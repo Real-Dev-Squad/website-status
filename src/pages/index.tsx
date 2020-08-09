@@ -1,15 +1,14 @@
-import "./index.scss";
-
 import { Component } from "react";
 import Layout from "../components/Layout/Layout";
-import Link from "next/link";
 import Timeline from "../components/timeline/Timeline";
-import Title from "../components/title/TItle";
+import logo from "../static/images/Real-Dev-Squad@1x.png";
+import styles from "./index.scss";
 
 class Index extends Component<any> {
   render() {
     return (
       <Layout>
+        <img src={logo} className={styles.logo} />
         <Timeline />
       </Layout>
     );

@@ -10,11 +10,10 @@
   font-family: "Roboto", sans-serif;
   font-size: 18px;
   font-weight: 900;
-  text-transform: uppercase;
   background: #00b0bd;
   padding: 15px 23px;
   color: #fff;
-  max-width: 5%;
+  max-width: 27%;
   width: 100%;
   text-align: center;
   margin: 0 auto;
@@ -60,16 +59,24 @@
   border: 1px solid #ddd;
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-  padding: 27px 25px;
+  padding: 27px 25px 36px;
 }
 .timelinearticle p {
-  margin: 0 0 0 60px;
+  margin: 0 0 0 56px;
   padding: 0;
   font-weight: 400;
   color: #242424;
   font-size: 14px;
   line-height: 24px;
   position: relative;
+
+  &:first-child {
+    margin-bottom: 20px;
+    padding-top: 12px;
+    font-weight: 400;
+    font-size: 38px;
+    color: #00b0bd;
+  }
 }
 .timelinearticle p span.articlenumber {
   position: absolute;
@@ -106,6 +113,7 @@
   left: -8% !important;
   color: #e6e6e6;
   position: absolute;
+  top: 12px;
 }
 .timelinearticle .contentleft:before {
   content: "\f0da";

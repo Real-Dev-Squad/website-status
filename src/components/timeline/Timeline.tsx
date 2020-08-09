@@ -11,7 +11,7 @@ class Timeline extends Component<any> {
     return (
       <Layout>
         <section id={styles.conferencetimeline}>
-          <div className={styles.timelinestart}>Roadmap</div>
+          <div className={styles.timelinestart}>ROADMAP</div>
           <div className={styles.conferencecenterline}></div>
           <div className={styles.conferencetimelinecontent}>
             <div className={styles.timelinearticle}>
@@ -104,7 +104,7 @@ class Timeline extends Component<any> {
               <div className={styles.metadate}></div>
             </div>
           </div>
-          <div className={styles.timelineend}>End</div>
+          <div className={styles.timelineend}>Thats just a beginning</div>
         </section>
       </Layout>
     );
