@@ -10,7 +10,7 @@
   font-family: "Roboto", sans-serif;
   font-size: 18px;
   font-weight: 900;
-  background: #00b0bd;
+  background: #0d1187;
   padding: 15px 23px;
   color: #fff;
   max-width: 27%;
@@ -25,7 +25,7 @@
   top: 0;
   left: 50%;
   margin-left: -2px;
-  background: #00b0bd;
+  background: #0d1187;
   z-index: -1;
 }
 #conferencetimeline .conferencetimelinecontent {
@@ -60,6 +60,8 @@
   background-color: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   padding: 27px 25px 36px;
+  border-radius: 5px;
+  border-top: 4px solid #0d1187;
 }
 .timelinearticle p {
   margin: 0 0 0 56px;
@@ -72,10 +74,10 @@
 
   &:first-child {
     margin-bottom: 20px;
-    padding-top: 12px;
+    padding-top: 11px;
     font-weight: 400;
     font-size: 38px;
-    color: #00b0bd;
+    color: #e30062;
   }
 }
 .timelinearticle p span.articlenumber {
@@ -84,7 +86,7 @@
   font-size: 44px;
   top: 10px;
   left: -60px;
-  color: #00b0bd;
+  color: #0d1187;
 }
 .timelinearticle .contentleftcontainer {
   float: left;
@@ -132,7 +134,7 @@
   margin-left: -31px;
   color: #fff;
   border-radius: 100%;
-  background: #00b0bd;
+  background: #0d1187;
 }
 .timelinearticle .metadate .date,
 .timelinearticle .metadate .month {
@@ -170,7 +172,6 @@
     width: auto;
     float: none;
     margin-left: 110px;
-    min-height: 53px;
   }
   .timelinearticle .contentleftcontainer {
     margin-bottom: 20px;
