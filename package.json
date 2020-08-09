@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "rm -rf node_modules/.cache && next src",
     "build": "next build src dist",
-    "start": "next start src"
+    "start": "next start src",
+    "lint": "eslint . --ext .ts",
+    "lint-and-fix": "eslint . --ext .ts --fix"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +29,9 @@
     "@types/node-sass": "^4.11.0",
     "@types/react": "^16.8.20",
     "@types/react-dom": "^16.8.4",
-    "@types/zeit__next-typescript": "^0.1.2"
+    "@types/zeit__next-typescript": "^0.1.2",
+    "@typescript-eslint/eslint-plugin": "^3.8.0",
+    "@typescript-eslint/parser": "^3.8.0",
+    "eslint": "^7.6.0"
   }
 }
