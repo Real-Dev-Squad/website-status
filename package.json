@@ -32,6 +32,12 @@
     "@types/zeit__next-typescript": "^0.1.2",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
-    "eslint": "^7.6.0"
+    "eslint": "^7.6.0",
+    "husky": "^4.2.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-and-fix"
+    }
   }
 }
