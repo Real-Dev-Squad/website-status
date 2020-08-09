@@ -851,6 +851,11 @@
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/node/-/node-14.0.27.tgz#a151873af5a5e851b51b3b065c9e63390a9e0eb1"
   integrity sha1-oVGHOvWl6FG1GzsGXJ5jOQqeDrE=
 
+"@types/parse-json@^4.0.0":
+  version "4.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
+  integrity sha1-L4u0QUNNFjs1+4/9zNcTiSf/uMA=
+
 "@types/prop-types@*":
   version "15.7.3"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
@@ -1911,6 +1916,11 @@ chrome-trace-event@^1.0.0:
   dependencies:
     tslib "^1.9.0"
 
+ci-info@^2.0.0:
+  version "2.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
+  integrity sha1-Z6npZL4xpR4V5QENWObxKDQAL0Y=
+
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/cipher-base/-/cipher-base-1.0.4.tgz#8760e4ecc272f4c363532f926d874aae2c1397de"
@@ -2018,6 +2028,11 @@ commondir@^1.0.1:
   version "1.0.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
   integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
+
+compare-versions@^3.6.0:
+  version "3.6.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/compare-versions/-/compare-versions-3.6.0.tgz#1a5689913685e5a87637b8d3ffca75514ec41d62"
+  integrity sha1-GlaJkTaF5ah2N7jT/8p1UU7EHWI=
 
 component-emitter@^1.2.1:
   version "1.3.0"
@@ -2134,6 +2149,17 @@ cosmiconfig@^5.0.0:
     is-directory "^0.3.1"
     js-yaml "^3.13.1"
     parse-json "^4.0.0"
+
+cosmiconfig@^6.0.0:
+  version "6.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
+  integrity sha1-2k/uhTxS9rHmk19BwaL8UL1KmYI=
+  dependencies:
+    "@types/parse-json" "^4.0.0"
+    import-fresh "^3.1.0"
+    parse-json "^5.0.0"
+    path-type "^4.0.0"
+    yaml "^1.7.2"
 
 create-ecdh@^4.0.0:
   version "4.0.3"
@@ -2847,6 +2873,21 @@ find-up@^1.0.0:
     path-exists "^2.0.0"
     pinkie-promise "^2.0.0"
 
+find-up@^4.0.0:
+  version "4.1.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/find-up/-/find-up-4.1.0.tgz#97afe7d6cdc0bc5928584b7c8d7b16e8a9aa5d19"
+  integrity sha1-l6/n1s3AvFkoWEt8jXsW6KmqXRk=
+  dependencies:
+    locate-path "^5.0.0"
+    path-exists "^4.0.0"
+
+find-versions@^3.2.0:
+  version "3.2.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/find-versions/-/find-versions-3.2.0.tgz#10297f98030a786829681690545ef659ed1d254e"
+  integrity sha1-ECl/mAMKeGgpaBaQVF72We0dJU4=
+  dependencies:
+    semver-regex "^2.0.0"
+
 flat-cache@^2.0.1:
   version "2.0.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/flat-cache/-/flat-cache-2.0.1.tgz#5d296d6f04bda44a4630a301413bdbc2ec085ec0"
@@ -3261,6 +3302,22 @@ https-browserify@^1.0.0:
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
 
+husky@^4.2.5:
+  version "4.2.5"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/husky/-/husky-4.2.5.tgz#2b4f7622673a71579f901d9885ed448394b5fa36"
+  integrity sha1-K092Imc6cVefkB2Yhe1Eg5S1+jY=
+  dependencies:
+    chalk "^4.0.0"
+    ci-info "^2.0.0"
+    compare-versions "^3.6.0"
+    cosmiconfig "^6.0.0"
+    find-versions "^3.2.0"
+    opencollective-postinstall "^2.0.2"
+    pkg-dir "^4.2.0"
+    please-upgrade-node "^3.2.0"
+    slash "^3.0.0"
+    which-pm-runs "^1.0.0"
+
 iconv-lite@0.4.24:
   version "0.4.24"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -3315,7 +3372,7 @@ import-fresh@^2.0.0:
     caller-path "^2.0.0"
     resolve-from "^3.0.0"
 
-import-fresh@^3.0.0:
+import-fresh@^3.0.0, import-fresh@^3.1.0:
   version "3.2.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/import-fresh/-/import-fresh-3.2.1.tgz#633ff618506e793af5ac91bf48b72677e15cbe66"
   integrity sha1-Yz/2GFBueTr1rJG/SLcmd+FcvmY=
@@ -3760,6 +3817,11 @@ levn@^0.4.1:
   dependencies:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
+
+lines-and-columns@^1.1.6:
+  version "1.1.6"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
+  integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -4474,6 +4536,11 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
   dependencies:
     wrappy "1"
 
+opencollective-postinstall@^2.0.2:
+  version "2.0.3"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
+  integrity sha1-eg//l49tv6TQBiOPusmO1BmMMlk=
+
 optionator@^0.9.1:
   version "0.9.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/optionator/-/optionator-0.9.1.tgz#4f236a6373dae0566a6d43e1326674f50c291499"
@@ -4607,6 +4674,16 @@ parse-json@^4.0.0:
     error-ex "^1.3.1"
     json-parse-better-errors "^1.0.1"
 
+parse-json@^5.0.0:
+  version "5.0.1"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/parse-json/-/parse-json-5.0.1.tgz#7cfe35c1ccd641bce3981467e6c2ece61b3b3878"
+  integrity sha1-fP41wczWQbzjmBRn5sLs5hs7OHg=
+  dependencies:
+    "@babel/code-frame" "^7.0.0"
+    error-ex "^1.3.1"
+    json-parse-better-errors "^1.0.1"
+    lines-and-columns "^1.1.6"
+
 parse5-htmlparser2-tree-adapter@5.1.0:
   version "5.1.0"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/parse5-htmlparser2-tree-adapter/-/parse5-htmlparser2-tree-adapter-5.1.0.tgz#a8244ee12bbd6b8937ad2a16ea43fe348aebcc86"
@@ -4658,6 +4735,11 @@ path-exists@^3.0.0:
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/path-exists/-/path-exists-3.0.0.tgz#ce0ebeaa5f78cb18925ea7d810d7b59b010fd515"
   integrity sha1-zg6+ql94yxiSXqfYENe1mwEP1RU=
 
+path-exists@^4.0.0:
+  version "4.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/path-exists/-/path-exists-4.0.0.tgz#513bdbe2d3b95d7762e8c1137efa195c6c61b5b3"
+  integrity sha1-UTvb4tO5XXdi6METfvoZXGxhtbM=
+
 path-is-absolute@^1.0.0:
   version "1.0.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
@@ -4698,6 +4780,11 @@ path-type@^2.0.0:
   integrity sha1-8BLMuEFbcJb8LaoQVMPXI4lZTHM=
   dependencies:
     pify "^2.0.0"
+
+path-type@^4.0.0:
+  version "4.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
+  integrity sha1-hO0BwKe6OAr+CdkKjBgNzZ0DBDs=
 
 pbkdf2@^3.0.3:
   version "3.1.1"
@@ -4760,6 +4847,20 @@ pkg-dir@^3.0.0:
   integrity sha1-J0kCDyOe2ZCIGx9xIQ1R62UjvqM=
   dependencies:
     find-up "^3.0.0"
+
+pkg-dir@^4.2.0:
+  version "4.2.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
+  integrity sha1-8JkTPfft5CLoHR2ESCcO6z5CYfM=
+  dependencies:
+    find-up "^4.0.0"
+
+please-upgrade-node@^3.2.0:
+  version "3.2.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/please-upgrade-node/-/please-upgrade-node-3.2.0.tgz#aeddd3f994c933e4ad98b99d9a556efa0e2fe942"
+  integrity sha1-rt3T+ZTJM+StmLmdmlVu+g4v6UI=
+  dependencies:
+    semver-compare "^1.0.0"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -5410,6 +5511,16 @@ scss-tokenizer@^0.2.3:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
+semver-compare@^1.0.0:
+  version "1.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/semver-compare/-/semver-compare-1.0.0.tgz#0dee216a1c941ab37e9efb1788f6afc5ff5537fc"
+  integrity sha1-De4hahyUGrN+nvsXiPavxf9VN/w=
+
+semver-regex@^2.0.0:
+  version "2.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/semver-regex/-/semver-regex-2.0.0.tgz#a93c2c5844539a770233379107b38c7b4ac9d338"
+  integrity sha1-qTwsWERTmncCMzeRB7OMe0rJ0zg=
+
 "semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@^5.4.1, semver@^5.5.1, semver@^5.6.0:
   version "5.7.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -5549,6 +5660,11 @@ slash@^1.0.0:
   version "1.0.0"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
   integrity sha1-xB8vbDn8FtHNF61LXYlhFK5HDVU=
+
+slash@^3.0.0:
+  version "3.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
+  integrity sha1-ZTm+hwwWWtvVJAIg2+Nh8bxNRjQ=
 
 slice-ansi@^2.1.0:
   version "2.1.0"
@@ -6403,6 +6519,11 @@ which-module@^2.0.0:
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
   integrity sha1-2e8H3Od7mQK4o6j6SzHD4/fm6Ho=
 
+which-pm-runs@^1.0.0:
+  version "1.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/which-pm-runs/-/which-pm-runs-1.0.0.tgz#670b3afbc552e0b55df6b7780ca74615f23ad1cb"
+  integrity sha1-Zws6+8VS4LVd9rd4DKdGFfI60cs=
+
 which@1, which@^1.2.9:
   version "1.3.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
@@ -6484,6 +6605,11 @@ yallist@^3.0.2:
   version "3.1.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/yallist/-/yallist-3.1.1.tgz#dbb7daf9bfd8bac9ab45ebf602b8cbad0d5d08fd"
   integrity sha1-27fa+b/YusmrRev2ArjLrQ1dCP0=
+
+yaml@^1.7.2:
+  version "1.10.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/yaml/-/yaml-1.10.0.tgz#3b593add944876077d4d683fee01081bd9fff31e"
+  integrity sha1-O1k63ZRIdgd9TWg/7gEIG9n/8x4=
 
 yargs-parser@^13.1.2:
   version "13.1.2"
