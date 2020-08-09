@@ -1,4 +1,4 @@
-# Real dev squad : Roadmap project - reactnextjs-scss-typescript
+# Real dev squad : Roadmap project - react-nextjs-scss-typescript
 
 # Setup
 
