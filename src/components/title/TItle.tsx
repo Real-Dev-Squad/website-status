@@ -1,5 +1,4 @@
-
-import styles from './Title.scss';
+import styles from "./Title.scss";
 
 type Props = {
   children?: React.ReactNode;
@@ -8,11 +7,7 @@ type Props = {
 function Title(props: Props) {
   const { children } = props;
 
-  return (
-    <h1 className={styles.Title}>
-      {children}
-    </h1>
-  );
+  return <h1 className={styles.title}>{children}</h1>;
 }
 
 export default Title;

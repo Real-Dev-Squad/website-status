@@ -3,44 +3,45 @@
   max-width: 920px;
   width: 100%;
   margin: 0 auto;
-}
-#conferencetimeline .timelinestart,
-#conferencetimeline .timelineend {
-  display: table;
-  font-family: "Roboto", sans-serif;
-  font-size: 18px;
-  font-weight: 900;
-  background: #0d1187;
-  padding: 15px 23px;
-  color: #fff;
-  max-width: 27%;
-  width: 100%;
-  text-align: center;
-  margin: 0 auto;
-}
-#conferencetimeline .conferencecenterline {
-  position: absolute;
-  width: 3px;
-  height: 100%;
-  top: 0;
-  left: 50%;
-  margin-left: -2px;
-  background: #0d1187;
-  z-index: -1;
-}
-#conferencetimeline .conferencetimelinecontent {
-  padding-top: 67px;
-  padding-bottom: 67px;
+
+  .timelinestart,
+  .timelineend {
+    display: table;
+    font-size: 18px;
+    font-weight: 900;
+    background: #0d1187;
+    padding: 15px 23px;
+    color: #fff;
+    max-width: 27%;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .conferencecenterline {
+    position: absolute;
+    width: 3px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    margin-left: -2px;
+    background: #0d1187;
+    z-index: -1;
+  }
+  .conferencetimelinecontent {
+    padding-top: 67px;
+    padding-bottom: 67px;
+  }
 }
 
-/*===== Resonsive Vertical Timeline =====*/
 @media only screen and (max-width: 830px) {
-  #conferencetimeline .timelinestart,
-  #conferencetimeline .timelineend {
-    margin: 0;
-  }
-  #conferencetimeline .conferencecenterline {
-    margin-left: 0;
-    left: 50px;
+  #conferencetimeline {
+    .timelinestart,
+    .timelineend {
+      margin: 0;
+    }
+    .conferencecenterline {
+      margin-left: 0;
+      left: 50px;
+    }
   }
 }
