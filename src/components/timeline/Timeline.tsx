@@ -1,108 +1,54 @@
 import { Component } from "react";
 import Layout from "../Layout/Layout";
+import { TimelineItem } from "../../types/timeLine";
 import styles from "./Timeline.scss";
 
 type Props = {
-  children?: React.ReactNode;
+  timeLineData: TimelineItem[];
 };
 
-class Timeline extends Component<any> {
+class Timeline extends Component<Props> {
   render() {
     return (
       <Layout>
         <section id={styles.conferencetimeline}>
           <div className={styles.timelinestart}>ROADMAP</div>
           <div className={styles.conferencecenterline}></div>
+
           <div className={styles.conferencetimelinecontent}>
-            <div className={styles.timelinearticle}>
-              <div className={styles.contentleftcontainer}>
-                <div className={styles.contentleft}>
-                  <p>
-                    Welcome
-                    <span className={styles.articlenumber}>01</span>
-                  </p>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
-                  </p>
-                </div>
-              </div>
+            {this.props.timeLineData.map(
+              (item: TimelineItem, index: number) => {
+                return (
+                  <div className={styles.timelinearticle}>
+                    <div
+                      className={
+                        index % 2 === 0
+                          ? styles.contentleftcontainer
+                          : styles.contentrightcontainer
+                      }
+                    >
+                      <div
+                        className={
+                          index % 2 === 0
+                            ? styles.contentleft
+                            : styles.contentright
+                        }
+                      >
+                        <p>
+                          {item.title}
+                          <span className={styles.articlenumber}>
+                            {index + 1}
+                          </span>
+                        </p>
+                        <p>{item.description}</p>
+                      </div>
+                    </div>
 
-              <div className={styles.metadate}></div>
-            </div>
-
-            <div className={styles.timelinearticle}>
-              <div className={styles.contentleftcontainer}></div>
-              <div className={styles.contentrightcontainer}>
-                <div className={styles.contentright}>
-                  <p>
-                    Members
-                    <span className={styles.articlenumber}>02</span>
-                  </p>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
-                  </p>
-                </div>
-              </div>
-              <div className={styles.metadate}></div>
-            </div>
-
-            <div className={styles.timelinearticle}>
-              <div className={styles.contentleftcontainer}>
-                <div className={styles.contentleft}>
-                  <p>
-                    Events
-                    <span className={styles.articlenumber}>03</span>
-                  </p>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.metadate}></div>
-            </div>
-
-            <div className={styles.timelinearticle}>
-              <div className={styles.contentleftcontainer}></div>
-              <div className={styles.contentrightcontainer}>
-                <div className={styles.contentright}>
-                  <p>
-                    Help
-                    <span className={styles.articlenumber}>04</span>
-                  </p>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
-                  </p>
-                </div>
-              </div>
-              <div className={styles.metadate}></div>
-            </div>
-
-            <div className={styles.timelinearticle}>
-              <div className={styles.contentleftcontainer}>
-                <div className={styles.contentleft}>
-                  <p>
-                    Blogs
-                    <span className={styles.articlenumber}>05</span>
-                  </p>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s
-                  </p>
-                </div>
-              </div>
-
-              <div className={styles.metadate}></div>
-            </div>
+                    <div className={styles.metadate}></div>
+                  </div>
+                );
+              }
+            )}
           </div>
           <div className={styles.timelineend}>Thats just a beginning</div>
         </section>
