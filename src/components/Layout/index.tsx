@@ -1,5 +1,4 @@
-
-import styles from './Layout.scss';
+import styles from "./Layout.scss";
 
 type Props = {
   children?: React.ReactNode;
@@ -8,11 +7,7 @@ type Props = {
 function Layout(props: Props) {
   const { children } = props;
 
-  return (
-    <div className={styles.Layout}>
-      {children}
-    </div>
-  );
+  return <div className={styles.layout}>{children}</div>;
 }
 
 export default Layout;
