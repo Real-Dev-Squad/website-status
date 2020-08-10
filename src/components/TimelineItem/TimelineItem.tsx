@@ -1,5 +1,6 @@
 import { TimelineItem } from "../../types/timeLine";
 import styles from "./TimelineItem.scss";
+import useVisibility from "../../helpers/check-visibility.helper";
 
 type Props = {
   timelineItem: TimelineItem;
@@ -7,29 +8,42 @@ type Props = {
 };
 
 function DiaplayTimelineItem(props: Props) {
+  const [isFirstVisible, firstRef] = useVisibility<HTMLDivElement>(-100);
   const { timelineItem, index } = props;
 
   return (
-    <div className={styles.timelinearticle}>
+    <div ref={firstRef}>
       <div
         className={
-          index % 2 === 0
-            ? styles.contentleftcontainer
-            : styles.contentrightcontainer
+          index < 2
+            ? styles.timelinearticleVisible
+            : isFirstVisible
+            ? styles.timelinearticleVisible
+            : styles.timelinearticle
         }
       >
         <div
-          className={index % 2 === 0 ? styles.contentleft : styles.contentright}
+          className={
+            index % 2 === 0
+              ? styles.contentleftcontainer
+              : styles.contentrightcontainer
+          }
         >
-          <p>
-            {timelineItem.title}
-            <span className={styles.articlenumber}>{index + 1}</span>
-          </p>
-          <p>{timelineItem.description}</p>
+          <div
+            className={
+              index % 2 === 0 ? styles.contentleft : styles.contentright
+            }
+          >
+            <p>
+              {timelineItem.title}
+              <span className={styles.articlenumber}>{index + 1}</span>
+            </p>
+            <p>{timelineItem.description}</p>
+          </div>
         </div>
-      </div>
 
-      <div className={styles.metadate}></div>
+        <div className={styles.metadate}></div>
+      </div>
     </div>
   );
 }

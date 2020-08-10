@@ -809,10 +809,22 @@
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha1-HuMNeVRMqE1o1LPNsK9PIFZj3S0=
 
-"@types/json-schema@^7.0.3":
+"@types/json-schema@^7.0.3", "@types/json-schema@^7.0.4":
   version "7.0.5"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/json-schema/-/json-schema-7.0.5.tgz#dcce4430e64b443ba8945f0290fb564ad5bac6dd"
   integrity sha1-3M5EMOZLRDuolF8CkPtWStW6xt0=
+
+"@types/lodash.throttle@4.1.6":
+  version "4.1.6"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/lodash.throttle/-/lodash.throttle-4.1.6.tgz#f5ba2c22244ee42ff6c2c49e614401a870c1009c"
+  integrity sha1-9bosIiRO5C/2wsSeYUQBqHDBAJw=
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.159"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/@types/lodash/-/lodash-4.14.159.tgz#61089719dc6fdd9c5cb46efc827f2571d1517065"
+  integrity sha1-YQiXGdxv3ZxctG78gn8lcdFRcGU=
 
 "@types/next-server@*":
   version "9.0.0"
@@ -1159,12 +1171,12 @@ ajv-errors@^1.0.0:
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
   integrity sha1-81mGrOuRr63sQQL72FAUlQzvpk0=
 
-ajv-keywords@^3.1.0:
+ajv-keywords@^3.1.0, ajv-keywords@^3.4.1:
   version "3.5.2"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha1-MfKdpatuANHC0yms97WSlhTVAU0=
 
-ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3:
+ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.2, ajv@^6.12.3:
   version "6.12.3"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/ajv/-/ajv-6.12.3.tgz#18c5af38a111ddeb4f2697bd78d68abc1cabd706"
   integrity sha1-GMWvOKER3etPJpe9eNaKvByr1wY=
@@ -2804,6 +2816,14 @@ file-entry-cache@^5.0.1:
   dependencies:
     flat-cache "^2.0.1"
 
+file-loader@^6.0.0:
+  version "6.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/file-loader/-/file-loader-6.0.0.tgz#97bbfaab7a2460c07bcbd72d3a6922407f67649f"
+  integrity sha1-l7v6q3okYMB7y9ctOmkiQH9nZJ8=
+  dependencies:
+    loader-utils "^2.0.0"
+    schema-utils "^2.6.5"
+
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -3751,6 +3771,13 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
+json5@^2.1.2:
+  version "2.1.3"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/json5/-/json5-2.1.3.tgz#c9b0f7fa9233bfe5807fe66fcf3a5617ed597d43"
+  integrity sha1-ybD3+pIzv+WAf+ZvzzpWF+1ZfUM=
+  dependencies:
+    minimist "^1.2.5"
+
 jsprim@^1.2.2:
   version "1.4.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/jsprim/-/jsprim-1.4.1.tgz#313e66bc1e5cc06e438bc1b7499c2e5c56acb6a2"
@@ -3876,6 +3903,15 @@ loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.0:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
+loader-utils@^2.0.0:
+  version "2.0.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/loader-utils/-/loader-utils-2.0.0.tgz#e4cace5b816d425a166b5f097e10cd12b36064b0"
+  integrity sha1-5MrOW4FtQloWa18JfhDNErNgZLA=
+  dependencies:
+    big.js "^5.2.2"
+    emojis-list "^3.0.0"
+    json5 "^2.1.2"
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -3908,6 +3944,11 @@ lodash.tail@^4.1.1:
   version "4.1.1"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/lodash.tail/-/lodash.tail-4.1.1.tgz#d2333a36d9e7717c8ad2f7cacafec7c32b444664"
   integrity sha1-0jM6NtnncXyK0vfKyv7HwytERmQ=
+
+lodash.throttle@4.1.1:
+  version "4.1.1"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
 
 lodash@^4.0.0, lodash@^4.17.10, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@~4.17.10:
   version "4.17.19"
@@ -4064,7 +4105,7 @@ mime-db@1.44.0, "mime-db@>= 1.43.0 < 2":
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/mime-db/-/mime-db-1.44.0.tgz#fa11c5eb0aca1334b4233cb4d52f10c5a6272f92"
   integrity sha1-+hHF6wrKEzS0Izy01S8QxaYnL5I=
 
-mime-types@^2.1.12, mime-types@~2.1.19, mime-types@~2.1.24:
+mime-types@^2.1.12, mime-types@^2.1.26, mime-types@~2.1.19, mime-types@~2.1.24:
   version "2.1.27"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/mime-types/-/mime-types-2.1.27.tgz#47949f98e279ea53119f5722e0f34e529bec009f"
   integrity sha1-R5SfmOJ56lMRn1ci4PNOUpvsAJ8=
@@ -4231,6 +4272,14 @@ neo-async@^2.5.0:
   version "2.6.2"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha1-tKr7k+OustgXTKU88WOrfXMIMF8=
+
+next-images@^1.4.1:
+  version "1.4.1"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/next-images/-/next-images-1.4.1.tgz#946f34728609dc24517234d85b2f6b6f9a3344d1"
+  integrity sha1-lG80coYJ3CRRcjTYWy9rb5ozRNE=
+  dependencies:
+    file-loader "^6.0.0"
+    url-loader "^4.0.0"
 
 next-server@*:
   version "9.0.5"
@@ -5503,6 +5552,15 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
+schema-utils@^2.6.5:
+  version "2.7.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/schema-utils/-/schema-utils-2.7.0.tgz#17151f76d8eae67fbbf77960c33c676ad9f4efc7"
+  integrity sha1-FxUfdtjq5n+793lgwzxnatn078c=
+  dependencies:
+    "@types/json-schema" "^7.0.4"
+    ajv "^6.12.2"
+    ajv-keywords "^3.4.1"
+
 scss-tokenizer@^0.2.3:
   version "0.2.3"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/scss-tokenizer/-/scss-tokenizer-0.2.3.tgz#8eb06db9a9723333824d3f5530641149847ce5d1"
@@ -6335,6 +6393,15 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
+
+url-loader@^4.0.0:
+  version "4.1.0"
+  resolved "https://artifactory.camp-prod.aws.hosting.transport.nsw.gov.au/artifactory/api/npm/npm-cdp/url-loader/-/url-loader-4.1.0.tgz#c7d6b0d6b0fccd51ab3ffc58a78d32b8d89a7be2"
+  integrity sha1-x9aw1rD8zVGrP/xYp40yuNiae+I=
+  dependencies:
+    loader-utils "^2.0.0"
+    mime-types "^2.1.26"
+    schema-utils "^2.6.5"
 
 url@0.11.0, url@^0.11.0:
   version "0.11.0"
