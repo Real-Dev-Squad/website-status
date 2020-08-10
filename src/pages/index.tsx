@@ -1,6 +1,6 @@
 import { Component } from "react";
-import Layout from "../components/Layout/Layout";
-import Timeline from "../components/Timeline/Timeline";
+import Layout from "../components/Layout";
+import Timeline from "../components/Timeline";
 import { TimelineData } from "../mocks/timeLine.data.mock";
 import logo from "../static/images/Real-Dev-Squad@1x.png";
 import styles from "./index.scss";

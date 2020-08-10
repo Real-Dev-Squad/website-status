@@ -1,6 +1,6 @@
 import { Component } from "react";
-import DiaplayTimelineItem from "../TimelineItem/TimelineItem";
-import Layout from "../Layout/Layout";
+import DiaplayTimelineItem from "../TimelineItem";
+import Layout from "../Layout";
 import { TimelineItem } from "../../types/timeLine";
 import styles from "./Timeline.scss";
 
