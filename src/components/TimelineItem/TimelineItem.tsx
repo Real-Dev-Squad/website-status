@@ -1,6 +1,6 @@
 import { TimelineItem } from "../../types/timeLine";
 import styles from "./TimelineItem.scss";
-import useVisibility from "../../helpers/check-visibility.helper";
+import useVisibility from "../../custom-hooks/check-visibility.hook";
 
 type Props = {
   timelineItem: TimelineItem;
