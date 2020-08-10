@@ -1,9 +1,9 @@
 import "./index.scss";
 
 import { Component } from "react";
-import Layout from "../components/Layout/Layout";
+import Layout from "../components/Layout/layout";
 import Link from "next/link";
-import Title from "../components/title/TItle";
+import Title from "../components/Title/tItle";
 
 class Index extends Component<any> {
   render() {
