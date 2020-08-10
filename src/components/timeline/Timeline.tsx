@@ -10,19 +10,16 @@ type Props = {
 
 class Timeline extends Component<Props> {
   render() {
+    const { timeLineData } = this.props;
     return (
       <Layout>
         <section id={styles.conferencetimeline}>
           <div className={styles.timelinestart}>ROADMAP</div>
           <div className={styles.conferencecenterline}></div>
           <div className={styles.conferencetimelinecontent}>
-            {this.props.timeLineData.map(
-              (item: TimelineItem, index: number) => {
-                return (
-                  <DiaplayTimelineItem timelineItem={item} index={index} />
-                );
-              }
-            )}
+            {timeLineData.map((item: TimelineItem, index: number) => {
+              return <DiaplayTimelineItem timelineItem={item} index={index} />;
+            })}
           </div>
           <div className={styles.timelineend}>Thats just a beginning</div>
         </section>
