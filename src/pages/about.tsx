@@ -1,7 +1,7 @@
 import { Component } from "react";
-import Layout from "../components/Layout/layout";
+import Layout from "../components/Layout";
 import Link from "next/link";
-import Title from "../components/Title/tItle";
+import Title from "../components/Title";
 
 class About extends Component<any> {
   render() {
