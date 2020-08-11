@@ -18,7 +18,7 @@ function Index() {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <p>error</p>
+        <p>Sorry, could not fetch the roadmap data</p>
       ) : data ? (
         <Timeline timeLineData={data} />
       ) : null}
