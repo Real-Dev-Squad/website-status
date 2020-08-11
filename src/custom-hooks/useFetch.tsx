@@ -49,7 +49,6 @@ const useFetch = (url: string) => {
         // mocking the data instead of using real response
         setToData(TimelineData);
       } catch (e) {
-        console.log(e);
         setToError(e);
       }
     };
