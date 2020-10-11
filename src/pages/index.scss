@@ -1,7 +1,26 @@
 body {
-  background-color: tomato;
-
   a {
     padding: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    color: #6018e0;
   }
+}
+
+.newChallengeBtn {
+  text-align: center;
+}
+
+.newChallengeBtn button {
+  background: #540075;
+  color: white;
+  border: 1px solid #540075;
+  border-radius: 5px;
+  padding: 0.5rem 2rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.challenges {
+  display: flex;
 }

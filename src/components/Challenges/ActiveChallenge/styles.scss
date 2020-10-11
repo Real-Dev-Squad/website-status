@@ -1,0 +1,40 @@
+.activeChallengeBox {
+  display: flex;
+  margin: 40px;
+  border: 2px solid #d2cbcb;
+  box-shadow: 0 2px 3px #ccc;
+  width: 400px;
+  height: 300px;
+}
+
+.activeBoxConent {
+  width: 100%;
+}
+
+.activeBtn {
+  text-align: center;
+  width: 100%;
+}
+
+.activeBtn button {
+  background: #4fb90d;
+  color: white;
+  border: 1px solid #4fb90d;
+  border-radius: 5px;
+  padding: 0.5rem 2rem;
+  font: inherit;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.description {
+  margin-left: 10px;
+  color: grey;
+  font-weight: 500;
+}
+
+.heading {
+  color: #540075;
+  font-size: 25px;
+  text-align: center;
+}

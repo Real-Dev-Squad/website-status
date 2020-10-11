@@ -1,23 +1,13 @@
-import "./index.scss";
-
-import { Component } from "react";
-import Layout from "../components/Layout";
-import Link from "next/link";
-import Title from "../components/Title";
+import { Component } from 'react';
+import Layout from '../components/Layout';
+import Title from '../components/Title';
+import Menu from '../components/Menu';
 
 class Index extends Component<any> {
   render() {
     return (
       <Layout>
-        <div>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
-          <Link href="/about">
-            <a>About</a>
-          </Link>
-        </div>
-        <Title>This is index page</Title>
+        <Menu page="Index" />
       </Layout>
     );
   }
