@@ -1,8 +1,7 @@
-import classNames from './index.scss';
 import { Component } from 'react';
 import Layout from '../components/Layout';
-import Menu from '../components/Menu';
-import Title from '../components/Title';
+import Menu from '../components/menu';
+import Title from '../components/title';
 
 class Mine extends Component<any> {
   render() {

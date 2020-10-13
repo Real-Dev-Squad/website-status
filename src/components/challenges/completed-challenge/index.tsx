@@ -1,4 +1,4 @@
-import classNames from './styles.scss';
+import classNames from './completed-challenge.module.scss';
 
 const CompletedChallenge = () => {
   return (

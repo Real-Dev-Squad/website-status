@@ -1,25 +1,52 @@
-import classNames from './index.scss';
-
 import { Component } from 'react';
 import Layout from '../components/Layout';
-import Challenge from '../components/Challenges';
-import Menu from '../components/Menu';
-import Title from '../components/Title';
+import Challenge from '../components/challenges';
+import Modal from '../components/modal';
+import Menu from '../components/menu';
+import Title from '../components/title';
 
 class Challenges extends Component<any> {
+  state = {
+    showModal: false,
+  };
 
   btnClickHandler = () => {
-    console.log('test');
+    const showModalVal = this.state.showModal;
+    this.setState({ showModal: !showModalVal });
   };
+
+  closeModal = () => {
+    this.setState({ showModal: false });
+  };
+
   render() {
     return (
       <Layout>
-        <Menu page="DS" />
+        <Menu page='DS' />
         <Title>This is index page</Title>
-        <div className={classNames.newChallengeBtn}>
+        <div className='new-challenge-btn'>
           <button onClick={this.btnClickHandler}>Add New Challenge</button>
         </div>
-        <div className={classNames.challenges}>
+        <style jsx>{`
+          .new-challenge-btn {
+            text-align: center;
+          }
+          .new-challenge-btn button {
+            background: #540075;
+            color: white;
+            border: 1px solid #540075;
+            border-radius: 5px;
+            padding: 0.5rem 2rem;
+            font: inherit;
+            cursor: pointer;
+          }
+
+          .challenges {
+            display: flex;
+          }
+        `}</style>
+        <Modal showModal={this.state.showModal} click={this.closeModal} />
+        <div>
           <Challenge />
         </div>
       </Layout>

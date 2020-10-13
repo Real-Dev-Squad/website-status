@@ -1,5 +1,5 @@
-import ActiveChallenge from './ActiveChallenge';
-import CompletedChallenge from './CompletedChallenge';
+import ActiveChallenge from './active-challenge';
+import CompletedChallenge from './completed-challenge';
 
 const Challenges = () => {
   return (

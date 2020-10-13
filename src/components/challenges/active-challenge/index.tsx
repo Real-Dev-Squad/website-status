@@ -1,4 +1,4 @@
-import classNames from './styles.scss';
+import classNames from './active-challenge.module.scss';
 
 const ActiveChallenge = () => {
   return (

@@ -1,4 +1,4 @@
-import classNames from './styles.scss';
+import classNames from './menu.module.scss';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 

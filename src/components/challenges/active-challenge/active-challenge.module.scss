@@ -1,13 +1,13 @@
 .activeChallengeBox {
-  display: flex;
+  display: inline-block;
   margin: 40px;
   border: 2px solid #d2cbcb;
   box-shadow: 0 2px 3px #ccc;
   width: 400px;
-  height: 300px;
 }
 
 .activeBoxConent {
+  padding: 1rem;
   width: 100%;
 }
 

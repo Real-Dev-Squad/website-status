@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import Layout from '../components/Layout';
-import Title from '../components/Title';
-import Menu from '../components/Menu';
+import Menu from '../components/menu';
 
 class Index extends Component<any> {
   render() {

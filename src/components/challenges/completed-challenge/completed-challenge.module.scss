@@ -1,14 +1,14 @@
 .completedChallengeBox {
-  display: flex;
+  display: inline-block;
   margin: 40px;
   border: 2px solid #d2cbcb;
   box-shadow: 0 2px 3px #ccc;
   width: 400px;
-  height: 300px;
 }
 
 .completedBoxConent {
   width: 100%;
+  padding: 1rem;
 }
 
 .viewStats {
