@@ -1,8 +1,8 @@
-import classNames from './menu.module.scss';
+import classNames from './navbar.module.scss';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 
-const Menu = ({ page }) => {
+const Navbar = ({ page }) => {
   return (
     <div className={classNames.header}>
       <Link href='/'>
@@ -24,12 +24,12 @@ const Menu = ({ page }) => {
   );
 };
 
-Menu.prototype = {
+Navbar.prototype = {
   page: PropTypes.string,
 };
 
-Menu.defaultProps = {
+Navbar.defaultProps = {
   page: 'Index',
 };
 
-export default Menu;
+export default Navbar;

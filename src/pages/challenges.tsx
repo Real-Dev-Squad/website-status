@@ -2,7 +2,7 @@ import { Component } from 'react';
 import Layout from '../components/Layout';
 import Challenge from '../components/challenges';
 import Modal from '../components/modal';
-import Menu from '../components/menu';
+import Navbar from '../components/navbar';
 import Title from '../components/title';
 
 class Challenges extends Component<any> {
@@ -22,7 +22,7 @@ class Challenges extends Component<any> {
   render() {
     return (
       <Layout>
-        <Menu page='DS' />
+        <Navbar page='DS' />
         <Title>This is index page</Title>
         <div className='new-challenge-btn'>
           <button onClick={this.btnClickHandler}>Add New Challenge</button>
