@@ -1,0 +1,42 @@
+.boxConent {
+  padding: 1rem;
+  width: 100%;
+}
+
+.heading {
+  color: #540075;
+  font-size: 25px;
+  text-align: center;
+}
+
+.description {
+  margin-left: 10px;
+  color: grey;
+  font-weight: 500;
+}
+
+.activeBtn button {
+  background: #4fb90d;
+  color: white;
+  border: 1px solid #4fb90d;
+  border-radius: 5px;
+  padding: 0.5rem 2rem;
+  font: inherit;
+  cursor: pointer;
+  font-weight: bolder;
+}
+
+.viewStats {
+  width: 100%;
+  text-align: center;
+}
+
+.viewStats a {
+  color: black;
+  text-decoration: underline;
+}
+
+.activeBtn {
+  text-align: center;
+  width: 100%;
+}

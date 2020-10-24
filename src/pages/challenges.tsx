@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import Layout from '../components/Layout';
-import Challenge from '../components/challenges';
+import Section from '../components/section';
 import Modal from '../components/modal';
 import Navbar from '../components/navbar';
 import Title from '../components/title';
@@ -20,6 +20,29 @@ class Challenges extends Component<any> {
   };
 
   render() {
+    const CHALLENGES = [
+      {
+        id: 1,
+        title: 'Sherlock and Anagrams',
+        level: 'Easy',
+        startDate: '14 Days Ago',
+        endDate: 'Today',
+        participantsCnt: '5',
+        isActive: 1,
+      },
+      {
+        id: 2,
+        title: 'Sherlock and Anagrams',
+        level: 'Easy',
+        startDate: '28 Days Ago',
+        endDate: '14 Days Ago',
+        participantsCnt: '5',
+        isActive: 0,
+      },
+    ];
+
+    const SCREEN = 'Challenges';
+
     return (
       <Layout>
         <Navbar page='DS' />
@@ -47,7 +70,7 @@ class Challenges extends Component<any> {
         `}</style>
         <Modal showModal={this.state.showModal} click={this.closeModal} />
         <div>
-          <Challenge />
+          <Section content={CHALLENGES} screen={SCREEN} />
         </div>
       </Layout>
     );
