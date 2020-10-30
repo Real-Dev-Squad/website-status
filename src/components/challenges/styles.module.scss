@@ -9,21 +9,16 @@
   text-align: center;
 }
 
-.description {
-  margin-left: 10px;
-  color: grey;
-  font-weight: 500;
-}
-
 .activeBtn button {
   background: #4fb90d;
   color: white;
-  border: 1px solid #4fb90d;
+  border: 2px solid black;
   border-radius: 5px;
   padding: 0.5rem 2rem;
   font: inherit;
   cursor: pointer;
   font-weight: bolder;
+  font-size: 20px;
 }
 
 .viewStats {
@@ -38,5 +33,5 @@
 
 .activeBtn {
   text-align: center;
-  width: 100%;
+  max-width: 370px;
 }

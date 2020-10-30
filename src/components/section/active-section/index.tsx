@@ -6,7 +6,7 @@ const ActiveSection = (props) => {
 
   if (props.screen == 'Challenges') {
     activeContent = props.sectionContent.map((challenge) => {
-      if (challenge.isActive) {
+      if (challenge.is_active) {
         return <Active key={challenge.id} content={challenge} />;
       }
     });

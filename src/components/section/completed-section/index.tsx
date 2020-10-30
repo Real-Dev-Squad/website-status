@@ -6,7 +6,7 @@ const CompletedSection = (props) => {
 
   if (props.screen == 'Challenges') {
     completeContent = props.sectionContent.map((challenge) => {
-      if (!challenge.isActive) {
+      if (!challenge.is_active) {
         return <Complete key={challenge.id} content={challenge} />;
       }
     });

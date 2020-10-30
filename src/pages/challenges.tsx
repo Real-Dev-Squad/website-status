@@ -1,80 +1,57 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 import Section from '../components/section';
-import Modal from '../components/modal';
 import Navbar from '../components/navbar';
 import Title from '../components/title';
+import ChallengesJson from '../../mock/challenges.json';
 
-class Challenges extends Component<any> {
-  state = {
+const Challenges = (props) => {
+  const [state, setState] = useState({
     showModal: false,
+  });
+
+  const btnClickHandler = () => {
+    const showModalVal = state.showModal;
+    setState({ showModal: !showModalVal });
   };
 
-  btnClickHandler = () => {
-    const showModalVal = this.state.showModal;
-    this.setState({ showModal: !showModalVal });
+  const closeModal = () => {
+    setState({ showModal: false });
   };
 
-  closeModal = () => {
-    this.setState({ showModal: false });
-  };
+  const SCREEN = 'Challenges';
 
-  render() {
-    const CHALLENGES = [
-      {
-        id: 1,
-        title: 'Sherlock and Anagrams',
-        level: 'Easy',
-        startDate: '14 Days Ago',
-        endDate: 'Today',
-        participantsCnt: '5',
-        isActive: 1,
-      },
-      {
-        id: 2,
-        title: 'Sherlock and Anagrams',
-        level: 'Easy',
-        startDate: '28 Days Ago',
-        endDate: '14 Days Ago',
-        participantsCnt: '5',
-        isActive: 0,
-      },
-    ];
+  return (
+    <Layout>
+      <Navbar page='DS' />
+      <Title>This is index page</Title>
+      <div className='new-challenge-btn'>
+        <button onClick={btnClickHandler}>Add New Challenge</button>
+      </div>
+      <style jsx>{`
+        .new-challenge-btn {
+          text-align: center;
+        }
+        .new-challenge-btn button {
+          background: #540075;
+          color: white;
+          border: 1px solid #540075;
+          border-radius: 5px;
+          padding: 0.5rem 2rem;
+          font: inherit;
+          cursor: pointer;
+        }
 
-    const SCREEN = 'Challenges';
-
-    return (
-      <Layout>
-        <Navbar page='DS' />
-        <Title>This is index page</Title>
-        <div className='new-challenge-btn'>
-          <button onClick={this.btnClickHandler}>Add New Challenge</button>
-        </div>
-        <style jsx>{`
-          .new-challenge-btn {
-            text-align: center;
-          }
-          .new-challenge-btn button {
-            background: #540075;
-            color: white;
-            border: 1px solid #540075;
-            border-radius: 5px;
-            padding: 0.5rem 2rem;
-            font: inherit;
-            cursor: pointer;
-          }
-
-          .challenges {
-            display: flex;
-          }
-        `}</style>
-        <Modal showModal={this.state.showModal} click={this.closeModal} />
-        <div>
-          <Section content={CHALLENGES} screen={SCREEN} />
-        </div>
-      </Layout>
-    );
-  }
-}
+        .challenges {
+          display: flex;
+        }
+      `}</style>
+      {/* <Modal showModal={state.showModal} click={closeModal} /> */}
+      <div>
+        <Section content={ChallengesJson} screen={SCREEN} />
+      </div>
+    </Layout>
+  );
+};
 
 export default Challenges;

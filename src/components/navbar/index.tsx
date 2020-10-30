@@ -3,23 +3,18 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 
 const Navbar = ({ page }) => {
+  const navBarContent = (title, refUrl) => {
+    const navBarText = title === 'Tasks' ? 'Index' : title;
+    return (
+      <Link href={refUrl}>
+        <a className={page === navBarText ? classNames.active : ''}>{title}</a>
+      </Link>
+    );
+  };
   return (
     <div className={classNames.header}>
-      <Link href='/'>
-        <a className={page == 'Index' ? classNames.active : ''}>Tasks</a>
-      </Link>{' '}
-      |
-      <Link href='/mine'>
-        <a className={page == 'Mine' ? classNames.active : ''}>Mine</a>
-      </Link>{' '}
-      |
-      <Link href='/challenges'>
-        <a className={page == 'DS' ? classNames.active : ''}>DS</a>
-      </Link>{' '}
-      |
-      <Link href='/all'>
-        <a className={page == 'All' ? classNames.active : ''}>ALL</a>
-      </Link>
+      {navBarContent('Tasks', '/')} | {navBarContent('Mine', '/mine')} |{' '}
+      {navBarContent('DS', '/challenges')} | {navBarContent('ALL', '/all')}
     </div>
   );
 };

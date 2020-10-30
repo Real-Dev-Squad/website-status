@@ -1,27 +1,14 @@
 import classNames from './styles.module.scss';
+import Label from '../label/label';
 
-const Complete = ({content}) => {
+const Complete = ({ content }) => {
   return (
     <div className={classNames.boxConent}>
       <p className={classNames.heading}>{content.title}</p>
-      <p>
-        <span className={classNames.description}>Level</span>:
-        <span className={classNames.descValue}>{content.level}</span>
-      </p>
-      <p>
-        <span className={classNames.description}>Challenge Started</span>:
-        <span className={classNames.descValue}>{content.startDate}</span>
-      </p>
-      <p>
-        <span className={classNames.description}>Challenge Ends</span>:
-        <span className={classNames.descValue}>{content.endDate}</span>
-      </p>
-      <p>
-        <span className={classNames.description}>Active Participants</span>:
-        <span
-          className={classNames.descValue}
-        >{`${content.participantsCnt} Members`}</span>
-      </p>
+      <Label text='Level' value={content.level} />
+      <Label text='Challenge Started' value={content.start_date} />
+      <Label text='Challenge Ends' value={content.end_date} />
+      <Label text='Active Participants' value={content.participants.length} />
       <p className={classNames.viewStats}>
         <a href='#'>View Stats</a>
       </p>
