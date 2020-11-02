@@ -4,6 +4,7 @@ import Section from '../components/section';
 import Navbar from '../components/navbar';
 import Title from '../components/title';
 import ChallengesJson from '../../mock/challenges.json';
+import Constants from '../components/constants/display-sections.js';
 
 const Challenges = (props) => {
   const [state, setState] = useState({
@@ -18,8 +19,6 @@ const Challenges = (props) => {
   const closeModal = () => {
     setState({ showModal: false });
   };
-
-  const SCREEN = 'Challenges';
 
   return (
     <Layout>
@@ -48,7 +47,10 @@ const Challenges = (props) => {
       `}</style>
       {/* <Modal showModal={state.showModal} click={closeModal} /> */}
       <div>
-        <Section content={ChallengesJson} screen={SCREEN} />
+        <Section
+          content={ChallengesJson}
+          screen={Constants['CHALLENGES_SCREEN_NAME']}
+        />
       </div>
     </Layout>
   );

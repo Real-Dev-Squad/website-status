@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import classNames from './styles.module.scss';
-import Label from '../label/label';
+import Details from './details/details';
+import PropTypes from 'prop-types';
 
 const Active = ({ content }) => {
   const [state, setState] = useState({
@@ -30,10 +31,10 @@ const Active = ({ content }) => {
   return (
     <div className={classNames.boxConent}>
       <p className={classNames.heading}>{content.title}</p>
-      <Label text='Level' value={content.level} />
-      <Label text='Challenge Started' value={content.start_date} />
-      <Label text='Challenge Ends' value={content.end_date} />
-      <Label text='Active Participants' value={content.participants.length} />
+      <Details text='Level' value={content.level} />
+      <Details text='Challenge Started' value={content.start_date} />
+      <Details text='Challenge Ends' value={content.end_date} />
+      <Details text='Active Participants' value={content.participants.length} />
       {!state.is_user_subscribed ? (
         <p className={classNames.activeBtn}>
           <button onClick={subscribeEventHandler}>I will do this</button>
@@ -43,6 +44,10 @@ const Active = ({ content }) => {
       )}
     </div>
   );
+};
+
+Active.propTypes = {
+  content: PropTypes.object,
 };
 
 export default Active;

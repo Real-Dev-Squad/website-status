@@ -1,6 +1,6 @@
 .boxConent {
-  padding: 1rem;
   width: 100%;
+  text-align: left;
 }
 
 .heading {
@@ -19,6 +19,11 @@
   cursor: pointer;
   font-weight: bolder;
   font-size: 20px;
+}
+
+.activeBtn button:hover,
+.activeBtn button:active {
+  background: darkgreen;
 }
 
 .viewStats {

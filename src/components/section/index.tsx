@@ -1,13 +1,20 @@
 import ActiveSection from './active-section';
 import CompletedSection from './completed-section';
+import classNames from './section.module.scss';
+import PropTypes from 'prop-types';
 
-const Challenges = (props) => {
+const Index = ({ content, screen }) => {
   return (
-    <>
-      <ActiveSection sectionContent={props.content} screen={props.screen}/>
-      <CompletedSection sectionContent={props.content} screen={props.screen}/>
-    </>
+    <div className={classNames.section}>
+      <ActiveSection sectionContent={content} screen={screen} />
+      <CompletedSection sectionContent={content} screen={screen} />
+    </div>
   );
 };
 
-export default Challenges;
+Index.propTypes = {
+  content: PropTypes.array,
+  screen: PropTypes.string,
+};
+
+export default Index;
