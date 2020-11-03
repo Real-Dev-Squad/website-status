@@ -1,12 +1,12 @@
 import classNames from './active-section.module.scss';
 import Active from '../../challenges/active';
-import Constants from '../../constants/display-sections.js';
+import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 import PropTypes from 'prop-types';
 
 const ActiveSection = ({ sectionContent, screen }) => {
   let activeContent;
 
-  if (screen === Constants['CHALLENGES_SCREEN_NAME']) {
+  if (screen === CHALLENGES_SCREEN) {
     activeContent = sectionContent
       .filter((challenge) => challenge.is_active)
       .map((activeChallenge) => (

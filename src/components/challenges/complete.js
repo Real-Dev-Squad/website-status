@@ -1,5 +1,5 @@
 import classNames from './styles.module.scss';
-import Details from './details/details';
+import Details from './details';
 import PropTypes from 'prop-types';
 
 const Complete = ({ content }) => {

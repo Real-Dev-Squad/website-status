@@ -1,7 +1,7 @@
 import classNames from './details.module.scss';
 import PropTypes from 'prop-types';
 
-const Details = ({ text, value }) => {
+const Index = ({ text, value }) => {
   return (
     <p>
       <span className={classNames.description}>{text}</span>:
@@ -10,9 +10,9 @@ const Details = ({ text, value }) => {
   );
 };
 
-Details.propTypes = {
+Index.propTypes = {
   text: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
-export default Details;
+export default Index;

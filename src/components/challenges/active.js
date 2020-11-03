@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classNames from './styles.module.scss';
-import Details from './details/details';
+import Details from './details';
 import PropTypes from 'prop-types';
 
 const Active = ({ content }) => {

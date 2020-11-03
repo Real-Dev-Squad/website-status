@@ -1,2 +1,1 @@
-const screenConstants = [];
-screenConstants['CHALLENGES_SCREEN_NAME'] = 'Challenges';
+export const CHALLENGES_SCREEN = 'Challenges';

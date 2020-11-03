@@ -1,12 +1,12 @@
 import classNames from './completed-section.module.scss';
 import Complete from '../../challenges/complete';
-import Constants from '../../constants/display-sections.js';
+import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 import PropTypes from 'prop-types';
 
 const CompletedSection = ({ sectionContent, screen }) => {
   let completeContent;
 
-  if (screen === Constants['CHALLENGES_SCREEN_NAME']) {
+  if (screen === CHALLENGES_SCREEN) {
     completeContent = sectionContent
       .filter((challenge) => !challenge.is_active)
       .map((completedChallenge) => (

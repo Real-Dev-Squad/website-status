@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 const Index = ({ content, screen }) => {
   return (
-    <div className={classNames.section}>
+    <section className={classNames.section}>
       <ActiveSection sectionContent={content} screen={screen} />
       <CompletedSection sectionContent={content} screen={screen} />
-    </div>
+    </section>
   );
 };
 

@@ -4,7 +4,7 @@ import Section from '../components/section';
 import Navbar from '../components/navbar';
 import Title from '../components/title';
 import ChallengesJson from '../../mock/challenges.json';
-import Constants from '../components/constants/display-sections.js';
+import {CHALLENGES_SCREEN} from '../components/constants/display-sections.js';
 
 const Challenges = () => {
   return (
@@ -35,7 +35,7 @@ const Challenges = () => {
       <div>
         <Section
           content={ChallengesJson}
-          screen={Constants['CHALLENGES_SCREEN_NAME']}
+          screen={CHALLENGES_SCREEN}
         />
       </div>
     </Layout>
