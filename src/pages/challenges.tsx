@@ -6,26 +6,13 @@ import Title from '../components/title';
 import ChallengesJson from '../../mock/challenges.json';
 import Constants from '../components/constants/display-sections.js';
 
-const Challenges = (props) => {
-  const [state, setState] = useState({
-    showModal: false,
-  });
-
-  const btnClickHandler = () => {
-    const showModalVal = state.showModal;
-    setState({ showModal: !showModalVal });
-  };
-
-  const closeModal = () => {
-    setState({ showModal: false });
-  };
-
+const Challenges = () => {
   return (
     <Layout>
       <Navbar page='DS' />
       <Title>This is index page</Title>
       <div className='new-challenge-btn'>
-        <button onClick={btnClickHandler}>Add New Challenge</button>
+        <button>Add New Challenge</button>
       </div>
       <style jsx>{`
         .new-challenge-btn {
@@ -45,7 +32,6 @@ const Challenges = (props) => {
           display: flex;
         }
       `}</style>
-      {/* <Modal showModal={state.showModal} click={closeModal} /> */}
       <div>
         <Section
           content={ChallengesJson}
