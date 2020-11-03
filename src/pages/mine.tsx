@@ -1,15 +1,17 @@
 import { Component } from 'react';
 import Layout from '../components/Layout';
 import Navbar from '../components/navbar';
+import Title from '../components/title';
 
-class Index extends Component<any> {
+class Mine extends Component<any> {
   render() {
     return (
       <Layout>
-        <Navbar page="Index" />
+        <Navbar page="Mine" />
+        <Title>This is about page</Title>
       </Layout>
     );
   }
 }
 
-export default Index;
+export default Mine;
