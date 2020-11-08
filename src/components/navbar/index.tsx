@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 
 const Navbar = ({ page }) => {
   const navBarContent = (title, refUrl) => {
-    const navBarText = title === 'Tasks' ? 'Index' : title;
+    // const navBarText = title === 'Tasks' ? 'Index' : title;
     return (
       <Link href={refUrl}>
-        <a className={page === navBarText ? classNames.active : ''}>{title}</a>
+        <a className={page === title ? classNames.active : ''}>{title}</a>
       </Link>
     );
   };
   return (
     <div className={classNames.header}>
-      {navBarContent('Tasks', '/')} | {navBarContent('Mine', '/mine')} |{' '}
+      {navBarContent('Tasks', '/tasks')} | {navBarContent('Mine', '/mine')} |{' '}
       {navBarContent('DS', '/challenges')} | {navBarContent('ALL', '/all')}
     </div>
   );
