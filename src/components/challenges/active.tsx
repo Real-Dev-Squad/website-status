@@ -1,9 +1,21 @@
+import { FunctionComponent } from 'react';
 import { useState } from 'react';
 import classNames from './styles.module.scss';
 import Details from './details';
-import PropTypes from 'prop-types';
+import Participants from './participants';
 
-const Active = ({ content }) => {
+type ActiveProps = {
+  content: {
+    is_user_subscribed: number;
+    title: string;
+    level: string;
+    start_date: string;
+    end_date: string;
+    participants: [];
+  };
+};
+
+const Active: FunctionComponent<ActiveProps> = ({ content }) => {
   const [state, setState] = useState({
     is_user_subscribed: content.is_user_subscribed,
   });
@@ -34,7 +46,13 @@ const Active = ({ content }) => {
       <Details text='Level' value={content.level} />
       <Details text='Challenge Started' value={content.start_date} />
       <Details text='Challenge Ends' value={content.end_date} />
-      <Details text='Active Participants' value={content.participants.length} />
+      <div className={classNames.participants}>
+        <Details
+          text='Active Participants'
+          value={content.participants.length}
+        />
+        <Participants participants={content.participants} />
+      </div>
       {!state.is_user_subscribed ? (
         <p className={classNames.activeBtn}>
           <button onClick={subscribeEventHandler}>I will do this</button>
@@ -44,10 +62,6 @@ const Active = ({ content }) => {
       )}
     </div>
   );
-};
-
-Active.propTypes = {
-  content: PropTypes.object,
 };
 
 export default Active;

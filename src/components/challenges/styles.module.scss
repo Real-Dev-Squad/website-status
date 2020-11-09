@@ -1,10 +1,13 @@
 .boxConent {
+  border: 4px solid black;
+  box-shadow: 0 2px 3px #ccc;
   width: 100%;
   text-align: left;
+  margin: 16px 0;
 }
 
 .heading {
-  color: #540075;
+  color: #041484;
   font-size: 25px;
   text-align: center;
 }
@@ -38,5 +41,9 @@
 
 .activeBtn {
   text-align: center;
-  max-width: 370px;
+}
+
+.participants {
+  display: flex;
+  flex-direction: row;
 }
