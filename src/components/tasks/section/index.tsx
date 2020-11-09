@@ -1,5 +1,21 @@
+import { FunctionComponent } from 'react';
 import Card from '../card'
-const Section = ({ heading, content }) => {
+
+type pullRequest = {
+  title: string,
+  completionDate: string,
+  startedAt: string,
+  author: string,
+  profilePicture: string,
+  issueStatus: string
+}
+
+type Props = {
+  heading: string,
+  content: pullRequest[]
+}
+
+const Section: FunctionComponent<Props> = ({ heading, content }) => {
 
   const cards = content.map((pullRequest, i) => {
     return <Card pullRequest={pullRequest} key={i} />

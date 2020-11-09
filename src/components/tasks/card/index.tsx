@@ -1,6 +1,19 @@
-const Card = ({
-  pullRequest
-}) => {
+import { FunctionComponent } from 'react';
+
+type pullRequest = {
+  title: string,
+  completionDate: string,
+  startedAt: string,
+  author: string,
+  profilePicture: string,
+  issueStatus: string
+}
+
+type Props = {
+  pullRequest: pullRequest
+}
+
+const Card: FunctionComponent<Props> = ({ pullRequest }) => {
   const {
     title,
     completionDate,
@@ -9,6 +22,7 @@ const Card = ({
     profilePicture,
     issueStatus
   } = pullRequest
+
   return (
     <>
       <style jsx>{`

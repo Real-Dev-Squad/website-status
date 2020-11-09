@@ -1,9 +1,12 @@
+import { FunctionComponent } from 'react';
+
 import Layout from '../components/Layout';
 import Navbar from '../components/navbar';
 import Title from '../components/title';
-import Section from '../components/tasks/section'
-import pullRequests from '../../mock/pullRequests'
-const Tasks = () => {
+import Section from '../components/tasks/section';
+import pullRequests from '../../mock/pullRequests';
+
+const Tasks: FunctionComponent = () => {
   const completedTasks = pullRequests.filter((pr) => {
     if (pr.completionStatus === 'completed') {
       return pr
