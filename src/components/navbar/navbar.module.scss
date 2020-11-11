@@ -1,5 +1,10 @@
 .header {
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .active {
@@ -9,6 +14,6 @@
 a {
   padding: 10px;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: bold;
   color: #6018e0;
 }

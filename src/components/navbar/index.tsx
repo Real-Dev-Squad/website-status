@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 const Navbar = ({ page }) => {
   const navBarContent = (title, refUrl) => {
-    // const navBarText = title === 'Tasks' ? 'Index' : title;
     return (
       <Link href={refUrl}>
         <a className={page === title ? classNames.active : ''}>{title}</a>
@@ -13,7 +12,7 @@ const Navbar = ({ page }) => {
   };
   return (
     <div className={classNames.header}>
-      {navBarContent('Tasks', '/tasks')} | {navBarContent('Mine', '/mine')} |{' '}
+      {navBarContent('Tasks', '/')} | {navBarContent('Mine', '/mine')} |{' '}
       {navBarContent('DS', '/challenges')} | {navBarContent('ALL', '/all')}
     </div>
   );
