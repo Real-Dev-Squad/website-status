@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'react';
 import Card from '../card';
 import classNames from './section.scss';
+
 type pullRequest = {
   title: string,
   completionDate: string,
