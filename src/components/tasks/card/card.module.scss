@@ -1,12 +1,12 @@
 .card {
-  border: 0.2rem solid black;
-  border-radius: 0.5rem;
-  padding: 1rem;
+  border: 0.2em solid black;
+  border-radius: 0.5em;
+  padding: 1em;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  max-width: 25rem;
-  margin-bottom: 2rem;
+  max-width: 25em;
+  margin-bottom: 2em;
   cursor: pointer;
 }
 
@@ -29,11 +29,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 6rem;
+  width: 6em;
 }
 
 .profilePicture > img {
-  width: 3rem;
+  width: 3em;
   border-radius: 50%;
 }
 

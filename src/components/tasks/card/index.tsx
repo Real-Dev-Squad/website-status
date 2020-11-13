@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import classNames from './card.scss'
+import classNames from './card.module.scss'
 
 type Props = {
   pullRequest: {
