@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "rm -rf node_modules/.cache && next src",
     "build": "next build src dist",
-    "start": "next start src",
+    "start": "next start src -p $PORT",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix"
   },
