@@ -1,9 +1,13 @@
+import { FunctionComponent } from 'react';
 import classNames from './navbar.module.scss';
 import Link from 'next/link';
-import PropTypes from 'prop-types';
 
-const Navbar = ({ page }) => {
-  const navBarContent = (title, refUrl) => {
+type NavbarProps = {
+  page: string;
+};
+
+const Navbar: FunctionComponent<NavbarProps> = ({ page }) => {
+  const navBarContent = (title: string, refUrl: string) => {
     const navBarText = title === 'Tasks' ? 'Index' : title;
     return (
       <Link href={refUrl}>
@@ -17,14 +21,6 @@ const Navbar = ({ page }) => {
       {navBarContent('DS', '/challenges')} | {navBarContent('ALL', '/all')}
     </div>
   );
-};
-
-Navbar.prototype = {
-  page: PropTypes.string,
-};
-
-Navbar.defaultProps = {
-  page: 'Index',
 };
 
 export default Navbar;

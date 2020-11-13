@@ -1,7 +1,19 @@
 .active {
-  display: inline-block;
-  margin: 40px;
-  border: 2px solid black;
-  box-shadow: 0 2px 3px #ccc;
-  width: 30%;
+  display: block;
+  width: 100%;
+  min-width: 17rem;
+  max-width: 24rem;
+}
+
+.sectionHeading {
+  font-size: 2rem;
+  color: #041484;
+}
+
+@media (min-width: 40rem) {
+  .active {
+    display: inline-block;
+    margin: 40px;
+    vertical-align: top;
+  }
 }
