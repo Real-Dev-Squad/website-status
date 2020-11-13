@@ -1,0 +1,20 @@
+.heading {
+  font-size: 3.5rem;
+  font-weight: bold;
+  text-align: center;
+  color: #041484;
+  margin-bottom: 1em;
+}
+
+.section {
+  height: 100%;
+  min-width: 17em;
+  font-size: 1rem;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}

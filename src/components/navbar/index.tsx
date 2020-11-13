@@ -8,10 +8,9 @@ type NavbarProps = {
 
 const Navbar: FunctionComponent<NavbarProps> = ({ page }) => {
   const navBarContent = (title: string, refUrl: string) => {
-    const navBarText = title === 'Tasks' ? 'Index' : title;
     return (
       <Link href={refUrl}>
-        <a className={page === navBarText ? classNames.active : ''}>{title}</a>
+        <a className={page === title ? classNames.active : ''}>{title}</a>
       </Link>
     );
   };

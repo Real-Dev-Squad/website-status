@@ -1,4 +1,4 @@
-import styles from "./Layout.scss";
+import styles from "./Layout.module.scss";
 
 type Props = {
   children?: React.ReactNode;
