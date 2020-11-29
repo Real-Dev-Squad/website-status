@@ -8,9 +8,10 @@ type NavbarProps = {
 
 const Navbar: FunctionComponent<NavbarProps> = ({ page }) => {
   const navBarContent = (title: string, refUrl: string) => {
+    const linkClasses = `link ${page === title ? classNames.active : ''}` 
     return (
       <Link href={refUrl}>
-        <a className={page === title ? classNames.active : ''}>{title}</a>
+        <a className={linkClasses}>{title}</a>
       </Link>
     );
   };

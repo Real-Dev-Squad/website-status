@@ -3,8 +3,6 @@ import Layout from 'components/Layout';
 import Navbar from 'components/navbar';
 import Section from 'components/tasks/section';
 import pullRequests from 'mocks/pullRequests.json';
-import classNames from '../styles/index.scss';
-
 const Index: FunctionComponent = () => {
   const completedTasks = pullRequests.filter((pr) => {
     if (pr.completionStatus === 'completed') {
@@ -20,7 +18,7 @@ const Index: FunctionComponent = () => {
   return (
     <Layout>
       <Navbar page="Tasks" />
-      <div className={classNames.container}>
+      <div className="container">
         <Section heading='Active' content={incompleteTasks} />
         <Section heading='Completed' content={completedTasks} />
       </div>
