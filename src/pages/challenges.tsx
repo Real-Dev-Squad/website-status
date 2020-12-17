@@ -2,7 +2,7 @@ import { FunctionComponent } from 'react';
 import Layout from 'components/Layout';
 import Section from 'components/section';
 import Navbar from 'components/navbar';
-import Title from 'components/Title';
+import Title from 'components/title';
 import ChallengesJson from 'mocks/challenges.json';
 import { CHALLENGES_SCREEN } from '../components/constants/display-sections.js';
 
