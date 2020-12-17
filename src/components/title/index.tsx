@@ -1,4 +1,5 @@
 import styles from "./title.module.scss";
+import React from "react";
 
 type Props = {
   children?: React.ReactNode;
