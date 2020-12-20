@@ -9,7 +9,8 @@ type CompleteProps = {
     level: string;
     start_date: string;
     end_date: string;
-    participants: {user_id: string,
+    participants: {
+      user_id: string,
       first_name: string,
       last_name: string,
       yoe: number,
