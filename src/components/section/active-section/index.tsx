@@ -4,7 +4,8 @@ import Active from '../../challenges/active';
 import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 
 type ActiveSectionProps = {
-  sectionContent: { is_active: number; id: number;
+  sectionContent: { is_active: number; 
+    id: number;
     is_user_subscribed: number;
     title: string;
     level: string;
