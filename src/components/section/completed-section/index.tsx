@@ -4,7 +4,8 @@ import Complete from '../../challenges/complete';
 import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 
 type CompletedSectionProps = {
-  sectionContent: { is_active: number; 
+  sectionContent: { 
+    is_active: number; 
     id: number;
     is_user_subscribed: number;
     title: string;
@@ -24,7 +25,9 @@ type CompletedSectionProps = {
       twitter_id: string,
       instagram_id: string,
       is_member: number,
-      rds_member_id: string} []; }[];
+      rds_member_id: string
+    } []; 
+  }[];
   screen: string;
 };
 

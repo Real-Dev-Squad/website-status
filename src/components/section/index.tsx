@@ -4,7 +4,8 @@ import CompletedSection from './completed-section';
 import classNames from './section.module.scss';
 
 type IndexProps = {
-  content: { id: number;
+  content: { 
+    id: number;
     title: string;
     level: string;
     start_date: string;
@@ -22,9 +23,11 @@ type IndexProps = {
       twitter_id: string,
       instagram_id: string,
       is_member: number,
-      rds_member_id: string} [];
+      rds_member_id: string
+    }[];
     is_active: number;
-    is_user_subscribed: number; }[];
+    is_user_subscribed: number; 
+  }[];
   screen: string;
 };
 

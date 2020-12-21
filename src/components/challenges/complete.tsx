@@ -4,7 +4,8 @@ import Details from './details';
 import Participants from './participants';
 
 type CompleteProps = {
-  content: {id: number;
+  content: {
+    id: number;
     title: string;
     level: string;
     start_date: string;
@@ -22,7 +23,8 @@ type CompleteProps = {
       twitter_id: string,
       instagram_id: string,
       is_member: number,
-      rds_member_id: string}[];
+      rds_member_id: string
+    }[];
     is_active: number;
     is_user_subscribed: number;
   };

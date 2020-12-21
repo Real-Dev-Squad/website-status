@@ -4,7 +4,8 @@ import Active from '../../challenges/active';
 import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 
 type ActiveSectionProps = {
-  sectionContent: { is_active: number; 
+  sectionContent: { 
+    is_active: number; 
     id: number;
     is_user_subscribed: number;
     title: string;
@@ -24,7 +25,9 @@ type ActiveSectionProps = {
       twitter_id: string,
       instagram_id: string,
       is_member: number,
-      rds_member_id: string}[]; }[];
+      rds_member_id: string
+    }[];
+  }[];
   screen: string;
 };
 
