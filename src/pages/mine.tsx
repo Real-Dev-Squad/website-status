@@ -11,7 +11,6 @@ const Mine: FunctionComponent = () => {
         <title>Mine</title>
       </Helmet>
       <Navbar page="Mine" />
-      <Title>This is about page</Title>
     </Layout>
   );
 }

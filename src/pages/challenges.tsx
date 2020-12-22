@@ -14,7 +14,6 @@ const Challenges: FunctionComponent = () => {
         <title>Challenges</title>
       </Helmet>
       <Navbar page='DS' />
-      <Title>This is index page</Title>
       <div>
         <Section content={ChallengesJson} screen={CHALLENGES_SCREEN} />
       </div>
