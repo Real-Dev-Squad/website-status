@@ -3,6 +3,7 @@ import Layout from 'components/Layout';
 import Navbar from 'components/navbar';
 import Section from 'components/tasks/section';
 import pullRequests from 'mocks/pullRequests.json';
+import { Helmet } from 'react-helmet';
 const Index: FunctionComponent = () => {
   const completedTasks = pullRequests.filter((pr) => {
     if (pr.completionStatus === 'completed') {
@@ -17,6 +18,9 @@ const Index: FunctionComponent = () => {
   })
   return (
     <Layout>
+      <Helmet>
+        <title>Tasks | Status Real Dev Squad</title>
+      </Helmet>
       <Navbar page="Tasks" />
       <div className="container">
         <Section heading='Active' content={incompleteTasks} />

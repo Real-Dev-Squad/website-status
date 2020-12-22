@@ -11,7 +11,7 @@ const Challenges: FunctionComponent = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Challenges</title>
+        <title>Challenges | Status Real Dev Squad</title>
       </Helmet>
       <Navbar page='DS' />
       <div>

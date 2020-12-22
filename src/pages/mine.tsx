@@ -8,7 +8,7 @@ const Mine: FunctionComponent = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Mine</title>
+        <title>Mine | Status Real Dev Squad</title>
       </Helmet>
       <Navbar page="Mine" />
     </Layout>
