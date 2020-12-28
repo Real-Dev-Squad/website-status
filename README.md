@@ -1,3 +1,5 @@
+[![Better Uptime Badge](https://betteruptime.com/status-badges/v1/monitor/5huw.svg)](https://betteruptime.com/?utm_source=status_badge)
+
 # Real dev squad : Roadmap project - react-nextjs-scss-typescript
 
 # Setup
