@@ -1,10 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import ActiveSection from './active-section';
 import CompletedSection from './completed-section';
 import classNames from './section.module.scss';
 
 type IndexProps = {
-  content: { 
+  content: {
     id: number;
     title: string;
     level: string;
@@ -26,18 +26,16 @@ type IndexProps = {
       rds_member_id: string
     }[];
     is_active: number;
-    is_user_subscribed: number; 
+    is_user_subscribed: number;
   }[];
   screen: string;
 };
 
-const Index: FunctionComponent<IndexProps> = ({ content, screen }) => {
-  return (
-    <section className={classNames.section}>
-      <ActiveSection sectionContent={content} screen={screen} />
-      <CompletedSection sectionContent={content} screen={screen} />
-    </section>
-  );
-};
+const Index: FC<IndexProps> = ({ content, screen }) => (
+  <section className={classNames.section}>
+    <ActiveSection sectionContent={content} screen={screen} />
+    <CompletedSection sectionContent={content} screen={screen} />
+  </section>
+);
 
 export default Index;

@@ -1,24 +1,33 @@
-import { FunctionComponent } from 'react';
-import classNames from './navbar.module.scss';
+import { FC } from 'react';
 import Link from 'next/link';
+import classNames from './navbar.module.scss';
 
 type NavbarProps = {
   page: string;
 };
 
-const Navbar: FunctionComponent<NavbarProps> = ({ page }) => {
+const Navbar: FC<NavbarProps> = ({ page }) => {
   const navBarContent = (title: string, refUrl: string) => {
-    const linkClasses = `link ${page === title ? classNames.active : ''}` 
+    const linkClasses = `${classNames.link} ${page === title ? classNames.active : ''}`;
     return (
       <Link href={refUrl}>
-        <a className={linkClasses}>{title}</a>
+        <div className={linkClasses}>{title}</div>
       </Link>
     );
   };
   return (
     <div className={classNames.header}>
-      {navBarContent('Tasks', '/')} | {navBarContent('Mine', '/mine')} |{' '}
-      {navBarContent('DS', '/challenges')} | {navBarContent('ALL', '/all')}
+      {navBarContent('Tasks', '/')}
+      {' '}
+      |
+      {navBarContent('Mine', '/mine')}
+      {' '}
+      |
+      {' '}
+      {navBarContent('DS', '/challenges')}
+      {' '}
+      |
+      {navBarContent('ALL', '/all')}
     </div>
   );
 };

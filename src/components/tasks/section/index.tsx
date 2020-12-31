@@ -1,8 +1,9 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import Card from '../card';
 import classNames from './section.module.scss';
 
-type pullRequest = {
+interface pullRequest {
+  id: number,
   title: string,
   completionDate: string,
   startedAt: string,
@@ -16,11 +17,8 @@ type Props = {
   content: pullRequest[]
 }
 
-const Section: FunctionComponent<Props> = ({ heading, content }) => {
-
-  const cards = content.map((pullRequest, i) => {
-    return <Card pullRequest={pullRequest} key={i} />
-  })
+const Section: FC<Props> = ({ heading, content }) => {
+  const cards = content.map((pr) => <Card pullRequest={pr} key={pr.id} />);
 
   return (
     <div className={classNames.section}>
@@ -29,7 +27,7 @@ const Section: FunctionComponent<Props> = ({ heading, content }) => {
         {cards}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Section;

@@ -1,17 +1,15 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
+import { Helmet } from 'react-helmet';
 import Layout from '../components/Layout';
 import Navbar from '../components/navbar';
-import { Helmet } from 'react-helmet';
 
-const Mine: FunctionComponent = () => {
-  return (
-    <Layout>
-      <Helmet>
-        <title>Mine | Status Real Dev Squad</title>
-      </Helmet>
-      <Navbar page="Mine" />
-    </Layout>
-  );
-}
+const Mine: FC = () => (
+  <Layout>
+    <Helmet>
+      <title>Mine | Status Real Dev Squad</title>
+    </Helmet>
+    <Navbar page="Mine" />
+  </Layout>
+);
 
 export default Mine;

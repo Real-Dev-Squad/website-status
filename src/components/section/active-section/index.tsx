@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import classNames from './active-section.module.scss';
 import Active from '../../challenges/active';
 import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 
 type ActiveSectionProps = {
-  sectionContent: { 
-    is_active: number; 
+  sectionContent: {
+    is_active: number;
     id: number;
     is_user_subscribed: number;
     title: string;
@@ -31,7 +31,7 @@ type ActiveSectionProps = {
   screen: string;
 };
 
-const ActiveSection: FunctionComponent<ActiveSectionProps> = ({
+const ActiveSection: FC<ActiveSectionProps> = ({
   sectionContent,
   screen,
 }) => {
