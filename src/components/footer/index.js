@@ -7,7 +7,7 @@ const Footer = () => {
       <p>
         The contents of this website are deployed from this{' '}
         <a
-          href="https://github.com/Real-Dev-Squad/website-members"
+          href="https://github.com/Real-Dev-Squad/website-status"
           target="_blank"
           rel="noopener noreferrer">
           open sourced repo
