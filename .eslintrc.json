@@ -40,7 +40,8 @@
         ],
         "react/react-in-jsx-scope": "off",
         "camelcase": "off",
-        "react/jsx-props-no-spreading": "off"
+        "react/jsx-props-no-spreading": "off",
+        "linebreak-style": "off"
     },
     "settings": {
         "import/resolver": {
