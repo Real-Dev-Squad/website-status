@@ -1,4 +1,5 @@
 import styles from "./Layout.module.scss";
+import Footer from "../footer/index";
 
 type Props = {
   children?: React.ReactNode;
@@ -7,7 +8,7 @@ type Props = {
 function Layout(props: Props) {
   const { children } = props;
 
-  return <div className={styles.layout}>{children}</div>;
+  return <div className={styles.layout}>{children}<Footer /></div>;
 }
 
 export default Layout;
