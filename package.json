@@ -1,7 +1,7 @@
 {
-  "name": "react-nextjs-scss-typescript",
+  "name": "",
   "version": "1.0.0",
-  "description": "",
+  "description": "Shows a status of the ongoing projects being done",
   "main": "index.js",
   "scripts": {
     "dev": "next src",
