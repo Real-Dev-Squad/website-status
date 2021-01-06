@@ -1,19 +1,18 @@
 import { FunctionComponent, useState, useEffect } from 'react';
-import axios from 'axios';
+import fetch from '../helperFunctions/fetch';
 import Layout from '../components/Layout';
 import Navbar from '../components/navbar';
 import PullRequest from '../components/pullRequests';
 
 const openPRs: FunctionComponent = () => {
-    axios.defaults.baseURL = 'https://staging-api.realdevsquad.com/';
+    const url = 'https://staging-api.realdevsquad.com/pullrequests/open';
+    const [state, setState] = useState(null);
 
-    const [state, updateState] = useState(null);
     useEffect(() => {
-        axios.get('/pullrequests/open')
-            .then((response) => {
-                updateState(response.data.pullRequests);
-                console.log(state);
-            });
+        (async () => {
+            const response = await fetch(url);
+            setState(response.data.pullRequests);
+        })();
     }, []);
 
     const getPRs = () => {
