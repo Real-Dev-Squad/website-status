@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "rm -rf node_modules/.cache && next src",
+    "dev": "next src",
     "build": "next build src dist",
     "start": "next start src -p $PORT",
     "lint": "eslint . --ext .ts",
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
+    "axios": "^0.21.1",
     "next": "^10.0.3",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
