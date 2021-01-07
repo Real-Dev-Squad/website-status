@@ -2,18 +2,16 @@ import { FunctionComponent } from 'react';
 import Card from '../card';
 import classNames from './section.module.scss';
 
-type pullRequest = {
-  title: string,
-  completionDate: string,
-  startedAt: string,
-  author: string,
-  profilePicture: string,
-  issueStatus: string
-}
-
 type Props = {
   heading: string,
-  content: pullRequest[]
+  content: {
+    title: string,
+    state: string,
+    createdAt: string,
+    updatedAt: string,
+    url: string,
+    username: string
+  }
 }
 
 const Section: FunctionComponent<Props> = ({ heading, content }) => {
