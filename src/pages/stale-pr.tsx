@@ -6,12 +6,8 @@ import { FunctionComponent } from 'react';
 
 type Props = {
     stalePRs: {
-       title: string,
-       state: string,
-       createdAt: string,
-       updatedAt: string,
-       url: string,
-       username: string
+       message: string,
+       pullRequests: []
     }
 }
 

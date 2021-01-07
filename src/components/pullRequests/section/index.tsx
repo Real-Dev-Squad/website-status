@@ -4,14 +4,7 @@ import classNames from './section.module.scss';
 
 type Props = {
   heading: string,
-  content: {
-    title: string,
-    state: string,
-    createdAt: string,
-    updatedAt: string,
-    url: string,
-    username: string
-  }
+  content: []
 }
 
 const Section: FunctionComponent<Props> = ({ heading, content }) => {
