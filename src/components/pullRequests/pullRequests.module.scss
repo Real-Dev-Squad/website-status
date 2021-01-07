@@ -1,11 +1,11 @@
 .pullRequest {
-    border: 0.2em solid black;
-    border-radius: 0.5em;
-    padding: 1em;
+    border: 3px solid black;
+    border-radius: 7.5px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    margin: 2em;
+    margin: 30px;
     flex-basis: 400px;
 }
 
@@ -38,7 +38,7 @@
     color: white;
     border: 2px solid black;
     border-radius: 5px;
-    padding: 0.5rem 2rem;
+    padding: 7.5px 30px;
     font: inherit;
     cursor: pointer;
     font-weight: bolder;
