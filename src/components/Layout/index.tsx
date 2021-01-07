@@ -7,20 +7,20 @@ type Props = {
   children?: React.ReactNode;
 };
 
+const navBarContent = (title: string, refUrl: string) => {
+  const router =useRouter()
+
+  const linkClasses = `link ${router.pathname === refUrl ? styles.active : ''}`
+  
+  return (
+    <Link href={refUrl}>
+      <a className={linkClasses}>{title}</a>
+    </Link>
+  );
+};
+
 function Layout(props: Props) {
   const { children } = props;
-
-  const navBarContent = (title: string, refUrl: string) => {
-    const router =useRouter()
-
-    const linkClasses = `link ${router.pathname === refUrl ? styles.active : ''}`
-    
-    return (
-      <Link href={refUrl}>
-        <a className={linkClasses}>{title}</a>
-      </Link>
-    );
-  };
 
   return <div className={styles.layout}>
       <div className={styles.header}>
