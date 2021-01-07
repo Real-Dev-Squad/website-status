@@ -19,7 +19,8 @@ const Navbar: FunctionComponent<NavbarProps> = ({ page }) => {
     <div className={classNames.header}>
       {navBarContent('Tasks', '/')} | {navBarContent('Mine', '/mine')} |{' '}
       {navBarContent('DS', '/challenges')} | {navBarContent('ALL', '/all')} |{' '}
-      {navBarContent('StalePRs', '/stale-pr')}
+      {navBarContent('StalePRs', '/stale-pr')} |{' '}
+      {navBarContent('OpenPRs', '/openPRs')}
     </div>
   );
 };
