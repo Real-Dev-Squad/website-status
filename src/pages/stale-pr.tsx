@@ -4,6 +4,17 @@ import Navbar from 'components/navbar';
 import { Helmet } from 'react-helmet';
 import { FunctionComponent } from 'react';
 
+type Props = {
+    stalePRs: {
+       title: string,
+       state: string,
+       createdAt: string,
+       updatedAt: string,
+       url: string,
+       username: string
+    }
+}
+
 const stalePR: FunctionComponent<Props> = ({stalePRs}) => {
     return (
         <div>
