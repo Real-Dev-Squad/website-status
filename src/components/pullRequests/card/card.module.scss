@@ -1,17 +1,17 @@
 .card {
-  border: 0.2em solid black;
-  border-radius: 0.5em;
-  padding: 1em;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   max-width: 850px;
-  margin-bottom: 2em;
+  margin-bottom: 30px;
 }
 
 .prTitle {
   color: #041484;
-  font-size: 1.5rem;
+  font-size: 25px;
   font-weight: bold;
 }
 
@@ -22,18 +22,6 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-}
-
-.profilePicture {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 6em;
-}
-
-.profilePicture > img {
-  width: 3em;
-  border-radius: 50%;
 }
 
 .statusLable {
@@ -49,12 +37,11 @@
   color: white;
   border: 2px solid black;
   border-radius: 5px;
-  padding: 0.5rem 2rem;
+  padding: 8px 25px;
   font: inherit;
   cursor: pointer;
   font-weight: bolder;
   font-size: 20px;
-  
 }
 
 .activeBtn:hover,
@@ -69,11 +56,11 @@
   margin-top: 10px;
 }
 
-
 .datetime .onhover {
   display: none;
   cursor: pointer;
 }
+
 .datetime:hover .nothover {
   display: none;
   cursor: pointer;

@@ -7,17 +7,19 @@ type Props = {
   content: []
 }
 
-const Section: FunctionComponent<Props> = ({ heading, content }) => {
-
+function cards(content){
   const cards = content.map((pullRequest, i) => {
     return <Card pullRequest={pullRequest} key={i} />
   })
+  return cards
+}
 
+const Section: FunctionComponent<Props> = ({ heading, content }) => {
   return (
     <div className={classNames.section}>
       <div className={classNames.heading}>{heading}</div>
       <div className={classNames.cardContainer}>
-        {cards}
+        {cards(content)}
       </div>
     </div>
   )
