@@ -18,12 +18,13 @@ const openPRs: FunctionComponent = () => {
     const getPRs = () => {
         return state.map((pullRequest) => {
             return (
-                <PullRequest key={pullRequest.title} 
-                             title={pullRequest.title} 
-                             username={pullRequest.username}
-                             createdAt={pullRequest.createdAt}
-                             updatedAt={pullRequest.updatedAt}
-                             url={pullRequest.url} />
+                <PullRequest 
+                    key={pullRequest.title}
+                    title={pullRequest.title}
+                    username={pullRequest.username}
+                    createdAt={pullRequest.createdAt}
+                    updatedAt={pullRequest.updatedAt}
+                    url={pullRequest.url} />
             );
         });
     };
@@ -31,9 +32,14 @@ const openPRs: FunctionComponent = () => {
     return (
         <Layout>
             <Navbar page="OpenPRs" />
-            {state ? <div className="container">
-                {getPRs()}
-            </div> : null}
+            {
+                !!state
+                && (
+                    <div className="container">
+                        {getPRs()}
+                    </div>
+                )
+            }
         </Layout>
     );
 };
