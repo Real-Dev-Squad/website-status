@@ -28,6 +28,8 @@ const Navbar: FC<NavbarProps> = ({ page }) => {
       {' '}
       |
       {navBarContent('ALL', '/all')}
+      |
+      {navBarContent('OpenPRs', '/openPRs')}
     </div>
   );
 };
