@@ -40,7 +40,7 @@ const Card: FunctionComponent<Props> = ({ pullRequest }) => {
   }
   return (
     <div className={classNames.card}>
-      <a href = "https://www.realdevsquad.com/" className={classNames.links}>
+      <a href = "https://www.realdevsquad.com/" className={classNames.links} target = "_blank" rel = "noreferrer">
         <span className={classNames.prTitle}>{title}</span>
       </a>
       {informationElement('State', state)}
@@ -63,7 +63,7 @@ const Card: FunctionComponent<Props> = ({ pullRequest }) => {
       {informationElement('PR url', url)}
       {informationElement('Username', username)}
       <div className={classNames.Center}>
-        <a href = {url} className={classNames.links} target = "_blank">
+        <a href = {url} className={classNames.links} target = "_blank" rel = "noreferrer">
           <button className={classNames.activeBtn}>Open PR in Github</button>
         </a>
       </div>
