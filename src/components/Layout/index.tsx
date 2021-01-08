@@ -11,7 +11,7 @@ interface Props {
 const navBarContent = (title: string, refUrl: string) => {
   const router = useRouter();
 
-  const linkClasses = `link ${router.pathname === refUrl ? styles.active : ''}`;
+  const linkClasses = `${styles.link} ${router.pathname === refUrl ? styles.active : ''}`;
 
   return (
     <Link href={refUrl}>
@@ -26,25 +26,16 @@ const Layout: FC<Props> = ({ children }) => (
   <div className={styles.layout}>
     <div className={styles.header}>
       {navBarContent('Tasks', '/')}
-      {' '}
       |
-      {' '}
       {navBarContent('Mine', '/mine')}
-      {' '}
       |
-      {' '}
       {navBarContent('DS', '/challenges')}
-      {' '}
       |
-      {' '}
       {navBarContent('ALL', '/all')}
-      {' '}
       |
-      {' '}
-      {navBarContent('OpenPRs', '/openPRs')}
-      {' '}
+      {navBarContent('Open PRs', '/openPRs')}
       |
-      {navBarContent('StalePRs', '/stale-pr')}
+      {navBarContent('Stale PRs', '/stale-pr')}
     </div>
     {children}
     <Footer />
