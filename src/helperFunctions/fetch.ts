@@ -11,13 +11,13 @@ import axios from 'axios';
  */
 
 const fetch = async (
-  url:string,
+  url: string,
   method = 'get',
   params = null,
   data = null,
   headers = null,
   options = null,
-) => {
+): Promise<any> => {
   const response = await axios({
     method,
     url,

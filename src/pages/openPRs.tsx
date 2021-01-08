@@ -1,7 +1,6 @@
 import { FunctionComponent, useState, useEffect } from 'react';
 import fetch from '../helperFunctions/fetch';
 import Layout from '../components/Layout';
-import Navbar from '../components/navbar';
 import PullRequest from '../components/pullRequests';
 
 const openPRs: FunctionComponent = () => {
@@ -28,15 +27,14 @@ const openPRs: FunctionComponent = () => {
 
   return (
     <Layout>
-      <Navbar page="OpenPRs" />
       {
-                !!state
-                && (
-                <div className="container">
-                  {getPRs()}
-                </div>
-                )
-            }
+        !!state
+        && (
+          <div className="container">
+            {getPRs()}
+          </div>
+        )
+      }
     </Layout>
   );
 };
