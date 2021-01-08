@@ -35,6 +35,12 @@ function Layout(props: Props) {
         {' '}
         |
         {navBarContent('ALL', '/all')}
+        {' '}
+        |
+        {navBarContent('OpenPRs', '/openPRs')}
+        {' '}
+        |
+        {navBarContent('StalePRs', '/stale-pr')}
       </div>
     {children}
     <Footer />
