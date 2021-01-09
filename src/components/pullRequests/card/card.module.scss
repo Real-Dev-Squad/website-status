@@ -1,0 +1,77 @@
+.card {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+.prTitle {
+  color: #041484;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.cardFooter {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.statusLable {
+  color: grey;
+  font-weight: bold;
+}
+
+.activeBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #4fb90d;
+  color: white;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 8px 25px;
+  font: inherit;
+  cursor: pointer;
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.activeBtn:hover,
+.activeBtn:active {
+  background: darkgreen;
+}
+
+.Center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.datetime .onhover {
+  display: none;
+  cursor: pointer;
+}
+
+.datetime:hover .nothover {
+  display: none;
+  cursor: pointer;
+}
+
+.datetime:hover .onhover{
+  display: block;
+  cursor: pointer;
+}
+
+.links{
+  text-decoration: none;
+}
