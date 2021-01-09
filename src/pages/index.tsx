@@ -1,10 +1,8 @@
 import { FunctionComponent } from 'react';
-import Layout from '../components/Layout';
-import Navbar from '../components/navbar';
-import Section from '../components/tasks/section';
-import pullRequests from '../../mock/pullRequests';
-import classNames from '../styles/index.scss';
-
+import Layout from 'components/Layout';
+import Section from 'components/tasks/section';
+import pullRequests from 'mocks/pullRequests.json';
+import { Helmet } from 'react-helmet';
 const Index: FunctionComponent = () => {
   const completedTasks = pullRequests.filter((pr) => {
     if (pr.completionStatus === 'completed') {
@@ -19,8 +17,10 @@ const Index: FunctionComponent = () => {
   })
   return (
     <Layout>
-      <Navbar page="Tasks" />
-      <div className={classNames.container}>
+      <Helmet>
+        <title>Tasks | Status Real Dev Squad</title>
+      </Helmet>
+      <div className="container">
         <Section heading='Active' content={incompleteTasks} />
         <Section heading='Completed' content={completedTasks} />
       </div>

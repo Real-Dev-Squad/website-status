@@ -1,17 +1,15 @@
-import { Component } from 'react';
+import { FunctionComponent } from 'react';
 import Layout from '../components/Layout';
-import Navbar from '../components/navbar';
-import Title from '../components/title';
+import { Helmet } from 'react-helmet';
 
-class Mine extends Component<any> {
-  render() {
-    return (
-      <Layout>
-        <Navbar page="Mine" />
-        <Title>This is about page</Title>
-      </Layout>
-    );
-  }
+const Mine: FunctionComponent = () => {
+  return (
+    <Layout>
+      <Helmet>
+        <title>Mine | Status Real Dev Squad</title>
+      </Helmet>
+    </Layout>
+  );
 }
 
 export default Mine;

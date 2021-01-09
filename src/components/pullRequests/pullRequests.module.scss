@@ -1,0 +1,57 @@
+.pullRequest {
+    border: 3px solid black;
+    border-radius: 7.5px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 30px;
+    flex-basis: 400px;
+}
+
+.prTitle {
+    color: #041484;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .title {
+    color: #840404;
+  }
+
+  .statusLable {
+    color: grey;
+    font-weight: bold;
+    margin: 6px 0;
+    text-align: center;
+  }
+
+  .infoEl {
+    color: black;
+  }
+
+  .prLink {
+    display: inline-block;
+    background: #4fb90d;
+    margin: 6px 0;
+    color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 7.5px 30px;
+    font: inherit;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: 20px;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .linkCt {
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  .prLink:hover {
+      background-color: darkgreen;
+  }

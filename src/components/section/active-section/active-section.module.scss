@@ -1,8 +1,6 @@
 .active {
-  display: block;
-  width: 100%;
-  min-width: 17rem;
-  max-width: 24rem;
+  text-align: center;
+
 }
 
 .sectionHeading {
@@ -12,8 +10,6 @@
 
 @media (min-width: 40rem) {
   .active {
-    display: inline-block;
-    margin: 40px;
-    vertical-align: top;
+    flex: 0 1 30%;
   }
 }
