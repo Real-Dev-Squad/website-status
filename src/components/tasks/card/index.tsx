@@ -12,7 +12,7 @@ type Props = {
   }
 }
 
-const informationElement = (title, value) => (
+const informationElement = (title: string, value: string) => (
   <span className={classNames.statusElement}>
     <span className={classNames.statusLable}>{`${title}: `}</span>
     <strong>{value}</strong>
