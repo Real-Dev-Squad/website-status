@@ -1,6 +1,5 @@
 import { FunctionComponent } from 'react';
 import Layout from 'components/Layout';
-import Navbar from 'components/navbar';
 import Section from 'components/tasks/section';
 import pullRequests from 'mocks/pullRequests.json';
 import { Helmet } from 'react-helmet';
@@ -21,7 +20,6 @@ const Index: FunctionComponent = () => {
       <Helmet>
         <title>Tasks | Status Real Dev Squad</title>
       </Helmet>
-      <Navbar page="Tasks" />
       <div className="container">
         <Section heading='Active' content={incompleteTasks} />
         <Section heading='Completed' content={completedTasks} />

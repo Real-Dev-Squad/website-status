@@ -1,6 +1,5 @@
 import Section from 'components/pullRequests/section';
 import Layout from 'components/Layout';
-import Navbar from 'components/navbar';
 import { Helmet } from 'react-helmet';
 import { FunctionComponent } from 'react';
 
@@ -18,7 +17,6 @@ const stalePR: FunctionComponent<Props> = ({stalePRs}) => {
                 <Helmet>
                     <title>Stale PRs | Status Real Dev Squad</title>
                 </Helmet>
-                <Navbar page = 'StalePRs'/>
                     <div className="container">
                         <Section heading='Stale PRs' content= {stalePRs.pullRequests}/>
                     </div>

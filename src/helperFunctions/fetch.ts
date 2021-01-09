@@ -17,7 +17,7 @@ const fetch = async (
     data = null,
     headers = null,
     options = null
-) => {
+):Promise<any> => {
     const response = await axios({
         method,
         url,

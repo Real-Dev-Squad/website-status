@@ -3,3 +3,21 @@
   font-family: roboto;
   max-width: 100%;
 }
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link {
+  padding: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #041484;
+  cursor: pointer;
+}
+
+.active {
+  color: #E30464;
+}
