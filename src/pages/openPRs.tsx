@@ -1,16 +1,17 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
+import Layout from 'components/Layout';
+import PullRequest from 'components/pullRequests';
 import fetch from '../helperFunctions/fetch';
-import Layout from '../components/Layout';
-import PullRequest from '../components/pullRequests';
 
 type pullRequestType = {
-  title: string,
-  username: string,
-  createdAt: string,
-  updatedAt: string,
-}
+  title: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  url: string;
+};
 
-const openPRs: FunctionComponent = () => {
+const openPRs: FC = () => {
   const url = 'https://staging-api.realdevsquad.com/pullrequests/open';
   const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
 
@@ -21,37 +22,25 @@ const openPRs: FunctionComponent = () => {
     })();
   }, []);
 
-  const getPRs = () => pullRequests.map((
-    pullRequest?: pullRequestType,
-  ) => {
+  const getPRs = () => pullRequests.map((pullRequest?: pullRequestType) => {
     const {
-      title,
-      username,
-      createdAt,
-      updatedAt,
+      title, username, createdAt, updatedAt, url: link,
     } = pullRequest;
     return (
       <PullRequest
-        key={title}
+        key={link}
         title={title}
         username={username}
         createdAt={createdAt}
         updatedAt={updatedAt}
-        url={url}
+        url={link}
       />
     );
   });
 
   return (
     <Layout>
-      {
-        !!pullRequests
-        && (
-          <div className="container">
-            {getPRs()}
-          </div>
-        )
-      }
+      {!!pullRequests && <div className="container">{getPRs()}</div>}
     </Layout>
   );
 };

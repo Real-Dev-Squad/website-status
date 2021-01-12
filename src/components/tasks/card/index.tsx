@@ -3,14 +3,14 @@ import classNames from './card.module.scss';
 
 type Props = {
   pullRequest: {
-    title: string,
-    completionDate: string,
-    startedAt: string,
-    author: string,
-    profilePicture: string,
-    issueStatus: string
-  }
-}
+    title: string;
+    completionDate: string;
+    startedAt: string;
+    author: string;
+    profilePicture: string;
+    issueStatus: string;
+  };
+};
 
 const informationElement = (title: string, value: string) => (
   <span className={classNames.statusElement}>

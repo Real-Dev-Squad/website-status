@@ -1,21 +1,30 @@
-import { FunctionComponent, useState } from 'react';
+import { FC, useState } from 'react';
 import classNames from './pullRequests.module.scss';
 
 interface prData {
-    title: string,
-    username: string,
-    createdAt: string,
-    updatedAt: string,
-    url: string
+  title: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  url: string;
 }
 
-const pullRequest: FunctionComponent<prData> = ({
-  title, username, createdAt, updatedAt, url,
+const pullRequest: FC<prData> = ({
+  title,
+  username,
+  createdAt,
+  updatedAt,
+  url,
 }) => {
-  const created = new Date(createdAt); const updated = new Date(updatedAt); const
-    presentDate = new Date();
-  const createdAgo = `${Math.ceil((presentDate.getTime() - created.getTime()) / (1000 * 3600 * 24))}days ago`;
-  const updatedAgo = `${Math.ceil((presentDate.getTime() - updated.getTime()) / (1000 * 3600 * 24))}days ago`;
+  const created = new Date(createdAt);
+  const updated = new Date(updatedAt);
+  const presentDate = new Date();
+  const createdAgo = `${Math.ceil(
+    (presentDate.getTime() - created.getTime()) / (1000 * 3600 * 24),
+  )}days ago`;
+  const updatedAgo = `${Math.ceil(
+    (presentDate.getTime() - updated.getTime()) / (1000 * 3600 * 24),
+  )}days ago`;
   const [createdTime, updateCreatedTime] = useState(createdAgo);
   const [updatedTime, updateUpdatedTime] = useState(updatedAgo);
 
@@ -35,8 +44,12 @@ const pullRequest: FunctionComponent<prData> = ({
         {' '}
         <span
           className={classNames.infoEl}
-          onMouseEnter={() => { updateCreatedTime(created.toLocaleString()); }}
-          onMouseLeave={() => { updateCreatedTime(createdAgo); }}
+          onMouseEnter={() => {
+            updateCreatedTime(created.toLocaleString());
+          }}
+          onMouseLeave={() => {
+            updateCreatedTime(createdAgo);
+          }}
         >
           {createdTime}
         </span>
@@ -46,14 +59,25 @@ const pullRequest: FunctionComponent<prData> = ({
         {' '}
         <span
           className={classNames.infoEl}
-          onMouseEnter={() => { updateUpdatedTime(updated.toLocaleString()); }}
-          onMouseLeave={() => { updateUpdatedTime(updatedAgo); }}
+          onMouseEnter={() => {
+            updateUpdatedTime(updated.toLocaleString());
+          }}
+          onMouseLeave={() => {
+            updateUpdatedTime(updatedAgo);
+          }}
         >
           {updatedTime}
         </span>
       </div>
       <div className={classNames.linkCt}>
-        <a className={classNames.prLink} href={url} target="_blank" rel="noreferrer">Open PR in Github</a>
+        <a
+          className={classNames.prLink}
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Open PR in Github
+        </a>
       </div>
     </div>
   );

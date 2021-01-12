@@ -11,19 +11,19 @@ type ActiveProps = {
     start_date: string;
     end_date: string;
     participants: {
-      user_id: string,
-      first_name: string,
-      last_name: string,
-      yoe: number,
-      company: string,
-      designation: string,
-      img: string,
-      github_id: string,
-      linkedin_id: string,
-      twitter_id: string,
-      instagram_id: string,
-      is_member: number,
-      rds_member_id: string
+      user_id: string;
+      first_name: string;
+      last_name: string;
+      yoe: number;
+      company: string;
+      designation: string;
+      img: string;
+      github_id: string;
+      linkedin_id: string;
+      twitter_id: string;
+      instagram_id: string;
+      is_member: number;
+      rds_member_id: string;
     }[];
     is_active: number;
     is_user_subscribed: number;
@@ -43,7 +43,7 @@ const Active: FC<ActiveProps> = ({ content }) => {
   };
 
   return (
-    <div className={classNames.boxConent}>
+    <div className={classNames.boxContent}>
       <p className={classNames.heading}>{content.title}</p>
       <Details text="Level" value={content.level} />
       <Details text="Challenge Started" value={content.start_date} />
@@ -56,8 +56,7 @@ const Active: FC<ActiveProps> = ({ content }) => {
         <Participants participants={content.participants} />
       </div>
       {
-        !state.is_user_subscribed
-        && (
+        !state.is_user_subscribed && (
           <p className={classNames.activeBtn}>
             <button
               onClick={subscribeEventHandler}

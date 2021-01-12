@@ -15,9 +15,7 @@ const navBarContent = (title: string, refUrl: string) => {
 
   return (
     <Link href={refUrl}>
-      <p className={linkClasses}>
-        {title}
-      </p>
+      <p className={linkClasses}>{title}</p>
     </Link>
   );
 };

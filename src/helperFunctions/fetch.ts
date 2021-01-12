@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 type fetchParams = {
-  url: string,
-  method?: 'get',
-  params?: null,
-  data?: null,
-  headers?: null,
-  options?: object | null,
-}
+  url: string;
+  method?: 'get';
+  params?: null;
+  data?: null;
+  headers?: null;
+  options?: object | null;
+};
 
 /**
  * Used for network calls
