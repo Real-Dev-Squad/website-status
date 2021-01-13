@@ -10,6 +10,10 @@
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx"
   },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Real-Dev-Squad/website-status.git"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

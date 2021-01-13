@@ -26,20 +26,15 @@ type ActiveProps = {
       rds_member_id: string;
     }[];
     is_active: number;
-    is_user_subscribed: number;
+    isUserSubscribed: number;
   };
 };
 
 const Active: FC<ActiveProps> = ({ content }) => {
-  const [state, setState] = useState({
-    is_user_subscribed: content.is_user_subscribed,
-  });
+  const [isUserSubscribed, setUserSubscribed] = useState(content.isUserSubscribed);
 
   const subscribeEventHandler = async () => {
-    setState({
-      ...state,
-      is_user_subscribed: 1,
-    });
+    setUserSubscribed(1);
   };
 
   return (
@@ -56,7 +51,7 @@ const Active: FC<ActiveProps> = ({ content }) => {
         <Participants participants={content.participants} />
       </div>
       {
-        !state.is_user_subscribed && (
+        !isUserSubscribed && (
           <p className={classNames.activeBtn}>
             <button
               onClick={subscribeEventHandler}
