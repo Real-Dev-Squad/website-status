@@ -1,34 +1,33 @@
-import { FunctionComponent } from 'react';
-import classNames from './card.module.scss'
+import { FC } from 'react';
+import classNames from './card.module.scss';
 
 type Props = {
   pullRequest: {
-    title: string,
-    completionDate: string,
-    startedAt: string,
-    author: string,
-    profilePicture: string,
-    issueStatus: string
-  }
-}
+    title: string;
+    completionDate: string;
+    startedAt: string;
+    author: string;
+    profilePicture: string;
+    issueStatus: string;
+  };
+};
 
-const Card: FunctionComponent<Props> = ({ pullRequest }) => {
+const informationElement = (title: string, value: string) => (
+  <span className={classNames.statusElement}>
+    <span className={classNames.statusLable}>{`${title}: `}</span>
+    <strong>{value}</strong>
+  </span>
+);
+
+const Card: FC<Props> = ({ pullRequest }) => {
   const {
     title,
     completionDate,
     startedAt,
     author,
     profilePicture,
-    issueStatus
-  } = pullRequest
-
-  function informationElement(title, value) {
-    return (
-      <span className={classNames.statusElement}>
-        <span className={classNames.statusLable}>{`${title}: `}</span><strong>{value}</strong>
-      </span>
-    )
-  }
+    issueStatus,
+  } = pullRequest;
 
   return (
     <div className={classNames.card}>
@@ -37,13 +36,13 @@ const Card: FunctionComponent<Props> = ({ pullRequest }) => {
       {informationElement('Started', startedAt)}
       <div className={classNames.cardFooter}>
         <div className={classNames.profilePicture}>
-          <img src={profilePicture} alt="Author profile picture" />
+          <img src={profilePicture} alt="Author profile" />
           <strong>{author}</strong>
         </div>
         {informationElement('Status', issueStatus)}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Card;

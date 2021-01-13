@@ -1,22 +1,27 @@
 {
-  "name": "react-nextjs-scss-typescript",
+  "name": "status",
   "version": "1.0.0",
-  "description": "",
+  "description": "Shows a status of the ongoing projects being done",
   "main": "index.js",
   "scripts": {
     "dev": "next src",
     "build": "next build src dist",
     "start": "next start src -p $PORT",
-    "lint": "eslint . --ext .ts",
-    "lint-and-fix": "eslint . --ext .ts --fix"
+    "lint": "eslint . --ext js,jsx,ts,tsx",
+    "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Real-Dev-Squad/website-status.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/react-helmet": "^6.1.0",
     "@zeit/next-sass": "^1.0.1",
-    "moment": "^2.29.1",
     "axios": "^0.21.1",
+    "moment": "^2.29.1",
     "next": "^10.0.3",
     "node-sass": "^5.0.0",
     "react": "^17.0.1",
@@ -24,22 +29,35 @@
     "react-helmet": "^6.1.0",
     "ts-node": "^9.0.0",
     "tslib": "^2.0.3",
-    "typescript": "^4.1.2"
+    "typescript": "^4.1.3"
   },
   "devDependencies": {
     "@types/next": "^8.0.7",
+    "@types/node": "^14.14.20",
     "@types/node-sass": "^4.11.1",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
-    "eslint": "^7.14.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.21.5",
-    "husky": "^4.3.0"
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.5.3"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint-and-fix"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.+(ts|tsx)": [
+      "yarn run lint"
+    ]
   }
 }

@@ -1,11 +1,11 @@
-import { FunctionComponent } from 'react';
+import { FC } from 'react';
 import classNames from './completed-section.module.scss';
 import Complete from '../../challenges/complete';
 import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
 
 type CompletedSectionProps = {
-  sectionContent: { 
-    is_active: number; 
+  sectionContent: {
+    is_active: number;
     id: number;
     is_user_subscribed: number;
     title: string;
@@ -13,25 +13,25 @@ type CompletedSectionProps = {
     start_date: string;
     end_date: string;
     participants: {
-      user_id: string,
-      first_name: string,
-      last_name: string,
-      yoe: number,
-      company: string,
-      designation: string,
-      img: string,
-      github_id: string,
-      linkedin_id: string,
-      twitter_id: string,
-      instagram_id: string,
-      is_member: number,
-      rds_member_id: string
-    } []; 
+      user_id: string;
+      first_name: string;
+      last_name: string;
+      yoe: number;
+      company: string;
+      designation: string;
+      img: string;
+      github_id: string;
+      linkedin_id: string;
+      twitter_id: string;
+      instagram_id: string;
+      is_member: number;
+      rds_member_id: string;
+    }[];
   }[];
   screen: string;
 };
 
-const CompletedSection: FunctionComponent<CompletedSectionProps> = ({
+const CompletedSection: FC<CompletedSectionProps> = ({
   sectionContent,
   screen,
 }) => {

@@ -1,45 +1,48 @@
-import { FunctionComponent, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
+import Layout from 'components/Layout';
+import PullRequest from 'components/pullRequests';
 import fetch from '../helperFunctions/fetch';
-import Layout from '../components/Layout';
-import PullRequest from '../components/pullRequests';
 
-const openPRs: FunctionComponent = () => {
-    const url = 'https://staging-api.realdevsquad.com/pullrequests/open';
-    const [state, setState] = useState(null);
+type pullRequestType = {
+  title: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  url: string;
+};
 
-    useEffect(() => {
-        (async () => {
-            const response = await fetch(url);
-            setState(response.data.pullRequests);
-        })();
-    }, []);
+const openPRs: FC = () => {
+  const url = 'https://staging-api.realdevsquad.com/pullrequests/open';
+  const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
 
-    const getPRs = () => {
-        return state.map((pullRequest) => {
-            return (
-                <PullRequest 
-                    key={pullRequest.title}
-                    title={pullRequest.title}
-                    username={pullRequest.username}
-                    createdAt={pullRequest.createdAt}
-                    updatedAt={pullRequest.updatedAt}
-                    url={pullRequest.url} />
-            );
-        });
-    };
+  useEffect(() => {
+    (async () => {
+      const response = await fetch({ url });
+      setPullRequests(response.data.pullRequests);
+    })();
+  }, []);
 
+  const getPRs = () => pullRequests.map((pullRequest?: pullRequestType) => {
+    const {
+      title, username, createdAt, updatedAt, url: link,
+    } = pullRequest;
     return (
-        <Layout>
-            {
-                !!state
-                && (
-                    <div className="container">
-                        {getPRs()}
-                    </div>
-                )
-            }
-        </Layout>
+      <PullRequest
+        key={link}
+        title={title}
+        username={username}
+        createdAt={createdAt}
+        updatedAt={updatedAt}
+        url={link}
+      />
     );
+  });
+
+  return (
+    <Layout>
+      {!!pullRequests && <div className="container">{getPRs()}</div>}
+    </Layout>
+  );
 };
 
 export default openPRs;

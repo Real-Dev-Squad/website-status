@@ -1,50 +1,43 @@
-import styles from "./Layout.module.scss";
-import Footer from "../footer/index";
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { FC, ReactNode } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Footer from '../footer';
+import styles from './Layout.module.scss';
 
-type Props = {
-  children?: React.ReactNode;
-};
+interface Props {
+  children?: ReactNode;
+}
 
 const navBarContent = (title: string, refUrl: string) => {
-  const router =useRouter()
+  const router = useRouter();
 
-  const linkClasses = `link ${router.pathname === refUrl ? styles.active : ''}`
-  
+  const linkClasses = `${styles.link} ${router.pathname === refUrl ? styles.active : ''}`;
+
   return (
     <Link href={refUrl}>
-      <a className={linkClasses}>{title}</a>
+      <p className={linkClasses}>{title}</p>
     </Link>
   );
 };
 
-function Layout(props: Props) {
-  const { children } = props;
-
-  return <div className={styles.layout}>
-      <div className={styles.header}>
-        {navBarContent('Tasks', '/')}
-        {' '}
-        |
-        {navBarContent('Mine', '/mine')}
-        {' '}
-        |
-        {' '}
-        {navBarContent('DS', '/challenges')}
-        {' '}
-        |
-        {navBarContent('ALL', '/all')}
-        {' '}
-        |
-        {navBarContent('OpenPRs', '/openPRs')}
-        {' '}
-        |
-        {navBarContent('StalePRs', '/stale-pr')}
-      </div>
+const Layout: FC<Props> = ({ children }) => (
+  <div className={styles.layout}>
+    <div className={styles.header}>
+      {navBarContent('Tasks', '/')}
+      |
+      {navBarContent('Mine', '/mine')}
+      |
+      {navBarContent('DS', '/challenges')}
+      |
+      {navBarContent('ALL', '/all')}
+      |
+      {navBarContent('Open PRs', '/openPRs')}
+      |
+      {navBarContent('Stale PRs', '/stale-pr')}
+    </div>
     {children}
     <Footer />
-  </div>;
-}
+  </div>
+);
 
 export default Layout;

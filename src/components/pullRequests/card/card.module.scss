@@ -1,18 +1,16 @@
 .card {
   border: 2px solid black;
   border-radius: 10px;
-  padding: 20px;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin-bottom: 30px;
-  margin-left: 60px;
-  margin-right: 60px;
+  margin-bottom: 2rem;
 }
 
 .prTitle {
   color: #041484;
-  font-size: 25px;
+  font-size: 2rem;
   font-weight: bold;
 }
 
@@ -38,11 +36,11 @@
   color: white;
   border: 2px solid black;
   border-radius: 5px;
-  padding: 8px 25px;
+  padding: 0.5rem 1rem;
   font: inherit;
   cursor: pointer;
   font-weight: bolder;
-  font-size: 20px;
+  font-size: 1.5rem;
 }
 
 .activeBtn:hover,
@@ -54,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 1rem;
 }
 
 .datetime .onhover {
