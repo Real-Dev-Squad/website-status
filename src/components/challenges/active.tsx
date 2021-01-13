@@ -26,12 +26,12 @@ type ActiveProps = {
       rds_member_id: string;
     }[];
     is_active: number;
-    isUserSubscribed: number;
+    is_user_subscribed: number;
   };
 };
 
 const Active: FC<ActiveProps> = ({ content }) => {
-  const [isUserSubscribed, setUserSubscribed] = useState(content.isUserSubscribed);
+  const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
   const subscribeEventHandler = async () => {
     setUserSubscribed(1);
