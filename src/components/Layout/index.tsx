@@ -22,6 +22,10 @@ const navBarContent = (title: string, refUrl: string) => {
 
 const Layout: FC<Props> = ({ children }) => (
   <div className={styles.layout}>
+    <div className={styles.rdsHeader}>
+      <img className={styles.logo} src="/Real-Dev-Squad@1x.png" alt="real-dev squad" />
+      <div className={styles.heading}>Status</div>
+    </div>
     <div className={styles.header}>
       {navBarContent('Tasks', '/')}
       |
