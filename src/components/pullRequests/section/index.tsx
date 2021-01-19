@@ -2,12 +2,21 @@ import { FC } from 'react';
 import Card from '../card';
 import classNames from './section.module.scss';
 
-type Props = {
-  heading: string;
-  content: [];
+type pullRequestType = {
+  title: string;
+  state: string;
+  username: string;
+  createdAt: string;
+  updatedAt: string;
+  url: string;
 };
 
-function cards(content) {
+type Props = {
+  heading: string;
+  content: Array<pullRequestType>;
+};
+
+function cards(content: Array<pullRequestType>) {
   return content.map((pullRequest) => (
     <Card pullRequest={pullRequest} key={pullRequest.title} />
   ));

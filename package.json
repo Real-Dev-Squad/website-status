@@ -4,8 +4,8 @@
   "description": "Shows a status of the ongoing projects being done",
   "main": "index.js",
   "scripts": {
-    "dev": "next src",
-    "build": "next build src dist",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start src -p $PORT",
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx"

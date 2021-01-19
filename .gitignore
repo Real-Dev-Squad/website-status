@@ -3,3 +3,4 @@ node_modules
 src/.next
 package-lock.json
 .next
+.env.local

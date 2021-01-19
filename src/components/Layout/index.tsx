@@ -1,6 +1,7 @@
 import { FC, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 import Footer from '../footer';
 import styles from './Layout.module.scss';
 
@@ -24,7 +25,7 @@ const Layout: FC<Props> = ({ children }) => (
   <div className={styles.layout}>
     <div className={styles.rdsHeader}>
       <a href="https://realdevsquad.com" target="_blank" rel="noreferrer">
-        <img className={styles.logo} src="/Real-Dev-Squad@1x.png" alt="real-dev squad" />
+        <Image width="45px" height="45px" className={styles.logo} src="/RDSLogo.png" alt="real-dev squad" />
       </a>
       <Link href="/">
         <div className={styles.heading}>Status</div>
