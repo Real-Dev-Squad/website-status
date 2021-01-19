@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import Card from '../card';
-import classNames from './section.module.scss';
+import Card from '@/components/pullRequests/card';
+import classNames from '@/components/pullRequests/section/section.module.scss';
 
 type pullRequestType = {
   title: string;

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import classNames from './pullRequests.module.scss';
+import classNames from '@/components/pullRequests/pullRequests.module.scss';
 
 interface prData {
   title: string;
