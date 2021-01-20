@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import Card from '../card';
-import classNames from './section.module.scss';
+import classNames from '@/components/tasks/section/section.module.scss';
+import Card from '@/components/tasks/card';
 
 interface pullRequest {
   id: number;

@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import classNames from './active-section.module.scss';
-import Active from '../../challenges/active';
-import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
+import Active from '@/components/challenges/active';
+import { CHALLENGES_SCREEN } from '@/components/constants/display-sections.js';
+import classNames from '@/components/section/active-section/active-section.module.scss';
 
 type ActiveSectionProps = {
   sectionContent: {

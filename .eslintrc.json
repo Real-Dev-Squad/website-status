@@ -20,6 +20,10 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "import/no-unresolved": [
+            0, 
+            { "caseSensitive": false }
+        ],
         "no-use-before-define": "off",
         "@typescript-eslint/no-use-before-define": [
             "error"

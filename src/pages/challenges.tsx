@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Helmet } from 'react-helmet';
-import Layout from 'components/Layout';
-import Section from 'components/section';
-import { CHALLENGES_SCREEN } from 'components/constants/display-sections.js';
-import ChallengesJson from '../mocks/challenges.json';
+import Layout from '@/components/Layout';
+import Section from '@/components/section';
+import { CHALLENGES_SCREEN } from '@/components/constants/display-sections.js';
+import ChallengesJson from '@/mocks/challenges.json';
 
 const Challenges: FC = () => (
   <Layout>
