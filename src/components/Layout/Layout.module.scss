@@ -1,6 +1,9 @@
 .layout {
   margin: 0 auto;
   max-width: 100%;
+  flex-direction: column;
+  display: flex;
+  min-height: 100%;
 }
 
 .header {

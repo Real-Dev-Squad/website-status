@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import classNames from './participants.module.scss';
+import classNames from '@/components/challenges/participants/participants.module.scss';
 
 type IndexProps = {
   participants: {

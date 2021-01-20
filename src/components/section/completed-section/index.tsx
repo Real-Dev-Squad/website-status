@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import classNames from './completed-section.module.scss';
-import Complete from '../../challenges/complete';
-import { CHALLENGES_SCREEN } from '../../constants/display-sections.js';
+import classNames from '@/components/section/completed-section/completed-section.module.scss';
+import Complete from '@/components/challenges/complete';
+import { CHALLENGES_SCREEN } from '@/components/constants/display-sections.js';
 
 type CompletedSectionProps = {
   sectionContent: {

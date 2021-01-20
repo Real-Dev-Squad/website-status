@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from './footer.module.scss';
+import classNames from '@/components/footer/footer.module.scss';
 
 const Footer = () => (
   <footer className={classNames.infoRepo}>

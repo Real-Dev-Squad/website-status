@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Helmet } from 'react-helmet';
 import Layout from '@/components/Layout';
 import Section from '@/components/tasks/section';
-import pullRequests from '../mocks/pullRequests.json';
+import pullRequests from '@/mocks/pullRequests.json';
 
 const Index: FC = () => {
   const completedTasks = pullRequests.filter(

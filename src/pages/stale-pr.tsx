@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Section from '@/components/pullRequests/section';
 import Layout from '@/components/Layout';
-import fetch from '../helperFunctions/fetch';
+import fetch from '@/helperFunctions/fetch';
 
 const stalePR: FC = () => {
   const [pullRequests, setPullRequests] = useState<[]>([]);

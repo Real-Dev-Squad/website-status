@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import classNames from './styles.module.scss';
-import Details from './details';
-import Participants from './participants';
+import classNames from '@/components/challenges/styles.module.scss';
+import Details from '@/components/challenges/details';
+import Participants from '@/components/challenges/participants';
 
 type ActiveProps = {
   content: {

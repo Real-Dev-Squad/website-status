@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
-import fetch from '../helperFunctions/fetch';
+import fetch from '@/helperFunctions/fetch';
 
 type pullRequestType = {
   title: string;

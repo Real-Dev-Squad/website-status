@@ -2,8 +2,8 @@ import { FC, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import Footer from '../footer';
-import styles from './Layout.module.scss';
+import Footer from '@/components/footer';
+import styles from '@/components/Layout/Layout.module.scss';
 
 interface Props {
   children?: ReactNode;
