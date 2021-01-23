@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import classNames from './details.module.scss';
+import classNames from '@/components/challenges/details/details.module.scss';
 
 type IndexProps = { text: string; value: string | number };
 

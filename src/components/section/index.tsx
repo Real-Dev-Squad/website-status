@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import ActiveSection from './active-section';
-import CompletedSection from './completed-section';
-import classNames from './section.module.scss';
+import ActiveSection from '@/components/section/active-section';
+import CompletedSection from '@/components/section/completed-section';
+import classNames from '@/components/section/section.module.scss';
 
 type IndexProps = {
   content: {

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import classNames from './card.module.scss';
+import classNames from '@/components/pullRequests/card/card.module.scss';
 
 const moment = require('moment');
 

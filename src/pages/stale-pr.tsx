@@ -1,38 +1,33 @@
+import { FC, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import { FC } from 'react';
-import Section from 'components/pullRequests/section';
-import Layout from 'components/Layout';
+import Section from '@/components/pullRequests/section';
+import Layout from '@/components/Layout';
+import fetch from '@/helperFunctions/fetch';
 
-type Props = {
-  stalePRs: {
-    message: string;
-    pullRequests: [];
-  };
-};
+const stalePR: FC = () => {
+  const [pullRequests, setPullRequests] = useState<[]>([]);
 
-const stalePR: FC<Props> = ({ stalePRs }) => (
-  <div>
-    <Layout>
-      <Helmet>
-        <title>Stale PRs | Status Real Dev Squad</title>
-      </Helmet>
-      <div className="container">
-        <Section heading="Stale PRs" content={stalePRs.pullRequests} />
-      </div>
-    </Layout>
-  </div>
-);
+  useEffect(() => {
+    (async () => {
+      const res = await fetch({
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/stale`,
+      });
+      setPullRequests(res.data.pullRequests);
+    })();
+  }, []);
 
-export async function getStaticProps() {
-  const res = await fetch(
-    'https://staging-api.realdevsquad.com/pullrequests/stale',
+  return (
+    <div>
+      <Layout>
+        <Helmet>
+          <title>Stale PRs | Status Real Dev Squad</title>
+        </Helmet>
+        <div className="container">
+          <Section heading="Stale PRs" content={pullRequests} />
+        </div>
+      </Layout>
+    </div>
   );
-  const stalePRs = await res.json();
-  return {
-    props: {
-      stalePRs,
-    },
-  };
-}
+};
 
 export default stalePR;
