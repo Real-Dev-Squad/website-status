@@ -5,7 +5,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  max-width: 25em;
+  max-width: 25rem;
+  width: 80%;
   margin-bottom: 2em;
   cursor: pointer;
 }
@@ -14,6 +15,11 @@
   color: #041484;
   font-size: 1.5rem;
   font-weight: bold;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cardFooter {

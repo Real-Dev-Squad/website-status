@@ -1,15 +1,41 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Layout from '@/components/Layout';
-import Section from '@/components/tasks/section';
-import pullRequests from '@/mocks/pullRequests.json';
+import Card from '@/components/tasks/card';
+import fetch from '@/helperFunctions/fetch';
+import classNames from '@/styles/tasks.module.scss';
+import { task } from '@/components/constants/types';
+
+const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
 const Index: FC = () => {
-  const completedTasks = pullRequests.filter(
-    (pr) => pr.completionStatus === 'completed',
+  const [tasks, setTasks] = useState<task[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+      const response = await fetch({
+        url: TASKS_URL,
+      });
+      setTasks(response.data.tasks);
+      setLoading(false);
+    })();
+  }, []);
+
+  const completedTasks = tasks.filter(
+    (item: task) => item.status === 'Active',
   );
-  const incompleteTasks = pullRequests.filter(
-    (pr) => pr.completionStatus !== 'completed',
+  const incompleteTasks = tasks.filter(
+    (item: task) => item.status !== 'Active',
+  );
+
+  const activeCards = completedTasks.map(
+    (item: task) => <Card content={item} key={item.id} />,
+  );
+
+  const incompletedCards = incompleteTasks.map(
+    (item: task) => <Card content={item} key={item.id} />,
   );
 
   return (
@@ -19,8 +45,24 @@ const Index: FC = () => {
       </Helmet>
 
       <div className="container">
-        <Section heading="Active" content={incompleteTasks} />
-        <Section heading="Completed" content={completedTasks} />
+        {
+          (loading)
+            ? (
+              <p>Loading...</p>
+            )
+            : (
+              <>
+                <div className={classNames.section}>
+                  <div className={classNames.heading}>Active</div>
+                  <div className={classNames.cardContainer}>{activeCards}</div>
+                </div>
+                <div className={classNames.section}>
+                  <div className={classNames.heading}>Completed</div>
+                  <div className={classNames.cardContainer}>{incompletedCards}</div>
+                </div>
+              </>
+            )
+        }
       </div>
     </Layout>
   );
