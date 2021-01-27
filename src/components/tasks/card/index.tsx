@@ -1,15 +1,9 @@
 import { FC } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
+import { task } from '@/components/constants/types';
 
 type Props = {
-  pullRequest: {
-    title: string;
-    completionDate: string;
-    startedAt: string;
-    author: string;
-    profilePicture: string;
-    issueStatus: string;
-  };
+  content: task,
 };
 
 const informationElement = (title: string, value: string) => (
@@ -19,27 +13,31 @@ const informationElement = (title: string, value: string) => (
   </span>
 );
 
-const Card: FC<Props> = ({ pullRequest }) => {
+const Card: FC<Props> = ({ content }) => {
   const {
     title,
-    completionDate,
-    startedAt,
-    author,
-    profilePicture,
-    issueStatus,
-  } = pullRequest;
+    endsOn,
+    startedOn,
+    ownerId,
+    status,
+  } = content;
+
+  const ownerProfilePic = `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${ownerId}/img.png`;
 
   return (
     <div className={classNames.card}>
       <span className={classNames.prTitle}>{title}</span>
-      {informationElement('Estimated completion', completionDate)}
-      {informationElement('Started', startedAt)}
+      {informationElement('Estimated completion', endsOn)}
+      {informationElement('Started', startedOn)}
       <div className={classNames.cardFooter}>
         <div className={classNames.profilePicture}>
-          <img src={profilePicture} alt="Author profile" />
-          <strong>{author}</strong>
+          <img
+            src={ownerProfilePic}
+            alt="ownerId profile"
+          />
+          <strong>{ownerId}</strong>
         </div>
-        {informationElement('Status', issueStatus)}
+        {informationElement('Status', status)}
       </div>
     </div>
   );
