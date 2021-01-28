@@ -1,22 +1,29 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import fetch from '@/helperFunctions/fetch';
 
-const useFetch = (url: string, options: object = {}) => {
-  const [response, setResponse] = React.useState(null);
-  const [error, setError] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(false);
-  React.useEffect(() => {
+const useFetch = (url: string) => {
+  const [response, setResponse] = useState<any>({});
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
     (async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(url, options);
-        const json = await res.json();
-        setResponse(json);
+        const res = await fetch({
+          url,
+          method: 'get',
+        });
+        setResponse(res.data);
         setIsLoading(false);
       } catch (err) {
+        setIsLoading(false);
         setError(err);
+      } finally {
+        setIsLoading(false);
       }
     })();
-  }, []);
+  }, [url]);
   return { response, error, isLoading };
 };
 
