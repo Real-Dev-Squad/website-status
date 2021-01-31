@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import fetch from '@/helperFunctions/fetch';
 
-const useFetch = (url: string) => {
+const useFetch = (url: string, options: object = {}) => {
   const [response, setResponse] = useState<any>({});
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,11 +13,10 @@ const useFetch = (url: string) => {
         const res = await fetch({
           url,
           method: 'get',
+          ...options,
         });
         setResponse(res.data);
-        setIsLoading(false);
       } catch (err) {
-        setIsLoading(false);
         setError(err);
       } finally {
         setIsLoading(false);
