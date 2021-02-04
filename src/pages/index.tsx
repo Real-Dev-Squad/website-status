@@ -2,41 +2,41 @@ import { FC, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
-import fetch from '@/helperFunctions/fetch';
+import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import { task } from '@/components/constants/types';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
+const renderCardList = (tasks: task[]) => tasks.map(
+  (item: task) => <Card content={item} key={item.id} />,
+);
+
 const Index: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [activeTasks, setActiveTasks] = useState<any>(null);
+  const [completeTasks, setCompleteTasks] = useState<any>(null);
+
+  const {
+    response,
+    error,
+    isLoading,
+  } = useFetch(TASKS_URL);
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const response = await fetch({
-        url: TASKS_URL,
-      });
-      setTasks(response.data.tasks);
-      setLoading(false);
-    })();
-  }, []);
+    if ('tasks' in response) {
+      setTasks(response.tasks);
+      const active = tasks.filter(
+        (item: task) => item.status === 'Active',
+      );
+      setActiveTasks(active);
 
-  const completedTasks = tasks.filter(
-    (item: task) => item.status === 'Active',
-  );
-  const incompleteTasks = tasks.filter(
-    (item: task) => item.status !== 'Active',
-  );
-
-  const activeCards = completedTasks.map(
-    (item: task) => <Card content={item} key={item.id} />,
-  );
-
-  const incompletedCards = incompleteTasks.map(
-    (item: task) => <Card content={item} key={item.id} />,
-  );
+      const complete = tasks.filter(
+        (item: task) => item.status !== 'Active',
+      );
+      setCompleteTasks(complete);
+    }
+  }, [isLoading, response]);
 
   return (
     <Layout>
@@ -46,7 +46,12 @@ const Index: FC = () => {
 
       <div className="container">
         {
-          (loading)
+          (!!error) && (
+            <p>Something went wrong, please contact admin!</p>
+          )
+        }
+        {
+          (isLoading)
             ? (
               <p>Loading...</p>
             )
@@ -54,11 +59,15 @@ const Index: FC = () => {
               <>
                 <div className={classNames.section}>
                   <div className={classNames.heading}>Active</div>
-                  <div className={classNames.cardContainer}>{activeCards}</div>
+                  <div className={classNames.cardContainer}>
+                    {renderCardList(activeTasks)}
+                  </div>
                 </div>
                 <div className={classNames.section}>
                   <div className={classNames.heading}>Completed</div>
-                  <div className={classNames.cardContainer}>{incompletedCards}</div>
+                  <div className={classNames.cardContainer}>
+                    {renderCardList(completeTasks)}
+                  </div>
                 </div>
               </>
             )
