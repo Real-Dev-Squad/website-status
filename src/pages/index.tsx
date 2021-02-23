@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
@@ -41,9 +41,7 @@ const Index: FC = () => {
 
   return (
     <Layout>
-      <Helmet>
-        <title>Tasks | Status Real Dev Squad</title>
-      </Helmet>
+      <Head title="Tasks" />
 
       <div className="container">
         {

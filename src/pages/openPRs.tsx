@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react';
+import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
 import fetch from '@/helperFunctions/fetch';
@@ -47,6 +48,7 @@ const openPRs: FC = () => {
 
   return (
     <Layout>
+      <Head title="Open PRs" />
 
       <div className="container">
         {
