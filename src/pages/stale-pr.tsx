@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import Head from '@/components/head';
 import Section from '@/components/pullRequests/section';
 import Layout from '@/components/Layout';
 import fetch from '@/helperFunctions/fetch';
@@ -19,9 +19,7 @@ const stalePR: FC = () => {
   return (
     <div>
       <Layout>
-        <Helmet>
-          <title>Stale PRs | Status Real Dev Squad</title>
-        </Helmet>
+        <Head title="Stale PRs" />
         <div className="container">
           <Section heading="Stale PRs" content={pullRequests} />
         </div>
