@@ -6,7 +6,7 @@ import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 
 interface Props {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const navBarContent = (title: string, refUrl: string) => {
@@ -43,6 +43,8 @@ const Layout: FC<Props> = ({ children }) => (
       {navBarContent('Open PRs', '/openPRs')}
       |
       {navBarContent('Stale PRs', '/stale-pr')}
+      |
+      {navBarContent('Idle Members', '/idle-members')}
     </div>
     {children}
     <Footer />
