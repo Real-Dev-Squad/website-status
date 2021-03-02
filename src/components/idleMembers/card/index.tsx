@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const imageGenerator = (name: string) => `https://raw.githubusercontent.com/Real-Dev-Squad/website-static/main/members/${name}/img.png`;
+  const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
   const getMemberDetails = (name: string) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');

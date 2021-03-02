@@ -9,7 +9,7 @@ type Props = {
   isLoading: boolean
 }
 
-function cards(content: Array<string>) {
+function renderCards(content: Array<string>) {
   return content.map((idleMember) => (
     <Card idleMemberUserName={idleMember} key={idleMember} />
   ));
@@ -33,7 +33,7 @@ const Section: FC<Props> = ({
           <span className={classNames.statusMessage}>Loading...</span>
         )
         : (
-          <div className={classNames.cardContainer}>{cards(content)}</div>
+          <div className={classNames.cardContainer}>{renderCards(content)}</div>
         )
     }
   </div>
