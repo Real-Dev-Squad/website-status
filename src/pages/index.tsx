@@ -17,9 +17,7 @@ const Index: FC = () => {
   let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
 
-  const { response, error, isLoading } = useFetch(
-    `https://api.allorigins.win/raw?url=${TASKS_URL}`,
-  );
+  const { response, error, isLoading } = useFetch(TASKS_URL);
 
   useEffect(() => {
     if ('tasks' in response) {
