@@ -40,7 +40,6 @@ const Index: FC = () => {
 
       <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
-        {(!filteredTask.length && !isLoading) && <p>No tasks found</p>}
         {
           isLoading
             ? (
