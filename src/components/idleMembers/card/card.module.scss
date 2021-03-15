@@ -1,0 +1,25 @@
+.card {
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 2rem;
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.image {
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+}
+
+.name {
+  text-transform: capitalize;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+}
