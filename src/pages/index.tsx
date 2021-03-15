@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
+import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
@@ -9,62 +9,52 @@ import Accordion from '@/components/Accordion';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
-const renderCardList = (tasks: task[]) => tasks.map(
-  (item: task) => <Card content={item} key={item.id} />,
-);
+function renderCardList(tasks: task[]) {
+  return tasks.map((item: task) => <Card content={item} key={item.id} />);
+}
 
 const Index: FC = () => {
-  const [tasks, setTasks] = useState<task[]>([]);
-  const [activeTasks, setActiveTasks] = useState<any>(null);
-  const [completeTasks, setCompleteTasks] = useState<any>(null);
+  let tasks: task[] = [];
+  const [filteredTask, setFilteredTask] = useState<any>([]);
 
-  const {
-    response,
-    error,
-    isLoading,
-  } = useFetch(TASKS_URL);
+  const { response, error, isLoading } = useFetch(TASKS_URL);
 
   useEffect(() => {
     if ('tasks' in response) {
-      setTasks(response.tasks);
-      const active = tasks.filter(
-        (item: task) => item.status === 'Active',
-      );
-      setActiveTasks(active);
-
-      const complete = tasks.filter(
-        (item: task) => item.status !== 'Active',
-      );
-      setCompleteTasks(complete);
+      tasks = response.tasks;
+      const taskMap: any = [];
+      tasks.forEach((item) => {
+        if (item.status in taskMap) {
+          taskMap[item.status] = [...taskMap[item.status], item];
+        } else {
+          taskMap[item.status] = [item];
+        }
+      });
+      setFilteredTask(taskMap);
     }
   }, [isLoading, response]);
 
   return (
     <Layout>
-      <Helmet>
-        <title>Tasks | Status Real Dev Squad</title>
-      </Helmet>
+      <Head title="Tasks" />
 
-      <div className="container">
+      <div className={classNames.container}>
+        {!!error && <p>Something went wrong, please contact admin!</p>}
         {
-          (!!error) && (
-            <p>Something went wrong, please contact admin!</p>
-          )
-        }
-        {
-          (isLoading)
+          isLoading
             ? (
               <p>Loading...</p>
-            )
-            : (
-              <div className={classNames.container}>
-                <Accordion title="Active">
-                  {renderCardList(activeTasks)}
-                </Accordion>
-                <Accordion title="Completed">
-                  {renderCardList(completeTasks)}
-                </Accordion>
-              </div>
+            ) : (
+              <>
+                {
+                  Object.keys(filteredTask).length > 0
+                    ? Object.keys(filteredTask).map((key) => (
+                      <Accordion title={key} key={key}>
+                        {renderCardList(filteredTask[key])}
+                      </Accordion>
+                    )) : 'No Tasks Found'
+                }
+              </>
             )
         }
       </div>
