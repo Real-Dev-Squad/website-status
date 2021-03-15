@@ -48,11 +48,12 @@ const Index: FC = () => {
             ) : (
               <>
                 {
-                  Object.keys(filteredTask).map((key) => (
-                    <Accordion title={key}>
-                      {renderCardList(filteredTask[key])}
-                    </Accordion>
-                  ))
+                  Object.keys(filteredTask).length > 0
+                    ? Object.keys(filteredTask).map((key) => (
+                      <Accordion title={key}>
+                        {renderCardList(filteredTask[key])}
+                      </Accordion>
+                    )) : 'No Tasks Found'
                 }
               </>
             )
