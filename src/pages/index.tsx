@@ -38,14 +38,15 @@ const Index: FC = () => {
     <Layout>
       <Head title="Tasks" />
 
-      <div className="container">
+      <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
+        {(!filteredTask.length && !isLoading) && <p>No tasks found</p>}
         {
           isLoading
             ? (
               <p>Loading...</p>
             ) : (
-              <div className={classNames.container}>
+              <>
                 {
                   Object.keys(filteredTask).map((key) => (
                     <Accordion title={key}>
@@ -53,7 +54,7 @@ const Index: FC = () => {
                     </Accordion>
                   ))
                 }
-              </div>
+              </>
             )
         }
       </div>
