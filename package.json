@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p $PORT",
     "lint": "eslint . --ext js,jsx,ts,tsx",
-    "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx"
+    "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx",
+    "postinstall": "husky install"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.21.1",
+    "husky": "^5.1.3",
     "moment": "^2.29.1",
     "next": "^10.0.5",
     "node-sass": "^5.0.0",
@@ -45,16 +47,11 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "husky": "^5.0.9",
-    "lint-staged": "^10.5.3"
+    "lint-staged": "^10.5.3",
+    "pinst": "^2.1.6"
   },
   "engines": {
     "node": "14.x"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.+(ts|tsx)": [
