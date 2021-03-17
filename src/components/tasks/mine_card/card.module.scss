@@ -1,0 +1,36 @@
+.card {
+  border: 0.2em solid black;
+  border-radius: 0.5em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 2em;
+  cursor: pointer;
+}
+
+.prTitle {
+  color: #041484;
+  font-size: 1.5rem;
+  font-weight: bold;
+
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardFooter {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+
+.statusLable {
+  color: grey;
+  font-weight: bold;
+}
