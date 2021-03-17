@@ -16,7 +16,8 @@ const idleMembers: FC = () => {
 
   useEffect(() => {
     if ('idleMemberUserNames' in response) {
-      setIdleMembersList(response.idleMemberUserNames);
+      const sortedIdleMembers = response.idleMemberUserNames.sort();
+      setIdleMembersList(sortedIdleMembers);
     }
   }, [isLoading, response]);
 
