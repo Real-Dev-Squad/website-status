@@ -8,7 +8,7 @@ export default function PageNotFound() {
       <Layout>
         <Link href="/">
           <div className={styles.header}>
-            <h2>404 - Page Not Found</h2>
+            <h2 className={styles.link}>404 - Page Not Found</h2>
           </div>
         </Link>
       </Layout>
