@@ -7,11 +7,9 @@ export default function FourOhFour() {
     <>
       <Layout>
         <Link href="/">
-          {/* <a> */}
           <div className={styles.header}>
             <h2>404 - Page Not Found</h2>
           </div>
-          {/* </a> */}
         </Link>
       </Layout>
     </>
