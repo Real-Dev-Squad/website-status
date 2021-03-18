@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import styles from '@/components/Layout/Layout.module.scss';
 
-export default function FourOhFour() {
+export default function PageNotFound() {
   return (
     <>
       <Layout>
