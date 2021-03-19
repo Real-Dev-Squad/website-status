@@ -51,7 +51,7 @@
     "pinst": "^2.1.6"
   },
   "engines": {
-    "node": "14.x"
+    "node": "10.19.0"
   },
   "lint-staged": {
     "*.+(ts|tsx)": [
