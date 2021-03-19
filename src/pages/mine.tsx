@@ -1,30 +1,19 @@
-import { FC, useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet';
-
-
+import { FC,useState, useEffect } from 'react';
+import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/mine_card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import { task } from '@/components/constants/types';
-// const Mine: FC = () => (
-//   <Layout>
-//     <Head title="Mine" />
-//   </Layout>
-// );
 
-// export default Mine;
-const TASKS_URL = `https://run.mocky.io/v3/f8799d5e-03b4-4a96-b684-65557b97ecd9`;
+const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
+
 
 const CardList = (tasks: task[]) => tasks.map(
-  (item: task) => <Card content={item} key={item.id} />,
-
-
+    (item: task) => <Card content={item} key={item.id} />);
 
 const Mine: FC = () => {
-  const [tasks, setTasks] = useState<task[]>([]);
-  
-
+  let [tasks, setTasks] = useState<task[]>([]);
   const {
     response,
     error,
@@ -37,33 +26,31 @@ const Mine: FC = () => {
 
     }
   }, [isLoading, response]);
-
-  return (
-    <Layout>
-      <Helmet>
-        <title>Tasks | Status Real Dev Squad</title>
-      </Helmet>
-
-      <div className="container">
+  return(
+  <Layout>
+    <Head title="Mine" />
+    <div className={classNames.container}>
+        {!!error && <p>Something went wrong, please contact admin!</p>}
         {
-          (!!error) && (
-            <p>Something went wrong, please contact admin!</p>
-          )
-        }
-        {
-          (isLoading)
+          isLoading
             ? (
               <p>Loading...</p>
-            )
-            : (
-              <div className={classNames.container}>
-               {CardList(tasks)} 
+            ) : (
 
-              </div>
+              <>
+                {
+                  Object.keys(tasks).length > 0
+                    ?  (
+                      <div>
+                        {CardList(tasks)}
+                      </div>
+                    ) : 'No Tasks Found'
+                }
+              </>
             )
         }
       </div>
-    </Layout>
+  </Layout>
   );
 };
 

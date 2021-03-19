@@ -24,9 +24,8 @@ const Card: FC<Props> = ({ content }) => {
     <div className={classNames.card}>
       <span className={classNames.prTitle}>{title}</span>
       {informationElement('Started', startedOn)}
-      <div className={classNames.cardFooter}>
-        {informationElement('Status', status)}
-      </div>
+      {informationElement('Status', status)}
+      
     </div>
   );
 };
