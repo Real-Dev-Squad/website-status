@@ -4,3 +4,4 @@ src/.next
 package-lock.json
 .next
 .env.local
+yarn-error.log
