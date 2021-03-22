@@ -16,17 +16,28 @@ type pullRequestType = {
 const openPRs: FC = () => {
   const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+
+  async function fetchOpenPRs() {
+    setLoading(true);
+    const response = await fetch({
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/open?page=${page}`,
+    });
+    setPullRequests(response.data.pullRequests);
+    setLoading(false);
+  }
+
+  function handlePrev() {
+    setPage(page > 1 ? page - 1 : 1);
+  }
+
+  function handleNext() {
+    setPage(pullRequests.length ? page + 1 : page);
+  }
 
   useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const response = await fetch({
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/open`,
-      });
-      setPullRequests(response.data.pullRequests);
-      setLoading(false);
-    })();
-  }, []);
+    fetchOpenPRs();
+  }, [page]);
 
   const getPRs = () => pullRequests.map((pullRequest: pullRequestType) => {
     const {
@@ -51,26 +62,55 @@ const openPRs: FC = () => {
       <Head title="Open PRs" />
 
       <div className="container">
-        {
-          loading ? (
-            <>
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-              <CardShimmer />
-            </>
-          ) : (
-            getPRs())
-}
-
+        {loading
+          ? [...Array(10)].map((e: number) => <CardShimmer key={e} />)
+          : getPRs()}
       </div>
-      )
+      {!pullRequests.length ? <p className="center-text">No more open PRs...</p> : ''}
+
+      <div className="pagination">
+        <button
+          className="pagination-btn"
+          type="button"
+          onClick={handlePrev}
+          disabled={page <= 1}
+        >
+          Prev
+        </button>
+
+        <button
+          className="pagination-btn"
+          type="button"
+          onClick={handleNext}
+          disabled={pullRequests.length === 0}
+        >
+          Next
+        </button>
+      </div>
+
+      <style jsx>
+        {`
+        .center-text {
+          font-size: 1.5em;
+          text-align: center;
+        }
+
+        .pagination {
+          display: flex;
+          justify-content: center;
+        }
+
+        .pagination-btn {
+          margin: 1rem;
+          padding: 1rem;
+          font-size: 1.5em;
+          cursor: pointer;
+          border: none;
+          background-color: #bfbfbf;
+          border-radius: 5px;
+        }
+      `}
+      </style>
     </Layout>
   );
 };
