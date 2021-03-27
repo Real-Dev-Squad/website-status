@@ -1,19 +1,19 @@
 .center_text {
-    font-size: 1.5em;
-    text-align: center;
-  }
-
-.pagination {
-display: flex;
-justify-content: center;
+  font-size: 1.5em;
+  text-align: center;
 }
 
-  .pagination_btn {
-    margin: 1rem;
-    padding: 1rem;
-    font-size: 1.5em;
-    cursor: pointer;
-    border: none;
-    background-color: #bfbfbf;
-    border-radius: 5px;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination_btn {
+  margin: 1rem;
+  padding: 1rem;
+  font-size: 1.5em;
+  cursor: pointer;
+  border: none;
+  background-color: #bfbfbf;
+  border-radius: 5px;
+}
