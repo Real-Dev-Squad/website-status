@@ -34,7 +34,9 @@ const Layout: FC<Props> = ({ children }) => (
     <div className={styles.header}>
       {navBarContent('Tasks', '/')}
       |
-      {navBarContent('DS', '/challenges')}
+      {navBarContent('Active', '/active')}
+      |
+      {navBarContent('Completed', '/completed')}
       |
       {navBarContent('Open PRs', '/openPRs')}
       |
