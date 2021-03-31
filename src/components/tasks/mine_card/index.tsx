@@ -6,12 +6,14 @@ type Props = {
   content: task,
 };
 
-const informationElement = (title: string, value: string) => (
-  <span className={classNames.statusElement}>
-    <span className={classNames.statusLable}>{`${title}: `}</span>
-    <strong>{value}</strong>
-  </span>
-);
+function informationElement(title: string, value: string) {
+  return (
+    <span className={classNames.statusElement}>
+      <span className={classNames.statusLable}>{`${title}: `}</span>
+      <strong>{value}</strong>
+    </span>
+  );
+}
 
 const Card: FC<Props> = ({ content }) => {
   const {
@@ -25,7 +27,7 @@ const Card: FC<Props> = ({ content }) => {
       <span className={classNames.prTitle}>{title}</span>
       {informationElement('Started', startedOn)}
       {informationElement('Status', status)}
-      
+
     </div>
   );
 };

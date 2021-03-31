@@ -1,4 +1,4 @@
-import { FC,useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/mine_card';
@@ -8,12 +8,14 @@ import { task } from '@/components/constants/types';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 
-
-const CardList = (tasks: task[]) => tasks.map(
-    (item: task) => <Card content={item} key={item.id} />);
+function CardList(tasks: task[]) {
+  return tasks.map(
+    (item: task) => <Card content={item} key={item.id} />,
+  );
+}
 
 const Mine: FC = () => {
-  let [tasks, setTasks] = useState<task[]>([]);
+  const [tasks, setTasks] = useState<task[]>([]);
   const {
     response,
     error,
@@ -21,26 +23,22 @@ const Mine: FC = () => {
   } = useFetch(TASKS_URL);
 
   useEffect(() => {
-    if ('tasks' in response) {
-      setTasks(response.tasks);
-
-    }
+    if ('tasks' in response) { setTasks(response.tasks); }
   }, [isLoading, response]);
-  return(
-  <Layout>
-    <Head title="Mine" />
-    <div className={classNames.container}>
+  return (
+    <Layout>
+      <Head title="Mine" />
+      <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
         {
           isLoading
             ? (
               <p>Loading...</p>
             ) : (
-
               <>
                 {
-                  Object.keys(tasks).length > 0
-                    ?  (
+                  tasks.length > 0
+                    ? (
                       <div>
                         {CardList(tasks)}
                       </div>
@@ -50,9 +48,7 @@ const Mine: FC = () => {
             )
         }
       </div>
-  </Layout>
+    </Layout>
   );
 };
-
 export default Mine;
-
