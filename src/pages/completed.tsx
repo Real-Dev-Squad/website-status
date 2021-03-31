@@ -29,7 +29,7 @@ const Completed: FC = () => {
       setTasks(response.tasks);
 
       const complete = tasks.filter(
-        (item: task) => item.status === 'Completed',
+        (item: task) => item.status === 'completed',
       );
       setCompleteTasks(complete);
     }

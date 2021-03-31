@@ -27,7 +27,7 @@ const Active: FC = () => {
     if ('tasks' in response) {
       setTasks(response.tasks);
       const active = tasks.filter(
-        (item: task) => item.status === 'Active',
+        (item: task) => item.status === 'active',
       );
       setActiveTasks(active);
     }
