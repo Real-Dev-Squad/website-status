@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import PullRequest from '@/components/pullRequests';
+import PullRequest from '@/components/pullRequests/indexModified';
 import fetch from '@/helperFunctions/fetch';
 import CardShimmer from '@/components/Loaders/cardShimmer';
 
@@ -67,10 +67,9 @@ const openPRs: FC = () => {
             </>
           ) : (
             getPRs())
-}
-
+        }
       </div>
-      )
+
     </Layout>
   );
 };
