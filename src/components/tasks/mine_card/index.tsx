@@ -14,20 +14,17 @@ function informationElement(title: string, value: string) {
     </span>
   );
 }
-
 const Card: FC<Props> = ({ content }) => {
   const {
     title,
     startedOn,
     status,
   } = content;
-
   return (
     <div className={classNames.card}>
       <span className={classNames.prTitle}>{title}</span>
       {informationElement('Started', startedOn)}
       {informationElement('Status', status)}
-
     </div>
   );
 };
