@@ -54,7 +54,11 @@ const Completed: FC = () => {
                   <div className={classNames.title}>Completed</div>
                   <div>
 
-                    {response.data === undefined ? <p>No Data</p> : renderCardList(completeTasks) }
+                    {
+                      response.data === undefined
+                        ? <p>No completed tasks found</p>
+                        : renderCardList(completeTasks)
+                    }
 
                   </div>
                 </div>

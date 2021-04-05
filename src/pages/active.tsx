@@ -52,7 +52,11 @@ const Active: FC = () => {
                   <div className={classNames.title}>Active</div>
                   <div>
 
-                    {response.data === undefined ? <p>No Tasks</p> : renderCardList(activeTasks) }
+                    {
+                      response.data === undefined
+                        ? <p>No active tasks found</p>
+                        : renderCardList(activeTasks)
+                    }
 
                   </div>
                 </div>
