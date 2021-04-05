@@ -6,7 +6,6 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import { task } from '@/components/constants/types';
-import Accordion from '@/components/Accordion';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
@@ -52,9 +51,12 @@ const Completed: FC = () => {
               )
               : (
                 <div className={classNames.container}>
-                  <Accordion title="Completed">
-                    {renderCardList(completeTasks)}
-                  </Accordion>
+                  <div className={classNames.title}>Completed</div>
+                  <div>
+
+                    {response.data === undefined ? <p>No Data</p> : renderCardList(completeTasks) }
+
+                  </div>
                 </div>
               )
         }
