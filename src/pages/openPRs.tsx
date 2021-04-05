@@ -70,7 +70,6 @@ const openPRs: FC = () => {
 }
 
       </div>
-      )
     </Layout>
   );
 };
