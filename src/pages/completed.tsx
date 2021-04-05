@@ -28,7 +28,7 @@ const Completed: FC = () => {
       setTasks(response.tasks);
 
       const complete = tasks.filter(
-        (item: task) => item.status === 'completed',
+        (item: task) => (item.status).toLowerCase() === 'completed',
       );
       setCompleteTasks(complete);
     }
@@ -52,7 +52,7 @@ const Completed: FC = () => {
               : (
                 <div className={classNames.container}>
                   <div className={classNames.title}>Completed</div>
-                  <div>
+                  <>
 
                     {
                       response.data === undefined
@@ -60,7 +60,7 @@ const Completed: FC = () => {
                         : renderCardList(completeTasks)
                     }
 
-                  </div>
+                  </>
                 </div>
               )
         }

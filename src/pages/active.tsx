@@ -26,7 +26,7 @@ const Active: FC = () => {
     if ('tasks' in response) {
       setTasks(response.tasks);
       const active = tasks.filter(
-        (item: task) => item.status === 'active',
+        (item: task) => (item.status).toLowerCase() === 'active',
       );
       setActiveTasks(active);
     }
@@ -50,15 +50,15 @@ const Active: FC = () => {
               : (
                 <div className={classNames.container}>
                   <div className={classNames.title}>Active</div>
-                  <div>
+                  <>
 
                     {
-                      response.data === undefined
+                      activeTasks.length === 0
                         ? <p>No active tasks found</p>
                         : renderCardList(activeTasks)
                     }
 
-                  </div>
+                  </>
                 </div>
               )
         }
