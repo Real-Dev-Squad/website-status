@@ -1,5 +1,4 @@
-import type { FC } from 'react';
-import { useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -30,6 +29,7 @@ const Completed: FC = () => {
       const complete = tasks.filter(
         (item: task) => (item.status).toLowerCase() === 'completed',
       );
+
       setCompleteTasks(complete);
     }
   }, [isLoading, response]);
@@ -53,13 +53,11 @@ const Completed: FC = () => {
                 <div className={classNames.container}>
                   <div className={classNames.title}>Completed</div>
                   <>
-
                     {
-                      response.data === undefined
+                      completeTasks.length === 0
                         ? <p>No completed tasks found</p>
                         : renderCardList(completeTasks)
                     }
-
                   </>
                 </div>
               )

@@ -51,13 +51,11 @@ const Active: FC = () => {
                 <div className={classNames.container}>
                   <div className={classNames.title}>Active</div>
                   <>
-
                     {
                       activeTasks.length === 0
                         ? <p>No active tasks found</p>
                         : renderCardList(activeTasks)
                     }
-
                   </>
                 </div>
               )
