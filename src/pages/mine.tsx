@@ -42,7 +42,7 @@ const Mine: FC = () => {
                       <div>
                         {CardList(tasks)}
                       </div>
-                    ) : 'No Tasks Found'
+                    ) : (!error && 'No Tasks Found')
                 }
               </>
             )
