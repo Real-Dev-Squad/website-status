@@ -1,6 +1,4 @@
 .card {
-  border: 0.2em solid black;
-  border-radius: 0.5em;
   padding: 1em;
   display: flex;
   flex-direction: column;
@@ -25,10 +23,21 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: right;
+  align-items: center;
   width: 100%;
 }
 
+.profilePicture {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 6em;
+}
+
+.profilePicture > img {
+  width: 3em;
+  border-radius: 50%;
+}
 
 .statusLable {
   color: grey;
