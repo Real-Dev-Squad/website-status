@@ -3,10 +3,11 @@ import styles from '@/components/Accordion/Accordion.module.scss';
 
 type Props = {
   title: string,
+  open: boolean
 };
 
-const Accordion: FC<Props> = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Accordion: FC<Props> = ({ title, open = true, children }) => {
+  const [isOpen, setIsOpen] = useState(open);
 
   function toggle() {
     setIsOpen(!isOpen);
