@@ -6,6 +6,7 @@
     flex-direction: column;
     flex-wrap: wrap;
     margin-bottom: 2rem;
+    cursor: pointer;
   }
   
   .prTitle {
@@ -26,6 +27,20 @@
   .statusLable {
     color: grey;
     font-weight: bold;
+  }
+
+  .participantsLists {
+    list-style: none;
+    display: flex;
+    vertical-align: top;
+    margin-top: 0;
+  }
+  
+  .participantsList img {
+    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    margin-left: -20px;
   }
   
   .activeBtn{

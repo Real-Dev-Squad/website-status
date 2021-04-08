@@ -45,7 +45,6 @@ const pullRequest: FC<pullRequestType> = ({
     <Card
       title={{ text: title, link: url }}
       data={getPr()}
-      button={{ text: 'Open PR in Github', link: url }}
       key={title}
     />
   );

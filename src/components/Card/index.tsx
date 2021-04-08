@@ -11,14 +11,23 @@ type Props = {
     key: string,
     value: string
   }[],
+  participants?:
+  {
+    firstName: string,
+    lastName: string,
+    userName: string,
+    imgUrl: string,
+  }[],
   button?: {
     text: string,
-    link: string | undefined,
+    link?: string,
     onClick?: () => void
   };
 };
 
-const Card: FC<Props> = ({ title, data, button = undefined }) => {
+const Card: FC<Props> = ({
+  title, data, participants = undefined, button = undefined,
+}) => {
   const { text: tileText } = title;
 
   function informationElement(key: string, value: string) {
@@ -36,8 +45,7 @@ const Card: FC<Props> = ({ title, data, button = undefined }) => {
       className={classNames.card}
       onClick={() => {
         if (title.link !== undefined) {
-          // eslint-disable-next-line no-restricted-globals
-          location.href = title.link;
+          window.open(title.link, '_blank');
         }
       }}
     >
@@ -52,19 +60,41 @@ const Card: FC<Props> = ({ title, data, button = undefined }) => {
         ))}
       </div>
 
-      <div className={classNames.Center}>
-        <a
-          href={button?.link}
-          className={classNames.links}
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button" className={classNames.activeBtn}>
-            {button?.text}
-          </button>
-        </a>
-      </div>
+      {
+        !(participants === undefined) && (
+          <div className={classNames.Center}>
+            <ul className={classNames.participantsLists}>
+              {
+                participants.map((participant) => (
+                  <li key={participant.userName} className={classNames.participantsList}>
+                    <img
+                      src={`https://raw.githubusercontent.com/Real-Dev-Squad/website-static/main/members/${participant.userName}/img.png`}
+                      alt={participant.userName}
+                    />
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        )
+      }
 
+      {
+        !(button === undefined) && (
+          <div className={classNames.Center}>
+            <a
+              href={button?.link}
+              className={classNames.links}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <button type="button" onClick={button?.onClick} className={classNames.activeBtn}>
+                {button.text}
+              </button>
+            </a>
+          </div>
+        )
+      }
     </div>
   );
 };
