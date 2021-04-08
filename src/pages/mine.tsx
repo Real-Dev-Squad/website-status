@@ -6,7 +6,7 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import { task } from '@/components/constants/types';
 
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/task0/self`;
+const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/task/self`;
 
 function CardList(tasks: task[]) {
   return tasks.map(
