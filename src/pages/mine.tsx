@@ -1,12 +1,12 @@
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import Card from '@/components/tasks/mine_card';
+import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import { task } from '@/components/constants/types';
 
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
+const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
 function CardList(tasks: task[]) {
   return tasks.map(
