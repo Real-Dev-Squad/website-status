@@ -1,5 +1,5 @@
 .card {
-    border: 2px solid black;
+    box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.65);
     border-radius: 10px;
     padding: 1.5rem;
     display: flex;
@@ -8,14 +8,15 @@
     margin-bottom: 2rem;
     cursor: pointer;
   }
-  
-  .prTitle {
+.card:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+.prTitle {
     color: #041484;
     font-size: 2rem;
     font-weight: bold;
   }
-  
-  .cardFooter {
+.cardFooter {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -23,27 +24,23 @@
     align-items: center;
     width: 100%;
   }
-  
-  .statusLable {
+.statusLable {
     color: grey;
     font-weight: bold;
   }
-
-  .participantsLists {
+.participantsLists {
     list-style: none;
     display: flex;
     vertical-align: top;
     margin-top: 0;
-  }
-  
-  .participantsList img {
+  } 
+.participantsList img {
     border-radius: 50%;
     width: 3rem;
     height: 3rem;
     margin-left: -20px;
   }
-  
-  .activeBtn{
+.activeBtn{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -57,34 +54,28 @@
     font-weight: bolder;
     font-size: 1.5rem;
   }
-  
-  .activeBtn:hover,
-  .activeBtn:active {
+.activeBtn:hover,
+.activeBtn:active {
     background: darkgreen;
   }
-  
-  .Center {
+.Center {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 1rem;
   }
-  
-  .datetime .onhover {
+.datetime .onhover {
     display: none;
     cursor: pointer;
   }
-  
-  .datetime:hover .nothover {
+.datetime:hover .nothover {
     display: none;
     cursor: pointer;
   }
-  
-  .datetime:hover .onhover{
+.datetime:hover .onhover{
     display: block;
     cursor: pointer;
   }
-  
-  .links{
+.links{
     text-decoration: none;
   }

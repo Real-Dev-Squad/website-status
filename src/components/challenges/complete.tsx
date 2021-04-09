@@ -1,7 +1,4 @@
 import { FC } from 'react';
-// import classNames from '@/components/challenges/styles.module.scss';
-// import Details from '@/components/challenges/details';
-// import Participants from '@/components/challenges/participants';
 import Card from '@/components/Card/index';
 
 type CompleteProps = {
@@ -55,10 +52,8 @@ const Complete: FC<CompleteProps> = ({ content }) => {
     // eslint-disable-next-line array-callback-return
     users.map((user) => {
       participants.push({
-        firstName: user.first_name,
-        lastName: user.last_name,
         userName: user.rds_member_id,
-        imgUrl: user.img,
+        imgUrl: `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${user.rds_member_id}/img.png`,
         key: user.rds_member_id,
       });
     });

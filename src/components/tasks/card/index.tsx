@@ -1,19 +1,12 @@
 import { FC } from 'react';
-import classNames from '@/components/tasks/card/card.module.scss';
 import { task } from '@/components/constants/types';
+import Card from '@/components/Card/index';
 
 type Props = {
   content: task,
 };
 
-const informationElement = (title: string, value: string) => (
-  <span className={classNames.statusElement}>
-    <span className={classNames.statusLable}>{`${title}: `}</span>
-    <strong>{value}</strong>
-  </span>
-);
-
-const Card: FC<Props> = ({ content }) => {
+const taskCard: FC<Props> = ({ content }) => {
   const {
     title,
     endsOn,
@@ -24,23 +17,31 @@ const Card: FC<Props> = ({ content }) => {
 
   const ownerProfilePic = `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${ownerId}/img.png`;
 
+  const taskData = {
+    Estimated_completion: endsOn,
+    Started: startedOn,
+    Status: status,
+    Owner: ownerId,
+  };
+  const taskArray: any[] = [];
+  function getTask() {
+    // eslint-disable-next-line array-callback-return
+    Object.entries(taskData).map(([key, value]) => {
+      taskArray.push({ key, value });
+    });
+    return taskArray;
+  }
+
+  const arrayOfOwner: any[] = [{ userName: ownerId, imgUrl: ownerProfilePic, key: ownerId }];
+
   return (
-    <div className={classNames.card}>
-      <span className={classNames.prTitle}>{title}</span>
-      {informationElement('Estimated completion', endsOn)}
-      {informationElement('Started', startedOn)}
-      <div className={classNames.cardFooter}>
-        <div className={classNames.profilePicture}>
-          <img
-            src={ownerProfilePic}
-            alt="ownerId profile"
-          />
-          <strong>{ownerId}</strong>
-        </div>
-        {informationElement('Status', status)}
-      </div>
-    </div>
+    <Card
+      title={{ text: title }}
+      data={getTask()}
+      participants={arrayOfOwner}
+      key={title}
+    />
   );
 };
 
-export default Card;
+export default taskCard;

@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { FC } from 'react';
 import classNames from '@/components/Card/card.module.scss';
 
@@ -13,8 +12,6 @@ type Props = {
   }[],
   participants?:
   {
-    firstName: string,
-    lastName: string,
     userName: string,
     imgUrl: string,
   }[],
@@ -48,6 +45,8 @@ const Card: FC<Props> = ({
           window.open(title.link, '_blank');
         }
       }}
+      role="button"
+      tabIndex={0}
     >
 
       <span className={classNames.prTitle}>{tileText}</span>
@@ -68,7 +67,7 @@ const Card: FC<Props> = ({
                 participants.map((participant) => (
                   <li key={participant.userName} className={classNames.participantsList}>
                     <img
-                      src={`https://raw.githubusercontent.com/Real-Dev-Squad/website-static/main/members/${participant.userName}/img.png`}
+                      src={participant.imgUrl}
                       alt={participant.userName}
                     />
                   </li>
