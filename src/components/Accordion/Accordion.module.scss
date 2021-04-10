@@ -1,7 +1,7 @@
 .container {
   border-radius: 10px;
   margin-bottom: 1rem;
-  min-width: 800px;
+  width: 750px;
 
   @media (max-width: 767px) {
     min-width: 300px;
