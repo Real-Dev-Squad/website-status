@@ -52,7 +52,7 @@ const Index: FC = () => {
                       <Accordion open title={key} key={key}>
                         {renderCardList(filteredTask[key])}
                       </Accordion>
-                    )) : 'No Tasks Found'
+                    )) : (!error && 'No Tasks Found')
                 }
               </>
             )
