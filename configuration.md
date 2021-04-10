@@ -7,7 +7,7 @@
 
 ##  **1. How to Start**
 
-Follow this [link](https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md) to learn how to fork and pr.
+Follow this [link](https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md) to understand how to clone,fork and do a PR.
 
 
 
