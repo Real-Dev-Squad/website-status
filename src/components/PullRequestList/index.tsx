@@ -75,7 +75,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
 
   return (
     <Layout>
-      <Head title="Stale PRs" />
+      <Head title="PRs" />
 
       <div className="container">
         {loading
