@@ -30,7 +30,7 @@ const Mine: FC = () => {
       <Head title="Mine" />
       <div className={classNames.container}>
         {
-          (!!error && error.response.data.statusCode !== 404)
+          !!error
           && <p>Something went wrong, please contact admin!</p>
         }
         {
@@ -45,7 +45,7 @@ const Mine: FC = () => {
                       <div>
                         {CardList(tasks)}
                       </div>
-                    ) : ((!error || error.response.data.statusCode === 404) && 'No Tasks Found')
+                    ) : (!error && 'No Tasks Found')
                 }
               </>
             )
