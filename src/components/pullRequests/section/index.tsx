@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import Card from '@/components/Card/index';
+import prDetails from '@/components/pullRequests/PRDetails';
 import classNames from '@/components/pullRequests/section/section.module.scss';
 
 const moment = require('moment');
@@ -32,19 +33,11 @@ function getPrData(pullRequest: pullRequestType) {
     UpdatedAt: fromNowUpdatedAt,
     Username: username,
   };
-  const PR: any[] = [];
-  function getPr() {
-    // eslint-disable-next-line array-callback-return
-    Object.entries(prData).map(([key, value]) => {
-      PR.push({ key, value });
-    });
-    return PR;
-  }
 
   return (
     <Card
       title={{ text: pullRequest.title, link: pullRequest.url }}
-      data={getPr()}
+      data={prDetails(prData)}
       key={pullRequest.title}
     />
   );

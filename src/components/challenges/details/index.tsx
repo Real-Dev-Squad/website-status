@@ -1,14 +1,19 @@
-import { FC } from 'react';
-import classNames from '@/components/challenges/details/details.module.scss';
+const index = (content:any) => {
+  const taskData = {
+    Level: content.level,
+    Challenge_Started: content.start_date,
+    Challenge_Ends: content.end_date,
+    Active_Participants: content.participants.length,
+  };
 
-type IndexProps = { text: string; value: string | number };
+  const task: any[] = [];
+  const getTask = () => {
+    Object.entries(taskData).forEach(([key, value]) => {
+      task.push({ key, value });
+    });
+    return task;
+  };
+  return getTask();
+};
 
-const Index: FC<IndexProps> = ({ text, value }: IndexProps) => (
-  <p>
-    <span className={classNames.description}>{text}</span>
-    :
-    <span className={classNames.descValue}>{value}</span>
-  </p>
-);
-
-export default Index;
+export default index;

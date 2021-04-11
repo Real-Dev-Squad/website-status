@@ -37,11 +37,15 @@ const Card: FC<Props> = ({
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
     <div
       className={classNames.card}
       onClick={() => {
-        if (title.link !== undefined) {
+        if (title.link) {
+          window.open(title.link, '_blank');
+        }
+      }}
+      onKeyDown={() => {
+        if (title.link) {
           window.open(title.link, '_blank');
         }
       }}
@@ -53,14 +57,14 @@ const Card: FC<Props> = ({
 
       <div>
         {data.map((pair) => (
-          <div>
+          <div key={pair.key}>
             {informationElement(pair.key, pair.value)}
           </div>
         ))}
       </div>
 
       {
-        !(participants === undefined) && (
+        (participants) && (
           <div className={classNames.Center}>
             <ul className={classNames.participantsLists}>
               {
@@ -79,7 +83,7 @@ const Card: FC<Props> = ({
       }
 
       {
-        !(button === undefined) && (
+        (button) && (
           <div className={classNames.Center}>
             <a
               href={button?.link}

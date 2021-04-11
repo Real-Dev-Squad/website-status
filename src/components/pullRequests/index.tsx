@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import Card from '@/components/Card/index';
+import prDetails from '@/components/pullRequests/PRDetails';
 
 interface pullRequestType {
   title: string;
@@ -32,19 +33,11 @@ const pullRequest: FC<pullRequestType> = ({
     Created: createdAgo,
     Updated: updatedAgo,
   };
-  const PR:any[] = [];
-  function getPr() {
-    // eslint-disable-next-line array-callback-return
-    Object.entries(prData).map(([key, value]) => {
-      PR.push({ key, value });
-    });
-    return PR;
-  }
 
   return (
     <Card
       title={{ text: title, link: url }}
-      data={getPr()}
+      data={prDetails(prData)}
       key={title}
     />
   );

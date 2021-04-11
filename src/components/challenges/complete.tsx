@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import Card from '@/components/Card/index';
+import details from '@/components/challenges/details';
+import participantsDetails from '@/components/challenges/participants';
 
 type CompleteProps = {
   content: {
@@ -28,46 +30,13 @@ type CompleteProps = {
   };
 };
 
-const Complete: FC<CompleteProps> = ({ content }) => {
-  const taskData = {
-    Level: content.level,
-    Challenge_Started: content.start_date,
-    Challenge_Ends: content.end_date,
-    Active_Participants: content.participants.length,
-  };
-
-  const task: any[] = [];
-  function getTask() {
-    // eslint-disable-next-line array-callback-return
-    Object.entries(taskData).map(([key, value]) => {
-      task.push({ key, value });
-    });
-    return task;
-  }
-
-  const arrayOfParticipants: any[] = content.participants;
-
-  const participants: any[] = [];
-  function getParticipants(users: any[]) {
-    // eslint-disable-next-line array-callback-return
-    users.map((user) => {
-      participants.push({
-        userName: user.rds_member_id,
-        imgUrl: `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${user.rds_member_id}/img.png`,
-        key: user.rds_member_id,
-      });
-    });
-    return participants;
-  }
-
-  return (
-    <Card
-      title={{ text: content.title }}
-      data={getTask()}
-      participants={getParticipants(arrayOfParticipants)}
-      key={content.title}
-    />
-  );
-};
+const Complete: FC<CompleteProps> = ({ content }) => (
+  <Card
+    title={{ text: content.title }}
+    data={details(content)}
+    participants={participantsDetails(content)}
+    key={content.title}
+  />
+);
 
 export default Complete;

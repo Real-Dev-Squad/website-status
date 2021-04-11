@@ -24,13 +24,12 @@ const taskCard: FC<Props> = ({ content }) => {
     Owner: ownerId,
   };
   const taskArray: any[] = [];
-  function getTask() {
-    // eslint-disable-next-line array-callback-return
-    Object.entries(taskData).map(([key, value]) => {
+  const getTask = () => {
+    Object.entries(taskData).forEach(([key, value]) => {
       taskArray.push({ key, value });
     });
     return taskArray;
-  }
+  };
 
   const arrayOfOwner: any[] = [{ userName: ownerId, imgUrl: ownerProfilePic, key: ownerId }];
 
