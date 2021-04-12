@@ -26,11 +26,11 @@ const Card: FC<Props> = ({ content }) => {
 
   const ownerProfilePic = `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${ownerId}/img.png`;
 
-  const localStartedOn = new Date(startedOn);
+  const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
   const readableStartedOn = `${localStartedOn.toLocaleDateString()}, ${localStartedOn.toLocaleTimeString()}`;
 
-  const localEndsOn = new Date(endsOn);
+  const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
   const readableEndsOn = `${localEndsOn.toLocaleDateString()}, ${localEndsOn.toLocaleTimeString()}`;
 
