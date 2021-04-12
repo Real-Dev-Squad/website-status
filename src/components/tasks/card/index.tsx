@@ -21,7 +21,6 @@ const taskCard: FC<Props> = ({ content }) => {
     Estimated_completion: endsOn,
     Started: startedOn,
     Status: status,
-    Owner: ownerId,
   };
   const taskArray: any[] = [];
   const getTask = () => {
@@ -31,15 +30,21 @@ const taskCard: FC<Props> = ({ content }) => {
     return taskArray;
   };
 
-  const arrayOfOwner: any[] = [{ userName: ownerId, imgUrl: ownerProfilePic, key: ownerId }];
+  const owner = {
+    userName: ownerId,
+    imgUrl: ownerProfilePic,
+    key: ownerId,
+  };
 
   return (
-    <Card
-      title={{ text: title }}
-      data={getTask()}
-      participants={arrayOfOwner}
-      key={title}
-    />
+    <div>
+      <Card
+        title={{ text: title }}
+        data={getTask()}
+        owner={owner}
+        key={title}
+      />
+    </div>
   );
 };
 
