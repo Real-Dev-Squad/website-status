@@ -1,7 +1,6 @@
 export type award = {
-  gold: number,
-  silver: number,
-  bronze: number
+  dinero: number,
+  neelam: number
 }
 
 export type task = {
@@ -14,7 +13,7 @@ export type task = {
   endsOn: string,
   startedOn: string,
   status: string,
-  ownerId: string,
+  assignee: string,
   percentCompleted: number,
   dependsOn: string[],
   participants: string,
