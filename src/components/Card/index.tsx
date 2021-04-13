@@ -14,6 +14,7 @@ type Props = {
   {
     userName: string,
     imgUrl: string,
+    onError:() => void
   },
   participants?:
   {
@@ -76,7 +77,7 @@ const Card: FC<Props> = ({
                 src={owner.imgUrl}
                 alt={owner.userName}
               />
-              <strong>{owner.userName}</strong>
+              <strong>{owner.userName || 'No contributor'}</strong>
             </div>
           </div>
         )

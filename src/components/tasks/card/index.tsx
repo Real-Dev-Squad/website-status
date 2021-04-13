@@ -1,6 +1,8 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { task } from '@/components/constants/types';
 import Card from '@/components/Card/index';
+
+const moment = require('moment');
 
 type Props = {
   content: task,
@@ -11,15 +13,22 @@ const taskCard: FC<Props> = ({ content }) => {
     title,
     endsOn,
     startedOn,
-    ownerId,
     status,
+    assignee,
   } = content;
 
-  const ownerProfilePic = `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${ownerId}/img.png`;
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${assignee}/img.png`);
+  const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
+
+  const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
+  const fromNowStartedOn = moment(localStartedOn).fromNow();
+
+  const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
+  const fromNowEndsOn = moment(localEndsOn).fromNow();
 
   const taskData = {
-    Estimated_completion: endsOn,
-    Started: startedOn,
+    Estimated_completion: fromNowEndsOn,
+    Started: fromNowStartedOn,
     Status: status,
   };
   const taskArray: any[] = [];
@@ -31,9 +40,10 @@ const taskCard: FC<Props> = ({ content }) => {
   };
 
   const owner = {
-    userName: ownerId,
-    imgUrl: ownerProfilePic,
-    key: ownerId,
+    userName: assignee,
+    imgUrl: assigneeProfilePic,
+    onError: contributorImageOnError,
+    key: assignee,
   };
 
   return (
