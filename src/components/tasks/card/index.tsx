@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { task } from '@/components/constants/types';
 
@@ -20,11 +20,12 @@ const Card: FC<Props> = ({ content }) => {
     title,
     endsOn,
     startedOn,
-    ownerId,
     status,
+    assignee,
   } = content;
 
-  const ownerProfilePic = `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${ownerId}/img.png`;
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${assignee}/img.png`);
+  const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -56,10 +57,11 @@ const Card: FC<Props> = ({ content }) => {
       <div className={classNames.cardFooter}>
         <div className={classNames.profilePicture}>
           <img
-            src={ownerProfilePic}
-            alt="ownerId profile"
+            src={assigneeProfilePic}
+            alt="No contributor"
+            onError={contributorImageOnError}
           />
-          <strong>{ownerId}</strong>
+          <strong>{assignee || 'No contributor'}</strong>
         </div>
         {informationElement('Status', status)}
       </div>
