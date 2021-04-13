@@ -34,14 +34,12 @@ const Card: FC<Props> = ({
 }) => {
   const { text: tileText } = title;
 
-  function informationElement(key: string, value: string) {
-    return (
-      <span className={classNames.statusElement}>
-        <span className={classNames.statusLable}>{`${key}: `}</span>
-        <strong>{value}</strong>
-      </span>
-    );
-  }
+  const informationElement = (key: string, value: string) => (
+    <span className={classNames.statusElement}>
+      <span className={classNames.statusLable}>{`${key}: `}</span>
+      <strong>{value}</strong>
+    </span>
+  );
 
   return (
     <div
