@@ -41,7 +41,7 @@ const Active: FC<ActiveProps> = ({ content }) => {
       button={
         {
           text: 'I will do this',
-          onClick: async () => {
+          onClick: () => {
             if (!isUserSubscribed) {
               (setUserSubscribed(1));
             }
