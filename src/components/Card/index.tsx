@@ -76,6 +76,7 @@ const Card: FC<Props> = ({
               <img
                 src={owner.imgUrl}
                 alt={owner.userName}
+                onError={owner.onError}
               />
               <strong>{owner.userName || 'No contributor'}</strong>
             </div>
