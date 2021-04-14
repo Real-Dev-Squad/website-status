@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import classNames from '@/components/challenges/styles.module.scss';
-import Details from '@/components/challenges/details';
-import Participants from '@/components/challenges/participants';
+import Card from '@/components/Card/index';
+import details from '@/components/challenges/details';
+import participantsDetails from '@/components/challenges/participants';
 
 type ActiveProps = {
   content: {
@@ -33,38 +33,23 @@ type ActiveProps = {
 const Active: FC<ActiveProps> = ({ content }) => {
   const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
-  const subscribeEventHandler = async () => {
-    setUserSubscribed(1);
-  };
-
   return (
-    <div className={classNames.boxContent}>
-      <p className={classNames.heading}>{content.title}</p>
-      <Details text="Level" value={content.level} />
-      <Details text="Challenge Started" value={content.start_date} />
-      <Details text="Challenge Ends" value={content.end_date} />
-      <div className={classNames.participants}>
-        <Details
-          text="Active Participants"
-          value={content.participants.length}
-        />
-        <Participants participants={content.participants} />
-      </div>
-      {
-        !isUserSubscribed && (
-          <p className={classNames.activeBtn}>
-            <button
-              onClick={subscribeEventHandler}
-              onKeyDown={subscribeEventHandler}
-              tabIndex={0}
-              type="button"
-            >
-              I will do this
-            </button>
-          </p>
-        )
+    <Card
+      title={{ text: content.title }}
+      data={details(content)}
+      participants={participantsDetails(content)}
+      button={
+        {
+          text: 'I will do this',
+          onClick: () => {
+            if (!isUserSubscribed) {
+              (setUserSubscribed(1));
+            }
+          },
+        }
       }
-    </div>
+      key={content.title}
+    />
   );
 };
 
