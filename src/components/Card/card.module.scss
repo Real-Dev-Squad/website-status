@@ -76,3 +76,42 @@
 .links{
   text-decoration: none;
 }
+
+.datetime {
+  display: block;
+  position: relative;
+
+  &:hover {
+    .nothover {
+      visibility: hidden;
+      opacity: 0;
+    }
+    .onhover{
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+
+  .nothover {
+    cursor: pointer;
+    transition: all 350ms ease-in-out;
+  }
+
+  .onhover {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: all 350ms ease-in-out;
+    span {
+      position: unset;
+      visibility: unset;
+      opacity: unset;
+    }
+  }
+  
+  .onhover {
+    visibility: hidden;
+    opacity: 0;
+  }
+}

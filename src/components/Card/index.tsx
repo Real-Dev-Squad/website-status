@@ -10,7 +10,7 @@ type Props = {
     key: string,
     value: string
   }[],
-  owner?:
+  assignee?:
   {
     userName: string,
     imgUrl: string,
@@ -31,7 +31,7 @@ type Props = {
 };
 
 const Card: FC<Props> = ({
-  title, data, owner = undefined, participants = undefined, button = undefined,
+  title, data, assignee = undefined, participants = undefined, button = undefined,
 }) => {
   const { text: tileText } = title;
 
@@ -70,15 +70,15 @@ const Card: FC<Props> = ({
       </div>
 
       {
-        (owner) && (
+        (assignee) && (
           <div className={classNames.cardFooter}>
             <div className={classNames.profilePicture}>
               <img
-                src={owner.imgUrl}
-                alt={owner.userName}
-                onError={owner.onError}
+                src={assignee.imgUrl}
+                alt={assignee.userName}
+                onError={assignee.onError}
               />
-              <strong>{owner.userName || 'No contributor'}</strong>
+              <strong>{assignee.userName || 'No contributor'}</strong>
             </div>
           </div>
         )

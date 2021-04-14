@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
+import classNames from '@/components/Card/card.module.scss';
 import { task } from '@/components/constants/types';
-import Card from '@/components/Card/index';
 
 const moment = require('moment');
 
@@ -8,7 +8,14 @@ type Props = {
   content: task,
 };
 
-const taskCard: FC<Props> = ({ content }) => {
+const informationElement = (title: string, value: string) => (
+  <span className={classNames.statusElement}>
+    <span className={classNames.statusLable}>{`${title}: `}</span>
+    <strong>{value}</strong>
+  </span>
+);
+
+const Card: FC<Props> = ({ content }) => {
   const {
     title,
     endsOn,
@@ -22,40 +29,44 @@ const taskCard: FC<Props> = ({ content }) => {
 
   const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
+  const readableStartedOn = `${localStartedOn.toLocaleDateString()}, ${localStartedOn.toLocaleTimeString()}`;
 
   const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
-
-  const taskData = {
-    Estimated_completion: fromNowEndsOn,
-    Started: fromNowStartedOn,
-    Status: status,
-  };
-  const taskArray: any[] = [];
-  const getTask = () => {
-    Object.entries(taskData).forEach(([key, value]) => {
-      taskArray.push({ key, value });
-    });
-    return taskArray;
-  };
-
-  const owner = {
-    userName: assignee,
-    imgUrl: assigneeProfilePic,
-    onError: contributorImageOnError,
-    key: assignee,
-  };
+  const readableEndsOn = `${localEndsOn.toLocaleDateString()}, ${localEndsOn.toLocaleTimeString()}`;
 
   return (
-    <div>
-      <Card
-        title={{ text: title }}
-        data={getTask()}
-        owner={owner}
-        key={title}
-      />
+    <div className={classNames.card}>
+      <span className={classNames.prTitle}>{title}</span>
+      <div className={classNames.datetime}>
+        <span className={classNames.nothover}>
+          {informationElement('Estimated completion', fromNowEndsOn)}
+        </span>
+        <span className={classNames.onhover}>
+          {informationElement('Estimated completion', readableEndsOn)}
+        </span>
+      </div>
+      <div className={classNames.datetime}>
+        <span className={classNames.nothover}>
+          {informationElement('Started', fromNowStartedOn)}
+        </span>
+        <span className={classNames.onhover}>
+          {informationElement('Started', readableStartedOn)}
+        </span>
+      </div>
+      <div className={classNames.cardFooter}>
+        <div className={classNames.profilePicture}>
+          <img
+            src={assigneeProfilePic}
+            alt="No contributor"
+            onError={contributorImageOnError}
+          />
+          <strong>{assignee || 'No contributor'}</strong>
+        </div>
+        {informationElement('Status', status)}
+      </div>
     </div>
   );
 };
 
-export default taskCard;
+export default Card;
