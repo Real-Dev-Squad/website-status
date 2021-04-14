@@ -27,9 +27,9 @@ To run the project `yarn run dev`.
 To do a production build `yarn run start`.
 
 
-## **3. Api Contracts**
+## **3. API Contracts**
 
-Api contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-contracts/tree/main/tasks).
+API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-contracts/tree/main/tasks).
 
 ## **4. Setting Up Local System**
 
