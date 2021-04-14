@@ -27,6 +27,7 @@ To run the project `yarn run dev`.
 To do a production build `yarn run start`.
 
 
+<<<<<<< HEAD
 ## **3. Api Contracts**
 
 Api contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-contracts/tree/main/tasks).
@@ -45,6 +46,15 @@ Api contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
     copy **rds-session-staging** value.
 
  3. **Add "dev.realdevsquad.com" to localhost**
+=======
+## **3. API Contracts**
+
+API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-contracts/tree/main/tasks).
+
+## **4. Setting Up Local System**
+
+ 1. **Add "dev.realdevsquad.com" to localhost**
+>>>>>>> d2d176f0099d9074162fe5d546de8258e3b53256
     
     open terminal and enter
     
@@ -54,13 +64,21 @@ Api contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
 
     add **127.0.0.1   dev.realdevsquad.com**, save it & close the terminal.
     
+<<<<<<< HEAD
  4. **Testing Changes**   
+=======
+ 2. **Testing Changes**   
+>>>>>>> d2d176f0099d9074162fe5d546de8258e3b53256
  
     ping dev.realdevsquad.com
 
     Now **dev.realdevsquad.com:3000** can be used as **localhost:3000**
 
+<<<<<<< HEAD
  5. **Making it Secure**
+=======
+ 3. **Making it Secure**
+>>>>>>> d2d176f0099d9074162fe5d546de8258e3b53256
 
     ```
     sudo local-ssl-proxy --source 443 --target <your-port e.g 3000>
@@ -68,6 +86,7 @@ Api contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
     Now **https://dev.realdevsquad.com** is secure.
 
     Once you get your development app to run on https://dev.realdevsquad.com, you will be able to access the backend APIs without any CORS issues.
+<<<<<<< HEAD
     
     Follow this [link](https://github.com/Real-Dev-Squad/website-code-docs/tree/main/docs/dev/https-dev-url-cors) to understand the above steps in detail.
  6. **Adding Copied Cookie to Secure Local Setup**
@@ -78,3 +97,7 @@ Api contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
 
 
 
+=======
+
+Follow this [link](https://github.com/Real-Dev-Squad/website-code-docs/tree/main/docs/dev/https-dev-url-cors) to understand the above steps in detail.
+>>>>>>> d2d176f0099d9074162fe5d546de8258e3b53256
