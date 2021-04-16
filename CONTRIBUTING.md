@@ -34,8 +34,7 @@ API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
 ## **4. Setting Up Local System**
 
  
- 1. **Get Authenticated cookie**
-    
+ 1. **Get Authenticated cookie**  
     Click [this](https://github.com/login/oauth/authorize?client_id=c4a84431feaf604e89d1) link to redirect to authenticating page.
  2. **To get the CORS error resolved follow this doc**  
     https://github.com/Real-Dev-Squad/website-code-docs/tree/main/docs/dev/https-dev-url-cors
