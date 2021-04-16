@@ -37,42 +37,8 @@ API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
  1. **Get Authenticated cookie**
     
     Click [this](https://github.com/login/oauth/authorize?client_id=c4a84431feaf604e89d1) link to redirect to authenticating page.
-
- 2. **Copy Cookie**
-   
-    Open developer tool (ctrl+shift+j), open application tab and select cookies.
-    
-    copy **rds-session-staging** value.
-
- 3. **Add "dev.realdevsquad.com" to localhost**
-    
-    open terminal and enter
-    
-    ```
-    sudo vim /etc/hosts
-    ```
-
-    add **127.0.0.1   dev.realdevsquad.com**, save it & close the terminal.
-    
- 4. **Testing Changes**   
- 
-    ping dev.realdevsquad.com
-
-    Now **dev.realdevsquad.com:3000** can be used as **localhost:3000**
-
- 5. **Making it Secure**
-
-    ```
-    sudo local-ssl-proxy --source 443 --target <your-port e.g 3000>
-    ```
-    Now **https://dev.realdevsquad.com** is secure.
-
-    Once you get your development app to run on https://dev.realdevsquad.com, you will be able to access the backend APIs without any CORS issues.
-    
-    Follow this [link](https://github.com/Real-Dev-Squad/website-code-docs/tree/main/docs/dev/https-dev-url-cors) to understand the above steps in detail.
- 6. **Adding Copied Cookie to Secure Local Setup**
-    
-     Repeat Step 2 and paste the copied cookie value to https://dev.realdevsquad.com **rds-session-staging**.
+ 2. **To get the CORS error resolved follow this doc**  
+    https://github.com/Real-Dev-Squad/website-code-docs/tree/main/docs/dev/https-dev-url-cors
    
  
 
