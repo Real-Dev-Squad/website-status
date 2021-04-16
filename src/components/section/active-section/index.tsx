@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Active from '@/components/challenges/active';
 import { CHALLENGES_SCREEN } from '@/components/constants/display-sections.js';
+import Accordion from '@/components/Accordion';
 import classNames from '@/components/section/active-section/active-section.module.scss';
 
 type ActiveSectionProps = {
@@ -43,8 +44,9 @@ const ActiveSection: FC<ActiveSectionProps> = ({ sectionContent, screen }) => {
   }
   return (
     <div className={classNames.active}>
-      <h1 className={classNames.sectionHeading}>Active</h1>
-      {activeContent}
+      <Accordion open title="Active">
+        {activeContent}
+      </Accordion>
     </div>
   );
 };

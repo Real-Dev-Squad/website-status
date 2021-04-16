@@ -2,6 +2,7 @@ import { FC } from 'react';
 import classNames from '@/components/section/completed-section/completed-section.module.scss';
 import Complete from '@/components/challenges/complete';
 import { CHALLENGES_SCREEN } from '@/components/constants/display-sections.js';
+import Accordion from '@/components/Accordion';
 
 type CompletedSectionProps = {
   sectionContent: {
@@ -46,8 +47,9 @@ const CompletedSection: FC<CompletedSectionProps> = ({
   }
   return (
     <div className={classNames.complete}>
-      <h1 className={classNames.sectionHeading}>Completed</h1>
-      {completeContent}
+      <Accordion open title="Completed" key="Completed">
+        {completeContent}
+      </Accordion>
     </div>
   );
 };
