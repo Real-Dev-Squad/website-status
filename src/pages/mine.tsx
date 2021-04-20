@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
@@ -21,10 +22,8 @@ const Mine: FC = () => {
     error,
     isLoading,
   } = useFetch(TASKS_URL);
-
-  useEffect(() => {
-    if ('tasks' in response) { setTasks(response.tasks); }
-  }, [isLoading, response]);
+  useEffect(() => { setTasks(response); },
+    [isLoading, response]);
   return (
     <Layout>
       <Head title="Mine" />
