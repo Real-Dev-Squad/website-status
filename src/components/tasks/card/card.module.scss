@@ -1,0 +1,65 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.65);
+  margin-bottom: 25px;
+  justify-content: space-between;
+}
+.card:hover {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.cardItems {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.cardItems {
+  span {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2px 2px;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+.cardTitle {
+  font-family: Helvetica Neue;
+  font-style: Regular;
+  font-size: 22px;
+  font-weight: 400;
+  color: #041187;
+}
+
+.cardSpecialFont {
+  font-family: Helvetica Neue;
+  font-style: Medium;
+  font-size: 20px;
+  font-weight: 500;
+  color: #aeaeae;
+}
+
+.cardStatusFont {
+  color: #00a337;
+  font-size: 20px;
+  font-weight: 501;
+}
+.contributorImage {
+  height: 45px;
+  width: 45px;
+  border-radius: 30%;
+}
+
+.cardStrongFont {
+  font-size: 20px;
+  font-weight: 500;
+}
+.calendarIcon {
+  width: 25px;
+  height: 25px;
+}
