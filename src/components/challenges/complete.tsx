@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import classNames from '@/components/challenges/styles.module.scss';
-import Details from '@/components/challenges/details';
-import Participants from '@/components/challenges/participants';
+import Card from '@/components/Card/index';
+import details from '@/components/challenges/details';
+import participantsDetails from '@/components/challenges/participants';
 
 type CompleteProps = {
   content: {
@@ -31,19 +31,12 @@ type CompleteProps = {
 };
 
 const Complete: FC<CompleteProps> = ({ content }) => (
-  <div className={classNames.boxContent}>
-    <p className={classNames.heading}>{content.title}</p>
-    <Details text="Level" value={content.level} />
-    <Details text="Challenge Started" value={content.start_date} />
-    <Details text="Challenge Ends" value={content.end_date} />
-    <div className={classNames.participants}>
-      <Details text="Participants" value={content.participants.length} />
-      <Participants participants={content.participants} />
-    </div>
-    <p className={classNames.viewStats}>
-      <a href="/">View Stats</a>
-    </p>
-  </div>
+  <Card
+    title={{ text: content.title }}
+    data={details(content)}
+    participants={participantsDetails(content)}
+    key={content.title}
+  />
 );
 
 export default Complete;

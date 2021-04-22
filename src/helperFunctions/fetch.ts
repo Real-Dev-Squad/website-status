@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+
 type fetchParams = {
   url: string;
   method?: 'get';
