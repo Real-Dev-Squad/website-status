@@ -12,7 +12,7 @@ import classNames from '@/styles/tasks.module.scss';
 const CHALLENGES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges`;
 
 const Challenges: FC = () => {
-  let challenges:any[] = [];
+  let challenges:IndexProps[] = [];
   const [filterChallenge, setFilterChallenge] = useState<any>([]);
 
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
