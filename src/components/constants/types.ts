@@ -22,7 +22,7 @@ export type task = {
   isNoteworthy: boolean
 }
 
-export type IndexProps = {
+export type challenge = {
   content: {
     id: number;
     title: string;
@@ -44,7 +44,7 @@ export type IndexProps = {
       is_member: number;
       rds_member_id: string;
     }[];
-    is_active: number;
+    is_active: boolean;
     is_user_subscribed: number;
   }[];
   screen: string;
