@@ -8,7 +8,7 @@ import {
   ASSIGNED,
   COMPLETED,
   PENDING,
-} from '../../constants/statusConstant';
+} from '../../constants/task-status';
 
 const moment = require('moment');
 
