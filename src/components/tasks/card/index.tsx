@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/Card/card.module.scss';
 import { task } from '@/components/constants/types';
 
 const moment = require('moment');
