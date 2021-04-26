@@ -21,10 +21,7 @@ const Mine: FC = () => {
     error,
     isLoading,
   } = useFetch(TASKS_URL);
-
-  useEffect(() => {
-    if ('tasks' in response) { setTasks(response.tasks); }
-  }, [isLoading, response]);
+  useEffect(() => { setTasks(response); }, [isLoading, response]);
   return (
     <Layout>
       <Head title="Mine" />
