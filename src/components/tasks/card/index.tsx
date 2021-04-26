@@ -3,6 +3,12 @@ import { FC, useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { task } from '@/components/constants/types';
 import Image from 'next/image';
+import {
+  ACTIVE,
+  ASSIGNED,
+  COMPLETED,
+  PENDING,
+} from '../../constants/statusConstant';
 
 const moment = require('moment');
 
@@ -28,12 +34,7 @@ const Card: FC<Props> = ({ content }) => {
   const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
 
-  const active = 'active';
-  const assigned = 'assigned';
-  const completed = 'completed';
-  const pending = 'pending';
-
-  const statusFontColor = status === active || assigned || completed || pending ? '#00a337' : '#f83535';
+  const statusFontColor = status === ACTIVE || ASSIGNED || COMPLETED || PENDING ? '#00a337' : '#f83535';
 
   const iconHeight = '25px';
   const iconWidth = '25px';
