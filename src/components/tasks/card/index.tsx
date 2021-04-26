@@ -28,7 +28,15 @@ const Card: FC<Props> = ({ content }) => {
   const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
 
-  const statusFontColor = status === 'active' || 'assigned' || 'completed' || 'pending' ? '#00a337' : '#f83535';
+  const active = 'active';
+  const assigned = 'assigned';
+  const completed = 'completed';
+  const pending = 'pending';
+
+  const statusFontColor = status === active || assigned || completed || pending ? '#00a337' : '#f83535';
+
+  const iconHeight = '25px';
+  const iconWidth = '25px';
 
   return (
     <div className={classNames.card}>
@@ -46,8 +54,8 @@ const Card: FC<Props> = ({ content }) => {
           <Image
             src="/calendar-icon.png"
             alt="calendar icon"
-            width="25px"
-            height="25px"
+            width={iconWidth}
+            height={iconHeight}
           />
           <span className={classNames.cardSpecialFont}>
             Due Date
@@ -68,7 +76,7 @@ const Card: FC<Props> = ({ content }) => {
             <img
               className={classNames.contributorImage}
               src={assigneeProfilePic}
-              alt="No contributor"
+              alt=""
               onError={contributorImageOnError}
             />
           </span>

@@ -21,7 +21,7 @@
   span {
     display: flex;
     flex-wrap: wrap;
-    margin: 2px 2px;
+    margin: 2px;
     align-items: center;
     margin-top: 10px;
   }
@@ -33,16 +33,14 @@
 }
 
 .cardSpecialFont {
-  font-style: Medium;
   font-size: 1.5rem;
   font-weight: 500;
   color: #aeaeae;
 }
 
 .cardStatusFont {
-  color: #00a337;
   font-size: 1.5rem;
-  font-weight: 501;
+  font-weight: 500;
 }
 .contributorImage {
   height: 45px;
@@ -52,9 +50,5 @@
 
 .cardStrongFont {
   font-size: 1.5rem;
-  font-weight: 501;
-}
-.calendarIcon {
-  width: 25px;
-  height: 25px;
+  font-weight: 500;
 }
