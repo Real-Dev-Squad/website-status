@@ -18,7 +18,7 @@ const renderCardList = (challengeSection: challenge['content'], key:string) => {
 };
 
 const Challenges: FC = () => {
-  let challenges: challenge['content'][] = [];
+  let challenges: challenge['content'] = [];
 
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
 
@@ -30,7 +30,7 @@ const Challenges: FC = () => {
       const challengeMap: any = [];
 
       challengeMap.Active = challenges.filter((task) => task.is_active);
-      challengeMap.Complete = challenges.filter((task) => !task.is_active);
+      challengeMap.Completed = challenges.filter((task) => !task.is_active);
 
       setFilteredChallenge(challengeMap);
     }
