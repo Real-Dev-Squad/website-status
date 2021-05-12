@@ -9,11 +9,10 @@ html {
 }
 
 .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-  grid-gap: 10px;
+  display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   font-size: 1rem;
 }
