@@ -3,7 +3,7 @@ import fetch from '@/helperFunctions/fetch';
 
 const useFetch = (url: string, options: object = {}) => {
   const [response, setResponse] = useState<any>({});
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
