@@ -25,7 +25,7 @@ type CompleteProps = {
       is_member: number;
       rds_member_id: string;
     }[];
-    is_active: number;
+    is_active: boolean;
     is_user_subscribed: number;
   };
 };
