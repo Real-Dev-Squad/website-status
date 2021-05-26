@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
@@ -6,6 +6,7 @@ import CardShimmer from '@/components/Loaders/cardShimmer';
 import axios from 'axios';
 import styles from './PullRequestList.module.scss';
 
+axios.defaults.timeout = 3000;
 type pullRequestType = {
   title: string;
   username: string;
@@ -20,6 +21,7 @@ type PullRequestListProps = {
 
 const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
+  const [noData, setNoData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
@@ -30,12 +32,15 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     try {
       setLoading(true);
       const response = await axios.get(prUrl);
-      setPullRequests(response.data.pullRequests);
+      if (page > 1) {
+        const newres = [...pullRequests, ...response.data.pullRequests];
+        setPullRequests(newres);
+      } else {
+        setPullRequests(response.data.pullRequests);
+      }
 
       if (!response.data.pullRequests.length) {
-        setError(`No more ${prType} PRs...`);
-      } else {
-        setError('');
+        setNoData(true);
       }
     } catch (err) {
       setPullRequests([]);
@@ -44,15 +49,6 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
       setLoading(false);
     }
   };
-
-  const handlePrev = () => {
-    setPage(page > 1 ? page - 1 : 1);
-  };
-
-  const handleNext = () => {
-    setPage(pullRequests.length ? page + 1 : page);
-  };
-
   useEffect(() => {
     fetchPRs();
   }, [page]);
@@ -72,37 +68,24 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
       />
     );
   });
-
+  const firstEvent = (e: any) => {
+    if (e.target.clientHeight + e.target.scrollTop >= e.target.scrollHeight) {
+      if (!noData) {
+        const pg = page + 1;
+        setPage(pg);
+      }
+    }
+  };
   return (
     <Layout>
       <Head title="PRs" />
 
-      <div className="container">
+      <div className={styles.scroll} onScroll={firstEvent}>
         {loading
           ? [...Array(10)].map((e: number) => <CardShimmer key={e} />)
           : getPRs()}
       </div>
       {error ? <p className={styles.center_text}>{error}</p> : ''}
-
-      <div className={styles.pagination}>
-        <button
-          className={styles.pagination_btn}
-          type="button"
-          onClick={handlePrev}
-          disabled={page <= 1}
-        >
-          Prev
-        </button>
-
-        <button
-          className={styles.pagination_btn}
-          type="button"
-          onClick={handleNext}
-          disabled={pullRequests.length === 0}
-        >
-          Next
-        </button>
-      </div>
     </Layout>
   );
 };
