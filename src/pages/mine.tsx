@@ -29,10 +29,16 @@ const Mine: FC = () => {
       <div className={classNames.container}>
         {
           !!error
-          && (error.response.data.statusCode === 401 ? (
+          && (error?.response?.data?.statusCode === 401 ? (
             <div>
               <p>You are not Authorized</p>
-              <a href="https://github.com/login/oauth/authorize?client_id=c4a84431feaf604e89d1" target="_blank" rel="noreferrer">Click here to Login</a>
+              <a
+                href="https://github.com/login/oauth/authorize?client_id=c4a84431feaf604e89d1"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Click here to Login
+              </a>
             </div>
           ) : <div><p>Something went wrong! Please contact admin</p></div>)
         }
