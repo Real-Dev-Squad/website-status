@@ -17,7 +17,9 @@
   background-color: #bfbfbf;
   border-radius: 5px;
 }
-.scroll{
-  height: 750px;
-	overflow-y: auto;
+.scroll {
+  display: flex;
+	flex-direction: column;
+	align-items: center;
+  width: 100%;
 }
