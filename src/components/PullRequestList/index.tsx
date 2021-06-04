@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
-import CardShimmer from '@/components/Loaders/cardShimmer';
 import axios from 'axios';
 import styles from './PullRequestList.module.scss';
 
@@ -25,6 +24,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [page, setPage] = useState(1);
+  const [isBottom, setIsBottom] = useState(false);
 
   const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}`;
 
@@ -32,60 +32,72 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     try {
       setLoading(true);
       const response = await axios.get(prUrl);
-      if (page > 1) {
-        const newres = [...pullRequests, ...response.data.pullRequests];
-        setPullRequests(newres);
-      } else {
-        setPullRequests(response.data.pullRequests);
-      }
-
       if (!response.data.pullRequests.length) {
         setNoData(true);
+      }
+      if (page > 1) {
+        setPullRequests((pullRequest) => [...pullRequest, ...response.data.pullRequests]);
+      } else {
+        setPullRequests(response.data.pullRequests);
       }
     } catch (err) {
       setPullRequests([]);
       setError('Error fetching pull requests!');
     } finally {
       setLoading(false);
+      setIsBottom(false);
     }
   };
   useEffect(() => {
     fetchPRs();
   }, [page]);
 
-  const getPRs = () => pullRequests.map((pullRequest: pullRequestType) => {
-    const {
-      title, username, createdAt, updatedAt, url: link,
-    } = pullRequest;
-    return (
-      <PullRequest
-        key={link}
-        title={title}
-        username={username}
-        createdAt={createdAt}
-        updatedAt={updatedAt}
-        url={link}
-      />
-    );
-  });
-  const firstEvent = (e: any) => {
-    if (e.target.clientHeight + e.target.scrollTop >= e.target.scrollHeight) {
-      if (!noData) {
-        const pg = page + 1;
-        setPage(pg);
-      }
+  useEffect(() => {
+    if (isBottom && !noData) {
+      setPage(page + 1);
     }
-  };
+  }, [isBottom]);
+  useEffect(() => {
+    const onScroll = () => {
+      const scrollTop = (document.documentElement
+        && document.documentElement.scrollTop)
+        || document.body.scrollTop;
+      const scrollHeight = (document.documentElement
+          && document.documentElement.scrollHeight)
+          || document.body.scrollHeight;
+      if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
+        setIsBottom(true);
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
   return (
     <Layout>
       <Head title="PRs" />
-
-      <div className={styles.scroll} onScroll={firstEvent}>
+      <div className={styles.scroll}>
+        <ul>
+          {pullRequests.map((pullRequest: pullRequestType) => {
+            const {
+              title, username, createdAt, updatedAt, url: link,
+            } = pullRequest;
+            return (
+              <PullRequest
+                key={link}
+                title={title}
+                username={username}
+                createdAt={createdAt}
+                updatedAt={updatedAt}
+                url={link}
+              />
+            );
+          })}
+        </ul>
         {loading
-          ? [...Array(10)].map((e: number) => <CardShimmer key={e} />)
-          : getPRs()}
+          ? <p> loading...</p>
+          : ''}
+        {error ? <p className={styles.center_text}>{error}</p> : ''}
       </div>
-      {error ? <p className={styles.center_text}>{error}</p> : ''}
     </Layout>
   );
 };
