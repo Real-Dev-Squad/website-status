@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from '@/components/Card/card.module.scss';
 
-type Props = {
+export type Props = {
   title: {
     text: string,
     link?: string
