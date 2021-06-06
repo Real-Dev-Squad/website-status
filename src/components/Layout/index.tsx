@@ -43,6 +43,8 @@ const Layout: FC<Props> = ({ children }) => (
       {navBarContent('Stale PRs', '/stale-pr')}
       |
       {navBarContent('Idle Members', '/idle-members')}
+      |
+      {navBarContent('Availability Panel', '/availability-panel')}
     </div>
     {children}
     <Footer />

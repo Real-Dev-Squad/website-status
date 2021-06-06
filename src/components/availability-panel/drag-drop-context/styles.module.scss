@@ -1,0 +1,73 @@
+.flexContainer {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem;
+  margin: 0 2rem 0 2rem;
+  justify-content: space-around;
+  position: relative;
+}
+.divider {
+  border-left: 1px solid rgb(219, 214, 214);
+  position: absolute;
+  height: 100%;
+}
+
+.searchBoxContainer {
+  display: flex;
+  flex-direction: column;
+  span {
+    color: #041187;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  input {
+    height: 2.5rem;
+  }
+}
+.heading {
+  height: 2.5rem;
+  margin: 0.5rem 0;
+  background-color: rgb(209, 209, 209);
+}
+
+.taskItem {
+  border: 1px solid rgb(219, 219, 219);
+  padding: 0.8rem;
+  height: 3rem;
+  width: 30rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  color: #041187;
+  font-size: large;
+}
+.memberCard {
+  display: flex;
+  align-items: center;
+}
+.memberCard {
+  img {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+  }
+  span {
+    padding-left: 0.5rem;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .divider {
+    display: none;
+  }
+  .flexContainer {
+    flex-direction: column;
+  }
+  .searchBoxContainer {
+    margin-top: 2.5rem;
+  }
+  .taskItem {
+    width: 100%;
+    height: 100%;
+  }
+}
