@@ -1,12 +1,14 @@
-import React, { FC, useState } from 'react';
+import React, { VFC, useState, PropsWithChildren } from 'react';
 import styles from '@/components/Accordion/Accordion.module.scss';
 
-type Props = {
+type AccordionProps = {
   title: string,
-  open: boolean
+  open: boolean,
 };
 
-const Accordion: FC<Props> = ({ title, open = true, children }) => {
+export type Props = PropsWithChildren<AccordionProps>
+
+const Accordion: VFC<Props> = ({ title, open = true, children }) => {
   const [isOpen, setIsOpen] = useState(open);
 
   function toggle() {
