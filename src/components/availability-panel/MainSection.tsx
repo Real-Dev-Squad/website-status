@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import React, { FC } from 'react';
 import classNames from '@/components/availability-panel/MainSection.module.scss';
 import DragDropcontext from './drag-drop-context';

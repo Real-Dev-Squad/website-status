@@ -1,8 +1,9 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-alert */
-/* eslint-disable jsx-quotes */
 import React, { FC, useState } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import AssignTask from '../helper-functions/AssignTask';
 
 type Props = {
   idleMembers: Array<string>;
@@ -19,13 +20,24 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => {
   return style;
 };
 
-const onDragEnd = (result: object | any) => {
-  // console.log(result);
+const onDragEnd = async (result: object | any) => {
   if (result.combine) {
     if (result.source.droppableId !== result.combine.droppableId) {
-      alert(
-        `${result.draggableId} has be assigned to ${result.combine.draggableId}`,
-      );
+      if (document.cookie.replace(/(?:(?:^|.*;\s*)rds-session\s*\=\s*([^;]*).*$)|^.*$/, '$1')) {
+        try {
+          const taskId = result.combine.droppableId === 'tasks' ? result.combine.draggableId : result.draggableId;
+          const assignee = result.combine.droppableId === 'tasks' ? result.draggableId : result.combine.draggableId;
+          const authToken = document.cookie.replace(/(?:(?:^|.*;\s*)rds-session\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+
+          const response = await AssignTask({ authToken, taskId, assignee });
+          const message = await response.status === 204 ? 'Sucessfully Assigned Task' : 'Something went wrong';
+          alert(message);
+        } catch (err) {
+          alert(`${err}`);
+        }
+      } else {
+        alert('Please sign in and continue');
+      }
     }
   }
 };
@@ -40,7 +52,7 @@ const DragDropcontext: FC<Props> = ({ unAssignedTasks, idleMembers }) => {
             <div>No Tasks found</div>
           ) : (
             <div>
-              <Droppable droppableId='tasks' isCombineEnabled>
+              <Droppable droppableId="tasks" isCombineEnabled>
                 {(provided) => (
                   <div ref={provided.innerRef}>
                     <div className={classNames.searchBoxContainer}>
@@ -48,7 +60,7 @@ const DragDropcontext: FC<Props> = ({ unAssignedTasks, idleMembers }) => {
                         onClick={() => {
                           setToogleSearch(!toogleSearch);
                         }}
-                        aria-hidden='true'
+                        aria-hidden="true"
                       >
                         Search
                       </span>
@@ -90,7 +102,7 @@ const DragDropcontext: FC<Props> = ({ unAssignedTasks, idleMembers }) => {
             <div>No idle users Found</div>
           ) : (
             <div>
-              <Droppable droppableId='members' isCombineEnabled>
+              <Droppable droppableId="members" isCombineEnabled>
                 {(provided) => (
                   <div ref={provided.innerRef}>
                     <div className={classNames.searchBoxContainer}>
@@ -98,7 +110,7 @@ const DragDropcontext: FC<Props> = ({ unAssignedTasks, idleMembers }) => {
                         onClick={() => {
                           setToogleSearch(!toogleSearch);
                         }}
-                        aria-hidden='true'
+                        aria-hidden="true"
                       >
                         Search
                       </span>
