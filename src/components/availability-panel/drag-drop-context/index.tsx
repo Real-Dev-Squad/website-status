@@ -3,7 +3,7 @@
 import React, { FC, useState } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import AssignTask from '../helper-functions/AssignTask';
+import fetch from '../../../helperFunctions/fetch';
 
 type Props = {
   idleMembers: Array<string>;
@@ -23,20 +23,25 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => {
 const onDragEnd = async (result: object | any) => {
   if (result.combine) {
     if (result.source.droppableId !== result.combine.droppableId) {
-      if (document.cookie.replace(/(?:(?:^|.*;\s*)rds-session\s*\=\s*([^;]*).*$)|^.*$/, '$1')) {
-        try {
-          const taskId = result.combine.droppableId === 'tasks' ? result.combine.draggableId : result.draggableId;
-          const assignee = result.combine.droppableId === 'tasks' ? result.draggableId : result.combine.draggableId;
-          const authToken = document.cookie.replace(/(?:(?:^|.*;\s*)rds-session\s*\=\s*([^;]*).*$)|^.*$/, '$1');
-
-          const response = await AssignTask({ authToken, taskId, assignee });
-          const message = await response.status === 204 ? 'Sucessfully Assigned Task' : 'Something went wrong';
-          alert(message);
-        } catch (err) {
-          alert(`${err}`);
-        }
-      } else {
-        alert('Please sign in and continue');
+      try {
+        const taskId = result.combine.droppableId === 'tasks' ? result.combine.draggableId : result.draggableId;
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
+        const assignee = result.combine.droppableId === 'tasks' ? result.draggableId : result.combine.draggableId;
+        const method = 'patch';
+        const data = JSON.stringify({
+          status: 'assgined',
+          assignee,
+        });
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+        const response = await fetch({
+          url, method, data, headers,
+        });
+        const message = await response.status === 204 ? 'Sucessfully Assigned Task' : 'Something went wrong';
+        alert(message);
+      } catch (err) {
+        alert(`${err}`);
       }
     }
   }
