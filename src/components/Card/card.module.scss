@@ -7,14 +7,16 @@
   flex-wrap: wrap;
   margin-bottom: 2rem;
   cursor: pointer;
+  width: auto;
 }
 .card:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .prTitle {
   color: #041484;
-  font-size: 2rem;
+  font-size: 1.3rem;
   font-weight: bold;
+  margin-top: 0;
 }
 .cardFooter {
   display: flex;
@@ -33,9 +35,14 @@
   width: 3em;
   border-radius: 50%;
 }
-.statusLable {
+.statusElement {
+  margin: 0 0 5px 0;
+}
+.statusLabel {
   color: grey;
   font-weight: bold;
+  min-width: 85px;
+  display: inline-block;
 }
 .participantsLists {
   list-style: none;
@@ -113,5 +120,11 @@
   .onhover {
     visibility: hidden;
     opacity: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .card {
+    width: 40%;
   }
 }

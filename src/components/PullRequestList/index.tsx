@@ -78,9 +78,11 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
       <Head title="PRs" />
 
       <div className="container">
-        {loading
-          ? [...Array(10)].map((e: number) => <CardShimmer key={e} />)
-          : getPRs()}
+        <div className={styles['openPRs-container']}>
+          {loading
+            ? [...Array(10)].map((e: number) => <CardShimmer key={e} />)
+            : getPRs()}
+        </div>
       </div>
       {error ? <p className={styles.center_text}>{error}</p> : ''}
 

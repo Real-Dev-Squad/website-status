@@ -36,10 +36,10 @@ const Card: FC<Props> = ({
   const { text: tileText } = title;
 
   const informationElement = (key: string, value: string) => (
-    <span className={classNames.statusElement}>
-      <span className={classNames.statusLable}>{`${key}: `}</span>
+    <>
+      <span className={classNames.statusLabel}>{`${key}: `}</span>
       <strong>{value}</strong>
-    </span>
+    </>
   );
 
   return (
@@ -59,15 +59,15 @@ const Card: FC<Props> = ({
       tabIndex={0}
     >
 
-      <span className={classNames.prTitle}>{tileText}</span>
+      <h2 className={classNames.prTitle}>{tileText}</h2>
 
-      <div>
+      <>
         {data.map((pair) => (
-          <div key={pair.key}>
+          <p className={classNames.statusElement} key={pair.key}>
             {informationElement(pair.key, pair.value)}
-          </div>
+          </p>
         ))}
-      </div>
+      </>
 
       {
         (assignee) && (
