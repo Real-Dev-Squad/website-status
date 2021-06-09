@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import NavBar from '@/components/navBar';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 
@@ -24,12 +24,7 @@ const navBarContent = (title: string, refUrl: string) => {
 const Layout: FC<Props> = ({ children }) => (
   <div className={styles.layout}>
     <div className={styles.rdsHeader}>
-      <a href="https://realdevsquad.com" target="_blank" rel="noreferrer">
-        <Image width="45px" height="45px" className={styles.logo} src="/RDSLogo.png" alt="real-dev squad" />
-      </a>
-      <Link href="/">
-        <div className={styles.heading}>Status</div>
-      </Link>
+      <NavBar />
     </div>
     <div className={styles.header}>
       {navBarContent('Tasks', '/')}
