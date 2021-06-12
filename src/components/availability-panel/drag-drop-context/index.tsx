@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-escape */
 /* eslint-disable no-alert */
 import React, { FC, useState } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
@@ -24,21 +23,30 @@ const onDragEnd = async (result: object | any) => {
   if (result.combine) {
     if (result.source.droppableId !== result.combine.droppableId) {
       try {
-        const taskId = result.combine.droppableId === 'tasks' ? result.combine.draggableId : result.draggableId;
+        const taskId = result.combine.droppableId === 'tasks'
+          ? result.combine.draggableId
+          : result.draggableId;
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
-        const assignee = result.combine.droppableId === 'tasks' ? result.draggableId : result.combine.draggableId;
+        const assignee = result.combine.droppableId === 'tasks'
+          ? result.draggableId
+          : result.combine.draggableId;
         const method = 'patch';
         const data = JSON.stringify({
-          status: 'assgined',
+          status: 'assigned',
           assignee,
         });
         const headers = {
           'Content-Type': 'application/json',
         };
         const response = await fetch({
-          url, method, data, headers,
+          url,
+          method,
+          data,
+          headers,
         });
-        const message = await response.status === 204 ? 'Sucessfully Assigned Task' : 'Something went wrong';
+        const message = (await response.status) === 204
+          ? 'Sucessfully Assigned Task'
+          : 'Something went wrong';
         alert(message);
       } catch (err) {
         alert(`${err}`);
