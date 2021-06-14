@@ -10,6 +10,7 @@
   margin: 50px auto;
 }
 .wrapper {
+  overflow: hidden;
   width: 0px;
   animation: fullView 0.5s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -17,7 +18,7 @@
 .title {
   padding: 20px;
   background: #777;
-  margin: 10px 40px 0px 40px;
+  margin: 10px 20px 0px 20px;
 }
 
 .button {
