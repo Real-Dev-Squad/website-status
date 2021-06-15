@@ -16,7 +16,6 @@ const CardShimmer = () => (
       <div
         className={`${classNames.comment} ${classNames.br} ${classNames.animate}`}
       />
-      {/* <div className={`${classNames.button} ${classNames.animate}`} /> */}
     </div>
   </div>
 );
