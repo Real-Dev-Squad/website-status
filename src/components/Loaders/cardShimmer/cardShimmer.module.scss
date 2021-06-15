@@ -10,6 +10,7 @@
   margin: 50px auto;
 }
 .wrapper {
+  align-items: center;
   overflow: hidden;
   width: 0px;
   animation: fullView 0.5s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -18,7 +19,6 @@
 .title {
   padding: 20px;
   background: #777;
-  margin: 10px 20px 0px 20px;
 }
 
 .button {
@@ -32,13 +32,17 @@
 .create {
   height: 10px;
   background: #777;
-  margin: 20px 100px 0px 100px;
+  margin-top: 20px;
+  margin-right: 50%;
+  margin-left: 2px;
 }
 
 .comment {
   height: 10px;
   background: #777;
-  margin: 20px 140px 0px 140px;
+  margin-top: 20px;
+  margin-right: 50%;
+  margin-left: 2px;
 }
 
 @keyframes fullView {
