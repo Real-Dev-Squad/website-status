@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import classNames from '@/components/idleMembers/card/card.module.scss';
 
 type Props = {
@@ -6,7 +6,9 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
+  const [imageGenerator, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${idleMemberUserName}/img.png`);
+
+  const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
 
   const getMemberDetails = (name: string) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');
@@ -21,8 +23,9 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
     >
       <img
         className={classNames.image}
-        src={imageGenerator(idleMemberUserName)}
+        src={imageGenerator}
         alt={idleMemberUserName}
+        onError={contributorImageOnError}
       />
       <span className={classNames.name}>{idleMemberUserName}</span>
     </div>
