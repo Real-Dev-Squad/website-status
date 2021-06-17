@@ -1,24 +1,19 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
-/* eslint-disable no-alert */
 import React, { FC, useState } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import fetch from '../../../helperFunctions/fetch';
 import DroppableComponent from './DroppableComponent';
+import { dragDropProps } from '../../constants/types';
 
-type Props = {
-  idleMembers: Array<string>;
-  unAssignedTasks: Array<object | any>;
-};
-
-const DragDropcontext: FC<Props> = ({
-  unAssignedTasks, idleMembers,
+const DragDropcontext: FC<dragDropProps> = ({
+  unAssignedTasks,
+  idleMembers,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
   const [shouldRefresh, setShouldRefresh] = useState(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
-  const onDragEnd = async (result: object | any) => {
+  const onDragEnd = async (result: DropResult) => {
     if (result.combine) {
       if (result.source.droppableId !== result.combine.droppableId) {
         setIsProcessing(true);
@@ -51,6 +46,7 @@ const DragDropcontext: FC<Props> = ({
           setShouldRefresh(true);
         } catch (err) {
           alert(`${err}`);
+          setShouldRefresh(true);
         }
       }
     }
@@ -62,7 +58,9 @@ const DragDropcontext: FC<Props> = ({
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      {isProcessing && <div className={classNames.statusMessage}>Please wait...</div>}
+      {isProcessing && (
+        <div className={classNames.statusMessage}>Please wait...</div>
+      )}
       <div className={classNames.flexContainer}>
         <div>
           {unAssignedTasks.length === 0 ? (
@@ -82,7 +80,11 @@ const DragDropcontext: FC<Props> = ({
                 {toogleSearch && <input />}
               </div>
               <div className={classNames.heading}> </div>
-              <DroppableComponent droppableId="tasks" idleMembers={[]} unAssignedTasks={unAssignedTasks} />
+              <DroppableComponent
+                droppableId="tasks"
+                idleMembers={[]}
+                unAssignedTasks={unAssignedTasks}
+              />
             </div>
           )}
         </div>
@@ -98,7 +100,11 @@ const DragDropcontext: FC<Props> = ({
               </div>
               <div className={classNames.heading}> </div>
               <div className={classNames.idleMember}>
-                <DroppableComponent droppableId="members" idleMembers={idleMembers} unAssignedTasks={[]} />
+                <DroppableComponent
+                  droppableId="members"
+                  idleMembers={idleMembers}
+                  unAssignedTasks={[]}
+                />
               </div>
             </div>
           )}

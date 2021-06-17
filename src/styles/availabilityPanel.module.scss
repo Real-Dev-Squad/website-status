@@ -12,3 +12,9 @@
   font-weight: bold;
   color: #041484;
 }
+
+@media (max-width: 340px) {
+  .heading {
+    font-size: 2rem;
+  }
+}

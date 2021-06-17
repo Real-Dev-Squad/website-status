@@ -1,26 +1,26 @@
 export type award = {
-  dinero: number,
-  neelam: number
-}
+  dinero: number;
+  neelam: number;
+};
 
 export type task = {
-  id: string,
-  title: string,
-  purpose: string,
-  featureUrl: string,
-  type: string,
-  links: string[],
-  endsOn: string,
-  startedOn: string,
-  status: string,
-  assignee: string,
-  percentCompleted: number,
-  dependsOn: string[],
-  participants: string,
-  completionAward: award,
-  lossRate: award,
-  isNoteworthy: boolean
-}
+  id: string;
+  title: string;
+  purpose: string;
+  featureUrl: string;
+  type: string;
+  links: string[];
+  endsOn: string;
+  startedOn: string;
+  status: string;
+  assignee: string;
+  percentCompleted: number;
+  dependsOn: string[];
+  participants: string;
+  completionAward: award;
+  lossRate: award;
+  isNoteworthy: boolean;
+};
 
 export type challenge = {
   content: {
@@ -48,4 +48,15 @@ export type challenge = {
     is_user_subscribed: number;
   }[];
   screen: string;
-}
+};
+
+export type dragDropProps = {
+  idleMembers: Array<string>;
+  unAssignedTasks: Array<object | any>;
+};
+
+export type droppableComponent = {
+  droppableId: string;
+  idleMembers: Array<string>;
+  unAssignedTasks: Array<object | any>;
+};

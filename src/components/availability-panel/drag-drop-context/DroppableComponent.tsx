@@ -1,12 +1,7 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
-
-type Props={
-    droppableId:string;
-    idleMembers: Array<string>;
-    unAssignedTasks: Array<object | any>;
-}
+import { droppableComponent } from '../../constants/types';
 
 const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
@@ -18,18 +13,18 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => {
   return style;
 };
 
-const DroppableComponent:FC<Props> = ({ droppableId, unAssignedTasks, idleMembers }) => (
+const DroppableComponent: FC<droppableComponent> = ({
+  droppableId,
+  unAssignedTasks,
+  idleMembers,
+}) => (
   <div>
     {droppableId === 'tasks' ? (
       <Droppable droppableId="tasks" isCombineEnabled>
         {(provided) => (
           <div ref={provided.innerRef}>
             {unAssignedTasks.map((task, index) => (
-              <Draggable
-                key={task.id}
-                draggableId={task.id}
-                index={index}
-              >
+              <Draggable key={task.id} draggableId={task.id} index={index}>
                 {(Provided, snapshot) => (
                   <div
                     ref={Provided.innerRef}
@@ -55,11 +50,7 @@ const DroppableComponent:FC<Props> = ({ droppableId, unAssignedTasks, idleMember
         {(provided) => (
           <div ref={provided.innerRef}>
             {idleMembers.map((member, index) => (
-              <Draggable
-                key={member}
-                draggableId={member}
-                index={index}
-              >
+              <Draggable key={member} draggableId={member} index={index}>
                 {(Provided, snapshot) => (
                   <div
                     ref={Provided.innerRef}
@@ -71,9 +62,7 @@ const DroppableComponent:FC<Props> = ({ droppableId, unAssignedTasks, idleMember
                     )}
                     className={classNames.idleMember}
                   >
-                    <div
-                      className={classNames.memberCard}
-                    >
+                    <div className={classNames.memberCard}>
                       <img src={imageGenerator(member)} alt={member} />
                       <span>{member}</span>
                     </div>
