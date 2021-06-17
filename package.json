@@ -9,7 +9,9 @@
     "start": "next start -p $PORT",
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "storybook": "start-storybook -s ./public -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,12 @@
     "typescript": "^4.3.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@storybook/addon-actions": "^6.2.9",
+    "@storybook/addon-essentials": "^6.2.9",
+    "@storybook/addon-links": "^6.2.9",
+    "@storybook/builder-webpack5": "^6.2.9",
+    "@storybook/react": "^6.2.9",
     "@types/next": "^8.0.7",
     "@types/node": "^15.6.1",
     "@types/react": "^17.0.9",
@@ -39,6 +47,7 @@
     "@types/react-dom": "^17.0.6",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
+    "babel-loader": "^8.2.2",
     "eslint": "^7.27.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
@@ -48,7 +57,9 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "lint-staged": "^11.0.0",
-    "pinst": "^2.1.6"
+    "node-sass": "^6.0.0",
+    "pinst": "^2.1.6",
+    "sass-loader": "^12.0.0"
   },
   "engines": {
     "node": "16.x"
