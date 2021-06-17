@@ -32,7 +32,8 @@ const AvailabilityPanel: FC = () => {
     }
 
     if ('idleMemberUserNames' in response) {
-      const sortedIdleMembers = response.idleMemberUserNames.sort();
+      const filterMembers = response.idleMemberUserNames.filter((username:string) => username);
+      const sortedIdleMembers = filterMembers.sort();
       setIdleMembersList(sortedIdleMembers);
     }
   }, [isLoading, response, taskIsLoading, taskResponse]);
