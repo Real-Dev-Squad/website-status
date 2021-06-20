@@ -14,40 +14,38 @@ const DragDropcontext: FC<dragDropProps> = ({
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const onDragEnd = async (result: DropResult) => {
-    if (result.combine) {
-      if (result.source.droppableId !== result.combine.droppableId) {
-        setIsProcessing(true);
-        try {
-          const taskId = result.combine.droppableId === 'tasks'
-            ? result.combine.draggableId
-            : result.draggableId;
-          const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
-          const assignee = result.combine.droppableId === 'tasks'
-            ? result.draggableId
-            : result.combine.draggableId;
-          const method = 'patch';
-          const data = JSON.stringify({
-            status: 'active',
-            assignee,
-          });
-          const headers = {
-            'Content-Type': 'application/json',
-          };
-          const response = await fetch({
-            url,
-            method,
-            data,
-            headers,
-          });
-          const message = (await response.status) === 204
-            ? 'Sucessfully Assigned Task'
-            : 'Something went wrong';
-          alert(message);
-          setShouldRefresh(true);
-        } catch (err) {
-          alert(`${err}`);
-          setShouldRefresh(true);
-        }
+    if (result.combine && result.source.droppableId !== result.combine.droppableId) {
+      setIsProcessing(true);
+      try {
+        const taskId = result.combine.droppableId === 'tasks'
+          ? result.combine.draggableId
+          : result.draggableId;
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
+        const assignee = result.combine.droppableId === 'tasks'
+          ? result.draggableId
+          : result.combine.draggableId;
+        const method = 'patch';
+        const data = JSON.stringify({
+          status: 'active',
+          assignee,
+        });
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+        const response = await fetch({
+          url,
+          method,
+          data,
+          headers,
+        });
+        const message = (await response.status) === 204
+          ? 'Sucessfully Assigned Task'
+          : 'Something went wrong';
+        alert(message);
+        setShouldRefresh(true);
+      } catch (err) {
+        alert(`${err}`);
+        setShouldRefresh(true);
       }
     }
   };

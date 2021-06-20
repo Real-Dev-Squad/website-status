@@ -23,24 +23,27 @@ const DroppableComponent: FC<droppableComponent> = ({
       <Droppable droppableId="tasks" isCombineEnabled>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {unAssignedTasks.map((task, index) => (
-              <Draggable key={task.id} draggableId={task.id} index={index}>
-                {(Provided, snapshot) => (
-                  <div
-                    ref={Provided.innerRef}
-                    {...Provided.draggableProps}
-                    {...Provided.dragHandleProps}
-                    style={getItemStyle(
-                      snapshot.isDragging,
-                      Provided.draggableProps.style,
-                    )}
-                    className={classNames.taskItem}
-                  >
-                    <div>{task.title}</div>
-                  </div>
-                )}
-              </Draggable>
-            ))}
+            {unAssignedTasks.map((task, index) => {
+              const { id, title } = task;
+              return (
+                <Draggable key={id} draggableId={id} index={index}>
+                  {(Provided, snapshot) => (
+                    <div
+                      ref={Provided.innerRef}
+                      {...Provided.draggableProps}
+                      {...Provided.dragHandleProps}
+                      style={getItemStyle(
+                        snapshot.isDragging,
+                        Provided.draggableProps.style,
+                      )}
+                      className={classNames.taskItem}
+                    >
+                      <div>{title}</div>
+                    </div>
+                  )}
+                </Draggable>
+              );
+            })}
             {provided.placeholder}
           </div>
         )}

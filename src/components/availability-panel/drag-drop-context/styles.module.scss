@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-around;
   padding: 2rem;
-  margin: 0 2rem 0 2rem;
+  margin: 0 2rem;
   position: relative;
   margin-bottom: 2rem;
 }
@@ -30,12 +30,11 @@
 .searchBoxContainer {
   display: flex;
   flex-direction: column;
-  display: none;
+  display: none; // to be remove for next feature
   span {
     height: 1.5rem;
     width: 100%;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 1.5rem;
     color: #041187;
     margin-bottom: 0.5rem;
   }
@@ -95,10 +94,9 @@
   }
 
   span {
-    padding-left: 20px;
+    padding-left: 1rem;
     font-weight: bold;
-    font-size: 15px;
-    line-height: 37px;
+    font-size: 1rem;
     color: #646464;
   }
 }
@@ -119,16 +117,8 @@
     }
   }
 
-  .heading {
-    width: 100%;
-  }
+.heading, .taskItem, .memberCard { width: 100%; }
 
-  .taskItem {
-    width: 100%;
-  }
-  .memberCard {
-    width: 100%;
-  }
   .emptyArray {
     text-align: left;
   }
