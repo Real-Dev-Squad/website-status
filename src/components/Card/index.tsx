@@ -93,7 +93,7 @@ const Card: FC<Props> = ({
                   <li key={participant.userName} className={classNames.participantsList}>
                     <img
                       src={participant.imgUrl}
-                      onError={(e) => { e.target.src = 'dummyProfile.png'; }}
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
                       alt={`${participant.firstName} ${participant.lastName}`}
                     />
                   </li>
