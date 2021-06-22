@@ -1,11 +1,10 @@
-import React, { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
-import axios from 'axios';
+import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
 
-axios.defaults.timeout = 3000;
 type pullRequestType = {
   title: string;
   username: string;
@@ -18,53 +17,54 @@ type PullRequestListProps = {
     prType: string;
 };
 
+function ScrollTop() {
+  const topMargin = (document.documentElement
+    && document.documentElement.scrollTop)
+    || document.body.scrollTop;
+  return topMargin;
+}
+function ScrollHeight() {
+  const WindowHeight = (document.documentElement
+    && document.documentElement.scrollHeight)
+    || document.body.scrollHeight;
+  return WindowHeight;
+}
+
 const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
   const [noData, setNoData] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
 
   const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}`;
+  const {
+    response,
+    error,
+    isLoading,
+  } = useFetch(prUrl);
 
-  const fetchPRs = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(prUrl);
-      if (!response.data.pullRequests.length) {
-        setNoData(true);
-      }
+  useEffect(() => {
+    if (!response?.pullRequests?.length && page > 1) {
+      setNoData(true);
+    }
+    if (response?.pullRequests?.length > 0) {
       if (page > 1) {
-        setPullRequests((pullRequest) => [...pullRequest, ...response.data.pullRequests]);
-      } else {
-        setPullRequests(response.data.pullRequests);
-      }
-    } catch (err) {
-      setPullRequests([]);
-      setError('Error fetching pull requests!');
-    } finally {
-      setLoading(false);
+        setPullRequests((pullRequest) => [...pullRequest, ...response.pullRequests]);
+      } else { setPullRequests(response.pullRequests); }
       setIsBottom(false);
     }
-  };
-  useEffect(() => {
-    fetchPRs();
-  }, [page]);
+  }, [response]);
 
   useEffect(() => {
     if (isBottom && !noData) {
       setPage(page + 1);
     }
   }, [isBottom]);
+
   useEffect(() => {
     const onScroll = () => {
-      const scrollTop = (document.documentElement
-        && document.documentElement.scrollTop)
-        || document.body.scrollTop;
-      const scrollHeight = (document.documentElement
-          && document.documentElement.scrollHeight)
-          || document.body.scrollHeight;
+      const scrollTop = ScrollTop();
+      const scrollHeight = ScrollHeight();
       if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
         setIsBottom(true);
       }
@@ -72,10 +72,12 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
   return (
     <Layout>
       <Head title="PRs" />
       <div className={styles.scroll}>
+        { error ? <p className={styles.center_text}>Something went wrong! Please contact admin</p> : ''}
         <ul>
           {pullRequests.map((pullRequest: pullRequestType) => {
             const {
@@ -93,10 +95,9 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
             );
           })}
         </ul>
-        {loading
+        {isLoading
           ? <p> loading...</p>
           : ''}
-        {error ? <p className={styles.center_text}>{error}</p> : ''}
       </div>
     </Layout>
   );
