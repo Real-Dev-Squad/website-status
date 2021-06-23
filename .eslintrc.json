@@ -45,7 +45,15 @@
         "react/react-in-jsx-scope": "off",
         "camelcase": "off",
         "react/jsx-props-no-spreading": "off",
-        "linebreak-style": "off"
+        "linebreak-style": "off",
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": [
+              "**/*.stories.tsx"
+            ]
+          }
+        ]
     },
     "settings": {
         "import/resolver": {
