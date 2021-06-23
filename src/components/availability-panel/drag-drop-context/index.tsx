@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { dragDropProps } from '@/Interfaces/availabilityPanel.types';
+import { dragDropProps } from '@/interfaces/availabilityPanel.type';
 import fetch from '../../../helperFunctions/fetch';
 import DroppableComponent from './DroppableComponent';
 

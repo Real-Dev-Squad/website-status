@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
-import { droppableComponent } from '@/Interfaces/availabilityPanel.types';
+import { droppableComponent } from '@/interfaces/availabilityPanel.type';
 
 const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
