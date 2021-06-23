@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
-import { task } from '@/components/constants/types';
+import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
