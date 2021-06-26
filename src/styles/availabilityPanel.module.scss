@@ -1,8 +1,10 @@
+$blueColor: #041484;
+
 .heading {
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
-  color: #041484;
+  color: $blueColor;
   margin-bottom: 1rem;
 }
 .statusMessage {
@@ -10,7 +12,7 @@
   justify-content: center;
   padding: 1rem;
   font-weight: bold;
-  color: #041484;
+  color: $blueColor;
 }
 
 @media (max-width: 340px) {

@@ -63,12 +63,14 @@ const DroppableComponent: FC<droppableComponent> = ({
                       snapshot.isDragging,
                       Provided.draggableProps.style,
                     )}
-                    className={classNames.idleMember}
+                    className={classNames.memberCard}
                   >
-                    <div className={classNames.memberCard}>
-                      <img src={imageGenerator(member)} alt={member} />
-                      <span>{member}</span>
-                    </div>
+                    <img
+                      src={imageGenerator(member)}
+                      alt={member}
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
+                    />
+                    <span>{member}</span>
                   </div>
                 )}
               </Draggable>

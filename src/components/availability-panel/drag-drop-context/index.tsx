@@ -8,9 +8,9 @@ import DroppableComponent from './DroppableComponent';
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
+  reRenderComponent,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
-  const [shouldRefresh, setShouldRefresh] = useState(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const onDragEnd = async (result: DropResult) => {
@@ -42,23 +42,20 @@ const DragDropcontext: FC<dragDropProps> = ({
           ? 'Sucessfully Assigned Task'
           : 'Something went wrong';
         alert(message);
-        setShouldRefresh(true);
+        reRenderComponent();
       } catch (err) {
         alert(`${err}`);
-        setShouldRefresh(true);
+        reRenderComponent();
       }
     }
   };
-
-  if (shouldRefresh) {
-    window.location.reload();
-  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       {isProcessing && (
         <div className={classNames.statusMessage}>Please wait...</div>
       )}
+      {!isProcessing && (
       <div className={classNames.flexContainer}>
         <div>
           {unAssignedTasks.length === 0 ? (
@@ -108,6 +105,7 @@ const DragDropcontext: FC<dragDropProps> = ({
           )}
         </div>
       </div>
+      )}
     </DragDropContext>
   );
 };
