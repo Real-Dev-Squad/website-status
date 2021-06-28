@@ -44,7 +44,7 @@ const Card: FC<Props> = ({
 
   return (
     <div
-      className={classNames.card}
+      className={`classNames.card ${title.link ? "classNames.pointer" : ""}`} 
       onClick={() => {
         if (title.link) {
           window.open(title.link, '_blank');
