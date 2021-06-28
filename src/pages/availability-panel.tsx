@@ -10,7 +10,7 @@ const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
   const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
   const [error, setError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [reRenderComponent, setReRenderComponent] = useState<boolean>(false);
 
   useEffect(() => {

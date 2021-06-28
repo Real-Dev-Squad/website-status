@@ -11,8 +11,10 @@ $borderForItem: 2px solid #e0e0e0;
 }
 
 .emptyArray {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 32rem;
-  text-align: center;
   margin-bottom: 1rem;
 }
 
@@ -120,6 +122,7 @@ $borderForItem: 2px solid #e0e0e0;
 .heading, .taskItem, .memberCard { width: 100%; }
 
   .emptyArray {
-    text-align: left;
+    align-items: center;
+    width: auto;
   }
 }

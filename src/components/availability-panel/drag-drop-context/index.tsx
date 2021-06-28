@@ -59,7 +59,10 @@ const DragDropcontext: FC<dragDropProps> = ({
       <div className={classNames.flexContainer}>
         <div>
           {unAssignedTasks.length === 0 ? (
-            <div className={classNames.emptyArray}>No Tasks found</div>
+            <div className={classNames.emptyArray}>
+              <img src="ghost.png" alt="ghost" />
+              No Tasks found
+            </div>
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>
@@ -86,7 +89,10 @@ const DragDropcontext: FC<dragDropProps> = ({
         <div className={classNames.divider} />
         <div>
           {idleMembers.length === 0 ? (
-            <div className={classNames.emptyArray}>No idle users Found</div>
+            <div className={classNames.emptyArray}>
+              <img src="ghost.png" alt="ghost" />
+              No idle users Found
+            </div>
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>
