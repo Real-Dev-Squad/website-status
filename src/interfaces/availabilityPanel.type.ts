@@ -10,4 +10,5 @@ export type droppableComponent = {
   droppableId: string,
   idleMembers: Array<string>,
   unAssignedTasks: Array<task>,
+  isTaskOnDrag:boolean,
 };
