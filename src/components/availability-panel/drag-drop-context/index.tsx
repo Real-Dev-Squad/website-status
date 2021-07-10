@@ -2,13 +2,14 @@ import { FC, useState } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
+import { toast } from 'react-toastify';
 import fetch from '../../../helperFunctions/fetch';
 import DroppableComponent from './DroppableComponent';
 
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
-  reRenderComponent,
+  refreshData,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
@@ -25,27 +26,31 @@ const DragDropcontext: FC<dragDropProps> = ({
           ? result.draggableId
           : result.combine.draggableId;
         const method = 'patch';
-        const data = JSON.stringify({
+        const data = {
           status: 'active',
           assignee,
-        });
+        };
         const headers = {
           'Content-Type': 'application/json',
         };
-        const response = await fetch({
+        await fetch({
           url,
           method,
           data,
           headers,
         });
-        const message = (await response.status) === 204
-          ? 'Sucessfully Assigned Task'
-          : 'Something went wrong';
-        alert(message);
-        reRenderComponent();
+        const message = 'Sucessfully Assigned Task';
+        toast.success(`${message}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+        });
       } catch (err) {
-        alert(`${err}`);
-        reRenderComponent();
+        toast.error(`${err}`, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+        });
+      } finally {
+        refreshData();
       }
     }
   };
@@ -61,7 +66,9 @@ const DragDropcontext: FC<dragDropProps> = ({
           {unAssignedTasks.length === 0 ? (
             <div className={classNames.emptyArray}>
               <img src="ghost.png" alt="ghost" />
-              No Tasks found
+              <span className={classNames.emptyText}>
+                No task found
+              </span>
             </div>
           ) : (
             <div>
@@ -91,7 +98,9 @@ const DragDropcontext: FC<dragDropProps> = ({
           {idleMembers.length === 0 ? (
             <div className={classNames.emptyArray}>
               <img src="ghost.png" alt="ghost" />
-              No idle users Found
+              <span className={classNames.emptyText}>
+                No idle members found
+              </span>
             </div>
           ) : (
             <div>

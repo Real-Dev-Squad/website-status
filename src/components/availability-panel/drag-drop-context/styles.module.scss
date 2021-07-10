@@ -18,6 +18,12 @@ $borderForItem: 2px solid #e0e0e0;
   margin-bottom: 1rem;
 }
 
+.emptyText{
+  font-weight: bold;
+  text-align: center;
+  font-size: 1rem;
+}
+
 .statusMessage {
   display: flex;
   justify-content: center;
@@ -105,9 +111,10 @@ $borderForItem: 2px solid #e0e0e0;
 
 @media only screen and (max-width: 1200px) {
   .divider {
-    display: none;
+    position: relative;
+    margin-bottom: 1rem;
+    border-top: 1px solid #d9d9d9;
   }
-
   .flexContainer {
     flex-direction: column;
     margin: 0;
@@ -115,11 +122,11 @@ $borderForItem: 2px solid #e0e0e0;
 
   .searchBoxContainer {
     input {
-      width: 100%;
+      width: auto;
     }
   }
 
-.heading, .taskItem, .memberCard { width: 100%; }
+.heading, .taskItem, .memberCard { width: auto}
 
   .emptyArray {
     align-items: center;

@@ -3,7 +3,7 @@ import task from '@/interfaces/task.type';
 export type dragDropProps = {
   idleMembers: Array<string>,
   unAssignedTasks: Array<task>,
-  reRenderComponent:any,
+  refreshData:any,
 };
 
 export type droppableComponent = {
