@@ -85,8 +85,9 @@ const DragDropcontext: FC<dragDropProps> = ({
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
         });
-      } catch (err) {
-        toast.error(`${err}`, {
+      } catch (error:any) {
+        const { message } = error.response.data;
+        toast.error(`${message || error}`, {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
         });
