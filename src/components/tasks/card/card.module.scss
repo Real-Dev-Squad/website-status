@@ -6,9 +6,10 @@
   cursor: pointer;
   margin-bottom: 25px;
   justify-content: space-between;
+  border: solid 2px;
   border-bottom-style: solid;
   border-bottom-color: #d9d9d9;
-  border-bottom-width: 1px;
+  border-color: whitesmoke;
 }
 
 .cardItems {
@@ -51,4 +52,9 @@
 .cardStrongFont {
   font-size: 1.3rem;
   font-weight: 500;
+}
+
+.overdueTask{
+  border: solid red 2px;
+   background-color: #ffebee;
 }
