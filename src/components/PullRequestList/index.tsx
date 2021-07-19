@@ -48,9 +48,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
       setNoData(true);
     }
     if (response?.pullRequests?.length > 0) {
-      if (page > 1) {
-        setPullRequests((pullRequest) => [...pullRequest, ...response.pullRequests]);
-      } else { setPullRequests(response.pullRequests); }
+      setPullRequests((pullRequest) => [...pullRequest, ...response.pullRequests]);
       setIsBottom(false);
     }
   }, [response]);
