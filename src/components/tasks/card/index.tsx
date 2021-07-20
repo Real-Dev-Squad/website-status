@@ -41,7 +41,7 @@ const Card: FC<Props> = ({ content }) => {
   const cardClassNames = [classNames.card];
   const currentDate = new Date();
   if (status !== COMPLETED) {
-    if (+localEndsOn - (+currentDate) <= 0) {
+    if (+localEndsOn - +currentDate <= 0) {
       cardClassNames.push(classNames.overdueTask);
     }
   }
@@ -75,9 +75,7 @@ const Card: FC<Props> = ({ content }) => {
         <span className={classNames.cardSpecialFont}>
           Started
           {' '}
-          {
-            fromNowStartedOn
-          }
+          {fromNowStartedOn}
         </span>
         <span>
           <span className={classNames.cardSpecialFont}>Assignee:</span>

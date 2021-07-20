@@ -23,7 +23,7 @@ const Index: FC = () => {
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
-      tasks.sort((a, b) => (+a.endsOn - (+b.endsOn)));
+      tasks.sort((a, b) => +a.endsOn - +b.endsOn);
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {

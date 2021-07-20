@@ -4,10 +4,12 @@ import { Story, Meta } from '@storybook/react';
 import Card, { Props } from './index';
 
 const handleImageError = () => {
+  // eslint-disable-next-line no-console
   console.log('Image load error');
 };
 
 const handleButtonClick = () => {
+  // eslint-disable-next-line no-console
   console.log('Button clicked');
 };
 

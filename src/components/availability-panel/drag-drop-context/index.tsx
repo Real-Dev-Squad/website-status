@@ -41,9 +41,11 @@ const DragDropcontext: FC<dragDropProps> = ({
         const message = (await response.status) === 204
           ? 'Sucessfully Assigned Task'
           : 'Something went wrong';
+        // eslint-disable-next-line no-alert
         alert(message);
         setShouldRefresh(true);
       } catch (err) {
+        // eslint-disable-next-line no-alert
         alert(`${err}`);
         setShouldRefresh(true);
       }
