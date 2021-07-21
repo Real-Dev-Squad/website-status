@@ -20,9 +20,7 @@ const Card: FC<Props> = ({ content }) => {
     title, endsOn, startedOn, status, assignee,
   } = content;
 
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(
-    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${assignee}/img.png`,
-  );
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${assignee}/img.png`);
   const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
@@ -31,9 +29,7 @@ const Card: FC<Props> = ({ content }) => {
   const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
 
-  const statusFontColor = status === ACTIVE || ASSIGNED || COMPLETED || PENDING
-    ? '#00a337'
-    : '#f83535';
+  const statusFontColor = status === ACTIVE || ASSIGNED || COMPLETED || PENDING ? '#00a337' : '#f83535';
 
   const iconHeight = '25px';
   const iconWidth = '25px';
@@ -41,20 +37,17 @@ const Card: FC<Props> = ({ content }) => {
   const cardClassNames = [classNames.card];
   const currentDate = new Date();
   if (status !== COMPLETED) {
-    if (+localEndsOn - +currentDate <= 0) {
+    if (localEndsOn.valueOf() - currentDate.valueOf() <= 0) {
       cardClassNames.push(classNames.overdueTask);
     }
   }
   return (
-    <div className={cardClassNames.join(' ')} id="wrapper-div">
+    <div className={cardClassNames.join(' ')}>
       <div className={classNames.cardItems}>
         <span className={classNames.cardTitle}>{title}</span>
         <span>
           <span className={classNames.cardSpecialFont}>Status:</span>
-          <span
-            className={classNames.cardStatusFont}
-            style={{ color: statusFontColor }}
-          >
+          <span className={classNames.cardStatusFont} style={{ color: statusFontColor }}>
             {status}
           </span>
         </span>
@@ -67,14 +60,15 @@ const Card: FC<Props> = ({ content }) => {
             width={iconWidth}
             height={iconHeight}
           />
-          <span className={classNames.cardSpecialFont}>Due Date</span>
+          <span className={classNames.cardSpecialFont}>
+            Due Date
+          </span>
           <span className={classNames.cardStrongFont}>{fromNowEndsOn}</span>
         </span>
       </div>
       <div className={classNames.cardItems}>
         <span className={classNames.cardSpecialFont}>
           Started
-          {' '}
           {fromNowStartedOn}
         </span>
         <span>

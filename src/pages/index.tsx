@@ -6,7 +6,6 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
-// import { COMPLETED } from '@/components/constants/task-status'; unused variable.
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
