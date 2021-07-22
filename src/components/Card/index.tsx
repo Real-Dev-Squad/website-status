@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from '@/components/Card/card.module.scss';
 
-type Props = {
+export type Props = {
   title: {
     text: string,
     link?: string
@@ -44,7 +44,10 @@ const Card: FC<Props> = ({
 
   return (
     <div
-      className={classNames.card}
+      className={`
+        ${classNames.card}
+        ${title.link && classNames.links}
+      `}
       onClick={() => {
         if (title.link) {
           window.open(title.link, '_blank');

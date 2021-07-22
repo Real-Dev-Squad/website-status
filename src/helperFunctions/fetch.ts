@@ -4,10 +4,10 @@ axios.defaults.withCredentials = true;
 
 type fetchParams = {
   url: string;
-  method?: 'get';
+  method?: 'get'|'patch';
   params?: null;
-  data?: null;
-  headers?: null;
+  data?: null | any;
+  headers?: null | object;
   options?: object | null;
 };
 

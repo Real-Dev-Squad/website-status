@@ -5,7 +5,7 @@ import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import useFetch from '@/hooks/useFetch';
-import { challenge } from '@/components/constants/types';
+import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
 
 const CHALLENGES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges`;

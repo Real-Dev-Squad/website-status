@@ -1,7 +1,6 @@
-/* eslint-disable no-constant-condition */
 import { FC, useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
-import { task } from '@/components/constants/types';
+import task from '@/interfaces/task.type';
 import Image from 'next/image';
 import {
   ACTIVE,
