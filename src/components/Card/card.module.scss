@@ -7,17 +7,21 @@
   flex-wrap: wrap;
   margin-bottom: 2rem;
 }
+
 .pointer{
   cursor:pointer;
 }
+
 .card:hover {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
 .prTitle {
   color: #041484;
   font-size: 2rem;
   font-weight: bold;
 }
+
 .cardFooter {
   display: flex;
   flex-wrap: wrap;
@@ -25,32 +29,38 @@
   align-items: center;
   width: 100%;
 } 
+
 .profilePicture {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 6em;
 }
+
 .profilePicture > img {
   width: 3em;
   border-radius: 50%;
 }
+
 .statusLable {
   color: grey;
   font-weight: bold;
 }
+
 .participantsLists {
   list-style: none;
   display: flex;
   vertical-align: top;
   margin-top: 0;
 } 
+
 .participantsList img {
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
   margin-left: -20px;
 }
+
 .activeBtn{
   display: flex;
   align-items: center;
@@ -64,17 +74,20 @@
   cursor: pointer;
   font-weight: bolder;
   font-size: 1.5rem;
-  }
+}
+
 .activeBtn:hover,
 .activeBtn:active {
   background: darkgreen;
-  }
+}
+
 .Center {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 1rem;
 }
+
 .links{
   text-decoration: none;
   cursor:pointer;
@@ -89,6 +102,7 @@
       visibility: hidden;
       opacity: 0;
     }
+
     .onhover{
       visibility: visible;
       opacity: 1;
@@ -112,9 +126,10 @@
       opacity: unset;
     }
   }
-  
+
   .onhover {
     visibility: hidden;
     opacity: 0;
   }
 }
+
