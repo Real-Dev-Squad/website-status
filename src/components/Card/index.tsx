@@ -46,7 +46,7 @@ const Card: FC<Props> = ({
     <div
       className={`
         ${classNames.card}
-        ${title.link && classNames.pointer}
+        ${title.link && classNames.links}
       `}
       onClick={() => {
         if (title.link) {
