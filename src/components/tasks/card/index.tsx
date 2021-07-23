@@ -20,7 +20,7 @@ const Card: FC<Props> = ({ content }) => {
     title, endsOn, startedOn, status, assignee,
   } = content;
 
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${assignee}/img.png`);
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${assignee}/img.png`);
   const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
@@ -34,15 +34,23 @@ const Card: FC<Props> = ({ content }) => {
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-  const cardClassNames = [classNames.card];
-  const currentDate = new Date();
-  if (status !== COMPLETED) {
-    if (localEndsOn.valueOf() - currentDate.valueOf() <= 0) {
-      cardClassNames.push(classNames.overdueTask);
+  function isTaskOverdue() {
+    const cardClassNames = [classNames.card];
+    const currentDate = new Date();
+    if (status !== COMPLETED) {
+      if (localEndsOn.valueOf() - currentDate.valueOf() <= 0) {
+        cardClassNames.push(classNames.overdueTask);
+        return true;
+      }
     }
+    return false;
   }
   return (
-    <div className={cardClassNames.join(' ')}>
+    <div className={`
+    ${classNames.card}
+    ${isTaskOverdue() && classNames.overdueTask}
+`}
+    >
       <div className={classNames.cardItems}>
         <span className={classNames.cardTitle}>{title}</span>
         <span>
@@ -69,6 +77,7 @@ const Card: FC<Props> = ({ content }) => {
       <div className={classNames.cardItems}>
         <span className={classNames.cardSpecialFont}>
           Started
+          {' '}
           {fromNowStartedOn}
         </span>
         <span>
