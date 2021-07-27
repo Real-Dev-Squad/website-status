@@ -7,6 +7,7 @@ module.exports = {
   "addons": [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
+    '@storybook/preset-scss',
   ],
   core: {
     builder: "webpack5",
@@ -17,20 +18,6 @@ module.exports = {
       '@': path.resolve(__dirname, '../src/'),
     };
 
-    config.module.rules.push({
-      test: /\.scss$/,
-      use: [
-        'style-loader',
-        {
-          loader: 'css-loader',
-          options: {
-            modules: true, // Enable modules to help you using className
-          }
-        },
-        'sass-loader'
-      ]
-    }
-  )
     return config;
   },
 }

@@ -3,13 +3,9 @@ import { Story, Meta } from '@storybook/react';
 
 import Card, { Props } from './index';
 
-const handleImageError = () => {
-  console.log('Image load error');
-};
+const handleImageError = () => undefined;
 
-const handleButtonClick = () => {
-  console.log('Button clicked');
-};
+const handleButtonClick = () => undefined;
 
 export default {
   title: 'Example/Card',
