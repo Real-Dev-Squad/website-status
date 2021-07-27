@@ -1,14 +1,13 @@
-/* eslint-disable no-constant-condition */
 import { FC, useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
-import { task } from '@/components/constants/types';
+import task from '@/interfaces/task.type';
 import Image from 'next/image';
 import {
   ACTIVE,
   ASSIGNED,
   COMPLETED,
   PENDING,
-} from '../../constants/task-status';
+} from '@/components/constants/task-status';
 
 const moment = require('moment');
 
