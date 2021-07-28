@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import classNames from '@/components/Card/card.module.scss';
 
+const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
+
 export type Props = {
   title: {
     text: string,
@@ -44,7 +46,10 @@ const Card: FC<Props> = ({
 
   return (
     <div
-      className={classNames.card}
+      className={`
+        ${classNames.card}
+        ${title.link && classNames.links}
+      `}
       onClick={() => {
         if (title.link) {
           window.open(title.link, '_blank');
@@ -93,6 +98,9 @@ const Card: FC<Props> = ({
                   <li key={participant.userName} className={classNames.participantsList}>
                     <img
                       src={participant.imgUrl}
+                      onError={
+                        (e) => { (e.target as HTMLImageElement).src = DUMMY_PROFILE_PICTURE; }
+                      }
                       alt={`${participant.firstName} ${participant.lastName}`}
                     />
                   </li>
