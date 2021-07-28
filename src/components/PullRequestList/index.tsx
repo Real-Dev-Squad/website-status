@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
+import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
 
@@ -75,8 +76,11 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     <Layout>
       <Head title="PRs" />
       <div className={styles.scroll}>
-        { error ? <p className={styles.center_text}>Something went wrong! Please contact admin</p> : ''}
-        <ul>
+        {
+          error
+            && <p className={styles.center_text}>Something went wrong! Please contact admin</p>
+        }
+        <div className={styles.prContainer}>
           {pullRequests.map((pullRequest: pullRequestType) => {
             const {
               title, username, createdAt, updatedAt, url: link,
@@ -92,10 +96,11 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
               />
             );
           })}
-        </ul>
-        {isLoading
-          ? <p> loading...</p>
-          : ''}
+          {
+            isLoading
+            && [...Array(15)].map((e: number) => <CardShimmer key={e} />)
+          }
+        </div>
       </div>
     </Layout>
   );
