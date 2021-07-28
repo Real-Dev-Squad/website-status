@@ -64,7 +64,7 @@ const Card: FC<Props> = ({
       tabIndex={0}
     >
 
-      <span className={classNames.prTitle}>{tileText}</span>
+      <span className={classNames.title} title={tileText}>{tileText}</span>
 
       <div>
         {data.map((pair) => (
