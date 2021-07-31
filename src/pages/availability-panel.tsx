@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
-import DragDropcontext from '../components/availability-panel/drag-drop-context/index';
+import DragDropcontext from '@/components/availability-panel/drag-drop-context/index';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
