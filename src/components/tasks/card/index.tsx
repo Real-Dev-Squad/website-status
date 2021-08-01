@@ -34,16 +34,19 @@ const Card: FC<Props> = ({ content }) => {
   const iconHeight = '25px';
   const iconWidth = '25px';
 
+  const cardClassNames = [classNames.card];
+
   function isTaskOverdue() {
-    const cardClassNames = [classNames.card];
     const currentDate = new Date();
     if (status !== COMPLETED) {
       if (localEndsOn.valueOf() - currentDate.valueOf() <= 0) {
-        cardClassNames.push(classNames.overdueTask);
         return true;
       }
     }
     return false;
+  }
+  if (isTaskOverdue()) {
+    cardClassNames.push(classNames.overdueTask);
   }
   return (
     <div className={`
