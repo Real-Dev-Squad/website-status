@@ -12,19 +12,15 @@ import {
 const moment = require('moment');
 
 type Props = {
-  content: task,
+  content: task;
 };
 
 const Card: FC<Props> = ({ content }) => {
   const {
-    title,
-    endsOn,
-    startedOn,
-    status,
-    assignee,
+    title, endsOn, startedOn, status, assignee,
   } = content;
 
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${assignee}/img.png`);
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${assignee}/img.png`);
   const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(startedOn, 10) * 1000);
@@ -38,8 +34,23 @@ const Card: FC<Props> = ({ content }) => {
   const iconHeight = '25px';
   const iconWidth = '25px';
 
+  const cardClassNames = [classNames.card];
+
+  function isTaskOverdue() {
+    const currentDate = new Date();
+    const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
+    return status !== COMPLETED && timeLeft <= 0;
+  }
+
+  if (isTaskOverdue()) {
+    cardClassNames.push(classNames.overdueTask);
+  }
   return (
-    <div className={classNames.card}>
+    <div className={`
+    ${classNames.card}
+    ${isTaskOverdue() && classNames.overdueTask}
+`}
+    >
       <div className={classNames.cardItems}>
         <span className={classNames.cardTitle}>{title}</span>
         <span>
@@ -85,5 +96,4 @@ const Card: FC<Props> = ({ content }) => {
     </div>
   );
 };
-
 export default Card;
