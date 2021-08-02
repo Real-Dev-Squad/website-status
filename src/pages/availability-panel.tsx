@@ -4,9 +4,7 @@ import Layout from '@/components/Layout';
 import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
-import { ToastContainer } from 'react-toastify';
-import DragDropcontext from '../components/availability-panel/drag-drop-context/index';
-import 'react-toastify/dist/ReactToastify.css';
+import DragDropcontext from '@/components/availability-panel/drag-drop-context/index';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -68,25 +66,20 @@ const AvailabilityPanel: FC = () => {
   };
 
   return (
-    <>
-      <ToastContainer />
-      <Layout>
-        <Head title="Availability Panel" />
-        <div>
-          <div>
-            <div className={classNames.heading}>Availability Panel</div>
-            {isErrorOrIsLoading}
-            {!isErrorOrIsLoading && (
-            <DragDropcontext
-              idleMembers={idleMembersList}
-              unAssignedTasks={unAssignedTasks}
-              refreshData={getData}
-            />
-            )}
-          </div>
-        </div>
-      </Layout>
-    </>
+    <Layout>
+      <Head title="Availability Panel" />
+      <div>
+        <div className={classNames.heading}>Availability Panel</div>
+        {isErrorOrIsLoading}
+        {!isErrorOrIsLoading && (
+          <DragDropcontext
+            idleMembers={idleMembersList}
+            unAssignedTasks={unAssignedTasks}
+            refreshData={getData}
+          />
+        )}
+      </div>
+    </Layout>
   );
 };
 

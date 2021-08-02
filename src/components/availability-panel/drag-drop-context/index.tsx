@@ -4,8 +4,22 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
 import { toast } from 'react-toastify';
 import task from '@/interfaces/task.type';
-import fetch from '../../../helperFunctions/fetch';
+import fetch from '@/helperFunctions/fetch';
+import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
+
+type NotFoundErrorProps = {
+  message: string,
+};
+
+const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
+  <div className={classNames.emptyArray}>
+    <img src="ghost.png" alt="ghost" />
+    <span className={classNames.emptyText}>
+      {message}
+    </span>
+  </div>
+);
 
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
@@ -66,28 +80,30 @@ const DragDropcontext: FC<dragDropProps> = ({
         const assignee = result.combine.droppableId === 'tasks'
           ? result.draggableId
           : result.combine.draggableId;
-        const method = 'patch';
         const data = {
-          status: 'active',
+          status: ASSIGNED,
           assignee,
         };
-        const headers = {
-          'Content-Type': 'application/json',
-        };
-        await fetch({
+
+        const updateTaskResult = await fetch({
           url,
-          method,
+          method: 'patch',
           data,
-          headers,
         });
-        const message = 'Sucessfully Assigned Task';
-        toast.success(`${message}`, {
+
+        toast.success(`${updateTaskResult.data.message}`, {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
         });
       } catch (error:any) {
-        const { message } = error.response.data;
-        toast.error(`${message || error}`, {
+        if ('response' in error) {
+          toast.error(error.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 2000,
+          });
+          return;
+        }
+        toast.error(error.message, {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
         });
@@ -106,12 +122,7 @@ const DragDropcontext: FC<dragDropProps> = ({
       <div className={classNames.flexContainer}>
         <div>
           {taskList.length === 0 ? (
-            <div className={classNames.emptyArray}>
-              <img src="ghost.png" alt="ghost" />
-              <span className={classNames.emptyText}>
-                No task found
-              </span>
-            </div>
+            <NotFoundError message="No task found" />
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>
@@ -139,12 +150,7 @@ const DragDropcontext: FC<dragDropProps> = ({
         <div className={classNames.divider} />
         <div>
           {memberList.length === 0 ? (
-            <div className={classNames.emptyArray}>
-              <img src="ghost.png" alt="ghost" />
-              <span className={classNames.emptyText}>
-                No idle members found
-              </span>
-            </div>
+            <NotFoundError message="No idle members found" />
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>

@@ -6,8 +6,7 @@ import {
   ACTIVE,
   ASSIGNED,
   COMPLETED,
-  PENDING,
-} from '../../constants/task-status';
+} from '@/components/constants/task-status';
 
 const moment = require('moment');
 
@@ -33,7 +32,7 @@ const Card: FC<Props> = ({ content }) => {
   const localEndsOn = new Date(parseInt(endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
 
-  const statusFontColor = status === ACTIVE || ASSIGNED || COMPLETED || PENDING ? '#00a337' : '#f83535';
+  const statusFontColor = status === ACTIVE || ASSIGNED || COMPLETED ? '#00a337' : '#f83535';
 
   const iconHeight = '25px';
   const iconWidth = '25px';
