@@ -22,7 +22,6 @@ const idleMembers: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <div>
       <Layout>
         <Head title="Idle Members | Status Real Dev Squad" />
 
@@ -31,7 +30,6 @@ const idleMembers: FC = () => {
         </div>
 
       </Layout>
-    </div>
   );
 };
 
