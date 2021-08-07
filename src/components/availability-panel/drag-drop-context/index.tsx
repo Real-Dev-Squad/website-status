@@ -5,7 +5,7 @@ import { dragDropProps } from '@/interfaces/availabilityPanel.type';
 import { toast } from 'react-toastify';
 import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
-import { ACTIVE } from '@/components/constants/task-status';
+import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
 
 type NotFoundErrorProps = {
@@ -81,7 +81,7 @@ const DragDropcontext: FC<dragDropProps> = ({
           ? result.draggableId
           : result.combine.draggableId;
         const data = {
-          status: ACTIVE,
+          status: ASSIGNED,
           assignee,
         };
 
