@@ -1,0 +1,125 @@
+.flexContainer {
+  display: flex;
+  justify-content: space-around;
+  padding: 2rem;
+  margin: 0 2rem;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.emptyArray {
+  width: 32rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.statusMessage {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  font-weight: bold;
+  color: #041484;
+}
+
+.divider {
+  border-left: 1px solid #d9d9d9;
+  position: absolute;
+  height: 100%;
+}
+
+.searchBoxContainer {
+  display: flex;
+  flex-direction: column;
+  display: none; // to be remove for next feature
+  span {
+    height: 1.5rem;
+    width: 100%;
+    font-size: 1.5rem;
+    color: #041187;
+    margin-bottom: 0.5rem;
+  }
+
+  .searchText {
+    cursor: pointer;
+  }
+
+  input {
+    height: 2.5rem;
+    width: 32rem;
+    background: #ffffff;
+    border: 2px solid #646464;
+    border-radius: 5px;
+  }
+}
+
+.heading {
+  display: none;
+  height: 2.5rem;
+  width: 32rem;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+  background-color: rgb(209, 209, 209);
+}
+
+.taskItem {
+  padding: 0.8rem;
+  width: 30rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  color: #041187;
+  font-size: large;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+.idleMember {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5rem 0;
+}
+
+.memberCard {
+  display: flex;
+  width: 30rem;
+  border: 2px solid #e0e0e0;
+  padding: 0.8rem;
+  align-items: center;
+  flex-wrap: wrap;
+
+  img {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+  }
+
+  span {
+    padding-left: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #646464;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .divider {
+    display: none;
+  }
+
+  .flexContainer {
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .searchBoxContainer {
+    input {
+      width: 100%;
+    }
+  }
+
+.heading, .taskItem, .memberCard { width: 100%; }
+
+  .emptyArray {
+    text-align: left;
+  }
+}

@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
-import { task } from '@/components/constants/types';
+import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -22,6 +22,7 @@ const Index: FC = () => {
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
+      tasks.sort((a:task, b:task) => +a.endsOn - +b.endsOn);
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -40,23 +41,19 @@ const Index: FC = () => {
 
       <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
-        {
-          isLoading
-            ? (
-              <p>Loading...</p>
-            ) : (
-              <>
-                {
-                  Object.keys(filteredTask).length > 0
-                    ? Object.keys(filteredTask).map((key) => (
-                      <Accordion open title={key} key={key}>
-                        {renderCardList(filteredTask[key])}
-                      </Accordion>
-                    )) : (!error && 'No Tasks Found')
-                }
-              </>
-            )
-        }
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            {Object.keys(filteredTask).length > 0
+              ? Object.keys(filteredTask).map((key) => (
+                <Accordion open title={key} key={key}>
+                  {renderCardList(filteredTask[key])}
+                </Accordion>
+              ))
+              : !error && 'No Tasks Found'}
+          </>
+        )}
       </div>
     </Layout>
   );

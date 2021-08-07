@@ -22,16 +22,14 @@ const idleMembers: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <div>
-      <Layout>
-        <Head title="Idle Members | Status Real Dev Squad" />
+    <Layout>
+      <Head title="Idle Members | Status Real Dev Squad" />
 
-        <div className="container">
-          <Section heading="Idle Members" content={idleMembersList} error={error} isLoading={isLoading} />
-        </div>
+      <div className="container">
+        <Section heading="Idle Members" content={idleMembersList} error={error} isLoading={isLoading} />
+      </div>
 
-      </Layout>
-    </div>
+    </Layout>
   );
 };
 

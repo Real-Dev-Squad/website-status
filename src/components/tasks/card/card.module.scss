@@ -3,7 +3,6 @@
   flex-direction: column;
   padding: 1rem;
   margin-bottom: 2rem;
-  cursor: pointer;
   margin-bottom: 25px;
   justify-content: space-between;
   border-bottom-style: solid;
@@ -26,6 +25,7 @@
     margin-top: 10px;
   }
 }
+
 .cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
@@ -42,6 +42,7 @@
   font-size: 1.3rem;
   font-weight: 500;
 }
+
 .contributorImage {
   height: 45px;
   width: 45px;
@@ -51,4 +52,9 @@
 .cardStrongFont {
   font-size: 1.3rem;
   font-weight: 500;
+}
+
+.overdueTask {
+  border: solid red 2px;
+  background-color: #ffebee;
 }
