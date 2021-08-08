@@ -1,5 +1,3 @@
-import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Story, Meta } from '@storybook/react';
 
 import StoryCard, { Props } from './index';
