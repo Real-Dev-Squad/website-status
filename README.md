@@ -2,17 +2,9 @@
 
 # Real dev squad : Roadmap project - react-nextjs-scss-typescript
 
-# Setup
+# Setup and run locally
 
-`yarn install`
-
-# Development
-
-To run the project `yarn run dev`.
-
-# Production
-
-To do a production build `yarn run start`.
+[CONTRIBUTING.MD](https://github.com/Real-Dev-Squad/website-status/blob/develop/CONTRIBUTING.md)
 
 # Our websites
 
