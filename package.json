@@ -21,7 +21,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@storybook/manager-webpack5": "^6.3.5",
     "axios": "^0.21.1",
     "husky": "^7.0.1",
     "moment": "^2.29.1",
@@ -41,6 +40,7 @@
     "@storybook/addon-essentials": "^6.3.5",
     "@storybook/addon-links": "^6.3.5",
     "@storybook/builder-webpack5": "^6.3.5",
+    "@storybook/manager-webpack5": "^6.3.6",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.3.5",
     "@types/next": "^9.0.0",
