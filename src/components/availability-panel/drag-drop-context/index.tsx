@@ -1,19 +1,75 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
+import { toast } from 'react-toastify';
+import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
+import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
+
+type NotFoundErrorProps = {
+  message: string,
+};
+
+const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
+  <div className={classNames.emptyArray}>
+    <img src="ghost.png" alt="ghost" />
+    <span className={classNames.emptyText}>
+      {message}
+    </span>
+  </div>
+);
 
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
+  refreshData,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
-  const [shouldRefresh, setShouldRefresh] = useState(false);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
+  const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
+  const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTaskList(unAssignedTasks);
+    setMemberList(idleMembers);
+  }, [unAssignedTasks, idleMembers]);
+
+  const reorder = (list:Array<task |string>, startIndex:number, endIndex:number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+    return result;
+  };
+
+  const onDragStart = (result:DragEvent | any) => {
+    const isTask = result.source.droppableId === 'tasks';
+    if (isTask) {
+      setIsTaskOnDrag(true);
+    } else {
+      setIsTaskOnDrag(false);
+    }
+  };
 
   const onDragEnd = async (result: DropResult) => {
+    if (!result.combine && result.destination
+      && result.source.droppableId === result.destination.droppableId) {
+      const isIdTask = result.source.droppableId === 'tasks';
+      const array = isIdTask ? taskList : memberList;
+      const items:Array<any> = reorder(
+        array,
+        result.source.index,
+        result.destination.index,
+      );
+      if (isIdTask) {
+        setTaskList(items);
+      } else {
+        setMemberList(items);
+      }
+    }
+
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
       setIsProcessing(true);
       try {
@@ -24,47 +80,48 @@ const DragDropcontext: FC<dragDropProps> = ({
         const assignee = result.combine.droppableId === 'tasks'
           ? result.draggableId
           : result.combine.draggableId;
-        const method = 'patch';
-        const data = JSON.stringify({
-          status: 'active',
+        const data = {
+          status: ASSIGNED,
           assignee,
-        });
-        const headers = {
-          'Content-Type': 'application/json',
         };
-        const response = await fetch({
+
+        await fetch({
           url,
-          method,
+          method: 'patch',
           data,
-          headers,
         });
-        const message = (await response.status) === 204
-          ? 'Sucessfully Assigned Task'
-          : 'Something went wrong';
-        // eslint-disable-next-line no-alert
-        alert(message);
-        setShouldRefresh(true);
-      } catch (err) {
-        // eslint-disable-next-line no-alert
-        alert(`${err}`);
-        setShouldRefresh(true);
+        toast.success('Sucessfully Assigned Task', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+        });
+      } catch (error:any) {
+        if ('response' in error) {
+          toast.error(error.response.data.message, {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 2000,
+          });
+          return;
+        }
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000,
+        });
+      } finally {
+        refreshData();
       }
     }
   };
 
-  if (shouldRefresh) {
-    window.location.reload();
-  }
-
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
       {isProcessing && (
         <div className={classNames.statusMessage}>Please wait...</div>
       )}
+      {!isProcessing && (
       <div className={classNames.flexContainer}>
         <div>
-          {unAssignedTasks.length === 0 ? (
-            <div className={classNames.emptyArray}>No Tasks found</div>
+          {taskList.length === 0 ? (
+            <NotFoundError message="No task found" />
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>
@@ -83,15 +140,16 @@ const DragDropcontext: FC<dragDropProps> = ({
               <DroppableComponent
                 droppableId="tasks"
                 idleMembers={[]}
-                unAssignedTasks={unAssignedTasks}
+                unAssignedTasks={taskList}
+                isTaskOnDrag={isTaskOnDrag}
               />
             </div>
           )}
         </div>
         <div className={classNames.divider} />
         <div>
-          {idleMembers.length === 0 ? (
-            <div className={classNames.emptyArray}>No idle users Found</div>
+          {memberList.length === 0 ? (
+            <NotFoundError message="No idle members found" />
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>
@@ -102,14 +160,16 @@ const DragDropcontext: FC<dragDropProps> = ({
               <div className={classNames.idleMember}>
                 <DroppableComponent
                   droppableId="members"
-                  idleMembers={idleMembers}
+                  idleMembers={memberList}
                   unAssignedTasks={[]}
+                  isTaskOnDrag={isTaskOnDrag}
                 />
               </div>
             </div>
           )}
         </div>
       </div>
+      )}
     </DragDropContext>
   );
 };

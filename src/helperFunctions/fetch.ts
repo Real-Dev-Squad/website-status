@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
-
 type fetchParams = {
   url: string;
-  method?: 'get'|'patch';
+  method?: 'get' | 'patch';
   params?: null;
   data?: null | any;
   headers?: null | object;
@@ -34,7 +32,11 @@ const fetch = async ({
     url,
     params,
     data,
-    headers,
+    headers: {
+      'Content-type': 'application/json',
+      ...headers,
+    },
+    withCredentials: true,
     ...options,
   });
   return response;

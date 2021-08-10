@@ -17,10 +17,11 @@ const DroppableComponent: FC<droppableComponent> = ({
   droppableId,
   unAssignedTasks,
   idleMembers,
+  isTaskOnDrag,
 }) => (
   <div>
     {droppableId === 'tasks' ? (
-      <Droppable droppableId="tasks" isCombineEnabled>
+      <Droppable droppableId="tasks" isCombineEnabled={!isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
             {unAssignedTasks.map((task, index) => {
@@ -49,7 +50,7 @@ const DroppableComponent: FC<droppableComponent> = ({
         )}
       </Droppable>
     ) : (
-      <Droppable droppableId="members" isCombineEnabled>
+      <Droppable droppableId="members" isCombineEnabled={isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
             {idleMembers.map((member, index) => (
@@ -63,12 +64,14 @@ const DroppableComponent: FC<droppableComponent> = ({
                       snapshot.isDragging,
                       Provided.draggableProps.style,
                     )}
-                    className={classNames.idleMember}
+                    className={classNames.memberCard}
                   >
-                    <div className={classNames.memberCard}>
-                      <img src={imageGenerator(member)} alt={member} />
-                      <span>{member}</span>
-                    </div>
+                    <img
+                      src={imageGenerator(member)}
+                      alt={member}
+                      onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
+                    />
+                    <span>{member}</span>
                   </div>
                 )}
               </Draggable>

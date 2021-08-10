@@ -1,4 +1,5 @@
 export const ACTIVE = 'active';
 export const ASSIGNED = 'assigned';
+export const UNASSIGNED = 'unassigned';
 export const COMPLETED = 'completed';
-export const PENDING = 'pending';
+export const BLOCKED = 'blocked';
