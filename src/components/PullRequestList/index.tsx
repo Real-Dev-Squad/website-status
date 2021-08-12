@@ -37,7 +37,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
 
-  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}`;
+  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=100`;
   const {
     response,
     error,
