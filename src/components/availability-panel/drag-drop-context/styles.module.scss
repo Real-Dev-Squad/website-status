@@ -1,3 +1,6 @@
+$blueColor: #041484;
+$borderForItem: 2px solid #e0e0e0;
+
 .flexContainer {
   display: flex;
   justify-content: space-around;
@@ -8,9 +11,17 @@
 }
 
 .emptyArray {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 32rem;
-  text-align: center;
   margin-bottom: 1rem;
+}
+
+.emptyText{
+  font-weight: bold;
+  text-align: center;
+  font-size: 1rem;
 }
 
 .statusMessage {
@@ -18,7 +29,7 @@
   justify-content: center;
   padding: 1rem;
   font-weight: bold;
-  color: #041484;
+  color: $blueColor;
 }
 
 .divider {
@@ -35,7 +46,7 @@
     height: 1.5rem;
     width: 100%;
     font-size: 1.5rem;
-    color: #041187;
+    color: $blueColor;
     margin-bottom: 0.5rem;
   }
 
@@ -67,25 +78,22 @@
   margin: 1rem 0;
   display: flex;
   align-items: center;
-  color: #041187;
+  color: $blueColor;
   font-size: large;
-  border: 2px solid #e0e0e0;
+  border: $borderForItem;
   border-radius: 5px;
-}
-
-.idleMember {
-  display: flex;
-  flex-direction: column;
-  margin: 0.5rem 0;
+  user-select: none;
 }
 
 .memberCard {
   display: flex;
   width: 30rem;
-  border: 2px solid #e0e0e0;
+  margin: 1rem 0;
+  border: $borderForItem;
   padding: 0.8rem;
   align-items: center;
   flex-wrap: wrap;
+  user-select: none;
 
   img {
     width: 3.5rem;
@@ -103,9 +111,10 @@
 
 @media only screen and (max-width: 1200px) {
   .divider {
-    display: none;
+    position: relative;
+    margin-bottom: 1rem;
+    border-top: 1px solid #d9d9d9;
   }
-
   .flexContainer {
     flex-direction: column;
     margin: 0;
@@ -113,13 +122,14 @@
 
   .searchBoxContainer {
     input {
-      width: 100%;
+      width: auto;
     }
   }
 
-.heading, .taskItem, .memberCard { width: 100%; }
+.heading, .taskItem, .memberCard { width: auto}
 
   .emptyArray {
-    text-align: left;
+    align-items: center;
+    width: auto;
   }
 }
