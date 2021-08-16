@@ -19,15 +19,17 @@ type fetchParams = {
  * @param options {Object} - Options to be sent via axios
  */
 
-const fetch = async ({
+const fetch = ({
   url,
   method = 'get',
   params = null,
   data = null,
   headers = null,
   options = {},
-}: fetchParams): Promise<any> => {
-  const response = await axios({
+}: fetchParams):{ response: Promise<any>, cancelApi: () => void } => {
+  const { CancelToken } = axios;
+  const source = CancelToken.source();
+  const response = axios({
     method,
     url,
     params,
@@ -37,9 +39,13 @@ const fetch = async ({
       ...headers,
     },
     withCredentials: true,
+    cancelToken: source.token,
     ...options,
   });
-  return response;
+  return {
+    response,
+    cancelApi: source.cancel,
+  };
 };
 
 export default fetch;
