@@ -10,13 +10,13 @@ const useFetch = (url: string, options: object = {}) => {
     (async () => {
       setIsLoading(true);
       try {
-        const { requestPromise: res, cancelApi } = fetch({
+        const { requestPromise, cancelApi } = fetch({
           url,
           method: 'get',
           ...options,
         });
         cancel = cancelApi;
-        const fetchPromise = await res;
+        const fetchPromise = await requestPromise;
         setResponse(fetchPromise.data);
       } catch (err) {
         setError(err);
