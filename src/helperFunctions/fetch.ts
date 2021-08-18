@@ -26,10 +26,10 @@ const fetch = ({
   data = null,
   headers = null,
   options = {},
-}: fetchParams):{ response: Promise<any>, cancelApi: () => void } => {
+}: fetchParams):{ requestPromise: Promise<any>, cancelApi: () => void } => {
   const { CancelToken } = axios;
   const source = CancelToken.source();
-  const response = axios({
+  const requestPromise = axios({
     method,
     url,
     params,
@@ -43,7 +43,7 @@ const fetch = ({
     ...options,
   });
   return {
-    response,
+    requestPromise,
     cancelApi: source.cancel,
   };
 };

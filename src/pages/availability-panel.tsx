@@ -18,8 +18,9 @@ const AvailabilityPanel: FC = () => {
     const fetchTasks = async () => {
       try {
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-        const response = await fetch({ url });
-        const { tasks } = response.data;
+        const { requestPromise } = fetch({ url });
+        const fetchPromise = await requestPromise;
+        const { tasks } = fetchPromise.data;
         const unassigned = tasks.filter(
           (item: task) => item.status.toLowerCase() === 'unassigned' && item.type === 'feature',
         );
@@ -31,9 +32,9 @@ const AvailabilityPanel: FC = () => {
     const fetchIdleUsers = async () => {
       try {
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
-        const response = await fetch({ url });
-
-        const { idleMemberUserNames } = response.data;
+        const { requestPromise } = fetch({ url });
+        const fetchPromise = await requestPromise;
+        const { idleMemberUserNames } = fetchPromise.data;
         const filterMembers = idleMemberUserNames.filter((username:string) => username);
         const sortedIdleMembers = filterMembers.sort();
         setIdleMembersList(sortedIdleMembers);

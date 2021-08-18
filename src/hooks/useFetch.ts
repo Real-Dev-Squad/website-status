@@ -10,7 +10,7 @@ const useFetch = (url: string, options: object = {}) => {
     (async () => {
       setIsLoading(true);
       try {
-        const { response: res, cancelApi } = fetch({
+        const { requestPromise: res, cancelApi } = fetch({
           url,
           method: 'get',
           ...options,
