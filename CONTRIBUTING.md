@@ -3,6 +3,8 @@
 - [Yarn Command Reference](#2-yarn-command-reference)
 - [API Contracts](#3-api-contracts)
 - [Setting Up Local System](#4-setting-up-local-system)
+- [Prerequisite](#5-prerequisite)
+- [Raising a Pull Request](#6-raising-a-pull-request)
 
 ##  **1. How to Start**
 
@@ -29,3 +31,10 @@ API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
  1. <a href="https://nextjs.org/" target="_blank">Next.js</a>
  3. <a href="https://www.typescriptlang.org/docs/" target="_blank">TypeScript</a>
  4. <a href="https://react-typescript-cheatsheet.netlify.app/docs/basic/setup" target="_blank">React TypeScript cheatsheet</a>
+
+## **6. Raising a Pull Request**
+ 1. Double check the code before every commit/push
+ 2. Have on-point commit messages
+ 3. Write useful descriptions and titles
+ 4. Add comments on your pull request to help guide the reviewer
+ 6. Make it visual. Add Images or GIFs if needed.
