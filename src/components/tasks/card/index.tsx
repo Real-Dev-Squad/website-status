@@ -6,6 +6,7 @@ import {
   ACTIVE,
   ASSIGNED,
   COMPLETED,
+  UNASSIGNED,
 } from '@/components/constants/task-status';
 
 const moment = require('moment');
@@ -38,7 +39,7 @@ const Card: FC<Props> = ({ content }) => {
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
-    return status !== COMPLETED && timeLeft <= 0;
+    return status !== COMPLETED && status !== UNASSIGNED && timeLeft <= 0;
   }
 
   if (isTaskOverdue()) {
