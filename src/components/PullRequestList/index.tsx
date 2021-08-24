@@ -36,7 +36,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [noData, setNoData] = useState(false);
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
-  const size = Math.floor((global.innerHeight / 147) * 3);
+  const size = Math.floor((globalThis.innerHeight / 147) * 3);
 
   const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${size}`;
   const {
