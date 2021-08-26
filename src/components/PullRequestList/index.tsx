@@ -6,8 +6,14 @@ import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
 
+const SCREEN_HEIGHT = globalThis.innerHeight;
+const SCREEN_WIDTH = globalThis.innerWidth;
 const CARD_HEIGHT = 147;
-const WIDTH_OF_CARD = (globalThis.innerWidth < 700 ? 1 : 3);
+const NUMBER_OF_CARDS_FOR_MOBILE_DISPLAYS = 1;
+const NUMBER_OF_CARDS_FOR_DESKTOP = 3;
+const SMALL_SCREEN_WIDTH_THRESHOLD = 700;
+const HORIZONTAL_NUMBER_OF_CARDS = (SCREEN_WIDTH < SMALL_SCREEN_WIDTH_THRESHOLD
+  ? NUMBER_OF_CARDS_FOR_MOBILE_DISPLAYS : NUMBER_OF_CARDS_FOR_DESKTOP);
 type pullRequestType = {
   title: string;
   username: string;
@@ -38,7 +44,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [noData, setNoData] = useState(false);
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
-  const numberOfCards = Math.floor((globalThis.innerHeight / CARD_HEIGHT) * WIDTH_OF_CARD);
+  const numberOfCards = Math.floor((SCREEN_HEIGHT / CARD_HEIGHT) * HORIZONTAL_NUMBER_OF_CARDS);
   const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
   const {
     response,
