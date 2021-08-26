@@ -6,6 +6,8 @@ import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
 
+const CARD_HEIGHT = 147;
+const WIDTH_OF_CARD = (globalThis.innerWidth < 700 ? 1 : 3);
 type pullRequestType = {
   title: string;
   username: string;
@@ -36,11 +38,8 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [noData, setNoData] = useState(false);
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
-  const Card_Height = 147;
-  // eslint-disable-next-line max-len
-  const Widthofcard = (globalThis.innerWidth < 700 ? 1 : 3);
-  const size = Math.floor((globalThis.innerHeight / Card_Height) * Widthofcard);
-  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${size}`;
+  const numberOfCards = Math.floor((globalThis.innerHeight / CARD_HEIGHT) * WIDTH_OF_CARD);
+  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
   const {
     response,
     error,
