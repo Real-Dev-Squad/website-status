@@ -23,10 +23,10 @@ const pullRequest: FC<pullRequestType> = ({
 
   const createdAgo = `${Math.ceil(
     (presentDate.getTime() - created.getTime()) / (1000 * 3600 * 24),
-  )}days ago`;
+  )} days ago`;
   const updatedAgo = `${Math.ceil(
     (presentDate.getTime() - updated.getTime()) / (1000 * 3600 * 24),
-  )}days ago`;
+  )} days ago`;
 
   const prData = {
     CreatedBy: username,
