@@ -27,7 +27,7 @@ const DragDropcontext: FC<dragDropProps> = ({
   refreshData,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [, setIsProcessing] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
@@ -114,10 +114,6 @@ const DragDropcontext: FC<dragDropProps> = ({
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      {isProcessing && (
-        <div className={classNames.statusMessage}>Please wait...</div>
-      )}
-      {!isProcessing && (
       <div className={classNames.flexContainer}>
         <div>
           {taskList.length === 0 ? (
@@ -169,7 +165,6 @@ const DragDropcontext: FC<dragDropProps> = ({
           )}
         </div>
       </div>
-      )}
     </DragDropContext>
   );
 };
