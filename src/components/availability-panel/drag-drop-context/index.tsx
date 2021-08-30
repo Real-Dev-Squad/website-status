@@ -85,11 +85,12 @@ const DragDropcontext: FC<dragDropProps> = ({
           assignee,
         };
 
-        await fetch({
+        const { requestPromise } = fetch({
           url,
           method: 'patch',
           data,
         });
+        await requestPromise;
         toast.success('Sucessfully Assigned Task', {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000,
