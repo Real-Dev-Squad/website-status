@@ -57,7 +57,7 @@ const AvailabilityPanel: FC = () => {
     );
   } else if (isLoading) {
     isErrorOrIsLoading = (
-      <span className={classNames.statusMessage} />
+      <span className={classNames.statusMessage}>Loading...</span>
     );
   }
 

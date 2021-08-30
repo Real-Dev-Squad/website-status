@@ -27,7 +27,6 @@ const DragDropcontext: FC<dragDropProps> = ({
   refreshData,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
-  const [, setIsProcessing] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
@@ -71,7 +70,6 @@ const DragDropcontext: FC<dragDropProps> = ({
     }
 
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
-      setIsProcessing(true);
       try {
         const taskId = result.combine.droppableId === 'tasks'
           ? result.combine.draggableId
