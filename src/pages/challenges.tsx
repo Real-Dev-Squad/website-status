@@ -10,8 +10,6 @@ import classNames from '@/styles/tasks.module.scss';
 
 const CHALLENGES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges`;
 const USER_SELF = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
-// const CHALLENGES_URL = 'https://staging-api.realdevsquad.com/challenges';
-// const USER_SELF = 'https://staging-api.realdevsquad.com/users/self';
 
 const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {
@@ -27,7 +25,6 @@ const Challenges: FC = () => {
 
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
   const { response: user } = useFetch(USER_SELF);
-  // console.log(process.env);
   useEffect(() => {
     if ('challenges' in response) {
       challenges = response.challenges;
