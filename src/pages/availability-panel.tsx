@@ -14,7 +14,6 @@ const AvailabilityPanel: FC = () => {
   const [refreshData, setRefreshData] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchTasks = async () => {
       try {
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
