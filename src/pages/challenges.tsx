@@ -7,9 +7,7 @@ import Accordion from '@/components/Accordion';
 import useFetch from '@/hooks/useFetch';
 import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
-
-const CHALLENGES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges`;
-const USER_SELF = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+import { CHALLENGES_URL, USER_SELF } from '@/components/constants/url';
 
 const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {

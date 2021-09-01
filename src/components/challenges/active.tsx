@@ -3,8 +3,7 @@ import Card from '@/components/Card/index';
 import details from '@/components/challenges/details';
 import participantsDetails from '@/components/challenges/participants';
 import { toast } from 'react-toastify';
-
-const SUBSCRIBE_TO_CHALLENGE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/subscribe`;
+import { SUBSCRIBE_TO_CHALLENGE_URL } from '@/components/constants/url';
 
 type ActiveProps = {
   content: {
