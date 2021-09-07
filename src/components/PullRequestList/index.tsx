@@ -6,19 +6,6 @@ import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
 
-const SCREEN_HEIGHT = globalThis.innerHeight;
-const SCREEN_WIDTH = globalThis.innerWidth;
-const CARD_HEIGHT = 147;
-const MINIMUM_CARD_WIDTH = 300;
-const MAXIMUM_NUMBER_OF_CARDS_HORIZONTALLY = 3;
-const MINIMUM_NUMBER_OF_CARDS_HORIZONTALLY = 1;
-const CALCULATED_NUMBER_OF_CARDS_HORIZONTALLY = Math.floor(SCREEN_WIDTH / MINIMUM_CARD_WIDTH)
-> MINIMUM_NUMBER_OF_CARDS_HORIZONTALLY
-  ? Math.floor(SCREEN_WIDTH / MINIMUM_CARD_WIDTH) : MINIMUM_NUMBER_OF_CARDS_HORIZONTALLY;
-const HORIZONTAL_NUMBER_OF_CARDS = (MAXIMUM_NUMBER_OF_CARDS_HORIZONTALLY
-> CALCULATED_NUMBER_OF_CARDS_HORIZONTALLY
-  ? CALCULATED_NUMBER_OF_CARDS_HORIZONTALLY : MAXIMUM_NUMBER_OF_CARDS_HORIZONTALLY);
-
 type pullRequestType = {
   title: string;
   username: string;
@@ -30,6 +17,25 @@ type pullRequestType = {
 type PullRequestListProps = {
     prType: string;
 };
+
+function getNumberOfCards() {
+  const screenHeight = globalThis.innerHeight;
+  const screenWidth = globalThis.innerWidth;
+  const cardHeight = 147;
+  const minCardWidth = 300;
+  const maxCardsHorizontally = 3;
+  const minCardsHorizontally = 1;
+  const cardWidth = ((screenWidth / 4) > minCardWidth)
+    ? (screenWidth / 4)
+    : minCardWidth;
+  const checkForSmallDisplays = Math.floor(screenWidth / cardWidth) > minCardsHorizontally
+    ? Math.floor(screenWidth / minCardWidth)
+    : minCardsHorizontally;
+  const numberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
+    ? checkForSmallDisplays
+    : maxCardsHorizontally;
+  return Math.floor((screenHeight / cardHeight) * numberOfCards);
+}
 
 function ScrollTop() {
   const topMargin = (document.documentElement
@@ -49,7 +55,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [noData, setNoData] = useState(false);
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
-  const numberOfCards = Math.floor((SCREEN_HEIGHT / CARD_HEIGHT) * HORIZONTAL_NUMBER_OF_CARDS);
+  const numberOfCards = getNumberOfCards();
   const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
   const {
     response,
