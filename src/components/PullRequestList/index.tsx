@@ -25,16 +25,21 @@ function getNumberOfCards() {
   const minCardWidth = 300;
   const maxCardsHorizontally = 3;
   const minCardsHorizontally = 1;
+
   const cardWidth = ((screenWidth / 4) > minCardWidth)
     ? (screenWidth / 4)
     : minCardWidth;
+
   const checkForSmallDisplays = Math.floor(screenWidth / cardWidth) > minCardsHorizontally
     ? Math.floor(screenWidth / minCardWidth)
     : minCardsHorizontally;
-  const numberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
+
+  const horizontalNumberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
     ? checkForSmallDisplays
     : maxCardsHorizontally;
-  return Math.floor((screenHeight / cardHeight) * numberOfCards);
+
+  const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
+  return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
 }
 
 function ScrollTop() {
