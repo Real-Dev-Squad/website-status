@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
-import { toast } from 'react-toastify';
+import Toast, { ToastTypes } from '@/helperFunctions/toast';
 import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
@@ -89,22 +89,13 @@ const DragDropcontext: FC<dragDropProps> = ({
           data,
         });
         await requestPromise;
-        toast.success('Sucessfully Assigned Task', {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-        });
+        Toast(ToastTypes.SUCCESS, 'Successfully Assigned Task');
       } catch (error:any) {
         if ('response' in error) {
-          toast.error(error.response.data.message, {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 2000,
-          });
+          Toast(ToastTypes.ERROR, error.response.data.message);
           return;
         }
-        toast.error(error.message, {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-        });
+        Toast(ToastTypes.ERROR, error.message);
       } finally {
         refreshData();
       }
