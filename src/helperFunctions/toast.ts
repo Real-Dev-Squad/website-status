@@ -1,21 +1,20 @@
-import { toast } from 'react-toastify';
+// toast is imported as toastify to avoid declaration conflicts with local toast function
+
+import { toast as toastify } from 'react-toastify';
 
 const DELAY: number = 3000;
-enum ToastTypes {
+export enum ToastTypes {
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
   ERROR = 'error'
 }
 
-type ToastType = ToastTypes ;
-
-const Toast = (type: ToastType, message: string) => toast[type](message, {
-  position: toast.POSITION.TOP_RIGHT,
+const toast = (type: ToastTypes, message: string) => toastify[type](message, {
+  position: toastify.POSITION.TOP_RIGHT,
   autoClose: DELAY,
   pauseOnHover: false,
   draggable: false,
 });
 
-export default Toast;
-export { ToastTypes };
+export default toast;
