@@ -12,6 +12,8 @@ type NotFoundErrorProps = {
   message: string,
 };
 
+const { SUCCESS, ERROR } = ToastTypes;
+
 const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   <div className={classNames.emptyArray}>
     <img src="ghost.png" alt="ghost" />
@@ -89,13 +91,13 @@ const DragDropcontext: FC<dragDropProps> = ({
           data,
         });
         await requestPromise;
-        toast(ToastTypes.SUCCESS, 'Successfully Assigned Task');
+        toast(SUCCESS, 'Successfully Assigned Task');
       } catch (error:any) {
         if ('response' in error) {
-          toast(ToastTypes.ERROR, error.response.data.message);
+          toast(ERROR, error.response.data.message);
           return;
         }
-        toast(ToastTypes.ERROR, error.message);
+        toast(ERROR, error.message);
       } finally {
         refreshData();
       }
