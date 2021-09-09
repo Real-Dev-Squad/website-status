@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${idleMemberUserName}/img.png`);
+  const [assignedProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${idleMemberUserName}/img.png`);
   
   const assigneeImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
   const getMemberDetails = (name: string) => {
@@ -22,7 +22,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
     >
       <img
         className={classNames.image}
-        src={assigneeProfilePic}
+        src={assignedProfilePic}
         alt={idleMemberUserName}
         onError={assigneeImageOnError}
       />
