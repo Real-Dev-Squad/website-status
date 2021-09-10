@@ -7,8 +7,8 @@ const NavBar = () => (
   <div>
     <nav className={styles.navBar}>
       <ul>
-        <li style={{ padding: '7px' }}>
-          <Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" />
+        <li>
+          <a style={{ padding: '7px' }} href="https://realdevsquad.com"><Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" /></a>
         </li>
         <li><a href="https://realdevsquad.com">Home</a></li>
         <li><a href="https://welcome.realdevsquad.com/">Welcome</a></li>
