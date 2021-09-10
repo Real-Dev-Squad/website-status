@@ -1,0 +1,31 @@
+.navBar {
+    width: 100vw;
+    font-size: 1rem;
+    margin: 0 -2em;
+    background-color: #1d1283;  
+}
+
+.navBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navBar li {
+    float: left;
+}
+
+.navBar li a {
+    display: block;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: bolder;
+    text-align: center;
+    padding: 19px 16px;
+    text-decoration: none;
+}
+
+.navBar li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}

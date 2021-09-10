@@ -1,4 +1,5 @@
 .layout {
+  margin: 0 2em;
   margin: 0 auto;
   max-width: 100%;
   flex-direction: column;
@@ -25,24 +26,4 @@
 
 .active {
   color: #E30464;
-}
-
-.rdsHeader{
-  display: flex;  
-  align-self: flex-start; 
-}
-
-.logo {
-  width: 3rem;
-  padding: 0.1rem;
-  cursor: pointer;
-}
-
-.heading {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #E30464;
-  display: inline;
-  margin: 10px 4px;
-  cursor: pointer;
 }
