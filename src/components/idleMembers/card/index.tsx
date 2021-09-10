@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}${idleMemberUserName}/img.png`);
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(`${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${idleMemberUserName}/img.png`);
   const assigneeImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
   const getMemberDetails = (name: string) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');
