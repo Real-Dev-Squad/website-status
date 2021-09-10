@@ -14,7 +14,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');
     if (newWindow) newWindow.opener = null;
   };
-  const assigneeImageOnError = (e) => {
+  const assigneeImageOnError = (e: any) => {
     e.target.src = dummyProfile;
   };
   return (
