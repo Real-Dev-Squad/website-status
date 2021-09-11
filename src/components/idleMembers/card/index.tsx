@@ -1,6 +1,8 @@
 import { FC, SyntheticEvent } from 'react';
 import classNames from '@/components/idleMembers/card/card.module.scss';
-import { DUMMY_PROFILE, IMAGE_URL } from '@/components/constants/display-sections.js';
+import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
+
+const IMAGE_URL = process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL;
 
 type Props = {
   idleMemberUserName: string
