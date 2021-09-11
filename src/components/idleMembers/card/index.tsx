@@ -1,21 +1,21 @@
-import { FC } from 'react';
+import { FC, SyntheticEvent } from 'react';
 import classNames from '@/components/idleMembers/card/card.module.scss';
+import { dummyProfile } from '@/components/constants/display-sections.js';
 
-const dummyProfile = 'dummyProfile.png';
-const url = process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL;
+const imgUrl = process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL;
 
 type Props = {
   idleMemberUserName: string
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const assigneeProfilePic = (name: string) => `${url}/${name}/img.png`;
+  const assigneeProfilePic = (name: string) => `${imgUrl}/${name}/img.png`;
   const getMemberDetails = (name: string) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');
     if (newWindow) newWindow.opener = null;
   };
-  const assigneeImageOnError = (e: any) => {
-    e.target.src = dummyProfile;
+  const assigneeImageOnError = (events: SyntheticEvent<HTMLImageElement>) => {
+    events.currentTarget.src = dummyProfile;
   };
   return (
     <div
