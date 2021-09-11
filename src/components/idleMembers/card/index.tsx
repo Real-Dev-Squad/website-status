@@ -1,6 +1,6 @@
 import { FC, SyntheticEvent } from 'react';
 import classNames from '@/components/idleMembers/card/card.module.scss';
-import { dummyProfile } from '@/components/constants/display-sections.js';
+import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
 
 const imgUrl = process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL;
 
@@ -15,7 +15,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
     if (newWindow) newWindow.opener = null;
   };
   const assigneeImageOnError = (e: SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = dummyProfile;
+    e.currentTarget.src = DUMMY_PROFILE;
   };
   return (
     <div
