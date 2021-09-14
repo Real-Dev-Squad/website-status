@@ -28,6 +28,9 @@ async function updateCardContent(cardDetails: any) {
   } catch (err) {
     error = err;
   }
+
+  console.log('Response', response);
+  console.log('Error', error);
 }
 
 function renderCardList(tasks: task[], edit: string) {
