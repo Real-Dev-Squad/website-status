@@ -6,14 +6,49 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
-function renderCardList(tasks: task[]) {
-  return tasks.map((item: task) => <Card content={item} key={item.id} />);
+function renderCardList(tasks: task[], edit: string) {
+  return tasks.map((item: task) => (
+    <Card
+      content={item}
+      key={item.id}
+      shouldEdit={edit}
+      onContentChange={async (newDetails: any) => updateCardContent(newDetails)}
+    />
+  ));
+}
+
+async function updateCardContent(cardDetails: any) {
+  let response = {};
+  let error = {};
+  try {
+    response = await axios({
+      method: 'patch',
+      url: `https://api.realdevsquad.com/tasks/${cardDetails.id}`,
+      params: null,
+      data: cardDetails,
+      headers: {
+        'Content-type': 'application/json',
+      },
+      withCredentials: true,
+    });
+  } catch (err) {
+    error = err;
+  }
+
+  console.log('Response', response);
+  console.log('Error', error);
 }
 
 const Index: FC = () => {
+  const router = useRouter();
+  const { query } = router;
+  const { edit } = query;
+
   let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
 
@@ -22,7 +57,7 @@ const Index: FC = () => {
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
-      tasks.sort((a:task, b:task) => +a.endsOn - +b.endsOn);
+      tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -48,7 +83,7 @@ const Index: FC = () => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open title={key} key={key}>
-                  {renderCardList(filteredTask[key])}
+                  {renderCardList(filteredTask[key], edit)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}
