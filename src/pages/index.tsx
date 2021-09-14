@@ -11,17 +11,6 @@ import { useRouter } from 'next/router';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
-function renderCardList(tasks: task[], edit: string) {
-  return tasks.map((item: task) => (
-    <Card
-      content={item}
-      key={item.id}
-      shouldEdit={edit}
-      onContentChange={async (newDetails: any) => updateCardContent(newDetails)}
-    />
-  ));
-}
-
 async function updateCardContent(cardDetails: any) {
   let response = {};
   let error = {};
@@ -39,9 +28,17 @@ async function updateCardContent(cardDetails: any) {
   } catch (err) {
     error = err;
   }
+}
 
-  console.log('Response', response);
-  console.log('Error', error);
+function renderCardList(tasks: task[], edit: string) {
+  return tasks.map((item: task) => (
+    <Card
+      content={item}
+      key={item.id}
+      shouldEdit={edit}
+      onContentChange={async (newDetails: any) => updateCardContent(newDetails)}
+    />
+  ));
 }
 
 const Index: FC = () => {
