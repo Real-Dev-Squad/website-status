@@ -3,7 +3,7 @@
 import { toast as toastify } from 'react-toastify';
 
 const DELAY: number = 3000;
-export enum ToastTypes {
+enum ToastTypes {
   INFO = 'info',
   SUCCESS = 'success',
   WARNING = 'warning',
@@ -17,4 +17,4 @@ const toast = (type: ToastTypes, message: string) => toastify[type](message, {
   draggable: false,
 });
 
-export default toast;
+export { toast, ToastTypes };
