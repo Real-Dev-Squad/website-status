@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
-import { toast } from 'react-toastify';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
@@ -11,6 +11,8 @@ import DroppableComponent from './DroppableComponent';
 type NotFoundErrorProps = {
   message: string,
 };
+
+const { SUCCESS, ERROR } = ToastTypes;
 
 const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   <div className={classNames.emptyArray}>
@@ -27,7 +29,6 @@ const DragDropcontext: FC<dragDropProps> = ({
   refreshData,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
@@ -71,7 +72,6 @@ const DragDropcontext: FC<dragDropProps> = ({
     }
 
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
-      setIsProcessing(true);
       try {
         const taskId = result.combine.droppableId === 'tasks'
           ? result.combine.draggableId
@@ -85,27 +85,19 @@ const DragDropcontext: FC<dragDropProps> = ({
           assignee,
         };
 
-        await fetch({
+        const { requestPromise } = fetch({
           url,
           method: 'patch',
           data,
         });
-        toast.success('Sucessfully Assigned Task', {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-        });
+        await requestPromise;
+        toast(SUCCESS, 'Successfully Assigned Task');
       } catch (error:any) {
         if ('response' in error) {
-          toast.error(error.response.data.message, {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 2000,
-          });
+          toast(ERROR, error.response.data.message);
           return;
         }
-        toast.error(error.message, {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-        });
+        toast(ERROR, error.message);
       } finally {
         refreshData();
       }
@@ -114,10 +106,6 @@ const DragDropcontext: FC<dragDropProps> = ({
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      {isProcessing && (
-        <div className={classNames.statusMessage}>Please wait...</div>
-      )}
-      {!isProcessing && (
       <div className={classNames.flexContainer}>
         <div>
           {taskList.length === 0 ? (
@@ -169,7 +157,6 @@ const DragDropcontext: FC<dragDropProps> = ({
           )}
         </div>
       </div>
-      )}
     </DragDropContext>
   );
 };

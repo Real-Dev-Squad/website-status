@@ -18,6 +18,30 @@ type PullRequestListProps = {
     prType: string;
 };
 
+function getNumberOfCards() {
+  const screenHeight = globalThis.innerHeight;
+  const screenWidth = globalThis.innerWidth;
+  const cardHeight = 147;
+  const minCardWidth = 300;
+  const maxCardsHorizontally = 3;
+  const minCardsHorizontally = 1;
+
+  const cardWidth = ((screenWidth / 4) > minCardWidth)
+    ? (screenWidth / 4)
+    : minCardWidth;
+
+  const checkForSmallDisplays = Math.floor(screenWidth / cardWidth) > minCardsHorizontally
+    ? Math.floor(screenWidth / minCardWidth)
+    : minCardsHorizontally;
+
+  const horizontalNumberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
+    ? checkForSmallDisplays
+    : maxCardsHorizontally;
+
+  const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
+  return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
+}
+
 function ScrollTop() {
   const topMargin = (document.documentElement
     && document.documentElement.scrollTop)
@@ -36,8 +60,8 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [noData, setNoData] = useState(false);
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
-
-  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}`;
+  const numberOfCards = getNumberOfCards();
+  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
   const {
     response,
     error,

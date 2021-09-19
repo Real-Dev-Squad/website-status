@@ -24,7 +24,7 @@
     "axios": "^0.21.1",
     "husky": "^7.0.1",
     "moment": "^2.29.1",
-    "next": "^11.1.0",
+    "next": "^11.1.1",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
