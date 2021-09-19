@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import Card from '@/components/Card/index';
 import details from '@/components/challenges/details';
 import participantsDetails from '@/components/challenges/participants';
-import { toast } from 'react-toastify';
 import { SUBSCRIBE_TO_CHALLENGE_URL } from '@/components/constants/url';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 type ActiveProps = {
   content: {
@@ -37,27 +37,21 @@ const Active: FC<ActiveProps> = ({ content, userId }) => {
   const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
   const subscibeUser = () => {
+    const data = {
+      challenge_id: content.id,
+      user_id: userId,
+    };
+
     fetch(SUBSCRIBE_TO_CHALLENGE_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        challenge_id: content.id,
-        user_id: userId,
-      }),
+      body: JSON.stringify(data),
       credentials: 'include',
     })
       .then((res) => res.json())
       .then((res) => setUserSubscribed(res.is_user_subscribed))
       .catch((err) => {
-        toast.error(err, {
-          position: 'top-center',
-          autoClose: 4000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: false,
-          progress: undefined,
-        });
+        toast(ToastTypes.ERROR, err);
       });
   };
 
@@ -67,7 +61,7 @@ const Active: FC<ActiveProps> = ({ content, userId }) => {
       data={details(content)}
       participants={participantsDetails(content)}
       button={
-        isUserSubscribed ? {
+        !isUserSubscribed ? {
           text: 'I will do this',
           onClick: subscibeUser,
         }
