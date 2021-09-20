@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
-import NavBar from '../navBar';
+import NavBar from '@/components/navBar';
 
 interface Props {
   children?: ReactNode
