@@ -1,7 +1,5 @@
 .navBar {
   width: 100vw;
-  font-size: 1rem;
-  margin: 0 -2em;
   background-color: #1d1283;  
 }
 
@@ -18,6 +16,7 @@
 
 .navBar li .active {
   color: #87d870;
+  border-bottom: 3px solid #87d870;
 }
 
 .navBar li .logo {
@@ -26,14 +25,13 @@
 
 .navBar li a {
   display: block;
-  border-radius: 8px;
   color: #ffffff;
   font-weight: bolder;
   text-align: center;
-  padding: 19px 16px;
+  padding: 20px 16px;
   text-decoration: none;
 }
 
 .navBar li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  color: #87d870;
 }

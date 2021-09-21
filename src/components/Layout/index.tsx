@@ -31,19 +31,20 @@ const Layout: FC<Props> = ({ children }) => {
   return (
     <div className={styles.layout}>
       <NavBar />
-      <div className={styles.header}>
-        {navBarContent('Tasks', '/')}
-        |
-        {navBarContent('Mine', '/mine')}
-        |
-        {navBarContent('DS', '/challenges')}
-        |
-        {navBarContent('Open PRs', '/openPRs')}
-        |
-        {navBarContent('Stale PRs', '/stale-pr')}
-        |
-        {navBarContent('Idle Members', '/idle-members')}
-        {
+      <div className={styles.wrapper}>
+        <div className={styles.header}>
+          {navBarContent('Tasks', '/')}
+          |
+          {navBarContent('Mine', '/mine')}
+          |
+          {navBarContent('DS', '/challenges')}
+          |
+          {navBarContent('Open PRs', '/openPRs')}
+          |
+          {navBarContent('Stale PRs', '/stale-pr')}
+          |
+          {navBarContent('Idle Members', '/idle-members')}
+          {
           (dev)
             && (
               <>
@@ -52,9 +53,10 @@ const Layout: FC<Props> = ({ children }) => {
               </>
             )
         }
+        </div>
+        {children}
+        <Footer />
       </div>
-      {children}
-      <Footer />
     </div>
   );
 };
