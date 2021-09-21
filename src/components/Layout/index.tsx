@@ -55,8 +55,8 @@ const Layout: FC<Props> = ({ children }) => {
         }
         </div>
         {children}
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };
