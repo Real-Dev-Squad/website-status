@@ -20,7 +20,7 @@
 }
 
 .navBar li .logo {
-  padding: 4px;
+  padding: 20px;
 }
 
 .navBar li a {
@@ -28,10 +28,20 @@
   color: #ffffff;
   font-weight: bolder;
   text-align: center;
-  padding: 18px 16px;
+  padding: 35px 25px 10px;
   text-decoration: none;
 }
 
 .navBar li a:hover {
   color: #87d870;
+}
+
+@media screen and (max-width: 500px) {
+  .navBar li .logo {
+    padding: 4px;
+  }
+
+  .navBar li a {
+    padding: 18px 14px;
+  }
 }

@@ -9,7 +9,6 @@ const NavBar = () => (
       <li>
         <a className={styles.logo} href="https://realdevsquad.com"><Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" /></a>
       </li>
-      <li><a href="https://realdevsquad.com">Home</a></li>
       <li><a href="https://welcome.realdevsquad.com/">Welcome</a></li>
       <li><a href="https://www.realdevsquad.com/events.html">Events</a></li>
       <li><a href="https://members.realdevsquad.com/">Members</a></li>
