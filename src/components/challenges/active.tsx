@@ -33,26 +33,29 @@ type ActiveProps = {
   userId: string
 };
 
+const { SUCCESS, ERROR } = ToastTypes;
+
 const Active: FC<ActiveProps> = ({ content, userId }) => {
   const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
-  const subscibeUser = () => {
+  const subscibeUser = async () => {
     const data = {
       challenge_id: content.id,
       user_id: userId,
     };
-
-    fetch(SUBSCRIBE_TO_CHALLENGE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((res) => setUserSubscribed(res.is_user_subscribed))
-      .catch((err) => {
-        toast(ToastTypes.ERROR, err);
+    try {
+      const response = await fetch(SUBSCRIBE_TO_CHALLENGE_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        credentials: 'include',
       });
+      const { isUserSubscribed: subscription } = await response.json();
+      setUserSubscribed(subscription);
+      toast(SUCCESS, 'You have subscribed to the challenge');
+    } catch (error:any) {
+      toast(ERROR, error.message);
+    }
   };
 
   return (
