@@ -6,6 +6,9 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
+import {
+  ACTIVE,
+} from '@/components/constants/task-status';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
@@ -23,6 +26,7 @@ const Index: FC = () => {
     if ('tasks' in response) {
       tasks = response.tasks;
       tasks.sort((a:task, b:task) => +a.endsOn - +b.endsOn);
+      tasks.sort((a:task, b:task) => (a.status > b.status ? 1 : -1));
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -47,7 +51,7 @@ const Index: FC = () => {
           <>
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
-                <Accordion open title={key} key={key}>
+                <Accordion open={(key === ACTIVE)} title={key} key={key}>
                   {renderCardList(filteredTask[key])}
                 </Accordion>
               ))
