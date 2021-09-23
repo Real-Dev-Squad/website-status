@@ -8,6 +8,10 @@ import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
 import {
   ACTIVE,
+  ASSIGNED,
+  COMPLETED,
+  UNASSIGNED,
+  PENDING,
 } from '@/components/constants/task-status';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -26,7 +30,8 @@ const Index: FC = () => {
     if ('tasks' in response) {
       tasks = response.tasks;
       tasks.sort((a:task, b:task) => +a.endsOn - +b.endsOn);
-      tasks.sort((a:task, b:task) => (a.status > b.status ? 1 : -1));
+      const statusOrder = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
+      tasks.sort((a:task, b:task) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
