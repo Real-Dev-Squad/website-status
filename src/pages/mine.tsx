@@ -10,7 +10,14 @@ const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 
 function CardList(tasks: task[]) {
   return tasks.map(
-    (item: task) => <Card content={item} key={item.id} />,
+    (item: task) => (
+      <Card
+        content={item}
+        key={item.id}
+        shouldEdit={false}
+        onContentChange={undefined}
+      />
+    ),
   );
 }
 
