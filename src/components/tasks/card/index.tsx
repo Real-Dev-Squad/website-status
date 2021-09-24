@@ -1,30 +1,35 @@
-import { FC, useState, useEffect } from "react";
-import classNames from "@/components/tasks/card/card.module.scss";
-import task from "@/interfaces/task.type";
-import Image from "next/image";
+import { FC, useState } from 'react';
+import classNames from '@/components/tasks/card/card.module.scss';
+import task from '@/interfaces/task.type';
+import Image from 'next/image';
 import {
   ACTIVE,
   ASSIGNED,
   COMPLETED,
-} from "@/components/constants/task-status";
+  UNASSIGNED,
+} from '@/components/constants/task-status';
 
-const moment = require("moment");
+const moment = require('moment');
 
 type Props = {
   content: task;
+  shouldEdit: boolean;
+  onContentChange: any;
 };
 
-const Card: FC<Props> = ({ content, shouldEdit, onContentChange }) => {
-  // const {
-  //   id, title, endsOn, startedOn, status, assignee,
-  // } = content;
-  const cardDetails = (content);
-
+const Card: FC<Props> = ({
+  content,
+  shouldEdit = false,
+  onContentChange = () => {
+    // eslint-disable-next-line no-console
+    console.error('No function body defined');
+  },
+}) => {
+  const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
-    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
+    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
-  const contributorImageOnError = () =>
-    setAssigneeProfilePic("dummyProfile.png");
+  const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -32,34 +37,59 @@ const Card: FC<Props> = ({ content, shouldEdit, onContentChange }) => {
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
 
-  const statusFontColor =
-    status === ACTIVE || ASSIGNED || COMPLETED ? "#00a337" : "#f83535";
-
-  const iconHeight = "25px";
-  const iconWidth = "25px";
+  const statusFontColor = cardDetails.status === ACTIVE || ASSIGNED || COMPLETED ? '#00a337' : '#f83535';
+  const iconHeight = '25px';
+  const iconWidth = '25px';
 
   const cardClassNames = [classNames.card];
 
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
-    return status !== COMPLETED && timeLeft <= 0;
+    return cardDetails.status !== COMPLETED && cardDetails.status !== UNASSIGNED && timeLeft <= 0;
   }
 
-  function stripHtml(html) {
-    let tmp = document.createElement("DIV");
+  function stripHtml(html: string) {
+    const tmp = document.createElement('DIV');
     tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    return tmp.textContent || tmp.innerText || '';
   }
 
-  function handleTitleChange(event, changedDetails) {
-    if (event.key === "Enter") {
+  function handleTitleChange(event: any) {
+    if (event.key === 'Enter') {
       const toChange = cardDetails;
-      toChange.[changedDetails]= stripHtml(event.target.innerHTML);
+      toChange.title = stripHtml(event.target.innerHTML);
       onContentChange(toChange);
     }
   }
-
+  function handleStatusChange(event: any) {
+    if (event.key === 'Enter') {
+      const toChange = cardDetails;
+      toChange.status = stripHtml(event.target.innerHTML);
+      onContentChange(toChange);
+    }
+  }
+  function handleDueDateChange(event: any) {
+    if (event.key === 'Enter') {
+      const toChange = cardDetails;
+      toChange.endsOn = stripHtml(event.target.innerHTML);
+      onContentChange(toChange);
+    }
+  }
+  function handleStartDateChange(event: any) {
+    if (event.key === 'Enter') {
+      const toChange = cardDetails;
+      toChange.startedOn = stripHtml(event.target.innerHTML);
+      onContentChange(toChange);
+    }
+  }
+  function handleAssigneeChange(event: any) {
+    if (event.key === 'Enter') {
+      const toChange = cardDetails;
+      toChange.assignee = stripHtml(event.target.innerHTML);
+      onContentChange(toChange);
+    }
+  }
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
@@ -74,7 +104,9 @@ const Card: FC<Props> = ({ content, shouldEdit, onContentChange }) => {
         <span
           className={classNames.cardTitle}
           contentEditable={shouldEdit}
-          onKeyPress={(e) => handleTitleChange(e, 'title')}
+          onKeyPress={(e) => handleTitleChange(e)}
+          role="button"
+          tabIndex={0}
         >
           {cardDetails.title}
         </span>
@@ -83,8 +115,10 @@ const Card: FC<Props> = ({ content, shouldEdit, onContentChange }) => {
           <span
             className={classNames.cardStatusFont}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleTitleChange(e, 'status')}
+            onKeyPress={(e) => handleStatusChange(e)}
             style={{ color: statusFontColor }}
+            role="button"
+            tabIndex={0}
           >
             {cardDetails.status}
           </span>
@@ -99,22 +133,38 @@ const Card: FC<Props> = ({ content, shouldEdit, onContentChange }) => {
             height={iconHeight}
           />
           <span className={classNames.cardSpecialFont}>Due Date</span>
-          <span className={classNames.cardStrongFont}
-          contentEditable={shouldEdit}
-          onKeyPress={(e) => handleTitleChange(e, 'fromNowEndsOn')}>{fromNowEndsOn}</span>
+          <span
+            className={classNames.cardStrongFont}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleDueDateChange(e)}
+            role="button"
+            tabIndex={0}
+          >
+            {fromNowEndsOn}
+          </span>
         </span>
       </div>
       <div className={classNames.cardItems}>
-        <span className={classNames.cardSpecialFont}
-        contentEditable={shouldEdit}
-        onKeyPress={(e) => handleTitleChange(e, 'fromNowStartedOn')}>
-          Started {fromNowStartedOn}
+        <span
+          className={classNames.cardSpecialFont}
+          contentEditable={shouldEdit}
+          onKeyPress={(e) => handleStartDateChange(e)}
+          role="button"
+          tabIndex={0}
+        >
+          Started
+          {' '}
+          {fromNowStartedOn}
         </span>
         <span>
           <span className={classNames.cardSpecialFont}>Assignee:</span>
-          <span className={classNames.cardStrongFont}
-          contentEditable={shouldEdit}
-          onKeyPress={(e) => handleTitleChange(e, 'assignee')}>
+          <span
+            className={classNames.cardStrongFont}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleAssigneeChange(e)}
+            role="button"
+            tabIndex={0}
+          >
             {cardDetails.assignee}
           </span>
           <span>
@@ -130,4 +180,5 @@ const Card: FC<Props> = ({ content, shouldEdit, onContentChange }) => {
     </div>
   );
 };
+
 export default Card;
