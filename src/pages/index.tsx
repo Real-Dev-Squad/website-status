@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
@@ -28,7 +27,11 @@ async function updateCardContent(cardDetails: any) {
     });
   } catch (err:any) {
     error = err;
+    // eslint-disable-next-line no-console
+    console.log('Error', error);
   }
+  // eslint-disable-next-line no-console
+  console.log('Response', response);
 }
 
 function renderCardList(tasks: task[], edit: boolean) {
