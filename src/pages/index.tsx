@@ -15,6 +15,7 @@ async function updateCardContent(cardDetails: any) {
   let response = {};
   let error = {};
   try {
+    // eslint-disable-next-line no-unused-vars
     response = await axios({
       method: 'patch',
       url: `https://api.realdevsquad.com/tasks/${cardDetails.id}`,
@@ -25,15 +26,13 @@ async function updateCardContent(cardDetails: any) {
       },
       withCredentials: true,
     });
-  } catch (err) {
+  } catch (err:any) {
+    // eslint-disable-next-line no-unused-vars
     error = err;
   }
-
-  console.log('Response', response);
-  console.log('Error', error);
 }
 
-function renderCardList(tasks: task[], edit: string) {
+function renderCardList(tasks: task[], edit: boolean) {
   return tasks.map((item: task) => (
     <Card
       content={item}
@@ -47,7 +46,7 @@ function renderCardList(tasks: task[], edit: string) {
 const Index: FC = () => {
   const router = useRouter();
   const { query } = router;
-  const { edit } = query;
+  const edit = !!query.edit;
 
   let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
