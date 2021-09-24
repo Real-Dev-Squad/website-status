@@ -15,7 +15,6 @@ async function updateCardContent(cardDetails: any) {
   let response = {};
   let error = {};
   try {
-    // eslint-disable-next-line no-unused-vars
     response = await axios({
       method: 'patch',
       url: `https://api.realdevsquad.com/tasks/${cardDetails.id}`,
@@ -27,9 +26,11 @@ async function updateCardContent(cardDetails: any) {
       withCredentials: true,
     });
   } catch (err:any) {
-    // eslint-disable-next-line no-unused-vars
     error = err;
   }
+
+  console.log('Response', response);
+  console.log('Error', error);
 }
 
 function renderCardList(tasks: task[], edit: boolean) {
