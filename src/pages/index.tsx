@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
@@ -28,9 +29,6 @@ async function updateCardContent(cardDetails: any) {
   } catch (err:any) {
     error = err;
   }
-
-  console.log('Response', response);
-  console.log('Error', error);
 }
 
 function renderCardList(tasks: task[], edit: boolean) {
