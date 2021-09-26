@@ -15,7 +15,7 @@ import {
 } from '@/components/constants/task-status';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-
+const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
 function renderCardList(tasks: task[]) {
   return tasks.map((item: task) => <Card content={item} key={item.id} />);
 }
@@ -30,8 +30,8 @@ const Index: FC = () => {
     if ('tasks' in response) {
       tasks = response.tasks;
       tasks.sort((a:task, b:task) => +a.endsOn - +b.endsOn);
-      const statusOrder = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
-      tasks.sort((a:task, b:task) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status));
+      tasks.sort((a:task, b:task) => STATUS_ORDER.indexOf(a.status)
+      - STATUS_ORDER.indexOf(b.status));
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
