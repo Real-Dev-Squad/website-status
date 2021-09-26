@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
+import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
-import Image from 'next/image';
 import {
   ACTIVE,
   ASSIGNED,

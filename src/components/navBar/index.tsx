@@ -1,5 +1,5 @@
-import styles from '@/components/navBar/navBar.module.scss';
 import Image from 'next/image';
+import styles from '@/components/navBar/navBar.module.scss';
 
 const RDSLogo = '/RDSLogo.png';
 
