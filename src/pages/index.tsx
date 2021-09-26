@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 
 async function updateCardContent(cardDetails: any) {
   let response = {};
@@ -48,13 +49,11 @@ function renderCardList(tasks: task[], edit: boolean) {
 const Index: FC = () => {
   const router = useRouter();
   const { query } = router;
-  const edit = !!query.edit;
-
   let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
-
   const { response, error, isLoading } = useFetch(TASKS_URL);
-
+  const [roles, setRoles] = useState(false);
+  const edit = !!query.edit && roles;
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
@@ -71,6 +70,22 @@ const Index: FC = () => {
     }
   }, [isLoading, response]);
 
+  useEffect(() => {
+    const url = SELF_URL;
+    const fetchData = async () => {
+      try {
+        const r_esponse = await fetch(url);
+        const json = await r_esponse.json();
+        const permission = json.user.roles.admin && json.user.roles.super_user;
+        setRoles(permission || false);
+      } catch (error_) {
+        // eslint-disable-next-line no-console
+        console.log('error', error_);
+      }
+    };
+
+    fetchData();
+  }, [isLoading, response]);
   return (
     <Layout>
       <Head title="Tasks" />
