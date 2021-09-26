@@ -19,12 +19,12 @@ Active.args = {
     dueDate: '8 days',
     subtasks: [
       {
-        key: 'task-1',
+        id: 'task-1',
         title: 'Task 1',
         status: 'Active',
       },
       {
-        key: 'task-2',
+        id: 'task-2',
         title: 'Task 2',
         status: 'Active',
       },
@@ -56,12 +56,12 @@ InActive.args = {
     dueDate: '8 days',
     subtasks: [
       {
-        key: 'task-1',
+        id: 'task-1',
         title: 'Task 1',
         status: 'Active',
       },
       {
-        key: 'task-2',
+        id: 'task-2',
         title: 'Task 2',
         status: 'Active',
       },
