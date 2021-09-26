@@ -1,4 +1,6 @@
 import { FC, useState, useEffect } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -6,8 +8,6 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
-import axios from 'axios';
-import { useRouter } from 'next/router';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
