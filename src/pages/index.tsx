@@ -76,8 +76,9 @@ const Index: FC = () => {
       try {
         const r_esponse = await fetch(url);
         const json = await r_esponse.json();
-        const permission = json.user.roles.admin && json.user.roles.super_user;
-        setRoles(permission || false);
+        if (json.user.roles.admin && json.user.roles.super_user === true) {
+          setRoles(true);
+        }
       } catch (error_) {
         // eslint-disable-next-line no-console
         console.log('error', error_);
