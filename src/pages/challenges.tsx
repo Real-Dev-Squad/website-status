@@ -9,10 +9,13 @@ import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
 
 const CHALLENGES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges`;
+const USER_SELF = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+// const CHALLENGES_URL = 'https://staging-api.realdevsquad.com/challenges';
+// const USER_SELF = 'https://staging-api.realdevsquad.com/users/self';
 
-const renderCardList = (challengeSection: challenge['content'], key:string) => {
+const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {
-    return challengeSection.map((item) => <Active content={item} key={item.id} />);
+    return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} />);
   }
   return challengeSection.map((item) => <Complete content={item} key={item.id} />);
 };
@@ -23,7 +26,8 @@ const Challenges: FC = () => {
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
 
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
-
+  const { response: user } = useFetch(USER_SELF);
+  // console.log(process.env);
   useEffect(() => {
     if ('challenges' in response) {
       challenges = response.challenges;
@@ -68,7 +72,7 @@ const Challenges: FC = () => {
                     filteredChallenge[key].length > 0
                     && (
                     <Accordion open title={key} key={key}>
-                      {renderCardList(filteredChallenge[key], key)}
+                      {renderCardList(filteredChallenge[key], key, user.id)}
                     </Accordion>
                     )
 

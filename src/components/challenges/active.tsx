@@ -3,6 +3,9 @@ import Card from '@/components/Card/index';
 import details from '@/components/challenges/details';
 import participantsDetails from '@/components/challenges/participants';
 
+const SUBSCRIBE_TO_CHALLENGE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges/subscribe`;
+// const SUBSCRIBE_TO_CHALLENGE_URL = 'https://staging-api.realdevsquad.com/challenges/subscribe';
+
 type ActiveProps = {
   content: {
     id: number;
@@ -27,10 +30,11 @@ type ActiveProps = {
     }[];
     is_active: boolean;
     is_user_subscribed: number;
-  };
+  },
+  userId: string
 };
 
-const Active: FC<ActiveProps> = ({ content }) => {
+const Active: FC<ActiveProps> = ({ content, userId }) => {
   const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
   return (
@@ -43,7 +47,20 @@ const Active: FC<ActiveProps> = ({ content }) => {
           text: 'I will do this',
           onClick: () => {
             if (!isUserSubscribed) {
-              (setUserSubscribed(1));
+              // console.log(`${isUserSubscribed} has subscribed to the challenge`);
+              fetch(SUBSCRIBE_TO_CHALLENGE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  challenge_id: content.id,
+                  user_id: userId,
+                }),
+                credentials: 'include',
+              })
+                .then((res) => res.json())
+                .then((res) => console.log(res));
+              // console.log(is_user_subscribed);
+              setUserSubscribed(1);
             }
           },
         }
