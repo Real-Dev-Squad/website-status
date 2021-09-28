@@ -55,38 +55,10 @@ const Card: FC<Props> = ({
     return tmp.textContent || tmp.innerText || '';
   }
 
-  function handleTitleChange(event: any) {
+  function handleChange(event: any, changedProperty: string) {
     if (event.key === 'Enter') {
       const toChange = cardDetails;
-      toChange.title = stripHtml(event.target.innerHTML);
-      onContentChange(toChange);
-    }
-  }
-  function handleStatusChange(event: any) {
-    if (event.key === 'Enter') {
-      const toChange = cardDetails;
-      toChange.status = stripHtml(event.target.innerHTML);
-      onContentChange(toChange);
-    }
-  }
-  function handleDueDateChange(event: any) {
-    if (event.key === 'Enter') {
-      const toChange = cardDetails;
-      toChange.endsOn = stripHtml(event.target.innerHTML);
-      onContentChange(toChange);
-    }
-  }
-  function handleStartDateChange(event: any) {
-    if (event.key === 'Enter') {
-      const toChange = cardDetails;
-      toChange.startedOn = stripHtml(event.target.innerHTML);
-      onContentChange(toChange);
-    }
-  }
-  function handleAssigneeChange(event: any) {
-    if (event.key === 'Enter') {
-      const toChange = cardDetails;
-      toChange.assignee = stripHtml(event.target.innerHTML);
+      toChange[changedProperty] = stripHtml(event.target.innerHTML);
       onContentChange(toChange);
     }
   }
@@ -104,7 +76,7 @@ const Card: FC<Props> = ({
         <span
           className={classNames.cardTitle}
           contentEditable={shouldEdit}
-          onKeyPress={(e) => handleTitleChange(e)}
+          onKeyPress={(e) => handleChange(e, 'title')}
           role="button"
           tabIndex={0}
         >
@@ -115,7 +87,7 @@ const Card: FC<Props> = ({
           <span
             className={classNames.cardStatusFont}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleStatusChange(e)}
+            onKeyPress={(e) => handleChange(e, 'status')}
             style={{ color: statusFontColor }}
             role="button"
             tabIndex={0}
@@ -136,7 +108,7 @@ const Card: FC<Props> = ({
           <span
             className={classNames.cardStrongFont}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleDueDateChange(e)}
+            onKeyPress={(e) => handleChange(e, 'endsOn')}
             role="button"
             tabIndex={0}
           >
@@ -148,7 +120,7 @@ const Card: FC<Props> = ({
         <span
           className={classNames.cardSpecialFont}
           contentEditable={shouldEdit}
-          onKeyPress={(e) => handleStartDateChange(e)}
+          onKeyPress={(e) => handleChange(e, 'startedOn')}
           role="button"
           tabIndex={0}
         >
@@ -161,7 +133,7 @@ const Card: FC<Props> = ({
           <span
             className={classNames.cardStrongFont}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleAssigneeChange(e)}
+            onKeyPress={(e) => handleChange(e, 'assignee')}
             role="button"
             tabIndex={0}
           >
