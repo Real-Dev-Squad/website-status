@@ -86,7 +86,7 @@ const Index: FC = () => {
     };
 
     fetchData();
-  }, [isLoading, response]);
+  }, []);
   return (
     <Layout>
       <Head title="Tasks" />
