@@ -55,9 +55,9 @@ const Card: FC<Props> = ({
     return tmp.textContent || tmp.innerText || '';
   }
 
-  function handleChange(event: any, changedProperty: string) {
+  function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     if (event.key === 'Enter') {
-      const toChange = cardDetails;
+      const toChange : any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
       onContentChange(toChange);
     }
