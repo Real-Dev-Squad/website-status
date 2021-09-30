@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
@@ -8,39 +7,29 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
-import {
-  ACTIVE,
-  ASSIGNED,
-  COMPLETED,
-  UNASSIGNED,
-  PENDING,
-} from '@/components/constants/task-status';
+import fetch from '@/helperFunctions/fetch';
+import { toast } from '@/helperFunctions/toast';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/ankush`;
 
-async function updateCardContent(cardDetails: any) {
-  let response = {};
-  let error = {};
+async function updateCardContent(cardDetails: task) {
   try {
-    response = await axios({
+    const response = fetch({
+      url: `${TASKS_URL}/${cardDetails.id}`,
       method: 'patch',
-      url: `https://api.realdevsquad.com/tasks/${cardDetails.id}`,
       params: null,
       data: cardDetails,
       headers: {
         'Content-type': 'application/json',
       },
-      withCredentials: true,
     });
-  } catch (err:any) {
-    error = err;
     // eslint-disable-next-line no-console
-    console.log('Error', error);
+    console.log('Response', response);
+  } catch (err:any) {
+    // eslint-disable-next-line no-console
+    console.log('Toast', toast);
   }
-  // eslint-disable-next-line no-console
-  console.log('Response', response);
 }
 
 function renderCardList(tasks: task[], edit: boolean) {
@@ -65,9 +54,7 @@ const Index: FC = () => {
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
-      tasks.sort((a:task, b:task) => +a.endsOn - +b.endsOn);
-      tasks.sort((a:task, b:task) => STATUS_ORDER.indexOf(a.status)
-      - STATUS_ORDER.indexOf(b.status));
+      tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -84,9 +71,11 @@ const Index: FC = () => {
     const url = SELF_URL;
     const fetchData = async () => {
       try {
-        const r_esponse = await fetch(url);
-        const json = await r_esponse.json();
-        if (json.user.roles.admin && json.user.roles.super_user === true) {
+        const r_esponse = fetch({ url });
+        const fetchPromise = await r_esponse.requestPromise;
+        const adminUser :boolean = fetchPromise.data.user.roles.admin;
+        const superUser :boolean = fetchPromise.data.user.roles.super_user;
+        if (adminUser || superUser === true) {
           setRoles(true);
         }
       } catch (error_) {
@@ -109,8 +98,8 @@ const Index: FC = () => {
           <>
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
-                <Accordion open={(key === ACTIVE)} title={key} key={key}>
-                  {renderCardList(filteredTask[key])}
+                <Accordion open title={key} key={key}>
+                  {renderCardList(filteredTask[key], edit)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}
