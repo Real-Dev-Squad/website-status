@@ -11,6 +11,11 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  padding-top: 10px;
+}
+
+.wrapper {
+  margin: 0 2em;
 }
 
 .link {
@@ -25,24 +30,4 @@
 
 .active {
   color: #E30464;
-}
-
-.rdsHeader{
-  display: flex;  
-  align-self: flex-start; 
-}
-
-.logo {
-  width: 3rem;
-  padding: 0.1rem;
-  cursor: pointer;
-}
-
-.heading {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #E30464;
-  display: inline;
-  margin: 10px 4px;
-  cursor: pointer;
 }

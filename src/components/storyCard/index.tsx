@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import styles from '@/components/storyCard/storyCard.module.scss';
 
-type TaskProps = {
-  key: string,
+interface TaskProps {
+  id: string,
   title: string,
   status: string,
 }
@@ -28,8 +28,8 @@ export type Props = {
   }
 }
 
-const Task: FC<TaskProps> = ({ title, status }) => (
-  <div className={styles.subtask}>
+const Task: FC<TaskProps> = ({ id, title, status }) => (
+  <div key={id} className={styles.subtask}>
     <span className={styles.subtaskTitle}>{title}</span>
     <span className={styles.subtaskStatus}>{status}</span>
   </div>
@@ -76,7 +76,9 @@ const StoryCard: FC<Props> = ({ data }) => {
         </div>
         <div className={styles.subtasks}>
           {subtasks.map((task) => (
-            <Task title={task.title} key={task.key} status={task.status} />
+            <Fragment key={task.id}>
+              <Task id={task.id} title={task.title} status={task.status} />
+            </Fragment>
           ))}
         </div>
         <div className={styles.dateInfo}>
