@@ -1,34 +1,42 @@
-import { FC, useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import Card from "@/components/tasks/card";
-import useFetch from "@/hooks/useFetch";
-import classNames from "@/styles/tasks.module.scss";
-import task from "@/interfaces/task.type";
-import Accordion from "@/components/Accordion";
-import fetch from "@/helperFunctions/fetch";
-import { toast } from "@/helperFunctions/toast";
+import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import Card from '@/components/tasks/card';
+import useFetch from '@/hooks/useFetch';
+import classNames from '@/styles/tasks.module.scss';
+import task from '@/interfaces/task.type';
+import Accordion from '@/components/Accordion';
+import fetch from '@/helperFunctions/fetch';
+import { toast } from '@/helperFunctions/toast';
+import {
+  ACTIVE,
+  ASSIGNED,
+  COMPLETED,
+  UNASSIGNED,
+  PENDING,
+} from '@/components/constants/task-status';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+const SELF_URL = 'https://api.realdevsquad.com/users/self';
+const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
 
 async function updateCardContent(cardDetails: task) {
   try {
     const response = fetch({
       url: `${TASKS_URL}/${cardDetails.id}`,
-      method: "patch",
+      method: 'patch',
       params: null,
       data: cardDetails,
       headers: {
-        "Content-type": "application/json",
+        'Content-type': 'application/json',
       },
     });
     // eslint-disable-next-line no-console
-    console.log("Response", response);
-  } catch (err: any) {
+    console.log('Response', response);
+  } catch (err:any) {
     // eslint-disable-next-line no-console
-    console.log("Toast", toast);
+    console.log('Toast', toast);
   }
 }
 
@@ -52,9 +60,11 @@ const Index: FC = () => {
   const [roles, setRoles] = useState(false);
   const edit = !!query.edit && roles;
   useEffect(() => {
-    if ("tasks" in response) {
+    if ('tasks' in response) {
       tasks = response.tasks;
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
+      tasks.sort((a:task, b:task) => STATUS_ORDER.indexOf(a.status)
+      - STATUS_ORDER.indexOf(b.status));
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -73,14 +83,14 @@ const Index: FC = () => {
       try {
         const r_esponse = fetch({ url });
         const fetchPromise = await r_esponse.requestPromise;
-        const adminUser: boolean = fetchPromise.data.user.roles.admin;
-        const superUser: boolean = fetchPromise.data.user.roles.super_user;
+        const adminUser :boolean = fetchPromise.data.user.roles.admin;
+        const superUser :boolean = fetchPromise.data.user.roles.super_user;
         if (adminUser || superUser === true) {
           setRoles(true);
         }
       } catch (error_) {
         // eslint-disable-next-line no-console
-        console.log("error", error_);
+        console.log('error');
       }
     };
 
@@ -98,11 +108,11 @@ const Index: FC = () => {
           <>
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
-                  <Accordion open title={key} key={key}>
-                    {renderCardList(filteredTask[key], edit)}
-                  </Accordion>
-                ))
-              : !error && "No Tasks Found"}
+                <Accordion open={(key === ACTIVE)} title={key} key={key}>
+                  {renderCardList(filteredTask[key], edit)}
+                </Accordion>
+              ))
+              : !error && 'No Tasks Found'}
           </>
         )}
       </div>
