@@ -7,7 +7,8 @@ import Accordion from '@/components/Accordion';
 import useFetch from '@/hooks/useFetch';
 import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
-import { CHALLENGES_URL, USER_SELF } from '@/components/constants/url';
+import { CHALLENGES_URL } from '@/components/constants/url';
+import userData from '@/helperFunctions/getUser';
 
 const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {
@@ -20,10 +21,13 @@ const Challenges: FC = () => {
   let challenges: challenge['content'] = [];
 
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
-
+  const [user, setUser] = useState<any>({});
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
-  const { response: user } = useFetch(USER_SELF);
+
   useEffect(() => {
+    (async () => {
+      setUser(await userData);
+    })();
     if ('challenges' in response) {
       challenges = response.challenges;
       const challengeMap: any = [];
