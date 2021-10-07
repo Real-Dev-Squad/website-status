@@ -19,7 +19,7 @@ import {
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-const SELF_URL = 'https://api.realdevsquad.com/users/self';
+const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
 
 async function updateCardContent(cardDetails: task) {
