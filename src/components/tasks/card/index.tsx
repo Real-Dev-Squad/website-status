@@ -59,6 +59,11 @@ const Card: FC<Props> = ({
     if (event.key === 'Enter') {
       const toChange : any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
+      // eslint-disable-next-line no-constant-condition
+      if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
+        const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime();
+        toChange[changedProperty] = toTimeStamp;
+      }
       onContentChange(toChange);
     }
   }

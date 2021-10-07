@@ -8,7 +8,7 @@ import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
 import fetch from '@/helperFunctions/fetch';
-import { toast } from '@/helperFunctions/toast';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
   ACTIVE,
   ASSIGNED,
@@ -17,35 +17,35 @@ import {
   PENDING,
 } from '@/components/constants/task-status';
 
+const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const SELF_URL = 'https://api.realdevsquad.com/users/self';
 const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
 
 async function updateCardContent(cardDetails: task) {
   try {
-    const response = fetch({
+    const { requestPromise } = fetch({
       url: `${TASKS_URL}/${cardDetails.id}`,
       method: 'patch',
-      params: null,
       data: cardDetails,
-      headers: {
-        'Content-type': 'application/json',
-      },
     });
-    // eslint-disable-next-line no-console
-    console.log('Response', response);
+    await requestPromise;
+    toast(SUCCESS, 'Changes have been saved !');
   } catch (err:any) {
-    // eslint-disable-next-line no-console
-    console.log('Toast', toast);
+    if ('response' in err) {
+      toast(ERROR, err.response.data.message);
+      return;
+    }
+    toast(ERROR, err.message);
   }
 }
 
-function renderCardList(tasks: task[], edit: boolean) {
+function renderCardList(tasks: task[], isEditable: boolean) {
   return tasks.map((item: task) => (
     <Card
       content={item}
       key={item.id}
-      shouldEdit={edit}
+      shouldEdit={isEditable}
       onContentChange={async (newDetails: any) => updateCardContent(newDetails)}
     />
   ));
@@ -57,8 +57,8 @@ const Index: FC = () => {
   let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [roles, setRoles] = useState(false);
-  const edit = !!query.edit && roles;
+  const [isUserAuthorized, setisUserAuthorized] = useState(false);
+  const isEditable = !!query.edit && isUserAuthorized;
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
@@ -78,22 +78,20 @@ const Index: FC = () => {
   }, [isLoading, response]);
 
   useEffect(() => {
-    const url = SELF_URL;
     const fetchData = async () => {
       try {
-        const r_esponse = fetch({ url });
-        const fetchPromise = await r_esponse.requestPromise;
-        const adminUser :boolean = fetchPromise.data.user.roles.admin;
-        const superUser :boolean = fetchPromise.data.user.roles.super_user;
-        if (adminUser || superUser === true) {
-          setRoles(true);
-        }
-      } catch (error_) {
-        // eslint-disable-next-line no-console
-        console.log('error');
+        const responseForEdit = fetch({ url: SELF_URL });
+        const fetchPromise = await responseForEdit.requestPromise;
+        const userRoles = {
+          adminUser: fetchPromise?.data?.user?.roles?.admin,
+          superUser: fetchPromise?.data?.user?.roles?.super_user,
+        };
+        const { adminUser, superUser } = userRoles;
+        setisUserAuthorized(adminUser || superUser);
+      } catch (err: any) {
+        toast(ERROR, err.message);
       }
     };
-
     fetchData();
   }, []);
   return (
@@ -109,7 +107,7 @@ const Index: FC = () => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(key === ACTIVE)} title={key} key={key}>
-                  {renderCardList(filteredTask[key], edit)}
+                  {renderCardList(filteredTask[key], isEditable)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}
