@@ -8,6 +8,8 @@
   border-bottom-style: solid;
   border-bottom-color: #d9d9d9;
   border-bottom-width: 1px;
+  border: solid #fff 0px;
+  box-shadow: 0 4px 8px 0 #00000033, 0 6px 20px 0 #00000030;
 }
 
 .cardItems {
@@ -55,6 +57,7 @@
 }
 
 .overdueTask {
-  border: solid red 2px;
-  background-color: #ffebee;
+  border: solid #c51f1f 2px;
+  background-color: rgba(180, 7, 7, 0.1);;
+  box-shadow: 0 4px 8px 0 #e6cece33, 0 6px 20px 0 #a5000030;
 }
