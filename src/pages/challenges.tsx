@@ -26,7 +26,7 @@ const Challenges: FC = () => {
 
   useEffect(() => {
     (async () => {
-      setUser(await userData);
+      setUser(await userData());
     })();
     if ('challenges' in response) {
       challenges = response.challenges;
