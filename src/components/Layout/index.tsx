@@ -9,10 +9,8 @@ interface Props {
   children?: ReactNode
 }
 
-const navBarContent = (title: string, refUrl: string) => {
-  const router = useRouter();
-
-  const linkClasses = `${styles.link} ${router.pathname === refUrl ? styles.active : ''}`;
+const navBarContent = (title: string, refUrl: string, isActive: boolean = false) => {
+  const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;
 
   return (
     <Link href={refUrl}>
@@ -33,17 +31,17 @@ const Layout: FC<Props> = ({ children }) => {
       <NavBar />
       <div className={styles.wrapper}>
         <div className={styles.header}>
-          {navBarContent('Tasks', '/')}
+          {navBarContent('Tasks', '/', router.pathname === '/')}
           |
-          {navBarContent('Mine', '/mine')}
+          {navBarContent('Mine', '/mine', router.pathname === '/mine')}
           |
-          {navBarContent('DS', '/challenges')}
+          {navBarContent('DS', '/challenges', router.pathname === '/challenges')}
           |
-          {navBarContent('Open PRs', '/openPRs')}
+          {navBarContent('Open PRs', '/openPRs', router.pathname === '/openPRs')}
           |
-          {navBarContent('Stale PRs', '/stale-pr')}
+          {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
           |
-          {navBarContent('Idle Members', '/idle-members')}
+          {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
           {
           (dev)
             && (
