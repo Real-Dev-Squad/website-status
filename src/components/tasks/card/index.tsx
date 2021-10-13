@@ -54,13 +54,17 @@ const Card: FC<Props> = ({
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     if (event.key === 'Enter') {
-      const toChange : any = cardDetails;
+      const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
+
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
-        const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime();
+        const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
-      onContentChange(toChange);
+
+      onContentChange(toChange.id, {
+        [changedProperty]: toChange[changedProperty],
+      });
     }
   }
   if (isTaskOverdue()) {
@@ -69,9 +73,9 @@ const Card: FC<Props> = ({
   return (
     <div
       className={`
-    ${classNames.card}
-    ${isTaskOverdue() && classNames.overdueTask}
-`}
+        ${classNames.card}
+        ${isTaskOverdue() && classNames.overdueTask}
+    `}
     >
       <div className={classNames.cardItems}>
         <span

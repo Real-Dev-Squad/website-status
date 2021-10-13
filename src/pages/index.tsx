@@ -22,16 +22,16 @@ const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
 
-async function updateCardContent(cardDetails: task) {
+async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
-      url: `${TASKS_URL}/${cardDetails.id}`,
+      url: `${TASKS_URL}/${id}`,
       method: 'patch',
       data: cardDetails,
     });
     await requestPromise;
     toast(SUCCESS, 'Changes have been saved !');
-  } catch (err:any) {
+  } catch (err: any) {
     if ('response' in err) {
       toast(ERROR, err.response.data.message);
       return;
@@ -46,7 +46,7 @@ function renderCardList(tasks: task[], isEditable: boolean) {
       content={item}
       key={item.id}
       shouldEdit={isEditable}
-      onContentChange={async (newDetails: any) => updateCardContent(newDetails)}
+      onContentChange={async (id: string, newDetails: any) => updateCardContent(id, newDetails)}
     />
   ));
 }
@@ -63,8 +63,8 @@ const Index: FC = () => {
     if ('tasks' in response) {
       tasks = response.tasks;
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-      tasks.sort((a:task, b:task) => STATUS_ORDER.indexOf(a.status)
-      - STATUS_ORDER.indexOf(b.status));
+      tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
+        - STATUS_ORDER.indexOf(b.status));
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -80,11 +80,11 @@ const Index: FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseForEdit = fetch({ url: SELF_URL });
-        const fetchPromise = await responseForEdit.requestPromise;
+        const { requestPromise } = fetch({ url: SELF_URL });
+        const { data } = await requestPromise;
         const userRoles = {
-          adminUser: fetchPromise?.data?.user?.roles?.admin,
-          superUser: fetchPromise?.data?.user?.roles?.super_user,
+          adminUser: data.roles?.admin,
+          superUser: data.roles?.super_user,
         };
         const { adminUser, superUser } = userRoles;
         setIsUserAuthorized(adminUser || superUser);
@@ -94,6 +94,7 @@ const Index: FC = () => {
     };
     fetchData();
   }, []);
+
   return (
     <Layout>
       <Head title="Tasks" />
