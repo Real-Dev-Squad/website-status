@@ -20,10 +20,7 @@ type Props = {
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
-  onContentChange = () => {
-    // eslint-disable-next-line no-console
-    console.error('No function body defined');
-  },
+  onContentChange = () => undefined,
 }) => {
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
@@ -59,7 +56,6 @@ const Card: FC<Props> = ({
     if (event.key === 'Enter') {
       const toChange : any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
-      // eslint-disable-next-line no-constant-condition
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime();
         toChange[changedProperty] = toTimeStamp;

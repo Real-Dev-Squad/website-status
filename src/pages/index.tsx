@@ -57,8 +57,8 @@ const Index: FC = () => {
   let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [isUserAuthorized, setisUserAuthorized] = useState(false);
-  const isEditable = !!query.edit && isUserAuthorized;
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const isEditable = !!query.edit && IsUserAuthorized;
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
@@ -87,7 +87,7 @@ const Index: FC = () => {
           superUser: fetchPromise?.data?.user?.roles?.super_user,
         };
         const { adminUser, superUser } = userRoles;
-        setisUserAuthorized(adminUser || superUser);
+        setIsUserAuthorized(adminUser || superUser);
       } catch (err: any) {
         toast(ERROR, err.message);
       }
