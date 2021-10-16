@@ -6,6 +6,7 @@ import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import useFetch from '@/hooks/useFetch';
 import challenge from '@/interfaces/challenge.type';
+import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL } from '@/components/constants/url';
 import userData from '@/helperFunctions/getUser';
@@ -21,7 +22,7 @@ const Challenges: FC = () => {
   let challenges: challenge['content'] = [];
 
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
-  const [user, setUser] = useState<any>({});
+  const [user, setUser] = useState<userType>(Object);
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
 
   useEffect(() => {

@@ -1,12 +1,13 @@
 import { USER_SELF } from '@/components/constants/url';
+import fetch from '@/helperFunctions/fetch';
 
 const userData = async () => {
-  const response = await fetch(USER_SELF, {
-    headers: { 'Content-type': 'application/json' },
-    credentials: 'include',
+  const { requestPromise } = fetch({
+    url: USER_SELF,
+    method: 'get',
   });
-  const data = await response.json();
-  return data;
+  const response = await requestPromise;
+  return response.data;
 };
 
 export default userData;

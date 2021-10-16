@@ -46,15 +46,13 @@ const Active: FC<ActiveProps> = ({ content, userId }) => {
         challenge_id: content.id,
         user_id: userId,
       };
-      const { requestPromise } = await fetch({
+      const { requestPromise } = fetch({
         url,
         method: 'post',
         data,
       });
-      await requestPromise;
-      requestPromise.then((response) => {
-        setUserSubscribed(response.data.is_user_subscribed);
-      });
+      const response = await requestPromise;
+      setUserSubscribed(response.data.is_user_subscribed);
       toast(SUCCESS, 'You have subscribed to the challenges');
     } catch (error:any) {
       if ('response' in error) {
