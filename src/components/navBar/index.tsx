@@ -45,7 +45,7 @@ const NavBar = () => {
             <li><a href="https://members.realdevsquad.com/">Members</a></li>
             <li><a href="https://crypto.realdevsquad.com/">Crypto</a></li>
             <li><a className={styles.active} href="https://status.realdevsquad.com/">Status</a></li>
-            <li><Image className={styles.iconImage} width="20px" height="20px" src={iconDisplay()} onClick={themeToggler} /></li>
+            <li><input type="image" className={styles.iconImage} src={iconDisplay()} onClick={themeToggler} alt="toggle icon" /></li>
           </ul>
         </nav>
       </>

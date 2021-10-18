@@ -21,9 +21,13 @@
 .navBar li .logo {
   padding: 20px;
 }
-.navBar li .iconImage {
-  right: 100px;
+
+ul li .iconImage {
+  margin: 30px 0 0 50vw;
+  width: 20px;
+  height: 20px;
 }
+
 .navBar li a {
   display: block;
   color: #ffffff;
@@ -43,5 +47,9 @@
 
   .navBar li a {
     padding: 18px 14px;
+  }
+
+  ul li .iconImage {
+    margin: 20px 0 0 25vw;
   }
 }
