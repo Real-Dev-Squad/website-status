@@ -29,6 +29,9 @@ const Challenges: FC = () => {
     (async () => {
       setUser(await userData());
     })();
+  }, []);
+
+  useEffect(() => {
     if ('challenges' in response) {
       challenges = response.challenges;
       const challengeMap: any = [];
