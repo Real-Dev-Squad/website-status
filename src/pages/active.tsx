@@ -9,7 +9,14 @@ import task from '@/interfaces/task.type';
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
 const renderCardList = (tasks: task[]) => tasks.map(
-  (item: task) => <Card content={item} key={item.id} />,
+  (item: task) => (
+    <Card
+      content={item}
+      key={item.id}
+      shouldEdit={false}
+      onContentChange={undefined}
+    />
+  ),
 );
 
 const Active: FC = () => {
