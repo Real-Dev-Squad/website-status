@@ -1,38 +1,19 @@
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
+import Toggle from '@/components/Dark-Theme/toggler';
 import styles from '@/components/navBar/navBar.module.scss';
+import useDarkMode from '@/components/Dark-Theme/useDarkMode';
 import GlobalStyles from '@/components/Dark-Theme/globalStyles';
 import { lightTheme, darkTheme } from '@/components/Dark-Theme/Themes';
 
 const RDSLogo = '/RDSLogo.png';
-let Icon = '/moon.png';
 
 const NavBar = () => {
-  const [theme, setTheme] = useState('light');
-  const setMode = (mode: string) => {
-    window.localStorage.setItem('theme', mode);
-    setTheme(mode);
-  };
-
-  const themeToggler = () => {
-    const toggle = theme === 'light' ? setMode('dark') : setMode('light');
-    return toggle;
-  };
-
-  useEffect(() => {
-    const localTheme = window.localStorage.getItem('theme')!;
-    setTheme(localTheme);
-  }, []);
-
-  const iconDisplay = () => {
-    if (Icon === '/moon.png') Icon = '/sun.png';
-    else Icon = '/moon.png';
-    return Icon;
-  };
+  const [theme, themeToggler] = useDarkMode();
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
 
   return (
-    <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <ThemeProvider theme={themeMode}>
       <>
         <GlobalStyles />
         <nav className={styles.navBar}>
@@ -45,7 +26,7 @@ const NavBar = () => {
             <li><a href="https://members.realdevsquad.com/">Members</a></li>
             <li><a href="https://crypto.realdevsquad.com/">Crypto</a></li>
             <li><a className={styles.active} href="https://status.realdevsquad.com/">Status</a></li>
-            <li><input type="image" className={styles.iconImage} src={iconDisplay()} onClick={themeToggler} alt="toggle icon" /></li>
+            <li><Toggle toggleTheme={themeToggler} style={styles.iconImage} /></li>
           </ul>
         </nav>
       </>
