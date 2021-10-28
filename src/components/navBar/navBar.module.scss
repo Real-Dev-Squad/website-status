@@ -23,6 +23,12 @@
   padding: 20px;
 }
 
+ul li .iconImage {
+  margin: 35px 0 0 45rem;
+  width: 20px;
+  height: 20px;
+}
+
 .navBar li a {
   display: block;
   color: #ffffff;
@@ -43,5 +49,8 @@
 
   .navBar li a {
     padding: 18px 14px;
+  }
+  ul li .iconImage {
+    margin: 20px 0 0 80px;
   }
 }
