@@ -1,11 +1,11 @@
 import React from 'react';
 
-let Icon = '/moon.png';
+let icon = '/sun.png';
 
 const iconDisplay = () => {
-  if (Icon === '/moon.png') Icon = '/sun.png';
-  else Icon = '/moon.png';
-  return Icon;
+  if (icon === '/sun.png') icon = '/moon.png';
+  else icon = '/sun.png';
+  return icon;
 };
 
 const Toggle = ({ toggleTheme, style }) => (
