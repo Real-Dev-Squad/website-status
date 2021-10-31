@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+let icon = '/moon.png';
+
 const useDarkMode = () => {
   const [theme, setTheme] = useState('light');
 
@@ -37,4 +39,15 @@ const useDarkMode = () => {
   }, []);
   return [theme, themeToggler];
 };
-export default useDarkMode;
+
+const iconDisplay = () => {
+  if (icon === '/moon.png') icon = '/sun.png';
+  else icon = '/moon.png';
+  return icon;
+};
+
+const Toggle = ({ themeMode, style }) => (
+  <input type="image" onClick={themeMode} src={iconDisplay()} className={style} alt="toggle icon" />
+);
+
+export { Toggle, useDarkMode };
