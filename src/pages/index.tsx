@@ -22,21 +22,23 @@ const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
 
-async function updateCardContent(id: string, cardDetails: task) {
-  try {
-    const { requestPromise } = fetch({
-      url: `${TASKS_URL}/${id}`,
-      method: 'patch',
-      data: cardDetails,
-    });
-    await requestPromise;
-    toast(SUCCESS, 'Changes have been saved !');
-  } catch (err: any) {
-    if ('response' in err) {
-      toast(ERROR, err.response.data.message);
-      return;
+async function updateCardContent(id: string, cardDetails: task, isEditable: boolean) {
+  if (isEditable) {
+    try {
+      const { requestPromise } = fetch({
+        url: `${TASKS_URL}/${id}`,
+        method: 'patch',
+        data: cardDetails,
+      });
+      await requestPromise;
+      toast(SUCCESS, 'Changes have been saved !');
+    } catch (err: any) {
+      if ('response' in err) {
+        toast(ERROR, err.response.data.message);
+        return;
+      }
+      toast(ERROR, err.message);
     }
-    toast(ERROR, err.message);
   }
 }
 
@@ -46,7 +48,9 @@ function renderCardList(tasks: task[], isEditable: boolean) {
       content={item}
       key={item.id}
       shouldEdit={isEditable}
-      onContentChange={async (id: string, newDetails: any) => updateCardContent(id, newDetails)}
+      onContentChange={async (id: string, newDetails: any) => {
+        updateCardContent(id, newDetails, isEditable);
+      }}
     />
   ));
 }
@@ -87,7 +91,7 @@ const Index: FC = () => {
           superUser: data.roles?.super_user,
         };
         const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(adminUser || superUser);
+        setIsUserAuthorized(!!adminUser || !!superUser);
       } catch (err: any) {
         toast(ERROR, err.message);
       }
