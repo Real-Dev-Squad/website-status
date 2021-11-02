@@ -1,0 +1,22 @@
+.iconImage {
+    width: 25px;
+    height: 25px;
+}
+
+.cornerIcon {
+  background-color: #1d1283;
+  padding: 10px 10px;
+  margin: 33% 15px;
+  width: 45px;
+  height: 45px;
+  position: fixed;
+  opacity: 0.5;
+  right: 0;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 500px) {
+  .cornerIcon {
+    margin: 80% 10px;
+  }
+}
