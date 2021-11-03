@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 const useDarkMode = () => {
   const [theme, setTheme] = useState('light');
 
-  const setCookie = (value: string) => {
+  const setCookie = (mode: string) => {
     const domain = '.realdevsquad.com';
     const expires = new Date(Date.now() + 24 * 30 * 60 * 60 * 1000);
-    document.cookie = `${'theme'}=${value}; expires=${expires}; domain=${domain}; path=/`;
+    document.cookie = `${'theme'}=${mode}; expires=${expires}; domain=${domain}; path=/`;
+    setTheme(mode);
   };
 
-  const accessCookie = () => {
+  const getCookie = () => {
     const name = 'theme=';
     const allCookieArray = document.cookie.split(';');
     let i = 0;
@@ -21,18 +22,13 @@ const useDarkMode = () => {
     return '';
   };
 
-  const setMode = (mode : string) => {
-    setCookie(mode);
-    setTheme(mode);
-  };
-
   const themeToggler = () => {
-    const toggle = theme === 'light' ? setMode('dark') : setMode('light');
+    const toggle = theme === 'light' ? setCookie('dark') : setCookie('light');
     return toggle;
   };
 
   useEffect(() => {
-    const localTheme = accessCookie();
+    const localTheme = getCookie();
     setTheme(localTheme);
   }, []);
   return [theme, themeToggler];
