@@ -19,6 +19,14 @@
   border-bottom: 3px solid #87d870;
 }
 
+.navBar ul .iconImage {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  margin: 28px 15px;
+  right: 0;
+}
+
 .navBar li .logo {
   padding: 20px;
 }
@@ -43,5 +51,8 @@
 
   .navBar li a {
     padding: 18px 14px;
+  }
+  .navBar ul .iconImage {
+    margin: 60px 5px;
   }
 }

@@ -5,7 +5,6 @@ import { ThemeProvider } from 'styled-components';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
-import Toggle from '@/components/dark-theme/toggle/index';
 import { lightTheme, darkTheme } from '@/components/dark-theme/theme';
 import useDarkMode from '@/components/dark-theme/useDarkMode';
 import GlobalStyles from '@/components/dark-theme/globalStyles';
@@ -39,7 +38,7 @@ const Layout: FC<Props> = ({ children }) => {
       <>
         <GlobalStyles />
         <div className={styles.layout}>
-          <NavBar />
+          <NavBar theme={themeToggler} />
           <div className={styles.wrapper}>
             <div className={styles.header}>
               {navBarContent('Tasks', '/', router.pathname === '/')}
@@ -63,7 +62,6 @@ const Layout: FC<Props> = ({ children }) => {
                 )
             }
             </div>
-            <Toggle themeMode={themeToggler} />
             {children}
           </div>
           <Footer />
