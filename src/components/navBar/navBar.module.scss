@@ -8,7 +8,6 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  height: 5.25rem;
 }
 
 .navBar li {
@@ -17,9 +16,15 @@
 
 .navBar li .active {
   color: #87d870;
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 10px;
+  border-bottom: 3px solid #87d870;
+}
+
+.navBar ul .iconImage {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  margin: 30px 15px;
+  right: 0;
 }
 
 .navBar li .logo {
@@ -46,5 +51,8 @@
 
   .navBar li a {
     padding: 18px 14px;
+  }
+  .navBar ul .iconImage {
+    margin: 60px 5px;
   }
 }
