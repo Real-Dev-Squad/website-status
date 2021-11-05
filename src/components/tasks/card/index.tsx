@@ -15,12 +15,14 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange: any;
+  clickAble: boolean;
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
   onContentChange = () => undefined,
+  clickAble = false,
 }) => {
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
@@ -70,12 +72,22 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
+  function handleClick(event : any) {
+    if (clickAble) {
+      console.log(event);
+      console.log('clicked');
+    }
+  }
   return (
     <div
       className={`
         ${classNames.card}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
+      onClick={(e) => handleClick(e)}
+      aria-hidden="true"
+      role="button"
+      tabIndex={0}
     >
       <div className={classNames.cardItems}>
         <span

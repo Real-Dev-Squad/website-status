@@ -16,6 +16,7 @@ const renderCardList = (tasks: task[]) => tasks.map(
       key={item.id}
       shouldEdit={false}
       onContentChange={undefined}
+      clickAble={false}
     />
   ),
 );

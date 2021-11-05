@@ -40,13 +40,14 @@ async function updateCardContent(id: string, cardDetails: task) {
   }
 }
 
-function renderCardList(tasks: task[], isEditable: boolean) {
+function renderCardList(tasks: task[], isEditable: boolean, isclickAble: boolean) {
   return tasks.map((item: task) => (
     <Card
       content={item}
       key={item.id}
       shouldEdit={isEditable}
       onContentChange={async (id: string, newDetails: any) => updateCardContent(id, newDetails)}
+      clickAble={isclickAble}
     />
   ));
 }
@@ -59,6 +60,7 @@ const Index: FC = () => {
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const isEditable = !!query.edit && IsUserAuthorized;
+  const isclickAble = true;
   useEffect(() => {
     if ('tasks' in response) {
       tasks = response.tasks;
@@ -108,7 +110,7 @@ const Index: FC = () => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(key === ACTIVE)} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable)}
+                  {renderCardList(filteredTask[key], isEditable, isclickAble)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}
