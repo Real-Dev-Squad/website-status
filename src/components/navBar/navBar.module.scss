@@ -1,6 +1,10 @@
 .navBar {
+  display: flex;
   width: 100%;
-  background-color: #1d1283;  
+  background-color: #1d1283;
+  height: 5.25rem;
+  font: 700 1.25rem 'Roboto', sans-serif;
+  align-items: center;
 }
 
 .navBar ul {
@@ -8,7 +12,6 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  height: 5.25rem;
 }
 
 .navBar li {
@@ -39,12 +42,21 @@
   color: #87d870;
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
+  .navBar{
+    height:7.5rem;
+  }
   .navBar li .logo {
     padding: 4px;
   }
 
   .navBar li a {
     padding: 18px 14px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .navBar{
+    height:12rem;
   }
 }
