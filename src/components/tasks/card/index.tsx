@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
+// import detailPage from '@/components/tasks/detailPage';
 import {
   ACTIVE,
   ASSIGNED,
@@ -76,6 +77,7 @@ const Card: FC<Props> = ({
     if (clickAble) {
       console.log(event);
       console.log('clicked');
+      console.log(cardDetails.id);
     }
   }
   return (
