@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FC, useState } from 'react';
-import { useRouter } from 'next/router';
+import router, { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -13,14 +14,21 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 // import classNames from '@/components/tasks/detailPage/card.module.scss';
 import task from '@/interfaces/task.type';
 
-const detailPage : FC = () => (
-  <Layout>
-    <Head title="Tasks" />
+const Detail : FC = (props:any) => {
+  const router = useRouter();
+  const { taskid } = router.query;
+  return (
+    <Layout>
+      <Head title="Tasks" />
 
-    <div className={classNames.container}>
-      <p>hello</p>
-    </div>
-  </Layout>
-);
-
-export default detailPage;
+      <div className={classNames.container}>
+        <p>
+          hello
+          {' '}
+          {taskid}
+        </p>
+      </div>
+    </Layout>
+  );
+};
+export default Detail;

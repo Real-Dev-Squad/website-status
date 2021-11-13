@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
 import Image from 'next/image';
+import router from 'next/router';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
-// import detailPage from '@/components/tasks/detailPage';
 import {
   ACTIVE,
   ASSIGNED,
@@ -73,11 +73,12 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
-  function handleClick(event : any) {
+  function handleClick(): void {
     if (clickAble) {
-      console.log(event);
-      console.log('clicked');
-      console.log(cardDetails.id);
+      router.push({
+        pathname: '/tasks/[id]',
+        query: { id: cardDetails.id },
+      });
     }
   }
   return (
@@ -86,7 +87,7 @@ const Card: FC<Props> = ({
         ${classNames.card}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
-      onClick={(e) => handleClick(e)}
+      onClick={() => handleClick()}
       aria-hidden="true"
       role="button"
       tabIndex={0}
