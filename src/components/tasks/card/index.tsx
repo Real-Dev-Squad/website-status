@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import Image from 'next/image';
+import router from 'next/router';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import {
@@ -15,12 +16,14 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange: any;
+  clickAble: boolean;
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
   onContentChange = () => undefined,
+  clickAble = false,
 }) => {
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
@@ -70,12 +73,24 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
+  function handleClick(): void {
+    if (clickAble) {
+      router.push({
+        pathname: '/tasks/[id]',
+        query: { id: cardDetails.id },
+      });
+    }
+  }
   return (
     <div
       className={`
         ${classNames.card}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
+      onClick={() => handleClick()}
+      aria-hidden="true"
+      role="button"
+      tabIndex={0}
     >
       <div className={classNames.cardItems}>
         <span

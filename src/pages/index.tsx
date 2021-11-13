@@ -46,8 +46,8 @@ function renderCardList(tasks: task[], isEditable: boolean) {
       content={item}
       key={item.id}
       shouldEdit={isEditable}
-      onContentChange={async (id: string, newDetails: any) => isEditable
-        && updateCardContent(id, newDetails)}
+      onContentChange={async (id: string, newDetails: any) => updateCardContent(id, newDetails)}
+      clickAble
     />
   ));
 }

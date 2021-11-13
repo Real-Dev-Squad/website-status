@@ -16,6 +16,7 @@ function CardList(tasks: task[]) {
         key={item.id}
         shouldEdit={false}
         onContentChange={undefined}
+        clickAble={false}
       />
     ),
   );
