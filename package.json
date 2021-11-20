@@ -4,9 +4,12 @@
   "description": "Shows a status of the ongoing projects being done",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev",
+    "run-command:dev-server": "next dev -p 3000",
+    "run-command:reverse-ssl": "local-ssl-proxy --source 443 --target 3000",
+    "dev": "run-p run-command:*",
     "build": "next build",
     "start": "next start -p $PORT",
+    "test": "jest --watch",
     "lint": "eslint . --ext js,jsx,ts,tsx",
     "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx",
     "postinstall": "husky install",
@@ -33,7 +36,9 @@
     "sass-loader": "^12.1.0",
     "ts-node": "^10.1.0",
     "tslib": "^2.3.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.8",
@@ -51,6 +56,7 @@
     "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^4.28.4",
     "@typescript-eslint/parser": "^4.28.4",
+    "babel-jest": "^27.2.5",
     "babel-loader": "^8.2.2",
     "css-loader": "^6.2.0",
     "eslint": "^7.31.0",
@@ -62,8 +68,14 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.2.5",
     "lint-staged": "^11.1.1",
+    "next-page-tester": "^0.29.0",
+    "local-ssl-proxy": "^1.3.0",
+    "npm-run-all": "^4.1.5",
     "pinst": "^2.1.6",
+    "react-test-renderer": "^17.0.2",
     "style-loader": "^3.2.1",
     "webpack": "^5.46.0"
   },

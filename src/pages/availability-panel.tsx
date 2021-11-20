@@ -10,7 +10,8 @@ const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
   const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
   const [error, setError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
+  const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
 
   useEffect(() => {
@@ -26,6 +27,8 @@ const AvailabilityPanel: FC = () => {
         setUnAssignedTasks(unassigned);
       } catch (Error) {
         setError(true);
+      } finally {
+        setIsTaskLoading(false);
       }
     };
     const fetchIdleUsers = async () => {
@@ -41,7 +44,7 @@ const AvailabilityPanel: FC = () => {
       } catch (Error) {
         setError(true);
       } finally {
-        setIsLoading(false);
+        setIsMemberLoading(false);
       }
     };
     fetchTasks();
@@ -55,7 +58,7 @@ const AvailabilityPanel: FC = () => {
         Something went wrong, please contact admin!
       </span>
     );
-  } else if (isLoading) {
+  } else if (isTaskLoading || isMemberLoading) {
     isErrorOrIsLoading = (
       <span className={classNames.statusMessage}>Loading...</span>
     );

@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import Card from '@/components/Card/index';
 import details from '@/components/challenges/details';
 import participantsDetails from '@/components/challenges/participants';
+import fetch from '@/helperFunctions/fetch';
 import { SUBSCRIBE_TO_CHALLENGE_URL } from '@/components/constants/url';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 
@@ -39,21 +40,25 @@ const Active: FC<ActiveProps> = ({ content, userId }) => {
   const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
   const subscibeUser = async () => {
-    const data = {
-      challenge_id: content.id,
-      user_id: userId,
-    };
     try {
-      const response = await fetch(SUBSCRIBE_TO_CHALLENGE_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-        credentials: 'include',
+      const url = SUBSCRIBE_TO_CHALLENGE_URL;
+      const data = {
+        challenge_id: content.id,
+        user_id: userId,
+      };
+      const { requestPromise } = fetch({
+        url,
+        method: 'post',
+        data,
       });
-      const { isUserSubscribed: subscription } = await response.json();
-      setUserSubscribed(subscription);
-      toast(SUCCESS, 'You have subscribed to the challenge');
+      const response = await requestPromise;
+      setUserSubscribed(response.data.is_user_subscribed);
+      toast(SUCCESS, 'You have subscribed to the challenges');
     } catch (error:any) {
+      if ('response' in error) {
+        toast(ERROR, error.response.data.message);
+        return;
+      }
       toast(ERROR, error.message);
     }
   };
