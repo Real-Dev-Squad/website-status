@@ -1,8 +1,9 @@
+$offset: 10px;
+$thickness: 3px;
 .navBar {
   display: flex;
   width: 100%;
   background-color: #1d1283;
-  height: 5.25rem;
   font: 700 1.25rem 'Roboto', sans-serif;
   align-items: center;
 }
@@ -21,12 +22,12 @@
 .navBar li .active {
   color: #87d870;
   text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 10px;
+  text-decoration-thickness: $thickness;
+  text-underline-offset: $offset;
 }
 
 .navBar li .logo {
-  padding: 20px;
+  padding: 20px 4px ($offset+$thickness)+5 20px;
 }
 
 .navBar li a {
@@ -34,29 +35,10 @@
   color: #ffffff;
   font-weight: bolder;
   text-align: center;
-  padding: 35px 25px 10px;
+  padding: 35px 25px ($offset+$thickness)+5 10px;
   text-decoration: none;
 }
 
 .navBar li a:hover {
   color: #87d870;
-}
-
-@media screen and (max-width: 600px) {
-  .navBar{
-    height:7.5rem;
-  }
-  .navBar li .logo {
-    padding: 4px;
-  }
-
-  .navBar li a {
-    padding: 18px 14px;
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .navBar{
-    height:12rem;
-  }
 }
