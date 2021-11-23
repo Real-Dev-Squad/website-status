@@ -1,22 +1,26 @@
-import { render, fireEvent } from '@testing-library/react'
-import Accordion from '../../src/components/Accordion'
+import { render, fireEvent } from '@testing-library/react';
+import Accordion from '../../src/components/Accordion';
 
 describe('Accordion', () => {
   it('Show accordion title', async () => {
-    const { getByText, getByTestId } = await render(
+    const { getByText, getByTestId } = render(
       <Accordion
-        title="title"
+        title="Active"
         open={true}
       >
         <p>
-          test text
+          Paragraph text 
         </p>
       </Accordion>
     );
 
-    expect(getByText('title')).toBeInTheDocument();
-    expect(getByText('test text')).toBeInTheDocument();
-    fireEvent.click(getByTestId('accordion-title'));
-    expect(getByTestId('accordion-content')).toHaveStyle('display: block');
-  })
-})
+    expect(getByText('Active')).toBeInTheDocument();
+    expect(getByText('Paragraph text')).toBeInTheDocument();
+
+    expect(getByTestId('accordion-content')).toHaveClass('open');
+
+    fireEvent.click(getByText('Active'));
+    expect(getByTestId('accordion-content')).toHaveClass('close');
+  });
+});
+
