@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import Image from 'next/image';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import {
@@ -25,6 +25,7 @@ const Card: FC<Props> = ({
   onContentChange = () => undefined,
   clickAble = false,
 }) => {
+  const router = useRouter();
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
@@ -77,7 +78,14 @@ const Card: FC<Props> = ({
     if (clickAble) {
       router.push({
         pathname: '/tasks/[id]',
-        query: { id: cardDetails.id },
+        query: {
+          id: cardDetails.id,
+          title: cardDetails.title,
+          endsOn: cardDetails.endsOn,
+          startedOn: cardDetails.startedOn,
+          status: cardDetails.status,
+          assignee: cardDetails.assignee,
+        },
       });
     }
   }

@@ -1,32 +1,90 @@
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { FC, useState } from 'react';
-import router, { useRouter } from 'next/router';
+import React, { FC } from 'react';
+import { useRouter } from 'next/router';
+import moment from 'moment';
 import Head from '@/components/head';
+import classNames from '@/styles/taskdetail.module.scss';
 import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
-import useFetch from '@/hooks/useFetch';
-import classNames from '@/styles/tasks.module.scss';
-import Accordion from '@/components/Accordion';
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-// import Image from 'next/image';
-// import classNames from '@/components/tasks/detailPage/card.module.scss';
-import task from '@/interfaces/task.type';
 
-const Detail : FC = (props:any) => {
+const Detail : FC = () => {
   const router = useRouter();
-  const { taskid } = router.query;
-  return (
-    <Layout>
-      <Head title="Tasks" />
+  const {
+    taskid,
+    title,
+    status,
+    startedOn,
+    endsOn,
+    assignee,
+  } = router.query;
+  const localStartedOn = new Date(parseInt(String(startedOn), 10) * 1000);
+  const fromNowStartedOn = moment(localStartedOn).fromNow();
 
-      <div className={classNames.container}>
-        <p>
-          hello
-          {' '}
-          {taskid}
-        </p>
+  const localEndsOn = new Date(parseInt(String(endsOn), 10) * 1000);
+  const fromNowEndsOn = moment(localEndsOn).fromNow();
+  return (
+
+    <Layout>
+      <Head title="Task Detail" />
+      <div className={classNames.Container}>
+        <div>
+          <div className={classNames.titleLine}>
+            <span
+              className={classNames.backhover}
+              role="button"
+              onClick={() => router.back()}
+              aria-hidden="true"
+              tabIndex={0}
+            >
+              Back
+
+            </span>
+            <span
+              className={classNames.Title}
+            >
+              {title}
+            </span>
+            <span>
+              TaskID:
+              {' '}
+              {taskid}
+            </span>
+          </div>
+          <div className={classNames.Status}>
+            <div className={classNames.SpecialFont}>Status:</div>
+            <div
+              className={classNames.StatusFont}
+            >
+              {status}
+            </div>
+          </div>
+        </div>
+        <div className={classNames.Items}>
+          <span>
+            <span className={classNames.cardSpecialFont}>Due Date</span>
+            <span
+              className={classNames.cardStrongFont}
+            >
+              {fromNowEndsOn}
+            </span>
+          </span>
+        </div>
+        <div className={classNames.Items}>
+          <span
+            className={classNames.cardSpecialFont}
+          >
+            Started
+            {' '}
+            {fromNowStartedOn}
+          </span>
+          <span>
+            <span className={classNames.cardSpecialFont}>Assignee:</span>
+            <span
+              className={classNames.cardStrongFont}
+            >
+              {assignee}
+            </span>
+
+          </span>
+        </div>
       </div>
     </Layout>
   );

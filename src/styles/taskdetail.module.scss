@@ -1,0 +1,85 @@
+.Container {
+  padding: 50px;
+
+}
+.titleLine {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.titleLine{
+  span {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2px;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+.backhover {
+    cursor:pointer;
+    color:blue;
+}
+.backhover:hover {
+  color: #444444;
+}
+
+.Status{
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.Title {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #041187;
+  text-align: center;
+}
+
+.SpecialFont {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #aeaeae;
+}
+
+.StatusFont {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+.Items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.Items {
+  span {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 2px;
+    align-items: center;
+    margin-top: 10px;
+  }
+}
+.cardSpecialFont {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #aeaeae;
+}
+
+.cardStatusFont {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.contributorImage {
+  height: 45px;
+  width: 45px;
+  border-radius: 40%;
+}
+
+.cardStrongFont {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
