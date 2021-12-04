@@ -1,35 +1,32 @@
 $offset: 10px;
 $thickness: 3px;
+
 .navBar {
   display: flex;
   width: 100%;
-  background-color: #1d1283;
-  font: 700 1.25rem 'Roboto', sans-serif;
+  background-color: hsl(246, 76%, 29%);
   align-items: center;
-    div{
-      overflow: hidden;
+  overflow: hidden;
+  flex-wrap: wrap;
+
+    a{
+      display: block;
+      color: #ffffff;
+      font-weight: bolder;
+      text-align: center;
+      padding: 35px 2*($offset+$thickness)-1;
+      text-decoration: none;
     }
-    span{
-      float: left;
-      a{
-        display: block;
-        color: #ffffff;
-        font-weight: bolder;
-        text-align: center;
-        padding: 35px 25px ($offset+$thickness)+5 10px;
-        text-decoration: none;
-      }
-      a:hover {
-        color: #87d870;
-      }
-      .active{
-        color: #87d870;
-        text-decoration: underline;
-        text-decoration-thickness: $thickness;
-        text-underline-offset: $offset;
-      }
-      .logo{
-        padding: 20px 4px ($offset+$thickness)+5 20px;
-      }
-    } 
+    a:hover {
+      color: #87d870;
+    }
+    .active{
+      color: #87d870;
+      text-decoration: underline;
+      text-decoration-thickness: $thickness;
+      text-underline-offset: $offset;
+    }
+    .logo{
+      padding: ($offset+$thickness)+7;
+    }
 }
