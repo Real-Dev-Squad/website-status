@@ -29,9 +29,11 @@ const DragDropcontext: FC<dragDropProps> = ({
   refreshData,
 }) => {
   const [toogleSearch, setToogleSearch] = useState<boolean>(false);
+  const [toogleSearchName, setToogleSearchName] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
@@ -122,7 +124,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                {toogleSearch && <input />}
+                { toogleSearch && <input placeholder="Search by task" /> }
               </div>
               <div className={classNames.heading}> </div>
               <DroppableComponent
@@ -141,8 +143,16 @@ const DragDropcontext: FC<dragDropProps> = ({
           ) : (
             <div>
               <div className={classNames.searchBoxContainer}>
-                <span />
-                {toogleSearch && <input />}
+                <span
+                  onClick={() => {
+                    setToogleSearchName(!toogleSearchName);
+                  }}
+                  aria-hidden="true"
+                  className={classNames.searchText}
+                >
+                  Search
+                </span>
+                {toogleSearchName && <input placeholder="Search by name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="text" id="idleMemberSearch" />}
               </div>
               <div className={classNames.heading}> </div>
               <div className={classNames.idleMember}>
@@ -151,6 +161,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                   idleMembers={memberList}
                   unAssignedTasks={[]}
                   isTaskOnDrag={isTaskOnDrag}
+                  searchTerm={searchTerm}
                 />
               </div>
             </div>
