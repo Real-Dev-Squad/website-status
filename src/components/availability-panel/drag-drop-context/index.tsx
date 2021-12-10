@@ -1,4 +1,6 @@
-import { FC, useState, useEffect } from 'react';
+import {
+  FC, useState, useEffect, createContext,
+} from 'react';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
@@ -23,6 +25,8 @@ const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   </div>
 );
 
+export const disableDrag = createContext({ draggableId1: '', draggableId2: '' });
+
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
@@ -32,6 +36,8 @@ const DragDropcontext: FC<dragDropProps> = ({
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
+  const [draggableId1, setDraggableId1] = useState<string>('');
+  const [draggableId2, setDraggableId2] = useState<string>('');
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
@@ -73,6 +79,8 @@ const DragDropcontext: FC<dragDropProps> = ({
 
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
       try {
+        setDraggableId1(result.draggableId);
+        setDraggableId2(result.combine.draggableId);
         const taskId = result.combine.droppableId === 'tasks'
           ? result.combine.draggableId
           : result.draggableId;
@@ -92,7 +100,11 @@ const DragDropcontext: FC<dragDropProps> = ({
         });
         await requestPromise;
         toast(SUCCESS, 'Successfully Assigned Task');
+        setDraggableId1('');
+        setDraggableId2('');
       } catch (error:any) {
+        setDraggableId1('');
+        setDraggableId2('');
         if ('response' in error) {
           toast(ERROR, error.response.data.message);
           return;
@@ -106,57 +118,59 @@ const DragDropcontext: FC<dragDropProps> = ({
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      <div className={classNames.flexContainer}>
-        <div>
-          {taskList.length === 0 ? (
-            <NotFoundError message="No task found" />
-          ) : (
-            <div>
-              <div className={classNames.searchBoxContainer}>
-                <span
-                  onClick={() => {
-                    setToogleSearch(!toogleSearch);
-                  }}
-                  aria-hidden="true"
-                  className={classNames.searchText}
-                >
-                  Search
-                </span>
-                {toogleSearch && <input />}
-              </div>
-              <div className={classNames.heading}> </div>
-              <DroppableComponent
-                droppableId="tasks"
-                idleMembers={[]}
-                unAssignedTasks={taskList}
-                isTaskOnDrag={isTaskOnDrag}
-              />
-            </div>
-          )}
-        </div>
-        <div className={classNames.divider} />
-        <div>
-          {memberList.length === 0 ? (
-            <NotFoundError message="No idle members found" />
-          ) : (
-            <div>
-              <div className={classNames.searchBoxContainer}>
-                <span />
-                {toogleSearch && <input />}
-              </div>
-              <div className={classNames.heading}> </div>
-              <div className={classNames.idleMember}>
+      <disableDrag.Provider value={{ draggableId1, draggableId2 }}>
+        <div className={classNames.flexContainer}>
+          <div>
+            {taskList.length === 0 ? (
+              <NotFoundError message="No task found" />
+            ) : (
+              <div>
+                <div className={classNames.searchBoxContainer}>
+                  <span
+                    onClick={() => {
+                      setToogleSearch(!toogleSearch);
+                    }}
+                    aria-hidden="true"
+                    className={classNames.searchText}
+                  >
+                    Search
+                  </span>
+                  {toogleSearch && <input />}
+                </div>
+                <div className={classNames.heading}> </div>
                 <DroppableComponent
-                  droppableId="members"
-                  idleMembers={memberList}
-                  unAssignedTasks={[]}
+                  droppableId="tasks"
+                  idleMembers={[]}
+                  unAssignedTasks={taskList}
                   isTaskOnDrag={isTaskOnDrag}
                 />
               </div>
-            </div>
-          )}
+            )}
+          </div>
+          <div className={classNames.divider} />
+          <div>
+            {memberList.length === 0 ? (
+              <NotFoundError message="No idle members found" />
+            ) : (
+              <div>
+                <div className={classNames.searchBoxContainer}>
+                  <span />
+                  {toogleSearch && <input />}
+                </div>
+                <div className={classNames.heading}> </div>
+                <div className={classNames.idleMember}>
+                  <DroppableComponent
+                    droppableId="members"
+                    idleMembers={memberList}
+                    unAssignedTasks={[]}
+                    isTaskOnDrag={isTaskOnDrag}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      </disableDrag.Provider>
     </DragDropContext>
   );
 };

@@ -12,3 +12,9 @@ export type droppableComponent = {
   unAssignedTasks: Array<task>,
   isTaskOnDrag:boolean,
 };
+
+export type draggableProps = {
+  draggableId: string,
+  index: number,
+  title?: string,
+};
