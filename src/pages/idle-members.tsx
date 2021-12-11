@@ -4,8 +4,7 @@ import Section from '@/components/idleMembers/section';
 import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 
-// const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
-const IDLE_MEMBERS_URL = 'http://localhost:5500/idleMembers';
+const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
 const idleMembers: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<[]>([]);
 

@@ -14,11 +14,15 @@ const getItemStyle = (
   draggableId: string,
 ) => {
   const style = {
-    // eslint-disable-next-line no-nested-ternary
-    background: draggableId1 === draggableId || draggableId2 === draggableId ? '#aeaeae' : isDragging ? '#d1d1d1' : 'white',
-    // background: isDragging ? '#d1d1d1' : 'white',
     ...draggableStyle,
   };
+  if (draggableId1 === draggableId || draggableId2 === draggableId) {
+    style.background = '#aeaeae';
+  } else if (isDragging) {
+    style.background = '#d1d1d1';
+  } else {
+    style.background = 'white';
+  }
   return style;
 };
 
@@ -27,9 +31,7 @@ const DraggableComponent: FC<draggableProps> = ({
   index,
   title = '',
 }) => {
-  // const [isDragDisabled] = useState(false);
   const { draggableId1, draggableId2 } = useContext(disableDrag);
-  console.log(draggableId1, `${draggableId2} from draggablecomponent`);
   return (
     <Draggable
       key={draggableId}

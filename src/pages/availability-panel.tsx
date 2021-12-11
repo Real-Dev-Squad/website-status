@@ -33,8 +33,7 @@ const AvailabilityPanel: FC = () => {
     };
     const fetchIdleUsers = async () => {
       try {
-        // const url = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
-        const url = 'http://localhost:5500/idleMembers';
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
         const { requestPromise } = fetch({ url });
         const fetchPromise = await requestPromise;
         const { idleMemberUserNames } = fetchPromise.data;
