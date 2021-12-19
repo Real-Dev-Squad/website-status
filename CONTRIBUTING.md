@@ -8,7 +8,7 @@
 
 ##  **1. How to Start**
 
-Follow <a href="https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md" target="_blank">this</a> to understand how to clone,fork and do a PR.  
+Read <a href="https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> to learn how to clone,fork and raise a PR.  
 ## **2. Yarn Command Reference**  
 ### Set-up  
 `yarn install`
