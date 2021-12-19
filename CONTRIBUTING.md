@@ -8,7 +8,7 @@
 
 ##  **1. How to Start**
 
-Read <a href="https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md" target="_blank">CONTRIBUTING.md</a> to learn how to clone,fork and raise a PR.  
+Read <a href="https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md" target="_blank">this</a>  guide to learn how to clone,fork and raise a PR.
 ## **2. Yarn Command Reference**  
 ### Set-up  
 `yarn install`
@@ -38,5 +38,5 @@ API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
  3. Write useful descriptions and titles
  4. Add comments on your pull request to help guide the reviewer
  6. Make it visual. Add Images or GIFs if needed.
- 7. [Link the PR to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) you are working on
+ 7. [Link the PR to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) you are working on
  8. [Convert the PR to Draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/) if the work is still in progress
