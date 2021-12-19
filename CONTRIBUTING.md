@@ -38,3 +38,5 @@ API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
  3. Write useful descriptions and titles
  4. Add comments on your pull request to help guide the reviewer
  6. Make it visual. Add Images or GIFs if needed.
+ 7. [Link the PR to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue) you are working on
+ 8. [Convert the PR to Draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/) if the work is still in progress
