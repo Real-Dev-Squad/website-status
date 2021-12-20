@@ -100,17 +100,15 @@ const DragDropcontext: FC<dragDropProps> = ({
         });
         await requestPromise;
         toast(SUCCESS, 'Successfully Assigned Task');
-        setDraggableId1('');
-        setDraggableId2('');
       } catch (error:any) {
-        setDraggableId1('');
-        setDraggableId2('');
         if ('response' in error) {
           toast(ERROR, error.response.data.message);
           return;
         }
         toast(ERROR, error.message);
       } finally {
+        setDraggableId1('');
+        setDraggableId2('');
         refreshData();
       }
     }
