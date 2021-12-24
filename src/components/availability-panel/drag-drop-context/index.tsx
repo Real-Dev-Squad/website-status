@@ -125,7 +125,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                { toogleSearch  && <input placeholder="Search by tasks" value={searchTermUnassignedTask} onChange={(e) => setSearchTermUnassignedTask(e.target.value)} type="text" id="unassignedTasksSearch" />}
+                { toogleSearch && <input placeholder="Search by tasks" value={searchTermUnassignedTask} onChange={(e) => setSearchTermUnassignedTask(e.target.value)} type="text" id="unassignedTasksSearch" />}
               </div>
               <div className={classNames.heading}> </div>
               <DroppableComponent
