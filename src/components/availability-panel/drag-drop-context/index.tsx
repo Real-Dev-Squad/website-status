@@ -34,7 +34,7 @@ const DragDropcontext: FC<dragDropProps> = ({
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [searchTermUnassignedTask, setSearchTermUnassignedTask] = useState<string>('');
+  const [searchTermTask, setSearchTermTask] = useState<string>('');
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
@@ -125,7 +125,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                { toogleSearch && <input placeholder="Search by tasks" value={searchTermUnassignedTask} onChange={(e) => setSearchTermUnassignedTask(e.target.value)} type="text" id="unassignedTasksSearch" />}
+                { toogleSearch && <input placeholder="Search by tasks" value={searchTermTask} onChange={(e) => setSearchTermTask(e.target.value)} type="text" />}
               </div>
               <div className={classNames.heading}> </div>
               <DroppableComponent
@@ -134,7 +134,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 unAssignedTasks={taskList}
                 isTaskOnDrag={isTaskOnDrag}
                 searchTerm=""
-                searchTermUnassignedTask={searchTermUnassignedTask}
+                searchTermTask={searchTermTask}
               />
             </div>
           )}
@@ -155,7 +155,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                {toogleSearchName && <input placeholder="Search by name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="text" id="idleMemberSearch" />}
+                {toogleSearchName && <input placeholder="Search by name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="text" />}
               </div>
               <div className={classNames.heading}> </div>
               <div className={classNames.idleMember}>
@@ -165,7 +165,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                   unAssignedTasks={[]}
                   isTaskOnDrag={isTaskOnDrag}
                   searchTerm={searchTerm}
-                  searchTermUnassignedTask=""
+                  searchTermTask=""
                 />
               </div>
             </div>

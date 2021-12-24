@@ -12,5 +12,5 @@ export type droppableComponent = {
   unAssignedTasks: Array<task>,
   isTaskOnDrag:boolean,
   searchTerm: string,
-  searchTermUnassignedTask: string,
+  searchTermTask: string,
 };

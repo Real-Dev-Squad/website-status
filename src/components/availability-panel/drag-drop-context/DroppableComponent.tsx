@@ -19,17 +19,17 @@ const DroppableComponent: FC<droppableComponent> = ({
   idleMembers,
   isTaskOnDrag,
   searchTerm,
-  searchTermUnassignedTask,
+  searchTermTask,
 }) => (
   <div>
     {droppableId === 'tasks' ? (
       <Droppable droppableId="tasks" isCombineEnabled={!isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {unAssignedTasks.filter((val) => {
-              if (searchTermUnassignedTask === '') {
+            {unAssignedTasks.filter((taskItem) => {
+              if (searchTermTask === '') {
                 return true;
-              } if (val.title.toLowerCase().includes(searchTermUnassignedTask.toLowerCase())) {
+              } if (taskItem.title.toLowerCase().includes(searchTermTask.toLowerCase())) {
                 return true;
               }
               return false;
@@ -62,10 +62,10 @@ const DroppableComponent: FC<droppableComponent> = ({
       <Droppable droppableId="members" isCombineEnabled={isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {idleMembers.filter((val) => {
+            {idleMembers.filter((memberItem) => {
               if (searchTerm === '') {
                 return true;
-              } if (val.toLowerCase().includes(searchTerm.toLowerCase())) {
+              } if (memberItem.toLowerCase().includes(searchTerm.toLowerCase())) {
                 return true;
               }
               return false;
