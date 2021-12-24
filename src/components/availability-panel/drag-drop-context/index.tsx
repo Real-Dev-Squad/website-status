@@ -34,6 +34,7 @@ const DragDropcontext: FC<dragDropProps> = ({
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTermUnassignedTask, setSearchTermUnassignedTask] = useState<string>('');
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
@@ -124,7 +125,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                { toogleSearch && <input placeholder="Search by task" /> }
+                { toogleSearch  && <input placeholder="Search by tasks" value={searchTermUnassignedTask} onChange={(e) => setSearchTermUnassignedTask(e.target.value)} type="text" id="unassignedTasksSearch" />}
               </div>
               <div className={classNames.heading}> </div>
               <DroppableComponent
@@ -132,6 +133,8 @@ const DragDropcontext: FC<dragDropProps> = ({
                 idleMembers={[]}
                 unAssignedTasks={taskList}
                 isTaskOnDrag={isTaskOnDrag}
+                searchTerm=""
+                searchTermUnassignedTask={searchTermUnassignedTask}
               />
             </div>
           )}
@@ -162,6 +165,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                   unAssignedTasks={[]}
                   isTaskOnDrag={isTaskOnDrag}
                   searchTerm={searchTerm}
+                  searchTermUnassignedTask=""
                 />
               </div>
             </div>

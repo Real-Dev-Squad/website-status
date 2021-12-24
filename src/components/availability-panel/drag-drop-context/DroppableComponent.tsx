@@ -19,13 +19,21 @@ const DroppableComponent: FC<droppableComponent> = ({
   idleMembers,
   isTaskOnDrag,
   searchTerm,
+  searchTermUnassignedTask,
 }) => (
   <div>
     {droppableId === 'tasks' ? (
       <Droppable droppableId="tasks" isCombineEnabled={!isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {unAssignedTasks.map((task, index) => {
+            {unAssignedTasks.filter((val) => {
+              if (searchTermUnassignedTask === '') {
+                return true;
+              } if (val.title.toLowerCase().includes(searchTermUnassignedTask.toLowerCase())) {
+                return true;
+              }
+              return false;
+            }).map((task, index) => {
               const { id, title } = task;
               return (
                 <Draggable key={id} draggableId={id} index={index}>

@@ -11,4 +11,6 @@ export type droppableComponent = {
   idleMembers: Array<string>,
   unAssignedTasks: Array<task>,
   isTaskOnDrag:boolean,
+  searchTerm: string,
+  searchTermUnassignedTask: string,
 };
