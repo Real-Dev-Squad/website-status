@@ -4,29 +4,32 @@ $thickness: 3px;
 .navBar {
   display: flex;
   width: 100%;
-  background-color: hsl(246, 76%, 29%);
+  background-color: #1d1283;
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
 
-    a{
-      display: block;
-      color: #ffffff;
-      font-weight: bolder;
-      text-align: center;
-      padding: 35px 2*($offset+$thickness)-1;
-      text-decoration: none;
-    }
-    a:hover {
+  a {
+    display: block;
+    color: #ffffff;
+    font-weight: bolder;
+    text-align: center;
+    padding: 35px 2*($offset+$thickness)-1;
+    text-decoration: none;
+
+    &:hover {
       color: #87d870;
     }
-    .active{
-      color: #87d870;
-      text-decoration: underline;
-      text-decoration-thickness: $thickness;
-      text-underline-offset: $offset;
-    }
-    .logo{
-      padding: ($offset+$thickness)+7;
-    }
+  }
+
+  .active {
+    color: #87d870;
+    text-decoration: underline;
+    text-decoration-thickness: $thickness;
+    text-underline-offset: $offset;
+  }
+
+  .logo {
+    padding: ($offset+$thickness)+7;
+  }
 }
