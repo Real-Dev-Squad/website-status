@@ -11,6 +11,14 @@ export type droppableComponent = {
   idleMembers: Array<string>,
   unAssignedTasks: Array<task>,
   isTaskOnDrag:boolean,
-  searchTerm: string,
+  searchTermMember: string,
   searchTermTask: string,
+};
+
+export type searchInputComponent = {
+  droppableId: string,
+  value:string,
+  placeholder:string,
+  type:string,
+  onChangeMethod:Function,
 };

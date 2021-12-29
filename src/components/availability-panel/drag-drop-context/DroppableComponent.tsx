@@ -18,7 +18,7 @@ const DroppableComponent: FC<droppableComponent> = ({
   unAssignedTasks,
   idleMembers,
   isTaskOnDrag,
-  searchTerm,
+  searchTermMember,
   searchTermTask,
 }) => (
   <div>
@@ -63,9 +63,9 @@ const DroppableComponent: FC<droppableComponent> = ({
         {(provided) => (
           <div ref={provided.innerRef}>
             {idleMembers.filter((memberItem) => {
-              if (searchTerm === '') {
+              if (searchTermMember === '') {
                 return true;
-              } if (memberItem.toLowerCase().includes(searchTerm.toLowerCase())) {
+              } if (memberItem.toLowerCase().includes(searchTermMember.toLowerCase())) {
                 return true;
               }
               return false;

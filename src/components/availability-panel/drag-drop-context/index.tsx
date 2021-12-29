@@ -7,6 +7,8 @@ import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
+//import SearchBarComponent from './searchBarComponent';
+import SearchInputComponent from './searchInputComponent';
 
 type NotFoundErrorProps = {
   message: string,
@@ -28,18 +30,22 @@ const DragDropcontext: FC<dragDropProps> = ({
   idleMembers,
   refreshData,
 }) => {
-  const [toogleSearch, setToogleSearch] = useState<boolean>(false);
-  const [toogleSearchName, setToogleSearchName] = useState<boolean>(false);
+  const [toogleSearchTask, setToogleSearchTask] = useState<boolean>(false);
+  const [toogleSearchMember, setToogleSearchMember] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTermMember, setSearchTermMember] = useState<string>('');
   const [searchTermTask, setSearchTermTask] = useState<string>('');
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
     setMemberList(idleMembers);
   }, [unAssignedTasks, idleMembers]);
+
+  const handleChangeTask = (e:any) =>{setSearchTermTask(e.target.value as string)};
+
+  const handleChangeMember = (e:any) =>{setSearchTermMember(e.target.value as string)};
 
   const reorder = (list:Array<task |string>, startIndex:number, endIndex:number) => {
     const result = Array.from(list);
@@ -118,14 +124,22 @@ const DragDropcontext: FC<dragDropProps> = ({
               <div className={classNames.searchBoxContainer}>
                 <span
                   onClick={() => {
-                    setToogleSearch(!toogleSearch);
+                    setToogleSearchTask(!toogleSearchTask);
                   }}
                   aria-hidden="true"
                   className={classNames.searchText}
                 >
                   Search
                 </span>
-                { toogleSearch && <input placeholder="Search by tasks" value={searchTermTask} onChange={(e) => setSearchTermTask(e.target.value)} type="text" />}
+                { toogleSearchTask && 
+                <SearchInputComponent
+                droppableId = 'tasks'
+                placeholder = "Search by tasks" 
+                value={searchTermTask}
+                onChangeMethod = {handleChangeTask}
+                type="text"
+                />
+                }
               </div>
               <div className={classNames.heading}> </div>
               <DroppableComponent
@@ -133,7 +147,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                 idleMembers={[]}
                 unAssignedTasks={taskList}
                 isTaskOnDrag={isTaskOnDrag}
-                searchTerm=""
+                searchTermMember=""
                 searchTermTask={searchTermTask}
               />
             </div>
@@ -148,14 +162,22 @@ const DragDropcontext: FC<dragDropProps> = ({
               <div className={classNames.searchBoxContainer}>
                 <span
                   onClick={() => {
-                    setToogleSearchName(!toogleSearchName);
+                    setToogleSearchMember(!toogleSearchMember);
                   }}
                   aria-hidden="true"
                   className={classNames.searchText}
                 >
                   Search
                 </span>
-                {toogleSearchName && <input placeholder="Search by name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} type="text" />}
+                {toogleSearchMember && 
+                <SearchInputComponent
+                droppableId = 'members'
+                placeholder = "Search by members" 
+                value={searchTermMember}
+                onChangeMethod = {handleChangeMember}
+                type="text"
+                />
+                }
               </div>
               <div className={classNames.heading}> </div>
               <div className={classNames.idleMember}>
@@ -164,7 +186,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                   idleMembers={memberList}
                   unAssignedTasks={[]}
                   isTaskOnDrag={isTaskOnDrag}
-                  searchTerm={searchTerm}
+                  searchTermMember={searchTermMember}
                   searchTermTask=""
                 />
               </div>
