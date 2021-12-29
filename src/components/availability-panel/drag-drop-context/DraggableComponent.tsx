@@ -9,14 +9,13 @@ const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE
 const getItemStyle = (
   isDragging: boolean,
   draggableStyle: any,
-  draggableId1: string,
-  draggableId2: string,
+  draggableIds: string[],
   draggableId: string,
 ) => {
   const style = {
     ...draggableStyle,
   };
-  if (draggableId1 === draggableId || draggableId2 === draggableId) {
+  if (draggableIds.includes(draggableId)) {
     style.background = '#aeaeae';
   } else if (isDragging) {
     style.background = '#d1d1d1';
@@ -31,13 +30,13 @@ const DraggableComponent: FC<draggableProps> = ({
   index,
   title = '',
 }) => {
-  const { draggableId1, draggableId2 } = useContext(disableDrag);
+  const draggableIds = useContext(disableDrag);
   return (
     <Draggable
       key={draggableId}
       draggableId={draggableId}
       index={index}
-      isDragDisabled={(draggableId2 === draggableId || draggableId1 === draggableId)}
+      // isDragDisabled={draggableIds.includes(draggableId)})}
     >
       {(Provided, snapshot) => (
         <div
@@ -47,8 +46,7 @@ const DraggableComponent: FC<draggableProps> = ({
           style={getItemStyle(
             snapshot.isDragging,
             Provided.draggableProps.style,
-            draggableId1,
-            draggableId2,
+            draggableIds,
             draggableId,
           )}
           className={classNames.memberCard}

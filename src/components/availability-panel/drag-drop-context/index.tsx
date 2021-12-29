@@ -25,7 +25,7 @@ const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   </div>
 );
 
-export const disableDrag = createContext({ draggableId1: '', draggableId2: '' });
+export const disableDrag = createContext([]);
 
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
@@ -36,8 +36,7 @@ const DragDropcontext: FC<dragDropProps> = ({
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
-  const [draggableId1, setDraggableId1] = useState<string>('');
-  const [draggableId2, setDraggableId2] = useState<string>('');
+  const [draggableIds, setDraggableIds] = useState<string[]>([]);
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
@@ -79,8 +78,7 @@ const DragDropcontext: FC<dragDropProps> = ({
 
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
       try {
-        setDraggableId1(result.draggableId);
-        setDraggableId2(result.combine.draggableId);
+        setDraggableIds([...draggableIds, result.combine.draggableId, result.draggableId]);
         const taskId = result.combine.droppableId === 'tasks'
           ? result.combine.draggableId
           : result.draggableId;
@@ -107,8 +105,7 @@ const DragDropcontext: FC<dragDropProps> = ({
         }
         toast(ERROR, error.message);
       } finally {
-        setDraggableId1('');
-        setDraggableId2('');
+        setDraggableIds(['akshay', 'uAROzkH0JJ9ptFoZROi8']);
         refreshData();
       }
     }
@@ -116,7 +113,9 @@ const DragDropcontext: FC<dragDropProps> = ({
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      <disableDrag.Provider value={{ draggableId1, draggableId2 }}>
+      {/* <disableDrag.Provider value={{ draggableId1, draggableId2 }}> */}
+      {/* <disableDrag.Provider value={draggableIds}> */}
+      <disableDrag.Provider value={[]}>
         <div className={classNames.flexContainer}>
           <div>
             {taskList.length === 0 ? (
