@@ -7,7 +7,6 @@ import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
-//import SearchBarComponent from './searchBarComponent';
 import SearchInputComponent from './searchInputComponent';
 
 type NotFoundErrorProps = {
@@ -43,9 +42,13 @@ const DragDropcontext: FC<dragDropProps> = ({
     setMemberList(idleMembers);
   }, [unAssignedTasks, idleMembers]);
 
-  const handleChangeTask = (e:any) =>{setSearchTermTask(e.target.value as string)};
+  const handleChangeTask = (e:any) => {
+    setSearchTermTask(e.target.value as string);
+  };
 
-  const handleChangeMember = (e:any) =>{setSearchTermMember(e.target.value as string)};
+  const handleChangeMember = (e:any) => {
+    setSearchTermMember(e.target.value as string);
+  };
 
   const reorder = (list:Array<task |string>, startIndex:number, endIndex:number) => {
     const result = Array.from(list);
@@ -131,15 +134,16 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                { toogleSearchTask && 
+                {toogleSearchTask
+                && (
                 <SearchInputComponent
-                droppableId = 'tasks'
-                placeholder = "Search by tasks" 
-                value={searchTermTask}
-                onChangeMethod = {handleChangeTask}
-                type="text"
+                  droppableId="tasks"
+                  placeholder="Search by tasks"
+                  value={searchTermTask}
+                  onChangeMethod={handleChangeTask}
+                  type="text"
                 />
-                }
+                )}
               </div>
               <div className={classNames.heading}> </div>
               <DroppableComponent
@@ -169,15 +173,16 @@ const DragDropcontext: FC<dragDropProps> = ({
                 >
                   Search
                 </span>
-                {toogleSearchMember && 
+                {(toogleSearchMember
+                && (
                 <SearchInputComponent
-                droppableId = 'members'
-                placeholder = "Search by members" 
-                value={searchTermMember}
-                onChangeMethod = {handleChangeMember}
-                type="text"
+                  droppableId="members"
+                  placeholder="Search by members"
+                  value={searchTermMember}
+                  onChangeMethod={handleChangeMember}
+                  type="text"
                 />
-                }
+                )) }
               </div>
               <div className={classNames.heading}> </div>
               <div className={classNames.idleMember}>
