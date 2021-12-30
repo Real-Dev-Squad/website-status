@@ -4,7 +4,8 @@ import Layout from '@/components/Layout';
 import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
-import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
+import DragDropcontext from '@/components/availability-panel/drag-drop-context/index';
+import { UNASSIGNED, AVAILABLE } from '@/components/constants/task-status';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -13,6 +14,7 @@ const AvailabilityPanel: FC = () => {
   const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
   const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
+  const statusAvialableList = [UNASSIGNED, AVAILABLE];
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -22,7 +24,8 @@ const AvailabilityPanel: FC = () => {
         const fetchPromise = await requestPromise;
         const { tasks } = fetchPromise.data;
         const unassigned = tasks.filter(
-          (item: task) => item.status.toLowerCase() === 'unassigned' && item.type === 'feature',
+          (item: task) => (
+            (statusAvialableList.includes(item.status)) && (item.type === 'feature')),
         );
         setUnAssignedTasks(unassigned);
       } catch (Error) {
@@ -75,7 +78,7 @@ const AvailabilityPanel: FC = () => {
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
-          <DragDropContextWrapper
+          <DragDropcontext
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
