@@ -5,6 +5,9 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
+import {
+  ACTIVE, BLOCKED, IN_PROGRESS, NEW_BLOCKED, SMOKE_TESING, PENDING,
+} from '@/components/constants/task-status';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
@@ -22,7 +25,14 @@ const renderCardList = (tasks: task[]) => tasks.map(
 const Active: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
   const [activeTasks, setActiveTasks] = useState<any>(null);
-
+  const statusActiveList = [
+    ACTIVE,
+    BLOCKED,
+    PENDING,
+    IN_PROGRESS,
+    NEW_BLOCKED,
+    SMOKE_TESING,
+  ];
   const {
     response,
     error,
@@ -33,7 +43,7 @@ const Active: FC = () => {
     if ('tasks' in response) {
       setTasks(response.tasks);
       const active = tasks.filter(
-        (item: task) => (item.status).toLowerCase() === 'active',
+        (item: task) => (statusActiveList.includes(item.status)),
       );
       setActiveTasks(active);
     }

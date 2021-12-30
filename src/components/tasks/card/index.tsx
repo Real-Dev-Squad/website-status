@@ -3,10 +3,12 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import {
-  ACTIVE,
-  ASSIGNED,
+  AVAILABLE,
+  BLOCKED,
   COMPLETED,
+  NEW_BLOCKED,
   UNASSIGNED,
+  VERIFIED,
 } from '@/components/constants/task-status';
 
 const moment = require('moment');
@@ -22,6 +24,8 @@ const Card: FC<Props> = ({
   shouldEdit = false,
   onContentChange = () => undefined,
 }) => {
+  const statusRedList = [BLOCKED, NEW_BLOCKED];
+  const statusNotOverDueList = [COMPLETED, VERIFIED, UNASSIGNED, AVAILABLE];
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
@@ -33,8 +37,7 @@ const Card: FC<Props> = ({
 
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
-
-  const statusFontColor = cardDetails.status === ACTIVE || ASSIGNED || COMPLETED ? '#00a337' : '#f83535';
+  const statusFontColor = !statusRedList.includes(cardDetails.status) ? '#00a337' : '#f83535';
   const iconHeight = '25px';
   const iconWidth = '25px';
 
@@ -43,7 +46,7 @@ const Card: FC<Props> = ({
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
-    return cardDetails.status !== COMPLETED && cardDetails.status !== UNASSIGNED && timeLeft <= 0;
+    return !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0;
   }
 
   function stripHtml(html: string) {

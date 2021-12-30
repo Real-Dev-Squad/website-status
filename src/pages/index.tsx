@@ -15,13 +15,56 @@ import {
   COMPLETED,
   UNASSIGNED,
   PENDING,
+  AVAILABLE,
+  NEW_ASSIGNED,
+  IN_PROGRESS,
+  NEW_BLOCKED,
+  SMOKE_TESING,
+  NEW_COMPLETED,
+  NEEDS_REVIEW,
+  IN_REVIEW,
+  APPROVED,
+  MERGED,
+  SANITY_CHECK,
+  REGRESSION_CHECK,
+  RELEASED,
+  VERIFIED,
+  BLOCKED,
 } from '@/components/constants/task-status';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
-const STATUS_ORDER = [ACTIVE, ASSIGNED, COMPLETED, PENDING, UNASSIGNED];
-
+const STATUS_ORDER = [
+  ACTIVE,
+  ASSIGNED,
+  COMPLETED,
+  PENDING,
+  BLOCKED,
+  UNASSIGNED,
+  AVAILABLE,
+  NEW_ASSIGNED,
+  IN_PROGRESS,
+  NEW_BLOCKED,
+  SMOKE_TESING,
+  NEW_COMPLETED,
+  NEEDS_REVIEW,
+  IN_REVIEW,
+  APPROVED,
+  MERGED,
+  SANITY_CHECK,
+  REGRESSION_CHECK,
+  RELEASED,
+  VERIFIED,
+];
+const statusActiveList = [
+  ACTIVE,
+  BLOCKED,
+  PENDING,
+  IN_PROGRESS,
+  NEW_BLOCKED,
+  SMOKE_TESING,
+];
 async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
@@ -108,7 +151,7 @@ const Index: FC = () => {
           <>
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
-                <Accordion open={(key === ACTIVE)} title={key} key={key}>
+                <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
                   {renderCardList(filteredTask[key], isEditable)}
                 </Accordion>
               ))
