@@ -105,7 +105,7 @@ const DragDropcontext: FC<dragDropProps> = ({
         }
         toast(ERROR, error.message);
       } finally {
-        setDraggableIds(['akshay', 'uAROzkH0JJ9ptFoZROi8']);
+        console.log(draggableIds);
         refreshData();
       }
     }
