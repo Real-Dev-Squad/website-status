@@ -38,17 +38,13 @@ const DragDropcontext: FC<dragDropProps> = ({
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
   const [draggableIds, setDraggableIds] = useState<string[]>([]);
 
-  const ref = useRef([]);
+  const ref = useRef<string[]>([]);
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
     setMemberList(idleMembers);
   }, [unAssignedTasks, idleMembers]);
 
-  useEffect(() => {
-    const newIds = draggableIds.filter((id) => !(id === ref.current[0] || id === ref.current[1]));
-    setDraggableIds(newIds);
-  }, [ref.current]);
   const reorder = (list:Array<task |string>, startIndex:number, endIndex:number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -79,7 +75,7 @@ const DragDropcontext: FC<dragDropProps> = ({
       }
       toast(ERROR, error.message);
     } finally {
-      setTimeout(() => resolve({ id1: taskId, id2: assignee }), 4000);
+      setTimeout(() => resolve([taskId, assignee]), 4000);
     }
   });
 
@@ -110,7 +106,8 @@ const DragDropcontext: FC<dragDropProps> = ({
     }
 
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
-      setDraggableIds([...draggableIds, result.combine.draggableId, result.draggableId]);
+      ref.current = [...draggableIds, result.combine.draggableId, result.draggableId];
+      setDraggableIds(ref.current);
       const taskId = result.combine.droppableId === 'tasks'
         ? result.combine.draggableId
         : result.draggableId;
@@ -118,8 +115,10 @@ const DragDropcontext: FC<dragDropProps> = ({
         ? result.draggableId
         : result.combine.draggableId;
       const res = await assignTask(taskId, assignee);
-      if (res.id1 && res.id2) {
-        ref.current = [res.id1, res.id2];
+      if (res) {
+        const newIds = ref.current.filter((id) => !res.includes(id));
+        ref.current = newIds;
+        setDraggableIds(ref.current);
       }
       refreshData();
     }
