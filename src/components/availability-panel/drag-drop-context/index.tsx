@@ -25,7 +25,7 @@ const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   </div>
 );
 
-export const disableDrag = createContext([]);
+export const disableDrag = createContext<string[]>([]);
 
 const DragDropcontext: FC<dragDropProps> = ({
   unAssignedTasks,
@@ -52,8 +52,10 @@ const DragDropcontext: FC<dragDropProps> = ({
     return result;
   };
 
-  // eslint-disable-next-line no-async-promise-executor
-  const assignTask = (taskId: string, assignee: string) => new Promise(async (resolve) => {
+  const assignTask = async (
+    taskId: string,
+    assignee: string,
+  ) => {
     try {
       const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
       const data = {
@@ -68,16 +70,16 @@ const DragDropcontext: FC<dragDropProps> = ({
       });
       await requestPromise;
       toast(SUCCESS, 'Successfully Assigned Task');
+      return ([taskId, assignee]);
     } catch (error:any) {
       if ('response' in error) {
         toast(ERROR, error.response.data.message);
-        return;
+        return ([taskId, assignee]);
       }
       toast(ERROR, error.message);
-    } finally {
-      setTimeout(() => resolve([taskId, assignee]), 4000);
+      return ([taskId, assignee]);
     }
-  });
+  };
 
   const onDragStart = (result:DragEvent | any) => {
     const isTask = result.source.droppableId === 'tasks';
@@ -114,7 +116,7 @@ const DragDropcontext: FC<dragDropProps> = ({
       const assignee = result.combine.droppableId === 'tasks'
         ? result.draggableId
         : result.combine.draggableId;
-      const res = await assignTask(taskId, assignee);
+      const res:Array<string> = await assignTask(taskId, assignee);
       if (res) {
         const newIds = ref.current.filter((id) => !res.includes(id));
         ref.current = newIds;
