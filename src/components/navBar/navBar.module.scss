@@ -1,50 +1,35 @@
+$offset: 10px;
+$thickness: 3px;
+
 .navBar {
+  display: flex;
   width: 100%;
-  background-color: #1d1283;  
-}
-
-.navBar ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+  background-color: #1d1283;
+  align-items: center;
   overflow: hidden;
-  height: 5.25rem;
-}
+  flex-wrap: wrap;
 
-.navBar li {
-  float: left;
-}
+  a {
+    display: block;
+    color: #ffffff;
+    font-weight: bolder;
+    text-align: center;
+    padding: 35px 2*($offset+$thickness)-1;
+    text-decoration: none;
 
-.navBar li .active {
-  color: #87d870;
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 10px;
-}
-
-.navBar li .logo {
-  padding: 20px;
-}
-
-.navBar li a {
-  display: block;
-  color: #ffffff;
-  font-weight: bolder;
-  text-align: center;
-  padding: 35px 25px 10px;
-  text-decoration: none;
-}
-
-.navBar li a:hover {
-  color: #87d870;
-}
-
-@media screen and (max-width: 500px) {
-  .navBar li .logo {
-    padding: 4px;
+    &:hover {
+      color: #87d870;
+    }
   }
 
-  .navBar li a {
-    padding: 18px 14px;
+  .active {
+    color: #87d870;
+    text-decoration: underline;
+    text-decoration-thickness: $thickness;
+    text-underline-offset: $offset;
+  }
+
+  .logo {
+    padding: ($offset+$thickness)+7;
   }
 }
