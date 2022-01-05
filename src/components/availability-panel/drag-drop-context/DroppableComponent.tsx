@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import Image from 'next/image';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { droppableComponent } from '@/interfaces/availabilityPanel.type';
@@ -66,10 +67,12 @@ const DroppableComponent: FC<droppableComponent> = ({
                     )}
                     className={classNames.memberCard}
                   >
-                    <img
+                    <Image
                       src={imageGenerator(member)}
                       alt={member}
-                      onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
+                      width={52}
+                      height={52}
+                      onError={(e) => { (e.target as HTMLImageElement).src = '/dummyProfile.png'; }}
                     />
                     <span>{member}</span>
                   </div>

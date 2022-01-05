@@ -1,4 +1,5 @@
 import { FC, Fragment } from 'react';
+import Image from 'next/image';
 import styles from '@/components/storyCard/storyCard.module.scss';
 
 interface TaskProps {
@@ -44,10 +45,11 @@ const ownerInfo = (type: string, owner?: Owner) => {
 
   if (owner) {
     ownerEl = (
-      <img
-        className={styles.ownerImage}
+      <Image
         src={owner.img}
         alt={owner.name}
+        width={50}
+        height={50}
       />
     );
   }
@@ -87,7 +89,7 @@ const StoryCard: FC<Props> = ({ data }) => {
             {started}
           </div>
           <div className={styles.taskDue}>
-            <img src="/calendar-icon.png" alt="calendar-icon" height="25" />
+            <Image src="/calendar-icon.png" alt="calendar-icon" width="25" height="25" />
             Due Date
             <span className={styles.dueDate}>{dueDate}</span>
           </div>
@@ -98,7 +100,7 @@ const StoryCard: FC<Props> = ({ data }) => {
           Status:
           {status === 'Active'
             ? <span className={styles.subtaskStatus}>{status}</span>
-            : <img src="/lock-solid.svg" alt="lock-icon" height="30" />}
+            : <Image src="/lock-solid.svg" alt="lock-icon" width="25" height="30" />}
         </div>
         <div>
           {ownerInfo('Feature', owners.feature)}

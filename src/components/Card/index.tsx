@@ -16,7 +16,7 @@ export type Props = {
   {
     userName: string,
     imgUrl: string,
-    onError:() => void
+    onError: () => void
   },
   participants?:
   {
