@@ -50,6 +50,21 @@ const DragDropcontext: FC<dragDropProps> = ({
     setSearchTermMember(e.target.value as string);
   };
 
+  const onkeypressedTask = (event:any) => {
+    var code = event.charCode || event.keyCode;
+    if (code == 27) {
+      console.log(event);
+      setSearchTermTask('');
+    }
+  }
+
+  const onkeypressedMember = (event:any) => {
+    var code = event.charCode || event.keyCode;
+    if (code == 27) {
+      setSearchTermMember('');
+    }
+  }
+
   const reorder = (list:Array<task |string>, startIndex:number, endIndex:number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -142,6 +157,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                   value={searchTermTask}
                   onChangeMethod={handleChangeTask}
                   type="text"
+                  onkeydown={onkeypressedTask}
                 />
                 )}
               </div>
@@ -181,6 +197,7 @@ const DragDropcontext: FC<dragDropProps> = ({
                   value={searchTermMember}
                   onChangeMethod={handleChangeMember}
                   type="text"
+                  onkeydown={onkeypressedMember}
                 />
                 )) }
               </div>

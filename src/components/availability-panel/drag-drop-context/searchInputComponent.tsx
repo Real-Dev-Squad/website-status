@@ -3,17 +3,16 @@ import { searchInputComponent } from '@/interfaces/availabilityPanel.type';
 
 const SearchInputComponent: FC<searchInputComponent> = (
   {
-    value, placeholder, type, onChangeMethod,
+    value, placeholder, type, onChangeMethod,onkeydown,
   },
 ) => (
-  <div>
     <input
       type={type}
       value={value}
       placeholder={placeholder}
       onChange={onChangeMethod}
+      onKeyDown={onkeydown}
     />
-  </div>
 );
 
 export default SearchInputComponent;

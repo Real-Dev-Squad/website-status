@@ -21,4 +21,5 @@ export type searchInputComponent = {
   placeholder:string,
   type:string,
   onChangeMethod:any,
+  onkeydown:any,
 };

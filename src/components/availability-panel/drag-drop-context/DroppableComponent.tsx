@@ -29,7 +29,8 @@ const DroppableComponent: FC<droppableComponent> = ({
             {unAssignedTasks.filter((taskItem) => {
               if (searchTermTask === '') {
                 return true;
-              } if (taskItem.title.toLowerCase().includes(searchTermTask.toLowerCase())) {
+              } 
+              if (taskItem.title.toLowerCase().includes(searchTermTask.trim().toLowerCase())) {
                 return true;
               }
               return false;
@@ -65,7 +66,7 @@ const DroppableComponent: FC<droppableComponent> = ({
             {idleMembers.filter((memberItem) => {
               if (searchTermMember === '') {
                 return true;
-              } if (memberItem.toLowerCase().includes(searchTermMember.toLowerCase())) {
+              } if (memberItem.toLowerCase().includes(searchTermMember.trim().toLowerCase())) {
                 return true;
               }
               return false;
