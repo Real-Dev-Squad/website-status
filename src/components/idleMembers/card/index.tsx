@@ -1,4 +1,5 @@
 import { FC, SyntheticEvent } from 'react';
+import Image from 'next/image';
 import classNames from '@/components/idleMembers/card/card.module.scss';
 import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
 
@@ -24,11 +25,12 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
       onKeyDown={() => getMemberDetails(idleMemberUserName)}
       aria-hidden="true"
     >
-      <img
-        className={classNames.image}
+      <Image
         src={assigneeProfilePic(idleMemberUserName)}
         alt={idleMemberUserName}
         onError={assigneeImageOnError}
+        width={150}
+        height={150}
       />
       <span className={classNames.name}>{idleMemberUserName}</span>
     </div>
