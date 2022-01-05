@@ -109,15 +109,34 @@ $borderForItem: 2px solid #e0e0e0;
   }
 }
 
-@media only screen and (max-width: 1200px) {
+
+@media only screen and (max-width: 1000px) {
+  .flexContainer {
+    flex-direction: row;
+    margin: 0;
+  }
+
+  .taskItem {
+    padding: 0.2rem;
+  }
+
+  .memberCard {
+    margin: 1rem 0.5rem;
+  
+    img {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
   .divider {
     position: relative;
     margin-bottom: 1rem;
     border-top: 1px solid #d9d9d9;
   }
   .flexContainer {
-    flex-direction: column;
     margin: 0;
+    padding: 0;
   }
 
   .searchBoxContainer {
