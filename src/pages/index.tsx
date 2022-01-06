@@ -93,7 +93,7 @@ const Index: FC = () => {
 
   useEffect(() => {
     if ('tasks' in response) {
-      tasks = updateTasksStatus(response.tasks);
+      const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
       tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
         - STATUS_ORDER.indexOf(b.status));
