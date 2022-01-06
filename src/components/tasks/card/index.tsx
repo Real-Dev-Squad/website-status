@@ -2,14 +2,6 @@ import { FC, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
-import {
-  AVAILABLE,
-  BLOCKED,
-  COMPLETED,
-  NEW_BLOCKED,
-  UNASSIGNED,
-  VERIFIED,
-} from '@/components/constants/task-status';
 
 const moment = require('moment');
 
@@ -24,8 +16,8 @@ const Card: FC<Props> = ({
   shouldEdit = false,
   onContentChange = () => undefined,
 }) => {
-  const statusRedList = [BLOCKED, NEW_BLOCKED];
-  const statusNotOverDueList = [COMPLETED, VERIFIED, UNASSIGNED, AVAILABLE];
+  const statusRedList = ['Blocked'];
+  const statusNotOverDueList = ['Completed', 'Verified', 'Available'];
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,

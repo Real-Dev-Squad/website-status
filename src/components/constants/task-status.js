@@ -1,16 +1,9 @@
-export const ACTIVE = 'active';
-export const ASSIGNED = 'assigned';
-export const UNASSIGNED = 'unassigned';
-export const COMPLETED = 'completed';
-export const BLOCKED = 'blocked';
-export const PENDING = 'pending';
-
 export const AVAILABLE = 'AVAILABLE';
-export const NEW_ASSIGNED = 'ASSIGNED';
+export const ASSIGNED = 'ASSIGNED';
 export const IN_PROGRESS = 'IN_PROGRESS';
-export const NEW_BLOCKED = 'BLOCKED';
+export const BLOCKED = 'BLOCKED';
 export const SMOKE_TESING = 'SMOKE_TESING';
-export const NEW_COMPLETED = 'COMPLETED';
+export const COMPLETED = 'COMPLETED';
 export const NEEDS_REVIEW = 'NEEDS_REVIEW';
 export const IN_REVIEW = 'IN_REVIEW';
 export const APPROVED = 'APPROVED';
