@@ -5,7 +5,7 @@ import { dragDropProps } from '@/interfaces/availabilityPanel.type';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
-import { NEW_ASSIGNED } from '@/components/constants/task-status';
+import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
 
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
@@ -91,7 +91,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
         const startedOn:any = dateObject / 1000;
         const endsOn:number = startedOn + (14 * 86400);
         const data = {
-          status: NEW_ASSIGNED,
+          status: ASSIGNED,
           startedOn,
           endsOn,
           assignee,
