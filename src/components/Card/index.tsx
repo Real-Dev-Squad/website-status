@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import classNames from '@/components/Card/card.module.scss';
+import Image from 'next/image';
 
 const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
 
@@ -16,7 +17,7 @@ export type Props = {
   {
     userName: string,
     imgUrl: string,
-    onError:() => void
+    onError: () => void
   },
   participants?:
   {
@@ -78,7 +79,7 @@ const Card: FC<Props> = ({
         (assignee) && (
           <div className={classNames.cardFooter}>
             <div className={classNames.profilePicture}>
-              <img
+              <Image
                 src={assignee.imgUrl}
                 alt={assignee.userName}
                 onError={assignee.onError}
@@ -96,7 +97,7 @@ const Card: FC<Props> = ({
               {
                 participants.map((participant) => (
                   <li key={participant.userName} className={classNames.participantsList}>
-                    <img
+                    <Image
                       src={participant.imgUrl}
                       onError={
                         (e) => { (e.target as HTMLImageElement).src = DUMMY_PROFILE_PICTURE; }

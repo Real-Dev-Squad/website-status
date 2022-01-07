@@ -55,14 +55,14 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 const Index: FC = () => {
   const router = useRouter();
   const { query } = router;
-  let tasks: task[] = [];
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const isEditable = !!query.edit && IsUserAuthorized;
+
   useEffect(() => {
     if ('tasks' in response) {
-      tasks = response.tasks;
+      let tasks: task[] = response.tasks;
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
       tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
         - STATUS_ORDER.indexOf(b.status));

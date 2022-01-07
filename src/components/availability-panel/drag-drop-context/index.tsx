@@ -1,14 +1,16 @@
 import {
   FC, useState, useEffect, createContext, useRef,
 } from 'react';
+import Image from 'next/image';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
+
+import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 
 type NotFoundErrorProps = {
   message: string,
@@ -18,7 +20,12 @@ const { SUCCESS, ERROR } = ToastTypes;
 
 const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   <div className={classNames.emptyArray}>
-    <img src="ghost.png" alt="ghost" />
+    <Image
+      src="/ghost.png"
+      alt="ghost"
+      width={160}
+      height={190}
+    />
     <span className={classNames.emptyText}>
       {message}
     </span>

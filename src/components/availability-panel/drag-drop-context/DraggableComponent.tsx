@@ -3,6 +3,7 @@ import { FC, useContext } from 'react';
 import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { disableDrag } from '.';
+import Image from 'next/image';
 
 const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
@@ -51,9 +52,11 @@ const DraggableComponent: FC<draggableProps> = ({
             ? <div>{title}</div>
             : (
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <img
+                <Image
                   src={imageGenerator(draggableId)}
                   alt={draggableId}
+                  width={52}
+                  height={52}
                   onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
                 />
                 <span>{draggableId}</span>

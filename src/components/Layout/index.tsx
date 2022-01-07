@@ -13,7 +13,7 @@ const navBarContent = (title: string, refUrl: string, isActive: boolean = false)
   const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;
 
   return (
-    <Link href={refUrl}>
+    <Link href={refUrl} passHref>
       <button type="button" tabIndex={0} className={linkClasses}>{title}</button>
     </Link>
   );

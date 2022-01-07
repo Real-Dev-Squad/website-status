@@ -44,9 +44,9 @@
 }
 
 .contributorImage {
-  height: 45px;
-  width: 45px;
-  border-radius: 40%;
+  img {
+    border-radius: 40%;
+  }
 }
 
 .cardStrongFont {
