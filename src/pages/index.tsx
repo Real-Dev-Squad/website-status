@@ -76,6 +76,10 @@ const Index: FC = () => {
       });
       setFilteredTask(taskMap);
     }
+
+    return(() => {
+      setFilteredTask([]);
+    });
   }, [isLoading, response]);
 
   useEffect(() => {
@@ -94,6 +98,10 @@ const Index: FC = () => {
       }
     };
     fetchData();
+
+    return (() => {
+      setIsUserAuthorized(false);
+    });
   }, []);
 
   return (
