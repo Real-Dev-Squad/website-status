@@ -29,6 +29,7 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
   const dev = !!query.dev;
 
   return (
+<<<<<<< HEAD
     <div className={darkMode ? styles.darkTheme : styles.lightTheme} style={{ height: '100%' }}>
       <div className={styles.layout}>
         <NavBar darkMode={darkMode} changeTheme={changeTheme} />
@@ -45,6 +46,24 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
             {navBarContent('Stale PRs', '/stale-pr', darkMode, router.pathname === '/stale-pr')}
             |
             {navBarContent('Idle Members', '/idle-members', darkMode, router.pathname === '/idle-members')}
+=======
+    <div className={styles.darkTheme} style={{ height: '100%' }}>
+      <div className={styles.layout}>
+        <NavBar />
+        <div className={styles.wrapper}>
+          <div className={styles.header}>
+            {navBarContent('Tasks', '/', router.pathname === '/')}
+            |
+            {navBarContent('Mine', '/mine', router.pathname === '/mine')}
+            |
+            {navBarContent('DS', '/challenges', router.pathname === '/challenges')}
+            |
+            {navBarContent('Open PRs', '/openPRs', router.pathname === '/openPRs')}
+            |
+            {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
+            |
+            {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
+>>>>>>> 395dbbb (add dark mode to status site Tasks tab)
             {
             (dev)
               && (

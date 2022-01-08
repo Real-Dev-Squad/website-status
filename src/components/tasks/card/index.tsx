@@ -73,7 +73,11 @@ const Card: FC<Props> = ({
     cardClassNames.push(classNames.overdueTask);
   }
   return (
+<<<<<<< HEAD
     <div className={darkMode ? classNames.darkTheme : classNames.lightTheme}>
+=======
+    <div className={classNames.darkTheme}>
+>>>>>>> 395dbbb (add dark mode to status site Tasks tab)
       <div
         className={`
           ${classNames.card}
