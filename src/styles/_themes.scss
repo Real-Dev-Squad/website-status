@@ -1,0 +1,32 @@
+$themes: (
+  darkTheme: (
+    'colorBackground': #1C1B22,
+    'colorLink': #0080FF,
+    'colorText': #E1E1EC,
+    'colorNav': #191970,
+    'colorHighlight': #FF0090,
+    'colorCardBg': #312F3B
+  ),
+  lightTheme: (
+    'colorBackground': #FFFFFF,
+    'colorLink': #0080FF,
+    'colorText': #000000,
+    'colorNav': #191970,
+    'colorHighlight': #FF0090,
+    'colorCardBg': #9b9b9b
+  )
+);
+
+@mixin theme() {
+  @each $theme, $map in $themes {
+    $theme-map: $map !global;
+    .#{$theme} & {
+      @content;
+    }
+  }
+  $theme-map: null !global;
+}
+
+@function theme-get($key) {
+  @return map-get($theme-map, $key);
+}
