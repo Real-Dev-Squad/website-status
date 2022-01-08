@@ -67,91 +67,93 @@ const Card: FC<Props> = ({
     cardClassNames.push(classNames.overdueTask);
   }
   return (
-    <div
-      className={`
-        ${classNames.card}
-        ${isTaskOverdue() && classNames.overdueTask}
-    `}
-    >
-      <div className={classNames.cardItems}>
-        <span
-          className={classNames.cardTitle}
-          contentEditable={shouldEdit}
-          onKeyPress={(e) => handleChange(e, 'title')}
-          role="button"
-          tabIndex={0}
-        >
-          {cardDetails.title}
-        </span>
-        <span>
-          <span className={classNames.cardSpecialFont}>Status:</span>
+    <div className={classNames.darkTheme}>
+      <div
+        className={`
+          ${classNames.card}
+          ${isTaskOverdue() && classNames.overdueTask}
+      `}
+      >
+        <div className={classNames.cardItems}>
           <span
-            className={classNames.cardStatusFont}
+            className={classNames.cardTitle}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'status')}
-            style={{ color: statusFontColor }}
+            onKeyPress={(e) => handleChange(e, 'title')}
             role="button"
             tabIndex={0}
           >
-            {cardDetails.status}
+            {cardDetails.title}
           </span>
-        </span>
-      </div>
-      <div className={classNames.cardItems}>
-        <span>
-          <Image
-            src="/calendar-icon.png"
-            alt="calendar icon"
-            width={iconWidth}
-            height={iconHeight}
-          />
-          <span className={classNames.cardSpecialFont}>Due Date</span>
-          <span
-            className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'endsOn')}
-            role="button"
-            tabIndex={0}
-          >
-            {fromNowEndsOn}
+          <span>
+            <span className={classNames.cardSpecialFont}>Status:</span>
+            <span
+              className={classNames.cardStatusFont}
+              contentEditable={shouldEdit}
+              onKeyPress={(e) => handleChange(e, 'status')}
+              style={{ color: statusFontColor }}
+              role="button"
+              tabIndex={0}
+            >
+              {cardDetails.status}
+            </span>
           </span>
-        </span>
-      </div>
-      <div className={classNames.cardItems}>
-        <span
-          className={classNames.cardSpecialFont}
-          contentEditable={shouldEdit}
-          onKeyPress={(e) => handleChange(e, 'startedOn')}
-          role="button"
-          tabIndex={0}
-        >
-          Started
-          {' '}
-          {fromNowStartedOn}
-        </span>
-        <span>
-          <span className={classNames.cardSpecialFont}>Assignee:</span>
-          <span
-            className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'assignee')}
-            role="button"
-            tabIndex={0}
-          >
-            {cardDetails.assignee}
-          </span>
-          <span
-            className={classNames.contributorImage}
-          >
+        </div>
+        <div className={classNames.cardItems}>
+          <span>
             <Image
-              src={assigneeProfilePic}
-              alt="Assignee profile picture"
-              onError={contributorImageOnError}
-              width={45}
-              height={45}
+              src="/calendar-icon.png"
+              alt="calendar icon"
+              width={iconWidth}
+              height={iconHeight}
             />
+            <span className={classNames.cardSpecialFont}>Due Date</span>
+            <span
+              className={classNames.cardStrongFont}
+              contentEditable={shouldEdit}
+              onKeyPress={(e) => handleChange(e, 'endsOn')}
+              role="button"
+              tabIndex={0}
+            >
+              {fromNowEndsOn}
+            </span>
           </span>
-        </span>
+        </div>
+        <div className={classNames.cardItems}>
+          <span
+            className={classNames.cardSpecialFont}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleChange(e, 'startedOn')}
+            role="button"
+            tabIndex={0}
+          >
+            Started
+            {' '}
+            {fromNowStartedOn}
+          </span>
+          <span>
+            <span className={classNames.cardSpecialFont}>Assignee:</span>
+            <span
+              className={classNames.cardStrongFont}
+              contentEditable={shouldEdit}
+              onKeyPress={(e) => handleChange(e, 'assignee')}
+              role="button"
+              tabIndex={0}
+            >
+              {cardDetails.assignee}
+            </span>
+            <span
+              className={classNames.contributorImage}
+            >
+              <Image
+                src={assigneeProfilePic}
+                alt="Assignee profile picture"
+                onError={contributorImageOnError}
+                width={45}
+                height={45}
+              />
+            </span>
+          </span>
+        </div>
       </div>
     </div>
   );
