@@ -1,3 +1,5 @@
+@use "../../../styles/themes.scss";
+
 .card {
   display: flex;
   flex-direction: column;
@@ -8,6 +10,10 @@
   border-bottom-style: solid;
   border-bottom-color: #d9d9d9;
   border-bottom-width: 1px;
+  // background-color: white;
+  @include themes.theme() {
+    background-color: themes.theme-get('colorCardBg');
+  }
 }
 
 .cardItems {
@@ -29,7 +35,9 @@
 .cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
-  color: #041187;
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+  }
 }
 
 .cardSpecialFont {

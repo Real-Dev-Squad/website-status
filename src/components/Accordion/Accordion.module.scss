@@ -1,3 +1,5 @@
+@use "../../styles/themes";
+
 .container {
   border-radius: 10px;
   margin-bottom: 1rem;
@@ -17,12 +19,15 @@
   width: auto;
   font-size: 3.5rem;
   font-weight: bold;
-  color: #041484;
   cursor: pointer;
   border: none;
   text-transform: capitalize;
   margin: 0 10px;
 
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+  }
+  
   &:focus {
     outline: none;
   }

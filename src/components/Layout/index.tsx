@@ -27,34 +27,36 @@ const Layout: FC<Props> = ({ children }) => {
   const dev = !!query.dev;
 
   return (
-    <div className={styles.layout}>
-      <NavBar />
-      <div className={styles.wrapper}>
-        <div className={styles.header}>
-          {navBarContent('Tasks', '/', router.pathname === '/')}
-          |
-          {navBarContent('Mine', '/mine', router.pathname === '/mine')}
-          |
-          {navBarContent('DS', '/challenges', router.pathname === '/challenges')}
-          |
-          {navBarContent('Open PRs', '/openPRs', router.pathname === '/openPRs')}
-          |
-          {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
-          |
-          {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
-          {
+    <div className={styles.darkTheme} style={{ height: '100%' }}>
+      <div className={styles.layout}>
+        <NavBar />
+        <div className={styles.wrapper}>
+          <div className={styles.header}>
+            {navBarContent('Tasks', '/', router.pathname === '/')}
+            |
+            {navBarContent('Mine', '/mine', router.pathname === '/mine')}
+            |
+            {navBarContent('DS', '/challenges', router.pathname === '/challenges')}
+            |
+            {navBarContent('Open PRs', '/openPRs', router.pathname === '/openPRs')}
+            |
+            {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
+            |
+            {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
+            {
             (dev)
-            && (
-              <>
-                |
-                {navBarContent('Availability Panel', '/availability-panel')}
-              </>
-            )
+              && (
+                <>
+                  |
+                  {navBarContent('Availability Panel', '/availability-panel')}
+                </>
+              )
           }
+          </div>
+          {children}
         </div>
-        {children}
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };
