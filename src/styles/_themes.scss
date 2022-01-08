@@ -1,6 +1,7 @@
 $themes: (
   darkTheme: (
     'colorBackground': #1C1B22,
+<<<<<<< HEAD
     'colorText': #E1E1EC,
     'colorLink': #0080FF,
     'colorNav': #191970,
@@ -16,6 +17,21 @@ $themes: (
     'colorHighlight':#e30464,
     'colorCardBg': #FFF,
     'colorCardBgOverdue': #ffebee
+=======
+    'colorLink': #0080FF,
+    'colorText': #E1E1EC,
+    'colorNav': #191970,
+    'colorHighlight': #FF0090,
+    'colorCardBg': #312F3B
+  ),
+  lightTheme: (
+    'colorBackground': #FFFFFF,
+    'colorLink': #0080FF,
+    'colorText': #000000,
+    'colorNav': #191970,
+    'colorHighlight': #FF0090,
+    'colorCardBg': #9b9b9b
+>>>>>>> 395dbbb (add dark mode to status site Tasks tab)
   )
 );
 
