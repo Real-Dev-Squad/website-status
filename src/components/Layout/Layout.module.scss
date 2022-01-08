@@ -1,9 +1,16 @@
+@use "../../styles/themes";
+
 .layout {
   margin: 0 auto;
   max-width: 100%;
   flex-direction: column;
   display: flex;
   min-height: 100%;
+
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+    background-color: themes.theme-get('colorBackground');
+  }
 }
 
 .header {
@@ -22,12 +29,16 @@
   padding: 10px;
   text-decoration: none;
   font-weight: bold;
-  color: #041484;
   cursor: pointer;
   background: none;
   border: none;
+  @include themes.theme() {
+    color: themes.theme-get("colorLink");
+  }
 }
 
 .active {
-  color: #E30464;
+  @include themes.theme() {
+    color: themes.theme-get('colorHighlight');
+  }
 }
