@@ -1,4 +1,4 @@
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
 import { FC, useContext } from 'react';
 import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
@@ -7,20 +7,24 @@ import Image from 'next/image';
 
 const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
-const getItemStyle = (isDragging: boolean, draggableStyle: any, undraggable: boolean) => {
-  let color:string;
-  if (undraggable) {
-    color = 'darkgrey';
-  } else if (isDragging) {
-    color = '#d1d1d1';
-  } else {
-    color = 'white';
-  }
-  const style = {
-    background: color,
-    ...draggableStyle,
-  };
-  return style;
+const getItemStyle = (
+  isDragging: boolean,
+  draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
+  undraggable: boolean
+  ) => {
+    let color:string;
+    if (undraggable) {
+      color = 'darkgrey';
+    } else if (isDragging) {
+      color = '#d1d1d1';
+    } else {
+      color = 'white';
+    }
+    const style = {
+      background: color,
+      ...draggableStyle,
+    };
+    return style;
 };
 
 const DraggableComponent: FC<draggableProps> = ({
@@ -36,14 +40,14 @@ const DraggableComponent: FC<draggableProps> = ({
       index={index}
       isDragDisabled={draggableIds.includes(draggableId)}
     >
-      {(Provided, snapshot) => (
+      {(provided, snapshot) => (
         <div
-          ref={Provided.innerRef}
-          {...Provided.draggableProps}
-          {...Provided.dragHandleProps}
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
           style={getItemStyle(
             snapshot.isDragging,
-            Provided.draggableProps.style,
+            provided.draggableProps.style,
             draggableIds.includes(draggableId),
           )}
           className={classNames.memberCard}
