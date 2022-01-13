@@ -26,7 +26,7 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
-  const contributorImageOnError = () => setAssigneeProfilePic('dummyProfile.png');
+  const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -144,12 +144,15 @@ const Card: FC<Props> = ({
           >
             {cardDetails.assignee}
           </span>
-          <span>
-            <img
-              className={classNames.contributorImage}
+          <span
+            className={classNames.contributorImage}
+          >
+            <Image
               src={assigneeProfilePic}
-              alt=""
+              alt="Assignee profile picture"
               onError={contributorImageOnError}
+              width={45}
+              height={45}
             />
           </span>
         </span>

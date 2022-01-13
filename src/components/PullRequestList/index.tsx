@@ -80,7 +80,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
 
   useEffect(() => {
     if (isBottom && !noData) {
-      setPage(page + 1);
+      setPage((page) => page + 1);
     }
   }, [isBottom]);
 

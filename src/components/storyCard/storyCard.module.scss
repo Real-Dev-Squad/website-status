@@ -83,12 +83,11 @@
 .ownerInfo {
   display: flex;
   align-items: center;
-}
 
-.ownerImage {
-  border-radius: 50%;
-  max-height: 50px;
-  margin-left: 8px;
+  img {
+    border-radius: 50%;
+    margin-left: 8px;
+  }
 }
 
 .toBeDecided {
