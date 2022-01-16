@@ -10,7 +10,6 @@
   border-bottom-style: solid;
   border-bottom-color: #d9d9d9;
   border-bottom-width: 1px;
-  // background-color: white;
   @include themes.theme() {
     background-color: themes.theme-get('colorCardBg');
   }
