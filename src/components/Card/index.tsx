@@ -45,88 +45,90 @@ const Card: FC<Props> = ({
   );
 
   return (
-    <div
-      className={`
-        ${classNames.card}
-        ${title.link && classNames.links}
-      `}
-      onClick={() => {
-        if (title.link) {
-          window.open(title.link, '_blank');
-        }
-      }}
-      onKeyDown={() => {
-        if (title.link) {
-          window.open(title.link, '_blank');
-        }
-      }}
-      role="button"
-      tabIndex={0}
-    >
+    <div className={classNames.darkTheme}>
+      <div
+        className={`
+          ${classNames.card}
+          ${title.link && classNames.links}
+        `}
+        onClick={() => {
+          if (title.link) {
+            window.open(title.link, '_blank');
+          }
+        }}
+        onKeyDown={() => {
+          if (title.link) {
+            window.open(title.link, '_blank');
+          }
+        }}
+        role="button"
+        tabIndex={0}
+      >
 
-      <span className={classNames.title} title={tileText}>{tileText}</span>
+        <span className={classNames.title} title={tileText}>{tileText}</span>
 
-      <div>
-        {data.map((pair) => (
-          <div key={pair.key}>
-            {informationElement(pair.key, pair.value)}
-          </div>
-        ))}
-      </div>
-
-      {
-        (assignee) && (
-          <div className={classNames.cardFooter}>
-            <div className={classNames.profilePicture}>
-              <img
-                src={assignee.imgUrl}
-                alt={assignee.userName}
-                onError={assignee.onError}
-              />
-              <strong>{assignee.userName || 'No contributor'}</strong>
+        <div>
+          {data.map((pair) => (
+            <div key={pair.key}>
+              {informationElement(pair.key, pair.value)}
             </div>
-          </div>
-        )
-      }
+          ))}
+        </div>
 
-      {
-        (participants) && (
-          <div className={classNames.Center}>
-            <ul className={classNames.participantsLists}>
-              {
-                participants.map((participant) => (
-                  <li key={participant.userName} className={classNames.participantsList}>
-                    <img
-                      src={participant.imgUrl}
-                      onError={
-                        (e) => { (e.target as HTMLImageElement).src = DUMMY_PROFILE_PICTURE; }
-                      }
-                      alt={`${participant.firstName} ${participant.lastName}`}
-                    />
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-        )
-      }
+        {
+          (assignee) && (
+            <div className={classNames.cardFooter}>
+              <div className={classNames.profilePicture}>
+                <img
+                  src={assignee.imgUrl}
+                  alt={assignee.userName}
+                  onError={assignee.onError}
+                />
+                <strong>{assignee.userName || 'No contributor'}</strong>
+              </div>
+            </div>
+          )
+        }
 
-      {
-        (button) && (
-          <div className={classNames.Center}>
-            <a
-              href={button?.link}
-              className={classNames.links}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <button type="button" onClick={button?.onClick} className={classNames.activeBtn}>
-                {button.text}
-              </button>
-            </a>
-          </div>
-        )
-      }
+        {
+          (participants) && (
+            <div className={classNames.Center}>
+              <ul className={classNames.participantsLists}>
+                {
+                  participants.map((participant) => (
+                    <li key={participant.userName} className={classNames.participantsList}>
+                      <img
+                        src={participant.imgUrl}
+                        onError={
+                          (e) => { (e.target as HTMLImageElement).src = DUMMY_PROFILE_PICTURE; }
+                        }
+                        alt={`${participant.firstName} ${participant.lastName}`}
+                      />
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          )
+        }
+
+        {
+          (button) && (
+            <div className={classNames.Center}>
+              <a
+                href={button?.link}
+                className={classNames.links}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <button type="button" onClick={button?.onClick} className={classNames.activeBtn}>
+                  {button.text}
+                </button>
+              </a>
+            </div>
+          )
+        }
+      </div>
     </div>
   );
 };
