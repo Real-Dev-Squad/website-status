@@ -8,10 +8,15 @@
   flex-direction: column;
   flex-wrap: wrap;
   margin-bottom: 2rem;
+  @include themes.theme() {
+    background-color: themes.theme-get('colorCardBg');
+  }
   
   .title {
     width: 100%;
-    color: #041484;
+    @include themes.theme() {
+      color: themes.theme-get('colorText');
+    }
     font-size: 2rem;
     font-weight: bold;
     overflow: hidden;
