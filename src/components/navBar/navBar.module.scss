@@ -13,8 +13,10 @@ $thickness: 3px;
     display: block;
     color: #ffffff;
     font-weight: bolder;
+    font-size: 16px;
+    margin: 0 10px;
     text-align: center;
-    padding: 35px 2*($offset+$thickness)-1;
+    padding: 12px 16px;
     text-decoration: none;
 
     &:hover {
@@ -22,14 +24,14 @@ $thickness: 3px;
     }
   }
 
+  a:first-child {
+    margin: 0 2px;
+  }
+
   .active {
     color: #87d870;
     text-decoration: underline;
     text-decoration-thickness: $thickness;
     text-underline-offset: $offset;
-  }
-
-  .logo {
-    padding: ($offset+$thickness)+7;
   }
 }

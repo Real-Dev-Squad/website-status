@@ -5,7 +5,7 @@ const RDSLogo = '/RDSLogo.png';
 
 const NavBar = () => (
   <nav className={styles.navBar}>
-    <a className={styles.logo} href="https://realdevsquad.com"><Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" /></a>
+    <a className={styles.logo} href="https://realdevsquad.com"><Image width="50px" height="50px" src={RDSLogo} alt="real-dev squad" /></a>
     <a href="https://welcome.realdevsquad.com/">Welcome</a>
     <a href="https://www.realdevsquad.com/events.html">Events</a>
     <a href="https://members.realdevsquad.com/">Members</a>
