@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
-import DragDropcontext from '@/components/availability-panel/drag-drop-context/index';
+import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -37,7 +37,7 @@ const AvailabilityPanel: FC = () => {
         const { requestPromise } = fetch({ url });
         const fetchPromise = await requestPromise;
         const { idleMemberUserNames } = fetchPromise.data;
-        const filterMembers = idleMemberUserNames.filter((username:string) => username);
+        const filterMembers = idleMemberUserNames.filter((username: string) => username);
         const sortedIdleMembers = filterMembers.sort();
         setIdleMembersList(sortedIdleMembers);
         setError(false);
@@ -75,7 +75,7 @@ const AvailabilityPanel: FC = () => {
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
-          <DragDropcontext
+          <DragDropContextWrapper
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
