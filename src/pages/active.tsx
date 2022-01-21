@@ -6,7 +6,7 @@ import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import {
-  BLOCKED, IN_PROGRESS, SMOKE_TESING,
+  BLOCKED, IN_PROGRESS, SMOKE_TESTING,
 } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
@@ -33,7 +33,7 @@ const Active: FC = () => {
   const statusActiveList = [
     BLOCKED,
     IN_PROGRESS,
-    SMOKE_TESING,
+    SMOKE_TESTING,
   ];
   const {
     response,
@@ -49,6 +49,7 @@ const Active: FC = () => {
       );
       setActiveTasks(active);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, response]);
 
   return (

@@ -7,8 +7,8 @@ import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
-
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import { THOUSAND_MILLI_SECONDS, FOURTEEN_DAYS, SECONDS_IN_A_DAY } from '@/components/constants/date'
 
 type NotFoundErrorProps = {
   message: string,
@@ -87,13 +87,13 @@ const DragDropcontext: FC<dragDropProps> = ({
         const assignee = result.combine.droppableId === 'tasks'
           ? result.draggableId
           : result.combine.draggableId;
-        const dateObject:any = new Date();
-        const startedOn:any = dateObject / 1000;
-        const endsOn:number = startedOn + (14 * 86400);
+        const dateObject:Date = new Date();
+        const startedOnEpoch:number = dateObject.getTime() / THOUSAND_MILLI_SECONDS;
+        const endsOnEpoch:number = startedOnEpoch + (FOURTEEN_DAYS * SECONDS_IN_A_DAY);
         const data = {
           status: ASSIGNED,
-          startedOn,
-          endsOn,
+          startedOn: startedOnEpoch,
+          endsOn: endsOnEpoch,
           assignee,
         };
 

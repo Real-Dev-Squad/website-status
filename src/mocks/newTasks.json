@@ -311,9 +311,9 @@
         "endsOn": 1640875825,
         "percentCompleted": 90,
         "assignee": "pavan",
-        "title": "Task with SMOKE_TESING",
+        "title": "Task with SMOKE_TESTING",
         "type": "feature",
-        "status": "Smoke Tesing",
+        "status": "Smoke TESTING",
         "createdBy": "pavan",
         "startedOn": 1640789425
     }
