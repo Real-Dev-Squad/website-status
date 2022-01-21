@@ -50,7 +50,7 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
               && (
                 <>
                   |
-                  {navBarContent('Availability Panel', '/availability-panel')}
+                  {navBarContent('Availability Panel', '/availability-panel', darkMode)}
                 </>
               )
           }
