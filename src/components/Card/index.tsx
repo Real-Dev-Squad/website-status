@@ -46,11 +46,7 @@ const Card: FC<Props> = ({
   );
 
   return (
-<<<<<<< HEAD
     <div className={darkMode ? classNames.darkTheme : classNames.lightTheme}>
-=======
-    <div className={classNames.darkTheme}>
->>>>>>> 28c8c0c (add dark mode for cards in open and stale prs)
       <div
         className={`
           ${classNames.card}
