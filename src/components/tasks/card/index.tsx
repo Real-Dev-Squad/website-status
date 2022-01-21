@@ -15,12 +15,14 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange: any;
+  darkMode: boolean
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
   onContentChange = () => undefined,
+  darkMode,
 }) => {
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
@@ -71,7 +73,7 @@ const Card: FC<Props> = ({
     cardClassNames.push(classNames.overdueTask);
   }
   return (
-    <div className={classNames.darkTheme}>
+    <div className={darkMode ? classNames.darkTheme : classNames.lightTheme}>
       <div
         className={`
           ${classNames.card}

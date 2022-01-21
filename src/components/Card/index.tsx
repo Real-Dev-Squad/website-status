@@ -4,6 +4,7 @@ import classNames from '@/components/Card/card.module.scss';
 const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
 
 export type Props = {
+  darkMode: boolean,
   title: {
     text: string,
     link?: string
@@ -33,7 +34,7 @@ export type Props = {
 };
 
 const Card: FC<Props> = ({
-  title, data, assignee = undefined, participants = undefined, button = undefined,
+  title, data, darkMode=false, assignee = undefined, participants = undefined, button = undefined,
 }) => {
   const { text: tileText } = title;
 
@@ -45,7 +46,7 @@ const Card: FC<Props> = ({
   );
 
   return (
-    <div className={classNames.darkTheme}>
+    <div className={darkMode ? classNames.darkTheme : classNames.lightTheme}>
       <div
         className={`
           ${classNames.card}
