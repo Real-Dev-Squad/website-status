@@ -40,9 +40,10 @@ async function updateCardContent(id: string, cardDetails: task) {
   }
 }
 
-function renderCardList(tasks: task[], isEditable: boolean) {
+function renderCardList(tasks: task[], isEditable: boolean, darkModeToggle: boolean) {
   return tasks.map((item: task) => (
     <Card
+      darkMode={darkModeToggle}
       content={item}
       key={item.id}
       shouldEdit={isEditable}
@@ -59,6 +60,10 @@ const Index: FC = () => {
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const isEditable = !!query.edit && IsUserAuthorized;
+
+  const [mainDarkMode, setMainDarkMode] = useState(false)
+
+  useEffect(() => console.log(mainDarkMode), [mainDarkMode])
 
   useEffect(() => {
     if ('tasks' in response) {
@@ -104,8 +109,12 @@ const Index: FC = () => {
     });
   }, []);
 
+  const themeSetter = () => {
+    setMainDarkMode(!mainDarkMode)
+  }
+
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="Tasks" />
 
       <div className={classNames.container}>
@@ -117,7 +126,7 @@ const Index: FC = () => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(key === ACTIVE)} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable)}
+                  {renderCardList(filteredTask[key], isEditable, mainDarkMode)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}

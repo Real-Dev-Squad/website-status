@@ -63,5 +63,7 @@
 
 .overdueTask {
   border: solid red 2px;
-  background-color: #ffebee;
+  @include themes.theme() {
+    background-color: themes.theme-get('colorCardBgOverdue') !important;
+  }
 }
