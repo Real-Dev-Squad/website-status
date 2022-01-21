@@ -6,6 +6,8 @@ import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
 import DragDropcontext from '@/components/availability-panel/drag-drop-context/index';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { AVAILABLE } from '@/components/constants/task-status';
+import { FEATURE } from '@/components/constants/task-type';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -23,8 +25,7 @@ const AvailabilityPanel: FC = () => {
         const fetchPromise = await requestPromise;
         const { tasks } = fetchPromise.data;
         const unassigned = updateTasksStatus(tasks).filter(
-          (item: task) => (
-            (item.status === 'AVAILABLE') && (item.type === 'feature')),
+          (item: task) => item.status === AVAILABLE && item.type === FEATURE
         );
         setUnAssignedTasks(unassigned);
       } catch (Error) {
@@ -72,7 +73,7 @@ const AvailabilityPanel: FC = () => {
 
   return (
     <Layout>
-      <Head title="Availability Panel" />
+      <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}

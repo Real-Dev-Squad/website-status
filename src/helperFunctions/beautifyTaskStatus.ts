@@ -1,18 +1,12 @@
 import task from '../interfaces/task.type';
 
 const beautifyTaskStatus = (tasks: Array<task>) => {
-  const taskList: Array<task> = [];
-  tasks.forEach((taskItem: task, taskIndex) => {
-    taskList.push(taskItem);
-    const splitedStringArray = taskItem.status.split('_');
-    splitedStringArray.forEach((subString, index) => {
-      splitedStringArray[index] = subString.toLowerCase();
-    });
-    splitedStringArray.forEach((string, index) => {
-      splitedStringArray[index] = string.charAt(0).toUpperCase() + string.slice(1);
-    });
-    taskList[taskIndex].status = splitedStringArray.join(' ');
-  });
+  let taskList: Array<task> = [];
+  taskList=tasks.map((task)=>{
+    const beautifiedTaskStatus=task.status.toLowerCase().split('_').map(item => item.charAt(0).toUpperCase() + item.slice(1)).join(' ');
+    task.status=beautifiedTaskStatus
+    return task
+  })
   return taskList;
 };
 

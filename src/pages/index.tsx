@@ -14,7 +14,7 @@ import {
   COMPLETED,
   AVAILABLE,
   IN_PROGRESS,
-  SMOKE_TESING,
+  SMOKE_TESTING,
   NEEDS_REVIEW,
   IN_REVIEW,
   APPROVED,
@@ -37,7 +37,7 @@ const STATUS_ORDER = [
   BLOCKED,
   AVAILABLE,
   IN_PROGRESS,
-  SMOKE_TESING,
+  SMOKE_TESTING,
   NEEDS_REVIEW,
   IN_REVIEW,
   APPROVED,
@@ -50,7 +50,7 @@ const STATUS_ORDER = [
 const statusActiveList = [
   IN_PROGRESS,
   BLOCKED,
-  SMOKE_TESING,
+  SMOKE_TESTING,
 ];
 async function updateCardContent(id: string, cardDetails: task) {
   try {
@@ -137,7 +137,7 @@ const Index: FC = () => {
 
   return (
     <Layout>
-      <Head title="Tasks" />
+      <Head title='Tasks' />
 
       <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
