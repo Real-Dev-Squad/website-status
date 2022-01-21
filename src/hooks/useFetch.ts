@@ -5,8 +5,8 @@ const useFetch = (url: string, options: object = {}) => {
   const [response, setResponse] = useState<any>({});
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  let cancel: () => void;
   useEffect(() => {
+    let cancel: () => void;
     (async () => {
       setIsLoading(true);
       try {
@@ -24,8 +24,12 @@ const useFetch = (url: string, options: object = {}) => {
         setIsLoading(false);
       }
     })();
+
     return () => {
       cancel();
+      setError(null);
+      setResponse({});
+      setIsLoading(true);
     };
   }, [url]);
   return {

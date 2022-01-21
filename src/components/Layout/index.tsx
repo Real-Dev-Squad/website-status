@@ -43,14 +43,14 @@ const Layout: FC<Props> = ({ children }) => {
           |
           {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
           {
-          (dev)
+            (dev)
             && (
               <>
                 |
                 {navBarContent('Availability Panel', '/availability-panel')}
               </>
             )
-        }
+          }
         </div>
         {children}
       </div>
