@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
-import DragDropcontext from '@/components/availability-panel/drag-drop-context/index';
+import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
@@ -78,7 +78,7 @@ const AvailabilityPanel: FC = () => {
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
-          <DragDropcontext
+          <DragDropContextWrapper 
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
