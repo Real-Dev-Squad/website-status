@@ -3,6 +3,9 @@
   "ignorePatterns": [
     "*.json",
     "**/*.json",
-    "next-env.d.ts"
+    "next-env.d.ts",
+    "node_modules",
+    "dist",
+    "src/components/constants/**/*.js"
   ]
 }

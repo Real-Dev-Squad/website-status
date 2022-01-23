@@ -10,13 +10,14 @@ type task = {
   endsOn: string,
   startedOn: string,
   status: string,
-  assignee: string,
+  assignee?: string,
   percentCompleted: number,
   dependsOn: string[],
-  participants: string,
+  participants?: string[],
   completionAward: award,
   lossRate: award,
   isNoteworthy: boolean,
+  createdBy: string,
 };
 
 export default task;
