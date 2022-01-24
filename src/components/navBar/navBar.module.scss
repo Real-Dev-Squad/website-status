@@ -1,37 +1,122 @@
-$offset: 10px;
-$thickness: 3px;
+.wrapper {
+  font: 700 16px 'Roboto', sans-serif;
+  margin-bottom: 25px;
+}
 
-.navBar {
-  display: flex;
-  width: 100%;
-  background-color: #1d1283;
-  align-items: center;
+.navBar li a {
+  margin: 10px;
+  display: block;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  text-align: center;
+  padding: 19px 16px;
+  text-decoration: none;
+}
+
+.navBar li {
+  float: left;
+}
+
+.navBar li a:hover {
+  color: #49a82e;
+}
+
+.navBarMenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
+  background-color: #1d1283;
+}
+
+.navBarLogoLi {
+  padding: 12px 20px;
+}
+
+.navBar li.navBarLogoLi a {
+  margin: 0px;
+  padding: 0px;
+}
+
+.navBar li a.activeTab {
+  color: #49a82e;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 10px;
+}
+
+.hamburger {
+  display: none;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
+  padding-top: 5px;
+}
 
-  a {
+.link {
+  padding: 10px;
+  margin-top: 2px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #041484;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.active {
+  color: #e30464;
+}
+
+@media screen and (max-width: 970px) {
+  .navBar {
+    background: #1d1283;
+  }
+
+  .hamburger {
+    margin: 20px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .navBarMenu {
+    background: white;
+    display: none;
+    width: 100%;
+    padding: 10px 0px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .navBarMenu.active,
+  .homeTab {
     display: block;
-    color: #ffffff;
-    font-weight: bolder;
-    font-size: 16px;
-    margin: 0 10px;
-    text-align: center;
-    padding: 12px 16px;
+  }
+
+  .navBar li a {
+    padding: 10px 40px;
+    text-align: left;
+    color: #1d1283;
+  }
+
+  .navBarLoginLi,
+  .navBarLogoLi {
+    display: none;
+  }
+
+  .navBar li a.activeTab {
     text-decoration: none;
-
-    &:hover {
-      color: #87d870;
-    }
   }
 
-  a:first-child {
-    margin: 0 2px;
+  .navBar li {
+    float: none;
   }
 
-  .active {
-    color: #87d870;
-    text-decoration: underline;
-    text-decoration-thickness: $thickness;
-    text-underline-offset: $offset;
+  .mainBanner,
+  .logoImg {
+    margin-top: 40px;
   }
 }
