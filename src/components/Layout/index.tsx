@@ -34,29 +34,7 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
   const { query } = router;
   const dev = !!query.dev;
 
-  // const [localDarkMode, setLocalDarkMode] = useState(query.darkMode === undefined ? false : query.darkMode === "true")
-
-  // useEffect(() => {
-  //   if (query.darkMode !== undefined){
-  //     setLocalDarkMode(query.darkMode === "true")
-  //     console.log("query darkMode changed")
-  //   }
-  //   console.log("query REACHED*************")
-  //   console.log("dark mode UNDEFINED?", query.darkMode === undefined)
-  //   console.log("query REACHED************")
-  // }, [query])
-
-  
-  // useEffect(() => {
-
-  // }, [darkMode])
-
-  // useEffect(() => {
-  //   setLocalDarkMode(localDarkMode)
-  // }, [localDarkMode])
-
   return (
-<<<<<<< HEAD
     <div className={darkMode ? styles.darkTheme : styles.lightTheme} style={{ height: '100%' }}>
       <div className={styles.layout}>
         <NavBar darkMode={darkMode} changeTheme={changeTheme} />
@@ -73,30 +51,12 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
             {navBarContent('Stale PRs', '/stale-pr', darkMode, router.pathname === '/stale-pr')}
             |
             {navBarContent('Idle Members', '/idle-members', darkMode, router.pathname === '/idle-members')}
-=======
-    <div className={styles.darkTheme} style={{ height: '100%' }}>
-      <div className={styles.layout}>
-        <NavBar />
-        <div className={styles.wrapper}>
-          <div className={styles.header}>
-            {navBarContent('Tasks', '/', router.pathname === '/')}
-            |
-            {navBarContent('Mine', '/mine', router.pathname === '/mine')}
-            |
-            {navBarContent('DS', '/challenges', router.pathname === '/challenges')}
-            |
-            {navBarContent('Open PRs', '/openPRs', router.pathname === '/openPRs')}
-            |
-            {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
-            |
-            {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
->>>>>>> 395dbbb (add dark mode to status site Tasks tab)
             {
             (dev)
               && (
                 <>
                   |
-                  {navBarContent('Availability Panel', '/availability-panel')}
+                  {navBarContent('Availability Panel', '/availability-panel', darkMode)}
                 </>
               )
           }
