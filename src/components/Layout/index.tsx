@@ -34,6 +34,27 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
   const { query } = router;
   const dev = !!query.dev;
 
+  // const [localDarkMode, setLocalDarkMode] = useState(query.darkMode === undefined ? false : query.darkMode === "true")
+
+  // useEffect(() => {
+  //   if (query.darkMode !== undefined){
+  //     setLocalDarkMode(query.darkMode === "true")
+  //     console.log("query darkMode changed")
+  //   }
+  //   console.log("query REACHED*************")
+  //   console.log("dark mode UNDEFINED?", query.darkMode === undefined)
+  //   console.log("query REACHED************")
+  // }, [query])
+
+  
+  // useEffect(() => {
+
+  // }, [darkMode])
+
+  // useEffect(() => {
+  //   setLocalDarkMode(localDarkMode)
+  // }, [localDarkMode])
+
   return (
 <<<<<<< HEAD
     <div className={darkMode ? styles.darkTheme : styles.lightTheme} style={{ height: '100%' }}>
