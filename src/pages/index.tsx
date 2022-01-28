@@ -9,6 +9,7 @@ import task from '@/interfaces/task.type';
 import Accordion from '@/components/Accordion';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 import {
   ACTIVE,
   ASSIGNED,
@@ -61,9 +62,13 @@ const Index: FC = () => {
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const isEditable = !!query.edit && IsUserAuthorized;
 
-  const [mainDarkMode, setMainDarkMode] = useState(false)
+  
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
-  useEffect(() => console.log(mainDarkMode), [mainDarkMode])
+  const themeSetter = () => {
+    document.cookie = setCookie(!mainDarkMode);
+    setMainDarkMode(!mainDarkMode);
+  }
 
   useEffect(() => {
     if ('tasks' in response) {
@@ -88,6 +93,8 @@ const Index: FC = () => {
   }, [isLoading, response]);
 
   useEffect(() => {
+    console.log("in use effect: ", checkThemeHistory(document.cookie, query))
+    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
     const fetchData = async () => {
       try {
         const { requestPromise } = fetch({ url: SELF_URL });
@@ -109,9 +116,6 @@ const Index: FC = () => {
     });
   }, []);
 
-  const themeSetter = () => {
-    setMainDarkMode(!mainDarkMode)
-  }
 
   return (
     <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>

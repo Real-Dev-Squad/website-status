@@ -18,24 +18,26 @@ function renderCards(content: Array<string>) {
 const Section: FC<Props> = ({
   heading, content, error, isLoading,
 }) => (
-  <div className={classNames.section}>
-    <div className={classNames.heading}>{heading}</div>
-    {
-      (!!error) && (
-        <span className={classNames.statusMessage}>
-          Something went wrong, please contact admin!
-        </span>
-      )
-    }
-    {
-      (isLoading)
-        ? (
-          <span className={classNames.statusMessage}>Loading...</span>
+  <div className={classNames.darkMode}>
+    <div className={classNames.section}>
+      <div className={classNames.heading}>{heading}</div>
+      {
+        (!!error) && (
+          <span className={classNames.statusMessage}>
+            Something went wrong, please contact admin!
+          </span>
         )
-        : (
-          <div className={classNames.cardContainer}>{renderCards(content)}</div>
-        )
-    }
+      }
+      {
+        (isLoading)
+          ? (
+            <span className={classNames.statusMessage}>Loading...</span>
+          )
+          : (
+            <div className={classNames.cardContainer}>{renderCards(content)}</div>
+          )
+      }
+    </div>
   </div>
 );
 

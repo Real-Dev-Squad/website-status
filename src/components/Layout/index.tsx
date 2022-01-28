@@ -15,7 +15,13 @@ const navBarContent = (title: string, refUrl: string, toggleDarkMode: boolean, i
   const linkClasses = `${toggleDarkMode ? styles.darkTheme : styles.lightTheme} ${styles.link} ${isActive ? styles.active : ''}`;
 
   return (
-    <Link href={refUrl} passHref>
+    <Link 
+      href={{
+        pathname: refUrl,
+        query: {darkMode: toggleDarkMode}
+      }}
+      as={refUrl}
+      passHref>
       <button type="button" tabIndex={0} className={linkClasses}>{title}</button>
     </Link>
   );
@@ -27,6 +33,27 @@ const Layout: FC<Props> = ({ children, darkMode, changeTheme }) => {
   // Dev feature toggle
   const { query } = router;
   const dev = !!query.dev;
+
+  // const [localDarkMode, setLocalDarkMode] = useState(query.darkMode === undefined ? false : query.darkMode === "true")
+
+  // useEffect(() => {
+  //   if (query.darkMode !== undefined){
+  //     setLocalDarkMode(query.darkMode === "true")
+  //     console.log("query darkMode changed")
+  //   }
+  //   console.log("query REACHED*************")
+  //   console.log("dark mode UNDEFINED?", query.darkMode === undefined)
+  //   console.log("query REACHED************")
+  // }, [query])
+
+  
+  // useEffect(() => {
+
+  // }, [darkMode])
+
+  // useEffect(() => {
+  //   setLocalDarkMode(localDarkMode)
+  // }, [localDarkMode])
 
   return (
 <<<<<<< HEAD
