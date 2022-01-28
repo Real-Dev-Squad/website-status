@@ -1,14 +1,19 @@
 import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Section from '@/components/idleMembers/section';
 import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
+import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
+
 
 const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
 
 const IdleMembers: FC = () => {
+  const router = useRouter();
+  const { query } = router;
   const [idleMembersList, setIdleMembersList] = useState<[]>([]);
-
+  
   const {
     response,
     error,
@@ -22,9 +27,20 @@ const IdleMembers: FC = () => {
       setIdleMembersList(sortedIdleMembers);
     }
   }, [isLoading, response]);
+  
+  useEffect(() => {
+    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+  }, []);
 
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+
+  const themeSetter = () => {
+    document.cookie = setCookie(!mainDarkMode);
+    setMainDarkMode(!mainDarkMode);
+  }
+  
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="Idle Members | Status Real Dev Squad" />
 
       <div className="container">

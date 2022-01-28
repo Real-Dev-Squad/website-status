@@ -1,8 +1,13 @@
+@use "../../../styles/themes";
+
 .heading {
   font-size: 3.5rem;
   font-weight: bold;
   text-align: center;
-  color: #041484;
+
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+  }
   margin-bottom: 1rem;
 }
 
@@ -25,5 +30,7 @@
   justify-content: center;
   padding: 1rem;
   font-weight: bold;
-  color: #041484;
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+  }
 }
