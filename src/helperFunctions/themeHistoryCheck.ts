@@ -1,9 +1,8 @@
 export const getCookieValue = (cookie: any, cookieHeader: string) => {
-
     return cookie
             .split('; ')
             .find((row:string) => row.startsWith(cookieHeader))
-            .split('=')[1];
+            ?.split('=')[1];
 }
 
 export const getDefaultOrTransferDark = (query: any) => {
