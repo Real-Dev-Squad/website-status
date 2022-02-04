@@ -100,14 +100,12 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
   const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
   const themeSetter = () => {
     document.cookie = setCookie(!mainDarkMode);
     setMainDarkMode(!mainDarkMode);
   }
-
   return (
     <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="PRs" />
