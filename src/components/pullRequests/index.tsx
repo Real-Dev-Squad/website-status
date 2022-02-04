@@ -8,6 +8,7 @@ interface pullRequestType {
   createdAt: string;
   updatedAt: string;
   url: string;
+  toggleDarkMode: boolean;
 }
 
 const pullRequest: FC<pullRequestType> = ({
@@ -16,6 +17,7 @@ const pullRequest: FC<pullRequestType> = ({
   createdAt,
   updatedAt,
   url,
+  toggleDarkMode
 }) => {
   const created = new Date(createdAt);
   const updated = new Date(updatedAt);
@@ -39,6 +41,7 @@ const pullRequest: FC<pullRequestType> = ({
       title={{ text: title, link: url }}
       data={prDetails(prData)}
       key={title}
+      darkMode={toggleDarkMode}
     />
   );
 };

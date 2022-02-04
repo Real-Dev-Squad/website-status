@@ -1,19 +1,21 @@
 $themes: (
   darkTheme: (
     'colorBackground': #1C1B22,
-    'colorLink': #0080FF,
     'colorText': #E1E1EC,
+    'colorLink': #0080FF,
     'colorNav': #191970,
     'colorHighlight': #FF0090,
-    'colorCardBg': #312F3B
+    'colorCardBg': #312F3B,
+    'colorCardBgOverdue': #331e1e
   ),
   lightTheme: (
     'colorBackground': #FFFFFF,
-    'colorLink': #0080FF,
+    'colorLink': #041484,
     'colorText': #041484,
     'colorNav': #191970,
-    'colorHighlight': #FF0090,
-    'colorCardBg': #9b9b9b
+    'colorHighlight':#e30464,
+    'colorCardBg': #FFF,
+    'colorCardBgOverdue': #ffebee
   )
 );
 

@@ -96,8 +96,14 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const [mainDarkMode, setMainDarkMode] = useState(false)
+
+  const themeSetter = () => {
+     setMainDarkMode(!mainDarkMode)
+   } 
+
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="PRs" />
       <div className={styles.scroll}>
         {
@@ -117,6 +123,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
                 createdAt={createdAt}
                 updatedAt={updatedAt}
                 url={link}
+                toggleDarkMode={mainDarkMode}
               />
             );
           })}
