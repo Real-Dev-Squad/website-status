@@ -10,12 +10,14 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange: any;
+  darkMode: boolean
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
   onContentChange = () => undefined,
+  darkMode,
 }) => {
   const statusRedList = [BLOCKED];
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
@@ -67,7 +69,7 @@ const Card: FC<Props> = ({
     cardClassNames.push(classNames.overdueTask);
   }
   return (
-    <div className={classNames.darkTheme}>
+    <div className={darkMode ? classNames.darkTheme : classNames.lightTheme}>
       <div
         className={`
           ${classNames.card}
