@@ -3,6 +3,7 @@
   margin-bottom: 25px;
 }
 
+.navBarLogin,
 .homeTab {
   display: none;
 }
@@ -76,6 +77,57 @@
   color: #e30464;
 }
 
+.navBar li.navBarLoginLi {
+  float: right;
+}
+
+.navBar li.navBarLoginLi .btnLogin {
+  padding: 0px;
+  margin: 22px;
+}
+
+.navBar li.navBarLoginLi .btnLogin {
+  padding: 0px;
+  margin: 22px;
+}
+
+.btnLoginText {
+  border-radius: 6px;
+  padding: 5px;
+  background-color: #1d1283;
+  color: white;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.userGreet {
+  color: #ffffff;
+  margin: 23px;
+}
+
+.navBarLoginLi .userGreet a{
+  padding: 0px;
+}
+
+.userProfilePic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline;
+  vertical-align: middle;
+}
+
+.userGreetMsg {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.githubLogo {
+  margin-left: 4px;
+  transform: scale(1.7);
+}
+
 @media screen and (max-width: 970px) {
   .navBar {
     background: #1d1283;
@@ -111,6 +163,27 @@
     display: none;
   }
 
+  .navBarLogin {
+    display: block;
+    margin: 20px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+  }
+
+  .navBarLogin {
+    display: block;
+    margin: 20px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+  }
+
+  .navBarLoginLi,
+  .navBarLogoLi {
+    display: none;
+  }
+
   .navBar li a.activeTab {
     text-decoration: none;
   }
@@ -122,5 +195,9 @@
   .mainBanner,
   .logoImg {
     margin-top: 40px;
+  }
+
+  .userGreet {
+    margin: 0px;
   }
 }

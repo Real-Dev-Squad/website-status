@@ -3,6 +3,7 @@ import styles from '@/components/navBar/navBar.module.scss';
 import React, { useState } from 'react';
 
 const RDSLogo = '/RDSLogo.png';
+const GitHubLogo = '/gitHubLogo.svg'
 const hamburgerLogo = '/hamburger.svg';
 
 const NavBar = () => {
@@ -41,6 +42,27 @@ const NavBar = () => {
         </li>
         <li>
           <a className={styles.activeTab} href="https://status.realdevsquad.com/"> Status </a>
+        </li>
+        <li className={styles.navBarLoginLi}>
+          <a
+            className={styles.btnLogin}
+            href="https://github.com/login/oauth/authorize?client_id=23c78f66ab7964e5ef97"
+          >
+            <button className={styles.btnLoginText}>
+              Sign In With GitHub
+              <img
+                className={styles.githubLogo}
+                src={GitHubLogo}
+                alt="GitHub Icon"
+                height="15px"
+                width="15px"
+              />
+            </button>
+          </a>
+          <div className={styles.userGreet}>
+            <div className={styles.userGreetMsg}>Hello, User!</div>
+            <img className={styles.userProfilePic} />
+          </div>
         </li>
       </ul>
     </nav>
