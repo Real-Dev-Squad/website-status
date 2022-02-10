@@ -9,8 +9,8 @@ import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
-
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import { THOUSAND_MILLI_SECONDS, FOURTEEN_DAYS, SECONDS_IN_A_DAY } from '@/components/constants/date'
 
 type NotFoundErrorProps = {
   message: string,
@@ -18,7 +18,7 @@ type NotFoundErrorProps = {
 
 const { SUCCESS, ERROR } = ToastTypes;
 
-const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
+const NotFoundError: FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   <div className={classNames.emptyArray}>
     <Image
       src="/ghost.png"
@@ -34,12 +34,12 @@ const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
 
 export const disableDrag = createContext<string[]>([]);
 
-const DragDropcontext: FC<dragDropProps> = ({
+const DragDropContextWrapper: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
   refreshData,
 }) => {
-  const [toogleSearch, setToogleSearch] = useState<boolean>(false);
+  const [toggleSearch, setToggleSearch] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
@@ -52,7 +52,7 @@ const DragDropcontext: FC<dragDropProps> = ({
     setMemberList(idleMembers);
   }, [unAssignedTasks, idleMembers]);
 
-  const reorder = (list:Array<task |string>, startIndex:number, endIndex:number) => {
+  const reorder = (list: Array<task | string>, startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
     result.splice(endIndex, 0, removed);
@@ -102,7 +102,7 @@ const DragDropcontext: FC<dragDropProps> = ({
       && result.source.droppableId === result.destination.droppableId) {
       const isIdTask = result.source.droppableId === 'tasks';
       const array = isIdTask ? taskList : memberList;
-      const items:Array<any> = reorder(
+      const items: Array<any> = reorder(
         array,
         result.source.index,
         result.destination.index,
@@ -145,14 +145,14 @@ const DragDropcontext: FC<dragDropProps> = ({
                 <div className={classNames.searchBoxContainer}>
                   <span
                     onClick={() => {
-                      setToogleSearch(!toogleSearch);
+                      setToggleSearch(!toggleSearch);
                     }}
                     aria-hidden="true"
                     className={classNames.searchText}
                   >
                     Search
                   </span>
-                  {toogleSearch && <input />}
+                  {toggleSearch && <input />}
                 </div>
                 <div className={classNames.heading}> </div>
                 <DroppableComponent
@@ -172,7 +172,7 @@ const DragDropcontext: FC<dragDropProps> = ({
               <div>
                 <div className={classNames.searchBoxContainer}>
                   <span />
-                  {toogleSearch && <input />}
+                  {toggleSearch && <input />}
                 </div>
                 <div className={classNames.heading}> </div>
                 <div className={classNames.idleMember}>
@@ -185,11 +185,11 @@ const DragDropcontext: FC<dragDropProps> = ({
                 </div>
               </div>
             )}
-          </div>
+          </div>          
         </div>
       </disableDrag.Provider>
     </DragDropContext>
   );
 };
 
-export default DragDropcontext;
+export default DragDropContextWrapper;
