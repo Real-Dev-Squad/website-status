@@ -51,15 +51,14 @@ const DragDropcontext: FC<dragDropProps> = ({
   };
 
   const onkeypressedTask = (event:any) => {
-    var code = event.charCode || event.keyCode;
+    const code = event.charCode || event.keyCode;
     if (code == 27) {
-      console.log(event);
       setSearchTermTask('');
     }
   }
 
   const onkeypressedMember = (event:any) => {
-    var code = event.charCode || event.keyCode;
+    const code = event.charCode || event.keyCode;
     if (code == 27) {
       setSearchTermMember('');
     }

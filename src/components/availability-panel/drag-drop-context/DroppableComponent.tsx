@@ -2,6 +2,19 @@ import { FC } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { droppableComponent } from '@/interfaces/availabilityPanel.type';
+import idleMembers from '@/pages/idle-members';
+type NotFoundErrorProps = {
+  message: string,
+};
+
+const NotFoundError:FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
+  <div className={classNames.emptyArray}>
+    <img src="ghost.png" alt="ghost" />
+    <span className={classNames.emptyText}>
+      {message}
+    </span>
+  </div>
+);
 
 const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
@@ -26,7 +39,16 @@ const DroppableComponent: FC<droppableComponent> = ({
       <Droppable droppableId="tasks" isCombineEnabled={!isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {unAssignedTasks.filter((taskItem) => {
+            {(unAssignedTasks.filter((taskItem) => {
+              if (searchTermTask === '') {
+                return true;
+              } 
+              if (taskItem.title.toLowerCase().includes(searchTermTask.trim().toLowerCase())) {
+                return true;
+              }
+              return false;
+            })).length === 0 ? (<NotFoundError message="No tasks found" />):
+            (unAssignedTasks.filter((taskItem) => {
               if (searchTermTask === '') {
                 return true;
               } 
@@ -54,7 +76,7 @@ const DroppableComponent: FC<droppableComponent> = ({
                   )}
                 </Draggable>
               );
-            })}
+            }))}
             {provided.placeholder}
           </div>
         )}
@@ -63,7 +85,14 @@ const DroppableComponent: FC<droppableComponent> = ({
       <Droppable droppableId="members" isCombineEnabled={isTaskOnDrag}>
         {(provided) => (
           <div ref={provided.innerRef}>
-            {idleMembers.filter((memberItem) => {
+            {(idleMembers.filter((memberItem) => {
+              if (searchTermMember === '') {
+                return true;
+              } if (memberItem.toLowerCase().includes(searchTermMember.trim().toLowerCase())) {
+                return true;
+              }
+              return false;})).length === 0 ? (<NotFoundError message="No idle members found" />)
+            : (idleMembers.filter((memberItem) => {
               if (searchTermMember === '') {
                 return true;
               } if (memberItem.toLowerCase().includes(searchTermMember.trim().toLowerCase())) {
@@ -92,7 +121,7 @@ const DroppableComponent: FC<droppableComponent> = ({
                   </div>
                 )}
               </Draggable>
-            ))}
+            )))}
             {provided.placeholder}
           </div>
         )}
