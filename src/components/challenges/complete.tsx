@@ -27,11 +27,14 @@ type CompleteProps = {
     }[];
     is_active: boolean;
     is_user_subscribed: number;
-  };
+    
+  },
+  setDarkMode: boolean;
 };
 
-const Complete: FC<CompleteProps> = ({ content }) => (
+const Complete: FC<CompleteProps> = ({ content, setDarkMode }) => (
   <Card
+    darkMode={setDarkMode}
     title={{ text: content.title }}
     data={details(content)}
     participants={participantsDetails(content)}

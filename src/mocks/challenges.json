@@ -18,7 +18,7 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "sumit"
       },
       {
@@ -33,7 +33,7 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "nikhil"
       },
       {
@@ -48,11 +48,11 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "ankush"
       }
     ],
-    "is_active": 1,
+    "is_active": true,
     "is_user_subscribed": 0
   },
   {
@@ -74,7 +74,7 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "sumit"
       },
       {
@@ -89,7 +89,7 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "nikhil"
       },
       {
@@ -104,11 +104,11 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "ankush"
       }
     ],
-    "is_active": 1,
+    "is_active": true,
     "is_user_subscribed": 0
   },
   {
@@ -130,7 +130,7 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "sumit"
       },
       {
@@ -145,7 +145,7 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "nikhil"
       },
       {
@@ -160,11 +160,11 @@
         "linkedin_id": "",
         "twitter_id": "",
         "instagram_id": "",
-        "is_member": 1,
+        "is_member": true,
         "rds_member_id": "ankush"
       }
     ],
-    "is_active": 0,
+    "is_active": false,
     "is_user_subscribed": 0
   }
 ]

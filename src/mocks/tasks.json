@@ -1,0 +1,40 @@
+[
+  {
+      "id": "2o3jkfs12",
+      "title": "Cool Task :)",
+      "purpose": "This is a task you should focus on",
+      "featureUrl": "<live url of the feature>, optional",
+      "type":"feature",
+      "links": ["www.google.com", "www.apple.com"], 
+      "endsOn":"1644956956.049",
+      "startedOn":"1634056956.049",
+      "status": "active",
+      "createdBy": "yvrQxsvTpQ",
+      "assignee": "eLAn2ATYAT", 
+      "percentCompleted": 0,
+      "dependsOn": [], 
+      "participants": [], 
+      "completionAward": { "dinero": 1500, "neelam": 1 },
+      "lossRate": { "dinero": 100 },  
+      "isNoteworthy": true
+    },
+    {
+      "id": "lkncop23cck",
+      "title": "Another Cool Task :D",
+      "purpose": "No purpose really.... just do it :O",
+      "featureUrl": "<live url of the feature>, optional",
+      "type":"group",
+      "links": ["www.google.com", "www.apple.com"], 
+      "endsOn":"34056956.049",
+      "startedOn":"1634056956.049",
+      "status": "blocked",
+      "createdBy": "GgGT8ykKWC",
+      "assignee": "yvrQxsvTpQ", 
+      "percentCompleted": 0,
+      "dependsOn": [], 
+      "participants": [], 
+      "completionAward": { "dinero": 1500, "neelam": 1 },
+      "lossRate": { "dinero": 100 },  
+      "isNoteworthy": true
+    }
+]

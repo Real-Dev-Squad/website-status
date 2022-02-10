@@ -31,12 +31,13 @@ type ActiveProps = {
     is_active: boolean;
     is_user_subscribed: number;
   },
-  userId: string
+  userId: string;
+  setDarkMode: boolean;
 };
 
 const { SUCCESS, ERROR } = ToastTypes;
 
-const Active: FC<ActiveProps> = ({ content, userId }) => {
+const Active: FC<ActiveProps> = ({ content, userId, setDarkMode }) => {
   const [isUserSubscribed, setUserSubscribed] = useState(content.is_user_subscribed);
 
   const subscibeUser = async () => {
@@ -65,6 +66,7 @@ const Active: FC<ActiveProps> = ({ content, userId }) => {
 
   return (
     <Card
+      darkMode={setDarkMode}
       title={{ text: content.title }}
       data={details(content)}
       participants={participantsDetails(content)}

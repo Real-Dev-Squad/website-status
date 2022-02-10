@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
@@ -9,21 +10,32 @@ import challenge from '@/interfaces/challenge.type';
 import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL } from '@/components/constants/url';
+import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 import userData from '@/helperFunctions/getUser';
 
-const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
+const renderCardList = (challengeSection: challenge['content'], key:string, userId: string, darkMode: boolean) => {
   if (key === 'Active') {
-    return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} />);
+    return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} setDarkMode={darkMode} />);
   }
-  return challengeSection.map((item) => <Complete content={item} key={item.id} />);
+  return challengeSection.map((item) => <Complete content={item} key={item.id} setDarkMode={darkMode}/>);
 };
 
 const Challenges: FC = () => {
+  const router = useRouter();
+  const { query } = router;
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
   const [user, setUser] = useState<userType>(Object);
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+
+
+  const themeSetter = () => {
+    document.cookie = setCookie(!mainDarkMode);
+    setMainDarkMode(!mainDarkMode);
+  }
 
   useEffect(() => {
+    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
     (async () => {
       setUser(await userData());
     })();
@@ -42,7 +54,7 @@ const Challenges: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="Challenges" />
 
       <div className={classNames.container}>
@@ -73,7 +85,7 @@ const Challenges: FC = () => {
                     filteredChallenge[key].length > 0
                     && (
                     <Accordion open title={key} key={key}>
-                      {renderCardList(filteredChallenge[key], key, user.id)}
+                      {renderCardList(filteredChallenge[key], key, user.id, mainDarkMode)}
                     </Accordion>
                     )
 
