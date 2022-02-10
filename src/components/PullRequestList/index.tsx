@@ -71,7 +71,6 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   } = useFetch(prUrl);
   const router = useRouter();
   const { query } = router;
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
   useEffect(() => {
     if (!response?.pullRequests?.length && page > 1) {
@@ -101,12 +100,12 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
   const themeSetter = () => {
     document.cookie = setCookie(!mainDarkMode);
     setMainDarkMode(!mainDarkMode);
   }
-
   return (
     <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="PRs" />
