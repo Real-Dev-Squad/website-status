@@ -12,6 +12,7 @@
   align-items: center;
   flex-wrap: wrap;
   padding-top: 10px;
+  overflow: auto;
 }
 
 .wrapper {
@@ -31,3 +32,16 @@
 .active {
   color: #E30464;
 }
+.edit{
+  position: relative;
+  right: 0;
+  cursor: pointer;
+  // padding-right:25%;
+  float:right;
+  right:250px;
+
+}
+// .links{
+//   line-height:30px;
+//   float:right;
+// }
