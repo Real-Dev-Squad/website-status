@@ -11,20 +11,20 @@ const getItemStyle = (
   isDragging: boolean,
   draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
   undraggable: boolean
-  ) => {
-    let color:string;
-    if (undraggable) {
-      color = 'darkgrey';
-    } else if (isDragging) {
-      color = '#d1d1d1';
-    } else {
-      color = 'white';
-    }
-    const style = {
-      background: color,
-      ...draggableStyle,
-    };
-    return style;
+) => {
+  let color: string;
+  if (undraggable) {
+    color = 'darkgrey';
+  } else if (isDragging) {
+    color = '#d1d1d1';
+  } else {
+    color = 'white';
+  }
+  const style = {
+    background: color,
+    ...draggableStyle,
+  };
+  return style;
 };
 
 const DraggableComponent: FC<draggableProps> = ({
@@ -52,7 +52,7 @@ const DraggableComponent: FC<draggableProps> = ({
           )}
           className={classNames.memberCard}
         >
-          { title.length
+          {title.length
             ? <div>{title}</div>
             : (
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -71,4 +71,5 @@ const DraggableComponent: FC<draggableProps> = ({
     </Draggable>
   );
 };
+
 export default DraggableComponent;
