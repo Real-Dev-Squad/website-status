@@ -65,8 +65,13 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
   ) => {
     try {
       const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
+      const dateObject:Date = new Date();
+      const startedOnEpoch:number = dateObject.getTime() / THOUSAND_MILLI_SECONDS;
+      const endsOnEpoch:number = startedOnEpoch + (FOURTEEN_DAYS * SECONDS_IN_A_DAY);
       const data = {
         status: ASSIGNED,
+        startedOn: startedOnEpoch,
+        endsOn: endsOnEpoch,
         assignee,
       };
 
