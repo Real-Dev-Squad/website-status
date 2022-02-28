@@ -1,4 +1,6 @@
-import { FC, useState, useEffect } from 'react';
+import {
+  FC, useState, useEffect, createContext, useRef,
+} from 'react';
 import Image from 'next/image';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { dragDropProps } from '@/interfaces/availabilityPanel.type';
@@ -30,6 +32,8 @@ const NotFoundError: FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
   </div>
 );
 
+export const disableDrag = createContext<string[]>([]);
+
 const DragDropContextWrapper: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
@@ -39,6 +43,9 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
   const [memberList, setMemberList] = useState<Array<string>>(idleMembers);
   const [isTaskOnDrag, setIsTaskOnDrag] = useState<boolean>(false);
+  const [draggableIds, setDraggableIds] = useState<string[]>([]);
+
+  const ref = useRef<string[]>([]);
 
   useEffect(() => {
     setTaskList(unAssignedTasks);
@@ -52,7 +59,41 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
     return result;
   };
 
-  const onDragStart = (result: DragEvent | any) => {
+  const assignTask = async (
+    taskId: string,
+    assignee: string,
+  ) => {
+    try {
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
+      const dateObject:Date = new Date();
+      const startedOnEpoch:number = dateObject.getTime() / THOUSAND_MILLI_SECONDS;
+      const endsOnEpoch:number = startedOnEpoch + (FOURTEEN_DAYS * SECONDS_IN_A_DAY);
+      const data = {
+        status: ASSIGNED,
+        startedOn: startedOnEpoch,
+        endsOn: endsOnEpoch,
+        assignee,
+      };
+
+      const { requestPromise } = fetch({
+        url,
+        method: 'patch',
+        data,
+      });
+      await requestPromise;
+      toast(SUCCESS, 'Successfully Assigned Task');
+      return ([taskId, assignee]);
+    } catch (error:any) {
+      if ('response' in error) {
+        toast(ERROR, error.response.data.message);
+        return ([taskId, assignee]);
+      }
+      toast(ERROR, error.message);
+      return ([taskId, assignee]);
+    }
+  };
+
+  const onDragStart = (result:DragEvent | any) => {
     const isTask = result.source.droppableId === 'tasks';
     if (isTask) {
       setIsTaskOnDrag(true);
@@ -79,96 +120,79 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
     }
 
     if (result.combine && result.source.droppableId !== result.combine.droppableId) {
-      try {
-        const taskId = result.combine.droppableId === 'tasks'
-          ? result.combine.draggableId
-          : result.draggableId;
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
-        const assignee = result.combine.droppableId === 'tasks'
-          ? result.draggableId
-          : result.combine.draggableId;
-        const dateObject:Date = new Date();
-        const startedOnEpoch:number = dateObject.getTime() / THOUSAND_MILLI_SECONDS;
-        const endsOnEpoch:number = startedOnEpoch + (FOURTEEN_DAYS * SECONDS_IN_A_DAY);
-        const data = {
-          status: ASSIGNED,
-          startedOn: startedOnEpoch,
-          endsOn: endsOnEpoch,
-          assignee,
-        };
-
-        const { requestPromise } = fetch({
-          url,
-          method: 'patch',
-          data,
-        });
-        await requestPromise;
-        toast(SUCCESS, 'Successfully Assigned Task');
-      } catch (error: any) {
-        if ('response' in error) {
-          toast(ERROR, error.response.data.message);
-          return;
-        }
-        toast(ERROR, error.message);
-      } finally {
-        refreshData();
+      ref.current = [...draggableIds, result.combine.draggableId, result.draggableId];
+      setDraggableIds(ref.current);
+      const taskId = result.combine.droppableId === 'tasks'
+        ? result.combine.draggableId
+        : result.draggableId;
+      const assignee = result.combine.droppableId === 'tasks'
+        ? result.draggableId
+        : result.combine.draggableId;
+      const res:Array<string> = await assignTask(taskId, assignee);
+      if (res) {
+        const newIds = ref.current.filter((id) => !res.includes(id));
+        ref.current = newIds;
+        setDraggableIds(ref.current);
       }
+      refreshData();
     }
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-      <div className={classNames.flexContainer}>
-        <div>
-          {taskList.length === 0 ? (
-            <NotFoundError message="No task found" />
-          ) : (
-            <div>
-              <div className={classNames.searchBoxContainer}>
-                <span
-                  onClick={() => {
-                    setToggleSearch(!toggleSearch);
-                  }}
-                  aria-hidden="true"
-                  className={classNames.searchText}
-                >
-                  Search
-                </span>
-                {toggleSearch && <input />}
-              </div>
-              <div className={classNames.heading}> </div>
-              <DroppableComponent
-                droppableId="tasks"
-                idleMembers={[]}
-                unAssignedTasks={taskList}
-                isTaskOnDrag={isTaskOnDrag}
-              />
-            </div>
-          )}
-        </div>
-        <div className={classNames.divider} />
-        <div>
-          {memberList.length === 0 ? (
-            <NotFoundError message="No idle members found" />
-          ) : (
-            <div>
-              <div className={classNames.searchBoxContainer}>
-                <span />
-                {toggleSearch && <input />}
-              </div>
-              <div className={classNames.heading}> </div>
-              <div className={classNames.idleMember}>
+      <disableDrag.Provider value={draggableIds}>
+        <div className={classNames.flexContainer}>
+          <div>
+            {taskList.length === 0 ? (
+              <NotFoundError message="No task found" />
+            ) : (
+              <div>
+                <div className={classNames.searchBoxContainer}>
+                  <span
+                    onClick={() => {
+                      setToggleSearch(!toggleSearch);
+                    }}
+                    aria-hidden="true"
+                    className={classNames.searchText}
+                  >
+                    Search
+                  </span>
+                  {toggleSearch && <input />}
+                </div>
+                <div className={classNames.heading}> </div>
                 <DroppableComponent
-                  droppableId="members"
-                  idleMembers={memberList}
-                  unAssignedTasks={[]}
+                  droppableId="tasks"
+                  idleMembers={[]}
+                  unAssignedTasks={taskList}
                   isTaskOnDrag={isTaskOnDrag}
                 />
               </div>
-            </div>
-          )}
+            )}
+          </div>
+          <div className={classNames.divider} />
+          <div>
+            {memberList.length === 0 ? (
+              <NotFoundError message="No idle members found" />
+            ) : (
+              <div>
+                <div className={classNames.searchBoxContainer}>
+                  <span />
+                  {toggleSearch && <input />}
+                </div>
+                <div className={classNames.heading}> </div>
+                <div className={classNames.idleMember}>
+                  <DroppableComponent
+                    droppableId="members"
+                    idleMembers={memberList}
+                    unAssignedTasks={[]}
+                    isTaskOnDrag={isTaskOnDrag}
+                  />
+                </div>
+              </div>
+            )}
+          </div>          
         </div>
-      </div>
+      </disableDrag.Provider>
     </DragDropContext>
   );
 };
