@@ -8,6 +8,9 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
+import { useRouter } from 'next/router';
+import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
+
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -16,6 +19,18 @@ const AvailabilityPanel: FC = () => {
   const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
   const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
+  const router = useRouter();
+  const { query } = router;
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+
+  const themeSetter = () => {
+    document.cookie = setCookie(!mainDarkMode);
+    setMainDarkMode(!mainDarkMode);
+  }
+
+  useEffect(() => {
+    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+  }, []);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -72,7 +87,7 @@ const AvailabilityPanel: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>

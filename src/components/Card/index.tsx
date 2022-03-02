@@ -5,7 +5,7 @@ import Image from 'next/image';
 const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
 
 export type Props = {
-  darkMode: boolean,
+  darkMode?: boolean,
   title: {
     text: string,
     link?: string

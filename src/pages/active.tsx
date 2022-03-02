@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -10,6 +11,7 @@ import {
 } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
+import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
@@ -28,8 +30,18 @@ const renderCardList = (tasks: task[]) => {
 };
 
 const Active: FC = () => {
+  const router = useRouter();
+  const { query } = router;
   const [tasks, setTasks] = useState<task[]>([]);
   const [activeTasks, setActiveTasks] = useState<any>(null);
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+
+
+  const themeSetter = () => {
+    document.cookie = setCookie(!mainDarkMode);
+    setMainDarkMode(!mainDarkMode);
+  }
+
   const statusActiveList = [
     BLOCKED,
     IN_PROGRESS,
@@ -40,6 +52,10 @@ const Active: FC = () => {
     error,
     isLoading,
   } = useFetch(TASKS_URL);
+
+  useEffect(() => {
+    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+  }, []);
 
   useEffect(() => {
     if ('tasks' in response) {
@@ -53,7 +69,7 @@ const Active: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
       <Head title="Tasks" />
 
       <div className="container">
