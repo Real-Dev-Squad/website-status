@@ -7,7 +7,8 @@ $themes: (
     'colorHighlight': #FF0090,
     'colorCardBg': #312F3B,
     'colorCardBgOverdue': #331e1e,
-    'colorCardBgBorder': white
+    'colorCardBgBorder': white,
+    'colorCardBgBorderInverse': rgb(95, 95, 95),
   ),
   lightTheme: (
     'colorBackground': #FFFFFF,
@@ -17,7 +18,8 @@ $themes: (
     'colorHighlight':#e30464,
     'colorCardBg': #FFF,
     'colorCardBgOverdue': #ffebee,
-    'colorCardBgBorder': black
+    'colorCardBgBorder': black,
+    'colorCardBgBorderInverse': #e0e0e0,
   )
 );
 

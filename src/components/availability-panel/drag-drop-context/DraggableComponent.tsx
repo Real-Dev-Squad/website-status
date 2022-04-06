@@ -10,15 +10,16 @@ const imageGenerator = (name: string) => `${process.env.NEXT_PUBLIC_GITHUB_IMAGE
 const getItemStyle = (
   isDragging: boolean,
   draggableStyle: DraggingStyle | NotDraggingStyle | undefined,
-  undraggable: boolean
+  undraggable: boolean,
+  darkMode: boolean,
 ) => {
   let color: string;
   if (undraggable) {
-    color = 'darkgrey';
+    color = darkMode ? 'black' : 'darkgrey';
   } else if (isDragging) {
-    color = '#d1d1d1';
+    color = darkMode ? 'rgb(49 47 59 / 36%)' : '#d1d1d1';
   } else {
-    color = 'white';
+    color = darkMode ? '#312F3B' : 'white';
   }
   const style = {
     background: color,
@@ -31,6 +32,7 @@ const DraggableComponent: FC<draggableProps> = ({
   draggableId,
   index,
   title = '',
+  darkMode
 }) => {
   const draggableIds = useContext(disableDrag);
   return (
@@ -41,31 +43,34 @@ const DraggableComponent: FC<draggableProps> = ({
       isDragDisabled={draggableIds.includes(draggableId)}
     >
       {(provided, snapshot) => (
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          style={getItemStyle(
-            snapshot.isDragging,
-            provided.draggableProps.style,
-            draggableIds.includes(draggableId),
-          )}
-          className={classNames.memberCard}
-        >
-          {title.length
-            ? <div>{title}</div>
-            : (
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Image
-                  src={imageGenerator(draggableId)}
-                  alt={draggableId}
-                  width={52}
-                  height={52}
-                  onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
-                />
-                <span>{draggableId}</span>
-              </div>
+        <div className={darkMode ? classNames.darkTheme : classNames.lightTheme} >
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            style={getItemStyle(
+              snapshot.isDragging,
+              provided.draggableProps.style,
+              draggableIds.includes(draggableId),
+              darkMode
             )}
+            className={classNames.memberCard}
+          >
+            {title.length
+              ? <div>{title}</div>
+              : (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Image
+                    src={imageGenerator(draggableId)}
+                    alt={draggableId}
+                    width={52}
+                    height={52}
+                    onError={(e) => { (e.target as HTMLImageElement).src = 'dummyProfile.png'; }}
+                  />
+                  <span>{draggableId}</span>
+                </div>
+              )}
+          </div>
         </div>
       )}
     </Draggable>

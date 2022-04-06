@@ -83,6 +83,7 @@ const AvailabilityPanel: FC<ThemedComponent> = ({themeSetter, theme}) => {
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
+            darkMode={theme}
           />
         )}
       </div>

@@ -1,3 +1,4 @@
+@use "../../../styles/themes";
 $blueColor: #041484;
 $borderForItem: 2px solid #e0e0e0;
 
@@ -94,6 +95,11 @@ $borderForItem: 2px solid #e0e0e0;
   align-items: center;
   flex-wrap: wrap;
   user-select: none;
+
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+    border-color:  themes.theme-get('colorCardBgBorderInverse');
+  }
 
   img {
     border-radius: 50%;

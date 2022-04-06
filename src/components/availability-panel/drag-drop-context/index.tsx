@@ -38,6 +38,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
   unAssignedTasks,
   idleMembers,
   refreshData,
+  darkMode,
 }) => {
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
   const [taskList, setTaskList] = useState<Array<task>>(unAssignedTasks);
@@ -165,6 +166,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
                   idleMembers={[]}
                   unAssignedTasks={taskList}
                   isTaskOnDrag={isTaskOnDrag}
+                  darkMode={darkMode}
                 />
               </div>
             )}
@@ -186,6 +188,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
                     idleMembers={memberList}
                     unAssignedTasks={[]}
                     isTaskOnDrag={isTaskOnDrag}
+                    darkMode={darkMode}
                   />
                 </div>
               </div>

@@ -1,18 +1,24 @@
-$blueColor: #041484;
+@use "./themes";
 
 .heading {
   font-size: 3rem;
   font-weight: bold;
   text-align: center;
-  color: $blueColor;
   margin-bottom: 1rem;
+  
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+  }
 }
 .statusMessage {
   display: flex;
   justify-content: center;
   padding: 1rem;
   font-weight: bold;
-  color: $blueColor;
+  
+  @include themes.theme() {
+    color: themes.theme-get('colorText');
+  }
 }
 
 @media (max-width: 340px) {

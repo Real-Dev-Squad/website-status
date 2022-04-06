@@ -8,6 +8,7 @@ const DroppableComponent: FC<droppableComponent> = ({
   unAssignedTasks,
   idleMembers,
   isTaskOnDrag,
+  darkMode,
 }) => (
   <div>
     {droppableId === 'tasks' ? (
@@ -17,7 +18,7 @@ const DroppableComponent: FC<droppableComponent> = ({
             {unAssignedTasks.map((task, index) => {
               const { id, title } = task;
               return (
-                <DraggableComponent draggableId={id} index={index} title={title} key={id} />
+                <DraggableComponent darkMode={darkMode} draggableId={id} index={index} title={title} key={id} />
               );
             })}
             {provided.placeholder}
@@ -29,7 +30,7 @@ const DroppableComponent: FC<droppableComponent> = ({
         {(provided) => (
           <div ref={provided.innerRef}>
             {idleMembers.map((member, index) => (
-              <DraggableComponent draggableId={member} index={index} key={member} />
+              <DraggableComponent darkMode={darkMode} draggableId={member} index={index} key={member} />
             ))}
             {provided.placeholder}
           </div>
