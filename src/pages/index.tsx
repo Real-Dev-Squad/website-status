@@ -93,15 +93,6 @@ const Index: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const isEditable = !!query.edit && IsUserAuthorized;
 
-  // console.log(props);
-  
-  // const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
-
-  // const themeSetter = () => {
-  //   document.cookie = setCookie(!mainDarkMode);
-  //   setMainDarkMode(!mainDarkMode);
-  // }
-
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
@@ -125,7 +116,6 @@ const Index: FC<ThemedComponent> = ({themeSetter, theme}) => {
   }, [isLoading, response]);
 
   useEffect(() => {
-    // setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
     const fetchData = async () => {
       try {
         const { requestPromise } = fetch({ url: SELF_URL });
