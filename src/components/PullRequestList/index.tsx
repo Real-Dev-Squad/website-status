@@ -5,7 +5,6 @@ import PullRequest from '@/components/pullRequests';
 import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
-import { useRouter } from 'next/router';
 
 type pullRequestType = {
   title: string;
@@ -70,8 +69,6 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType, themeSetter, theme}
     error,
     isLoading,
   } = useFetch(prUrl);
-  const router = useRouter();
-  const { query } = router;
 
   useEffect(() => {
     if (!response?.pullRequests?.length && page > 1) {
@@ -90,9 +87,6 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType, themeSetter, theme}
   }, [isBottom]);
 
   useEffect(() => {
-    // setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
-    // console.log("themeSetter: ", themeSetter)
-    // console.log("theme: ", theme)
     const onScroll = () => {
       const scrollTop = ScrollTop();
       const scrollHeight = ScrollHeight();
@@ -103,12 +97,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType, themeSetter, theme}
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  // const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
-  // const themeSetter = () => {
-  //   document.cookie = setCookie(!mainDarkMode);
-  //   setMainDarkMode(!mainDarkMode);
-  // }
   return (
     <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="PRs" />

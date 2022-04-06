@@ -32,13 +32,6 @@ const renderCardList = (tasks: task[]) => {
 const Active: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [tasks, setTasks] = useState<task[]>([]);
   const [activeTasks, setActiveTasks] = useState<any>(null);
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
-
-
-  const themeSetter = () => {
-    document.cookie = setCookie(!mainDarkMode);
-    setMainDarkMode(!mainDarkMode);
-  }
 
   const statusActiveList = [
     BLOCKED,
@@ -50,10 +43,6 @@ const Active: FC<ThemedComponent> = ({themeSetter, theme}) => {
     error,
     isLoading,
   } = useFetch(TASKS_URL);
-
-  useEffect(() => {
-    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
-  }, []);
 
   useEffect(() => {
     if ('tasks' in response) {
