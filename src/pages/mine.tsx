@@ -1,12 +1,12 @@
 import { FC, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
+import { ThemedComponent } from '@/interfaces/themedComponent.type';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 
@@ -24,28 +24,18 @@ function CardList(tasks: task[], setDarkMode: boolean) {
   );
 }
 
-const Mine: FC = () => {
+const Mine: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [tasks, setTasks] = useState<task[]>([]);
   const {
     response,
     error,
     isLoading,
   } = useFetch(TASKS_URL);
-  const router = useRouter();
-  const { query } = router;
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
   useEffect(() => { setTasks(response); }, [isLoading, response]);
 
-  useEffect(() => setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark"), [])
-
-  const themeSetter = () => {
-    document.cookie = setCookie(!mainDarkMode);
-    setMainDarkMode(!mainDarkMode);
-  }
-
   return (
-    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="Mine" />
       <div className={classNames.container}>
         {
@@ -73,7 +63,7 @@ const Mine: FC = () => {
                   tasks.length > 0
                     ? (
                       <div>
-                        {CardList(tasks, mainDarkMode)}
+                        {CardList(tasks, theme)}
                       </div>
                     ) : (!error && 'No Tasks Found')
                 }

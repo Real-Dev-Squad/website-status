@@ -6,7 +6,6 @@ import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
 import { useRouter } from 'next/router';
-import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 
 type pullRequestType = {
   title: string;
@@ -18,6 +17,8 @@ type pullRequestType = {
 
 type PullRequestListProps = {
     prType: string;
+    theme: boolean
+    themeSetter: (event: React.MouseEvent<HTMLImageElement>) => void
 };
 
 function getNumberOfCards() {
@@ -57,7 +58,7 @@ function ScrollHeight() {
   return WindowHeight;
 }
 
-const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
+const PullRequestList: FC<PullRequestListProps> = ({ prType, themeSetter, theme}) => {
   const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
   const [noData, setNoData] = useState(false);
   const [page, setPage] = useState(1);
@@ -89,7 +90,9 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   }, [isBottom]);
 
   useEffect(() => {
-    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+    // setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+    // console.log("themeSetter: ", themeSetter)
+    // console.log("theme: ", theme)
     const onScroll = () => {
       const scrollTop = ScrollTop();
       const scrollHeight = ScrollHeight();
@@ -100,14 +103,14 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+  // const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
-  const themeSetter = () => {
-    document.cookie = setCookie(!mainDarkMode);
-    setMainDarkMode(!mainDarkMode);
-  }
+  // const themeSetter = () => {
+  //   document.cookie = setCookie(!mainDarkMode);
+  //   setMainDarkMode(!mainDarkMode);
+  // }
   return (
-    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="PRs" />
       <div className={styles.scroll}>
         {
@@ -127,7 +130,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
                 createdAt={createdAt}
                 updatedAt={updatedAt}
                 url={link}
-                toggleDarkMode={mainDarkMode}
+                toggleDarkMode={theme}
               />
             );
           })}

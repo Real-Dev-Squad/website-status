@@ -10,6 +10,7 @@ import {
 } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
+import { ThemedComponent } from '@/interfaces/themedComponent.type';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
@@ -27,7 +28,7 @@ const renderCardList = (tasks: task[]) => {
   );
 };
 
-const Active: FC = () => {
+const Active: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [tasks, setTasks] = useState<task[]>([]);
   const [activeTasks, setActiveTasks] = useState<any>(null);
   const statusActiveList = [
@@ -53,7 +54,7 @@ const Active: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="Tasks" />
 
       <div className="container">

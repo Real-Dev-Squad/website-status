@@ -8,8 +8,9 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
+import { ThemedComponent } from '@/interfaces/themedComponent.type';
 
-const AvailabilityPanel: FC = () => {
+const AvailabilityPanel: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
   const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
   const [error, setError] = useState<boolean>(false);
@@ -72,7 +73,7 @@ const AvailabilityPanel: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>

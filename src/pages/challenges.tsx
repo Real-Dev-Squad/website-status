@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
@@ -10,8 +9,8 @@ import challenge from '@/interfaces/challenge.type';
 import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL } from '@/components/constants/url';
-import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 import userData from '@/helperFunctions/getUser';
+import { ThemedComponent } from '@/interfaces/themedComponent.type';
 
 const renderCardList = (challengeSection: challenge['content'], key:string, userId: string, darkMode: boolean) => {
   if (key === 'Active') {
@@ -20,22 +19,12 @@ const renderCardList = (challengeSection: challenge['content'], key:string, user
   return challengeSection.map((item) => <Complete content={item} key={item.id} setDarkMode={darkMode}/>);
 };
 
-const Challenges: FC = () => {
-  const router = useRouter();
-  const { query } = router;
+const Challenges: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
   const [user, setUser] = useState<userType>(Object);
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
-
-
-  const themeSetter = () => {
-    document.cookie = setCookie(!mainDarkMode);
-    setMainDarkMode(!mainDarkMode);
-  }
 
   useEffect(() => {
-    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
     (async () => {
       setUser(await userData());
     })();
@@ -54,7 +43,7 @@ const Challenges: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="Challenges" />
 
       <div className={classNames.container}>
@@ -85,7 +74,7 @@ const Challenges: FC = () => {
                     filteredChallenge[key].length > 0
                     && (
                     <Accordion open title={key} key={key}>
-                      {renderCardList(filteredChallenge[key], key, user.id, mainDarkMode)}
+                      {renderCardList(filteredChallenge[key], key, user.id, theme)}
                     </Accordion>
                     )
 

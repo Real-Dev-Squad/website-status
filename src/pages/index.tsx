@@ -6,10 +6,10 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
+import { ThemedComponent } from '@/interfaces/themedComponent.type';
 import Accordion from '@/components/Accordion';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
 import {
   ASSIGNED,
   COMPLETED,
@@ -85,7 +85,7 @@ function renderCardList(tasks: task[], isEditable: boolean, darkModeToggle: bool
   ));
 }
 
-const Index: FC = () => {
+const Index: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const router = useRouter();
   const { query } = router;
   const [filteredTask, setFilteredTask] = useState<any>([]);
@@ -93,13 +93,14 @@ const Index: FC = () => {
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const isEditable = !!query.edit && IsUserAuthorized;
 
+  // console.log(props);
   
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+  // const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
 
-  const themeSetter = () => {
-    document.cookie = setCookie(!mainDarkMode);
-    setMainDarkMode(!mainDarkMode);
-  }
+  // const themeSetter = () => {
+  //   document.cookie = setCookie(!mainDarkMode);
+  //   setMainDarkMode(!mainDarkMode);
+  // }
 
   useEffect(() => {
     if ('tasks' in response) {
@@ -124,8 +125,7 @@ const Index: FC = () => {
   }, [isLoading, response]);
 
   useEffect(() => {
-    console.log("in use effect: ", checkThemeHistory(document.cookie, query))
-    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+    // setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
     const fetchData = async () => {
       try {
         const { requestPromise } = fetch({ url: SELF_URL });
@@ -149,7 +149,7 @@ const Index: FC = () => {
 
 
   return (
-    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="Tasks" />
 
       <div className={classNames.container}>
@@ -161,7 +161,7 @@ const Index: FC = () => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable, mainDarkMode)}
+                  {renderCardList(filteredTask[key], isEditable, theme)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}
