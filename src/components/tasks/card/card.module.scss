@@ -19,6 +19,9 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  @include themes.theme() {
+    color: themes.theme-get('colorSubText');
+  }
 }
 
 .cardItems {

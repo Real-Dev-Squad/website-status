@@ -6,19 +6,20 @@ type Props = {
   heading: string
   content: Array<string>
   error: string | null
-  isLoading: boolean
+  isLoading: boolean,
+  darkMode: boolean,
 }
 
-function renderCards(content: Array<string>) {
+function renderCards(content: Array<string>, toggleDarkMode: boolean) {
   return content.map((idleMember) => (
-    <Card idleMemberUserName={idleMember} key={idleMember} />
+    <Card idleMemberUserName={idleMember} key={idleMember} darkMode={toggleDarkMode} />
   ));
 }
 
 const Section: FC<Props> = ({
-  heading, content, error, isLoading,
+  heading, content, error, isLoading, darkMode
 }) => (
-  <div className={classNames.darkMode}>
+  <div className={darkMode ? classNames.darkTheme : classNames.lightTheme}>
     <div className={classNames.section}>
       <div className={classNames.heading}>{heading}</div>
       {
@@ -34,7 +35,7 @@ const Section: FC<Props> = ({
             <span className={classNames.statusMessage}>Loading...</span>
           )
           : (
-            <div className={classNames.cardContainer}>{renderCards(content)}</div>
+            <div className={classNames.cardContainer}>{renderCards(content, darkMode)}</div>
           )
       }
     </div>

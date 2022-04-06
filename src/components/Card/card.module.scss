@@ -11,6 +11,12 @@
   @include themes.theme() {
     background-color: themes.theme-get('colorCardBg');
   }
+
+  .infoElement {
+    @include themes.theme() {
+      color: themes.theme-get('colorSubText');
+    } 
+  }
   
   .title {
     width: 100%;

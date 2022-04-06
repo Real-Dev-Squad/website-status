@@ -28,9 +28,9 @@ const IdleMembers: FC<ThemedComponent> = ({themeSetter, theme}) => {
   return (
     <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="Idle Members | Status Real Dev Squad" />
-
+      
       <div className="container">
-        <Section heading="Idle Members" content={idleMembersList} error={error} isLoading={isLoading} />
+        <Section heading="Idle Members" content={idleMembersList} error={error} isLoading={isLoading} darkMode={theme} />
       </div>
 
     </Layout>

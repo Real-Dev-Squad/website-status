@@ -42,7 +42,7 @@ const Card: FC<Props> = ({
   const informationElement = (key: string, value: string) => (
     <span className={classNames.statusElement}>
       <span className={classNames.statusLable}>{`${key}: `}</span>
-      <strong>{value}</strong>
+      <strong className={classNames.infoElement}>{value}</strong>
     </span>
   );
 

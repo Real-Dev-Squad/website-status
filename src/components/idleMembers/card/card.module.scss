@@ -3,6 +3,7 @@
 .card {
   @include themes.theme() {
     border-color:  themes.theme-get('colorCardBgBorder');
+    color: themes.theme-get('colorText');
   }
   border: 2px solid;
   border-radius: 10px;
@@ -24,5 +25,8 @@
     text-align: center;
     font-size: 1rem;
     font-weight: 700;
+    @include themes.theme() {
+      color: themes.theme-get('colorSubText');
+    }
   }
 }
