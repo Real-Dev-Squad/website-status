@@ -5,7 +5,7 @@ import Image from 'next/image';
 const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
 
 export type Props = {
-  darkMode: boolean,
+  darkMode?: boolean,
   title: {
     text: string,
     link?: string
@@ -77,42 +77,42 @@ const Card: FC<Props> = ({
           ))}
         </div>
 
-        {
-          (assignee) && (
-            <div className={classNames.cardFooter}>
-              <div className={classNames.profilePicture}>
-                <img
-                  src={assignee.imgUrl}
-                  alt={assignee.userName}
-                  onError={assignee.onError}
-                />
-                <strong>{assignee.userName || 'No contributor'}</strong>
-              </div>
+      {
+        (assignee) && (
+          <div className={classNames.cardFooter}>
+            <div className={classNames.profilePicture}>
+              <Image
+                src={assignee.imgUrl}
+                alt={assignee.userName}
+                onError={assignee.onError}
+              />
+              <strong>{assignee.userName || 'No contributor'}</strong>
             </div>
-          )
-        }
+          </div>
+        )
+      }
 
-        {
-          (participants) && (
-            <div className={classNames.Center}>
-              <ul className={classNames.participantsLists}>
-                {
-                  participants.map((participant) => (
-                    <li key={participant.userName} className={classNames.participantsList}>
-                      <img
-                        src={participant.imgUrl}
-                        onError={
-                          (e) => { (e.target as HTMLImageElement).src = DUMMY_PROFILE_PICTURE; }
-                        }
-                        alt={`${participant.firstName} ${participant.lastName}`}
-                      />
-                    </li>
-                  ))
-                }
-              </ul>
-            </div>
-          )
-        }
+      {
+        (participants) && (
+          <div className={classNames.Center}>
+            <ul className={classNames.participantsLists}>
+              {
+                participants.map((participant) => (
+                  <li key={participant.userName} className={classNames.participantsList}>
+                    <Image
+                      src={participant.imgUrl}
+                      onError={
+                        (e) => { (e.target as HTMLImageElement).src = DUMMY_PROFILE_PICTURE; }
+                      }
+                      alt={`${participant.firstName} ${participant.lastName}`}
+                    />
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        )
+      }
 
         {
           (button) && (

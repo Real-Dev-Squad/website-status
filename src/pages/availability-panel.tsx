@@ -17,6 +17,18 @@ const AvailabilityPanel: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
   const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
+  const router = useRouter();
+  const { query } = router;
+  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
+
+  const themeSetter = () => {
+    document.cookie = setCookie(!mainDarkMode);
+    setMainDarkMode(!mainDarkMode);
+  }
+
+  useEffect(() => {
+    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
+  }, []);
 
   useEffect(() => {
     const fetchTasks = async () => {

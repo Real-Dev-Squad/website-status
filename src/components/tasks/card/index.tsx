@@ -10,7 +10,7 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange: any;
-  darkMode: boolean
+  darkMode?: boolean
 };
 
 const Card: FC<Props> = ({
