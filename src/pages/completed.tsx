@@ -8,38 +8,26 @@ import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import { COMPLETED } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
-import { useRouter } from 'next/router';
-import { setCookie, checkThemeHistory, getDefaultOrTransferDark } from '@/helperFunctions/themeHistoryCheck';
+import { ThemedComponent } from '@/interfaces/themedComponent.type';
 
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
-const renderCardList = (tasks: task[]) => tasks.map(
+const renderCardList = (tasks: task[], darkModeToggle: boolean) => tasks.map(
   (item: task) => (
     <Card
       content={item}
       key={item.id}
       shouldEdit={false}
       onContentChange={undefined}
+      darkMode={darkModeToggle}
     />
   ),
 );
 
-const Completed: FC = () => {
-  const router = useRouter();
-  const { query } = router;
+const Completed: FC<ThemedComponent> = ({themeSetter, theme}) => {
   const [tasks, setTasks] = useState<task[]>([]);
   const [completeTasks, setCompleteTasks] = useState<any>(null);
-  const [mainDarkMode, setMainDarkMode] = useState(getDefaultOrTransferDark(query))
-
-  const themeSetter = () => {
-    document.cookie = setCookie(!mainDarkMode);
-    setMainDarkMode(!mainDarkMode);
-  }
-
-  useEffect(() => {
-    setMainDarkMode(checkThemeHistory(document.cookie, query) === "dark");
-  }, []);
 
   const {
     response,
@@ -58,7 +46,7 @@ const Completed: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout changeTheme={themeSetter} darkMode={mainDarkMode}>
+    <Layout changeTheme={themeSetter} darkMode={theme}>
       <Head title="Tasks" />
 
       <div className="container">
@@ -80,7 +68,7 @@ const Completed: FC = () => {
                     {
                       response.data === undefined
                         ? <p>No completed tasks found</p>
-                        : renderCardList(completeTasks)
+                        : renderCardList(completeTasks, theme)
                     }
 
                   </>
