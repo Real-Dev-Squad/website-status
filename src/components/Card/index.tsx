@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import classNames from '@/components/Card/card.module.scss';
+import Image from 'next/image';
 
 const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
 
