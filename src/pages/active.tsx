@@ -15,7 +15,7 @@ import { ThemedComponent } from '@/interfaces/themedComponent.type';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
-const renderCardList = (tasks: task[]) => {
+const renderCardList = (tasks: task[], darkModeToggle:boolean) => {
   const beautifiedTasks = beautifyTaskStatus(tasks);
   return beautifiedTasks.map(
     (item: task) => (
@@ -24,6 +24,7 @@ const renderCardList = (tasks: task[]) => {
         key={item.id}
         shouldEdit={false}
         onContentChange={undefined}
+        darkMode={darkModeToggle}
       />
     ),
   );
@@ -78,7 +79,7 @@ const Active: FC<ThemedComponent> = ({themeSetter, theme}) => {
                   {
                     activeTasks.length === 0
                       ? <p>No active tasks found</p>
-                      : renderCardList(activeTasks)
+                      : renderCardList(activeTasks, theme)
                   }
 
                 </>

@@ -5,10 +5,6 @@ export const getCookieValue = (cookie: any, cookieHeader: string) => {
             ?.split('=')[1];
 }
 
-// export const getDefaultOrTransferDark = (query: any) => {
-//     return query.darkMode === undefined ? false : query.darkMode === "true";
-// }
-
 export const setCookie = (darkModeStatus: boolean) => {
     const noOfDays = 30;
     const currentTime = Date.now();
@@ -17,9 +13,6 @@ export const setCookie = (darkModeStatus: boolean) => {
 }
 
 export const checkThemeHistory = (cookie: any): string => {
-    // console.log("query obj: ", routeQuery)
-    // if (routeQuery.darkMode !== undefined)
-    //     return routeQuery.darkMode === "true" ? "dark" : "light";
     if(getCookieValue(cookie, "theme") !== undefined)
         return getCookieValue(cookie, "theme"); // dark if true else light
     else
