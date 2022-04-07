@@ -1,0 +1,8 @@
+@use "./themes";
+
+.toast {
+  @include themes.theme() {
+    color: themes.theme-get('colorSubText');
+    background-color: themes.theme-get('colorBackground');
+  }
+}

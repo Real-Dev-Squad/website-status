@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/index.scss';
+import classNames from '@/styles/toast.module.scss';
 import { setCookie, checkThemeHistory } from '@/helperFunctions/themeHistoryCheck';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
@@ -23,8 +24,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   
   return (
     <>
-      <ToastContainer toastStyle={{backgroundColor: "black"}} />
-      <Component {...pageProps} themeSetter={themeSetter} theme={mainDarkMode}/>
+      <div className={mainDarkMode ? classNames.darkTheme : classNames.lightTheme} style={{height: "100%"}}>
+        <ToastContainer toastClassName={classNames.toast} />
+        <Component {...pageProps} themeSetter={themeSetter} theme={mainDarkMode}/>
+      </div>
     </>
   )
 };
