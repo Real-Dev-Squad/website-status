@@ -131,8 +131,7 @@ const Index: FC<ThemedComponent> = ({themeSetter, theme}) => {
       }
     };
     fetchData();
-    toast(ERROR, "नमस्ते दुनिया");
-
+    
     return (() => {
       setIsUserAuthorized(false);
     });
