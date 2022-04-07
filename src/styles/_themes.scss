@@ -10,6 +10,7 @@ $themes: (
     'colorCardBgOverdue': #331e1e,
     'colorCardBgBorder': white,
     'colorCardBgBorderInverse': rgb(95, 95, 95),
+    'colorIcon': invert(1)
   ),
   lightTheme: (
     'colorBackground': #FFFFFF,
@@ -22,6 +23,7 @@ $themes: (
     'colorCardBgOverdue': #ffebee,
     'colorCardBgBorder': black,
     'colorCardBgBorderInverse': #e0e0e0,
+    'colorIcon': invert(0)
   )
 );
 

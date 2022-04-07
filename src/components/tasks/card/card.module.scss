@@ -24,6 +24,12 @@
   }
 }
 
+.cardCalendarIcon{
+  @include themes.theme() {
+    filter: themes.theme-get('colorIcon');
+  }
+}
+
 .cardItems {
   span {
     display: flex;

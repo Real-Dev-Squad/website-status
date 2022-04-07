@@ -107,6 +107,7 @@ const Card: FC<Props> = ({
               alt="calendar icon"
               width={iconWidth}
               height={iconHeight}
+              className={classNames.cardCalendarIcon}
             />
             <span className={classNames.cardSpecialFont}>Due Date</span>
             <span
