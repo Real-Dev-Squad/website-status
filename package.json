@@ -28,7 +28,7 @@
     "@testing-library/react": "^12.1.2",
     "axios": "^0.24.0",
     "husky": "^7.0.4",
-    "moment": "^2.29.1",
+    "moment": "^2.29.2",
     "next": "12",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
