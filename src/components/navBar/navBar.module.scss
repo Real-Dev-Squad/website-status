@@ -92,6 +92,9 @@
 }
 
 .btnLoginText {
+  display:flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
   padding: 5px;
   background-color: #1d1283;
@@ -128,9 +131,15 @@
   transform: scale(1.7);
 }
 
+
+.m_login_btn{
+  display:none
+}
+
 @media screen and (max-width: 970px) {
   .navBar {
     background: #1d1283;
+    position:relative
   }
 
   .hamburger {
@@ -190,6 +199,13 @@
 
   .navBar li {
     float: none;
+  }
+
+  .m_login_btn{ 
+    display:block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
   }
 
   .mainBanner,
