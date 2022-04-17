@@ -1,5 +1,5 @@
 .wrapper {
-  font: 700 16px 'Roboto', sans-serif;
+  font: 700 16px "Roboto", sans-serif;
   margin-bottom: 25px;
 }
 
@@ -92,7 +92,7 @@
 }
 
 .btnLoginText {
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
@@ -108,7 +108,7 @@
   margin: 23px;
 }
 
-.navBarLoginLi .userGreet a{
+.navBarLoginLi .userGreet a {
   padding: 0px;
 }
 
@@ -131,15 +131,14 @@
   transform: scale(1.7);
 }
 
-
-.m_login_btn{
-  display:none
+.m_login_btn {
+  display: none;
 }
 
 @media screen and (max-width: 970px) {
   .navBar {
     background: #1d1283;
-    position:relative
+    position: relative;
   }
 
   .hamburger {
@@ -201,8 +200,8 @@
     float: none;
   }
 
-  .m_login_btn{ 
-    display:block;
+  .m_login_btn {
+    display: block;
     position: absolute;
     top: 20px;
     right: 20px;
