@@ -86,9 +86,8 @@
   margin: 22px;
 }
 
-.navBar li.navBarLoginLi .btnLogin {
-  padding: 0px;
-  margin: 22px;
+.btnLogin {
+  text-decoration: none;
 }
 
 .btnLoginText {
@@ -128,7 +127,6 @@
 
 .githubLogo {
   margin-left: 4px;
-  transform: scale(1.7);
 }
 
 .m_login_btn {

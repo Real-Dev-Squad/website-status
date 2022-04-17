@@ -6,7 +6,7 @@ import { USER_SELF } from "../constants/url";
 import navLinks from "./navLinks";
 
 const RDSLogo = "/RDSLogo.png";
-const GitHubLogo = "/gitHubLogo.svg";
+const GitHubLogo = "/gitHubLogo.png";
 const hamburgerLogo = "/hamburger.svg";
 const DEFAULT_AVATAR = "/dummyProfile.png";
 const SIGN_IN_WITH_GITHUB = "Sign In With GitHub";
