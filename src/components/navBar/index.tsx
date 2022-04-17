@@ -1,8 +1,9 @@
 import Image from 'next/image';
 import styles from '@/components/navBar/navBar.module.scss';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { USER_SELF } from '../constants/url'
+import navLinks from './navlink'
 
 const RDSLogo = '/RDSLogo.png';
 const GitHubLogo = '/gitHubLogo.svg'
@@ -66,6 +67,12 @@ const NavBar = () => {
           </div>
   }
 
+  const NavbarLinks=({data})=>{
+    return data.map((item)=>
+    <li className={item.tabStyle ? item.tabStyle:""} key={item.id}>
+      <a className={item.linkStyle ? item.linkStyle:""} href={item.link}>{item.name}</a>
+    </li>)
+  }
 
   return (
   <div className={styles.wrapper}>
@@ -84,27 +91,10 @@ const NavBar = () => {
             <img src={RDSLogo} alt="realdevsquad-icon" height="50px" width="50px" />
           </a>
         </li>
-        <li className={styles.homeTab}>
-          <a href="https://www.realdevsquad.com/"> Home </a>
-        </li>
-        <li>
-          <a href="https://welcome.realdevsquad.com/"> Welcome </a>
-        </li>
-        <li>
-          <a href="https://www.realdevsquad.com/events.html"> Events </a>
-        </li>
-        <li>
-          <a href="https://members.realdevsquad.com/"> Members </a>
-        </li>
-        <li>
-          <a href="https://crypto.realdevsquad.com/"> Crypto </a>
-        </li>
-        <li>
-          <a className={styles.activeTab} href="https://status.realdevsquad.com/"> Status </a>
-        </li>
+        <NavbarLinks data={navLinks}/>
         <li className={styles.navBarLoginLi}>
           <UserSignIn btnText={SIGN_IN_WITH_GITHUB} />
-        </li>
+        </li> 
       </ul>
       <div className={styles.m_login_btn}>
         <UserSignIn btnText={SIGN_IN}/>
