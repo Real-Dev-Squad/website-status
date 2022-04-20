@@ -105,6 +105,8 @@
 .userGreet {
   color: #ffffff;
   margin: 23px;
+  display:flex;
+  align-items: center;
 }
 
 .navBarLoginLi .userGreet a {
@@ -112,8 +114,7 @@
 }
 
 .userProfilePic {
-  width: 32px;
-  height: 32px;
+  
   border-radius: 50%;
   display: inline;
   vertical-align: middle;

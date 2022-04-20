@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { USER_SELF } from "../constants/url";
 import navLinks from "./navLinks";
+import fetch from "@/helperFunctions/fetch";
 
 const RDSLogo = "/RDSLogo.png";
 const GitHubLogo = "/gitHubLogo.png";
@@ -16,28 +17,32 @@ const NavBar = () => {
   const [toggle, setToggle] = useState(false);
   const [userData, setUserData] = useState({});
   const [userisLoggedIn, setUserisLoggedIn] = useState(false);
-
+  
+  console.log(userData, "yeh dekho")
   useEffect(() => {
     (async function () {
       try {
-        const { data, status, statusText, incompleteUserDetails } =
-          await axios.get(USER_SELF, { withCredentials: true });
+        
+        const { requestPromise } = fetch({ url: USER_SELF, method: "get" });
+        
+        const { data, status, statusText } = await requestPromise
         if (status !== 200) {
           throw new Error(`${status} (${statusText})`);
-        } else if (incompleteUserDetails) {
+        } else if (data.incompleteUserDetails) {
           window.open(
             "https://my.realdevsquad.com/signup",
             "_blank",
             "noopener"
           );
         }
-
-        setUserisLoggedIn(true);
+        
+        console.log(data,"thos os data")
         setUserData({
           userName: data.username,
           firstName: data.first_name,
-          profilePicture: data.picture?.url ?? DEFAULT_AVATAR,
+          profilePicture: data.picture?.url ? data.picture?.url:DEFAULT_AVATAR,
         });
+        setUserisLoggedIn(true);
       } catch (e) {
         console.error(e.message);
       }
@@ -70,6 +75,9 @@ const NavBar = () => {
           className={styles.userProfilePic}
           src={userData.profilePicture}
           alt="User_Profile_Picture"
+          width='32px'
+          height=' 32px'
+         
         />
       </div>
     );
