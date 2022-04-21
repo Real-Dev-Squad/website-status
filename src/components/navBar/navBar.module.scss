@@ -102,11 +102,14 @@
   border: 2px solid white;
 }
 
-.userGreet {
+#userGreet {
   color: #ffffff;
   margin: 23px;
-  display:flex;
+  padding: 0;
+  display: flex;
   align-items: center;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .navBarLoginLi .userGreet a {
@@ -114,7 +117,6 @@
 }
 
 .userProfilePic {
-  
   border-radius: 50%;
   display: inline;
   vertical-align: middle;
@@ -211,7 +213,7 @@
     margin-top: 40px;
   }
 
-  .userGreet {
-    margin: 0px;
+  #userGreet {
+    margin: 0;
   }
 }

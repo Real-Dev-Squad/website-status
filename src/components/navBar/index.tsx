@@ -17,15 +17,13 @@ const NavBar = () => {
   const [toggle, setToggle] = useState(false);
   const [userData, setUserData] = useState({});
   const [userisLoggedIn, setUserisLoggedIn] = useState(false);
-  
-  console.log(userData, "yeh dekho")
+
   useEffect(() => {
     (async function () {
       try {
-        
         const { requestPromise } = fetch({ url: USER_SELF, method: "get" });
-        
-        const { data, status, statusText } = await requestPromise
+
+        const { data, status, statusText } = await requestPromise;
         if (status !== 200) {
           throw new Error(`${status} (${statusText})`);
         } else if (data.incompleteUserDetails) {
@@ -35,16 +33,17 @@ const NavBar = () => {
             "noopener"
           );
         }
-        
-        console.log(data,"thos os data")
+
         setUserData({
           userName: data.username,
           firstName: data.first_name,
-          profilePicture: data.picture?.url ? data.picture?.url:DEFAULT_AVATAR,
+          profilePicture: data.picture?.url
+            ? data.picture?.url
+            : DEFAULT_AVATAR,
         });
         setUserisLoggedIn(true);
       } catch (e) {
-        console.error(e.message);
+        console.log(e);
       }
     })();
   }, []);
@@ -67,7 +66,7 @@ const NavBar = () => {
         </button>
       </a>
     ) : (
-      <div className={styles.userGreet}>
+      <a href="https://my.realdevsquad.com/" id={styles.userGreet}>
         <div className={styles.userGreetMsg}>
           Hello, {userData.firstName ? userData.firstName : `User`}!
         </div>
@@ -75,11 +74,10 @@ const NavBar = () => {
           className={styles.userProfilePic}
           src={userData.profilePicture}
           alt="User_Profile_Picture"
-          width='32px'
-          height=' 32px'
-         
+          width="32px"
+          height=" 32px"
         />
-      </div>
+      </a>
     );
   };
 
