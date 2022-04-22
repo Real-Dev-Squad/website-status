@@ -16,7 +16,7 @@ const Accordion: VFC<Props> = ({ title, open = true, children }) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div aria-expanded={isOpen} data-testid="accordion" className={styles.container}>
       <div
         className={styles.title}
         onClick={toggle}
@@ -25,9 +25,9 @@ const Accordion: VFC<Props> = ({ title, open = true, children }) => {
         role="button"
       >
         {title}
-        <span>{ isOpen ? '-' : '+' }</span>
+        <span>{isOpen ? '-' : '+'}</span>
       </div>
-      <div className={`${styles.content} ${isOpen ? styles.open : styles.close}`}>
+      <div data-testid="accordion-content" className={`${styles.content} ${isOpen ? styles.open : styles.close}`}>
         {children}
       </div>
     </div>

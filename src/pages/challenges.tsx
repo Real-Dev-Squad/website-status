@@ -6,27 +6,32 @@ import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import useFetch from '@/hooks/useFetch';
 import challenge from '@/interfaces/challenge.type';
+import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
+import { CHALLENGES_URL } from '@/components/constants/url';
+import userData from '@/helperFunctions/getUser';
 
-const CHALLENGES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/challenges`;
-
-const renderCardList = (challengeSection: challenge['content'], key:string) => {
+const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {
-    return challengeSection.map((item) => <Active content={item} key={item.id} />);
+    return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} />);
   }
   return challengeSection.map((item) => <Complete content={item} key={item.id} />);
 };
 
 const Challenges: FC = () => {
-  let challenges: challenge['content'] = [];
-
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
-
+  const [user, setUser] = useState<userType>(Object);
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
 
   useEffect(() => {
+    (async () => {
+      setUser(await userData());
+    })();
+  }, []);
+
+  useEffect(() => {
     if ('challenges' in response) {
-      challenges = response.challenges;
+      let challenges: challenge['content'] = response.challenges;
       const challengeMap: any = [];
 
       challengeMap.Active = challenges.filter((task) => task.is_active);
@@ -68,7 +73,7 @@ const Challenges: FC = () => {
                     filteredChallenge[key].length > 0
                     && (
                     <Accordion open title={key} key={key}>
-                      {renderCardList(filteredChallenge[key], key)}
+                      {renderCardList(filteredChallenge[key], key, user.id)}
                     </Accordion>
                     )
 

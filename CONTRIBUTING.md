@@ -8,13 +8,17 @@
 
 ##  **1. How to Start**
 
-Follow <a href="https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md" target="_blank">this</a> to understand how to clone,fork and do a PR.  
+Read <a href="https://github.com/Real-Dev-Squad/website-welcome/blob/main/CONTRIBUTING.md" target="_blank">this</a>  guide to learn how to clone,fork and raise a PR.
 ## **2. Yarn Command Reference**  
 ### Set-up  
 `yarn install`
 
 ### Development  
 To run the project `yarn run dev`.
+
+#### To run the project with Mocked APIs
+- Configure your development browser to trust `https://localhost` with invalid certificate, follow [this doc](https://mswjs.io/docs/recipes/using-local-https#trust-insecure-localhost)
+- Make sure the variable `NEXT_PUBLIC_API_MOCKING` is `ON` in [`.env.development`](https://github.com/Real-Dev-Squad/website-status/blob/develop/.env.development) file
 
 ### Production  
 To do a production build `yarn run start`.
@@ -33,8 +37,13 @@ API contracts can be found [here](https://github.com/Real-Dev-Squad/website-api-
  4. <a href="https://react-typescript-cheatsheet.netlify.app/docs/basic/setup" target="_blank">React TypeScript cheatsheet</a>
 
 ## **6. Raising a Pull Request**
- 1. Double check the code before every commit/push
- 2. Have on-point commit messages
- 3. Write useful descriptions and titles
- 4. Add comments on your pull request to help guide the reviewer
+ 1. Write tests
+ 2. Double check the code before every commit/push
+ 3. Have on-point commit messages
+ 4. Write useful descriptions and titles
+ 5. Add comments on your pull request to help guide the reviewer
  6. Make it visual. Add Images or GIFs if needed.
+ 7. [Link the PR to the issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword) you are working on
+ 8. [Convert the PR to Draft](https://github.blog/2019-02-14-introducing-draft-pull-requests/) if the work is still in progress
+ 9. Make sure the checkbox "Allow edits by maintainers" is checked
+<img width="345" alt="Screenshot_2022-01-30_at_4 21 19_PM" src="https://user-images.githubusercontent.com/26569942/151747499-38896108-b9b4-4190-a39d-26d61b38d400.png">
