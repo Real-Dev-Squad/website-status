@@ -1,10 +1,29 @@
 import Image from "next/image";
 import styles from "@/components/navBar/navBar.module.scss";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { FC, Key, useEffect, useState } from "react";
 import { USER_SELF } from "../constants/url";
 import navLinks from "./navLinks";
 import fetch from "@/helperFunctions/fetch";
+
+type UserData = {
+  firstName: string;
+  profilePicture: string;
+};
+
+type SignInButton = {
+  btnText: string;
+  userData: Object;
+};
+
+type Data = { data: DataItem[] };
+
+type DataItem = {
+  id: Key;
+  link: string;
+  name: string;
+  tabStyle: string;
+  linkStyle: string;
+};
 
 const RDSLogo = "/RDSLogo.png";
 const GitHubLogo = "/gitHubLogo.png";
@@ -48,7 +67,9 @@ const NavBar = () => {
     })();
   }, []);
 
-  const UserSignIn = ({ btnText }) => {
+  const UserSignIn: FC<SignInButton> = (btnText, userData: UserData) => {
+    const { firstName, profilePicture } = userData;
+
     return !userisLoggedIn ? (
       <a
         className={styles.btnLogin}
@@ -56,7 +77,7 @@ const NavBar = () => {
       >
         <button className={styles.btnLoginText}>
           {btnText}
-          <img
+          <Image
             className={styles.githubLogo}
             src={GitHubLogo}
             alt="GitHub_Icon"
@@ -68,11 +89,11 @@ const NavBar = () => {
     ) : (
       <a href="https://my.realdevsquad.com/" id={styles.userGreet}>
         <div className={styles.userGreetMsg}>
-          Hello, {userData.firstName ? userData.firstName : `User`}!
+          Hello, {firstName ? firstName : `User`}!
         </div>
         <Image
           className={styles.userProfilePic}
-          src={userData.profilePicture}
+          src={profilePicture}
           alt="User_Profile_Picture"
           width="32px"
           height=" 32px"
@@ -81,14 +102,14 @@ const NavBar = () => {
     );
   };
 
-  const NavbarLinks = ({ data }) => {
-    return data.map((item) => (
+  const NavbarLinks = (data: DataItem[]) => {
+    return data.map((item: DataItem) => {
       <li className={item.tabStyle ? item.tabStyle : ""} key={item.id}>
         <a className={item.linkStyle ? item.linkStyle : ""} href={item.link}>
           {item.name}
         </a>
-      </li>
-    ));
+      </li>;
+    });
   };
 
   return (
@@ -123,11 +144,11 @@ const NavBar = () => {
           </li>
           <NavbarLinks data={navLinks} />
           <li className={styles.navBarLoginLi}>
-            <UserSignIn btnText={SIGN_IN_WITH_GITHUB} />
+            <UserSignIn btnText={SIGN_IN_WITH_GITHUB} userData={userData} />
           </li>
         </ul>
         <div className={styles.m_login_btn}>
-          <UserSignIn btnText={SIGN_IN} />
+          <UserSignIn btnText={SIGN_IN} userData={userData} />
         </div>
       </nav>
     </div>
