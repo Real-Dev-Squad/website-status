@@ -17,12 +17,12 @@ type SignInButton = {
 
 type Data = { data: DataItem[] };
 
-type DataItem = {
+export type DataItem = {
   id: Key;
   link: string;
   name: string;
-  tabStyle: string;
-  linkStyle: string;
+  tabStyle?: string;
+  linkStyle?: string;
 };
 
 const RDSLogo = "/RDSLogo.png";
@@ -76,7 +76,7 @@ const NavBar = () => {
         href="https://github.com/login/oauth/authorize?client_id=23c78f66ab7964e5ef97"
       >
         <button className={styles.btnLoginText}>
-          {btnText}
+          {btnText.btnText}
           <Image
             className={styles.githubLogo}
             src={GitHubLogo}
@@ -102,14 +102,15 @@ const NavBar = () => {
     );
   };
 
-  const NavbarLinks = (data: DataItem[]) => {
-    return data.map((item: DataItem) => {
-      <li className={item.tabStyle ? item.tabStyle : ""} key={item.id}>
+  const NavbarLinks = ({data}: {data: DataItem[]}) => {
+    return<>{ 
+      data.map((item: DataItem) => {
+      return <li className={item.tabStyle ? item.tabStyle : ""} key={item.id}>
         <a className={item.linkStyle ? item.linkStyle : ""} href={item.link}>
           {item.name}
         </a>
       </li>;
-    });
+    })}</>
   };
 
   return (

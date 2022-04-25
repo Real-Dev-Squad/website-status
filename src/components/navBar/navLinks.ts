@@ -1,6 +1,7 @@
 import styles from "@/components/navBar/navBar.module.scss";
+import { DataItem } from ".";
 
-const links = [
+const links: DataItem[] = [
   {
     id: 1,
     name: "Home",
