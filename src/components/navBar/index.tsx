@@ -159,7 +159,6 @@ const NavBar = () => {
           </li>
           <NavbarLinks data={navLinks} />
           <li className={styles.navBarLoginLi}>
-            {console.log(userData)}
             <UserSignIn btnText={SIGN_IN_WITH_GITHUB} userData={userData} />
           </li>
         </ul>
