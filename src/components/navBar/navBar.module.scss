@@ -1,35 +1,217 @@
-$offset: 10px;
-$thickness: 3px;
+.wrapper {
+  font: 700 16px "Roboto", sans-serif;
+  margin-bottom: 15px;
+}
 
-.navBar {
-  display: flex;
-  width: 100%;
-  background-color: #1d1283;
-  align-items: center;
+.navBarLogin,
+.homeTab {
+  display: none;
+}
+
+.navBar li a {
+  margin: 10px;
+  display: block;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  text-align: center;
+  padding: 19px 16px;
+  text-decoration: none;
+}
+
+.navBar li {
+  float: left;
+}
+
+.navBar li a:hover {
+  color: #49a82e;
+}
+
+.navBarMenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
+  background-color: #1d1283;
+}
+
+.navBarLogoLi {
+  padding: 12px 20px;
+}
+
+.navBar li.navBarLogoLi a {
+  margin: 0px;
+  padding: 0px;
+}
+
+.navBar li a.activeTab {
+  color: #49a82e;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 10px;
+}
+
+.hamburger {
+  display: none;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
+  padding-top: 5px;
+}
 
-  a {
+.link {
+  padding: 10px;
+  margin-top: 2px;
+  text-decoration: none;
+  font-weight: bold;
+  color: #041484;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.active {
+  color: #e30464;
+}
+
+.navBar li.navBarLoginLi {
+  float: right;
+}
+
+.navBar li.navBarLoginLi .btnLoginContainer {
+  padding: 0px;
+  margin: 22px;
+}
+
+.btnLoginContainer {
+  text-decoration: none;
+}
+
+.btnLogin {
+  display: flex;
+  border-radius: 6px;
+  padding: 5px;
+  background-color: #1d1283;
+  color: white;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.btnLoginText {
+  margin-right: 4px;
+}
+
+#userGreet {
+  color: #ffffff;
+  margin: 23px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.navBarLoginLi .userGreet a {
+  padding: 0px;
+}
+
+.userProfilePic {
+  border-radius: 50%;
+  display: inline;
+  vertical-align: middle;
+}
+
+.userGreetMsg {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.m_login_btn {
+  display: none;
+}
+
+@media screen and (max-width: 970px) {
+  .navBar {
+    background: #1d1283;
+    position: relative;
+  }
+
+  .hamburger {
+    margin: 20px;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .navBarMenu {
+    background: white;
+    display: none;
+    width: 100%;
+    padding: 10px 0px;
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
+  }
+
+  .navBarMenu.active,
+  .homeTab {
     display: block;
-    color: #ffffff;
-    font-weight: bolder;
-    text-align: center;
-    padding: 35px 2*($offset+$thickness)-1;
+  }
+
+  .navBar li a {
+    padding: 10px 40px;
+    text-align: left;
+    color: #1d1283;
+  }
+
+  .navBarLoginLi,
+  .navBarLogoLi {
+    display: none;
+  }
+
+  .navBarLogin {
+    display: block;
+    margin: 20px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+  }
+
+  .navBarLogin {
+    display: block;
+    margin: 20px;
+    position: absolute;
+    top: 0;
+    right: 0px;
+  }
+
+  .navBarLoginLi,
+  .navBarLogoLi {
+    display: none;
+  }
+
+  .navBar li a.activeTab {
     text-decoration: none;
-
-    &:hover {
-      color: #87d870;
-    }
   }
 
-  .active {
-    color: #87d870;
-    text-decoration: underline;
-    text-decoration-thickness: $thickness;
-    text-underline-offset: $offset;
+  .navBar li {
+    float: none;
   }
 
-  .logo {
-    padding: ($offset+$thickness)+7;
+  .m_login_btn {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .mainBanner,
+  .logoImg {
+    margin-top: 40px;
+  }
+
+  #userGreet {
+    margin: 0;
   }
 }
