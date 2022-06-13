@@ -6,6 +6,7 @@ import navLinks from "./navLinks";
 import fetch from "@/helperFunctions/fetch";
 
 type UserData = {
+  username: string;
   firstName: string;
   profilePicture: string;
 };
@@ -34,7 +35,11 @@ const SIGN_IN = "Sign In";
 
 const NavBar = () => {
   const [toggle, setToggle] = useState(false);
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    userName: "",
+    firstName: "",
+    profilePicture: "",
+  });
   const [userisLoggedIn, setUserisLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -67,16 +72,16 @@ const NavBar = () => {
     })();
   }, []);
 
-  const UserSignIn: FC<SignInButton> = (btnText, userData: UserData) => {
+  const UserSignIn: FC<SignInButton> = ({ btnText, userData: UserData }) => {
     const { firstName, profilePicture } = userData;
 
     return !userisLoggedIn ? (
       <a
-        className={styles.btnLogin}
+        className={styles.btnLoginContainer}
         href="https://github.com/login/oauth/authorize?client_id=23c78f66ab7964e5ef97"
       >
-        <button className={styles.btnLoginText}>
-          {btnText.btnText}
+        <button className={styles.btnLogin}>
+          <span className={styles.btnLoginText}>{btnText}</span>
           <Image
             className={styles.githubLogo}
             src={GitHubLogo}
@@ -102,15 +107,23 @@ const NavBar = () => {
     );
   };
 
-  const NavbarLinks = ({data}: {data: DataItem[]}) => {
-    return<>{ 
-      data.map((item: DataItem) => {
-      return <li className={item.tabStyle ? item.tabStyle : ""} key={item.id}>
-        <a className={item.linkStyle ? item.linkStyle : ""} href={item.link}>
-          {item.name}
-        </a>
-      </li>;
-    })}</>
+  const NavbarLinks = ({ data }: { data: DataItem[] }) => {
+    return (
+      <>
+        {data.map((item: DataItem) => {
+          return (
+            <li className={item.tabStyle ? item.tabStyle : ""} key={item.id}>
+              <a
+                className={item.linkStyle ? item.linkStyle : ""}
+                href={item.link}
+              >
+                {item.name}
+              </a>
+            </li>
+          );
+        })}
+      </>
+    );
   };
 
   return (

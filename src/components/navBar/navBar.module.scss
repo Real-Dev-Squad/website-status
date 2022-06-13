@@ -81,25 +81,27 @@
   float: right;
 }
 
-.navBar li.navBarLoginLi .btnLogin {
+.navBar li.navBarLoginLi .btnLoginContainer {
   padding: 0px;
   margin: 22px;
 }
 
-.btnLogin {
+.btnLoginContainer {
   text-decoration: none;
 }
 
-.btnLoginText {
+.btnLogin {
   display: flex;
-  align-items: center;
-  justify-content: center;
   border-radius: 6px;
   padding: 5px;
   background-color: #1d1283;
   color: white;
   cursor: pointer;
   border: 2px solid white;
+}
+
+.btnLoginText {
+  margin-right: 4px;
 }
 
 #userGreet {
@@ -126,10 +128,6 @@
   display: inline;
   vertical-align: middle;
   margin-right: 10px;
-}
-
-.githubLogo {
-  margin-left: 4px;
 }
 
 .m_login_btn {

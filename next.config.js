@@ -3,6 +3,6 @@ module.exports = {
     webpack5: true,
   },
   images: {
-    domains: ["raw.githubusercontent.com","res.cloudinary.com"],
+    domains: ["raw.githubusercontent.com", "res.cloudinary.com"],
   },
 };
