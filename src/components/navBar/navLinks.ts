@@ -1,5 +1,5 @@
 import styles from "@/components/navBar/navBar.module.scss";
-import { DataItem } from ".";
+import { DataItem } from "@/interfaces/navbar.type";
 
 const links: DataItem[] = [
   {

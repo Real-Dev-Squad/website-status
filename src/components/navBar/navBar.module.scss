@@ -1,5 +1,12 @@
+$font-stack: "Roboto", sans-serif;
+$color-white: #ffffff;
+$color-primary: #1d1283;
+$color-highlight: #49a82e;
+$color-highlight2: #e30464;
+$color-boxshadow: rgba(0, 0, 0, 0.5);
+
 .wrapper {
-  font: 700 16px "Roboto", sans-serif;
+  font: 700 16px $font-stack;
   margin-bottom: 15px;
 }
 
@@ -8,22 +15,40 @@
   display: none;
 }
 
-.navBar li a {
-  margin: 10px;
-  display: block;
-  border-radius: 0.5rem;
-  color: #ffffff;
-  text-align: center;
-  padding: 19px 16px;
-  text-decoration: none;
-}
-
-.navBar li {
-  float: left;
-}
-
-.navBar li a:hover {
-  color: #49a82e;
+.navBar {
+  li {
+    a {
+      margin: 10px;
+      display: block;
+      border-radius: 0.5rem;
+      color: $color-white;
+      text-align: center;
+      padding: 19px 16px;
+      text-decoration: none;
+      &:hover {
+        color: $color-highlight;
+      }
+    }
+    float: left;
+    a.activeTab {
+      color: $color-highlight;
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 10px;
+    }
+  }
+  li.navBarLogoLi {
+    a {
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+  li.navBarLoginLi {
+    float: right;
+    .btnLogin {
+      margin: 22px;
+    }
+  }
 }
 
 .navBarMenu {
@@ -31,23 +56,11 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #1d1283;
+  background-color: $color-primary;
 }
 
 .navBarLogoLi {
   padding: 12px 20px;
-}
-
-.navBar li.navBarLogoLi a {
-  margin: 0px;
-  padding: 0px;
-}
-
-.navBar li a.activeTab {
-  color: #49a82e;
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 10px;
 }
 
 .hamburger {
@@ -67,55 +80,43 @@
   margin-top: 2px;
   text-decoration: none;
   font-weight: bold;
-  color: #041484;
+  color: $color-primary;
   cursor: pointer;
   background: none;
   border: none;
 }
 
 .active {
-  color: #e30464;
-}
-
-.navBar li.navBarLoginLi {
-  float: right;
-}
-
-.navBar li.navBarLoginLi .btnLoginContainer {
-  padding: 0px;
-  margin: 22px;
-}
-
-.btnLoginContainer {
-  text-decoration: none;
+  color: $color-highlight2;
 }
 
 .btnLogin {
   display: flex;
+  align-items: center;
   border-radius: 6px;
   padding: 5px;
-  background-color: #1d1283;
-  color: white;
+  background-color: $color-primary;
+  color: $color-white;
   cursor: pointer;
-  border: 2px solid white;
+  border: 2px solid $color-white;
 }
 
 .btnLoginText {
   margin-right: 4px;
 }
 
-#userGreet {
-  color: #ffffff;
+.userGreet {
+  color: $color-white;
   margin: 23px;
   padding: 0;
   display: flex;
   align-items: center;
   text-decoration: none;
   cursor: pointer;
-}
-
-.navBarLoginLi .userGreet a {
-  padding: 0px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .userProfilePic {
@@ -136,8 +137,19 @@
 
 @media screen and (max-width: 970px) {
   .navBar {
-    background: #1d1283;
+    background: $color-primary;
     position: relative;
+    li {
+      a {
+        padding: 10px 40px;
+        text-align: left;
+        color: $color-primary;
+      }
+      a.activeTab {
+        text-decoration: none;
+      }
+      float: none;
+    }
   }
 
   .hamburger {
@@ -147,11 +159,11 @@
   }
 
   .navBarMenu {
-    background: white;
+    background: $color-white;
     display: none;
     width: 100%;
     padding: 10px 0px;
-    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 10px 15px $color-boxshadow;
   }
 
   .navBarMenu.active,
@@ -159,12 +171,6 @@
     display: block;
   }
 
-  .navBar li a {
-    padding: 10px 40px;
-    text-align: left;
-    color: #1d1283;
-  }
-
   .navBarLoginLi,
   .navBarLogoLi {
     display: none;
@@ -176,27 +182,6 @@
     position: absolute;
     top: 0;
     right: 0px;
-  }
-
-  .navBarLogin {
-    display: block;
-    margin: 20px;
-    position: absolute;
-    top: 0;
-    right: 0px;
-  }
-
-  .navBarLoginLi,
-  .navBarLogoLi {
-    display: none;
-  }
-
-  .navBar li a.activeTab {
-    text-decoration: none;
-  }
-
-  .navBar li {
-    float: none;
   }
 
   .m_login_btn {
@@ -211,7 +196,7 @@
     margin-top: 40px;
   }
 
-  #userGreet {
+  .userGreet {
     margin: 0;
   }
 }
