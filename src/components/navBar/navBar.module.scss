@@ -6,7 +6,7 @@ $color-highlight2: #e30464;
 $color-boxshadow: rgba(0, 0, 0, 0.5);
 
 .wrapper {
-  font: 700 16px $font-stack;
+  font: 700 1rem $font-stack;
   margin-bottom: 15px;
 }
 
@@ -115,7 +115,7 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   background: transparent;
   border: none;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
 }
 
