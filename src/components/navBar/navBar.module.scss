@@ -5,150 +5,95 @@ $color-highlight: #49a82e;
 $color-highlight2: #e30464;
 $color-boxshadow: rgba(0, 0, 0, 0.5);
 
-.wrapper {
-  font: 700 1rem $font-stack;
-  margin-bottom: 15px;
-}
-
-.navBarLogin,
-.homeTab {
-  display: none;
-}
-
 .navBar {
-  li {
-    a {
-      margin: 10px;
-      display: block;
-      border-radius: 0.5rem;
-      color: $color-white;
-      text-align: center;
-      padding: 19px 16px;
-      text-decoration: none;
-      &:hover {
-        color: $color-highlight;
-      }
+  font: 700 16px $font-stack;
+  margin-bottom: 15px;
+
+  .navBarMenu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    background-color: $color-primary;
+
+    .navBarLoginLi {
+      margin-left: auto;
     }
-    float: left;
-    a.activeTab {
-      color: $color-highlight;
-      text-decoration: underline;
-      text-decoration-thickness: 3px;
-      text-underline-offset: 10px;
-    }
-  }
-  li.navBarLogoLi {
-    a {
-      margin: 0px;
-      padding: 0px;
-    }
-  }
-  li.navBarLoginLi {
-    float: right;
-    .btnLogin {
-      margin: 22px;
+
+    .navBarLogoLi {
+      padding: 12px 20px;
     }
   }
 }
 
-.navBarMenu {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: $color-primary;
-}
-
-.navBarLogoLi {
-  padding: 12px 20px;
-}
-
+.homeTab,
+.loginBtn,
 .hamburger {
   display: none;
-}
-
-.header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  padding-top: 5px;
-}
-
-.link {
-  padding: 10px;
-  margin-top: 2px;
-  text-decoration: none;
-  font-weight: bold;
-  color: $color-primary;
-  cursor: pointer;
-  background: none;
-  border: none;
-}
-
-.active {
-  color: $color-highlight2;
 }
 
 .btnLogin {
   display: flex;
   align-items: center;
+  margin-right: 23px;
+  cursor: pointer;
   border-radius: 6px;
   padding: 5px;
   background-color: $color-primary;
   color: $color-white;
-  cursor: pointer;
   border: 2px solid $color-white;
-}
 
-.btnLoginText {
-  margin-right: 4px;
+  .btnLoginText {
+    margin-right: 4px;
+  }
 }
 
 .userGreet {
-  color: $color-white;
-  margin: 23px;
-  padding: 0;
   display: flex;
   align-items: center;
-  text-decoration: none;
+  margin-right: 23px;
   cursor: pointer;
+  color: $color-white;
+  padding: 0;
+  text-decoration: none;
   background: transparent;
   border: none;
   font-size: 1rem;
   font-weight: 700;
+
+  .userProfilePic {
+    border-radius: 50%;
+  }
+
+  .userGreetMsg {
+    margin-right: 10px;
+  }
 }
 
-.userProfilePic {
-  border-radius: 50%;
-  display: inline;
-  vertical-align: middle;
+.navBarLink {
+  color: $color-white;
+  margin: 0px 26px;
+  text-decoration: none;
 }
 
-.userGreetMsg {
-  display: inline;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-
-.m_login_btn {
-  display: none;
+.activeTab {
+  margin: 0px 26px;
+  color: $color-highlight;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 10px;
 }
 
 @media screen and (max-width: 970px) {
   .navBar {
     background: $color-primary;
-    position: relative;
-    li {
-      a {
-        padding: 10px 40px;
-        text-align: left;
-        color: $color-primary;
-      }
-      a.activeTab {
-        text-decoration: none;
-      }
-      float: none;
+
+    .navBarMenu {
+      background: $color-white;
+      display: none;
+      padding: 10px 0px;
+      box-shadow: 0px 10px 15px $color-boxshadow;
     }
   }
 
@@ -156,14 +101,28 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
     margin: 20px;
     display: inline-block;
     cursor: pointer;
+    background-color: transparent;
+    border: none;
   }
 
-  .navBarMenu {
-    background: $color-white;
-    display: none;
-    width: 100%;
-    padding: 10px 0px;
-    box-shadow: 0px 10px 15px $color-boxshadow;
+  .loginBtn {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 0px;
+  }
+
+  .navBarListItem,
+  .homeTab {
+    padding: 15px 24px;
+  }
+
+  .navBarLink {
+    color: $color-primary;
+  }
+
+  .activeTab {
+    text-decoration: none;
   }
 
   .navBarMenu.active,
@@ -174,29 +133,5 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
   .navBarLoginLi,
   .navBarLogoLi {
     display: none;
-  }
-
-  .navBarLogin {
-    display: block;
-    margin: 20px;
-    position: absolute;
-    top: 0;
-    right: 0px;
-  }
-
-  .m_login_btn {
-    display: block;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-
-  .mainBanner,
-  .logoImg {
-    margin-top: 40px;
-  }
-
-  .userGreet {
-    margin: 0;
   }
 }
