@@ -22,12 +22,12 @@ const NavBar = () => {
     profilePicture: "",
   });
 
-  const { response, error } = useFetch(USER_SELF);
+  const { response, status, error } = useFetch(USER_SELF);
 
   useEffect(() => {
-    if (response) {
+    if (response && status === 200) {
       const { first_name, picture } = response;
-      console.log(first_name, picture);
+
       setUserDetails({
         firstName: first_name,
         profilePicture: picture?.url,
@@ -36,10 +36,10 @@ const NavBar = () => {
       setUserIsLoggedIn(true);
     }
 
-    if (error) {
+    if (error && status === 401) {
       setUserIsLoggedIn(false);
     }
-  }, [response, error]);
+  }, [response, error, status]);
 
   return (
     <nav className={styles.navBar}>

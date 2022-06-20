@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
-import fetch from '@/helperFunctions/fetch';
+import { useState, useEffect } from "react";
+import fetch from "@/helperFunctions/fetch";
 
 const useFetch = (url: string, options: object = {}) => {
   const [response, setResponse] = useState<any>({});
+  const [status, setStatus] = useState();
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     let cancel: () => void;
     (async () => {
@@ -12,12 +14,13 @@ const useFetch = (url: string, options: object = {}) => {
       try {
         const { requestPromise, cancelApi } = fetch({
           url,
-          method: 'get',
+          method: "get",
           ...options,
         });
         cancel = cancelApi;
         const fetchPromise = await requestPromise;
         setResponse(fetchPromise.data);
+        setStatus(fetchPromise.status);
       } catch (err) {
         setError(err);
       } finally {
@@ -33,7 +36,10 @@ const useFetch = (url: string, options: object = {}) => {
     };
   }, [url]);
   return {
-    response, error, isLoading,
+    response,
+    status,
+    error,
+    isLoading,
   };
 };
 
