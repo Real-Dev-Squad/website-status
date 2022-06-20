@@ -52,9 +52,7 @@ const NavBar = () => {
           toggle ? `${styles.navBarMenu} ${styles.active}` : styles.navBarMenu
         }
       >
-        <li className={styles.navBarLogoLi}>
-          <Logo />
-        </li>
+        <Logo />
         <NavbarLinks data={navLinks} />
         <li className={styles.navBarLoginLi}>
           <UserSignIn
