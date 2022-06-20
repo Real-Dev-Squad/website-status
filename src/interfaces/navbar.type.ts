@@ -7,7 +7,6 @@ export type SignInButton = {
 };
 
 export type UserData = {
-  userName: string;
   firstName: string;
   profilePicture: string;
 };

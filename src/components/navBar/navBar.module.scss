@@ -6,7 +6,7 @@ $color-highlight2: #e30464;
 $color-boxshadow: rgba(0, 0, 0, 0.5);
 
 .navBar {
-  font: 700 16px $font-stack;
+  font: 700 1rem $font-stack;
   margin-bottom: 15px;
 
   .navBarMenu {
@@ -25,9 +25,27 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
       padding: 12px 20px;
     }
   }
+
+  .activeLink {
+    margin: 0px 26px;
+    color: $color-highlight;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 10px;
+  }
+
+  .navBarLink {
+    color: $color-white;
+    margin: 0px 26px;
+    text-decoration: none;
+  }
+
+  .navBarLink:hover {
+    color: $color-highlight;
+  }
 }
 
-.homeTab,
+.homeLink,
 .loginBtn,
 .hamburger {
   display: none;
@@ -71,20 +89,6 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
   }
 }
 
-.navBarLink {
-  color: $color-white;
-  margin: 0px 26px;
-  text-decoration: none;
-}
-
-.activeTab {
-  margin: 0px 26px;
-  color: $color-highlight;
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 10px;
-}
-
 @media screen and (max-width: 970px) {
   .navBar {
     background: $color-primary;
@@ -94,6 +98,26 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
       display: none;
       padding: 10px 0px;
       box-shadow: 0px 10px 15px $color-boxshadow;
+    }
+
+    .navBarMenu.active,
+    .homeLink {
+      display: block;
+    }
+
+    .activeLink,
+    .homeLink {
+      text-decoration: none;
+      margin: 0 26px;
+    }
+
+    .navBarLink {
+      color: $color-primary;
+    }
+
+    .homeLink:hover,
+    .navBarLink:hover {
+      color: $color-highlight;
     }
   }
 
@@ -112,22 +136,8 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
     right: 0px;
   }
 
-  .navBarListItem,
-  .homeTab {
+  .navBarListItem {
     padding: 15px 24px;
-  }
-
-  .navBarLink {
-    color: $color-primary;
-  }
-
-  .activeTab {
-    text-decoration: none;
-  }
-
-  .navBarMenu.active,
-  .homeTab {
-    display: block;
   }
 
   .navBarLoginLi,

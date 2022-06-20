@@ -6,7 +6,7 @@ const links: DataItem[] = [
     id: 1,
     name: "Home",
     link: "https://www.realdevsquad.com/",
-    tabStyle: styles.homeTab,
+    linkStyle: styles.homeLink,
   },
   {
     id: 2,
@@ -32,7 +32,7 @@ const links: DataItem[] = [
     id: 6,
     name: "Status",
     link: "https://status.realdevsquad.com/",
-    linkStyle: styles.activeTab,
+    linkStyle: styles.activeLink,
   },
 ];
 

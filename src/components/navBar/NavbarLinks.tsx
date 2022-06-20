@@ -6,10 +6,7 @@ const NavbarLinks = ({ data }: { data: DataItem[] }) => {
     <>
       {data.map((item: DataItem) => {
         return (
-          <li
-            className={item.tabStyle ? item.tabStyle : styles.navBarListItem}
-            key={item.id}
-          >
+          <li key={item.id} className={styles.navBarListItem}>
             <a
               className={item.linkStyle ? item.linkStyle : styles.navBarLink}
               href={item.link}

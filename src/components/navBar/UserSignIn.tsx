@@ -6,8 +6,9 @@ import {
   DEFAULT_AVATAR,
   MY_SITE_LINK,
   GITHUB_LOGIN_LINK,
-  EIGHTEEN_PX,
-  THIRTY_TWO_PX,
+  GITHUB,
+  USER_PROFILE_PICTURE,
+  USER,
 } from "@/components/constants/navbar";
 import styles from "@/components/navBar/navBar.module.scss";
 
@@ -26,14 +27,14 @@ const UserSignIn: FC<SignInButton> = ({ btnText, userData, loggedIn }) => {
         {loggedIn ? (
           <>
             <span className={styles.userGreetMsg}>
-              Hello, {firstName ? firstName : `User`}!
+              Hello, {firstName ? firstName : USER}!
             </span>
             <Image
               className={styles.userProfilePic}
-              src={profilePicture || DEFAULT_AVATAR}
-              alt="User_Profile_Picture"
-              width={THIRTY_TWO_PX}
-              height={THIRTY_TWO_PX}
+              src={profilePicture ? profilePicture : DEFAULT_AVATAR}
+              alt={USER_PROFILE_PICTURE}
+              width={32}
+              height={32}
             />
           </>
         ) : (
@@ -42,9 +43,9 @@ const UserSignIn: FC<SignInButton> = ({ btnText, userData, loggedIn }) => {
             <Image
               className={styles.githubLogo}
               src={GITHUB_LOGO}
-              alt="GitHub_Icon"
-              height={EIGHTEEN_PX}
-              width={EIGHTEEN_PX}
+              alt={GITHUB}
+              height={18}
+              width={18}
             />
           </>
         )}
