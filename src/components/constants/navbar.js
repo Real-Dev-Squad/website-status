@@ -3,8 +3,8 @@ export const HAMBURGER_ICON = "/hamburger.svg";
 export const GITHUB_LOGO = "/gitHubLogo.png";
 export const DEFAULT_AVATAR = "/dummyProfile.png";
 
-export const SIGN_IN_WITH_GITHUB = "Sign In With GitHub";
 export const SIGN_IN = "Sign In";
+export const WITH_GITHUB = "With GitHub";
 export const GITHUB = "GitHub";
 export const USER_PROFILE_PICTURE = "User Profile Picture";
 export const HAMBURGER = "Hamburger";

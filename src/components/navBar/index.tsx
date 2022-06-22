@@ -3,14 +3,9 @@ import Image from "next/image";
 import useFetch from "@/hooks/useFetch";
 import navLinks from "./navLinks";
 import NavbarLinks from "./NavbarLinks";
-import UserSignIn from "./UserSignIn";
+import SignIn from "./SignIn";
 import { USER_SELF } from "../constants/url";
-import {
-  HAMBURGER_ICON,
-  SIGN_IN_WITH_GITHUB,
-  SIGN_IN,
-  HAMBURGER,
-} from "@/components/constants/navbar";
+import { HAMBURGER_ICON, HAMBURGER } from "@/components/constants/navbar";
 import styles from "@/components/navBar/navBar.module.scss";
 import Logo from "./Logo";
 
@@ -54,20 +49,10 @@ const NavBar = () => {
       >
         <Logo />
         <NavbarLinks data={navLinks} />
-        <li className={styles.navBarLoginLi}>
-          <UserSignIn
-            btnText={SIGN_IN_WITH_GITHUB}
-            userData={userDetails}
-            loggedIn={userIsLoggedIn}
-          />
-        </li>
       </ul>
+
       <div className={styles.loginBtn}>
-        <UserSignIn
-          btnText={SIGN_IN}
-          userData={userDetails}
-          loggedIn={userIsLoggedIn}
-        />
+        <SignIn userData={userDetails} loggedIn={userIsLoggedIn} />
       </div>
     </nav>
   );

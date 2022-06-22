@@ -1,7 +1,6 @@
 import { Key } from "react";
 
 export type SignInButton = {
-  btnText: string;
   userData: UserData;
   loggedIn: boolean;
 };

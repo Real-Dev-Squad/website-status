@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
-import { SignInButton, UserData } from "@/interfaces/navbar.type";
+import { SignInButton } from "@/interfaces/navbar.type";
 import {
   GITHUB_LOGO,
   DEFAULT_AVATAR,
@@ -9,10 +9,12 @@ import {
   GITHUB,
   USER_PROFILE_PICTURE,
   USER,
+  SIGN_IN,
+  WITH_GITHUB,
 } from "@/components/constants/navbar";
 import styles from "@/components/navBar/navBar.module.scss";
 
-const UserSignIn: FC<SignInButton> = ({ btnText, userData, loggedIn }) => {
+const SignIn: FC<SignInButton> = ({ userData, loggedIn }) => {
   const { firstName, profilePicture } = userData;
 
   return (
@@ -39,7 +41,10 @@ const UserSignIn: FC<SignInButton> = ({ btnText, userData, loggedIn }) => {
           </>
         ) : (
           <>
-            <span className={styles.btnLoginText}>{btnText}</span>
+            <span className={styles.btnLoginText}>{SIGN_IN}</span>
+            <span className={`${styles.btnLoginText} ${styles.visible}`}>
+              {WITH_GITHUB}
+            </span>
             <Image
               className={styles.githubLogo}
               src={GITHUB_LOGO}
@@ -54,4 +59,4 @@ const UserSignIn: FC<SignInButton> = ({ btnText, userData, loggedIn }) => {
   );
 };
 
-export default UserSignIn;
+export default SignIn;

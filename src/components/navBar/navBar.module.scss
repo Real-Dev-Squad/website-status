@@ -17,10 +17,6 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
     align-items: center;
     background-color: $color-primary;
 
-    .navBarLoginLi {
-      margin-left: auto;
-    }
-
     .navBarLogoLi {
       padding: 12px 20px;
     }
@@ -46,9 +42,14 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
 }
 
 .homeLink,
-.loginBtn,
 .hamburger {
   display: none;
+}
+
+.loginBtn {
+  position: absolute;
+  top: 23px;
+  right: 0px;
 }
 
 .btnLogin {
@@ -130,17 +131,17 @@ $color-boxshadow: rgba(0, 0, 0, 0.5);
   }
 
   .loginBtn {
-    display: block;
-    position: absolute;
-    top: 20px;
-    right: 0px;
+    top: 21px;
+  }
+
+  .visible {
+    display: none;
   }
 
   .navBarListItem {
     padding: 15px 24px;
   }
 
-  .navBarLoginLi,
   .navBarLogoLi {
     display: none;
   }
