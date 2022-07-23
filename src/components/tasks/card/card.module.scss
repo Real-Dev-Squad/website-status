@@ -58,3 +58,40 @@
   border: solid red 2px;
   background-color: #ffebee;
 }
+
+.progressContainer {
+  width: 13rem;
+  flex-direction: column;
+}
+
+.progressIndicator {
+  width: 100%;
+  height: 0.6rem;
+  background-color: #e5e5e5;
+  border: 1.5px solid #252525;
+  border-radius: 1rem;
+}
+
+.progressGreen {
+  background-color: green;
+  height: .4rem;
+  border-radius: 1rem;
+}
+
+.progressOrange {
+  background-color: orange;
+  height: .4rem;
+  border-radius: 1rem;
+}
+
+.progressRed {
+  background-color: red;
+  height: .4rem;
+  border-radius: 1rem;
+}
+
+.progressYellow {
+  background-color: #ecef08;
+  height: .4rem;
+  border-radius: 1rem;
+}

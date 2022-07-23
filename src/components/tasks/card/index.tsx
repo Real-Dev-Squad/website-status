@@ -41,30 +41,54 @@ const Card: FC<Props> = ({
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
     return !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0;
   }
-
+  
   function stripHtml(html: string) {
     const tmp = document.createElement('DIV');
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || '';
   }
-
+  
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     if (event.key === 'Enter') {
       const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
-
+      
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
-
+      
       onContentChange(toChange.id, {
         [changedProperty]: toChange[changedProperty],
       });
     }
   }
+  
+  function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string) {
+    const startDate = moment(new Date(parseInt(startedOn, 10) * 1000))
+    const endDate = moment(new Date(parseInt(endsOn, 10) * 1000))
+
+    const totalDays = endDate.diff(startDate, 'days')
+    const daysLeft = endDate.diff(new Date(), 'days')
+
+    const percentageofDays = daysLeft/totalDays * 100
+
+    if(percentageofDays >= percentCompleted) {
+      return classNames.progressGreen
+    } else if(percentageofDays < 50 && percentCompleted > 75) {
+        return classNames.progressOrange
+    } else if(percentageofDays < 25 && percentCompleted > 35) {
+        return classNames.progressRed
+    } else {
+        return classNames.progressYellow
+    }
+  }
+  
+
+  
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
+
   }
   return (
     <div
@@ -114,6 +138,16 @@ const Card: FC<Props> = ({
             tabIndex={0}
           >
             {fromNowEndsOn}
+          </span>
+        </span>
+      </div>
+      <div className={classNames.cardItems}>
+        <span className={classNames.progressContainer}>
+          <div className={classNames.progressIndicator}>
+            <div className={handleProgressColor(content.percentCompleted, content.startedOn, content.endsOn)} style={{ width: `${content.percentCompleted}%` }}></div>
+          </div>
+          <span>
+            {content.percentCompleted}% completed
           </span>
         </span>
       </div>
