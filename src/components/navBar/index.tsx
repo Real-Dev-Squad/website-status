@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from '@/components/navBar/navBar.module.scss';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 const RDSLogo = '/RDSLogo.png';
 const edit = '/pencil.webp';
 
@@ -54,7 +55,12 @@ const NavBar = () => {
     <a href="https://crypto.realdevsquad.com/">Crypto</a>
     <a className={styles.active} href="https://status.realdevsquad.com/">Status</a>
     
-    {isEditVisible && <a className={styles.pencil} href="/?edit=true"><Image width="35px" height="35px" src={edit} alt="edit icon" /></a>}
+    {isEditVisible &&  <div>
+      <Link href="/?edit=true">
+      <a className={styles.pencil}><Image width="35px" height="35px" src={edit} alt="edit icon" /></a>
+      </Link>
+    </div>}
+   
   </nav>
 );}
 
