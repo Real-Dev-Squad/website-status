@@ -32,4 +32,10 @@ $thickness: 3px;
   .logo {
     padding: ($offset+$thickness)+7;
   }
+
+  .pencil{
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+  }
 }
