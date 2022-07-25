@@ -64,32 +64,34 @@ const Card: FC<Props> = ({
     }
   }
   
-  function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string) {
+  function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
     const startDate = moment(new Date(parseInt(startedOn, 10) * 1000))
     const endDate = moment(new Date(parseInt(endsOn, 10) * 1000))
 
+    // It provides us with total days that are there for the the project and number of days left
     const totalDays = endDate.diff(startDate, 'days')
     const daysLeft = endDate.diff(new Date(), 'days')
 
+    // It provides the percentage of days left
     const percentageofDays = daysLeft/totalDays * 100
 
     if(percentageofDays >= percentCompleted) {
       return classNames.progressGreen
     } else if(percentageofDays < 50 && percentCompleted > 75) {
-        return classNames.progressOrange
+      return classNames.progressOrange
     } else if(percentageofDays < 25 && percentCompleted > 35) {
-        return classNames.progressRed
+      return classNames.progressRed
     } else {
-        return classNames.progressYellow
+      console.log(typeof(classNames.progressYellow))
+      return classNames.progressYellow
     }
   }
-  
 
-  
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
 
   }
+
   return (
     <div
       className={`
@@ -144,7 +146,13 @@ const Card: FC<Props> = ({
       <div className={classNames.cardItems}>
         <span className={classNames.progressContainer}>
           <div className={classNames.progressIndicator}>
-            <div className={handleProgressColor(content.percentCompleted, content.startedOn, content.endsOn)} style={{ width: `${content.percentCompleted}%` }}></div>
+            <div 
+              className={`
+                ${handleProgressColor(content.percentCompleted, content.startedOn, content.endsOn)}
+                ${classNames.progressStyle}
+              `}
+              style={{ width: `${content.percentCompleted}%` }}>
+            </div>
           </div>
           <span>
             {content.percentCompleted}% completed

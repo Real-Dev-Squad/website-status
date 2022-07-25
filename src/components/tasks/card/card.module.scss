@@ -1,3 +1,8 @@
+$green: #008000;
+$orange: #ffa500;
+$red: #ff0000;
+$yellow: #ecef08;
+
 .card {
   display: flex;
   flex-direction: column;
@@ -60,7 +65,7 @@
 }
 
 .progressContainer {
-  width: 13rem;
+  width: 12rem;
   flex-direction: column;
 }
 
@@ -72,26 +77,23 @@
   border-radius: 1rem;
 }
 
-.progressGreen {
-  background-color: green;
+.progressStyle {
   height: .4rem;
   border-radius: 1rem;
+}
+
+.progressGreen {
+  background-color: $green;
 }
 
 .progressOrange {
-  background-color: orange;
-  height: .4rem;
-  border-radius: 1rem;
+  background-color: $orange;
 }
 
 .progressRed {
-  background-color: red;
-  height: .4rem;
-  border-radius: 1rem;
+  background-color: $red;
 }
 
 .progressYellow {
-  background-color: #ecef08;
-  height: .4rem;
-  border-radius: 1rem;
+  background-color: $yellow;
 }
