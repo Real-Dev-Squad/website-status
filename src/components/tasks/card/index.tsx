@@ -36,6 +36,10 @@ const Card: FC<Props> = ({
 
   const cardClassNames = [classNames.card];
 
+  let ChangetoDate = new Date(localEndsOn);
+  let dates = (JSON.stringify(ChangetoDate)).slice(1,11)
+  const [datetime, setdatetime] = useState(dates);
+
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
@@ -49,9 +53,17 @@ const Card: FC<Props> = ({
   }
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
+    setdatetime(event.target.value)
+    let date = event.target.value;
+
+let [year, month, day] = date.split('-');
+
+let resultDate = [month, day, year].join('/');
     if (event.key === 'Enter') {
+     console.log("Enter");
       const toChange: any = cardDetails;
-      toChange[changedProperty] = stripHtml(event.target.innerHTML);
+      toChange[changedProperty] = resultDate;
+      // stripHtml(event.target.innerHTML);
 
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime() / 1000;
@@ -66,6 +78,8 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
+
+ 
   return (
     <div
       className={`
@@ -106,15 +120,19 @@ const Card: FC<Props> = ({
             height={iconHeight}
           />
           <span className={classNames.cardSpecialFont}>Due Date</span>
-          <span
-            className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'endsOn')}
-            role="button"
-            tabIndex={0}
-          >
-            {fromNowEndsOn}
-          </span>
+          {shouldEdit ? (
+            <input type="date" onChange={(e) => handleChange(e, "endsOn")}
+            onKeyPress={(e) => handleChange(e, "endsOn")}
+            value ={datetime}  />
+          ) : (
+            <span
+              className={classNames.cardStrongFont}
+              role="button"
+              tabIndex={0}
+            >
+              {fromNowEndsOn}
+            </span>
+          )}
         </span>
       </div>
       <div className={classNames.cardItems}>
