@@ -38,7 +38,7 @@ const Card: FC<Props> = ({
 
   let ChangetoDate = new Date(localEndsOn);
   let dates = (JSON.stringify(ChangetoDate)).slice(1,11)
-  const [datetime, setdatetime] = useState(dates);
+  const [dateTime, setdateTime] = useState(dates);
 
   function isTaskOverdue() {
     const currentDate = new Date();
@@ -53,9 +53,9 @@ const Card: FC<Props> = ({
   }
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
-    setdatetime(event.target.value)
+    setdateTime(event.target.value)
     let date = event.target.value;
-
+    date.setHours(23, 59, 59, 999);
 let [year, month, day] = date.split('-');
 
 let resultDate = [month, day, year].join('/');
@@ -63,7 +63,7 @@ let resultDate = [month, day, year].join('/');
      console.log("Enter");
       const toChange: any = cardDetails;
       toChange[changedProperty] = resultDate;
-      // stripHtml(event.target.innerHTML);
+      
 
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime() / 1000;
@@ -123,7 +123,7 @@ let resultDate = [month, day, year].join('/');
           {shouldEdit ? (
             <input type="date" onChange={(e) => handleChange(e, "endsOn")}
             onKeyPress={(e) => handleChange(e, "endsOn")}
-            value ={datetime}  />
+            value ={dateTime}  />
           ) : (
             <span
               className={classNames.cardStrongFont}
