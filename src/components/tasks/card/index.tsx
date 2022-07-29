@@ -36,8 +36,9 @@ const Card: FC<Props> = ({
 
   const cardClassNames = [classNames.card];
 
-  let ChangetoDate = new Date(localEndsOn);
-  let dates = (JSON.stringify(ChangetoDate)).slice(1,11)
+  let changeToDate = new Date(localEndsOn);
+  let dates = (JSON.stringify(changeToDate)).slice(1,11)
+ 
   const [dateTime, setdateTime] = useState(dates);
 
   function isTaskOverdue() {
@@ -54,13 +55,18 @@ const Card: FC<Props> = ({
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     setdateTime(event.target.value)
-    let date = event.target.value;
-    date.setHours(23, 59, 59, 999);
-let [year, month, day] = date.split('-');
+  
+    let inputDate = event.target.value;
+    let Date_to_String = new Date(inputDate);
+    
+    Date_to_String.setHours(23, 59, 59, 999);
 
+    let StringToDate = (JSON.stringify(Date_to_String)).slice(1,11)
+
+let [year, month, day] = StringToDate.split('-');
 let resultDate = [month, day, year].join('/');
+
     if (event.key === 'Enter') {
-     console.log("Enter");
       const toChange: any = cardDetails;
       toChange[changedProperty] = resultDate;
       
