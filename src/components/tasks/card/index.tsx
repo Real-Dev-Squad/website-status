@@ -60,6 +60,7 @@ const Card: FC<Props> = ({
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     setDateTime(event.target.value);
+
     if (event.key === "Enter") {
       const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
