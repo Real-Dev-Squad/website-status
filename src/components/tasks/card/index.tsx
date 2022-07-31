@@ -64,9 +64,14 @@ const Card: FC<Props> = ({
     }
   }
 
+  function inputParser(input: string) {
+    const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
+    return parsedDate
+  }
+
   function getPercentageOfDays(startedOn: string, endsOn: string): number {
-    const startDate = moment(new Date(parseInt(startedOn, 10) * 1000))
-    const endDate = moment(new Date(parseInt(endsOn, 10) * 1000))
+    const startDate = inputParser(startedOn)
+    const endDate = inputParser(endsOn)
 
     // It provides us with total days that are there for the the project and number of days left
     const totalDays = endDate.diff(startDate, 'days')
