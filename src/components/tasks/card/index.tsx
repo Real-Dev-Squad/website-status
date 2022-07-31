@@ -1,15 +1,15 @@
-import { FC, useState } from "react";
-import Image from "next/image";
-import classNames from "@/components/tasks/card/card.module.scss";
-import task from "@/interfaces/task.type";
+import { FC, useState } from 'react';
+import Image from 'next/image';
+import classNames from '@/components/tasks/card/card.module.scss';
+import task from '@/interfaces/task.type';
 import {
   AVAILABLE,
   BLOCKED,
   COMPLETED,
   VERIFIED,
-} from "@/components/constants/beautified-task-status";
+} from '@/components/constants/beautified-task-status';
 
-const moment = require("moment");
+const moment = require('moment');
 
 type Props = {
   content: task;
@@ -29,7 +29,7 @@ const Card: FC<Props> = ({
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
   );
   const contributorImageOnError = () =>
-    setAssigneeProfilePic("/dummyProfile.png");
+    setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -37,10 +37,10 @@ const Card: FC<Props> = ({
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
   const statusFontColor = !statusRedList.includes(cardDetails.status)
-    ? "#00a337"
-    : "#f83535";
-  const iconHeight = "25px";
-  const iconWidth = "25px";
+    ? '#00a337'
+    : '#f83535';
+  const iconHeight = '25px';
+  const iconWidth = '25px';
 
   const cardClassNames = [classNames.card];
   const dates = JSON.stringify(localEndsOn).slice(1, 11);
@@ -53,19 +53,19 @@ const Card: FC<Props> = ({
   }
 
   function stripHtml(html: string) {
-    const tmp = document.createElement("DIV");
+    const tmp = document.createElement('DIV');
     tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    return tmp.textContent || tmp.innerText || '';
   }
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     setDateTime(event.target.value);
 
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
 
-      if (changedProperty === "endsOn" || changedProperty === "startedOn") {
+      if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${event.target.value}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
@@ -90,8 +90,8 @@ const Card: FC<Props> = ({
         <span
           className={classNames.cardTitle}
           contentEditable={shouldEdit}
-          onKeyPress={(e) => handleChange(e, "title")}
-          role="button"
+          onKeyPress={(e) => handleChange(e, 'title')}
+          role='button'
           tabIndex={0}
         >
           {cardDetails.title}
@@ -101,9 +101,9 @@ const Card: FC<Props> = ({
           <span
             className={classNames.cardStatusFont}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, "status")}
+            onKeyPress={(e) => handleChange(e, 'status')}
             style={{ color: statusFontColor }}
-            role="button"
+            role='button'
             tabIndex={0}
           >
             {cardDetails.status}
@@ -113,23 +113,23 @@ const Card: FC<Props> = ({
       <div className={classNames.cardItems}>
         <span>
           <Image
-            src="/calendar-icon.png"
-            alt="calendar icon"
+            src='/calendar-icon.png'
+            alt='calendar icon'
             width={iconWidth}
             height={iconHeight}
           />
           <span className={classNames.cardSpecialFont}>Due Date</span>
           {shouldEdit ? (
             <input
-              type="date"
-              onChange={(e) => handleChange(e, "endsOn")}
-              onKeyPress={(e) => handleChange(e, "endsOn")}
+              type='date'
+              onChange={(e) => handleChange(e, 'endsOn')}
+              onKeyPress={(e) => handleChange(e, 'endsOn')}
               value={dateTime}
             />
           ) : (
             <span
               className={classNames.cardStrongFont}
-              role="button"
+              role='button'
               tabIndex={0}
             >
               {fromNowEndsOn}
@@ -141,8 +141,8 @@ const Card: FC<Props> = ({
         <span
           className={classNames.cardSpecialFont}
           contentEditable={shouldEdit}
-          onKeyPress={(e) => handleChange(e, "startedOn")}
-          role="button"
+          onKeyPress={(e) => handleChange(e, 'startedOn')}
+          role='button'
           tabIndex={0}
         >
           Started {fromNowStartedOn}
@@ -152,8 +152,8 @@ const Card: FC<Props> = ({
           <span
             className={classNames.cardStrongFont}
             contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, "assignee")}
-            role="button"
+            onKeyPress={(e) => handleChange(e, 'assignee')}
+            role='button'
             tabIndex={0}
           >
             {cardDetails.assignee}
@@ -161,7 +161,7 @@ const Card: FC<Props> = ({
           <span className={classNames.contributorImage}>
             <Image
               src={assigneeProfilePic}
-              alt="Assignee profile picture"
+              alt='Assignee profile picture'
               onError={contributorImageOnError}
               width={45}
               height={45}
