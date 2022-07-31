@@ -43,9 +43,8 @@ const Card: FC<Props> = ({
   const iconWidth = "25px";
 
   const cardClassNames = [classNames.card];
-
-  const changeToDate = new Date(localEndsOn);
-  const dates = JSON.stringify(changeToDate).slice(1, 11);
+  console.log(localEndsOn);
+  const dates = JSON.stringify(localEndsOn).slice(1, 11);
 
   const [DateTime, setDateTime] = useState(dates);
 
@@ -63,24 +62,12 @@ const Card: FC<Props> = ({
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     setDateTime(event.target.value);
-
-    const inputDate = event.target.value;
-    const dateToString = new Date(inputDate);
-
-    dateToString.setHours(47, 59, 59, 999);
-
-    const StringToDate = JSON.stringify(dateToString).slice(1, 11);
-
-    const [year, month, day] = StringToDate.split("-");
-    const resultDate = [month, day, year].join("/");
-
     if (event.key === "Enter") {
       const toChange: any = cardDetails;
-      toChange[changedProperty] = resultDate;
+      toChange[changedProperty] = stripHtml(event.target.innerHTML);
 
       if (changedProperty === "endsOn" || changedProperty === "startedOn") {
-        const toTimeStamp =
-          new Date(`${toChange[changedProperty]}`).getTime() / 1000;
+        const toTimeStamp = new Date(`${event.target.value}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
 
