@@ -122,7 +122,7 @@ const Index: FC = () => {
           superUser: data.roles?.super_user,
         };
         const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(true);
+        setIsUserAuthorized(!!adminUser || !!superUser);
       } catch (err: any) {
         toast(ERROR, err.message);
       }

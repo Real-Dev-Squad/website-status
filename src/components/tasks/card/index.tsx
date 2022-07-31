@@ -43,10 +43,8 @@ const Card: FC<Props> = ({
   const iconWidth = "25px";
 
   const cardClassNames = [classNames.card];
-  console.log(localEndsOn);
   const dates = JSON.stringify(localEndsOn).slice(1, 11);
-
-  const [DateTime, setDateTime] = useState(dates);
+  const [dateTime, setDateTime] = useState(dates);
 
   function isTaskOverdue() {
     const currentDate = new Date();
@@ -125,7 +123,7 @@ const Card: FC<Props> = ({
               type="date"
               onChange={(e) => handleChange(e, "endsOn")}
               onKeyPress={(e) => handleChange(e, "endsOn")}
-              value={DateTime}
+              value={dateTime}
             />
           ) : (
             <span
