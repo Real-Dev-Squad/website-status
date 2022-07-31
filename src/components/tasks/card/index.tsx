@@ -25,10 +25,10 @@ const Card: FC<Props> = ({
   );
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
-  const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
+  const localStartedOn = inputParser(cardDetails.startedOn);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
 
-  const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
+  const localEndsOn = inputParser(cardDetails.endsOn);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
   const statusFontColor = !statusRedList.includes(cardDetails.status) ? '#00a337' : '#f83535';
   const iconHeight = '25px';
