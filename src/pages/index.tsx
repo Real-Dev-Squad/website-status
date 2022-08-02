@@ -1,14 +1,14 @@
-import { FC, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Head from '@/components/head';
-import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
-import useFetch from '@/hooks/useFetch';
-import classNames from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
-import Accordion from '@/components/Accordion';
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { FC, useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "@/components/head";
+import Layout from "@/components/Layout";
+import Card from "@/components/tasks/card";
+import useFetch from "@/hooks/useFetch";
+import classNames from "@/styles/tasks.module.scss";
+import task from "@/interfaces/task.type";
+import Accordion from "@/components/Accordion";
+import fetch from "@/helperFunctions/fetch";
+import { toast, ToastTypes } from "@/helperFunctions/toast";
 import {
   ASSIGNED,
   COMPLETED,
@@ -24,9 +24,9 @@ import {
   RELEASED,
   VERIFIED,
   BLOCKED,
-} from '@/components/constants/task-status';
-import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+} from "@/components/constants/task-status";
+import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
+import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -47,22 +47,18 @@ const STATUS_ORDER = [
   RELEASED,
   VERIFIED,
 ];
-const statusActiveList = [
-  IN_PROGRESS,
-  BLOCKED,
-  SMOKE_TESTING,
-];
+const statusActiveList = [IN_PROGRESS, BLOCKED, SMOKE_TESTING];
 async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
       url: `${TASKS_URL}/${id}`,
-      method: 'patch',
+      method: "patch",
       data: cardDetails,
     });
     await requestPromise;
-    toast(SUCCESS, 'Changes have been saved !');
+    toast(SUCCESS, "Changes have been saved !");
   } catch (err: any) {
-    if ('response' in err) {
+    if ("response" in err) {
       toast(ERROR, err.response.data.message);
       return;
     }
@@ -77,26 +73,30 @@ function renderCardList(tasks: task[], isEditable: boolean) {
       content={item}
       key={item.id}
       shouldEdit={isEditable}
-      onContentChange={async (id: string, newDetails: any) => isEditable
-        && updateCardContent(id, newDetails)}
+      onContentChange={async (id: string, newDetails: any) =>
+        isEditable && updateCardContent(id, newDetails)
+      }
     />
   ));
 }
 
 const Index: FC = () => {
+  const [editToggle, setEditToggle] = useState(false);
   const router = useRouter();
   const { query } = router;
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-  const isEditable = !!query.edit && IsUserAuthorized;
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(true);
+  const isEditable = !!query.edit && IsUserAuthorized && editToggle;
 
   useEffect(() => {
-    if ('tasks' in response) {
+    if ("tasks" in response) {
       const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-      tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
-        - STATUS_ORDER.indexOf(b.status));
+      tasks.sort(
+        (a: task, b: task) =>
+          STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)
+      );
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -108,9 +108,9 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-    return(() => {
+    return () => {
       setFilteredTask([]);
-    });
+    };
   }, [isLoading, response]);
 
   useEffect(() => {
@@ -130,14 +130,14 @@ const Index: FC = () => {
     };
     fetchData();
 
-    return (() => {
+    return () => {
       setIsUserAuthorized(false);
-    });
+    };
   }, []);
 
   return (
-    <Layout>
-      <Head title='Tasks' />
+    <Layout editSetter={setEditToggle}>
+      <Head title="Tasks" />
 
       <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
@@ -147,11 +147,15 @@ const Index: FC = () => {
           <>
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
-                <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable)}
-                </Accordion>
-              ))
-              : !error && 'No Tasks Found'}
+                  <Accordion
+                    open={statusActiveList.includes(key)}
+                    title={key}
+                    key={key}
+                  >
+                    {renderCardList(filteredTask[key], isEditable)}
+                  </Accordion>
+                ))
+              : !error && "No Tasks Found"}
           </>
         )}
       </div>
