@@ -97,7 +97,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout >
       <Head title="PRs" />
       <div className={styles.scroll}>
         {

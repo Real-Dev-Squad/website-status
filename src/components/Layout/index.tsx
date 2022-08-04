@@ -7,7 +7,7 @@ import NavBar from "@/components/navBar";
 import Image from "next/image";
 import { toast, ToastTypes } from "@/helperFunctions/toast";
 import fetch from "@/helperFunctions/fetch";
-
+import { useDebounce } from "../../hooks/useDebounce";
 interface Props {
   children?: ReactNode;
   editSetter: any;
@@ -34,26 +34,10 @@ const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 
 const Layout: FC<Props> = ({ children, editSetter }) => {
   const [IsUserAuthorized, setIsUserAuthorized] = useState(true);
-  // console.log(editSetter, 'edit setter');
-  const [editUrl, setEditUrl] = useState('')
-  const editAlter = () =>{
+  const editAlter = () => {
     editSetter((prev: any) => !prev);
-    setEditUrl('{ pathname: "/", query: { edit: "true" } }')
-  }
+  };
   const [isEditVisible, setIsEditVisible] = useState(false);
-  function debounce<Params extends any[]>(
-    func: (...args: Params) => any,
-    timeout: number,
-  ): (...args: Params) => void {
-    let timer: NodeJS.Timeout
-    return (...args: Params) => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        func(...args)
-      }, timeout)
-    }
-  }
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,7 +49,7 @@ const Layout: FC<Props> = ({ children, editSetter }) => {
           superUser: data.roles?.super_user,
         };
         const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(!!adminUser || !!superUser); 
+        setIsUserAuthorized(!!adminUser || !!superUser);
       } catch (err: any) {
         toast(ERROR, err.message);
       }
@@ -73,26 +57,31 @@ const Layout: FC<Props> = ({ children, editSetter }) => {
     fetchData();
 
     return () => {
-      setIsUserAuthorized(false); 
+      setIsUserAuthorized(false);
     };
   }, []);
 
+  // useEffect(() => {
 
-  
+  // }, []);
+
+  function handleKeyDown(event: any): void {
+    //alt key's keycode is 18
+    if (event.keyCode == 18) {
+      setIsEditVisible(true);
+    }
+  }
+
+  const debouncedHandler = useDebounce(handleKeyDown, 300);
 
   useEffect(() => {
-    function handleKeyDown(event:any) {
-      //alt key's keycode is 18
-      if(event.keyCode == 18){
-        setIsEditVisible(true);
-      }
-    }
-    document.addEventListener('keydown', debounce(handleKeyDown, 300));
-    
-      return function cleanup() {
-      document.removeEventListener('keydown', handleKeyDown);
-    }
+    document.addEventListener("keydown", debouncedHandler);
+
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
+
   const router = useRouter();
 
   // Dev feature toggle
@@ -132,11 +121,8 @@ const Layout: FC<Props> = ({ children, editSetter }) => {
           {dev && (
             <>|{navBarContent("Availability Panel", "/availability-panel")}</>
           )}
-          {IsUserAuthorized &&isEditVisible &&  (
-            <div
-              className={styles.edit}
-              onClick={editAlter}
-            >
+          {IsUserAuthorized && isEditVisible && (
+            <div className={styles.edit} onClick={editAlter}>
               <Link href="/?edit=true" passHref>
                 <Image
                   className={styles.edit}
