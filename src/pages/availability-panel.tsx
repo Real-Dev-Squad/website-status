@@ -72,7 +72,7 @@ const AvailabilityPanel: FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout editSetter>
       <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>
