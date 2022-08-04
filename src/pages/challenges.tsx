@@ -42,7 +42,7 @@ const Challenges: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout>
+    <Layout editSetter>
       <Head title="Challenges" />
 
       <div className={classNames.container}>

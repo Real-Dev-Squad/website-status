@@ -24,7 +24,7 @@ const IdleMembers: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout>
+    <Layout editSetter>
       <Head title="Idle Members | Status Real Dev Squad" />
 
       <div className="container">

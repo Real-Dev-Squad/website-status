@@ -53,7 +53,7 @@ const Active: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout>
+    <Layout editSetter>
       <Head title="Tasks" />
 
       <div className="container">
