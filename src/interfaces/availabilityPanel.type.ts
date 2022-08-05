@@ -23,3 +23,9 @@ export type searchInputComponent = {
   onChangeMethod:any,
   onkeydown:any,
 };
+
+export type draggableProps = {
+  draggableId: string,
+  index: number,
+  title?: string,
+};

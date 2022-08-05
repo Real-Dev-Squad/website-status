@@ -16,17 +16,16 @@ const Accordion: VFC<Props> = ({ title, open = true, children }) => {
   }
 
   return (
-    <div data-testid="accordion" className={styles.container}>
+    <div aria-expanded={isOpen} data-testid="accordion" className={styles.container}>
       <div
         className={styles.title}
         onClick={toggle}
         onKeyDown={toggle}
         tabIndex={0}
         role="button"
-        data-testid="accordion-title"
       >
         {title}
-        <span>{ isOpen ? '-' : '+' }</span>
+        <span>{isOpen ? '-' : '+'}</span>
       </div>
       <div data-testid="accordion-content" className={`${styles.content} ${isOpen ? styles.open : styles.close}`}>
         {children}

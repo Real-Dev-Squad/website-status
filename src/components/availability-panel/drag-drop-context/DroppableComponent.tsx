@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
-import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import { Droppable } from 'react-beautiful-dnd';
 import { droppableComponent } from '@/interfaces/availabilityPanel.type';
+
 import idleMembers from '@/pages/idle-members';
 type NotFoundErrorProps = {
   message: string,
@@ -25,6 +25,7 @@ const getItemStyle = (isDragging: boolean, draggableStyle: any) => {
   };
   return style;
 };
+
 
 const DroppableComponent: FC<droppableComponent> = ({
   droppableId,
@@ -59,22 +60,7 @@ const DroppableComponent: FC<droppableComponent> = ({
             }).map((task, index) => {
               const { id, title } = task;
               return (
-                <Draggable key={id} draggableId={id} index={index}>
-                  {(Provided, snapshot) => (
-                    <div
-                      ref={Provided.innerRef}
-                      {...Provided.draggableProps}
-                      {...Provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        Provided.draggableProps.style,
-                      )}
-                      className={classNames.taskItem}
-                    >
-                      <div>{title}</div>
-                    </div>
-                  )}
-                </Draggable>
+                <DraggableComponent draggableId={id} index={index} title={title} key={id} />
               );
             }))}
             {provided.placeholder}
