@@ -37,8 +37,7 @@ const Card: FC<Props> = ({
   const cardClassNames = [classNames.card];
 
   function isTaskOverdue() {
-    const currentDate = new Date();
-    const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
+    const timeLeft = localEndsOn.valueOf() - Date.now();
     return !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0;
   }
   
@@ -98,7 +97,6 @@ const Card: FC<Props> = ({
 
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
-
   }
 
   return (
