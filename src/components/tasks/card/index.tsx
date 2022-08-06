@@ -35,7 +35,7 @@ const Card: FC<Props> = ({
   const iconWidth = '25px';
 
   const cardClassNames = [classNames.card];
-  const dates = JSON.stringify(localEndsOn).slice(1, 11);
+  const dates = localEndsOn == undefined? " " : JSON.stringify(localEndsOn).slice(1, 11);
   const [dateTime, setDateTime] = useState(dates);
 
   function isTaskOverdue() {
