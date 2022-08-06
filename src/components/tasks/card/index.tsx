@@ -2,12 +2,7 @@ import { FC, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
-import {
-  AVAILABLE,
-  BLOCKED,
-  COMPLETED,
-  VERIFIED,
-} from '@/components/constants/beautified-task-status';
+import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 
 const moment = require('moment');
 
@@ -26,18 +21,16 @@ const Card: FC<Props> = ({
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
   const cardDetails = content;
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
-    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
+    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
-  const contributorImageOnError = () =>
-    setAssigneeProfilePic('/dummyProfile.png');
+  const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
+
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
-  const statusFontColor = !statusRedList.includes(cardDetails.status)
-    ? '#00a337'
-    : '#f83535';
+  const statusFontColor = !statusRedList.includes(cardDetails.status) ? '#00a337' : '#f83535';
   const iconHeight = '25px';
   const iconWidth = '25px';
 
@@ -75,7 +68,6 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
-
   return (
     <div
       className={`
@@ -88,7 +80,7 @@ const Card: FC<Props> = ({
           className={classNames.cardTitle}
           contentEditable={shouldEdit}
           onKeyPress={(e) => handleChange(e, 'title')}
-          role='button'
+          role="button"
           tabIndex={0}
         >
           {cardDetails.title}
@@ -100,7 +92,7 @@ const Card: FC<Props> = ({
             contentEditable={shouldEdit}
             onKeyPress={(e) => handleChange(e, 'status')}
             style={{ color: statusFontColor }}
-            role='button'
+            role="button"
             tabIndex={0}
           >
             {cardDetails.status}
@@ -110,8 +102,8 @@ const Card: FC<Props> = ({
       <div className={classNames.cardItems}>
         <span>
           <Image
-            src='/calendar-icon.png'
-            alt='calendar icon'
+            src="/calendar-icon.png"
+            alt="calendar icon"
             width={iconWidth}
             height={iconHeight}
           />
@@ -139,10 +131,12 @@ const Card: FC<Props> = ({
           className={classNames.cardSpecialFont}
           contentEditable={shouldEdit}
           onKeyPress={(e) => handleChange(e, 'startedOn')}
-          role='button'
+          role="button"
           tabIndex={0}
         >
-          Started {fromNowStartedOn}
+          Started
+          {' '}
+          {fromNowStartedOn}
         </span>
         <span>
           <span className={classNames.cardSpecialFont}>Assignee:</span>
@@ -150,15 +144,17 @@ const Card: FC<Props> = ({
             className={classNames.cardStrongFont}
             contentEditable={shouldEdit}
             onKeyPress={(e) => handleChange(e, 'assignee')}
-            role='button'
+            role="button"
             tabIndex={0}
           >
             {cardDetails.assignee}
           </span>
-          <span className={classNames.contributorImage}>
+          <span
+            className={classNames.contributorImage}
+          >
             <Image
               src={assigneeProfilePic}
-              alt='Assignee profile picture'
+              alt="Assignee profile picture"
               onError={contributorImageOnError}
               width={45}
               height={45}
