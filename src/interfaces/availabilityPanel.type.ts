@@ -28,4 +28,6 @@ export type draggableProps = {
   draggableId: string,
   index: number,
   title?: string,
-};
+}
+
+export type currentStatusParent = "success" | "error" | "isLoading"
