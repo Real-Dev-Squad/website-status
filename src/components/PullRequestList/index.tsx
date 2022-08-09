@@ -15,7 +15,7 @@ type pullRequestType = {
 };
 
 type PullRequestListProps = {
-    prType: string;
+  prType: string;
 };
 
 function getNumberOfCards() {
@@ -26,32 +26,33 @@ function getNumberOfCards() {
   const maxCardsHorizontally = 3;
   const minCardsHorizontally = 1;
 
-  const cardWidth = ((screenWidth / 4) > minCardWidth)
-    ? (screenWidth / 4)
-    : minCardWidth;
+  const cardWidth =
+    screenWidth / 4 > minCardWidth ? screenWidth / 4 : minCardWidth;
 
-  const checkForSmallDisplays = Math.floor(screenWidth / cardWidth) > minCardsHorizontally
-    ? Math.floor(screenWidth / minCardWidth)
-    : minCardsHorizontally;
+  const checkForSmallDisplays =
+    Math.floor(screenWidth / cardWidth) > minCardsHorizontally
+      ? Math.floor(screenWidth / minCardWidth)
+      : minCardsHorizontally;
 
-  const horizontalNumberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
-    ? checkForSmallDisplays
-    : maxCardsHorizontally;
+  const horizontalNumberOfCards =
+    maxCardsHorizontally > checkForSmallDisplays
+      ? checkForSmallDisplays
+      : maxCardsHorizontally;
 
   const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
   return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
 }
 
 function ScrollTop() {
-  const topMargin = (document.documentElement
-    && document.documentElement.scrollTop)
-    || document.body.scrollTop;
+  const topMargin =
+    (document.documentElement && document.documentElement.scrollTop) ||
+    document.body.scrollTop;
   return topMargin;
 }
 function ScrollHeight() {
-  const WindowHeight = (document.documentElement
-    && document.documentElement.scrollHeight)
-    || document.body.scrollHeight;
+  const WindowHeight =
+    (document.documentElement && document.documentElement.scrollHeight) ||
+    document.body.scrollHeight;
   return WindowHeight;
 }
 
@@ -62,18 +63,17 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [isBottom, setIsBottom] = useState(false);
   const numberOfCards = getNumberOfCards();
   const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
-  const {
-    response,
-    error,
-    isLoading,
-  } = useFetch(prUrl);
+  const { response, error, isLoading } = useFetch(prUrl);
 
   useEffect(() => {
     if (!response?.pullRequests?.length && page > 1) {
       setNoData(true);
     }
     if (response?.pullRequests?.length > 0) {
-      setPullRequests((pullRequest) => [...pullRequest, ...response.pullRequests]);
+      setPullRequests((pullRequest) => [
+        ...pullRequest,
+        ...response.pullRequests,
+      ]);
       setIsBottom(false);
     }
   }, [response]);
@@ -97,17 +97,22 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   }, []);
 
   return (
-    <Layout editSetter>
+    <Layout toggleEditButton>
       <Head title="PRs" />
       <div className={styles.scroll}>
-        {
-          error
-            && <p className={styles.center_text}>Something went wrong! Please contact admin</p>
-        }
+        {error && (
+          <p className={styles.center_text}>
+            Something went wrong! Please contact admin
+          </p>
+        )}
         <div className={styles.prContainer}>
           {pullRequests.map((pullRequest: pullRequestType) => {
             const {
-              title, username, createdAt, updatedAt, url: link,
+              title,
+              username,
+              createdAt,
+              updatedAt,
+              url: link,
             } = pullRequest;
             return (
               <PullRequest
@@ -120,10 +125,8 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
               />
             );
           })}
-          {
-            isLoading
-            && [...Array(15)].map((e: number) => <CardShimmer key={e} />)
-          }
+          {isLoading &&
+            [...Array(15)].map((e: number) => <CardShimmer key={e} />)}
         </div>
       </div>
     </Layout>
