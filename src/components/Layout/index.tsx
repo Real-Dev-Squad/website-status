@@ -1,16 +1,16 @@
-import { FC, ReactNode, useEffect, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Footer from "@/components/footer";
-import styles from "@/components/Layout/Layout.module.scss";
-import NavBar from "@/components/navBar";
-import Image from "next/image";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
-import fetch from "@/helperFunctions/fetch";
-import { useDebounce } from "../../hooks/useDebounce";
+import { FC, ReactNode, useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Footer from '@/components/footer';
+import styles from '@/components/Layout/Layout.module.scss';
+import NavBar from '@/components/navBar';
+import Image from 'next/image';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import fetch from '@/helperFunctions/fetch';
+import { useDebounce } from '../../hooks/useDebounce';
 interface Props {
   children?: ReactNode;
-  editSetter: any;
+  toggleEditButton: any;
 }
 
 const navBarContent = (
@@ -18,7 +18,7 @@ const navBarContent = (
   refUrl: string,
   isActive: boolean = false
 ) => {
-  const linkClasses = `${styles.link} ${isActive ? styles.active : ""}`;
+  const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;
 
   return (
     <Link href={refUrl} passHref>
@@ -32,12 +32,9 @@ const { SUCCESS, ERROR } = ToastTypes;
 
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 
-const Layout: FC<Props> = ({ children, editSetter }) => {
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(true);
-  const editAlter = () => {
-    editSetter((prev: any) => !prev);
-  };
-  const [isEditVisible, setIsEditVisible] = useState(false);
+const Layout: FC<Props> = ({ children, toggleEditButton }) => {
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,24 +58,20 @@ const Layout: FC<Props> = ({ children, editSetter }) => {
     };
   }, []);
 
-  // useEffect(() => {
-
-  // }, []);
-
   function handleKeyDown(event: any): void {
-    //alt key's keycode is 18
-    if (event.keyCode == 18) {
-      setIsEditVisible(true);
+    const alt_key = 18;
+    if (event.keyCode == alt_key) {
+      setShowEditButton(true);
     }
   }
 
   const debouncedHandler = useDebounce(handleKeyDown, 300);
 
   useEffect(() => {
-    document.addEventListener("keydown", debouncedHandler);
+    document.addEventListener('keydown', debouncedHandler);
 
     return function cleanup() {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
 
@@ -93,36 +86,41 @@ const Layout: FC<Props> = ({ children, editSetter }) => {
       <NavBar />
       <div className={styles.wrapper}>
         <div className={styles.header}>
-          {navBarContent("Tasks", "/", router.pathname === "/")}|
-          {navBarContent("Mine", "/mine", router.pathname === "/mine")}|
+          {navBarContent('Tasks', '/', router.pathname === '/')}|
+          {navBarContent('Mine', '/mine', router.pathname === '/mine')}|
           {navBarContent(
-            "DS",
-            "/challenges",
-            router.pathname === "/challenges"
+            'DS',
+            '/challenges',
+            router.pathname === '/challenges'
           )}
           |
           {navBarContent(
-            "Open PRs",
-            "/openPRs",
-            router.pathname === "/openPRs"
+            'Open PRs',
+            '/openPRs',
+            router.pathname === '/openPRs'
           )}
           |
           {navBarContent(
-            "Stale PRs",
-            "/stale-pr",
-            router.pathname === "/stale-pr"
+            'Stale PRs',
+            '/stale-pr',
+            router.pathname === '/stale-pr'
           )}
           |
           {navBarContent(
-            "Idle Members",
-            "/idle-members",
-            router.pathname === "/idle-members"
+            'Idle Members',
+            '/idle-members',
+            router.pathname === '/idle-members'
           )}
           {dev && (
-            <>|{navBarContent("Availability Panel", "/availability-panel")}</>
+            <>|{navBarContent('Availability Panel', '/availability-panel')}</>
           )}
-          {IsUserAuthorized && isEditVisible && (
-            <div className={styles.edit} onClick={editAlter}>
+          {IsUserAuthorized && showEditButton && (
+            <div
+              className={styles.edit}
+              onClick={() => {
+                toggleEditButton((prev: any) => !prev);
+              }}
+            >
               <Link href="/?edit=true" passHref>
                 <Image
                   className={styles.edit}

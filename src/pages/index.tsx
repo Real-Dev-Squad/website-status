@@ -1,14 +1,14 @@
-import { FC, useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import Card from "@/components/tasks/card";
-import useFetch from "@/hooks/useFetch";
-import classNames from "@/styles/tasks.module.scss";
-import task from "@/interfaces/task.type";
-import Accordion from "@/components/Accordion";
-import fetch from "@/helperFunctions/fetch";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
+import { FC, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import Card from '@/components/tasks/card';
+import useFetch from '@/hooks/useFetch';
+import classNames from '@/styles/tasks.module.scss';
+import task from '@/interfaces/task.type';
+import Accordion from '@/components/Accordion';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
   ASSIGNED,
   COMPLETED,
@@ -24,9 +24,9 @@ import {
   RELEASED,
   VERIFIED,
   BLOCKED,
-} from "@/components/constants/task-status";
-import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
+} from '@/components/constants/task-status';
+import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -52,13 +52,13 @@ async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
       url: `${TASKS_URL}/${id}`,
-      method: "patch",
+      method: 'patch',
       data: cardDetails,
     });
     await requestPromise;
-    toast(SUCCESS, "Changes have been saved !");
+    toast(SUCCESS, 'Changes have been saved !');
   } catch (err: any) {
-    if ("response" in err) {
+    if ('response' in err) {
       toast(ERROR, err.response.data.message);
       return;
     }
@@ -81,16 +81,16 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const [editToggle, setEditToggle] = useState(false);
+  const [toggleEdit, setToggleEdit] = useState(false);
   const router = useRouter();
   const { query } = router;
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(true);
-  const isEditable = !!query.edit && IsUserAuthorized && editToggle;
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const isEditable = !!query.edit && IsUserAuthorized && toggleEdit;
 
   useEffect(() => {
-    if ("tasks" in response) {
+    if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
       tasks.sort(
@@ -136,7 +136,7 @@ const Index: FC = () => {
   }, []);
 
   return (
-    <Layout editSetter={setEditToggle}>
+    <Layout toggleEditButton={setToggleEdit}>
       <Head title="Tasks" />
 
       <div className={classNames.container}>
@@ -155,7 +155,7 @@ const Index: FC = () => {
                     {renderCardList(filteredTask[key], isEditable)}
                   </Accordion>
                 ))
-              : !error && "No Tasks Found"}
+              : !error && 'No Tasks Found'}
           </>
         )}
       </div>
