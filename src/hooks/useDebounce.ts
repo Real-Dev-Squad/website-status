@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 
 
-function debounce<A = any, R = void>(
-    fn: (args: A) => R,
+function debounce<Args = any, Return = void>(
+    fn: (args: Args) => Return,
     ms: number
-): [(args: A) => Promise<R>, () => void] {
+): [(args: Args) => Promise<Return>, () => void] {
     let timer: NodeJS.Timeout;
 
-    const debouncedFunc = (args: A): Promise<R> =>
+    const debouncedFunc = (args: Args): Promise<Return> =>
         new Promise((resolve) => {
             if (timer) {
                 clearTimeout(timer);
@@ -23,13 +23,11 @@ function debounce<A = any, R = void>(
     return [debouncedFunc, teardown];
 }
 
-export const useDebounce = <A = any, R = void>(
-    fn: (args: A) => R,
+export const useDebounce = <Args = any, Return = void>(
+    fn: (args: Args) => Return,
     ms: number
-): ((args: A) => Promise<R>) => {
-    const [debouncedFun, teardown] = debounce<A, R>(fn, ms);
-
-    // useEffect(() => () => teardown(), []);
+): ((args: Args) => Promise<Return>) => {
+    const [debouncedFun, teardown] = debounce<Args, Return>(fn, ms);
 
     return debouncedFun;
 };

@@ -137,7 +137,7 @@ const Index: FC = () => {
   }, []);
 
   return (
-    <Layout toggleEditButton={setToggleEdit}>
+    <Layout>
       <Head title='Tasks' />
 
       <div className={classNames.container}>

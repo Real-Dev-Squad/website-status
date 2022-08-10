@@ -105,7 +105,7 @@ const Layout: FC<Props> = ({ children, toggleEditButton }) => {
             <div
               className={styles.edit}
               onClick={() => {
-                toggleEditButton((prev: any) => !prev);
+                toggleEditButton((prev: boolean) => !prev);
               }}
             >
               <Link href="/?edit=true" passHref>

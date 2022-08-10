@@ -31,7 +31,7 @@ const Mine: FC = () => {
   useEffect(() => { setTasks(response); }, [isLoading, response]);
 
   return (
-    <Layout toggleEditButton>
+    <Layout>
       <Head title="Mine" />
       <div className={classNames.container}>
         {
