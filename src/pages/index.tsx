@@ -109,7 +109,7 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-    return(() => {
+    return (() => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);
