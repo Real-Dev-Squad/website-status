@@ -11,19 +11,11 @@ import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL } from '@/components/constants/url';
 import userData from '@/helperFunctions/getUser';
 
-const renderCardList = (
-  challengeSection: challenge['content'],
-  key: string,
-  userId: string
-) => {
+const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {
-    return challengeSection.map((item) => (
-      <Active content={item} key={item.id} userId={userId} />
-    ));
+    return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} />);
   }
-  return challengeSection.map((item) => (
-    <Complete content={item} key={item.id} />
-  ));
+  return challengeSection.map((item) => <Complete content={item} key={item.id} />);
 };
 
 const Challenges: FC = () => {
@@ -54,8 +46,9 @@ const Challenges: FC = () => {
       <Head title="Challenges" />
 
       <div className={classNames.container}>
-        {!!error &&
-          (error?.response?.data?.statusCode === 401 ? (
+      {
+          !!error
+          && (error?.response?.data?.statusCode === 401 ? (
             <div>
               <p>You are not Authorized</p>
               <a
@@ -66,27 +59,29 @@ const Challenges: FC = () => {
                 Click here to Login
               </a>
             </div>
+          ) : <div><p>Something went wrong! Please contact admin</p></div>)
+        }
+        {
+        isLoading
+          ? (
+            <p>Loading...</p>
           ) : (
-            <div>
-              <p>Something went wrong! Please contact admin</p>
-            </div>
-          ))}
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {Object.keys(filteredChallenge).length > 0
-              ? Object.keys(filteredChallenge).map(
-                  (key) =>
-                    filteredChallenge[key].length > 0 && (
-                      <Accordion open title={key} key={key}>
-                        {renderCardList(filteredChallenge[key], key, user.id)}
-                      </Accordion>
+            <>
+              {
+                Object.keys(filteredChallenge).length > 0
+                  ? Object.keys(filteredChallenge).map((key) => (
+                    filteredChallenge[key].length > 0
+                    && (
+                    <Accordion open title={key} key={key}>
+                      {renderCardList(filteredChallenge[key], key, user.id)}
+                    </Accordion>
                     )
-                )
-              : !error && 'No Challenges Found'}
-          </>
-        )}
+
+                  )) : (!error && 'No Challenges Found')
+              }
+            </>
+          )
+      }
       </div>
     </Layout>
   );
