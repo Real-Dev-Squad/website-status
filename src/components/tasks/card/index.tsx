@@ -9,13 +9,13 @@ const moment = require('moment');
 type Props = {
   content: task;
   shouldEdit: boolean;
-  onContentChange: (changeId: string, changeObject: object) => void;
+  onContentChange?: (changeId: string, changeObject: object) => void;
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
-  onContentChange,
+  onContentChange = () => undefined,
 }) => {
   const statusRedList = [BLOCKED];
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
