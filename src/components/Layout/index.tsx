@@ -60,7 +60,7 @@ const Layout: FC<Props> = ({ children, toggleEditButton }) => {
     }
   }
 
-  const debouncedHandler = useDebounce(handleKeyDown, 300);
+  const debouncedHandler = useDebounce(handleKeyDown, 200);
 
   useEffect(() => {
     document.addEventListener('keydown', debouncedHandler);
