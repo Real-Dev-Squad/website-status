@@ -40,9 +40,7 @@ const AvailabilityPanel: FC = () => {
         const { requestPromise } = fetch({ url });
         const fetchPromise = await requestPromise;
         const { idleMemberUserNames } = fetchPromise.data;
-        const filterMembers = idleMemberUserNames.filter(
-          (username: string) => username
-        );
+        const filterMembers = idleMemberUserNames.filter((username: string) => username);
         const sortedIdleMembers = filterMembers.sort();
         setIdleMembersList(sortedIdleMembers);
         setError(false);
@@ -75,12 +73,12 @@ const AvailabilityPanel: FC = () => {
 
   return (
     <Layout toggleEditButton>
-      <Head title="Availability Panel" />
+       <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
-          <DragDropContextWrapper
+          <DragDropContextWrapper 
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}

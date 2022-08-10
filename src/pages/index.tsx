@@ -47,7 +47,11 @@ const STATUS_ORDER = [
   RELEASED,
   VERIFIED,
 ];
-const statusActiveList = [IN_PROGRESS, BLOCKED, SMOKE_TESTING];
+const statusActiveList = [
+  IN_PROGRESS,
+  BLOCKED,
+  SMOKE_TESTING,
+];
 async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
@@ -73,9 +77,8 @@ function renderCardList(tasks: task[], isEditable: boolean) {
       content={item}
       key={item.id}
       shouldEdit={isEditable}
-      onContentChange={async (id: string, newDetails: any) =>
-        isEditable && updateCardContent(id, newDetails)
-      }
+      onContentChange={async (id: string, newDetails: any) => isEditable
+        && updateCardContent(id, newDetails)}
     />
   ));
 }
@@ -93,10 +96,8 @@ const Index: FC = () => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-      tasks.sort(
-        (a: task, b: task) =>
-          STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status)
-      );
+      tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
+        - STATUS_ORDER.indexOf(b.status));
       const taskMap: any = [];
       tasks.forEach((item) => {
         if (item.status in taskMap) {
@@ -108,9 +109,9 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-    return () => {
+      return(() => {
       setFilteredTask([]);
-    };
+    });
   }, [isLoading, response]);
 
   useEffect(() => {
@@ -130,14 +131,14 @@ const Index: FC = () => {
     };
     fetchData();
 
-    return () => {
+    return (() => {
       setIsUserAuthorized(false);
-    };
+    });
   }, []);
 
   return (
     <Layout toggleEditButton={setToggleEdit}>
-      <Head title="Tasks" />
+      <Head title='Tasks' />
 
       <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
@@ -145,16 +146,12 @@ const Index: FC = () => {
           <p>Loading...</p>
         ) : (
           <>
-            {Object.keys(filteredTask).length > 0
+           {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
-                  <Accordion
-                    open={statusActiveList.includes(key)}
-                    title={key}
-                    key={key}
-                  >
-                    {renderCardList(filteredTask[key], isEditable)}
-                  </Accordion>
-                ))
+                <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
+                  {renderCardList(filteredTask[key], isEditable)}
+                </Accordion>
+              ))
               : !error && 'No Tasks Found'}
           </>
         )}

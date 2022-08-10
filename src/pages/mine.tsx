@@ -32,10 +32,11 @@ const Mine: FC = () => {
 
   return (
     <Layout toggleEditButton>
-      <Head title="Mine" />
+       <Head title="Mine" />
       <div className={classNames.container}>
-        {!!error &&
-          (error?.response?.data?.statusCode === 401 ? (
+        {
+          !!error
+          && (error?.response?.data?.statusCode === 401 ? (
             <div>
               <p>You are not Authorized</p>
               <a
@@ -46,22 +47,25 @@ const Mine: FC = () => {
                 Click here to Login
               </a>
             </div>
-          ) : (
-            <div>
-              <p>Something went wrong! Please contact admin</p>
-            </div>
-          ))}
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {tasks.length > 0 ? (
-              <div>{CardList(tasks)}</div>
+          ) : <div><p>Something went wrong! Please contact admin</p></div>)
+        }
+        {
+          isLoading
+            ? (
+              <p>Loading...</p>
             ) : (
-              !error && 'No Tasks Found'
-            )}
-          </>
-        )}
+              <>
+                {
+                  tasks.length > 0
+                    ? (
+                      <div>
+                        {CardList(tasks)}
+                      </div>
+                    ) : (!error && 'No Tasks Found')
+                }
+              </>
+            )
+        }
       </div>
     </Layout>
   );

@@ -13,21 +13,16 @@ interface Props {
   toggleEditButton: any;
 }
 
-const navBarContent = (
-  title: string,
-  refUrl: string,
-  isActive: boolean = false
-) => {
+const navBarContent = (title: string, refUrl: string, isActive: boolean = false) => {
   const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;
 
   return (
     <Link href={refUrl} passHref>
-      <button type="button" tabIndex={0} className={linkClasses}>
-        {title}
-      </button>
+      <button type="button" tabIndex={0} className={linkClasses}>{title}</button>
     </Link>
   );
 };
+  
 const { SUCCESS, ERROR } = ToastTypes;
 
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
@@ -86,34 +81,26 @@ const Layout: FC<Props> = ({ children, toggleEditButton }) => {
       <NavBar />
       <div className={styles.wrapper}>
         <div className={styles.header}>
-          {navBarContent('Tasks', '/', router.pathname === '/')}|
-          {navBarContent('Mine', '/mine', router.pathname === '/mine')}|
-          {navBarContent(
-            'DS',
-            '/challenges',
-            router.pathname === '/challenges'
-          )}
+        {navBarContent('Tasks', '/', router.pathname === '/')}
           |
-          {navBarContent(
-            'Open PRs',
-            '/openPRs',
-            router.pathname === '/openPRs'
-          )}
+          {navBarContent('Mine', '/mine', router.pathname === '/mine')}
           |
-          {navBarContent(
-            'Stale PRs',
-            '/stale-pr',
-            router.pathname === '/stale-pr'
-          )}
+          {navBarContent('DS', '/challenges', router.pathname === '/challenges')}
           |
-          {navBarContent(
-            'Idle Members',
-            '/idle-members',
-            router.pathname === '/idle-members'
-          )}
-          {dev && (
-            <>|{navBarContent('Availability Panel', '/availability-panel')}</>
-          )}
+          {navBarContent('Open PRs', '/openPRs', router.pathname === '/openPRs')}
+          |
+          {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
+          |
+          {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
+          {
+            (dev)
+            && (
+              <>
+                |
+                {navBarContent('Availability Panel', '/availability-panel')}
+              </>
+            )
+          }
           {IsUserAuthorized && showEditButton && (
             <div
               className={styles.edit}
