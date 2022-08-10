@@ -22,7 +22,7 @@ const navBarContent = (title: string, refUrl: string, isActive: boolean = false)
     </Link>
   );
 };
-  
+
 const { SUCCESS, ERROR } = ToastTypes;
 
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
@@ -54,8 +54,8 @@ const Layout: FC<Props> = ({ children, toggleEditButton }) => {
   }, []);
 
   function handleKeyDown(event: any): void {
-    const alt_key = 18;
-    if (event.keyCode == alt_key) {
+    const ALT_KEY = 18;
+    if (event.keyCode == ALT_KEY) {
       setShowEditButton(true);
     }
   }
