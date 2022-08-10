@@ -9,7 +9,7 @@ const moment = require('moment');
 type Props = {
   content: task;
   shouldEdit: boolean;
-  onContentChange: any;
+  onContentChange: (changeId: string, changeObject: object) => void;
 };
 
 const Card: FC<Props> = ({
