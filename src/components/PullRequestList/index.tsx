@@ -27,19 +27,19 @@ function getNumberOfCards() {
   const minCardsHorizontally = 1;
 
   const cardWidth = ((screenWidth / 4) > minCardWidth)
-  ? (screenWidth / 4)
-  : minCardWidth;
+    ? (screenWidth / 4)
+    : minCardWidth;
 
-const checkForSmallDisplays = Math.floor(screenWidth / cardWidth) > minCardsHorizontally
-  ? Math.floor(screenWidth / minCardWidth)
-  : minCardsHorizontally;
+  const checkForSmallDisplays = Math.floor(screenWidth / cardWidth) > minCardsHorizontally
+    ? Math.floor(screenWidth / minCardWidth)
+    : minCardsHorizontally;
 
-const horizontalNumberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
-  ? checkForSmallDisplays
-  : maxCardsHorizontally;
+  const horizontalNumberOfCards = (maxCardsHorizontally > checkForSmallDisplays)
+    ? checkForSmallDisplays
+    : maxCardsHorizontally;
 
-const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
-return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
+  const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
+  return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
 }
 
 function ScrollTop() {
@@ -100,15 +100,15 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     <Layout toggleEditButton>
       <Head title="PRs" />
       <div className={styles.scroll}>
-      {
+        {
           error
             && <p className={styles.center_text}>Something went wrong! Please contact admin</p>
         }
         <div className={styles.prContainer}>
           {pullRequests.map((pullRequest: pullRequestType) => {
-           const {
-            title, username, createdAt, updatedAt, url: link,
-          } = pullRequest;
+            const {
+              title, username, createdAt, updatedAt, url: link,
+            } = pullRequest;
             return (
               <PullRequest
                 key={link}
@@ -120,7 +120,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
               />
             );
           })}
-           {
+          {
             isLoading
             && [...Array(15)].map((e: number) => <CardShimmer key={e} />)
           }

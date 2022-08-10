@@ -15,10 +15,10 @@
  self.addEventListener('install', function () {
    return self.skipWaiting()
  })
-
+ 
  self.addEventListener('activate', async function (event) {
-  return self.clients.claim()
-})
+   return self.clients.claim()
+ })
 
 self.addEventListener('message', async function (event) {
   const clientId = event.source.id
