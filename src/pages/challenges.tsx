@@ -46,7 +46,7 @@ const Challenges: FC = () => {
       <Head title="Challenges" />
 
       <div className={classNames.container}>
-      {
+        {
           !!error
           && (error?.response?.data?.statusCode === 401 ? (
             <div>

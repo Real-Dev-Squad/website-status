@@ -73,7 +73,7 @@ const AvailabilityPanel: FC = () => {
 
   return (
     <Layout toggleEditButton>
-       <Head title='Availability Panel' />
+      <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}

@@ -15,7 +15,7 @@ type pullRequestType = {
 };
 
 type PullRequestListProps = {
-  prType: string;
+    prType: string;
 };
 
 function getNumberOfCards() {
