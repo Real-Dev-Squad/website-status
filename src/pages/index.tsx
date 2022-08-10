@@ -109,7 +109,7 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-      return(() => {
+    return(() => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);
@@ -146,7 +146,7 @@ const Index: FC = () => {
           <p>Loading...</p>
         ) : (
           <>
-           {Object.keys(filteredTask).length > 0
+            {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
                   {renderCardList(filteredTask[key], isEditable)}
