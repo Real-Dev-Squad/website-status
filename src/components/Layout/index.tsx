@@ -80,7 +80,7 @@ const Layout: FC<Props> = ({ children, toggleEditButton }) => {
     <div className={styles.layout}>
       <NavBar />
       <div className={styles.wrapper}>
-      <div className={styles.header}>
+        <div className={styles.header}>
           {navBarContent('Tasks', '/', router.pathname === '/')}
           |
           {navBarContent('Mine', '/mine', router.pathname === '/mine')}

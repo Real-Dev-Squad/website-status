@@ -47,7 +47,7 @@ const Completed: FC = () => {
       <Head title="Tasks" />
 
       <div className="container">
-      {
+        {
             (!!error) && (
             <p>Something went wrong, please contact admin!</p>
             )
