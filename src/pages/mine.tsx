@@ -32,7 +32,7 @@ const Mine: FC = () => {
 
   return (
     <Layout toggleEditButton>
-       <Head title="Mine" />
+      <Head title="Mine" />
       <div className={classNames.container}>
         {
           !!error
