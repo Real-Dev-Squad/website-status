@@ -15,7 +15,7 @@ type Props = {
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
-  onContentChange = () => undefined,
+  onContentChange,
 }) => {
   const statusRedList = [BLOCKED];
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
