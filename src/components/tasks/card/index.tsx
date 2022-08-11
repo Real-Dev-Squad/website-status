@@ -69,20 +69,18 @@ const Card: FC<Props> = ({
     cardClassNames.push(classNames.overdueTask);
   }
 
-  function renderDate(fromNowEndsOn: string,shouldEdit: boolean){
-  
-     if(shouldEdit){
-        return(
-          <input
-          type='date'
-          onChange={(e) => setDateTime(e.target.value)}
-          onKeyPress={(e) => handleChange(e, 'endsOn')}
-          value={dateTime}
-        />
-        )
-      } 
-
-      return(  
+  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
+    if(shouldEdit){
+      return(
+        <input
+        type='date'
+        onChange={(e) => setDateTime(e.target.value)}
+        onKeyPress={(e) => handleChange(e, 'endsOn')}
+        value={dateTime}
+      />
+      )
+    } 
+    return(  
       <span
           className={classNames.cardStrongFont}
           role='button'
