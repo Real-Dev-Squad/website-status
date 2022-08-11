@@ -34,8 +34,8 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-  const cardClassNames = [classNames.card];
-  const dates = localEndsOn == undefined? " " : JSON.stringify(localEndsOn).slice(1, 11);
+  const cardClassNames = [classNames.card];  
+  const dates = !!localEndsOn ? JSON.stringify(localEndsOn).slice(1, 11) : '';
   const [dateTime, setDateTime] = useState(dates);
 
   function isTaskOverdue() {
@@ -68,6 +68,30 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
+  
+  function renderDate(shouldEdit: boolean,fromNowEndsOn: any){
+    return(
+      <>
+      {shouldEdit ? (
+        <input
+          type='date'
+          onChange={(e) => setDateTime(e.target.value)}
+          onKeyPress={(e) => handleChange(e, 'endsOn')}
+          value={dateTime}
+        />
+      ) : (
+        <span
+          className={classNames.cardStrongFont}
+          role='button'
+          tabIndex={0}
+        >
+          {fromNowEndsOn}
+        </span>
+      )}
+      </>
+    )
+  }
+ 
   return (
     <div
       className={`
@@ -107,23 +131,8 @@ const Card: FC<Props> = ({
             width={iconWidth}
             height={iconHeight}
           />
-          <span className={classNames.cardSpecialFont}>Due Date</span>
-          {shouldEdit ? (
-            <input
-              type='date'
-              onChange={(e) => setDateTime(e.target.value)}
-              onKeyPress={(e) => handleChange(e, 'endsOn')}
-              value={dateTime}
-            />
-          ) : (
-            <span
-              className={classNames.cardStrongFont}
-              role='button'
-              tabIndex={0}
-            >
-              {fromNowEndsOn}
-            </span>
-          )}
+          <span className={classNames.cardSpecialFont}>Due Date</span>      
+         {renderDate(shouldEdit,fromNowEndsOn)}
         </span>
       </div>
       <div className={classNames.cardItems}>
