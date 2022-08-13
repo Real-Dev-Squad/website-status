@@ -87,7 +87,7 @@ const Card: FC<Props> = ({
           tabIndex={0}
         >
           {fromNowEndsOn}
-        </span>
+      </span>
       )
   }
  
