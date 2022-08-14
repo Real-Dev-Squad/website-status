@@ -34,10 +34,18 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-  const cardClassNames = [classNames.card];  
-  const dates = !!localEndsOn ? JSON.stringify(localEndsOn).slice(1, 11) : '';
-  const [dateTimes, setDateTimes] = useState(dates);
+function getDates(localEndsOn: Date){
+  const year = localEndsOn.getFullYear()
+  const month = localEndsOn.getMonth() + 1;
+  const day = localEndsOn.getDate();
+  const finalDate = [year, month, day].join('-');
+  return finalDate;
+}
 
+  const cardClassNames = [classNames.card]; 
+  const dates = !!localEndsOn ? getDates(localEndsOn) : '';
+  const [dateTimes, setDateTimes] = useState(dates);
+  
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
