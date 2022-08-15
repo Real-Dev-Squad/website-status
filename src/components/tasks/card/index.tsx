@@ -34,7 +34,7 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-function FormattedDates(localEndsOn: Date){
+function formattedDates(localEndsOn: Date){
   const year = localEndsOn.getFullYear()
   const month = localEndsOn.getMonth() + 1;
   const day = localEndsOn.getDate();
@@ -43,7 +43,7 @@ function FormattedDates(localEndsOn: Date){
 }
 
   const cardClassNames = [classNames.card]; 
-  const dates = !!localEndsOn ? FormattedDates(localEndsOn) : '';
+  const dates = !!localEndsOn ? formattedDates(localEndsOn) : '';
   const [dateTimes, setDateTimes] = useState(dates);
 
   function isTaskOverdue() {
