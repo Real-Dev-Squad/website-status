@@ -42,7 +42,6 @@ function formattedDates(localEndsOn: Date){
   return finalDate;
 }
 
-  const cardClassNames = [classNames.card]; 
   const dates = !!localEndsOn ? formattedDates(localEndsOn) : '';
   const [dateTimes, setDateTimes] = useState(dates);
 
@@ -73,9 +72,7 @@ function formattedDates(localEndsOn: Date){
       });
     }
   }
-  if (isTaskOverdue()) {
-    cardClassNames.push(classNames.overdueTask);
-  }
+ 
 
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
