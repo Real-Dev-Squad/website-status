@@ -73,7 +73,6 @@ function formattedDates(localEndsOn: Date){
     }
   }
  
-
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
       return(
