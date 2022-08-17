@@ -3,6 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
+import getDateInString from '@/helperFunctions/getDateInString';
 
 const moment = require('moment');
 
@@ -34,17 +35,9 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-function formattedDates(localEndsOn: Date){
-  const year = localEndsOn.getFullYear()
-  const month = localEndsOn.getMonth() + 1;
-  const day = localEndsOn.getDate();
-  const finalDate = [year, month, day].join('-');
-  return finalDate;
-}
-
-  const dates = !!localEndsOn ? formattedDates(localEndsOn) : '';
-  const [dateTimes, setDateTimes] = useState(dates);
-
+  const date:string = !!localEndsOn ? getDateInString(localEndsOn) : '';
+  const [dateTimes, setDateTimes] = useState(date);
+  
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
