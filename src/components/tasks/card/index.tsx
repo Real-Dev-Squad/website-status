@@ -3,6 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
+import getDateInString from '@/helperFunctions/getDateInString';
 
 const moment = require('moment');
 
@@ -34,8 +35,9 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-  const cardClassNames = [classNames.card];
-
+  const date:string = !!localEndsOn ? getDateInString(localEndsOn) : '';
+  const [dateTimes, setDateTimes] = useState(date);
+  
   function isTaskOverdue() {
     const currentDate = new Date();
     const timeLeft = localEndsOn.valueOf() - currentDate.valueOf();
@@ -54,7 +56,7 @@ const Card: FC<Props> = ({
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
 
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
-        const toTimeStamp = new Date(`${toChange[changedProperty]}`).getTime() / 1000;
+        const toTimeStamp = new Date(`${event.target.value}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
 
@@ -63,9 +65,29 @@ const Card: FC<Props> = ({
       });
     }
   }
-  if (isTaskOverdue()) {
-    cardClassNames.push(classNames.overdueTask);
+ 
+  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
+    if(shouldEdit){
+      return(
+        <input
+        type='date'
+        onChange={(e) => setDateTimes(e.target.value)}
+        onKeyPress={(e) => handleChange(e, 'endsOn')}
+        value={dateTimes}
+      />
+      )
+    } 
+    return(  
+      <span
+          className={classNames.cardStrongFont}
+          role='button'
+          tabIndex={0}
+        >
+          {fromNowEndsOn}
+      </span>
+      )
   }
+ 
   return (
     <div
       className={`
@@ -105,16 +127,8 @@ const Card: FC<Props> = ({
             width={iconWidth}
             height={iconHeight}
           />
-          <span className={classNames.cardSpecialFont}>Due Date</span>
-          <span
-            className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'endsOn')}
-            role="button"
-            tabIndex={0}
-          >
-            {fromNowEndsOn}
-          </span>
+          <span className={classNames.cardSpecialFont}>Due Date</span>  
+            {renderDate(fromNowEndsOn,shouldEdit)}      
         </span>
       </div>
       <div className={classNames.cardItems}>
