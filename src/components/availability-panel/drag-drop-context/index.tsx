@@ -48,23 +48,8 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
   const ref = useRef<string[]>([]);
 
   useEffect(() => {
-    const appendNewTasks = (
-      taskList: task[],
-      unAssignedTasks: task[]
-      ) :task[] => {
-        const oldTasksIds = taskList.map((Task: task) => Task.id);
-        const newTasks = unAssignedTasks.filter((Task: task) => !oldTasksIds.includes(Task.id));
-        return [...taskList, ...newTasks];
-    };
-    const appendNewMembers = (
-      idleMembers: Array<string>,
-      memberList: Array<string>
-      ) :Array<string> => {
-      const newMembers = idleMembers.filter((member) => !memberList.includes(member));
-      return [...memberList, ...newMembers];
-    }
-    setTaskList(appendNewTasks(taskList, unAssignedTasks));
-    setMemberList(appendNewMembers(idleMembers, memberList));
+    setTaskList(unAssignedTasks);
+    setMemberList(idleMembers);
   }, [unAssignedTasks, idleMembers]);
 
   const reorder = (list: Array<task | string>, startIndex: number, endIndex: number) => {

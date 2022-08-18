@@ -26,6 +26,7 @@
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
+    "@types/react-dom": "^17.0.11",
     "axios": "^0.24.0",
     "husky": "^7.0.4",
     "moment": "^2.29.4",
@@ -53,7 +54,6 @@
     "@types/node": "^17.0.5",
     "@types/react": "^17.0.38",
     "@types/react-beautiful-dnd": "^13.1.2",
-    "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^5.8.1",
     "@typescript-eslint/parser": "^5.8.1",
     "babel-jest": "^27.4.5",
