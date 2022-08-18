@@ -85,16 +85,19 @@ const Card: FC<Props> = ({
   
   function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
     const percentageofDays = getPercentageOfDays(startedOn, endsOn)
-
     if(percentageofDays >= percentCompleted) {
       return classNames.progressGreen
-    } else if(percentageofDays < 50 && percentCompleted > 75) {
-      return classNames.progressOrange
-    } else if(percentageofDays < 25 && percentCompleted > 35) {
-      return classNames.progressRed
-    } else {
-      return classNames.progressYellow
     }
+    
+    if(percentageofDays < 50 && percentCompleted > 75) {
+      return classNames.progressOrange
+    }
+    
+    if(percentageofDays < 25 && percentCompleted > 35) {
+      return classNames.progressRed
+    }
+    
+    return classNames.progressYellow;
   }
  
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
