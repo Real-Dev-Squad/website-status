@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import Card from '@/components/Card/index';
 import prDetails from '@/components/pullRequests/PRDetails';
+import dateFromNow from '@/utils/renderDate';
 
 interface pullRequestType {
   title: string;
@@ -17,16 +18,8 @@ const pullRequest: FC<pullRequestType> = ({
   updatedAt,
   url,
 }) => {
-  const created = new Date(createdAt);
-  const updated = new Date(updatedAt);
-  const presentDate = new Date();
-
-  const createdAgo = `${Math.ceil(
-    (presentDate.getTime() - created.getTime()) / (1000 * 3600 * 24),
-  )} days ago`;
-  const updatedAgo = `${Math.ceil(
-    (presentDate.getTime() - updated.getTime()) / (1000 * 3600 * 24),
-  )} days ago`;
+  const createdAgo = dateFromNow(createdAt);
+  const updatedAgo = dateFromNow(updatedAt);
 
   const prData = {
     CreatedBy: username,

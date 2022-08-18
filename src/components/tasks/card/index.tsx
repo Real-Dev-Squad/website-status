@@ -4,6 +4,7 @@ import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import getDateInString from '@/helperFunctions/getDateInString';
+import dateFromNow from '@/utils/renderDate';
 
 const moment = require('moment');
 
@@ -25,12 +26,9 @@ const Card: FC<Props> = ({
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
-
-  const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
-  const fromNowStartedOn = moment(localStartedOn).fromNow();
-
+  const fromNowStartedOn = dateFromNow(cardDetails.startedOn);
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
-  const fromNowEndsOn = moment(localEndsOn).fromNow();
+  const fromNowEndsOn = dateFromNow(cardDetails.endsOn);
   const statusFontColor = !statusRedList.includes(cardDetails.status) ? '#00a337' : '#f83535';
   const iconHeight = '25px';
   const iconWidth = '25px';
