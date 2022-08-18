@@ -1,3 +1,10 @@
+$green: #008000;
+$orange: #ffa500;
+$red: #ff0000;
+$yellow: #ecef08;
+$white: #e5e5e5;
+$black: #252525;
+
 .card {
   display: flex;
   flex-direction: column;
@@ -5,9 +12,7 @@
   margin-bottom: 2rem;
   margin-bottom: 25px;
   justify-content: space-between;
-  border-bottom-style: solid;
-  border-bottom-color: #d9d9d9;
-  border-bottom-width: 1px;
+  border: 1px solid #d9d9d9;
 }
 
 .cardItems {
@@ -57,4 +62,38 @@
 .overdueTask {
   border: solid red 2px;
   background-color: #ffebee;
+}
+
+.progressContainer {
+  width: 12rem;
+  flex-direction: column;
+}
+
+.progressIndicator {
+  width: 100%;
+  height: 0.6rem;
+  background-color: $white;
+  border: 2px solid $black;
+  border-radius: 1rem;
+}
+
+.progressStyle {
+  height: 0.4rem;
+  border-radius: 1rem;
+}
+
+.progressGreen {
+  background-color: $green;
+}
+
+.progressOrange {
+  background-color: $orange;
+}
+
+.progressRed {
+  background-color: $red;
+}
+
+.progressYellow {
+  background-color: $yellow;
 }
