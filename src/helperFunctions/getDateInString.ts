@@ -1,7 +1,7 @@
 const getDateInString = (date: Date) => {
     const year = date.getFullYear()
-    const month = ("0" + (date.getMonth() + 1)).slice(-2);
-    const day = ("0" + date.getDate()).slice(-2);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
     const strDate = [year, month, day].join('-');
     return strDate;
 };
