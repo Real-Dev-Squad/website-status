@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Card from '@/components/Card/index';
 import prDetails from '@/components/pullRequests/PRDetails';
 import classNames from '@/components/pullRequests/section/section.module.scss';
+import dateFromNow from '@/utils/renderDate';
 
 const moment = require('moment');
 
@@ -24,8 +25,7 @@ function getPrData(pullRequest: pullRequestType) {
     state, createdAt, updatedAt, username,
   } = pullRequest;
 
-  const localUpdatedAt = new Date(updatedAt);
-  const fromNowUpdatedAt = moment(localUpdatedAt).fromNow();
+  const fromNowUpdatedAt = dateFromNow(updatedAt);
 
   const prData = {
     State: state,

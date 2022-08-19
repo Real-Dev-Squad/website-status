@@ -6,6 +6,8 @@ import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/
 import getDateInString from '@/helperFunctions/getDateInString';
 import dateFromNow from '@/utils/renderDate';
 
+const moment = require('moment');
+
 type Props = {
   content: task;
   shouldEdit: boolean;
