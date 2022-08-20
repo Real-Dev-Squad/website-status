@@ -49,11 +49,11 @@ const Active: FC = () => {
       );
       setActiveTasks(active);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, response]);
 
   return (
-    <Layout toggleEditButton>
+    <Layout>
       <Head title="Tasks" />
 
       <div className="container">

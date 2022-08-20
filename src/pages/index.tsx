@@ -27,6 +27,7 @@ import {
 } from '@/components/constants/task-status';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { useAppContext } from '@/context';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -84,13 +85,16 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const [toggleEdit, setToggleEdit] = useState(false);
   const router = useRouter();
   const { query } = router;
+  const {state} = useAppContext();  
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-  const isEditable = !!query.edit && IsUserAuthorized && toggleEdit;
+
+  const {toggleEditButton} = state || {} 
+  const isEditable = !!query.edit && IsUserAuthorized && toggleEditButton;
+
 
   useEffect(() => {
     if ('tasks' in response) {
@@ -137,7 +141,7 @@ const Index: FC = () => {
   }, []);
 
   return (
-    <Layout toggleEditButton={setToggleEdit}>
+    <Layout>
       <Head title='Tasks' />
 
       <div className={classNames.container}>

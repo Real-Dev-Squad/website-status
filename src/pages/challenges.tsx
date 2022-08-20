@@ -11,7 +11,7 @@ import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL } from '@/components/constants/url';
 import userData from '@/helperFunctions/getUser';
 
-const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
+const renderCardList = (challengeSection: challenge['content'], key: string, userId: string) => {
   if (key === 'Active') {
     return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} />);
   }
@@ -42,7 +42,7 @@ const Challenges: FC = () => {
   }, [isLoading, response]);
 
   return (
-    <Layout toggleEditButton>
+    <Layout>
       <Head title="Challenges" />
 
       <div className={classNames.container}>
@@ -62,26 +62,26 @@ const Challenges: FC = () => {
           ) : <div><p>Something went wrong! Please contact admin</p></div>)
         }
         {
-        isLoading
-          ? (
-            <p>Loading...</p>
-          ) : (
-            <>
-              {
-                Object.keys(filteredChallenge).length > 0
-                  ? Object.keys(filteredChallenge).map((key) => (
-                    filteredChallenge[key].length > 0
-                    && (
-                    <Accordion open title={key} key={key}>
-                      {renderCardList(filteredChallenge[key], key, user.id)}
-                    </Accordion>
-                    )
+          isLoading
+            ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {
+                  Object.keys(filteredChallenge).length > 0
+                    ? Object.keys(filteredChallenge).map((key) => (
+                      filteredChallenge[key].length > 0
+                      && (
+                        <Accordion open title={key} key={key}>
+                          {renderCardList(filteredChallenge[key], key, user.id)}
+                        </Accordion>
+                      )
 
-                  )) : (!error && 'No Challenges Found')
-              }
-            </>
-          )
-      }
+                    )) : (!error && 'No Challenges Found')
+                }
+              </>
+            )
+        }
       </div>
     </Layout>
   );

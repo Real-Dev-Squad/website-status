@@ -1,33 +1,30 @@
-import { useEffect } from "react";
-
-
 function debounce<Args = any, Return = void>(
-    fn: (args: Args) => Return,
-    ms: number
+  fn: (args: Args) => Return,
+  ms: number
 ): [(args: Args) => Promise<Return>, () => void] {
-    let timer: NodeJS.Timeout;
+  let timer: NodeJS.Timeout;
 
-    const debouncedFunc = (args: Args): Promise<Return> =>
-        new Promise((resolve) => {
-            if (timer) {
-                clearTimeout(timer);
-            }
+  const debouncedFunc = (args: Args): Promise<Return> =>
+    new Promise((resolve) => {
+      if (timer) {
+        clearTimeout(timer);
+      }
 
-            timer = setTimeout(() => {
-                resolve(fn(args));
-            }, ms);
-        });
+      timer = setTimeout(() => {
+        resolve(fn(args));
+      }, ms);
+    });
 
-    const teardown = () => clearTimeout(timer);
+  const teardown = () => clearTimeout(timer);
 
-    return [debouncedFunc, teardown];
+  return [debouncedFunc, teardown];
 }
 
 export const useDebounce = <Args = any, Return = void>(
-    fn: (args: Args) => Return,
-    ms: number
+  fn: (args: Args) => Return,
+  ms: number
 ): ((args: Args) => Promise<Return>) => {
-    const [debouncedFun, teardown] = debounce<Args, Return>(fn, ms);
+  const [debouncedFun, teardown] = debounce<Args, Return>(fn, ms);
 
-    return debouncedFun;
+  return debouncedFun;
 };

@@ -1,9 +1,13 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import getDateInString from '@/helperFunctions/getDateInString';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useDebounce } from '../../../hooks/useDebounce';
+import { useAppContext } from '@/context';
 
 const moment = require('moment');
 
@@ -24,6 +28,13 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
+  const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+  const { SUCCESS, ERROR } = ToastTypes;
+
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
+  const { actions } = useAppContext();
+
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
@@ -64,64 +75,54 @@ const Card: FC<Props> = ({
       });
     }
   }
-
-  function inputParser(input: string) {
-    const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
-    return parsedDate
+  if (isTaskOverdue()) {
+    cardClassNames.push(classNames.overdueTask);
   }
 
-  function getPercentageOfDays(startedOn: string, endsOn: string): number {
-    const startDate = inputParser(startedOn)
-    const endDate = inputParser(endsOn)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { requestPromise } = fetch({ url: SELF_URL });
+        const { data } = await requestPromise;
+        const userRoles = {
+          adminUser: data.roles?.admin,
+          superUser: data.roles?.super_user,
+        };
+        const { adminUser, superUser } = userRoles;
+        setIsUserAuthorized(!!adminUser || !!superUser);
+      } catch (err: any) {
+        toast(ERROR, err.message);
+      }
+    };
+    fetchData();
 
-    // It provides us with total days that are there for the the project and number of days left
-    const totalDays = endDate.diff(startDate, 'days')
-    const daysLeft = endDate.diff(new Date(), 'days')
+    return (() => {
+      setIsUserAuthorized(false);
+    });
+  }, []);
 
-    // It provides the percentage of days left
-    const percentageofDays = daysLeft/totalDays * 100
-    return percentageofDays
-  }
-  
-  function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
-    const percentageofDays = getPercentageOfDays(startedOn, endsOn)
-    if(percentageofDays >= percentCompleted) {
-      return classNames.progressGreen
+  function handleKeyDown(event: any): void {
+    const ALT_KEY = 18;
+    if (event.keyCode === ALT_KEY) {
+      setShowEditButton(true);
     }
-    
-    if(percentageofDays < 50 && percentCompleted > 75) {
-      return classNames.progressOrange
-    }
-    
-    if(percentageofDays < 25 && percentCompleted > 35) {
-      return classNames.progressRed
-    }
-    
-    return classNames.progressYellow;
   }
- 
-  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
-    if(shouldEdit){
-      return(
-        <input
-        type='date'
-        onChange={(e) => setDateTimes(e.target.value)}
-        onKeyPress={(e) => handleChange(e, 'endsOn')}
-        value={dateTimes}
-      />
-      )
-    } 
-    return(  
-      <span
-          className={classNames.cardStrongFont}
-          role='button'
-          tabIndex={0}
-        >
-          {fromNowEndsOn}
-      </span>
-      )
+
+  const debouncedHandler = useDebounce(handleKeyDown, 300);
+
+  useEffect(() => {
+
+    document?.addEventListener('keydown', debouncedHandler);
+
+    return () => {
+      document?.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const handleClick = () => {
+    actions.handleToggleButton()
   }
- 
+
   return (
     <div
       className={`
@@ -217,6 +218,17 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
+      {IsUserAuthorized && showEditButton &&
+        <div className={classNames.editButton}>
+          <Image src='/pencil.webp'
+            alt='edit Pencil'
+            width={iconWidth}
+            height={iconHeight}
+            onClick={handleClick}
+          />
+        </div>
+      }
+
     </div>
   );
 };

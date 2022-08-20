@@ -16,7 +16,7 @@ type pullRequestType = {
 
 type PullRequestListProps = {
     prType: string;
-};
+};  
 
 function getNumberOfCards() {
   const screenHeight = globalThis.innerHeight;
@@ -97,12 +97,12 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   }, []);
 
   return (
-    <Layout toggleEditButton>
+    <Layout>
       <Head title="PRs" />
       <div className={styles.scroll}>
         {
           error
-            && <p className={styles.center_text}>Something went wrong! Please contact admin</p>
+          && <p className={styles.center_text}>Something went wrong! Please contact admin</p>
         }
         <div className={styles.prContainer}>
           {pullRequests.map((pullRequest: pullRequestType) => {
