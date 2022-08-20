@@ -72,9 +72,9 @@ const Challenges: FC = () => {
                   ? Object.keys(filteredChallenge).map((key) => (
                     filteredChallenge[key].length > 0
                     && (
-                      <Accordion open title={key} key={key}>
-                        {renderCardList(filteredChallenge[key], key, user.id)}
-                      </Accordion>
+                    <Accordion open title={key} key={key}>
+                      {renderCardList(filteredChallenge[key], key, user.id)}
+                    </Accordion>
                     )
 
                   )) : (!error && 'No Challenges Found')

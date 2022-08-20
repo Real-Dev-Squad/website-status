@@ -49,7 +49,7 @@ const Completed: FC = () => {
       <div className="container">
         {
             (!!error) && (
-              <p>Something went wrong, please contact admin!</p>
+            <p>Something went wrong, please contact admin!</p>
             )
         }
         {
