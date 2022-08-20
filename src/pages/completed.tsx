@@ -48,29 +48,29 @@ const Completed: FC = () => {
 
       <div className="container">
         {
-          (!!error) && (
-            <p>Something went wrong, please contact admin!</p>
-          )
+            (!!error) && (
+              <p>Something went wrong, please contact admin!</p>
+            )
         }
         {
-          (isLoading)
-            ? (
-              <p>Loading...</p>
-            )
-            : (
-              <div className={classNames.container}>
-                <div className={classNames.title}>Completed</div>
-                <>
+            (isLoading)
+              ? (
+                <p>Loading...</p>
+              )
+              : (
+                <div className={classNames.container}>
+                  <div className={classNames.title}>Completed</div>
+                  <>
 
-                  {
-                    response.data === undefined
-                      ? <p>No completed tasks found</p>
-                      : renderCardList(completeTasks)
-                  }
+                    {
+                      response.data === undefined
+                        ? <p>No completed tasks found</p>
+                        : renderCardList(completeTasks)
+                    }
 
-                </>
-              </div>
-            )
+                  </>
+                </div>
+              )
         }
       </div>
     </Layout>

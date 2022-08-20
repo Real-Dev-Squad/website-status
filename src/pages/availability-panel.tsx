@@ -78,7 +78,7 @@ const AvailabilityPanel: FC = () => {
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
-          <DragDropContextWrapper
+          <DragDropContextWrapper 
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
