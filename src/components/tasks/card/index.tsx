@@ -1,8 +1,12 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useDebounce } from '../../../hooks/useDebounce';
+import { useAppContext } from '@/context';
 
 const moment = require('moment');
 
@@ -23,6 +27,13 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
+  const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+  const { SUCCESS, ERROR } = ToastTypes;
+
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
+  const { actions } = useAppContext();
+
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
@@ -66,6 +77,51 @@ const Card: FC<Props> = ({
   if (isTaskOverdue()) {
     cardClassNames.push(classNames.overdueTask);
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { requestPromise } = fetch({ url: SELF_URL });
+        const { data } = await requestPromise;
+        const userRoles = {
+          adminUser: data.roles?.admin,
+          superUser: data.roles?.super_user,
+        };
+        const { adminUser, superUser } = userRoles;
+        setIsUserAuthorized(!!adminUser || !!superUser);
+      } catch (err: any) {
+        toast(ERROR, err.message);
+      }
+    };
+    fetchData();
+
+    return (() => {
+      setIsUserAuthorized(false);
+    });
+  }, []);
+
+  function handleKeyDown(event: any): void {
+    const ALT_KEY = 18;
+    if (event.keyCode === ALT_KEY) {
+      setShowEditButton(true);
+    }
+  }
+
+  const debouncedHandler = useDebounce(handleKeyDown, 300);
+
+  useEffect(() => {
+
+    document?.addEventListener('keydown', debouncedHandler);
+
+    return () => {
+      document?.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  const handleClick = () => {
+    actions.handleToggleButton()
+  }
+
   return (
     <div
       className={`
@@ -153,6 +209,17 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
+      {IsUserAuthorized && showEditButton &&
+        <div className={classNames.editButton}>
+          <Image src='/pencil.webp'
+            alt='edit Pencil'
+            width={iconWidth}
+            height={iconHeight}
+            onClick={handleClick}
+          />
+        </div>
+      }
+
     </div>
   );
 };

@@ -4,13 +4,8 @@ import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
-import Image from 'next/image';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-import fetch from '@/helperFunctions/fetch';
-import { useDebounce } from '../../hooks/useDebounce';
 interface Props {
   children?: ReactNode;
-  toggleEditButton: any;
 }
 
 const navBarContent = (title: string, refUrl: string, isActive: boolean = false) => {
@@ -23,52 +18,7 @@ const navBarContent = (title: string, refUrl: string, isActive: boolean = false)
   );
 };
 
-const { SUCCESS, ERROR } = ToastTypes;
-
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
-
-const Layout: FC<Props> = ({ children, toggleEditButton }) => {
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-  const [showEditButton, setShowEditButton] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: SELF_URL });
-        const { data } = await requestPromise;
-        const userRoles = {
-          adminUser: data.roles?.admin,
-          superUser: data.roles?.super_user,
-        };
-        const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(!!adminUser || !!superUser);
-      } catch (err: any) {
-        toast(ERROR, err.message);
-      }
-    };
-    fetchData();
-
-    return () => {
-      setIsUserAuthorized(false);
-    };
-  }, []);
-
-  function handleKeyDown(event: any): void {
-    const ALT_KEY = 18;
-    if (event.keyCode == ALT_KEY) {
-      setShowEditButton(true);
-    }
-  }
-
-  const debouncedHandler = useDebounce(handleKeyDown, 200);
-
-  useEffect(() => {
-    document.addEventListener('keydown', debouncedHandler);
-
-    return function cleanup() {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+const Layout: FC<Props> = ({ children }) => {
 
   const router = useRouter();
 
@@ -101,24 +51,7 @@ const Layout: FC<Props> = ({ children, toggleEditButton }) => {
               </>
             )
           }
-          {IsUserAuthorized && showEditButton && (
-            <div
-              className={styles.edit}
-              onClick={() => {
-                toggleEditButton((prev: boolean) => !prev);
-              }}
-            >
-              <Link href="/?edit=true" passHref>
-                <Image
-                  className={styles.edit}
-                  height="25px"
-                  width="25px"
-                  src="/pencil.webp"
-                  alt="pencil"
-                />
-              </Link>
-            </div>
-          )}
+          
         </div>
         {children}
       </div>
