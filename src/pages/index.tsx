@@ -91,7 +91,6 @@ const Index: FC = () => {
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-
   const {toggleEditButton} = state || {} 
   const isEditable = !!query.edit && IsUserAuthorized && toggleEditButton;
 

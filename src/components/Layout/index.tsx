@@ -1,11 +1,12 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
+
 interface Props {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const navBarContent = (title: string, refUrl: string, isActive: boolean = false) => {
@@ -19,7 +20,6 @@ const navBarContent = (title: string, refUrl: string, isActive: boolean = false)
 };
 
 const Layout: FC<Props> = ({ children }) => {
-
   const router = useRouter();
 
   // Dev feature toggle
@@ -50,8 +50,7 @@ const Layout: FC<Props> = ({ children }) => {
                 {navBarContent('Availability Panel', '/availability-panel')}
               </>
             )
-          }
-          
+          }          
         </div>
         {children}
       </div>
