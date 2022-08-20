@@ -233,4 +233,5 @@ const Card: FC<Props> = ({
   );
 };
 
+<<<<<<< HEAD
 export default Card;
