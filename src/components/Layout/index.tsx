@@ -50,7 +50,7 @@ const Layout: FC<Props> = ({ children }) => {
                 {navBarContent('Availability Panel', '/availability-panel')}
               </>
             )
-          }          
+          }
         </div>
         {children}
       </div>
