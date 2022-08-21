@@ -97,7 +97,7 @@ const Card: FC<Props> = ({
     endsOn: string
   ): string {
     const percentageofDays = getPercentageOfDays(startedOn, endsOn);
-    if (percentageofDays <= 0 && percentCompleted == 100) {
+    if (percentCompleted == 100) {
       return classNames.progressGreen;
     }
 
