@@ -18,7 +18,7 @@ const taskHandlers = [
           },
           {
             id: "1eJhUW19D556AhPEpdPr",
-            percentCompleted: 100,
+            percentCompleted: 0,
             completionAward: {
               dinero: 1500,
               neelam: 1,
