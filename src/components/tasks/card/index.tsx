@@ -90,12 +90,12 @@ const Card: FC<Props> = ({
       return classNames.progressGreen
     }
 
-    if((percentageofDaysLeft > 25 && percentageofDaysLeft < 50)  && percentIncomplete > 75) {
-      return classNames.progressOrange
-    }
-  
     if(percentageofDaysLeft < 25 && percentIncomplete > 35 || percentageofDaysLeft<=0 && percentIncomplete>0) {
       return classNames.progressRed
+    }
+    
+    if(percentageofDaysLeft < 50  && percentIncomplete > 75) {
+      return classNames.progressOrange
     }
     
     return classNames.progressYellow;
