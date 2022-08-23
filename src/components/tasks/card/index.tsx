@@ -84,31 +84,33 @@ const Card: FC<Props> = ({
   function getPercentageOfDays(startedOn: string, endsOn: string): number {
     const startDate = inputParser(startedOn)
     const endDate = inputParser(endsOn)
-     // It provides us with total days that are there for the the project and number of days left
-     const totalDays = endDate.diff(startDate, 'days')
-     const daysLeft = endDate.diff(new Date(), 'days')
-     // It provides the percentage of days left
+
+    // It provides us with total days that are there for the the project and number of days left
+    const totalDays = endDate.diff(startDate, 'days')
+    const daysLeft = endDate.diff(new Date(), 'days')
+
+    // It provides the percentage of days left
     const percentageofDays = daysLeft/totalDays * 100
     return percentageofDays
   }
-
+  
   function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
     const percentageofDays = getPercentageOfDays(startedOn, endsOn)
     if(percentageofDays >= percentCompleted) {
       return classNames.progressGreen
     }
-
+    
     if(percentageofDays < 50 && percentCompleted > 75) {
       return classNames.progressOrange
     }
-
+    
     if(percentageofDays < 25 && percentCompleted > 35) {
       return classNames.progressRed
     }
-
+    
     return classNames.progressYellow;
   }
-
+ 
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
       return(
@@ -295,4 +297,5 @@ const Card: FC<Props> = ({
     </div>
   );
 };
+
 export default Card;
