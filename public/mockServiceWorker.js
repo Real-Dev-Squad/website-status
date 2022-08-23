@@ -120,7 +120,7 @@ self.addEventListener('fetch', function (event) {
         console.warn(
           '[MSW] Successfully emulated a network error for the "%s %s" request.',
           request.method,
-          request.url
+          request.url,
         )
         return
       }
@@ -128,12 +128,12 @@ self.addEventListener('fetch', function (event) {
       // At this point, any exception indicates an issue with the original request/response.
       console.error(
         `\
- [MSW] Caught an exception from the "%s %s" request (%s). This is probably not a problem with Mock Service Worker. There is likely an additional logging output above.`,
+[MSW] Caught an exception from the "%s %s" request (%s). This is probably not a problem with Mock Service Worker. There is likely an additional logging output above.`,
         request.method,
         request.url,
-        `${error.name}: ${error.message}`
+        `${error.name}: ${error.message}`,
       )
-    })
+    }),
   )
 })
 
@@ -145,7 +145,7 @@ async function handleRequest(event, requestId) {
   // Ensure MSW is active and ready to handle the message, otherwise
   // this message will pend indefinitely.
   if (client && activeClientIds.has(client.id)) {
-    (async function () {
+    ;(async function () {
       const clonedResponse = response.clone()
       sendToClient(client, {
         type: 'RESPONSE',
