@@ -282,17 +282,6 @@ const Card: FC<Props> = ({
           />
         </div>
       }
-
-      {IsUserAuthorized && showEditButton &&
-        <div className={classNames.editButton}>
-          <Image src='/pencil.webp'
-            alt='edit Pencil'
-            width={iconWidth}
-            height={iconHeight}
-            onClick={handleClick}
-          />
-        </div>
-      }
     </div>
   );
 };

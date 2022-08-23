@@ -94,7 +94,6 @@ const Index: FC = () => {
   const {toggleEditButton} = state || {} 
   const isEditable = !!query.edit && IsUserAuthorized && toggleEditButton;
 
-
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
