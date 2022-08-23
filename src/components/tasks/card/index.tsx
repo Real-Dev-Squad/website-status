@@ -243,6 +243,4 @@ const Card: FC<Props> = ({
     </div>
   );
 };
-
-<<<<<<< HEAD
 export default Card;
