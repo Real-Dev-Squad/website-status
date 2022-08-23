@@ -70,7 +70,7 @@ const Card: FC<Props> = ({
     return parsedDate
   }
 
-  function getPercentageOfDays(startedOn: string, endsOn: string): number {
+  function getPercentageOfDaysLeft(startedOn: string, endsOn: string): number {
     const startDate = inputParser(startedOn)
     const endDate = inputParser(endsOn)
 
@@ -79,22 +79,22 @@ const Card: FC<Props> = ({
     const daysLeft = endDate.diff(new Date(), 'days')
 
     // It provides the percentage of days left
-    const percentageofDaysLeft = daysLeft/totalDays * 100
-    return percentageofDaysLeft
+    const percentageOfDaysLeft = daysLeft/totalDays * 100
+    return percentageOfDaysLeft
   }
   
   function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
-    const percentageofDaysLeft = getPercentageOfDays(startedOn, endsOn)
+    const percentageOfDaysLeft = getPercentageOfDaysLeft(startedOn, endsOn)
     const percentIncomplete = 100 - percentCompleted
-    if(percentCompleted === 100 || percentageofDaysLeft >= percentIncomplete) {
+    if(percentCompleted === 100 || percentageOfDaysLeft >= percentIncomplete) {
       return classNames.progressGreen
     }
 
-    if((percentageofDaysLeft < 25 && percentIncomplete > 35) || (percentageofDaysLeft<=0 && percentIncomplete>0)) {
+    if((percentageOfDaysLeft < 25 && percentIncomplete > 35) || (percentageOfDaysLeft<=0 && percentIncomplete>0)) {
       return classNames.progressRed
     }
     
-    if(percentageofDaysLeft < 50  && percentIncomplete > 75) {
+    if(percentageOfDaysLeft < 50  && percentIncomplete > 75) {
       return classNames.progressOrange
     }
     
