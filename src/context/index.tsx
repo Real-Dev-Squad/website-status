@@ -41,6 +41,9 @@ const AppWrapper: FC<Props> = ({ children }) => {
 
 export const useAppContext = () => {
     const context = useContext(AppContext) as ContextType
+    if (context === undefined) {
+        throw new Error('useAppContext must be used within a CountProvider')
+    }
     return context
 }
 export default AppWrapper

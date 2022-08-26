@@ -138,11 +138,7 @@ const Card: FC<Props> = ({
       try {
         const { requestPromise } = fetch({ url: SELF_URL });
         const { data } = await requestPromise;
-        const userRoles = {
-          adminUser: data.roles?.admin,
-          superUser: data.roles?.super_user,
-        };
-        const { adminUser, superUser } = userRoles;
+        const { admin:adminUser, super_user: superUser } = data?.roles
         setIsUserAuthorized(!!adminUser || !!superUser);
       } catch (err: any) {
         toast(ERROR, err.message);
@@ -155,9 +151,8 @@ const Card: FC<Props> = ({
     });
   }, []);
 
-  function handleKeyDown(event: any): void {
-    const ALT_KEY = 18;
-    if (event.keyCode === ALT_KEY) {
+  function handleKeyDown(event : KeyboardEvent): void {
+    if (event.altKey) {
       setShowEditButton(true);
     }
   }
