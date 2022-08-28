@@ -11,7 +11,7 @@ export type ContextType = {
 }
 const AppContext = createContext<ContextType | null>(null)
 
-const AppWrapper: FC<Props> = ({ children }) => {
+const AppWrapperContext: FC<Props> = ({ children }) => {
     const router = useRouter()
     const [toggleEditButton, setToggleEditButton] = useState(false);
     const handleToggleButton = () => {
@@ -46,4 +46,4 @@ export const useAppContext = () => {
     }
     return context
 }
-export default AppWrapper
+export default AppWrapperContext

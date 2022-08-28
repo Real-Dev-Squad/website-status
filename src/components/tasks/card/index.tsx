@@ -6,7 +6,7 @@ import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/
 import getDateInString from '@/helperFunctions/getDateInString';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { useDebounce } from '../../../hooks/useDebounce';
+import { useLongPress } from '@/hooks/useLongPress';
 import { useAppContext } from '@/context';
 
 const moment = require('moment');
@@ -32,6 +32,8 @@ const Card: FC<Props> = ({
   const { SUCCESS, ERROR } = ToastTypes;
 
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  
+  useLongPress("Alt", 300, handleAltKeypress);   //checks and handles longkeypress of alt key
   const [showEditButton, setShowEditButton] = useState(false);
   const { actions } = useAppContext();
 
@@ -152,22 +154,9 @@ const Card: FC<Props> = ({
     });
   }, []);
 
-  function handleKeyDown(event : KeyboardEvent): void {
-    if (event.altKey) {
-      setShowEditButton(true);
-    }
+  function handleAltKeypress(){
+    setShowEditButton(true)
   }
-
-  const debouncedHandler = useDebounce(handleKeyDown, 300);
-
-  useEffect(() => {
-
-    document?.addEventListener('keydown', debouncedHandler);
-
-    return () => {
-      document?.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
 
   const handleClick = () => {
     actions.handleToggleButton()
