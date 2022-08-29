@@ -18,9 +18,9 @@ const AppWrapperContext: FC<Props> = ({ children }) => {
         setToggleEditButton(prev => {
             const updatedState = !prev;
             if (updatedState) {
-                router.push('/?edit=true')
+                router.replace('/?edit=true')
             } else {
-                router.push('/')
+                router.replace('/')
             }
             return updatedState
         })

@@ -1,28 +1,19 @@
 import { useEffect, useState } from 'react';
 
-export const useLongPress = (
-  key: string,
-  delay: number,
-  callback: () => void = () => ''
-): [boolean] => {
-  const [isLongAltKeyPressed, setIsLongAltKeyPressed] = useState(false);
+export const useKeyLongPressed = (): [string] => {
+  const [keyLongPressed, setKeyLongPressed] = useState('');
 
   useEffect(() => {
     let timerId: ReturnType<typeof setTimeout>;
 
-    const handleKeyDown = (e: any) => {
-      if (e.key === key) {
+    const handleKeyDown = (event: KeyboardEvent) => {
         timerId = setTimeout(() => {
-          setIsLongAltKeyPressed(true);
-          if (callback) {
-            callback();
-          }
-        }, delay);
-      }
+          setKeyLongPressed(event.key);
+        }, 300);
     };
-
     const handleKeyUp = () => {
       clearTimeout(timerId);
+      setKeyLongPressed('')
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -32,7 +23,7 @@ export const useLongPress = (
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
     };
-  }, [key, delay, callback]);
+  },[]);
 
-  return [isLongAltKeyPressed];
+  return [keyLongPressed];
 };

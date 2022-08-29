@@ -6,8 +6,9 @@ import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/
 import getDateInString from '@/helperFunctions/getDateInString';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { useLongPress } from '@/hooks/useLongPress';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
+import { ALT_KEY } from '@/components/constants/key';
 
 const moment = require('moment');
 
@@ -32,9 +33,15 @@ const Card: FC<Props> = ({
   const { SUCCESS, ERROR } = ToastTypes;
 
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-  
-  useLongPress("Alt", 300, handleAltKeypress);   //checks and handles longkeypress of alt key
   const [showEditButton, setShowEditButton] = useState(false);
+  const [keyLongPressed] = useKeyLongPressed();
+  useEffect(() => {
+    const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
+    if (isAltKeyLongPressed) {
+      setShowEditButton(true)
+    }
+  }, [keyLongPressed]);
+  
   const { actions } = useAppContext();
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
@@ -154,9 +161,6 @@ const Card: FC<Props> = ({
     });
   }, []);
 
-  function handleAltKeypress(){
-    setShowEditButton(true)
-  }
 
   const handleClick = () => {
     actions.handleToggleButton()
