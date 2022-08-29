@@ -3,7 +3,6 @@ const getDateInString = (date: Date) => {
     const month = String((date.getUTCMonth() + 1)).padStart(2,'0');
     const day =  String(date.getUTCDate()).padStart(2,'0');
     const strDate = [year, month, day].join('-');
-    console.log(strDate)
     return strDate;
 };
 
