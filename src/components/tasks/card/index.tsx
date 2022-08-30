@@ -42,7 +42,8 @@ const Card: FC<Props> = ({
     }
   }, [keyLongPressed]);
   
-  const { actions } = useAppContext();
+  const context = useAppContext() ;
+  const { actions } = context || {}
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
