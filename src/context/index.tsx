@@ -44,6 +44,6 @@ export const useAppContext = () => {
     if (context===undefined) {
         throw new Error('useAppContext must be used within a CountProvider')
     }
-    return context
+    return context || {}
 }
 export default AppWrapperContext
