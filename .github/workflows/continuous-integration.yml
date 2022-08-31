@@ -5,7 +5,7 @@ name: Continuous Integration
 
 on:
   push:
-    branches: [ '*' ]
+    branches: [ '*' ] #added a comment to check the workflow
   pull_request:
     branches: [ '*' ]
 
