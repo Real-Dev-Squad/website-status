@@ -1,9 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import getDateInString from '@/helperFunctions/getDateInString';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
+import { useAppContext } from '@/context';
+import { ALT_KEY } from '@/components/constants/key';
 
 const moment = require('moment');
 
@@ -24,6 +29,22 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
+  const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+  const { SUCCESS, ERROR } = ToastTypes;
+
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
+  const [keyLongPressed] = useKeyLongPressed();
+  useEffect(() => {
+    const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
+    if (isAltKeyLongPressed) {
+      setShowEditButton(true)
+    }
+  }, [keyLongPressed]);
+  
+  const context = useAppContext() ;
+  const { actions } = context || {}
+
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
@@ -100,7 +121,7 @@ const Card: FC<Props> = ({
     
     return classNames.progressYellow;
   }
- 
+
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
       return(
@@ -122,7 +143,30 @@ const Card: FC<Props> = ({
       </span>
       )
   }
- 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { requestPromise } = fetch({ url: SELF_URL });
+        const { data } = await requestPromise;
+        const { admin:adminUser, super_user: superUser } = data?.roles
+        setIsUserAuthorized(!!adminUser || !!superUser); 
+      } catch (err: any) {
+        toast(ERROR, err.message);
+      }
+    };
+    fetchData();
+
+    return (() => {
+      setIsUserAuthorized(false);
+    });
+  }, []);
+
+
+  const onEditEnabled = () => {
+    actions.onEditRoute()
+  }
+
   return (
     <div
       className={`
@@ -218,6 +262,16 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
+      {IsUserAuthorized && showEditButton &&
+        <div className={classNames.editButton}>
+          <Image src='/pencil.webp'
+            alt='edit Pencil'
+            width={iconWidth}
+            height={iconHeight}
+            onClick={onEditEnabled}
+          />
+        </div>
+      }
     </div>
   );
 };
