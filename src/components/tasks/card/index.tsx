@@ -1,9 +1,14 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import getDateInString from '@/helperFunctions/getDateInString';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
+import { useAppContext } from '@/context';
+import { ALT_KEY } from '@/components/constants/key';
 
 const moment = require('moment');
 
@@ -24,6 +29,22 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
+  const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+  const { SUCCESS, ERROR } = ToastTypes;
+
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
+  const [showEditButton, setShowEditButton] = useState(false);
+  const [keyLongPressed] = useKeyLongPressed();
+  useEffect(() => {
+    const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
+    if (isAltKeyLongPressed) {
+      setShowEditButton(true)
+    }
+  }, [keyLongPressed]);
+  
+  const context = useAppContext() ;
+  const { actions } = context || {}
+
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
@@ -70,7 +91,7 @@ const Card: FC<Props> = ({
     return parsedDate
   }
 
-  function getPercentageOfDays(startedOn: string, endsOn: string): number {
+  function getPercentageOfDaysLeft(startedOn: string, endsOn: string): number {
     const startDate = inputParser(startedOn)
     const endDate = inputParser(endsOn)
 
@@ -79,27 +100,28 @@ const Card: FC<Props> = ({
     const daysLeft = endDate.diff(new Date(), 'days')
 
     // It provides the percentage of days left
-    const percentageofDays = daysLeft/totalDays * 100
-    return percentageofDays
+    const percentageOfDaysLeft = daysLeft/totalDays * 100
+    return percentageOfDaysLeft
   }
   
   function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
-    const percentageofDays = getPercentageOfDays(startedOn, endsOn)
-    if(percentageofDays >= percentCompleted) {
+    const percentageOfDaysLeft = getPercentageOfDaysLeft(startedOn, endsOn)
+    const percentIncomplete = 100 - percentCompleted
+    if(percentCompleted === 100 || percentageOfDaysLeft >= percentIncomplete) {
       return classNames.progressGreen
     }
-    
-    if(percentageofDays < 50 && percentCompleted > 75) {
-      return classNames.progressOrange
+
+    if((percentageOfDaysLeft < 25 && percentIncomplete > 35) || (percentageOfDaysLeft<=0 && percentIncomplete>0)) {
+      return classNames.progressRed
     }
     
-    if(percentageofDays < 25 && percentCompleted > 35) {
-      return classNames.progressRed
+    if(percentageOfDaysLeft < 50  && percentIncomplete > 75) {
+      return classNames.progressOrange
     }
     
     return classNames.progressYellow;
   }
- 
+
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
       return(
@@ -121,7 +143,30 @@ const Card: FC<Props> = ({
       </span>
       )
   }
- 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { requestPromise } = fetch({ url: SELF_URL });
+        const { data } = await requestPromise;
+        const { admin:adminUser, super_user: superUser } = data?.roles
+        setIsUserAuthorized(!!adminUser || !!superUser); 
+      } catch (err: any) {
+        toast(ERROR, err.message);
+      }
+    };
+    fetchData();
+
+    return (() => {
+      setIsUserAuthorized(false);
+    });
+  }, []);
+
+
+  const onEditEnabled = () => {
+    actions.onEditRoute()
+  }
+
   return (
     <div
       className={`
@@ -217,6 +262,16 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
+      {IsUserAuthorized && showEditButton &&
+        <div className={classNames.editButton}>
+          <Image src='/pencil.webp'
+            alt='edit Pencil'
+            width={iconWidth}
+            height={iconHeight}
+            onClick={onEditEnabled}
+          />
+        </div>
+      }
     </div>
   );
 };
