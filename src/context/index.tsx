@@ -6,32 +6,26 @@ interface Props {
 }
 
 export type ContextType = {
-    state: { toggleEditButton: boolean };
-    actions: { handleToggleButton: () => void }
+    state: { isEditMode: boolean };
+    actions: { onEditRoute: () => void }
 }
 const AppContext = createContext<ContextType | null>(null)
 
 const AppWrapperContext: FC<Props> = ({ children }) => {
     const router = useRouter()
-    const [toggleEditButton, setToggleEditButton] = useState(false);
-    const handleToggleButton = () => {
-        setToggleEditButton(prev => {
-            const updatedState = !prev;
-            if (updatedState) {
-                router.replace('/?edit=true')
-            } else {
-                router.replace('/')
-            }
-            return updatedState
-        })
+    const { query } = router;
+    const { edit: editQuery } = query;
+    const isEditMode = editQuery === 'true';
+    const onEditRoute = () => {
+        router.replace('?edit=true'); //TODO handle query better https://github.com/Real-Dev-Squad/website-status/issues/299 
     }
     return (
         <AppContext.Provider value={{
             state: {
-                toggleEditButton
+                isEditMode
             },
             actions: {
-                handleToggleButton
+                onEditRoute
             }
         }}>
             {children}

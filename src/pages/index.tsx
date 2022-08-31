@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -85,15 +84,12 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const router = useRouter();
-  const { query } = router;
-  const {state} = useAppContext();  
+  const { state: appState } = useAppContext();  
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-  const {toggleEditButton} = state || {} 
-  const isEditable = !!query.edit && IsUserAuthorized && toggleEditButton;
-
+  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
+  const { isEditMode } = appState;
+  const isEditable = isUserAuthorized && isEditMode;
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);

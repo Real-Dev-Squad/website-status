@@ -121,7 +121,7 @@ const Card: FC<Props> = ({
     
     return classNames.progressYellow;
   }
- 
+
   function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
       return(
@@ -150,7 +150,7 @@ const Card: FC<Props> = ({
         const { requestPromise } = fetch({ url: SELF_URL });
         const { data } = await requestPromise;
         const { admin:adminUser, super_user: superUser } = data?.roles
-        setIsUserAuthorized(!!adminUser || !!superUser);
+        setIsUserAuthorized(!!adminUser || !!superUser); 
       } catch (err: any) {
         toast(ERROR, err.message);
       }
@@ -163,8 +163,8 @@ const Card: FC<Props> = ({
   }, []);
 
 
-  const handleClick = () => {
-    actions.handleToggleButton()
+  const onEditEnabled = () => {
+    actions.onEditRoute()
   }
 
   return (
@@ -268,7 +268,7 @@ const Card: FC<Props> = ({
             alt='edit Pencil'
             width={iconWidth}
             height={iconHeight}
-            onClick={handleClick}
+            onClick={onEditEnabled}
           />
         </div>
       }
