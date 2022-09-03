@@ -6,6 +6,8 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
+import { COMPLETED } from '@/components/constants/task-status';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
@@ -32,10 +34,9 @@ const Completed: FC = () => {
 
   useEffect(() => {
     if ('tasks' in response) {
-      setTasks(response.tasks);
-
+      setTasks(updateTasksStatus(response.tasks));
       const complete = tasks.filter(
-        (item: task) => (item.status).toLowerCase() === 'completed',
+        (item: task) => (item.status === COMPLETED),
       );
       setCompleteTasks(complete);
     }

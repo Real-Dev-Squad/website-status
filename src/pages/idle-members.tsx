@@ -5,7 +5,8 @@ import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 
 const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
-const idleMembers: FC = () => {
+
+const IdleMembers: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<[]>([]);
 
   const {
@@ -34,4 +35,4 @@ const idleMembers: FC = () => {
   );
 };
 
-export default idleMembers;
+export default IdleMembers;

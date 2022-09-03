@@ -19,8 +19,6 @@ const renderCardList = (challengeSection: challenge['content'], key:string, user
 };
 
 const Challenges: FC = () => {
-  let challenges: challenge['content'] = [];
-
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
   const [user, setUser] = useState<userType>(Object);
   const { response, error, isLoading } = useFetch(CHALLENGES_URL);
@@ -33,7 +31,7 @@ const Challenges: FC = () => {
 
   useEffect(() => {
     if ('challenges' in response) {
-      challenges = response.challenges;
+      let challenges: challenge['content'] = response.challenges;
       const challengeMap: any = [];
 
       challengeMap.Active = challenges.filter((task) => task.is_active);
