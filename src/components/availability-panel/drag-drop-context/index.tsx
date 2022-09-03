@@ -9,6 +9,7 @@ import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';
+import { appendNewTasks } from '@/helperFunctions/getTasks';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { THOUSAND_MILLI_SECONDS, FOURTEEN_DAYS, SECONDS_IN_A_DAY } from '@/components/constants/date'
 
@@ -48,12 +49,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
   const ref = useRef<string[]>([]);
 
   useEffect(() => {
-    const newTaskList = ():task[] => {
-      const oldTasksIds = taskList.map((Task: task) => Task.id);
-      const newTasks = unAssignedTasks.filter((Task: task) => !oldTasksIds.includes(Task.id));
-      return [...taskList, ...newTasks];
-    };
-    setTaskList(newTaskList);
+    setTaskList(appendNewTasks(taskList, unAssignedTasks));
     const newMembers = idleMembers.filter((member) => !memberList.includes(member));
     const newMemberList = [...memberList, ...newMembers];
     setMemberList(newMemberList);
