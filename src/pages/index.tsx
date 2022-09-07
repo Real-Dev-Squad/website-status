@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useContext } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -27,6 +27,7 @@ import {
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
+import { isUserAuthorizedContext } from './_app';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -70,29 +71,25 @@ async function updateCardContent(id: string, cardDetails: task) {
   }
 }
 
-function renderCardList(tasks: task[], isEditable: boolean, isUserAuthorized: boolean) {
+function renderCardList(tasks: task[], isEditable: boolean) {
   const beautifiedTasks = beautifyTaskStatus(tasks);
   return beautifiedTasks.map((item: task) => (
     <Card
       content={item}
       key={item.id}
       shouldEdit={isEditable}
-      isUserAuthorized={isUserAuthorized}
       onContentChange={async (id: string, newDetails: any) => isEditable
         && updateCardContent(id, newDetails)}
     />
   ));
 }
 
-type Props = {
-  isUserAuthorized: boolean;
-}
-
-const Index: FC<Props> = ({ isUserAuthorized }) => {
+const Index: FC = () => {
   const { state: appState } = useAppContext();  
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const { isEditMode } = appState;
+  const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
   useEffect(() => {
     if ('tasks' in response) {
@@ -129,7 +126,7 @@ const Index: FC<Props> = ({ isUserAuthorized }) => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable, isUserAuthorized)}
+                  {renderCardList(filteredTask[key], isEditable)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}

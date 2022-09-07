@@ -1,28 +1,25 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import getDateInString from '@/helperFunctions/getDateInString';
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
+import { isUserAuthorizedContext } from '@/pages/_app';
 
 const moment = require('moment');
 
 type Props = {
   content: task;
   shouldEdit: boolean;
-  isUserAuthorized?: boolean;
   onContentChange?: (changeId: string, changeObject: object) => void;
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
-  isUserAuthorized = false,
   onContentChange = () => undefined,
 }) => {
   const statusRedList = [BLOCKED];
@@ -31,9 +28,7 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
-  const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
-  const { SUCCESS, ERROR } = ToastTypes;
-
+  const isUserAuthorized = useContext(isUserAuthorizedContext);
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   useEffect(() => {

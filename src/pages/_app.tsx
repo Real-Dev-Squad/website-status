@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { createContext, FC, useEffect, useState } from 'react';
 import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
@@ -13,6 +13,7 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
 
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const { ERROR } = ToastTypes;
+export const isUserAuthorizedContext = createContext<Boolean>(false);
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   const [isUserAuthorized, setIsUserAuthorized] = useState(false);
@@ -40,8 +41,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   }, []);
   return (
     <AppWrapperContext>
-      <ToastContainer />
-      <Component {...pageProps} isUserAuthorized={isUserAuthorized} />
+      <isUserAuthorizedContext.Provider value={isUserAuthorized}>
+        <ToastContainer />
+        <Component {...pageProps} />
+      </isUserAuthorizedContext.Provider>
     </AppWrapperContext>
   );
 }
