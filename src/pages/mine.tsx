@@ -8,20 +8,23 @@ import task from '@/interfaces/task.type';
 
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 
-function CardList(tasks: task[]) {
+function CardList(tasks: task[], isUserAuthorized: boolean) {
   return tasks.map(
     (item: task) => (
       <Card
         content={item}
         key={item.id}
         shouldEdit={false}
+        isUserAuthorized={isUserAuthorized}
         onContentChange={undefined}
       />
     ),
   );
 }
-
-const Mine: FC = () => {
+type Props = {
+  isUserAuthorized: boolean;
+}
+const Mine: FC<Props> = ({ isUserAuthorized }) => {
   const [tasks, setTasks] = useState<task[]>([]);
   const {
     response,
@@ -59,7 +62,7 @@ const Mine: FC = () => {
                   tasks.length > 0
                     ? (
                       <div>
-                        {CardList(tasks)}
+                        {CardList(tasks, isUserAuthorized)}
                       </div>
                     ) : (!error && 'No Tasks Found')
                 }

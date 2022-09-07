@@ -15,12 +15,14 @@ const moment = require('moment');
 type Props = {
   content: task;
   shouldEdit: boolean;
+  isUserAuthorized?: boolean;
   onContentChange?: (changeId: string, changeObject: object) => void;
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
+  isUserAuthorized = false,
   onContentChange = () => undefined,
 }) => {
   const statusRedList = [BLOCKED];
@@ -32,7 +34,6 @@ const Card: FC<Props> = ({
   const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
   const { SUCCESS, ERROR } = ToastTypes;
 
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   useEffect(() => {
@@ -144,25 +145,6 @@ const Card: FC<Props> = ({
       )
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: SELF_URL });
-        const { data } = await requestPromise;
-        const { admin:adminUser, super_user: superUser } = data?.roles
-        setIsUserAuthorized(!!adminUser || !!superUser); 
-      } catch (err: any) {
-        toast(ERROR, err.message);
-      }
-    };
-    fetchData();
-
-    return (() => {
-      setIsUserAuthorized(false);
-    });
-  }, []);
-
-
   const onEditEnabled = () => {
     actions.onEditRoute()
   }
@@ -262,7 +244,7 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
-      {IsUserAuthorized && showEditButton &&
+      {isUserAuthorized && showEditButton &&
         <div className={classNames.editButton}>
           <Image src='/pencil.webp'
             alt='edit Pencil'

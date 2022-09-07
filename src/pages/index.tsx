@@ -70,24 +70,28 @@ async function updateCardContent(id: string, cardDetails: task) {
   }
 }
 
-function renderCardList(tasks: task[], isEditable: boolean) {
+function renderCardList(tasks: task[], isEditable: boolean, isUserAuthorized: boolean) {
   const beautifiedTasks = beautifyTaskStatus(tasks);
   return beautifiedTasks.map((item: task) => (
     <Card
       content={item}
       key={item.id}
       shouldEdit={isEditable}
+      isUserAuthorized={isUserAuthorized}
       onContentChange={async (id: string, newDetails: any) => isEditable
         && updateCardContent(id, newDetails)}
     />
   ));
 }
 
-const Index: FC = () => {
+type Props = {
+  isUserAuthorized: boolean;
+}
+
+const Index: FC<Props> = ({ isUserAuthorized }) => {
   const { state: appState } = useAppContext();  
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
   const { isEditMode } = appState;
   const isEditable = isUserAuthorized && isEditMode;
   useEffect(() => {
@@ -112,28 +116,6 @@ const Index: FC = () => {
     });
   }, [isLoading, response]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: SELF_URL });
-        const { data } = await requestPromise;
-        const userRoles = {
-          adminUser: data.roles?.admin,
-          superUser: data.roles?.super_user,
-        };
-        const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(!!adminUser || !!superUser);
-      } catch (err: any) {
-        toast(ERROR, err.message);
-      }
-    };
-    fetchData();
-
-    return (() => {
-      setIsUserAuthorized(false);
-    });
-  }, []);
-
   return (
     <Layout>
       <Head title='Tasks' />
@@ -147,7 +129,7 @@ const Index: FC = () => {
             {Object.keys(filteredTask).length > 0
               ? Object.keys(filteredTask).map((key) => (
                 <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable)}
+                  {renderCardList(filteredTask[key], isEditable, isUserAuthorized)}
                 </Accordion>
               ))
               : !error && 'No Tasks Found'}
