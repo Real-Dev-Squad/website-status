@@ -52,8 +52,8 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
       taskList: task[],
       unAssignedTasks: task[]
       ) :task[] => {
-        const oldTasksIds = taskList.map((Task: task) => Task.id);
-        const newTasks = unAssignedTasks.filter((Task: task) => !oldTasksIds.includes(Task.id));
+        const oldTasksIds = taskList.map((taskItem: task) => taskItem.id);
+        const newTasks = unAssignedTasks.filter((taskItem: task) => !oldTasksIds.includes(taskItem.id));
         return [...taskList, ...newTasks];
     };
     const appendNewMembers = (
