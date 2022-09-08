@@ -84,7 +84,7 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const { state: appState } = useAppContext();  
+  const { state: appState } = useAppContext();
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [isUserAuthorized, setIsUserAuthorized] = useState(false);
@@ -107,26 +107,23 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-    return(() => {
+    return (() => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: SELF_URL });
-        const { data } = await requestPromise;
-        const userRoles = {
-          adminUser: data.roles?.admin,
-          superUser: data.roles?.super_user,
-        };
-        const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(!!adminUser || !!superUser);
-      } catch (err: any) {
-        toast(ERROR, err.message);
-      }
+      const { requestPromise } = fetch({ url: SELF_URL });
+      const { data } = await requestPromise;
+      const userRoles = {
+        adminUser: data.roles?.admin,
+        superUser: data.roles?.super_user,
+      };
+      const { adminUser, superUser } = userRoles;
+      setIsUserAuthorized(!!adminUser || !!superUser);
     };
+
     fetchData();
 
     return (() => {
