@@ -2,6 +2,7 @@ import { FC, SyntheticEvent, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/idleMembers/card/card.module.scss';
 import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
+import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
 
 const IMAGE_URL = process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL;
 
@@ -12,7 +13,16 @@ type Props = {
 const Card: FC<Props> = ({ idleMemberUserName }) => {
   const [isImageAvailable, setIsImageAvailable] = useState(false);
 
-  const assigneeProfilePic = (name: string) => `${IMAGE_URL}/${name}/img.png`;
+  const userImageUrl = `/dummyProfile.png`
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(userImageUrl);
+  if (idleMemberUserName){
+    getCloudinaryImgURL(idleMemberUserName).then(response=> {
+      if (response !== userImageUrl) {
+        setAssigneeProfilePic(response)
+      }
+    })
+  } 
+
   const getMemberDetails = (name: string) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');
     if (newWindow) newWindow.opener = null;
@@ -28,7 +38,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
       aria-hidden="true"
     >
       <Image
-        src={isImageAvailable ? `/${DUMMY_PROFILE}` : assigneeProfilePic(idleMemberUserName)}
+        src={isImageAvailable ? `/${DUMMY_PROFILE}` : assigneeProfilePic}
         alt={idleMemberUserName}
         onError={assigneeImageOnError}
         width={150}

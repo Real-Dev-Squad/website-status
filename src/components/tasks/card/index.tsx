@@ -8,6 +8,7 @@ import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import classNames from '@/components/tasks/card/card.module.scss';
+import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
 
 const moment = require('moment');
 
@@ -25,9 +26,15 @@ const Card: FC<Props> = ({
   const statusRedList = [BLOCKED];
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
   const cardDetails = content;
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(
-    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
-  );
+  const userImageUrl = `/dummyProfile.png`
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(userImageUrl);
+  if (cardDetails.assignee){
+    getCloudinaryImgURL(cardDetails.assignee).then(response=> {
+      if (response !== userImageUrl) {
+        setAssigneeProfilePic(response)
+      }
+    })
+  }
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
