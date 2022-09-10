@@ -7,7 +7,7 @@ import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
-import { isUserAuthorizedContext } from '@/pages/_app';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 
 const moment = require('moment');
 

@@ -27,7 +27,7 @@ import {
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
-import { isUserAuthorizedContext } from './_app';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
