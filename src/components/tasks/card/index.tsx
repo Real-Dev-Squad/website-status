@@ -1,16 +1,22 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import { useAppContext } from '@/context';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
+import getDateInString from '@/helperFunctions/getDateInString';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
+import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
 
 const moment = require('moment');
+const CLOUDINARY_IMAGE_CONFIGS = 'w_50,h_50'
+const DUMMY_IMAGE_URL = `/dummyProfile.png`
 
 type Props = {
   content: task;

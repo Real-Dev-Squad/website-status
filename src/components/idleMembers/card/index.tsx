@@ -1,10 +1,11 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/idleMembers/card/card.module.scss';
 import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
 import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
 
-const IMAGE_URL = process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL;
+const CLOUDINARY_IMAGE_CONFIGS = 'w_160,h_160'
+const DUMMY_IMAGE_URL = `/dummyProfile.png`
 
 type Props = {
   idleMemberUserName: string
