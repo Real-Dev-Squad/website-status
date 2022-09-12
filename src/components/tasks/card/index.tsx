@@ -13,10 +13,10 @@ import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
+import { DUMMY_PROFILE_PATH } from '@/components/constants/display-sections';
 
 const moment = require('moment');
 const CLOUDINARY_IMAGE_CONFIGS = 'w_50,h_50'
-const DUMMY_IMAGE_URL = `/dummyProfile.png`
 
 type Props = {
   content: task;
