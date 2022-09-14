@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
@@ -9,6 +9,9 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
+import { type } from 'os';
+import AssigneeDropdownMenu from "./AssigneeDropdownMenu"
+import { on } from 'process';
 
 const moment = require('moment');
 
@@ -34,6 +37,8 @@ const Card: FC<Props> = ({
 
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
+  const [isAssigneeDropdownOpen, setisAssigneeDropdownOpen] = useState(false)
+  const assigneeNameRefElement = useRef<HTMLElement>(null)
   const [keyLongPressed] = useKeyLongPressed();
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -41,8 +46,8 @@ const Card: FC<Props> = ({
       setShowEditButton(true)
     }
   }, [keyLongPressed]);
-  
-  const context = useAppContext() ;
+
+  const context = useAppContext();
   const { actions } = context || {}
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
@@ -56,9 +61,9 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-  const date:string = !!localEndsOn ? getDateInString(localEndsOn) : '';
+  const date: string = !!localEndsOn ? getDateInString(localEndsOn) : '';
   const [dateTimes, setDateTimes] = useState(date);
-  
+
   function isTaskOverdue() {
     const timeLeft = localEndsOn.valueOf() - Date.now();
     return !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0;
@@ -86,6 +91,22 @@ const Card: FC<Props> = ({
     }
   }
 
+  const updateAssignee = (username: string) => {
+    const toChange: any = cardDetails;
+    const changedProperty: keyof typeof cardDetails = 'assignee';
+    toChange[changedProperty] = username
+    if (assigneeNameRefElement.current !== null) {
+      assigneeNameRefElement.current.innerText = username
+    }
+    setAssigneeProfilePic(
+      `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
+    )
+
+    onContentChange(toChange.id, {
+      [changedProperty]: toChange[changedProperty]
+    })
+  }
+
   function inputParser(input: string) {
     const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
     return parsedDate
@@ -100,48 +121,48 @@ const Card: FC<Props> = ({
     const daysLeft = endDate.diff(new Date(), 'days')
 
     // It provides the percentage of days left
-    const percentageOfDaysLeft = daysLeft/totalDays * 100
+    const percentageOfDaysLeft = daysLeft / totalDays * 100
     return percentageOfDaysLeft
   }
-  
+
   function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
     const percentageOfDaysLeft = getPercentageOfDaysLeft(startedOn, endsOn)
     const percentIncomplete = 100 - percentCompleted
-    if(percentCompleted === 100 || percentageOfDaysLeft >= percentIncomplete) {
+    if (percentCompleted === 100 || percentageOfDaysLeft >= percentIncomplete) {
       return classNames.progressGreen
     }
 
-    if((percentageOfDaysLeft < 25 && percentIncomplete > 35) || (percentageOfDaysLeft<=0 && percentIncomplete>0)) {
+    if ((percentageOfDaysLeft < 25 && percentIncomplete > 35) || (percentageOfDaysLeft <= 0 && percentIncomplete > 0)) {
       return classNames.progressRed
     }
-    
-    if(percentageOfDaysLeft < 50  && percentIncomplete > 75) {
+
+    if (percentageOfDaysLeft < 50 && percentIncomplete > 75) {
       return classNames.progressOrange
     }
-    
+
     return classNames.progressYellow;
   }
 
-  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
-    if(shouldEdit){
-      return(
+  function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
+    if (shouldEdit) {
+      return (
         <input
-        type='date'
-        onChange={(e) => setDateTimes(e.target.value)}
-        onKeyPress={(e) => handleChange(e, 'endsOn')}
-        value={dateTimes}
-      />
+          type='date'
+          onChange={(e) => setDateTimes(e.target.value)}
+          onKeyPress={(e) => handleChange(e, 'endsOn')}
+          value={dateTimes}
+        />
       )
-    } 
-    return(  
+    }
+    return (
       <span
-          className={classNames.cardStrongFont}
-          role='button'
-          tabIndex={0}
-        >
-          {fromNowEndsOn}
+        className={classNames.cardStrongFont}
+        role='button'
+        tabIndex={0}
+      >
+        {fromNowEndsOn}
       </span>
-      )
+    )
   }
 
   useEffect(() => {
@@ -149,8 +170,8 @@ const Card: FC<Props> = ({
       try {
         const { requestPromise } = fetch({ url: SELF_URL });
         const { data } = await requestPromise;
-        const { admin:adminUser, super_user: superUser } = data?.roles
-        setIsUserAuthorized(!!adminUser || !!superUser); 
+        const { admin: adminUser, super_user: superUser } = data?.roles
+        setIsUserAuthorized(!!adminUser || !!superUser);
       } catch (err: any) {
         toast(ERROR, err.message);
       }
@@ -161,7 +182,6 @@ const Card: FC<Props> = ({
       setIsUserAuthorized(false);
     });
   }, []);
-
 
   const onEditEnabled = () => {
     actions.onEditRoute()
@@ -206,14 +226,14 @@ const Card: FC<Props> = ({
             width={iconWidth}
             height={iconHeight}
           />
-          <span className={classNames.cardSpecialFont}>Due Date</span>  
-            {renderDate(fromNowEndsOn,shouldEdit)}      
+          <span className={classNames.cardSpecialFont}>Due Date</span>
+          {renderDate(fromNowEndsOn, shouldEdit)}
         </span>
       </div>
       <div className={classNames.cardItems}>
         <span className={classNames.progressContainer}>
           <div className={classNames.progressIndicator}>
-            <div 
+            <div
               className={`
                 ${handleProgressColor(content.percentCompleted, content.startedOn, content.endsOn)}
                 ${classNames.progressStyle}
@@ -242,15 +262,15 @@ const Card: FC<Props> = ({
           <span className={classNames.cardSpecialFont}>Assignee:</span>
           <span
             className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'assignee')}
             role="button"
             tabIndex={0}
+            ref={assigneeNameRefElement}
           >
             {cardDetails.assignee}
           </span>
           <span
-            className={classNames.contributorImage}
+            className={`${classNames.contributorImage} ${shouldEdit && classNames.cursorPointer}`}
+            onClick={() => setisAssigneeDropdownOpen(!isAssigneeDropdownOpen)}
           >
             <Image
               src={assigneeProfilePic}
@@ -272,6 +292,10 @@ const Card: FC<Props> = ({
           />
         </div>
       }
+      {(IsUserAuthorized && isAssigneeDropdownOpen && shouldEdit) &&
+        <AssigneeDropdownMenu
+          updateAssignee={updateAssignee}
+        />}
     </div>
   );
 };

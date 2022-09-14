@@ -84,7 +84,7 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const { state: appState } = useAppContext();  
+  const { state: appState } = useAppContext();
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [isUserAuthorized, setIsUserAuthorized] = useState(false);
@@ -107,7 +107,7 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-    return(() => {
+    return (() => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);
