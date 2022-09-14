@@ -114,10 +114,8 @@ $black: #252525;
 .dropdownMenu {
   position: absolute;
   right: 0;
-  bottom: 0;
-  transform: translateY(100%);
+  top: 90%;
   z-index: 10;
-
 }
 
 .inputAssigneeSearch {

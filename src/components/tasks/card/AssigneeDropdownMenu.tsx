@@ -71,7 +71,7 @@ const AssigneeDropdownMenu: FC<Props> = ({ updateAssignee }) => {
               filteredList.map((user: userType) => (
                 <li key={user.id}
                   className={`${classNames.userName} ${classNames.cursorPointer}`}
-                  onClick={() => updateAssignee(user.username)}>
+                  onClick={() => updateAssignee(user.username!)}>
                   {user.username}
                 </li>
               ))
