@@ -269,7 +269,7 @@ const Card: FC<Props> = ({
             {cardDetails.assignee}
           </span>
           <span
-            className={`${classNames.contributorImage} ${shouldEdit && classNames.cursorPointer}`}
+            className={`${classNames.contributorImage} ${shouldEdit && classNames.isEditMode}`}
             onClick={() => setisAssigneeDropdownOpen(!isAssigneeDropdownOpen)}
           >
             <Image

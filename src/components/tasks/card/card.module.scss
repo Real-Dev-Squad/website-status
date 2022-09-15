@@ -5,12 +5,7 @@ $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
 
-//*****utitlites****//
-.cursorPointer {
-  cursor: pointer;
-}
 
-//*****************//
 
 .card {
   display: flex;
@@ -124,7 +119,7 @@ $black: #252525;
 
 .assigneeMenu {
   border-radius: .25rem;
-  background-color: #ffffff;
+  background-color: $white;
   padding: .5rem;
   box-shadow: 0 0 20px $black;
 
@@ -136,10 +131,15 @@ $black: #252525;
   .userName {
     margin: 0;
     list-style: none;
+    cursor: pointer;
   }
 }
 
 
 .userName+.userName {
-  border-top: 1px solid black;
+  border-top: 1px solid $black;
+}
+
+.isEditMode {
+  cursor: pointer;
 }
