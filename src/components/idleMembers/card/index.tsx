@@ -10,7 +10,7 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const [isError, setIsError] = useState(false);
+  const [isImageAvailable, setIsImageAvailable] = useState(false);
 
   const assigneeProfilePic = (name: string) => `${IMAGE_URL}/${name}/img.png`;
   const getMemberDetails = (name: string) => {
@@ -18,7 +18,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
     if (newWindow) newWindow.opener = null;
   };
   const assigneeImageOnError = (e: SyntheticEvent<HTMLImageElement>) => {
-    setIsError(true);
+    setIsImageAvailable(true);
   };
   return (
     <div
@@ -28,7 +28,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
       aria-hidden="true"
     >
       <Image
-        src={isError ? `/${DUMMY_PROFILE}` : assigneeProfilePic(idleMemberUserName)}
+        src={isImageAvailable ? `/${DUMMY_PROFILE}` : assigneeProfilePic(idleMemberUserName)}
         alt={idleMemberUserName}
         onError={assigneeImageOnError}
         width={150}
