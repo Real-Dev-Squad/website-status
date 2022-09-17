@@ -1,5 +1,7 @@
-import React, { VFC, useState, PropsWithChildren } from 'react';
+import React, { VFC, useState, PropsWithChildren, KeyboardEvent } from 'react';
 import styles from '@/components/Accordion/Accordion.module.scss';
+import { ENTER_KEY, SPACE_KEY } from '@/components/constants/key';
+
 
 type AccordionProps = {
   title: string,
@@ -15,12 +17,22 @@ const Accordion: VFC<Props> = ({ title, open = true, children }) => {
     setIsOpen(!isOpen);
   }
 
+  function keyDownToggle(e: KeyboardEvent) {
+    const { key } = e
+    if (key === ENTER_KEY || key === SPACE_KEY) {
+      e.preventDefault();
+      e.stopPropagation();
+      setIsOpen(!isOpen);
+    }
+  }
+
+
   return (
     <div aria-expanded={isOpen} data-testid="accordion" className={styles.container}>
       <div
         className={styles.title}
         onClick={toggle}
-        onKeyDown={toggle}
+        onKeyDown={keyDownToggle}
         tabIndex={0}
         role="button"
       >
