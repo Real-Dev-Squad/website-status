@@ -226,7 +226,7 @@ const Card: FC<Props> = ({
             height={iconHeight}
           />
           <span className={classNames.cardSpecialFont}>Due Date</span>  
-            {renderDate(fromNowEndsOn,shouldEdit)} 
+            {renderDate(fromNowEndsOn,shouldEdit)}      
         </span>
       </div>
       <div className={classNames.cardItems}>
