@@ -44,7 +44,7 @@ const Card: FC<Props> = ({
       setShowEditButton(true)
     }
   }, [keyLongPressed]);
-
+  
   const context = useAppContext() ;
   const { actions } = context || {}
 
@@ -141,7 +141,7 @@ const Card: FC<Props> = ({
     return classNames.progressYellow;
   }
 
-  function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
+  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
     if(shouldEdit){
       return(
         <input
@@ -158,7 +158,7 @@ const Card: FC<Props> = ({
           role='button'
           tabIndex={0}
         >
-        {fromNowEndsOn}
+          {fromNowEndsOn}
       </span>
       )
   }
@@ -226,7 +226,7 @@ const Card: FC<Props> = ({
             height={iconHeight}
           />
           <span className={classNames.cardSpecialFont}>Due Date</span>  
-          {renderDate(fromNowEndsOn,shouldEdit)}     
+            {renderDate(fromNowEndsOn,shouldEdit)} 
         </span>
       </div>
       <div className={classNames.cardItems}>
