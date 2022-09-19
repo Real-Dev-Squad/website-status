@@ -8,28 +8,71 @@ $thickness: 3px;
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
+  justify-content: space-between;
 
-  a {
-    display: block;
-    color: #ffffff;
-    font-weight: bolder;
-    text-align: center;
-    padding: 35px 2*($offset+$thickness)-1;
-    text-decoration: none;
+  div {
+    display: flex;
 
-    &:hover {
-      color: #87d870;
+    a {
+      display: block;
+      color: #ffffff;
+      font-weight: bolder;
+      text-align: center;
+      padding: 35px 2 * ($offset + $thickness)-1;
+      text-decoration: none;
+
+      &:hover {
+        color: #87d870;
+      }
     }
-  }
 
-  .active {
-    color: #87d870;
-    text-decoration: underline;
-    text-decoration-thickness: $thickness;
-    text-underline-offset: $offset;
-  }
+    .active {
+      color: #87d870;
+      text-decoration: underline;
+      text-decoration-thickness: $thickness;
+      text-underline-offset: $offset;
+    }
 
-  .logo {
-    padding: ($offset+$thickness)+7;
+    .logo {
+      padding: ($offset + $thickness)+7;
+    }
+
+    .btnLogin {
+      padding: 0px;
+      margin: 22px;
+    }
+
+    .btnLoginText {
+      border-radius: 6px;
+      padding: 5px;
+      background-color: #1d1283;
+      color: white;
+      cursor: pointer;
+      border: 2px solid white;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .githubLogo {
+      margin-left: 4px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+    }
+
+    .userProfilePic {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline;
+      vertical-align: middle;
+    }
+
+    .userGreetMsg {
+      display: inline;
+      vertical-align: middle;
+      margin-right: 10px;
+      color: rgb(255, 255, 255);
+    }
   }
 }
