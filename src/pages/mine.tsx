@@ -5,8 +5,9 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
+import useAuthenticated from '@/hooks/useAuthenticated';
 
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
+const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
 function CardList(tasks: task[]) {
   return tasks.map(
@@ -27,16 +28,23 @@ const Mine: FC = () => {
     response,
     error,
     isLoading,
-  } = useFetch(TASKS_URL);
+    callAPI
+  } = useFetch(TASKS_URL, {}, false);
+  const { isLoggedIn, isLoading: isAuthenticating } = useAuthenticated();
   useEffect(() => { setTasks(response); }, [isLoading, response]);
+
+  useEffect(() => {
+    if (isLoggedIn && !Object.keys(response).length) {
+      callAPI();
+    }
+  }, [isLoggedIn, response])
 
   return (
     <Layout>
       <Head title="Mine" />
       <div className={classNames.container}>
         {
-          !!error
-          && (error?.response?.data?.statusCode === 401 ? (
+          !isLoggedIn && !isAuthenticating && (
             <div>
               <p>You are not Authorized</p>
               <a
@@ -47,7 +55,10 @@ const Mine: FC = () => {
                 Click here to Login
               </a>
             </div>
-          ) : <div><p>Something went wrong! Please contact admin</p></div>)
+          ) 
+        }
+        {
+          !isLoading && error && <div><p>Something went wrong! Please contact admin</p></div>
         }
         {
           isLoading

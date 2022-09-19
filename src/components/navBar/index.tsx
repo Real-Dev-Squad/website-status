@@ -1,21 +1,14 @@
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import styles from '@/components/navBar/navBar.module.scss';
-import { LOGIN_URL, USER_PROFILE_URL, USER_SELF } from '@/components/constants/url'
+import { LOGIN_URL, USER_PROFILE_URL } from '@/components/constants/url'
 import Link from 'next/link';
 const RDSLogo = '/RDSLogo.png';
+import useAuthenticated, { DEFAULT_AVATAR } from '@/hooks/useAuthenticated';
 
 const NavBar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const GITHUB_LOGO = '/github-white.png';
-  const DEFAULT_AVATAR = '/Avatar.png';
-  const [userData, setUserData] = useState({
-    userName: '',
-    firstName: '',
-    profilePicture: ''
-  });
-
- 
+  
+  const {userData, isLoggedIn} = useAuthenticated()
 
   return (
     <nav className={styles.navBar}>

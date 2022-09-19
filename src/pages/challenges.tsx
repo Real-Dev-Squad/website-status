@@ -10,6 +10,7 @@ import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL } from '@/components/constants/url';
 import userData from '@/helperFunctions/getUser';
+import useAuthenticated from '@/hooks/useAuthenticated';
 
 const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
   if (key === 'Active') {
@@ -21,7 +22,12 @@ const renderCardList = (challengeSection: challenge['content'], key:string, user
 const Challenges: FC = () => {
   const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
   const [user, setUser] = useState<userType>(Object);
-  const { response, error, isLoading } = useFetch(CHALLENGES_URL);
+  const {
+    response,
+    error,
+    isLoading,
+    callAPI } = useFetch('CHALLENGES_URL', {}, false);
+  const { isLoggedIn, isLoading: isAuthenticating } = useAuthenticated();
 
   useEffect(() => {
     (async () => {
@@ -41,14 +47,19 @@ const Challenges: FC = () => {
     }
   }, [isLoading, response]);
 
+  useEffect(() => {
+    if (isLoggedIn && !Object.keys(response).length) {
+      callAPI();
+    }
+  }, [isLoggedIn, response])
+
   return (
     <Layout>
       <Head title="Challenges" />
 
       <div className={classNames.container}>
         {
-          !!error
-          && (error?.response?.data?.statusCode === 401 ? (
+          !isLoggedIn && !isAuthenticating && (
             <div>
               <p>You are not Authorized</p>
               <a
@@ -59,29 +70,34 @@ const Challenges: FC = () => {
                 Click here to Login
               </a>
             </div>
-          ) : <div><p>Something went wrong! Please contact admin</p></div>)
-        }
-        {
-        isLoading
-          ? (
-            <p>Loading...</p>
-          ) : (
-            <>
-              {
-                Object.keys(filteredChallenge).length > 0
-                  ? Object.keys(filteredChallenge).map((key) => (
-                    filteredChallenge[key].length > 0
-                    && (
-                    <Accordion open title={key} key={key}>
-                      {renderCardList(filteredChallenge[key], key, user.id)}
-                    </Accordion>
-                    )
-
-                  )) : (!error && 'No Challenges Found')
-              }
-            </>
           )
-      }
+        }
+
+        {
+          !isLoading && error && <div><p>Something went wrong! Please contact admin</p></div>
+        }
+
+        {
+          isLoading
+            ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {
+                  Object.keys(filteredChallenge).length > 0
+                    ? Object.keys(filteredChallenge).map((key) => (
+                      filteredChallenge[key].length > 0
+                      && (
+                        <Accordion open title={key} key={key}>
+                          {renderCardList(filteredChallenge[key], key, user.id)}
+                        </Accordion>
+                      )
+
+                    )) : (!error && 'No Challenges Found')
+                }
+              </>
+            )
+        }
       </div>
     </Layout>
   );
