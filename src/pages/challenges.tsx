@@ -78,26 +78,26 @@ const Challenges: FC = () => {
         }
 
         {
-          isLoading
-            ? (
-              <p>Loading...</p>
-            ) : (
-              <>
-                {
-                  Object.keys(filteredChallenge).length > 0
-                    ? Object.keys(filteredChallenge).map((key) => (
-                      filteredChallenge[key].length > 0
-                      && (
-                        <Accordion open title={key} key={key}>
-                          {renderCardList(filteredChallenge[key], key, user.id)}
-                        </Accordion>
-                      )
+        isLoading
+          ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {
+                Object.keys(filteredChallenge).length > 0
+                  ? Object.keys(filteredChallenge).map((key) => (
+                    filteredChallenge[key].length > 0
+                    && (
+                      <Accordion open title={key} key={key}>
+                        {renderCardList(filteredChallenge[key], key, user.id)}
+                      </Accordion>
+                    )
 
-                    )) : (!error && 'No Challenges Found')
-                }
-              </>
-            )
-        }
+                  )) : (!error && 'No Challenges Found')
+              }
+            </>
+          )
+      }
       </div>
     </Layout>
   );
