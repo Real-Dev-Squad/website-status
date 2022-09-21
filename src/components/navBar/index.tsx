@@ -7,8 +7,7 @@ import useAuthenticated, { DEFAULT_AVATAR } from '@/hooks/useAuthenticated';
 
 const NavBar = () => {
   const GITHUB_LOGO = '/github-white.png';
-  
-  const {userData, isLoggedIn} = useAuthenticated()
+  const { userData, isLoggedIn } = useAuthenticated()
 
   return (
     <nav className={styles.navBar}>
@@ -22,7 +21,7 @@ const NavBar = () => {
       </div>
 
       <div>
-        {!isLoggedIn && (
+        {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
             <a className={styles.btnLogin}>
               <button type="button" className={styles.btnLoginText}>
@@ -37,8 +36,7 @@ const NavBar = () => {
               </button>
             </a>
           </Link>
-        )}
-        {isLoggedIn && (
+        ) : (
           <div className={styles.userGreet}>
             <Link href={USER_PROFILE_URL}>
               <a>
