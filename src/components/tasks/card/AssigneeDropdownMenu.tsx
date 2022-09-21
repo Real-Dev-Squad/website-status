@@ -61,7 +61,6 @@ const AssigneeDropdownMenu: FC<Props> = ({ updateAssignee }) => {
             value={searchValue}
             type="search"
             placeholder='search for members'
-            className={classNames.inputAssigneeSearch}
             autoComplete="off"
             onChange={onChangeHandler} />
         </label>

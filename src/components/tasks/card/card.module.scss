@@ -4,8 +4,11 @@ $red: #ff0000;
 $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
-
-
+$neutral: #ffffff;
+$card-border: #d9d9d9;
+$card-title: #041187;
+$card-special-font: #aeaeae;
+$overdue-task-bg: #ffebee;
 
 .card {
   display: flex;
@@ -14,7 +17,7 @@ $black: #252525;
   margin-bottom: 2rem;
   margin-bottom: 25px;
   justify-content: space-between;
-  border: 1px solid #d9d9d9;
+  border: 1px solid $card-border;
   position: relative;
 }
 
@@ -37,13 +40,13 @@ $black: #252525;
 .cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
-  color: #041187;
+  color: $card-title;
 }
 
 .cardSpecialFont {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #aeaeae;
+  color: $card-special-font;
 }
 
 .cardStatusFont {
@@ -63,8 +66,8 @@ $black: #252525;
 }
 
 .overdueTask {
-  border: solid red 2px;
-  background-color: #ffebee;
+  border: solid $red 2px;
+  background-color: $overdue-task-bg;
 }
 
 .progressContainer {
@@ -108,18 +111,17 @@ $black: #252525;
 
 .dropdownMenu {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
   right: 0;
   top: 90%;
   z-index: 10;
 }
 
-.inputAssigneeSearch {
-  margin-bottom: .5rem;
-}
-
 .assigneeMenu {
   border-radius: .25rem;
-  background-color: #ffffff;
+  background-color: $neutral;
   padding: .5rem;
   box-shadow: 0 0 20px $black;
 
@@ -129,7 +131,6 @@ $black: #252525;
   }
 
   .userName {
-    margin: 0;
     list-style: none;
     cursor: pointer;
   }
