@@ -5,10 +5,10 @@ $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
 $neutral: #ffffff;
-$card-border: #d9d9d9;
-$card-title: #041187;
-$card-special-font: #aeaeae;
-$overdue-task-bg: #ffebee;
+$clr-card-border: #d9d9d9;
+$clr-card-title: #041187;
+$clr-card-special-font: #aeaeae;
+$clr-overdue-task-bg: #ffebee;
 
 .card {
   display: flex;
@@ -17,7 +17,7 @@ $overdue-task-bg: #ffebee;
   margin-bottom: 2rem;
   margin-bottom: 25px;
   justify-content: space-between;
-  border: 1px solid $card-border;
+  border: 1px solid $clr-card-border;
   position: relative;
 }
 
@@ -40,13 +40,13 @@ $overdue-task-bg: #ffebee;
 .cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
-  color: $card-title;
+  color: $clr-card-title;
 }
 
 .cardSpecialFont {
   font-size: 1.1rem;
   font-weight: 500;
-  color: $card-special-font;
+  color: $clr-card-special-font;
 }
 
 .cardStatusFont {
@@ -67,7 +67,7 @@ $overdue-task-bg: #ffebee;
 
 .overdueTask {
   border: solid $red 2px;
-  background-color: $overdue-task-bg;
+  background-color: $clr-overdue-task-bg;
 }
 
 .progressContainer {
