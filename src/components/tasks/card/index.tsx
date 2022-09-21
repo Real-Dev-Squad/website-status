@@ -279,6 +279,11 @@ const Card: FC<Props> = ({
               height={45}
             />
           </span>
+          
+          {(IsUserAuthorized && isAssigneeDropdownOpen && shouldEdit) &&
+            <AssigneeDropdownMenu
+          updateAssignee={updateAssignee}
+            />}
         </span>
       </div>
       {IsUserAuthorized && showEditButton &&
@@ -291,10 +296,6 @@ const Card: FC<Props> = ({
           />
         </div>
       }
-      {(IsUserAuthorized && isAssigneeDropdownOpen && shouldEdit) &&
-        <AssigneeDropdownMenu
-          updateAssignee={updateAssignee}
-        />}
     </div>
   );
 };
