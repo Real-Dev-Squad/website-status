@@ -32,7 +32,6 @@ const useAuthenticated = (): HooksReturnType => {
         .then((response) => {
           if (!response.ok) {
             setIsLoggedIn(false);
-            console.log('response :>> ', response);
             throw new Error(`${response.status} (${response.statusText})`);
           }
           return response.json();
