@@ -7,7 +7,8 @@ import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
 const CLOUDINARY_IMAGE_CONFIGS = 'w_160,h_160'
 
 type Props = {
-  idleMemberUserName: string
+  idleMemberUserName: string,
+  imageURL:string
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {

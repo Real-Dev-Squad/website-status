@@ -31,6 +31,7 @@ const DraggableComponent: FC<draggableProps> = ({
   draggableId,
   index,
   title = '',
+  imageURL
 }) => {
   const draggableIds = useContext(disableDrag);
   return (
@@ -57,7 +58,7 @@ const DraggableComponent: FC<draggableProps> = ({
             : (
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Image
-                  src={imageGenerator(draggableId)}
+                  src={imageURL}
                   alt={draggableId}
                   width={52}
                   height={52}

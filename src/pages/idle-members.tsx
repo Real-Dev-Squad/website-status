@@ -1,13 +1,20 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useCallback } from 'react';
 import Head from '@/components/head';
 import Section from '@/components/idleMembers/section';
 import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
+import { getAllUsersCloudinaryImageURLLink } from '@/helperFunctions/getCloudinaryImageUrl';
 
 const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
 
+interface userNameImage  {
+  name: string,
+  imageURL: string
+}
+const CLOUDINARY_IMAGE_CONFIGS = 'w_160,h_160'
+
 const IdleMembers: FC = () => {
-  const [idleMembersList, setIdleMembersList] = useState<[]>([]);
+  const [idleMembersList, setIdleMembersList] = useState<userNameImage[]>([]);
 
   const {
     response,
@@ -15,13 +22,28 @@ const IdleMembers: FC = () => {
     isLoading,
   } = useFetch(IDLE_MEMBERS_URL);
 
-  useEffect(() => {
+  const memoizeFetchIdleMemberDetails = useCallback(async ()=>{
     if ('idleMemberUserNames' in response) {
-      const sortedIdleMembers = response.idleMemberUserNames
+      const sortedIdleMembers:string[] = response.idleMemberUserNames
         .sort((a: string, b: string) => a.toLowerCase().localeCompare(b.toLowerCase()));
-      setIdleMembersList(sortedIdleMembers);
+        if (sortedIdleMembers.length > 0) {
+          const lstUsersCldLinks = getAllUsersCloudinaryImageURLLink(sortedIdleMembers,CLOUDINARY_IMAGE_CONFIGS)
+          Promise.all(lstUsersCldLinks)
+            .then((lstStrUsersCldLinks) => {
+              const lstUserNameImage = lstStrUsersCldLinks.map((userCloudinaryLink,index)=>{
+                return {name:sortedIdleMembers[index],imageURL:userCloudinaryLink}
+              })
+              setIdleMembersList(lstUserNameImage);
+            }).catch((e)=>{
+              console.error(e)   
+            })
+        }
     }
-  }, [isLoading, response]);
+  },[isLoading, response])
+
+  useEffect(() => {
+    memoizeFetchIdleMemberDetails()
+  }, [memoizeFetchIdleMemberDetails]);
 
   return (
     <Layout>

@@ -17,4 +17,5 @@ export type draggableProps = {
   draggableId: string,
   index: number,
   title?: string,
+  imageURL: string,
 };
