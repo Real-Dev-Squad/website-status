@@ -4,8 +4,6 @@
 name: Continuous Integration
 
 on:
-  push:  #added a comment
-    branches: [ '*' ]
   pull_request:
     branches: [ '*' ]
 
