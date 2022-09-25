@@ -1,5 +1,4 @@
-import { FC, useState, useEffect, useMemo } from "react";
-
+import { FC, useState, useEffect } from "react";
 import userType from '@/interfaces/user.type';
 import { ALL_USERS } from '@/components/constants/url';
 import fetch from '@/helperFunctions/fetch';
