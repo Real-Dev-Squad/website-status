@@ -3,7 +3,6 @@ import userType from '@/interfaces/user.type';
 import { ALL_USERS } from '@/components/constants/url';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-
 import classNames from '@/components/tasks/card/card.module.scss';
 
 type Props = {
