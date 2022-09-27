@@ -37,7 +37,6 @@ const AssigneeDropdownMenu: FC<Props> = ({ updateAssignee }) => {
       const newFilteredList = assigneeList.filter((member: userType) => (
         member.username?.toLowerCase().includes(searchValue.toLowerCase())
       ));
-      console.log(newFilteredList)
       setFilteredList(newFilteredList)
     }
     else {
