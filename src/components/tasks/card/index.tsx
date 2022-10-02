@@ -9,6 +9,8 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
+import TaskLevelEdit from './taskLevelEdit.component';
+import TaskLevelType from '@/interfaces/taskLevel.type';
 
 const moment = require('moment');
 
@@ -31,7 +33,6 @@ const Card: FC<Props> = ({
   );
   const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
   const { SUCCESS, ERROR } = ToastTypes;
-
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
@@ -85,7 +86,16 @@ const Card: FC<Props> = ({
       });
     }
   }
-
+  
+  function updateTaskLevelItems(newTaskLevelValue: TaskLevelType){
+    const toChange: any = cardDetails;
+    const taskLevel: keyof typeof cardDetails = 'taskLevel'
+    
+    onContentChange(toChange.id, {
+      [taskLevel]: newTaskLevelValue
+    });
+  }
+  
   function inputParser(input: string) {
     const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
     return parsedDate
@@ -225,6 +235,19 @@ const Card: FC<Props> = ({
             {content.percentCompleted}% completed
           </span>
         </span>
+      </div>
+      <div className={classNames.taskLevel}>
+        {(shouldEdit && IsUserAuthorized)
+          ? <TaskLevelEdit updateTaskLevelItems={updateTaskLevelItems} {...(content.taskLevel && { taskLevel: content.taskLevel })}/>
+          : content.taskLevel && (
+            <>    
+              {content.taskLevel?.category && <span title='task category' className={`${classNames.taskLevelItems}`}>{content.taskLevel?.category}</span>}
+              
+              { content.taskLevel?.level && <span title='task level' className={`${classNames.taskLevelItems}`}>Level: {content.taskLevel?.level}</span>}
+            </>
+          )
+        }
+      
       </div>
       <div className={classNames.cardItems}>
         <span

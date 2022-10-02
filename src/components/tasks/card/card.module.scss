@@ -101,3 +101,35 @@ $black: #252525;
   text-align: left;
   cursor: pointer;
 }
+
+.taskLevel{
+  display: flex;
+  gap: .25rem;
+  padding: .5rem;
+  flex-wrap: wrap;
+  .taskLevelItems{
+    background-color: #4169e140;
+    padding: .35em;
+    border-radius: 20px;
+    border: 2px solid #4169e1;
+  }
+  
+  .taskLevelEditItems{
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    
+    .currentValue{
+      color: #4169e1;
+      text-decoration: underline;
+    }
+  }
+}
+
+
+
+.selectDropdown{
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
