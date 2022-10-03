@@ -1,15 +1,15 @@
-import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
-import classNames from '@/components/tasks/card/card.module.scss';
+import { FC, useState, useEffect } from 'react';
+import { useAppContext } from '@/context';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
-import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
-import getDateInString from '@/helperFunctions/getDateInString';
 import dateFromNow from '@/utils/renderDate';
+import getDateInString from '@/helperFunctions/getDateInString';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import { useAppContext } from '@/context';
+import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
+import classNames from '@/components/tasks/card/card.module.scss';
 
 const moment = require('moment');
 
