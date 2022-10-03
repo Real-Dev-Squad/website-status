@@ -1,13 +1,13 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
-import classNames from '@/components/tasks/card/card.module.scss';
-import task from '@/interfaces/task.type';
-import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
+import { useAppContext } from '@/context';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import { useAppContext } from '@/context';
+import task from '@/interfaces/task.type';
+import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import classNames from '@/components/tasks/card/card.module.scss';
 
 const moment = require('moment');
 
