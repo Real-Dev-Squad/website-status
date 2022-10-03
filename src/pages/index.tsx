@@ -27,6 +27,10 @@ import {
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
+import { useKeyboardContext } from '@/context/keyboard';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
+import { ALT_KEY } from '@/components/constants/key';
+
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -84,12 +88,22 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const { state: appState } = useAppContext();  
+  const { state: appState } = useAppContext();
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const [isUserAuthorized, setIsUserAuthorized] = useState(false);
   const { isEditMode } = appState;
   const isEditable = isUserAuthorized && isEditMode;
+  const { actions: { setIsAltKeyPressed } } = useKeyboardContext();
+  const [keyLongPressed] = useKeyLongPressed();
+
+  useEffect(() => {
+    const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
+    if (isAltKeyLongPressed) {
+      setIsAltKeyPressed(true)
+    }
+  }, [keyLongPressed]);
+
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
@@ -107,7 +121,7 @@ const Index: FC = () => {
       setFilteredTask(taskMap);
     }
 
-    return(() => {
+    return (() => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);

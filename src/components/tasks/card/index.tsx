@@ -6,9 +6,8 @@ import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/
 import getDateInString from '@/helperFunctions/getDateInString';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
-import { ALT_KEY } from '@/components/constants/key';
+import { useKeyboardContext } from '@/context/keyboard';
 
 const moment = require('moment');
 
@@ -32,17 +31,10 @@ const Card: FC<Props> = ({
   const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
   const { SUCCESS, ERROR } = ToastTypes;
 
-  const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
-  const [showEditButton, setShowEditButton] = useState(false);
-  const [keyLongPressed] = useKeyLongPressed();
-  useEffect(() => {
-    const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
-    if (isAltKeyLongPressed) {
-      setShowEditButton(true)
-    }
-  }, [keyLongPressed]);
-  
-  const context = useAppContext() ;
+  const [IsUserAuthorized, setIsUserAuthorized] = useState(true);
+
+  const { state: { isAltKeyPressed: showEditButton } } = useKeyboardContext();
+  const context = useAppContext();
   const { actions } = context || {}
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
@@ -56,9 +48,9 @@ const Card: FC<Props> = ({
   const iconHeight = '25px';
   const iconWidth = '25px';
 
-  const date:string = !!localEndsOn ? getDateInString(localEndsOn) : '';
+  const date: string = !!localEndsOn ? getDateInString(localEndsOn) : '';
   const [dateTimes, setDateTimes] = useState(date);
-  
+
   function isTaskOverdue() {
     const timeLeft = localEndsOn.valueOf() - Date.now();
     return !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0;
@@ -100,48 +92,48 @@ const Card: FC<Props> = ({
     const daysLeft = endDate.diff(new Date(), 'days')
 
     // It provides the percentage of days left
-    const percentageOfDaysLeft = daysLeft/totalDays * 100
+    const percentageOfDaysLeft = daysLeft / totalDays * 100
     return percentageOfDaysLeft
   }
-  
+
   function handleProgressColor(percentCompleted: number, startedOn: string, endsOn: string): string {
     const percentageOfDaysLeft = getPercentageOfDaysLeft(startedOn, endsOn)
     const percentIncomplete = 100 - percentCompleted
-    if(percentCompleted === 100 || percentageOfDaysLeft >= percentIncomplete) {
+    if (percentCompleted === 100 || percentageOfDaysLeft >= percentIncomplete) {
       return classNames.progressGreen
     }
 
-    if((percentageOfDaysLeft < 25 && percentIncomplete > 35) || (percentageOfDaysLeft<=0 && percentIncomplete>0)) {
+    if ((percentageOfDaysLeft < 25 && percentIncomplete > 35) || (percentageOfDaysLeft <= 0 && percentIncomplete > 0)) {
       return classNames.progressRed
     }
-    
-    if(percentageOfDaysLeft < 50  && percentIncomplete > 75) {
+
+    if (percentageOfDaysLeft < 50 && percentIncomplete > 75) {
       return classNames.progressOrange
     }
-    
+
     return classNames.progressYellow;
   }
 
-  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
-    if(shouldEdit){
-      return(
+  function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
+    if (shouldEdit) {
+      return (
         <input
-        type='date'
-        onChange={(e) => setDateTimes(e.target.value)}
-        onKeyPress={(e) => handleChange(e, 'endsOn')}
-        value={dateTimes}
-      />
+          type='date'
+          onChange={(e) => setDateTimes(e.target.value)}
+          onKeyPress={(e) => handleChange(e, 'endsOn')}
+          value={dateTimes}
+        />
       )
-    } 
-    return(  
+    }
+    return (
       <span
-          className={classNames.cardStrongFont}
-          role='button'
-          tabIndex={0}
-        >
-          {fromNowEndsOn}
+        className={classNames.cardStrongFont}
+        role='button'
+        tabIndex={0}
+      >
+        {fromNowEndsOn}
       </span>
-      )
+    )
   }
 
   useEffect(() => {
@@ -206,14 +198,14 @@ const Card: FC<Props> = ({
             width={iconWidth}
             height={iconHeight}
           />
-          <span className={classNames.cardSpecialFont}>Due Date</span>  
-            {renderDate(fromNowEndsOn,shouldEdit)}      
+          <span className={classNames.cardSpecialFont}>Due Date</span>
+          {renderDate(fromNowEndsOn, shouldEdit)}
         </span>
       </div>
       <div className={classNames.cardItems}>
         <span className={classNames.progressContainer}>
           <div className={classNames.progressIndicator}>
-            <div 
+            <div
               className={`
                 ${handleProgressColor(content.percentCompleted, content.startedOn, content.endsOn)}
                 ${classNames.progressStyle}
