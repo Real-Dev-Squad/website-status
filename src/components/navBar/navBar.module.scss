@@ -1,10 +1,13 @@
 $offset: 10px;
 $thickness: 3px;
+$white: #fff;
+$theme-blue: #1d1283;
+$theme-active: #87d870;
 
 .navBar {
   display: flex;
   width: 100%;
-  background-color: #1d1283;
+  background-color: $theme-blue;
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
@@ -15,19 +18,19 @@ $thickness: 3px;
 
     a {
       display: block;
-      color: #ffffff;
+      color: $white;
       font-weight: bolder;
       text-align: center;
-      padding: 35px 2 * ($offset + $thickness)-1;
+      padding: 35px 2*($offset + $thickness)-1;
       text-decoration: none;
 
       &:hover {
-        color: #87d870;
+        color: $theme-active;
       }
     }
 
     .active {
-      color: #87d870;
+      color: $theme-active;
       text-decoration: underline;
       text-decoration-thickness: $thickness;
       text-underline-offset: $offset;
@@ -45,10 +48,10 @@ $thickness: 3px;
     .btnLoginText {
       border-radius: 6px;
       padding: 5px;
-      background-color: #1d1283;
-      color: white;
+      background-color: $theme-blue;
+      color: $white;
       cursor: pointer;
-      border: 2px solid white;
+      border: 2px solid $white;
       display: flex;
       justify-content: space-around;
     }
@@ -61,8 +64,6 @@ $thickness: 3px;
     }
 
     .userProfilePic {
-      width: 32px;
-      height: 32px;
       border-radius: 50%;
       display: inline;
       vertical-align: middle;
@@ -72,7 +73,7 @@ $thickness: 3px;
       display: inline;
       vertical-align: middle;
       margin-right: 10px;
-      color: rgb(255, 255, 255);
+      color: $white;
     }
   }
 }

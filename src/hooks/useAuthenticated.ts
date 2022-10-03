@@ -3,13 +3,13 @@ import { USER_SELF } from '@/components/constants/url';
 
 export const DEFAULT_AVATAR = '/Avatar.png';
 
-interface Userdata {
+type Userdata = {
   userName: string;
   firstName: string;
   profilePicture: string;
 }
 
-interface HooksReturnType {
+type HooksReturnType = {
   userData: Userdata;
   isLoggedIn: boolean;
   isLoading: boolean;

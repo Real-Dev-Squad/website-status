@@ -31,11 +31,11 @@ const Mine: FC = () => {
     callAPI
   } = useFetch(TASKS_URL, {}, false);
   const { isLoggedIn, isLoading: isAuthenticating } = useAuthenticated();
-  useEffect(() => { setTasks(response); }, [isLoading, response]);
 
   useEffect(() => {
     if (isLoggedIn && !Object.keys(response).length) {
       callAPI();
+      setTasks(response);
     }
   }, [isLoggedIn, response])
 
@@ -58,7 +58,11 @@ const Mine: FC = () => {
           ) 
         }
         {
-          !isLoading && error && <div><p>Something went wrong! Please contact admin</p></div>
+          !isLoading && error && 
+          <div>
+              <p>Something went wrong! Please contact admin
+              </p>
+          </div>
         }
         {
           isLoading

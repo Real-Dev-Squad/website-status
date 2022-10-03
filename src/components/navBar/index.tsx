@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import styles from '@/components/navBar/navBar.module.scss';
-import { LOGIN_URL, USER_PROFILE_URL } from '@/components/constants/url'
 import Link from 'next/link';
+import { LOGIN_URL, USER_PROFILE_URL } from '@/components/constants/url'
+import useAuthenticated from '@/hooks/useAuthenticated';
+import styles from '@/components/navBar/navBar.module.scss';
 const RDSLogo = '/RDSLogo.png';
-import useAuthenticated, { DEFAULT_AVATAR } from '@/hooks/useAuthenticated';
 
 const NavBar = () => {
   const GITHUB_LOGO = '/github-white.png';
@@ -26,7 +26,7 @@ const NavBar = () => {
             <a className={styles.btnLogin}>
               <button type="button" className={styles.btnLoginText}>
                 Sign In With GitHub
-                <img
+                <Image
                   className={styles.githubLogo}
                   src={GITHUB_LOGO}
                   alt="GitHub Icon"
@@ -41,18 +41,14 @@ const NavBar = () => {
             <Link href={USER_PROFILE_URL}>
               <a>
                 <div className={styles.userGreetMsg}>
-                  {isLoggedIn
-                    ? `Hello, ${userData.firstName}!`
-                    : `Hello, User!`}
+                  Hello, {userData.firstName}
                 </div>
-                <img
+                <Image
                   className={styles.userProfilePic}
-                  src={
-                    isLoggedIn
-                      ? `${userData.profilePicture}`
-                      : `${DEFAULT_AVATAR}`
-                  }
+                  src={userData.profilePicture}
                   alt="Profile Pic"
+                  width= "32px"
+                  height= "32px"
                 />
               </a>
             </Link>

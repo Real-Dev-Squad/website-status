@@ -12,7 +12,7 @@ import { CHALLENGES_URL } from '@/components/constants/url';
 import userData from '@/helperFunctions/getUser';
 import useAuthenticated from '@/hooks/useAuthenticated';
 
-const renderCardList = (challengeSection: challenge['content'], key:string, userId: string) => {
+const renderCardList = (challengeSection: challenge['content'], key: string, userId: string) => {
   if (key === 'Active') {
     return challengeSection.map((item) => <Active content={item} key={item.id} userId={userId} />);
   }
@@ -36,20 +36,17 @@ const Challenges: FC = () => {
   }, []);
 
   useEffect(() => {
-    if ('challenges' in response) {
-      let challenges: challenge['content'] = response.challenges;
-      const challengeMap: any = [];
-
-      challengeMap.Active = challenges.filter((task) => task.is_active);
-      challengeMap.Completed = challenges.filter((task) => !task.is_active);
-
-      setFilteredChallenge(challengeMap);
-    }
-  }, [isLoading, response]);
-
-  useEffect(() => {
     if (isLoggedIn && !Object.keys(response).length) {
       callAPI();
+      if ('challenges' in response) {
+        let challenges: challenge['content'] = response.challenges;
+        const challengeMap: any = [];
+  
+        challengeMap.Active = challenges.filter((task) => task.is_active);
+        challengeMap.Completed = challenges.filter((task) => !task.is_active);
+  
+        setFilteredChallenge(challengeMap);
+      }
     }
   }, [isLoggedIn, response])
 
@@ -74,30 +71,34 @@ const Challenges: FC = () => {
         }
 
         {
-          !isLoading && error && <div><p>Something went wrong! Please contact admin</p></div>
+          !isLoading && error && 
+            <div>
+              <p>Something went wrong! Please contact admin
+              </p>
+            </div>
         }
 
         {
-        isLoading
-          ? (
-            <p>Loading...</p>
-          ) : (
-            <>
-              {
-                Object.keys(filteredChallenge).length > 0
-                  ? Object.keys(filteredChallenge).map((key) => (
-                    filteredChallenge[key].length > 0
-                    && (
-                      <Accordion open title={key} key={key}>
-                        {renderCardList(filteredChallenge[key], key, user.id)}
-                      </Accordion>
-                    )
+          isLoading
+            ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {
+                  Object.keys(filteredChallenge).length > 0
+                    ? Object.keys(filteredChallenge).map((key) => (
+                      filteredChallenge[key].length > 0
+                      && (
+                        <Accordion open title={key} key={key}>
+                          {renderCardList(filteredChallenge[key], key, user.id)}
+                        </Accordion>
+                      )
 
-                  )) : (!error && 'No Challenges Found')
-              }
-            </>
-          )
-      }
+                    )) : (!error && 'No Challenges Found')
+                }
+              </>
+            )
+        }
       </div>
     </Layout>
   );
