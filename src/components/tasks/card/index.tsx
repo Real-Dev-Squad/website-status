@@ -9,6 +9,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
+import Link from 'next/link';
 
 const moment = require('moment');
 
@@ -175,6 +176,24 @@ const Card: FC<Props> = ({
     `}
     >
       <div className={classNames.cardItems}>
+    <Link
+    prefetch={false}
+    href={{
+      pathname: "/task/[id]",
+      query:{
+        id:`${cardDetails.id}`,
+        title: `${cardDetails.title}`,
+        type:`${cardDetails.type}`,
+        status:`${cardDetails.status}`,
+        links:`${cardDetails.links}`,
+        participants:`${cardDetails.participants}`,
+        assignee: `${cardDetails.assignee}`,
+        startedOn: `${cardDetails.startedOn}`,
+        endsOn: `${cardDetails.endsOn}`
+      }
+    }}
+    as={`/task/${cardDetails.id}`}
+  >
         <span
           className={classNames.cardTitle}
           contentEditable={shouldEdit}
@@ -184,6 +203,7 @@ const Card: FC<Props> = ({
         >
           {cardDetails.title}
         </span>
+    </Link>
         <span>
           <span className={classNames.cardSpecialFont}>Status:</span>
           <span
