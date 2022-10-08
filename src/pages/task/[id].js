@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import classNames from '@/components/tasks/card/task-details.module.scss'
 
 const TaskDetailsPage = () => {
   
@@ -6,9 +7,8 @@ const TaskDetailsPage = () => {
   const {title,type,status,links,participants,assignee,startedOn,endsOn} = router.query
     
   return(
-    <>
-    <main className='container' > 
-    <h1>Task Details</h1> 
+    <main className={classNames.container} > 
+    <h1>{title}</h1> 
     <div className='btn1' >
          <button type="button1" class="btn-1">Edit</button>
     </div>
@@ -61,7 +61,7 @@ const TaskDetailsPage = () => {
      </div>
         </div>
 </main>
-  </>
+
   );
 };
 
