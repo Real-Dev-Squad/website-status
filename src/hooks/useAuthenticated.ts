@@ -1,26 +1,24 @@
 import { useEffect, useState } from 'react';
-import { USER_SELF } from '@/components/constants/url';
-
-export const DEFAULT_AVATAR = '/Avatar.png';
+import { USER_SELF, DEFAULT_AVATAR } from '@/components/constants/url';
 
 type Userdata = {
   userName: string;
   firstName: string;
   profilePicture: string;
-}
+};
 
 type HooksReturnType = {
   userData: Userdata;
   isLoggedIn: boolean;
   isLoading: boolean;
-}
+};
 
 const useAuthenticated = (): HooksReturnType => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState<Userdata>({
     userName: '',
     firstName: '',
-    profilePicture: '',
+    profilePicture: DEFAULT_AVATAR
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -48,7 +46,7 @@ const useAuthenticated = (): HooksReturnType => {
           setUserData({
             userName: responseJson.username,
             firstName: responseJson.first_name,
-            profilePicture: responseJson.picture?.url ?? DEFAULT_AVATAR,
+            profilePicture: responseJson?.picture?.url
           });
         })
         .catch((err) => {
@@ -56,7 +54,6 @@ const useAuthenticated = (): HooksReturnType => {
         })
         .finally(() => setIsLoading(false));
     };
-
     fetchData();
   }, []);
   return { userData, isLoggedIn, isLoading };

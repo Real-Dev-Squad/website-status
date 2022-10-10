@@ -4,3 +4,4 @@ export const LOGIN_URL = 'https://github.com/login/oauth/authorize?client_id=23c
 export const USER_PROFILE_URL = 'https://my.realdevsquad.com/profile';
 export const CHALLENGES_URL = `${BASE_URL}/challenges`;
 export const USER_SELF = `${BASE_URL}/users/self`;
+export const DEFAULT_AVATAR = '/Avatar.png';

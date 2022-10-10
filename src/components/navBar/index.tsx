@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { LOGIN_URL, USER_PROFILE_URL } from '@/components/constants/url'
+import { LOGIN_URL, USER_PROFILE_URL, DEFAULT_AVATAR } from '@/components/constants/url'
 import useAuthenticated from '@/hooks/useAuthenticated';
 import styles from '@/components/navBar/navBar.module.scss';
 const RDSLogo = '/RDSLogo.png';
@@ -8,6 +8,7 @@ const RDSLogo = '/RDSLogo.png';
 const NavBar = () => {
   const GITHUB_LOGO = '/github-white.png';
   const { userData, isLoggedIn } = useAuthenticated()
+
 
   return (
     <nav className={styles.navBar}>
@@ -19,7 +20,6 @@ const NavBar = () => {
         <a href="https://crypto.realdevsquad.com/">Crypto</a>
         <a className={styles.active} href="https://status.realdevsquad.com/">Status</a>
       </div>
-
       <div>
         {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
@@ -45,14 +45,21 @@ const NavBar = () => {
                 </div>
                 <Image
                   className={styles.userProfilePic}
-                  src={userData.profilePicture}
+                  src={
+                    userData.profilePicture == ''
+                      ? `${DEFAULT_AVATAR}`
+                      : `${userData.profilePicture}`
+                  }
                   alt="Profile Pic"
-                  width= "32px"
-                  height= "32px"
+                  width="32px"
+                  height="32px"
                 />
               </a>
             </Link>
+
+
           </div>
+
         )}
       </div>
     </nav>
