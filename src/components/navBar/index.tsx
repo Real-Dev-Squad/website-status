@@ -9,7 +9,6 @@ const NavBar = () => {
   const GITHUB_LOGO = '/github-white.png';
   const { userData, isLoggedIn } = useAuthenticated()
 
-
   return (
     <nav className={styles.navBar}>
       <div>
@@ -56,10 +55,7 @@ const NavBar = () => {
                 />
               </a>
             </Link>
-
-
           </div>
-
         )}
       </div>
     </nav>
