@@ -179,20 +179,12 @@ const Card: FC<Props> = ({
     <Link
     prefetch={false}
     href={{
-      pathname: "/task/[id]",
+      pathname: "/tasks/[id]",
       query:{
         id:`${cardDetails.id}`,
-        title: `${cardDetails.title}`,
-        type:`${cardDetails.type}`,
-        status:`${cardDetails.status}`,
-        links:`${cardDetails.links}`,
-        participants:`${cardDetails.participants}`,
-        assignee: `${cardDetails.assignee}`,
-        startedOn: `${cardDetails.startedOn}`,
-        endsOn: `${cardDetails.endsOn}`
       }
     }}
-    as={`/task/${cardDetails.id}`}
+    as={`/tasks/${cardDetails.id}`}
   >
         <span
           className={classNames.cardTitle}
