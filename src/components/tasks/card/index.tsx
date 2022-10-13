@@ -88,10 +88,9 @@ const Card: FC<Props> = ({
   }
   
   function updateTaskLevelItems(newTaskLevelValue: TaskLevelType){
-    const toChange: any = cardDetails;
     const taskLevel: keyof typeof cardDetails = 'taskLevel'
     
-    onContentChange(toChange.id, {
+    onContentChange(cardDetails.id, {
       [taskLevel]: newTaskLevelValue
     });
   }
@@ -241,9 +240,9 @@ const Card: FC<Props> = ({
           ? <TaskLevelEdit updateTaskLevelItems={updateTaskLevelItems} {...(content.taskLevel && { taskLevel: content.taskLevel })}/>
           : content.taskLevel && (
             <>    
-              {content.taskLevel?.category && <span title='task category' className={`${classNames.taskLevelItems}`}>{content.taskLevel?.category}</span>}
+              {content.taskLevel?.category && <span title='task category' className={`${classNames.taskLevelItems}`}>{content.taskLevel?.category.toLowerCase()}</span>}
               
-              { content.taskLevel?.level && <span title='task level' className={`${classNames.taskLevelItems}`}>Level: {content.taskLevel?.level}</span>}
+              { content.taskLevel?.level && <span title='task level' className={`${classNames.taskLevelItems}`}>level: {content.taskLevel?.level}</span>}
             </>
           )
         }

@@ -5,6 +5,18 @@ $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
 
+.srOnly{ //screen reader only
+  position: absolute; 
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px; 
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -127,9 +139,35 @@ $black: #252525;
 }
 
 
-
-.selectDropdown{
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+.selectWrapper{
+  border: 1px solid $black;
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  display: grid;
+  grid-template-areas: select;
+  align-items: center;
+  
+  .selectDropdown{
+    width: 100%;
+    appearance: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    outline: none;
+    border: none;
+    padding: 0 1em 0 0;
+    border-radius: .25em;
+    grid-area: select;
+  }
+  
+  &::after {
+    content: "";
+    grid-area: select;
+    width: 0.7em;
+    height: 0.5em;
+    background-color: #041187;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    justify-self: end;
+  }
 }
