@@ -3,57 +3,66 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  width: 100%;
+  
 }
-.body {
+.body{
   background-color: white;
   font-size: 5px;
   justify-content: center;
-  font-family: 'Raleway', sans-serif;
-  width: 100%;
+  font-family: 'Raleway', sans-serif; 
+  align-items: center;
 }
-.container {
+.container{
   margin-top: 50px;
   justify-content: center;
-  margin: 10px 10px;
-  border: 2px solid #1d1283;
-  border-radius: 5px;
+  margin: 20px 20px;  
+  border: 3px blue;
 }
-.mainblock {
-  display: grid;
-  gap: 5px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-
+.head{
   margin: 10px 10px;
+  align-items: center;
+}
+.mainblock{
+  display: grid;
+   /* grid-template-columns: repeat(
+                auto-fit, minmax(300px, 1fr));*/
+
+   /* display: grid;
+                width: 100%;
+                grid-template-columns: 1fr 300px;*/
+  grid-template-columns: 2fr 1fr;
+  margin: 10px 10px; 
   padding: 5px 5px;
   border-radius: 5px;
   justify-content: center;
-  max-width: 900px;
   align-items: center;
   margin-left: auto;
-  margin-right: auto;
+  margin-right: auto; 
 }
 
-// h1 {
-//   align-items: center;
-//   padding: 10px 10px;
-//   color: #e30062;
-//   align-content: center;
-//   text-align: center;
-//   font-family: "Raleway", sans-serif;
-// }
-// h6 {
-//   margin: 10px 5px;
-//   font-family: "Raleway", sans-serif;
-// }
-// h5 {
-//   margin: 10px 5px;
-//   width: fit-content;
-//   color: #1d1283;
-//   font-family: "Raleway", sans-serif;
-// }
+.head1{
+  align-items: center;
+  padding:  5px 10px;
+  color:#E30062;
+  font-family: 'Raleway', sans-serif;
+  min-height: 50px;
+  margin: 10px 5px;
+  min-width: 240px;
+  font-size: 20px;
+  padding-left: 5px 5px;
+}
+.head6{
+margin: 10px 5px;
+font-family: 'Raleway', sans-serif;
+}
+.head5{
+  margin: 10px 5px;
+  width: fit-content;
+  color: #1D1283;
+  font-family: 'Raleway', sans-serif;
+}
 
-.Details {
+.details{
   margin: 10px 20px;
   background-color: #f0f0f0c7;
   padding: 15px 15px;
@@ -61,74 +70,119 @@
   min-height: 100px;
 }
 
-.detail-opt {
+@media  screen and (min-width:760px) {
+.detailopt{
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 5px 5px;
 }
-.Description {
+}
+.description{
   margin: 10px 20px;
   padding: 15px 15px;
-  background-color: #f0f0f0;
+  background-color: #F0F0F0;
   border-radius: 5px;
   min-height: 100px;
 }
-.Activity {
+.activity{ 
   margin: 10px 20px;
   padding: 15px 15px;
-  background-color: #f0f0f0;
+  background-color: #F0F0F0;
   border-radius: 5px;
   min-height: 100px;
 }
-.Participants {
-  margin: 10px 20px;
-  padding: 15px 15px;
-  background-color: #f0f0f0;
+.participants{
+  margin: 10px 20PX ;
+  padding: 15px 15px ;
+  background-color: #F0F0F0;
   border-radius: 5px;
   min-height: 100px;
 }
-.part-opt {
+.partopt{
   display: grid;
   grid-template-rows: 1fr 1fr;
   padding: 5px 5px;
 }
 
-.Dates {
-  margin: 10px 20px;
+.dates{
+  margin: 10px 20PX ;
   padding: 15px 15px;
-  background-color: #f0f0f0;
+  background-color: #F0F0F0;
   border-radius: 5px;
   min-height: 100px;
-  border: 2px #1d1283;
+  border:2px #1D1283;
 }
-.date-opt {
+.dateopt{
   display: grid;
   grid-template-rows: 1fr 1fr 1fr;
   padding: 5px 5px;
 }
 
-// p{
-//   align-items: center;
-//   font-size: 12px;
-//   padding-left: 5px 5px;
-//   font-family: 'Raleway', sans-serif;
-// }
-
-.btn {
-  margin: 5px 5px;
+.para{
+  align-items: center;
+  font-size: 12px;
+  padding-left: 5px 5px;
+  font-family: 'Raleway', sans-serif;
 }
-.btn1 {
+
+.btn{
+  margin: 5px 5px;
+  
+}
+.btn1{
   margin: 10px 10px;
   margin-left: 80%;
   margin-right: 20%;
 }
 
-.btn-1 {
-  font-weight: 700;
+.btn-1{
+  font-weight: 700 ;
   font-size: small;
-  padding: 8px 16px;
-  border-radius: 10px;
-  background-color: #463ca0;
-  border: none;
-  color: #f0f0f0;
+padding: 8px 16px;
+border-radius: 10px;
+background-color: #463ca0;
+border: none;
+color: #F0F0F0;
 }
+
+
+@media  screen and (max-width:750px) {
+  .mainblock{
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit, minmax(300px, 1fr));
+         
+ }
+}
+
+@media  screen and (max-width:760px) {
+  .btn1{
+    margin: 10px 10px;
+    margin-left: 80%;
+    margin-right: 20%;     
+         
+ }
+}
+
+@media  screen and (max-width:760px) {
+.detailopt{
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr ;
+  padding: 5px 5px;
+}
+}
+
+@media  screen and (max-width:760px) {
+  .head{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    padding: 5px 5px;
+  }
+  }
+  @media  screen and (min-width:760px) {
+    .head{
+      display: grid;
+      grid-template-columns: 2fr 1fr ;
+      padding: 5px 5px;
+    }
+    }
