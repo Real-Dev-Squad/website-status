@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect, SetStateAction } from "react";
 import userType from '@/interfaces/user.type';
 import { ALL_USERS } from '@/components/constants/url';
 import fetch from '@/helperFunctions/fetch';
@@ -6,12 +6,14 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import classNames from '@/components/tasks/card/card.module.scss';
 
 type Props = {
+  cardDetails: any
   updateAssignee: (username: string) => void
+  setisAssigneeDropdownOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
 //https://github.com/Real-Dev-Squad/website-status/issues/303
 
-const AssigneeDropdownMenu: FC<Props> = ({ updateAssignee }) => {
+const AssigneeDropdownMenu: FC<Props> = ({ cardDetails,updateAssignee,setisAssigneeDropdownOpen }) => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredList, setFilteredList] = useState([]);
   const [assigneeList, setAssigneeList] = useState([])
@@ -51,19 +53,30 @@ const AssigneeDropdownMenu: FC<Props> = ({ updateAssignee }) => {
   return (
     <>
       <div className={classNames.dropdownMenu}>
-        <label htmlFor="assigneeDropdownMenu">
+        <label htmlFor="assigneeInput"></label>
+        <div className={classNames.assigneeInputWrapper}>
+          <span className={classNames.currentAssignee}>
+            <span className={classNames.currentAssigneeName}>
+            {cardDetails.assignee ? cardDetails.assignee : <b><em>Unassigned</em></b>}
+            </span>
+          <button aria-label="close input search box"
+                  onClick={() => setisAssigneeDropdownOpen((prev) => !prev)}>&times;</button>
+          </span>
+          
           <input
-            id="assigneeDropdownMenu"
-            key="assigneeDropdownMenu"
+            id="assigneeInput"
             value={searchValue}
             type="search"
             placeholder='search for members'
             autoComplete="off"
+            className={classNames.assigneeInput}
             onChange={onChangeHandler} />
-        </label>
+        </div>
+        
+        {filteredList.length > 0 &&  
         <div className={searchValue && classNames.assigneeMenu}>
           <ul className={classNames.assigneeList}>
-            {filteredList &&
+            {
               filteredList.map((user: userType) => (
                 <li key={user.id}
                   className={`${classNames.userName}`}
@@ -74,6 +87,7 @@ const AssigneeDropdownMenu: FC<Props> = ({ updateAssignee }) => {
             }
           </ul>
         </div>
+        }
       </div>
     </>
   )

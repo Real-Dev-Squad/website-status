@@ -10,6 +10,10 @@ $clr-card-title: #041187;
 $clr-card-special-font: #aeaeae;
 $clr-overdue-task-bg: #ffebee;
 
+.cursorPointer{
+  cursor: pointer;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -110,24 +114,62 @@ $clr-overdue-task-bg: #ffebee;
 }
 
 .dropdownMenu {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: .75rem;
-  right: 0;
-  top: 90%;
-  z-index: 10;
+  position: relative;
+}
+
+.assigneeInputWrapper{
+   position: relative;
+    .currentAssignee{
+      position: absolute;
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      top: -95%;
+      width:98%;
+      background-color: #041187;
+      color: $white;
+      border-radius: .25em;
+      padding: .5em;
+      padding-bottom: 1em;
+      .currentAssigneeName{
+        font-size: .85rem;
+        margin: 0;
+      }
+      button{
+        color: red;
+        border-radius:50%;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+      }
+    }
+  .assigneeInput{
+    font-family: inherit;
+    padding: 0.25em;
+    border: 2px solid #8b8a8b;
+    border-radius: .25em;
+    margin-top: 10px;
+    position: relative;
+    z-index: 99;
+  }
 }
 
 .assigneeMenu {
   border-radius: .25rem;
   background-color: $neutral;
-  padding: .5rem;
+  padding: .5em;
   box-shadow: 0 0 20px $black;
-
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  transform: translateY(15%);
+  
   .assigneeList {
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
   }
 
   .userName {
@@ -136,11 +178,6 @@ $clr-overdue-task-bg: #ffebee;
   }
 }
 
-
 .userName+.userName {
   border-top: 1px solid $black;
-}
-
-.isEditMode {
-  cursor: pointer;
 }

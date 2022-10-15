@@ -259,17 +259,30 @@ const Card: FC<Props> = ({
         </span>
         <span>
           <span className={classNames.cardSpecialFont}>Assignee:</span>
+          { IsUserAuthorized && isAssigneeDropdownOpen && shouldEdit
+            ? (
+             <AssigneeDropdownMenu
+                cardDetails={cardDetails}
+                updateAssignee={updateAssignee}
+                setisAssigneeDropdownOpen={setisAssigneeDropdownOpen}
+              /> )
+              : cardDetails.assignee ? (
           <span
-            className={classNames.cardStrongFont}
+            className={`${classNames.cardStrongFont} ${shouldEdit && classNames.cursorPointer}`}
             role="button"
             tabIndex={0}
-            ref={assigneeNameRefElement}
-          >
+            onClick={() => setisAssigneeDropdownOpen(!isAssigneeDropdownOpen)}
+          > 
             {cardDetails.assignee}
           </span>
-          <span
-            className={`${classNames.contributorImage} ${shouldEdit && classNames.isEditMode}`}
+              )
+            : shouldEdit && <span 
             onClick={() => setisAssigneeDropdownOpen(!isAssigneeDropdownOpen)}
+            className={`${classNames.cardStrongFont} ${classNames.cursorPointer}`} role="button"
+            tabIndex={0}>Unassigned</span>
+          }
+          <span
+            className={`${classNames.contributorImage}`}
           >
             <Image
               src={assigneeProfilePic}
@@ -279,11 +292,6 @@ const Card: FC<Props> = ({
               height={45}
             />
           </span>
-          
-          {(IsUserAuthorized && isAssigneeDropdownOpen && shouldEdit) &&
-            <AssigneeDropdownMenu
-          updateAssignee={updateAssignee}
-            />}
         </span>
       </div>
       {IsUserAuthorized && showEditButton &&
