@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
-import useFetch from "@/hooks/useFetch";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useRouter } from 'next/router';
+import useFetch from '@/hooks/useFetch';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-import TaskDetails from "@/components/tasks/taskDetails/TaskDetails";
+import TaskDetails from '@/components/tasks/taskDetails/TaskDetails';
 
 const TaskDetailsPage = () => {
   const router = useRouter();
