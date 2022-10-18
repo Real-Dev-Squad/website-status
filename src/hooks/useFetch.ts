@@ -7,7 +7,7 @@ const useFetch = (url: string, options: object = {}, isCall = true) => {
   const [response, setResponse] = useState<any>({});
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const callAPI = async ():Promise<any | EmptyFunction> =>{
+  const callAPI = async ():Promise<any | EmptyFunction> => {
     let cancel;
     setIsLoading(true);
     try {

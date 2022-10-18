@@ -4,15 +4,17 @@ import { LOGIN_URL, USER_PROFILE_URL, DEFAULT_AVATAR } from '@/components/consta
 import useAuthenticated from '@/hooks/useAuthenticated';
 import styles from '@/components/navBar/navBar.module.scss';
 const RDSLogo = '/RDSLogo.png';
+const GITHUB_LOGO = '/github-white.png';
 
 const NavBar = () => {
-  const GITHUB_LOGO = '/github-white.png';
   const { userData, isLoggedIn } = useAuthenticated()
 
   return (
     <nav className={styles.navBar}>
       <div>
-        <a className={styles.logo} href="https://realdevsquad.com"><Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" /></a>
+        <a className={styles.logo} href="https://realdevsquad.com">
+          <Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" />
+        </a>
         <a href="https://welcome.realdevsquad.com/">Welcome</a>
         <a href="https://www.realdevsquad.com/events.html">Events</a>
         <a href="https://members.realdevsquad.com/">Members</a>

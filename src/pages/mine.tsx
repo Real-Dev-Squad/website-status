@@ -7,7 +7,7 @@ import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import useAuthenticated from '@/hooks/useAuthenticated';
 
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 
 function CardList(tasks: task[]) {
   return tasks.map(
