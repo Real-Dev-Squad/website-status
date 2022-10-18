@@ -9,7 +9,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
-import TaskLevelEdit from './taskLevelEdit.component';
+import TaskLevelEdit from './taskLevelEdit';
 import TaskLevelType from '@/interfaces/taskLevel.type';
 
 const moment = require('moment');
