@@ -1,10 +1,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { LOGIN_URL, USER_PROFILE_URL, DEFAULT_AVATAR } from '@/components/constants/url'
+import { LOGIN_URL, 
+        USER_PROFILE_URL, 
+        DEFAULT_AVATAR, 
+        HOME_URL,
+        WELCOME_URL,
+        EVENTS_URL,
+        CRYPTO_URL,
+        MEMBERS_URL,
+        STATUS_URL,
+        GITHUB_LOGO,
+        RDSLogo
+        } from '@/components/constants/url'
 import useAuthenticated from '@/hooks/useAuthenticated';
 import styles from '@/components/navBar/navBar.module.scss';
-const RDSLogo = '/RDSLogo.png';
-const GITHUB_LOGO = '/github-white.png';
+
 
 const NavBar = () => {
   const { userData, isLoggedIn } = useAuthenticated()
@@ -12,14 +22,14 @@ const NavBar = () => {
   return (
     <nav className={styles.navBar}>
       <div>
-        <a className={styles.logo} href="https://realdevsquad.com">
+        <a className={styles.logo} href={HOME_URL}>
           <Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" />
         </a>
-        <a href="https://welcome.realdevsquad.com/">Welcome</a>
-        <a href="https://www.realdevsquad.com/events.html">Events</a>
-        <a href="https://members.realdevsquad.com/">Members</a>
-        <a href="https://crypto.realdevsquad.com/">Crypto</a>
-        <a className={styles.active} href="https://status.realdevsquad.com/">Status</a>
+        <a href={WELCOME_URL}>Welcome</a>
+        <a href={EVENTS_URL}>Events</a>
+        <a href={MEMBERS_URL}>Members</a>
+        <a href={CRYPTO_URL}>Crypto</a>
+        <a className={styles.active} href={STATUS_URL}>Status</a>
       </div>
       <div>
         {!isLoggedIn ? (
@@ -27,12 +37,10 @@ const NavBar = () => {
             <a className={styles.btnLogin}>
               <button type="button" className={styles.btnLoginText}>
                 Sign In With GitHub
-                <Image
+                <img
                   className={styles.githubLogo}
                   src={GITHUB_LOGO}
                   alt="GitHub Icon"
-                  height="15px"
-                  width="15px"
                 />
               </button>
             </a>
@@ -44,7 +52,7 @@ const NavBar = () => {
                 <div className={styles.userGreetMsg}>
                   Hello, {userData.firstName}
                 </div>
-                <Image
+                <img
                   className={styles.userProfilePic}
                   src={
                     userData.profilePicture == ''

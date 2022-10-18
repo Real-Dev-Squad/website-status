@@ -55,31 +55,34 @@ const Mine: FC = () => {
                 Click here to Login
               </a>
             </div>
-          ) 
+          )
         }
         {
-          !isLoading && error && 
+          !isLoading && error &&
           <div>
-              <p>Something went wrong! Please contact admin
-              </p>
+            <p>Something went wrong! Please contact admin
+            </p>
           </div>
         }
+
         {
+        isAuthenticating ?
           isLoading
-            ? (
-              <p>Loading...</p>
-            ) : (
-              <>
-                {
-                  tasks.length > 0
-                    ? (
-                      <div>
-                        {CardList(tasks)}
-                      </div>
-                    ) : (!error && 'No Tasks Found')
-                }
-              </>
-            )
+          ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {
+                tasks.length > 0
+                  ? (
+                    <div>
+                      {CardList(tasks)}
+                    </div>
+                  ) : (!error && 'No Tasks Found')
+              }
+            </>
+          ) :
+          '' 
         }
       </div>
     </Layout>
