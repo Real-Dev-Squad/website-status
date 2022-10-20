@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useContext } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -27,6 +27,7 @@ import {
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -87,8 +88,8 @@ const Index: FC = () => {
   const { state: appState } = useAppContext();  
   const [filteredTask, setFilteredTask] = useState<any>([]);
   const { response, error, isLoading } = useFetch(TASKS_URL);
-  const [isUserAuthorized, setIsUserAuthorized] = useState(false);
   const { isEditMode } = appState;
+  const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
   useEffect(() => {
     if ('tasks' in response) {
@@ -111,28 +112,6 @@ const Index: FC = () => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: SELF_URL });
-        const { data } = await requestPromise;
-        const userRoles = {
-          adminUser: data.roles?.admin,
-          superUser: data.roles?.super_user,
-        };
-        const { adminUser, superUser } = userRoles;
-        setIsUserAuthorized(!!adminUser || !!superUser);
-      } catch (err: any) {
-        toast(ERROR, err.message);
-      }
-    };
-    fetchData();
-
-    return (() => {
-      setIsUserAuthorized(false);
-    });
-  }, []);
 
   return (
     <Layout>
