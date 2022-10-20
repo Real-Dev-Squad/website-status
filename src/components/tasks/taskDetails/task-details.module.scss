@@ -6,6 +6,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 5rem;
+  gap: 2rem;
 }
 
 .title {
@@ -84,4 +86,17 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+}
+
+.isEditTrue {
+  display: flex;
+  gap: 1rem;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #f0f0f0;
+  font-weight: bold;
 }
