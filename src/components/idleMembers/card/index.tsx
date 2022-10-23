@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent } from 'react';
+import { FC, SyntheticEvent, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/idleMembers/card/card.module.scss';
 import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
@@ -10,13 +10,15 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
+  const [isImageAvailable, setIsImageAvailable] = useState(false);
+
   const assigneeProfilePic = (name: string) => `${IMAGE_URL}/${name}/img.png`;
   const getMemberDetails = (name: string) => {
     const newWindow = window.open(`https://members.realdevsquad.com/${name}`, '_blank', ' noopener ,norefferrer');
     if (newWindow) newWindow.opener = null;
   };
   const assigneeImageOnError = (e: SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = DUMMY_PROFILE;
+    setIsImageAvailable(true);
   };
   return (
     <div
@@ -26,7 +28,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
       aria-hidden="true"
     >
       <Image
-        src={assigneeProfilePic(idleMemberUserName)}
+        src={isImageAvailable ? `/${DUMMY_PROFILE}` : assigneeProfilePic(idleMemberUserName)}
         alt={idleMemberUserName}
         onError={assigneeImageOnError}
         width={150}
