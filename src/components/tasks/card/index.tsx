@@ -94,7 +94,7 @@ const Card: FC<Props> = ({
       }
     } 
   }
-  
+
   function inputParser(input: string) {
     const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
     return parsedDate
