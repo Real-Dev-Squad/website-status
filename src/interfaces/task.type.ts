@@ -1,5 +1,4 @@
 import award from '@/interfaces/award.type';
-import TaskLevelType from '@/interfaces/taskLevel.type';
 
 type task = {
   id: string,
@@ -19,7 +18,8 @@ type task = {
   lossRate: award,
   isNoteworthy: boolean,
   createdBy: string,
-  taskLevel?: TaskLevelType,
+  level?: number,
+  category?: string
 };
 
 export default task;

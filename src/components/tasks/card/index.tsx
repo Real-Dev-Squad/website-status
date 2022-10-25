@@ -9,8 +9,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
-import TaskLevelEdit from './taskLevelEdit';
-import TaskLevelType from '@/interfaces/taskLevel.type';
+import TaskLevelEdit from './TaskTagEdit';
 
 const moment = require('moment');
 
@@ -72,27 +71,28 @@ const Card: FC<Props> = ({
   }
 
   function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
+    const toChange: any = cardDetails;
     if (event.key === 'Enter') {
-      const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
 
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${event.target.value}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
-
       onContentChange(toChange.id, {
         [changedProperty]: toChange[changedProperty],
       });
-    }
-  }
-  
-  function updateTaskLevelItems(newTaskLevelValue: TaskLevelType){
-    const taskLevel: keyof typeof cardDetails = 'taskLevel'
-    
-    onContentChange(cardDetails.id, {
-      [taskLevel]: newTaskLevelValue
-    });
+    } else if (changedProperty === 'category' || changedProperty === 'level')  {
+      if (changedProperty === 'level' ) {
+        onContentChange(toChange.id, {
+          [changedProperty]: Number(event.target.value),
+        });
+      } else {
+        onContentChange(toChange.id, {
+          [changedProperty]: event.target.value,
+        });
+      }
+    } 
   }
   
   function inputParser(input: string) {
@@ -235,16 +235,14 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
-      <div className={classNames.taskLevel}>
+      <div className={classNames.taskTags}>
         {(shouldEdit && IsUserAuthorized)
-          ? <TaskLevelEdit updateTaskLevelItems={updateTaskLevelItems} {...(content.taskLevel && { taskLevel: content.taskLevel })}/>
-          : content.taskLevel && (
+          ? <TaskLevelEdit handleChange={handleChange} level={content.level} category={content.category}/>
+          :
             <>    
-              {content.taskLevel?.category && <span title='task category' className={`${classNames.taskLevelItems}`}>{content.taskLevel?.category.toLowerCase()}</span>}
-              
-              { content.taskLevel?.level && <span title='task level' className={`${classNames.taskLevelItems}`}>level: {content.taskLevel?.level}</span>}
+              {content.category && <span title='task category' className={`${classNames.taskTagItems}`}>{content.category.toLowerCase()}</span>}
+              {content.level && <span title='task level' className={`${classNames.taskTagItems}`}>level: {content.level}</span>}
             </>
-          )
         }
       
       </div>
