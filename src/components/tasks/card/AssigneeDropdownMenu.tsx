@@ -1,53 +1,31 @@
-import { FC, useState, useEffect, SetStateAction } from "react";
+import { FC, useState, SetStateAction } from "react";
 import userType from '@/interfaces/user.type';
-import { ALL_USERS } from '@/components/constants/url';
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
 import classNames from '@/components/tasks/card/card.module.scss';
 
 type Props = {
   cardDetails: any
+  allUsers: any
   updateAssignee: (username: string) => void
   setisAssigneeDropdownOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
 //https://github.com/Real-Dev-Squad/website-status/issues/303
 
-const AssigneeDropdownMenu: FC<Props> = ({ cardDetails,updateAssignee,setisAssigneeDropdownOpen }) => {
+const AssigneeDropdownMenu: FC<Props> = ({ cardDetails,updateAssignee,setisAssigneeDropdownOpen, allUsers }) => {
   const [searchValue, setSearchValue] = useState("");
   const [filteredList, setFilteredList] = useState([]);
-  const [assigneeList, setAssigneeList] = useState([])
-  const { ERROR } = ToastTypes;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: ALL_USERS });
-        const { data } = await requestPromise;
-        const usersData = data.members || data.users
-        setAssigneeList(usersData)
-      } catch (err: any) {
-        toast(ERROR, err.message);
-      }
-    };
-    fetchData();
-
-  }, []);
-
-  useEffect(() => {
-    if (searchValue) {
-      const newFilteredList = assigneeList.filter((member: userType) => (
-        member.username?.toLowerCase().includes(searchValue.toLowerCase())
+  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value)
+    if (e.target.value) {
+      const newFilteredList = allUsers.filter((user: userType) => (
+        user.username?.toLowerCase().includes(e.target.value.toLowerCase())
       ));
       setFilteredList(newFilteredList)
     }
     else {
       setFilteredList([])
     }
-  }, [searchValue])
-
-  const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value)
   }
 
   return (
@@ -79,7 +57,7 @@ const AssigneeDropdownMenu: FC<Props> = ({ cardDetails,updateAssignee,setisAssig
             {
               filteredList.map((user: userType) => (
                 <li key={user.id}
-                  className={`${classNames.userName}`}
+                  className={classNames.userName}
                   onClick={() => updateAssignee(user.username!)}>
                   {user.username}
                 </li>

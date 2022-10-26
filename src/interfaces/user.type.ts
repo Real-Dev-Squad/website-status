@@ -2,7 +2,7 @@ type userType = {
   id: string,
   username?: string,
   github_id: string,
-  github_display_name: String | null,
+  github_display_name: string | null,
   incompleteUserDetails: boolean,
   roles: {
     archived: boolean,

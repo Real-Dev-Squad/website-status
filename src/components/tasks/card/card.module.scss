@@ -147,10 +147,14 @@ $clr-overdue-task-bg: #ffebee;
     font-family: inherit;
     padding: 0.25em;
     border: 2px solid #8b8a8b;
-    border-radius: .25em;
+    border-radius: 0.25em;
     margin-top: 10px;
     position: relative;
     z-index: 99;
+    &:focus{
+    outline: none;
+    border: 2px solid $black;
+    }
   }
 }
 

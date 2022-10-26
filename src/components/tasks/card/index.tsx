@@ -10,6 +10,8 @@ import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
 import AssigneeDropdownMenu from "./AssigneeDropdownMenu"
+import { ALL_USERS } from '@/components/constants/url';
+import userType from '@/interfaces/user.type';
 
 const moment = require('moment');
 
@@ -37,6 +39,7 @@ const Card: FC<Props> = ({
   const [showEditButton, setShowEditButton] = useState(false);
   const [isAssigneeDropdownOpen, setisAssigneeDropdownOpen] = useState(false)
   const assigneeNameRefElement = useRef<HTMLElement>(null)
+  const [allUsers, setAllUsers] = useState(null)
   const [keyLongPressed] = useKeyLongPressed();
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -88,7 +91,7 @@ const Card: FC<Props> = ({
       });
     }
   }
-
+  
   const updateAssignee = (username: string) => {
     const toChange: any = cardDetails;
     const changedProperty: keyof typeof cardDetails = 'assignee';
@@ -162,6 +165,22 @@ const Card: FC<Props> = ({
       </span>
       )
   }
+  
+  useEffect(() => {
+    if(shouldEdit){
+      const fetchData = async () => {
+        try {
+          const { requestPromise } =  fetch({ url: ALL_USERS })
+          const { data } = await requestPromise;
+          const { users } = data
+          setAllUsers(users)
+        } catch (err: any) {
+          toast(ERROR, err.message);
+        }
+      };
+      fetchData();
+    }
+  },[shouldEdit])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -264,6 +283,7 @@ const Card: FC<Props> = ({
              <AssigneeDropdownMenu
                 cardDetails={cardDetails}
                 updateAssignee={updateAssignee}
+                allUsers={allUsers}
                 setisAssigneeDropdownOpen={setisAssigneeDropdownOpen}
               /> )
               : cardDetails.assignee ? (
@@ -282,7 +302,7 @@ const Card: FC<Props> = ({
             tabIndex={0}>Unassigned</span>
           }
           <span
-            className={`${classNames.contributorImage}`}
+            className={classNames.contributorImage}
           >
             <Image
               src={assigneeProfilePic}
