@@ -214,7 +214,7 @@ const Card: FC<Props> = ({
         </span>
       </div>
       <div className={classNames.taskTags}>
-        {(shouldEdit && IsUserAuthorized)
+        {(shouldEdit && isUserAuthorized)
           ? <TaskLevelEdit handleChange={handleChange} level={content.level} category={content.category}/>
           :
             <>    
