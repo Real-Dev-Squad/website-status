@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useEffect } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import task from '@/interfaces/task.type';
@@ -11,7 +11,6 @@ import { useAppContext } from '@/context';
 import { ALT_KEY } from '@/components/constants/key';
 import AssigneeDropdownMenu from "./AssigneeDropdownMenu"
 import { ALL_USERS } from '@/components/constants/url';
-import userType from '@/interfaces/user.type';
 
 const moment = require('moment');
 
@@ -38,7 +37,6 @@ const Card: FC<Props> = ({
   const [IsUserAuthorized, setIsUserAuthorized] = useState(false);
   const [showEditButton, setShowEditButton] = useState(false);
   const [isAssigneeDropdownOpen, setisAssigneeDropdownOpen] = useState(false)
-  const assigneeNameRefElement = useRef<HTMLElement>(null)
   const [allUsers, setAllUsers] = useState(null)
   const [keyLongPressed] = useKeyLongPressed();
   useEffect(() => {
@@ -96,13 +94,9 @@ const Card: FC<Props> = ({
     const toChange: any = cardDetails;
     const changedProperty: keyof typeof cardDetails = 'assignee';
     toChange[changedProperty] = username
-    if (assigneeNameRefElement.current !== null) {
-      assigneeNameRefElement.current.innerText = username
-    }
     setAssigneeProfilePic(
       `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
     )
-
     onContentChange(toChange.id, {
       [changedProperty]: toChange[changedProperty]
     })
