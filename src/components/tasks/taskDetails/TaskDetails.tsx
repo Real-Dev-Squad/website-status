@@ -1,43 +1,56 @@
-import React from 'react';
-import NavBar from '@/components/navBar/index.tsx';
+import React, { ChangeEvent, FC } from 'react';
+import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import classNames from './task-details.module.scss';
-import { useState, useEffect } from 'react';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import task from '@/interfaces/task.type';
+import { useState, useEffect, useContext } from 'react';
 import useFetch from '@/hooks/useFetch';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 
-function TaskDetails({ url, taskID }) {
-  const isAuthorized = true; //use context when Akshay's PR is merged
+type Props = {
+  url: string;
+  taskID: string;
+};
 
+const TaskDetails: FC<Props> = ({ url, taskID }) => {
+  const isAuthorized = useContext(isUserAuthorizedContext);
   const [isEdit, setIsEdit] = useState(false);
-
-  const [taskDetails, setTaskDetails] = useState({});
+  const [initialData, setInitialData] = useState<task>();
+  const [taskDetails, setTaskDetails] = useState<task>();
   const [editedDetails, setEditedDetials] = useState({});
   const { response, error, isLoading } = useFetch(url);
+
+  const { SUCCESS, ERROR } = ToastTypes;
 
   useEffect(() => {
     setTaskDetails({
       ...response.taskData,
-      initialData: { ...response.taskData },
     });
+    setInitialData({ ...response.taskData });
   }, [isLoading, response]);
 
-  function convertTimeStamp(timeStamp) {
+  function convertTimeStamp(timeStamp: any) {
     const dateTime = new Date(timeStamp);
     return dateTime.toLocaleString();
   }
 
-  function handleChange(event) {
+  function handleChange(event: ChangeEvent) {
     setEditedDetials((prv) => {
       return {
         ...prv,
-        [event.target.name]: event.target.value,
+        [(event.target as HTMLInputElement).name]: (
+          event.target as HTMLInputElement
+        ).value,
       };
     });
-    setTaskDetails((prv) => {
+    setTaskDetails((prv: any) => {
       return {
         ...prv,
-        [event.target.name]: event.target.value,
+        [(event.target as HTMLInputElement).name]: (
+          event.target as HTMLInputElement
+        ).value,
       };
     });
   }
@@ -45,20 +58,15 @@ function TaskDetails({ url, taskID }) {
   function onCancel() {
     setIsEdit(false);
     setEditedDetials({});
-    setTaskDetails((prv) => {
-      return {
-        ...prv.initialData,
-        initialData: prv.initialData,
-      };
-    });
+    setTaskDetails(initialData);
   }
 
   async function onSave() {
     setIsEdit(false);
-    setTaskDetails((prv) => {
+    setTaskDetails((prv: any) => {
+      setInitialData({ ...prv });
       return {
         ...prv,
-        initialData: { ...prv },
       };
     });
     try {
@@ -75,18 +83,18 @@ function TaskDetails({ url, taskID }) {
       );
       if (response.ok) {
         setEditedDetials({});
+        toast(SUCCESS, 'Successfully saved');
       }
     } catch (err) {
-      console.log(err); //error is not being caught
+      toast(ERROR, 'Could not save changes');
     }
   }
-
   return (
     <>
       <NavBar />
-      {!!error && <p>Something went wrong!</p>}
+      {!!error && <p className={classNames['center']}>Something went wrong!</p>}
       {isLoading ? (
-        <p>Loading...</p>
+        <p className={classNames['center']}>Loading...</p>
       ) : (
         <div className={classNames['parent_container']}>
           <div className={classNames['title_container']}>
@@ -173,7 +181,11 @@ function TaskDetails({ url, taskID }) {
               >
                 <Details
                   detailType={'Assignee'}
-                  value={taskDetails?.assignee}
+                  value={
+                    taskDetails?.type === 'feature'
+                      ? taskDetails?.assignee
+                      : taskDetails?.participants?.join(' , ')
+                  }
                 />
                 <Details detailType={'Reporter'} value={'Ankush'} />
               </TaskContainer>
@@ -197,6 +209,6 @@ function TaskDetails({ url, taskID }) {
       )}
     </>
   );
-}
+};
 
 export default TaskDetails;

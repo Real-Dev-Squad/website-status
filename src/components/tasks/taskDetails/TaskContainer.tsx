@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import classNames from './task-details.module.scss';
 import Image from 'next/image';
 
-function TaskContainer({ children, block_title, hasImg, src }) {
+type Props = {
+  children?: ReactNode;
+  block_title: string;
+  hasImg: boolean;
+  src?: any;
+};
+
+const TaskContainer: FC<Props> = ({ children, block_title, hasImg, src }) => {
   return (
     <>
       {!hasImg ? (
@@ -25,5 +32,5 @@ function TaskContainer({ children, block_title, hasImg, src }) {
       )}
     </>
   );
-}
+};
 export default TaskContainer;
