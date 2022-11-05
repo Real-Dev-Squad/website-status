@@ -1,4 +1,4 @@
-import { FC, SyntheticEvent, useEffect, useState , useCallback} from 'react';
+import { FC, SyntheticEvent, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/idleMembers/card/card.module.scss';
 import { DUMMY_PROFILE, DUMMY_PROFILE_PATH } from '@/components/constants/display-sections.js';
@@ -17,7 +17,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
   const userImageUrl = `/dummyProfile.png`
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(userImageUrl);
   if (idleMemberUserName){
-    getCloudinaryImgURL(idleMemberUserName).then(response=> {
+    getCloudinaryImgURL(idleMemberUserName,CLOUDINARY_IMAGE_CONFIGS).then(response=> {
       if (response !== userImageUrl) {
         setAssigneeProfilePic(response)
       }
