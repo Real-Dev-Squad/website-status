@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import useAuthenticated from '@/hooks/useAuthenticated';
 import { LOGIN_URL, 
         USER_PROFILE_URL, 
         DEFAULT_AVATAR, 
@@ -12,7 +12,6 @@ import { LOGIN_URL,
         GITHUB_LOGO,
         RDSLogo
         } from '@/components/constants/url'
-import useAuthenticated from '@/hooks/useAuthenticated';
 import styles from '@/components/navBar/navBar.module.scss';
 
 
@@ -23,7 +22,7 @@ const NavBar = () => {
     <nav className={styles.navBar}>
       <div>
         <a className={styles.logo} href={HOME_URL}>
-          <Image width="45px" height="45px" src={RDSLogo} alt="real-dev squad" />
+          <img width="45px" height="45px" src={RDSLogo} alt="real-dev squad" />
         </a>
         <a href={WELCOME_URL}>Welcome</a>
         <a href={EVENTS_URL}>Events</a>

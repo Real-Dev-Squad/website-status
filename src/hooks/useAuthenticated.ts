@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { USER_SELF, DEFAULT_AVATAR } from '@/components/constants/url';
+import { USER_SELF, DEFAULT_AVATAR, SIGNUP_LINK } from '@/components/constants/url';
 
 type Userdata = {
   userName: string;
@@ -14,7 +14,7 @@ type HooksReturnType = {
 };
 
 const useAuthenticated = (): HooksReturnType => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userData, setUserData] = useState<Userdata>({
     userName: '',
     firstName: '',
@@ -37,7 +37,7 @@ const useAuthenticated = (): HooksReturnType => {
         .then((responseJson) => {
           if (responseJson.incompleteUserDetails) {
             window.open(
-              'https://my.realdevsquad.com/signup',
+              `${SIGNUP_LINK}`,
               '_blank',
               'noopener'
             );
