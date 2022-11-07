@@ -6,7 +6,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 5rem;
   gap: 2rem;
 }
 
@@ -103,4 +102,15 @@
 
 .center {
   text-align: center;
+}
+
+@media only screen and (max-width: 750px) {
+  .details_container {
+    flex-direction: column;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .sub_details_container {
+    grid-template-columns: 1fr;
+  }
 }

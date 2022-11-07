@@ -157,9 +157,6 @@ const Card: FC<Props> = ({
     prefetch={false}
     href={{
       pathname: "/tasks/[id]",
-      query:{
-        id:`${cardDetails.id}`,
-      }
     }}
     as={`/tasks/${cardDetails.id}`}
   >

@@ -8,10 +8,6 @@ const TaskDetailsPage: FC = () => {
   const id: any = router.query.id;
   const TASK_DETAILS_URL: string = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${id}/details`;
 
-  return (
-    <>
-      <TaskDetails url={TASK_DETAILS_URL} taskID={id} />
-    </>
-  );
+  return <>{id && <TaskDetails url={TASK_DETAILS_URL} taskID={id} />}</>;
 };
 export default TaskDetailsPage;
