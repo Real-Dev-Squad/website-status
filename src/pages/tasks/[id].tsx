@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { NextRouter, useRouter } from 'next/router';
 
-import TaskDetails from '@/components/tasks/taskDetails/TaskDetails';
+import TaskDetails from '@/components/taskDetails';
 
 const TaskDetailsPage: FC = () => {
   const router: NextRouter = useRouter();
