@@ -31,8 +31,6 @@ const Card: FC<Props> = ({
   if (cardDetails.assignee){
     getCloudinaryImgURL(cardDetails.assignee,CLOUDINARY_IMAGE_CONFIGS).then(response=> {
       if (response !== userImageUrl) {
-        console.log(response);
-        
         setAssigneeProfilePic(response)
       }
     })
