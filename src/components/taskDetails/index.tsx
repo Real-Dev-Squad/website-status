@@ -17,7 +17,7 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const isAuthorized = useContext(isUserAuthorizedContext);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [initialData, setInitialData] = useState<task>();
   const [taskDetails, setTaskDetails] = useState<task>();
   const [editedDetails, setEditedDetials] = useState({});
