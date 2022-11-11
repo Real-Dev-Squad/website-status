@@ -2,14 +2,22 @@ import React, { FC, ReactNode } from 'react';
 import classNames from './task-details.module.scss';
 import Image from 'next/image';
 
+const iconWidth: string = '25px';
+const iconHeight: string = '25px';
+
 type Props = {
   children?: ReactNode;
   block_title: string;
   hasImg: boolean;
-  src?: any;
+  src?: string;
 };
 
-const TaskContainer: FC<Props> = ({ children, block_title, hasImg, src }) => {
+const TaskContainer: FC<Props> = ({
+  children,
+  block_title,
+  hasImg,
+  src = '',
+}) => {
   return (
     <>
       {!hasImg ? (
@@ -20,7 +28,7 @@ const TaskContainer: FC<Props> = ({ children, block_title, hasImg, src }) => {
       ) : (
         <div className={classNames['block']}>
           <div className={classNames['right_container_details_header']}>
-            <Image src={src} alt="logo" width="25px" height="25px" />
+            <Image src={src} alt="logo" width={iconWidth} height={iconHeight} />
             <span className={classNames['right_container_details_heading']}>
               {block_title}
             </span>

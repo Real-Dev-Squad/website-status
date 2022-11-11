@@ -154,9 +154,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                     />
                   </div>
                 </TaskContainer>
-                <TaskContainer block_title="Activity" hasImg={false}>
-                  <p>Coming soon...</p>
-                </TaskContainer>
               </div>
 
               <div className={classNames['details_right_container']}>
