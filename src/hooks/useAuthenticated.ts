@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { USER_SELF, DEFAULT_AVATAR, SIGNUP_LINK } from '@/components/constants/url';
+import {
+  USER_SELF,
+  DEFAULT_AVATAR,
+  SIGNUP_LINK,
+} from '@/components/constants/url';
+import fetch from '@/helperFunctions/fetch';
 
 type Userdata = {
   userName: string;
@@ -18,7 +23,7 @@ const useAuthenticated = (): HooksReturnType => {
   const [userData, setUserData] = useState<Userdata>({
     userName: '',
     firstName: '',
-    profilePicture: DEFAULT_AVATAR
+    profilePicture: DEFAULT_AVATAR,
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -26,33 +31,23 @@ const useAuthenticated = (): HooksReturnType => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      await fetch(USER_SELF, { credentials: 'include' })
-        .then((response) => {
-          if (!response.ok) {
-            setIsLoggedIn(false);
-            throw new Error(`${response.status} (${response.statusText})`);
-          }
-          return response.json();
-        })
-        .then((responseJson) => {
-          if (responseJson.incompleteUserDetails) {
-            window.open(
-              `${SIGNUP_LINK}`,
-              '_blank',
-              'noopener'
-            );
-          }
-          setIsLoggedIn(true);
-          setUserData({
-            userName: responseJson.username,
-            firstName: responseJson.first_name,
-            profilePicture: responseJson?.picture?.url
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-        })
-        .finally(() => setIsLoading(false));
+      try {
+        const { requestPromise } = fetch({ url: USER_SELF });
+        const { data } = await requestPromise;
+        if (data.incompleteUserDetails) {
+          window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
+        }
+        setUserData({
+          userName: data.username,
+          firstName: data.first_name,
+          profilePicture: data?.picture?.url,
+        });
+        setIsLoggedIn(true);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, []);
