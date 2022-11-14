@@ -12,6 +12,6 @@ export const MEMBERS_URL = 'https://members.realdevsquad.com';
 export const CHALLENGES_URL = `${BASE_URL}/challenges`;
 export const USER_SELF = `${BASE_URL}/users/self`;
 export const DEFAULT_AVATAR = '/Avatar.png';
-export const RDSLogo = '/RDSLogo.png';
+export const RDS_LOGO = '/RDSLogo.png';
 export const GITHUB_LOGO = '/github-white.png';
 export const SIGNUP_LINK = 'https://my.realdevsquad.com/signup'
