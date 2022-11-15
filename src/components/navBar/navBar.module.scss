@@ -40,20 +40,17 @@ $theme-active: #87d870;
       padding: ($offset + $thickness)+7;
     }
 
-    .btnLogin {
-      padding: 0px;
-      margin: 22px;
-    }
-
-    .btnLoginText {
+    .signInLink {
       border-radius: 6px;
       padding: 5px;
       background-color: $theme-blue;
       color: $white;
-      cursor: pointer;
-      border: 2px solid $white;
+      border: 1px solid $white;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-around;      
+      font-size: 13px;
+      font-weight: 200;
+      margin-right: 10px;
     }
 
     .githubLogo {

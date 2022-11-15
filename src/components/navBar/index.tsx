@@ -34,15 +34,13 @@ const NavBar = () => {
       <div>
         {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
-            <a className={styles.btnLogin}>
-              <button type="button" className={styles.btnLoginText}>
+            <a className={styles.signInLink}>
                 Sign In With GitHub
                 <img
                   className={styles.githubLogo}
                   src={GITHUB_LOGO}
                   alt="GitHub Icon"
                 />
-              </button>
             </a>
           </Link>
         ) : (
