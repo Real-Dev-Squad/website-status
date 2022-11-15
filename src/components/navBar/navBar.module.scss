@@ -1,35 +1,76 @@
 $offset: 10px;
 $thickness: 3px;
+$white: #fff;
+$theme-blue: #1d1283;
+$theme-active: #87d870;
 
 .navBar {
   display: flex;
   width: 100%;
-  background-color: #1d1283;
+  background-color: $theme-blue;
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
+  justify-content: space-between;
 
-  a {
-    display: block;
-    color: #ffffff;
-    font-weight: bolder;
-    text-align: center;
-    padding: 35px 2*($offset+$thickness)-1;
-    text-decoration: none;
+  div {
+    display: flex;
 
-    &:hover {
-      color: #87d870;
+    a {
+      display: block;
+      color: $white;
+      font-weight: bolder;
+      text-align: center;
+      padding: 35px 2*($offset + $thickness)-1;
+      text-decoration: none;
+
+      &:hover {
+        color: $theme-active;
+      }
     }
-  }
 
-  .active {
-    color: #87d870;
-    text-decoration: underline;
-    text-decoration-thickness: $thickness;
-    text-underline-offset: $offset;
-  }
+    .active {
+      color: $theme-active;
+      text-decoration: underline;
+      text-decoration-thickness: $thickness;
+      text-underline-offset: $offset;
+    }
 
-  .logo {
-    padding: ($offset+$thickness)+7;
+    .logo {
+      padding: ($offset + $thickness)+7;
+    }
+
+    .signInLink {
+      border-radius: 6px;
+      padding: 5px;
+      background-color: $theme-blue;
+      color: $white;
+      border: 1px solid $white;
+      display: flex;
+      justify-content: space-around;      
+      font-size: 13px;
+      font-weight: 200;
+      margin-right: 10px;
+    }
+
+    .githubLogo {
+      margin-left: 4px;
+      border-radius: 50%;
+      height: 15px;
+      width: 15px;
+    }
+
+    .userProfilePic {
+      border-radius: 50%;
+      display: inline;
+      vertical-align: middle;
+    }
+
+    .userGreetMsg {
+      display: inline;
+      vertical-align: middle;
+      margin-right: 10px;
+      color: $white;
+    }
   }
 }
