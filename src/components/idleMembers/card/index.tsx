@@ -1,7 +1,7 @@
 import { FC, SyntheticEvent, useState } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/idleMembers/card/card.module.scss';
-import { DUMMY_PROFILE, DUMMY_PROFILE_PATH } from '@/components/constants/display-sections.js';
+import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
 import { getCloudinaryImgURL } from '@/helperFunctions/getCloudinaryImageUrl';
 
 const CLOUDINARY_IMAGE_CONFIGS = 'w_160,h_160'
@@ -12,13 +12,13 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ idleMemberUserName }) => {
-  const [isImageAvailable, setIsImageAvailable] = useState(false);
+  const [isImageUnavailable, setIsImageUnavailable] = useState(false);
 
-  const userImageUrl = `/dummyProfile.png`
-  const [assigneeProfilePic, setAssigneeProfilePic] = useState(userImageUrl);
+  const userImageURL = `/${DUMMY_PROFILE}`
+  const [assigneeProfilePic, setAssigneeProfilePic] = useState(userImageURL);
   if (idleMemberUserName){
     getCloudinaryImgURL(idleMemberUserName,CLOUDINARY_IMAGE_CONFIGS).then(response=> {
-      if (response !== userImageUrl) {
+      if (response !== userImageURL) {
         setAssigneeProfilePic(response)
       }
     })
@@ -29,7 +29,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
     if (newWindow) newWindow.opener = null;
   };
   const assigneeImageOnError = (e: SyntheticEvent<HTMLImageElement>) => {
-    setIsImageAvailable(true);
+    setIsImageUnavailable(true);
   };
   return (
     <div
@@ -39,7 +39,7 @@ const Card: FC<Props> = ({ idleMemberUserName }) => {
       aria-hidden="true"
     >
       <Image
-        src={isImageAvailable ? `/${DUMMY_PROFILE}` : assigneeProfilePic}
+        src={isImageUnavailable ? `/${DUMMY_PROFILE}` : assigneeProfilePic}
         alt={idleMemberUserName}
         onError={assigneeImageOnError}
         width={150}

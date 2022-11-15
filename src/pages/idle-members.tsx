@@ -7,14 +7,14 @@ import { getAllUsersCloudinaryImageURLLink } from '@/helperFunctions/getCloudina
 
 const IDLE_MEMBERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
 
-interface userNameImage  {
+interface userImageURL  {
   name: string,
   imageURL: string
 }
 const CLOUDINARY_IMAGE_CONFIGS = 'w_160,h_160'
 
 const IdleMembers: FC = () => {
-  const [idleMembersList, setIdleMembersList] = useState<userNameImage[]>([]);
+  const [idleMembersList, setIdleMembersList] = useState<userImageURL[]>([]);
 
   const {
     response,

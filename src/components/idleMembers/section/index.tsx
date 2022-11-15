@@ -1,20 +1,20 @@
 import { FC } from 'react';
 import Card from '@/components/idleMembers/card';
 import classNames from '@/components/idleMembers/section/section.module.scss';
-interface userNameImage  {
+interface userImageURL  {
   name: string,
   imageURL: string
 }
 
 type Props = {
   heading: string
-  content: Array<userNameImage>
+  content: Array<userImageURL>
   error: string | null
   isLoading: boolean
 }
 
 
-function renderCards(content: Array<userNameImage>) {
+function renderCards(content: Array<userImageURL>) {
   return content.map((idleMember,index) => (
     <Card idleMemberUserName={idleMember.name} key={index} imageURL={idleMember.imageURL}/>
   ));
