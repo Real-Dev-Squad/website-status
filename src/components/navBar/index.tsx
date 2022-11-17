@@ -2,7 +2,6 @@ import Link from 'next/link';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import {
   LOGIN_URL,
-  USER_PROFILE_URL,
   DEFAULT_AVATAR,
   HOME_URL,
   WELCOME_URL,
@@ -14,14 +13,17 @@ import {
   RDS_LOGO
 } from '@/components/constants/url'
 import styles from '@/components/navBar/navBar.module.scss';
+import { useState } from 'react';
+import Dropdown from '../Dropdown/Dropdown';
 
 
 const NavBar = () => {
-  const { userData, isLoggedIn } = useAuthenticated()
+  const { userData, isLoggedIn } = useAuthenticated();
+  const [toggleDropdown, setToggleDropdown] = useState(false)
 
   return (
     <nav className={styles.navBar}>
-      <div>
+      <div className={styles.navLinks}>
         <a className={styles.logo} href={HOME_URL}>
           <img width="45px" height="45px" src={RDS_LOGO} alt="real-dev squad" />
         </a>
@@ -35,30 +37,27 @@ const NavBar = () => {
         {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
             <a className={styles.signInLink}>
-                Sign In With GitHub
-                <img
-                  className={styles.githubLogo}
-                  src={GITHUB_LOGO}
-                  alt="GitHub Icon"
-                />
+              Sign In With GitHub
+              <img
+                className={styles.githubLogo}
+                src={GITHUB_LOGO}
+                alt="GitHub Icon"
+              />
             </a>
           </Link>
         ) : (
-          <div className={styles.userGreet}>
-            <Link href={USER_PROFILE_URL}>
-              <a>
-                <div className={styles.userGreetMsg}>
-                  Hello, {userData.firstName}
-                </div>
-                <img
-                  className={styles.userProfilePic}
-                  src={userData.profilePicture ? `${userData.profilePicture}` : `${DEFAULT_AVATAR}`}
-                  alt="Profile Pic"
-                  width="32px"
-                  height="32px"
-                />
-              </a>
-            </Link>
+          <div className={styles.userGreet} onClick={() => setToggleDropdown(!toggleDropdown)}>
+            <div className={styles.userGreetMsg}>
+              Hello, {userData.firstName}
+            </div>
+            <img
+              className={styles.userProfilePic}
+              src={userData.profilePicture ? `${userData.profilePicture}` : `${DEFAULT_AVATAR}`}
+              alt="Profile Pic"
+              width="32px"
+              height="32px"
+            />
+            {toggleDropdown && <Dropdown />}
           </div>
         )}
       </div>
