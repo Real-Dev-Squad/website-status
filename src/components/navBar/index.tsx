@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Link from 'next/link';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import {
@@ -12,9 +13,8 @@ import {
   GITHUB_LOGO,
   RDS_LOGO
 } from '@/components/constants/url'
-import styles from '@/components/navBar/navBar.module.scss';
-import { useState } from 'react';
 import Dropdown from '../Dropdown/Dropdown';
+import styles from '@/components/navBar/navBar.module.scss';
 
 
 const NavBar = () => {

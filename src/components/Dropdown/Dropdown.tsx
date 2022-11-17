@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import styles from '@/components/Dropdown/dropdown.module.scss';
 import { USER_PROFILE_URL } from '../constants/url';
 
