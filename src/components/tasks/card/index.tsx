@@ -9,6 +9,9 @@ import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
+import taskItem from '@/interfaces/taskItem.type';
+import fetch from '@/helperFunctions/fetch';
+import { toast,ToastTypes } from '@/helperFunctions/toast';
 
 const moment = require('moment');
 
@@ -29,15 +32,23 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
+  const { SUCCESS, ERROR } = ToastTypes;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
+  const [taskTagLevel, setTaskTagLevel] = useState<taskItem[]>()
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
+  const [isLoading, setIsloading] = useState<boolean>(false);
+  const ITEM_BY_ID_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items/byitem/${cardDetails.id}`;
+  const ITEMS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items`;
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
     if (isAltKeyLongPressed) {
       setShowEditButton(true)
     }
   }, [keyLongPressed]);
+  useEffect(() => {
+    fetchTaskItems() 
+  },[])
   
   const context = useAppContext() ;
   const { actions } = context || {}
@@ -79,19 +90,28 @@ const Card: FC<Props> = ({
       onContentChange(toChange.id, {
         [changedProperty]: toChange[changedProperty],
       });
-    } else if (changedProperty === 'category' || changedProperty === 'level')  {
-      if (changedProperty === 'level' ) {
-        onContentChange(toChange.id, {
-          [changedProperty]: Number(event.target.value),
-        });
-      } else {
-        onContentChange(toChange.id, {
-          [changedProperty]: event.target.value,
-        });
-      }
-    } 
+    }
   }
 
+  const updateTaskTagLevel = async (body: any,method: 'delete' | 'post') => {
+    try{
+      setIsloading(true)
+      const { requestPromise } = fetch({
+        url: ITEMS_URL,
+        method,
+        data: { itemid: cardDetails.id,...body }
+      })
+      const result = await requestPromise;
+      if(result.status === 200){
+        await fetchTaskItems()
+        setIsloading(false)
+      }
+    } catch(err: any) {
+      setIsloading(false)
+      toast(ERROR, err.message);
+    }
+  }
+  
   function inputParser(input: string) {
     const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
     return parsedDate
@@ -153,14 +173,35 @@ const Card: FC<Props> = ({
   const onEditEnabled = () => {
     actions.onEditRoute()
   }
+  
+  async function fetchTaskItems() {
+    try{
+      const { requestPromise } = fetch({ url: ITEM_BY_ID_URL });
+      const { data: result } = await requestPromise
+      setTaskTagLevel(result.data)
+     } catch (err: any) {
+       toast(ERROR, err.message);
+     }
+  }
 
   return (
     <div
       className={`
         ${classNames.card}
+        ${isLoading && classNames.pointerEventsNone}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
     >
+      {/* loading spinner */}
+      {
+      isLoading && 
+      <div className={classNames.loadingBg}>
+        <div className={classNames.spinner}>
+          <span className={classNames.srOnly}>loading</span>
+        </div>
+      </div>
+      }
+      
       <div className={classNames.cardItems}>
         <span
           className={classNames.cardTitle}
@@ -213,16 +254,25 @@ const Card: FC<Props> = ({
           </span>
         </span>
       </div>
-      <div className={classNames.taskTags}>
-        {(shouldEdit && isUserAuthorized)
-          ? <TaskLevelEdit handleChange={handleChange} level={content.level} category={content.category}/>
-          :
-            <>    
-              {content.category && <span title='task category' className={`${classNames.taskTagItems}`}>{content.category.toLowerCase()}</span>}
-              {content.level && <span title='task level' className={`${classNames.taskTagItems}`}>level: {content.level}</span>}
-            </>
-        }
-      
+      <div className={`${classNames.taskTagLevelWrapper} ${shouldEdit && classNames.editMode}`}>
+            <div className={classNames.taskTaglevelContainer}>
+            {
+              taskTagLevel?.map((item) => (
+                <span key={item.itemid} className={classNames.taskTagLevel}>{item.tagname} <small><b>LVL:{item.levelname}</b></small>{
+                  shouldEdit && isUserAuthorized &&
+                  (
+                    <span>
+                    <button className={classNames.removeTaskTagLevelBtn} onClick={
+                      () => updateTaskTagLevel({tagid: item.tagid},'delete')
+                      }>&#10060;</button>
+                </span>
+                  )
+                } </span>
+                
+                ))
+              }
+          </div>
+          {(shouldEdit && isUserAuthorized) && <TaskLevelEdit updateTaskTagLevel={updateTaskTagLevel}/>}
       </div>
       <div className={classNames.cardItems}>
         <span
@@ -270,6 +320,8 @@ const Card: FC<Props> = ({
           />
         </div>
       }
+      
+     
     </div>
   );
 };

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 type fetchParams = {
   url: string;
-  method?: 'get' | 'patch' | 'post';
+  method?: 'get' | 'patch' | 'post' | 'delete';
   params?: null;
   data?: null | any;
   headers?: null | object;

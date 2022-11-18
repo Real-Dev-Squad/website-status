@@ -17,6 +17,10 @@ $black: #252525;
   border: 0;
 }
 
+.pointerEventsNone{
+  pointer-events: none;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -25,6 +29,7 @@ $black: #252525;
   margin-bottom: 25px;
   justify-content: space-between;
   border: 1px solid #d9d9d9;
+  position: relative;
 }
 
 .cardItems {
@@ -114,26 +119,53 @@ $black: #252525;
   cursor: pointer;
 }
 
-.taskTags{
+.taskTagLevelWrapper{
   display: flex;
-  gap: .25rem;
-  padding: .5rem;
+  padding-top: .5rem;
   flex-wrap: wrap;
-  .taskTagItems{
-    background-color: #4169e140;
-    padding: .35em;
-    border-radius: 20px;
-    border: 2px solid #4169e1;
+}
+.taskTagLevelWrapper.editMode{
+  gap: 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.taskTaglevelContainer{
+  display: flex;
+  gap: 0.25rem
+}
+
+.taskTagLevel{
+  position: relative;
+  background-color: hsla(225, 73%, 57%,0.5);
+  padding: 0.35em;
+  border-radius: 20px;
+  border: 2px solid #4169e1;
+  small{
+    font-size: .75em;
   }
-  
-  .taskTagEditItems{
-    display: flex;
-    flex-direction: column;
-    gap: .25rem;
-    
+
+  .removeTaskTagLevelBtn{
+    font-size: 0.35rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%,-40%);
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    outline: none;
+    border: 1px solid grey;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
   }
 }
 
+.addTaskTagLevel{
+  display: flex;
+  gap: 0.5rem;
+}
 
 .selectWrapper{
   border: 1px solid $black;
@@ -153,7 +185,7 @@ $black: #252525;
     outline: none;
     border: none;
     padding: 0 1em 0 0;
-    border-radius: .25em;
+    border-radius: 0.25em;
     grid-area: select;
     background: none;
   }
@@ -168,3 +200,29 @@ $black: #252525;
     justify-self: end;
   }
 }
+
+/* loading spinner  */
+.loadingBg{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0,0.2);
+  display: grid;
+  place-content: center;
+  .spinner{
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+  
+    }
+}
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }

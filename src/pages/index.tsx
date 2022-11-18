@@ -28,6 +28,7 @@ import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import { TasksProvider } from '@/context/tasks.context';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -116,7 +117,7 @@ const Index: FC = () => {
   return (
     <Layout>
       <Head title='Tasks' />
-
+<TasksProvider >
       <div className={classNames.container}>
         {!!error && <p>Something went wrong, please contact admin!</p>}
         {isLoading ? (
@@ -133,6 +134,7 @@ const Index: FC = () => {
           </>
         )}
       </div>
+      </TasksProvider>
     </Layout>
   );
 };
