@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
-import classNames from "@/components/tasks/card/card.module.scss"
+import classNames from '@/components/tasks/card/card.module.scss';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
