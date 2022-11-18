@@ -1,12 +1,12 @@
 import Link from 'next/link'
+import { LOGOUT_URL, USER_PROFILE_URL } from '../constants/url';
 import styles from '@/components/Dropdown/dropdown.module.scss';
-import { USER_PROFILE_URL } from '../constants/url';
 
 
 const Dropdown = () => {
 
   const logout = () => {
-    fetch('https://api.realdevsquad.com/auth/signout', {
+    fetch(LOGOUT_URL, {
       method: 'GET',
       credentials: 'include',
     }).then(() => {
@@ -17,15 +17,15 @@ const Dropdown = () => {
   return (
     <div className={styles.dropdown}>
       <ul className={styles.dropdownList}>
-        <li className={styles.dropdownItem}>
-          <Link href={USER_PROFILE_URL}>
+        <Link href={USER_PROFILE_URL}>
+          <li className={styles.dropdownItem}>
             <a className={styles.dropdownLink}>
               My Profile
             </a>
-          </Link>
-        </li>
+          </li>
+        </Link>
         <hr className={styles.line} />
-        <li className={styles.dropdownItem} onClick={() => logout()}>
+        <li className={styles.dropdownItem} onClick={logout}>
           Sign out
         </li>
       </ul>
