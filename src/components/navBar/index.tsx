@@ -16,30 +16,9 @@ import {
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
 
-const GenericClosePopUp = (ref: any, callback: () => void) => {
-  const handleClick = (e: any) => {
-    if (ref.current && !ref.current.contains(e.target)) {
-      callback();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('click', handleClick);
-
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  });
-};
-
-
 const NavBar = () => {
   const { userData, isLoggedIn } = useAuthenticated();
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const navbarRef = useRef<HTMLDivElement | null>(null);
-  GenericClosePopUp(navbarRef, () => {
-    setToggleDropdown(false);
-  });
 
   return (
     <nav className={styles.navBar}>
@@ -66,7 +45,7 @@ const NavBar = () => {
             </a>
           </Link>
         ) : (
-          <div className={styles.userGreet} onClick={() => setToggleDropdown(!toggleDropdown)} ref={navbarRef}>
+          <div className={styles.userGreet} onClick={() => setToggleDropdown(!toggleDropdown)}>
             <div className={styles.userGreetMsg}>
               Hello, {userData.firstName}
             </div>
