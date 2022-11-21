@@ -16,17 +16,15 @@ function setDetailsColor(value: string = '') {
 
 type Props = {
   detailType: string;
-  value?: string;
+  value: string;
 };
 
-const Details: FC<Props> = ({ detailType, value = '' }) => {
+const Details: FC<Props> = ({ detailType, value }) => {
   return (
     <div>
-      <span className={classNames['block_content_detail_type']}>
-        {detailType}:
-      </span>
+      <span className={classNames['detail_type']}>{detailType}:</span>
       <span
-        className={classNames['block_content_value']}
+        className={classNames['detail_value']}
         style={{ color: setDetailsColor(value) }}
       >
         {value ? value : 'N/A'}

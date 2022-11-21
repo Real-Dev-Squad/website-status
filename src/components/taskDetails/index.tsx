@@ -19,7 +19,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const isAuthorized = useContext(isUserAuthorizedContext);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [initialData, setInitialData] = useState<task>();
-  const [taskDetails, setTaskDetails] = useState<task>();
+  const [taskDetails, setTaskDetails] = useState<any>();
   const [editedDetails, setEditedDetials] = useState({});
   const { response, error, isLoading } = useFetch(url);
   const { SUCCESS, ERROR } = ToastTypes;
@@ -46,14 +46,18 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     );
   }
 
-  function handleChange(event: ChangeEvent) {
-    const formData: any = {
-      [(event.target as HTMLInputElement).name]: (
-        event.target as HTMLInputElement
-      ).value,
+  function handleChange(
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    const formData = {
+      [event.target.name]: event.target.value,
     };
-    setEditedDetials({ ...editedDetails, ...formData });
-    setTaskDetails({ ...taskDetails, ...formData });
+    setEditedDetials((prv) => {
+      return { ...prv, ...formData };
+    });
+    setTaskDetails((prv: any) => {
+      return { ...prv, ...formData };
+    });
   }
 
   function onCancel() {
@@ -85,39 +89,41 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     <>
       <NavBar />
       {!!error ? (
-        <p className={classNames['center']}>Something went wrong!</p>
+        <p className={classNames['text_center']}>Something went wrong!</p>
       ) : isLoading ? (
-        <p className={classNames['center']}>Loading...</p>
+        <p className={classNames['text_center']}>Loading...</p>
       ) : (
         taskDetails && (
           <div className={classNames['parent_container']}>
             <div className={classNames['title_container']}>
               {!isEditing ? (
-                <h4 className={classNames['title']}>{taskDetails.title}</h4>
+                <span className={classNames['task_title']}>
+                  {taskDetails.title}
+                </span>
               ) : (
                 renderTextarea('title', taskDetails.title)
               )}
               {isAuthorized && !isEditing && (
                 <button
                   type="button"
-                  className={classNames['edit_btn']}
+                  className={classNames['button']}
                   onClick={() => setIsEditing(true)}
                 >
                   Edit
                 </button>
               )}
               {isEditing && (
-                <div className={classNames['isEditTrue']}>
+                <div className={classNames['edit_mode']}>
                   <button
                     type="button"
-                    className={classNames['edit_btn']}
+                    className={classNames['button']}
                     onClick={onCancel}
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
-                    className={classNames['edit_btn']}
+                    className={classNames['button']}
                     onClick={onSave}
                   >
                     Save
@@ -126,9 +132,9 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               )}
             </div>
 
-            <div className={classNames['details_container']}>
-              <div className={classNames['details_left_container']}>
-                <TaskContainer block_title="Description" hasImg={false}>
+            <section className={classNames['details_container']}>
+              <section className={classNames['left_container']}>
+                <TaskContainer title="Description" hasImg={false}>
                   {!isEditing ? (
                     <p className={classNames['block_content']}>
                       {taskDetails.purpose === undefined ||
@@ -140,8 +146,8 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                     renderTextarea('purpose', taskDetails.purpose)
                   )}
                 </TaskContainer>
-                <TaskContainer block_title="Details" hasImg={false}>
-                  <div className={classNames['sub_details_container']}>
+                <TaskContainer title="Details" hasImg={false}>
+                  <div className={classNames['sub_details_grid_container']}>
                     <Details detailType={'Type'} value={taskDetails.type} />
                     <Details
                       detailType={'Priority'}
@@ -154,12 +160,12 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                     />
                   </div>
                 </TaskContainer>
-              </div>
+              </section>
 
-              <div className={classNames['details_right_container']}>
+              <section className={classNames['right_container']}>
                 <TaskContainer
                   src="/participant_logo.png"
-                  block_title="Participants"
+                  title="Participants"
                   hasImg={true}
                 >
                   <Details
@@ -174,7 +180,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                 </TaskContainer>
                 <TaskContainer
                   src="/calendar-icon.png"
-                  block_title="Dates"
+                  title="Dates"
                   hasImg={true}
                 >
                   <Details
@@ -186,8 +192,8 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                     value={convertTimeStamp(taskDetails.endsOn)}
                   />
                 </TaskContainer>
-              </div>
-            </div>
+              </section>
+            </section>
           </div>
         )
       )}

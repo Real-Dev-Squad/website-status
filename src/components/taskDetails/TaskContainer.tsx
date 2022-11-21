@@ -1,42 +1,35 @@
-import React, { FC, ReactNode } from 'react';
-import classNames from './task-details.module.scss';
-import Image from 'next/image';
+import React, { FC, ReactNode } from "react";
+import classNames from "./task-details.module.scss";
+import Image from "next/image";
 
-const iconWidth: string = '25px';
-const iconHeight: string = '25px';
+const iconWidth: string = "25px";
+const iconHeight: string = "25px";
 
 type Props = {
   children?: ReactNode;
-  block_title: string;
+  title: string;
   hasImg: boolean;
   src?: string;
 };
 
-const TaskContainer: FC<Props> = ({
-  children,
-  block_title,
-  hasImg,
-  src = '',
-}) => {
+const TaskContainer: FC<Props> = ({ children, title, hasImg, src = "" }) => {
   return (
     <>
       {!hasImg ? (
-        <div className={classNames['block']}>
-          <h5 className={classNames['block_heading']}>{block_title}</h5>
+        <section className={classNames["details_section_parent_container"]}>
+          <p className={classNames["section_heading"]}>{title}</p>
           {children}
-        </div>
+        </section>
       ) : (
-        <div className={classNames['block']}>
-          <div className={classNames['right_container_details_header']}>
+        <section className={classNames["details_section_parent_container"]}>
+          <div className={classNames["details_container_with_header_image"]}>
             <Image src={src} alt="logo" width={iconWidth} height={iconHeight} />
-            <span className={classNames['right_container_details_heading']}>
-              {block_title}
-            </span>
+            <span className={classNames["section_heading"]}>{title}</span>
           </div>
-          <div className={classNames['right_container_details_sub_container']}>
+          <div className={classNames["sub_details_flex_container"]}>
             {children}
           </div>
-        </div>
+        </section>
       )}
     </>
   );
