@@ -13,7 +13,7 @@ $theme-active: #87d870;
   flex-wrap: wrap;
   justify-content: space-between;
 
-  div {
+  .navLinks {
     display: flex;
 
     a {
@@ -21,7 +21,7 @@ $theme-active: #87d870;
       color: $white;
       font-weight: bolder;
       text-align: center;
-      padding: 35px 2*($offset + $thickness)-1;
+      padding: 35px 2 * ($offset + $thickness)-1;
       text-decoration: none;
 
       &:hover {
@@ -39,38 +39,45 @@ $theme-active: #87d870;
     .logo {
       padding: ($offset + $thickness)+7;
     }
+  }
+  .signInLink {
+    border-radius: 6px;
+    padding: 5px;
+    background-color: $theme-blue;
+    color: $white;
+    border: 1px solid $white;
+    display: flex;
+    justify-content: space-around;
+    font-size: 13px;
+    font-weight: 200;
+    margin-right: 0.625rem;
+    text-decoration: none;
+  }
 
-    .signInLink {
-      border-radius: 6px;
-      padding: 5px;
-      background-color: $theme-blue;
-      color: $white;
-      border: 1px solid $white;
-      display: flex;
-      justify-content: space-around;      
-      font-size: 13px;
-      font-weight: 200;
-      margin-right: 10px;
-    }
+  .githubLogo {
+    margin-left: 0.25rem;
+    border-radius: 50%;
+    height: 1rem;
+    width: 1rem;
+  }
 
-    .githubLogo {
-      margin-left: 4px;
-      border-radius: 50%;
-      height: 15px;
-      width: 15px;
-    }
+  .userProfilePic {
+    border-radius: 50%;
+    display: inline;
+    vertical-align: middle;
+  }
 
-    .userProfilePic {
-      border-radius: 50%;
-      display: inline;
-      vertical-align: middle;
-    }
+  .userGreet {
+    align-items: center;
+    padding: ($offset + $thickness)+7;
+    cursor: pointer;
+  }
 
-    .userGreetMsg {
-      display: inline;
-      vertical-align: middle;
-      margin-right: 10px;
-      color: $white;
-    }
+  .userGreetMsg {
+    display: inline;
+    vertical-align: middle;
+    margin-right: 0.625rem;
+    color: $white;
+    font-weight: 600;
   }
 }
