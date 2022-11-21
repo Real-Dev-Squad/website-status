@@ -50,15 +50,15 @@ $theme-active: #87d870;
     justify-content: space-around;
     font-size: 13px;
     font-weight: 200;
-    margin-right: 10px;
+    margin-right: 0.625rem;
     text-decoration: none;
   }
 
   .githubLogo {
-    margin-left: 4px;
+    margin-left: 0.25rem;
     border-radius: 50%;
-    height: 15px;
-    width: 15px;
+    height: 1rem;
+    width: 1rem;
   }
 
   .userProfilePic {
@@ -76,7 +76,7 @@ $theme-active: #87d870;
   .userGreetMsg {
     display: inline;
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 0.625rem;
     color: $white;
     font-weight: 600;
   }
