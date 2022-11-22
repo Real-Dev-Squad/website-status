@@ -1,18 +1,6 @@
 import React, { FC } from 'react';
+import setColor from './DetailsColor';
 import classNames from './task-details.module.scss';
-
-function setDetailsColor(value: string = '') {
-  switch (value) {
-    case 'HIGH':
-      return 'red';
-    case 'MEDIUM':
-      return 'orange';
-    case 'LOW':
-      return 'green';
-    default:
-      return 'black';
-  }
-}
 
 type Props = {
   detailType: string;
@@ -25,7 +13,7 @@ const Details: FC<Props> = ({ detailType, value }) => {
       <span className={classNames['detail_type']}>{detailType}:</span>
       <span
         className={classNames['detail_value']}
-        style={{ color: setDetailsColor(value) }}
+        style={{ color: setColor[value] ? setColor[value] : 'black' }}
       >
         {value ? value : 'N/A'}
       </span>

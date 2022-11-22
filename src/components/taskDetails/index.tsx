@@ -8,7 +8,7 @@ import task from '@/interfaces/task.type';
 import { useState, useEffect, useContext } from 'react';
 import useFetch from '@/hooks/useFetch';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import fetch from '@/helperFunctions/fetch';
+import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 
 type Props = {
   url: string;
@@ -17,7 +17,7 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const isAuthorized = useContext(isUserAuthorizedContext);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<Boolean>(false);
   const [initialData, setInitialData] = useState<task>();
   const [taskDetails, setTaskDetails] = useState<any>();
   const [editedDetails, setEditedDetials] = useState({});
@@ -46,6 +46,40 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     );
   }
 
+  function renderButton(isAuthorized: Boolean, isEditing: Boolean) {
+    if (isAuthorized) {
+      if (!isEditing) {
+        return (
+          <button
+            type="button"
+            className={classNames['button']}
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </button>
+        );
+      }
+      return (
+        <div className={classNames['edit_mode']}>
+          <button
+            type="button"
+            className={classNames['button']}
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className={classNames['button']}
+            onClick={onSave}
+          >
+            Save
+          </button>
+        </div>
+      );
+    }
+  }
+
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -69,12 +103,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   async function onSave() {
     setIsEditing(false);
     try {
-      const response = fetch({
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskID}`,
-        method: 'patch',
-        data: JSON.stringify(editedDetails),
-      });
-      const responseData = await response.requestPromise;
+      const responseData = await updateTaskDetails(editedDetails, taskID);
       if (responseData.status === 204) {
         setInitialData(taskDetails);
         setEditedDetials({});
@@ -85,12 +114,16 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       setTaskDetails(initialData);
     }
   }
+
   return (
     <>
       <NavBar />
-      {!!error ? (
+
+      {!!error && (
         <p className={classNames['text_center']}>Something went wrong!</p>
-      ) : isLoading ? (
+      )}
+
+      {isLoading ? (
         <p className={classNames['text_center']}>Loading...</p>
       ) : (
         taskDetails && (
@@ -103,33 +136,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               ) : (
                 renderTextarea('title', taskDetails.title)
               )}
-              {isAuthorized && !isEditing && (
-                <button
-                  type="button"
-                  className={classNames['button']}
-                  onClick={() => setIsEditing(true)}
-                >
-                  Edit
-                </button>
-              )}
-              {isEditing && (
-                <div className={classNames['edit_mode']}>
-                  <button
-                    type="button"
-                    className={classNames['button']}
-                    onClick={onCancel}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className={classNames['button']}
-                    onClick={onSave}
-                  >
-                    Save
-                  </button>
-                </div>
-              )}
+              {renderButton(isAuthorized, isEditing)}
             </div>
 
             <section className={classNames['details_container']}>
@@ -137,8 +144,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                 <TaskContainer title="Description" hasImg={false}>
                   {!isEditing ? (
                     <p className={classNames['block_content']}>
-                      {taskDetails.purpose === undefined ||
-                      taskDetails.purpose === ''
+                      {!taskDetails.purpose
                         ? 'No description available'
                         : taskDetails.purpose}
                     </p>
