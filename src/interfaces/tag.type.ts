@@ -1,9 +1,9 @@
 type tagType = {
-    createdby: string
-    date: { _seconds: string, _nanoseconds: string }
+    createdby?: string
+    date?: { _seconds: string, _nanoseconds: string }
     id: string
     name: string
-    reason: string
+    reason?: string
     type: "SKILL"
 }
 

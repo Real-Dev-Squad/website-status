@@ -47,7 +47,15 @@ const Card: FC<Props> = ({
     }
   }, [keyLongPressed]);
   useEffect(() => {
-    fetchTaskItems() 
+    (async () => {
+      try{
+        const { requestPromise } = fetch({ url: ITEM_BY_ID_URL });
+        const { data: result } = await requestPromise
+        setTaskTagLevel(result.data)
+       } catch (err: any) {
+         toast(ERROR, err.message);
+       }
+    })()
   },[])
   
   const context = useAppContext() ;
@@ -93,19 +101,37 @@ const Card: FC<Props> = ({
     }
   }
 
-  const updateTaskTagLevel = async (body: any,method: 'delete' | 'post') => {
+  const updateTaskTagLevel = async (taskItemToUpdate: any,method: 'delete' | 'post') => {
+    let body: any;
     try{
       setIsloading(true)
+      if(method === 'post'){ 
+          body = {
+            itemType: taskItemToUpdate.itemtype,
+            tagPayload: [{
+                levelid: taskItemToUpdate?.levelid,
+                tagid: taskItemToUpdate?.tagid
+            }]
+          }
+      } else if (method === 'delete'){
+        body = {
+          tagid: taskItemToUpdate?.tagid 
+        }
+      }
       const { requestPromise } = fetch({
         url: ITEMS_URL,
         method,
         data: { itemid: cardDetails.id,...body }
       })
       const result = await requestPromise;
-      if(result.status === 200){
-        await fetchTaskItems()
-        setIsloading(false)
+      if(result.status === 200 &&  method === 'delete'){
+       taskTagLevel && setTaskTagLevel(taskTagLevel?.filter((item) => item.tagid !== taskItemToUpdate.tagid))
+      } else if (result.status === 200 && method === 'post') {
+        taskTagLevel 
+        ? setTaskTagLevel([...taskTagLevel,{itemid: cardDetails.id,...taskItemToUpdate}])
+        : setTaskTagLevel([{itemid: cardDetails.id,...taskItemToUpdate}])
       }
+      setIsloading(false)
     } catch(err: any) {
       setIsloading(false)
       toast(ERROR, err.message);
@@ -174,16 +200,6 @@ const Card: FC<Props> = ({
     actions.onEditRoute()
   }
   
-  async function fetchTaskItems() {
-    try{
-      const { requestPromise } = fetch({ url: ITEM_BY_ID_URL });
-      const { data: result } = await requestPromise
-      setTaskTagLevel(result.data)
-     } catch (err: any) {
-       toast(ERROR, err.message);
-     }
-  }
-
   return (
     <div
       className={`
@@ -263,7 +279,7 @@ const Card: FC<Props> = ({
                   (
                     <span>
                     <button className={classNames.removeTaskTagLevelBtn} onClick={
-                      () => updateTaskTagLevel({tagid: item.tagid},'delete')
+                      () => updateTaskTagLevel(item,'delete')
                       }>&#10060;</button>
                 </span>
                   )

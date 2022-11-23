@@ -1,5 +1,5 @@
 type taskItem = {
-    itemid: string
+    itemid?: string
     itemtype: "TASK" | "task"
     levelid: string
     levelname: "1" | "2" | "3" | "4" | "5"

@@ -3,9 +3,8 @@ import React, { useState } from "react";
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useTasksContext } from '@/context/tasks.context';
 
-
 type TaskTagPropsType = {
-    updateTaskTagLevel: (body: any, method: 'delete' | 'post') => void
+    updateTaskTagLevel: (taskItemToUpdate: any, method: 'delete' | 'post') => void
 }
 
 const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
@@ -17,14 +16,15 @@ const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
         e.preventDefault();
         const tagToAdd = taskTags?.find(tag => tag.name === newTagValue)
         const levelToAdd = taskLevels?.find(level => level.name === newlevelValue)
-        const body = { 
-            itemType: "TASK",
-            tagPayload: [{
-                levelid: levelToAdd?.id,
-                tagid: tagToAdd?.id
-            }]
+        const taskItemToUpdate = {
+            itemtype: 'TASK',
+            levelid: levelToAdd?.id,
+            levelname: levelToAdd?.name,
+            tagid: tagToAdd?.id,
+            tagname: tagToAdd?.name,
+            tagtype: 'SKILL'
         }
-        updateTaskTagLevel(body, 'post')
+        updateTaskTagLevel(taskItemToUpdate, 'post')
     }
     
     return(
