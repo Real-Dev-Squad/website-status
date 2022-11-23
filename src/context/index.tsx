@@ -16,8 +16,8 @@ const AppWrapperContext: FC<Props> = ({ children }) => {
     const { query } = router;
     const { edit: editQuery } = query;
     const isEditMode = editQuery === 'true';
-	const onEditRoute = () => {
-		router.push({ query: 'edit=true' }, undefined, { shallow: true }); //TODO handle query better https://github.com/Real-Dev-Squad/website-status/issues/299
+    const onEditRoute = () => {
+        router.push({ query: 'edit=true' }, undefined, { shallow: true }); 
     }
     return (
         <AppContext.Provider value={{
