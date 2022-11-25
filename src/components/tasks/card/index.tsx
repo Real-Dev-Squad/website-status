@@ -85,16 +85,16 @@ const Card: FC<Props> = ({
     return tmp.textContent || tmp.innerText || '';
   }
 
-  function handleChange(event: any, changedProperty: keyof task) {
+  function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
     if (event.key === 'Enter') {
       const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
-      
+
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${event.target.value}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
-      
+
       onContentChange(toChange.id, {
         [changedProperty]: toChange[changedProperty],
       });
