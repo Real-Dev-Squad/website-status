@@ -1,7 +1,8 @@
 import fetch from "@/helperFunctions/fetch";
 import React, { createContext, useContext ,useState, useEffect} from "react";
-import levelType from "@/interfaces/level.type";
-import tagType from "@/interfaces/tag.type";
+import levelType from "@/types/level.type";
+import tagType from "@/types/tag.type";
+import { ALL_LEVELS_URL,ALL_TAGS_URL } from "@/components/constants/url";
 
 export type TaskContextType = {
     taskTags: tagType[] | null,
@@ -16,8 +17,6 @@ const TasksContext = createContext<TaskContextType>({
 export const TasksProvider = ({children }: { children: React.ReactNode })=> {
     const [taskTags, setTaskTags] = useState<tagType[] | null>(null)
     const [taskLevels, setTaskLevels] = useState<levelType[] | null>(null)
-    const ALL_TAGS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tags`;
-    const ALL_LEVELS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/levels`;
     const value={
         taskTags,
         taskLevels
@@ -40,7 +39,7 @@ export const TasksProvider = ({children }: { children: React.ReactNode })=> {
                 if(parseInt(a.name) < parseInt(b.name)) return -1;
                 if(parseInt(a.name) > parseInt(b.name)) return 1;
                 return 0
-            }) 
+            })
             setTaskLevels(sortedTaskLevels)
            })();
     },[])
@@ -50,8 +49,8 @@ export const TasksProvider = ({children }: { children: React.ReactNode })=> {
 
 export const useTasksContext = () => {
     const context: TaskContextType = useContext(TasksContext)
-    if (context===undefined) {
-        throw new Error('useAppContext must be used within a CountProvider')
+    if (!context) {
+        throw new Error('useTasksContext must be used within a TasksProvider')
     }
     return context;
 }

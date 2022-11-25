@@ -3,9 +3,9 @@ import {
 } from 'react';
 import Image from 'next/image';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { dragDropProps } from '@/interfaces/availabilityPanel.type';
+import { dragDropProps } from '@/types/availabilityPanel.type';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import task from '@/interfaces/task.type';
+import task from '@/types/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/components/constants/task-status';
 import DroppableComponent from './DroppableComponent';

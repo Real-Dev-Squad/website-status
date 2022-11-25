@@ -15,3 +15,7 @@ export const DEFAULT_AVATAR = '/Avatar.png';
 export const RDS_LOGO = '/RDSLogo.png';
 export const GITHUB_LOGO = '/github-white.png';
 export const SIGNUP_LINK = 'https://my.realdevsquad.com/signup';
+export const ITEM_BY_ID_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items/byitem`;
+export const ITEMS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items`;
+export const ALL_TAGS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tags`;
+export const ALL_LEVELS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/levels`;

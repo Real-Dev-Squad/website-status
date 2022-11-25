@@ -1,4 +1,4 @@
-import task from '../interfaces/task.type';
+import task from '../types/task.type';
 
 const beautifyTaskStatus = (tasks: Array<task>) => {
   let taskList: Array<task> = [];

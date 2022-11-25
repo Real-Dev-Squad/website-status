@@ -5,13 +5,14 @@ import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import task from '@/interfaces/task.type';
+import task from '@/types/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
-import taskItem from '@/interfaces/taskItem.type';
+import taskItem from '@/types/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
+import { ITEMS_URL, ITEM_BY_ID_URL } from '@/components/constants/url';
 
 const moment = require('moment');
 
@@ -38,8 +39,6 @@ const Card: FC<Props> = ({
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   const [isLoading, setIsloading] = useState<boolean>(false);
-  const ITEM_BY_ID_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items/byitem/${cardDetails.id}`;
-  const ITEMS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items`;
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
     if (isAltKeyLongPressed) {
@@ -49,7 +48,7 @@ const Card: FC<Props> = ({
   useEffect(() => {
     (async () => {
       try{
-        const { requestPromise } = fetch({ url: ITEM_BY_ID_URL });
+        const { requestPromise } = fetch({ url: `${ITEM_BY_ID_URL}/${cardDetails.id}` });
         const { data: result } = await requestPromise
         setTaskTagLevel(result.data)
        } catch (err: any) {
@@ -86,15 +85,16 @@ const Card: FC<Props> = ({
     return tmp.textContent || tmp.innerText || '';
   }
 
-  function handleChange(event: any, changedProperty: keyof typeof cardDetails) {
-    const toChange: any = cardDetails;
+  function handleChange(event: any, changedProperty: keyof task) {
     if (event.key === 'Enter') {
+      const toChange: any = cardDetails;
       toChange[changedProperty] = stripHtml(event.target.innerHTML);
-
+      
       if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
         const toTimeStamp = new Date(`${event.target.value}`).getTime() / 1000;
         toChange[changedProperty] = toTimeStamp;
       }
+      
       onContentChange(toChange.id, {
         [changedProperty]: toChange[changedProperty],
       });
@@ -213,7 +213,7 @@ const Card: FC<Props> = ({
       isLoading && 
       <div className={classNames.loadingBg}>
         <div className={classNames.spinner}>
-          <span className={classNames.srOnly}>loading</span>
+          <span className={classNames.screenReaderOnly}>loading</span>
         </div>
       </div>
       }

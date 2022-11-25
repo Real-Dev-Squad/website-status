@@ -4,8 +4,10 @@ $red: #ff0000;
 $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
+$taskTagLevelBorder: #4169e1;
+$taskTagLevelBg: hsla(225, 73%, 57%,0.5);
 
-.srOnly{ //screen reader only
+.screenReaderOnly{ 
   position: absolute; 
   width: 1px;
   height: 1px;
@@ -121,7 +123,7 @@ $black: #252525;
 
 .taskTagLevelWrapper{
   display: flex;
-  padding-top: .5rem;
+  padding-top: 0.5rem;
   flex-wrap: wrap;
 }
 .taskTagLevelWrapper.editMode{
@@ -137,10 +139,10 @@ $black: #252525;
 
 .taskTagLevel{
   position: relative;
-  background-color: hsla(225, 73%, 57%,0.5);
+  background-color: $taskTagLevelBg;
   padding: 0.35em;
   border-radius: 20px;
-  border: 2px solid #4169e1;
+  border: 2px solid $taskTagLevelBorder;
   small{
     font-size: .75em;
   }
@@ -216,7 +218,7 @@ $black: #252525;
       display: inline-block;
       width: 30px;
       height: 30px;
-      border: 3px solid rgba(255,255,255,.3);
+      border: 3px solid rgba(255,255,255,0.3);
       border-radius: 50%;
       border-top-color: #fff;
       animation: spin 1s ease-in-out infinite;

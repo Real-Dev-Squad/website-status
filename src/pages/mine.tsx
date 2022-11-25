@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
+import task from '@/types/task.type';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { LOGIN_URL, TASKS_URL } from '@/components/constants/url';
 

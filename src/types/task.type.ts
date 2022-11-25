@@ -1,4 +1,4 @@
-import award from '@/interfaces/award.type';
+import award from '@/types/award.type';
 
 type task = {
   id: string,
@@ -17,9 +17,7 @@ type task = {
   completionAward: award,
   lossRate: award,
   isNoteworthy: boolean,
-  createdBy: string,
-  level?: number,
-  category?: string
+  createdBy: string
 };
 
 export default task;
