@@ -1,6 +1,6 @@
 import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
 import { FC, useContext } from 'react';
-import { draggableProps } from '@/types/availabilityPanel.type';
+import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { disableDrag } from '.';
 import Image from 'next/image';

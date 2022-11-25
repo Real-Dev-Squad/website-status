@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
-import task from '@/types/task.type';
+import task from '@/interfaces/task.type';
 import {
   BLOCKED, IN_PROGRESS, SMOKE_TESTING,
 } from '@/components/constants/task-status';

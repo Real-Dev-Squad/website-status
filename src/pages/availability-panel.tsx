@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import task from '@/types/task.type';
+import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
 import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';

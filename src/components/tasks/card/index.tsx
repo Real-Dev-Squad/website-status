@@ -5,11 +5,11 @@ import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import task from '@/types/task.type';
+import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
-import taskItem from '@/types/taskItem.type';
+import taskItem from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
 import { ITEMS_URL, ITEM_BY_ID_URL } from '@/components/constants/url';
@@ -199,7 +199,7 @@ const Card: FC<Props> = ({
   const onEditEnabled = () => {
     actions.onEditRoute()
   }
-  
+
   return (
     <div
       className={`
@@ -336,8 +336,6 @@ const Card: FC<Props> = ({
           />
         </div>
       }
-      
-     
     </div>
   );
 };

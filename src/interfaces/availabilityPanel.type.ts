@@ -1,4 +1,4 @@
-import task from '@/types/task.type';
+import task from '@/interfaces/task.type';
 
 export type dragDropProps = {
   idleMembers: Array<string>,

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useTasksContext } from '@/context/tasks.context';
 import { TAG_TYPE, ITEM_TYPE } from '@/components/constants/items';
-import levelType from "@/types/level.type";
-import tagType from "@/types/tag.type";
+import levelType from "@/interfaces/level.type";
+import tagType from "@/interfaces/tag.type";
 import { toast,ToastTypes } from "@/helperFunctions/toast";
 
 type TaskTagPropsType = {

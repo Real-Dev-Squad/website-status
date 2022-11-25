@@ -1,4 +1,4 @@
-import award from '@/types/award.type';
+import award from '@/interfaces/award.type';
 
 type task = {
   id: string,

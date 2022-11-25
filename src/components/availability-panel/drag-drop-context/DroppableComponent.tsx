@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { droppableComponent } from '@/types/availabilityPanel.type';
+import { droppableComponent } from '@/interfaces/availabilityPanel.type';
 import DraggableComponent from '@/components/availability-panel/drag-drop-context//DraggableComponent';
 
 const DroppableComponent: FC<droppableComponent> = ({

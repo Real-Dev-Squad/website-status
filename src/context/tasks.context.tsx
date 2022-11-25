@@ -1,7 +1,7 @@
 import fetch from "@/helperFunctions/fetch";
 import React, { createContext, useContext ,useState, useEffect} from "react";
-import levelType from "@/types/level.type";
-import tagType from "@/types/tag.type";
+import levelType from "@/interfaces/level.type";
+import tagType from "@/interfaces/tag.type";
 import { ALL_LEVELS_URL,ALL_TAGS_URL } from "@/components/constants/url";
 
 export type TaskContextType = {
