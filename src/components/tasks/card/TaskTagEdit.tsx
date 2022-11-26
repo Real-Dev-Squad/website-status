@@ -32,28 +32,28 @@ const SelectComponent = ({ label,
 
 return (
     <div>
-    <label htmlFor={id}><span className={classNames.screenReaderOnly}>{label}</span></label>
-    <div className={classNames.selectWrapper}>
-    <select id={id}
-        name={name}
-        value={value}
-        onChange={(e) =>{
-            setNewValueOnChange(e.target.value)
-        }}
-        className={classNames.selectDropdown}>
-    <option disabled selected>{defaultOption}</option>
-    {
-        options?.map(option => (
-            <option key={option.name} value={option.name}>
-                {name === "levels" 
-                    ? `Level - ${option.name}`
-                    : option.name
-                }
-            </option>
-            ))
-    }
-    </select>
-    </div>
+        <label htmlFor={id}><span className={classNames.screenReaderOnly}>{label}</span></label>
+        <div className={classNames.selectWrapper}>
+            <select id={id}
+                name={name}
+                value={value}
+                onChange={(e) =>{
+                    setNewValueOnChange(e.target.value)
+                }}
+                className={classNames.selectDropdown}>
+            <option disabled selected>{defaultOption}</option>
+            {
+                options?.map(option => (
+                    <option key={option.name} value={option.name}>
+                        {name === "levels" 
+                            ? `Level - ${option.name}`
+                            : option.name
+                        }
+                    </option>
+                ))
+            }
+            </select>
+        </div>
     </div>
 )
 }
