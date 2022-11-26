@@ -1,35 +1,83 @@
 $offset: 10px;
 $thickness: 3px;
+$white: #fff;
+$theme-blue: #1d1283;
+$theme-active: #87d870;
 
 .navBar {
   display: flex;
   width: 100%;
-  background-color: #1d1283;
+  background-color: $theme-blue;
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
+  justify-content: space-between;
 
-  a {
-    display: block;
-    color: #ffffff;
-    font-weight: bolder;
-    text-align: center;
-    padding: 35px 2*($offset+$thickness)-1;
-    text-decoration: none;
+  .navLinks {
+    display: flex;
 
-    &:hover {
-      color: #87d870;
+    a {
+      display: block;
+      color: $white;
+      font-weight: bolder;
+      text-align: center;
+      padding: 35px 2 * ($offset + $thickness)-1;
+      text-decoration: none;
+
+      &:hover {
+        color: $theme-active;
+      }
+    }
+
+    .active {
+      color: $theme-active;
+      text-decoration: underline;
+      text-decoration-thickness: $thickness;
+      text-underline-offset: $offset;
+    }
+
+    .logo {
+      padding: ($offset + $thickness)+7;
     }
   }
-
-  .active {
-    color: #87d870;
-    text-decoration: underline;
-    text-decoration-thickness: $thickness;
-    text-underline-offset: $offset;
+  .signInLink {
+    border-radius: 6px;
+    padding: 5px;
+    background-color: $theme-blue;
+    color: $white;
+    border: 1px solid $white;
+    display: flex;
+    justify-content: space-around;
+    font-size: 13px;
+    font-weight: 200;
+    margin-right: 0.625rem;
+    text-decoration: none;
   }
 
-  .logo {
-    padding: ($offset+$thickness)+7;
+  .githubLogo {
+    margin-left: 0.25rem;
+    border-radius: 50%;
+    height: 1rem;
+    width: 1rem;
+  }
+
+  .userProfilePic {
+    border-radius: 50%;
+    display: inline;
+    vertical-align: middle;
+  }
+
+  .userGreet {
+    align-items: center;
+    padding: ($offset + $thickness)+7;
+    cursor: pointer;
+  }
+
+  .userGreetMsg {
+    display: inline;
+    vertical-align: middle;
+    margin-right: 0.625rem;
+    color: $white;
+    font-weight: 600;
   }
 }
