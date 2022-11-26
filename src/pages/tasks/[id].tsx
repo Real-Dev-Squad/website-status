@@ -1,12 +1,12 @@
 import { FC } from 'react';
 import { NextRouter, useRouter } from 'next/router';
-
 import TaskDetails from '@/components/taskDetails';
+import { TASK_URL } from '@/components/constants/url';
 
 const TaskDetailsPage: FC = () => {
   const router: NextRouter = useRouter();
   const id: any = router.query.id;
-  const TASK_DETAILS_URL: string = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${id}/details`;
+  const TASK_DETAILS_URL: string = `${TASK_URL}/${id}/details`;
 
   if (!id) {
     return null;

@@ -1,8 +1,9 @@
 import fetch from '@/helperFunctions/fetch';
+import { TASK_URL } from '@/components/constants/url';
 
 const updateTaskDetails = async (editedDetails = {}, taskID = '') => {
   const response = fetch({
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskID}`,
+    url: `${TASK_URL}/${taskID}`,
     method: 'patch',
     data: JSON.stringify(editedDetails),
   });
