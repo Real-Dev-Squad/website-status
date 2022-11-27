@@ -1,0 +1,63 @@
+
+  .app {
+    padding: 2rem;
+  }
+
+  .card {
+    max-width: 600px;
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    transition: 0.2s ease-out;
+  }
+
+  .card:hover {
+    border-color: #e5e5e5;
+    filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.02))
+      drop-shadow(0 8px 5px rgba(0, 0, 0, 0.06));
+  }
+
+  .card__top {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  .card__top__details {
+    flex: 1;
+  }
+
+  .card__top__details__meta_data {
+    margin: 0 0 0.75rem;
+  }
+
+  .card__top__details__meta_data h2 {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 0 0 0.25rem;
+    color: #1c1917;
+  }
+
+  .card__top__details__meta_data p {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #78716c;
+  }
+
+  .card__top__details__desc {
+    color: #78716c;
+  }
+
+  .card__top__button {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 0.25rem;
+    background: #dbeafe;
+    color: #2563eb;
+    font-weight: 500;
+    cursor: pointer;
+
+  }
