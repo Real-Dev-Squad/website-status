@@ -35,51 +35,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     return dateTime.toLocaleString();
   }
 
-  function renderTextarea(name: string, value: string) {
-    return (
-      <textarea
-        className={classNames['textarea']}
-        name={name}
-        value={value}
-        onChange={(event) => handleChange(event)}
-      />
-    );
-  }
-
-  function renderButton(isAuthorized: Boolean, isEditing: Boolean) {
-    if (isAuthorized) {
-      if (!isEditing) {
-        return (
-          <button
-            type="button"
-            className={classNames['button']}
-            onClick={() => setIsEditing(true)}
-          >
-            Edit
-          </button>
-        );
-      }
-      return (
-        <div className={classNames['edit_mode']}>
-          <button
-            type="button"
-            className={classNames['button']}
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            className={classNames['button']}
-            onClick={onSave}
-          >
-            Save
-          </button>
-        </div>
-      );
-    }
-  }
-
   function handleChange(
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) {
@@ -95,13 +50,13 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   }
 
   function onCancel() {
-    setIsEditing(false);
+    setEditingState(false);
     setEditedDetials({});
     setTaskDetails(initialData);
   }
 
   async function onSave() {
-    setIsEditing(false);
+    setEditingState(false);
     try {
       const responseData = await updateTaskDetails(editedDetails, taskID);
       if (responseData.status === 204) {
@@ -112,6 +67,39 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     } catch (err) {
       toast(ERROR, 'Could not save changes');
       setTaskDetails(initialData);
+    }
+  }
+
+  function setEditingState(value: boolean) {
+    setIsEditing(value);
+  }
+
+  function renderTextarea(name: string, value: string) {
+    return (
+      <textarea
+        className={classNames['textarea']}
+        name={name}
+        value={value}
+        onChange={(event) => handleChange(event)}
+      />
+    );
+  }
+
+  function renderButton(
+    buttonName: string,
+    clickHandler: (value: any) => void,
+    value?: boolean
+  ) {
+    if (isAuthorized) {
+      return (
+        <button
+          type="button"
+          className={classNames['button']}
+          onClick={() => clickHandler(value)}
+        >
+          {buttonName}
+        </button>
+      );
     }
   }
 
@@ -129,6 +117,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         taskDetails && (
           <div className={classNames['parent_container']}>
             <div className={classNames['title_container']}>
+
               {!isEditing ? (
                 <span className={classNames['task_title']}>
                   {taskDetails.title}
@@ -136,12 +125,21 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               ) : (
                 renderTextarea('title', taskDetails.title)
               )}
-              {renderButton(isAuthorized, isEditing)}
+
+              {!isEditing ? (
+                renderButton('Edit', setEditingState, true)
+              ) : (
+                <div className={classNames['edit_mode']}>
+                  {renderButton('Cancel', onCancel)}
+                  {renderButton('Save', onSave)}
+                </div>
+              )}
             </div>
 
             <section className={classNames['details_container']}>
               <section className={classNames['left_container']}>
                 <TaskContainer title="Description" hasImg={false}>
+
                   {!isEditing ? (
                     <p className={classNames['block_content']}>
                       {!taskDetails.purpose
@@ -151,6 +149,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                   ) : (
                     renderTextarea('purpose', taskDetails.purpose)
                   )}
+                  
                 </TaskContainer>
                 <TaskContainer title="Details" hasImg={false}>
                   <div className={classNames['sub_details_grid_container']}>
