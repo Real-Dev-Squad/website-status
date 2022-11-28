@@ -50,13 +50,13 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   }
 
   function onCancel() {
-    setEditingState(false);
+    setIsEditing(false);
     setEditedDetials({});
     setTaskDetails(initialData);
   }
 
   async function onSave() {
-    setEditingState(false);
+    setIsEditing(false);
     try {
       const responseData = await updateTaskDetails(editedDetails, taskID);
       if (responseData.status === 204) {
@@ -68,10 +68,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       toast(ERROR, 'Could not save changes');
       setTaskDetails(initialData);
     }
-  }
-
-  function setEditingState(value: boolean) {
-    setIsEditing(value);
   }
 
   function renderTextarea(name: string, value: string) {
@@ -127,7 +123,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               )}
 
               {!isEditing ? (
-                renderButton('Edit', setEditingState, true)
+                renderButton('Edit', setIsEditing, true)
               ) : (
                 <div className={classNames['edit_mode']}>
                   {renderButton('Cancel', onCancel)}
@@ -149,7 +145,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                   ) : (
                     renderTextarea('purpose', taskDetails.purpose)
                   )}
-                  
+
                 </TaskContainer>
                 <TaskContainer title="Details" hasImg={false}>
                   <div className={classNames['sub_details_grid_container']}>
