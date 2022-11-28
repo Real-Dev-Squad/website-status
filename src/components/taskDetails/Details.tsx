@@ -13,9 +13,9 @@ const Details: FC<Props> = ({ detailType, value }) => {
       <span className={classNames['detail_type']}>{detailType}:</span>
       <span
         className={classNames['detail_value']}
-        style={{ color: setColor[value] ? setColor[value] : 'black' }}
+        style={{ color: setColor[value] ?? 'black' }}
       >
-        {value ? value : 'N/A'}
+        {value ?? 'N/A'}
       </span>
     </div>
   );
