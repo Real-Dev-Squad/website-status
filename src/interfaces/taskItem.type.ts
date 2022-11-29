@@ -1,11 +1,21 @@
 type taskItem = {
     itemid?: string
-    itemtype: "TASK" | "task"
+    itemtype?: 'TASK'
     levelid: string
-    levelname: "1" | "2" | "3" | "4" | "5"
+    levelname: string
     tagid: string
     tagname: string
-    tagtype: string
+    tagtype: 'SKILL'
+}
+
+export type taskItemPayload = {
+    itemid: string
+    itemType?: 'TASK'
+    tagPayload?: {
+                    levelid: string
+                    tagid: string
+                 }[]
+    tagid?: string
 }
 
 export default taskItem;

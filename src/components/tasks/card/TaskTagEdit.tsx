@@ -2,13 +2,13 @@ import React, { useState } from "react";
 
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useTasksContext } from '@/context/tasks.context';
-import { TAG_TYPE, ITEM_TYPE } from '@/components/constants/items';
 import levelType from "@/interfaces/level.type";
 import tagType from "@/interfaces/tag.type";
+import taskItem from "@/interfaces/taskItem.type";
 import { toast,ToastTypes } from "@/helperFunctions/toast";
 
 type TaskTagPropsType = {
-    updateTaskTagLevel: (taskItemToUpdate: any, method: 'delete' | 'post') => void
+    updateTaskTagLevel: (taskItemToUpdate: taskItem, method: 'delete' | 'post') => void
 }
 
 type SelectComponentPropsType = {
@@ -69,17 +69,20 @@ const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
         const tagToAdd = taskTags?.find(tag => tag.name === newTagValue)
         const levelToAdd = taskLevels?.find(level => level.name === newlevelValue)
         if(newTagValue && newlevelValue){
-            const taskItemToUpdate = {
-                itemtype: ITEM_TYPE.TASK,
-                levelid: levelToAdd?.id,
-                levelname: levelToAdd?.name,
-                tagid: tagToAdd?.id,
-                tagname: tagToAdd?.name,
-                tagtype: TAG_TYPE.SKILL
+            if(levelToAdd && tagToAdd){
+                const taskItemToUpdate: taskItem = {
+                    levelid: levelToAdd.id,
+                    levelname: levelToAdd.name,
+                    tagid: tagToAdd.id,
+                    tagname: tagToAdd.name,
+                    tagtype: "SKILL"
+                }
+                updateTaskTagLevel(taskItemToUpdate, 'post')
+            } else {
+                toast(ERROR, `Tag and Level values are missing`)
             }
-            updateTaskTagLevel(taskItemToUpdate, 'post')
         } else {
-            toast(ERROR, `Tag and level values both needed`)
+            toast(ERROR, `Tag and Level values both needed`)
         }
     }
     if (taskLevels && taskTags){
@@ -106,11 +109,10 @@ const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
                 />
                 <button>Add</button>
             </form>
-            
         </>)
-    } else {
-        return null
     }
+
+    return null
 }
 
 export default TaskTagEdit;

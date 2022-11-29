@@ -117,23 +117,23 @@ const Index: FC = () => {
   return (
     <Layout>
       <Head title='Tasks' />
-<TasksProvider >
-      <div className={classNames.container}>
-        {!!error && <p>Something went wrong, please contact admin!</p>}
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {Object.keys(filteredTask).length > 0
-              ? Object.keys(filteredTask).map((key) => (
-                <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable)}
-                </Accordion>
-              ))
-              : !error && 'No Tasks Found'}
-          </>
-        )}
-      </div>
+        <TasksProvider >
+          <div className={classNames.container}>
+            {!!error && <p>Something went wrong, please contact admin!</p>}
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {Object.keys(filteredTask).length > 0
+                  ? Object.keys(filteredTask).map((key) => (
+                    <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
+                      {renderCardList(filteredTask[key], isEditable)}
+                    </Accordion>
+                  ))
+                  : !error && 'No Tasks Found'}
+              </>
+            )}
+          </div>
       </TasksProvider>
     </Layout>
   );

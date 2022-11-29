@@ -9,7 +9,7 @@ import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
-import taskItem from '@/interfaces/taskItem.type';
+import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
 import { ITEMS_URL, ITEM_BY_ID_URL } from '@/components/constants/url';
@@ -101,27 +101,25 @@ const Card: FC<Props> = ({
     }
   }
 
-  const updateTaskTagLevel = async (taskItemToUpdate: any,method: 'delete' | 'post') => {
-    let body: any;
+  const updateTaskTagLevel = async (taskItemToUpdate: taskItem,method: 'delete' | 'post') => {
+    let body: taskItemPayload = {
+      itemid: cardDetails.id,
+      itemType: 'TASK'
+    };
     try{
       setIsloading(true)
-      if(method === 'post'){ 
-          body = {
-            itemType: taskItemToUpdate.itemtype,
-            tagPayload: [{
-                levelid: taskItemToUpdate?.levelid,
-                tagid: taskItemToUpdate?.tagid
-            }]
-          }
-      } else if (method === 'delete'){
-        body = {
-          tagid: taskItemToUpdate?.tagid 
+      if(method === 'post'){
+          body.tagPayload = [{
+            levelid: taskItemToUpdate.levelid,
+            tagid: taskItemToUpdate.tagid
+          }] 
+      } else if (method === 'delete') {
+        body.tagid = taskItemToUpdate.tagid 
         }
-      }
       const { requestPromise } = fetch({
         url: ITEMS_URL,
         method,
-        data: { itemid: cardDetails.id,...body }
+        data: body
       })
       const result = await requestPromise;
       if(result.status === 200 &&  method === 'delete'){
