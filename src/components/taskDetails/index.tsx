@@ -20,7 +20,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const [isEditing, setIsEditing] = useState<Boolean>(false);
   const [initialData, setInitialData] = useState<task>();
   const [taskDetails, setTaskDetails] = useState<any>();
-  const [editedDetails, setEditedDetials] = useState({});
+  const [editedDetails, setEditedDetails] = useState({});
   const { response, error, isLoading } = useFetch(url);
   const { SUCCESS, ERROR } = ToastTypes;
 
@@ -41,7 +41,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const formData = {
       [event.target.name]: event.target.value,
     };
-    setEditedDetials((prv) => {
+    setEditedDetails((prv) => {
       return { ...prv, ...formData };
     });
     setTaskDetails((prv: any) => {
@@ -51,7 +51,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
 
   function onCancel() {
     setIsEditing(false);
-    setEditedDetials({});
+    setEditedDetails({});
     setTaskDetails(initialData);
   }
 
@@ -61,7 +61,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       const responseData = await updateTaskDetails(editedDetails, taskID);
       if (responseData.status === 204) {
         setInitialData(taskDetails);
-        setEditedDetials({});
+        setEditedDetails({});
         toast(SUCCESS, 'Successfully saved');
       }
     } catch (err) {
