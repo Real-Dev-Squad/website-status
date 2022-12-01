@@ -31,6 +31,8 @@ const Layout: FC<Props> = ({ children }) => {
       <NavBar />
       <div className={styles.wrapper}>
         <div className={styles.header}>
+        {navBarContent('Issues', '/issues', router.pathname === '/issues')}
+          |
           {navBarContent('Tasks', '/', router.pathname === '/')}
           |
           {navBarContent('Mine', '/mine', router.pathname === '/mine')}
