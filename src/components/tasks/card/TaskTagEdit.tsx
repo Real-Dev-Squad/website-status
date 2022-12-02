@@ -8,6 +8,7 @@ import taskItem from "@/interfaces/taskItem.type";
 import { toast,ToastTypes } from "@/helperFunctions/toast";
 
 type TaskTagPropsType = {
+    taskTagLevel: taskItem[] | undefined
     updateTaskTagLevel: (taskItemToUpdate: taskItem, method: 'delete' | 'post') => void
 }
 
@@ -58,8 +59,8 @@ return (
 )
 }
 
-const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
-    const [newlevelValue, setNewLevelValue] = useState<string>()
+const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
+    const [newLevelValue, setNewLevelValue] = useState<string>()
     const [newTagValue, setNewTagValue] = useState<string>()
     const { taskLevels, taskTags } = useTasksContext()
     const { ERROR } = ToastTypes
@@ -67,15 +68,23 @@ const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const tagToAdd = taskTags?.find(tag => tag.name === newTagValue)
-        const levelToAdd = taskLevels?.find(level => level.name === newlevelValue)
-        if(newTagValue && newlevelValue){
+        const levelToAdd = taskLevels?.find(level => level.name === newLevelValue)
+        const isTagExists = taskTagLevel?.find((tagLevel) => {
+           return tagLevel.tagId === tagToAdd?.id
+        })
+        if(newTagValue && newLevelValue) {
+        if(isTagExists){
+            toast(ERROR,`Tag with Level already exists`);
+            return;
+        }
             if(levelToAdd && tagToAdd){
                 const taskItemToUpdate: taskItem = {
-                    levelid: levelToAdd.id,
-                    levelname: levelToAdd.name,
-                    tagid: tagToAdd.id,
-                    tagname: tagToAdd.name,
-                    tagtype: "SKILL"
+                    levelId: levelToAdd.id,
+                    levelName: levelToAdd.name,
+                    tagId: tagToAdd.id,
+                    tagName: tagToAdd.name,
+                    tagType: "SKILL",
+                    levelNumber: levelToAdd.levelNumber
                 }
                 updateTaskTagLevel(taskItemToUpdate, 'post')
             } else {
@@ -102,7 +111,7 @@ const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
                     defaultOption="--new level--"
                     id="select-level"
                     label="select level"
-                    value={newlevelValue}
+                    value={newLevelValue}
                     name="levels"
                     options={taskLevels}
                     setNewValueOnChange={setNewLevelValue}
@@ -111,7 +120,6 @@ const TaskTagEdit = ({ updateTaskTagLevel }: TaskTagPropsType) => {
             </form>
         </>)
     }
-
     return null
 }
 

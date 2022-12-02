@@ -27,7 +27,7 @@ export const TasksProvider = ({children }: { children: React.ReactNode })=> {
                 url: ALL_TAGS_URL
             })
             const { data } = await requestPromise;
-            setTaskTags(data.allTags)
+            setTaskTags(data.tags)
            })();
            
            (async() => {
@@ -35,7 +35,7 @@ export const TasksProvider = ({children }: { children: React.ReactNode })=> {
                 url: ALL_LEVELS_URL
             })
             const { data } = await requestPromise;
-            const sortedTaskLevels = (data.allLevels).sort((a: levelType,b: levelType) => {
+            const sortedTaskLevels = (data.levels).sort((a: levelType,b: levelType) => {
                 if(parseInt(a.name) < parseInt(b.name)) return -1;
                 if(parseInt(a.name) > parseInt(b.name)) return 1;
                 return 0

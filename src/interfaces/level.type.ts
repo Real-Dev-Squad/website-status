@@ -1,7 +1,8 @@
 type levelType = {
-    createdby?: string
-    date?: { _seconds: string, _nanoseconds: string }
+    createdBy: string
+    date: { _seconds: string, _nanoseconds: string }
     id: string
+    levelNumber: number
     name: string
 }
 
