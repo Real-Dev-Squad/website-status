@@ -12,7 +12,7 @@ import TaskLevelEdit from './TaskTagEdit';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
-import { ITEMS_URL, ITEM_BY_ID_URL } from '@/components/constants/url';
+import { ITEMS_URL, ITEM_BY_FILTER_URL } from '@/components/constants/url';
 
 const moment = require('moment');
 
@@ -48,7 +48,14 @@ const Card: FC<Props> = ({
   useEffect(() => {
     (async () => {
       try{
-        const { requestPromise } = fetch({ url: `${ITEM_BY_ID_URL}/${cardDetails.id}` });
+        const { requestPromise } = fetch(
+          { 
+            url: `${ITEM_BY_FILTER_URL}`,
+            params: {
+              itemType: 'TASK',
+              itemId: `${cardDetails.id}`
+            }
+          });
         const { data: result } = await requestPromise
         setTaskTagLevel(result.data)
        } catch (err: any) {
