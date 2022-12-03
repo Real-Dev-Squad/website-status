@@ -17,7 +17,7 @@ type task = {
   completionAward: award,
   lossRate: award,
   isNoteworthy: boolean,
-  createdBy: string,
+  createdBy: string
 };
 
 export default task;
