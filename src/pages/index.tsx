@@ -28,6 +28,7 @@ import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import { TasksProvider } from '@/context/tasks.context';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -116,23 +117,24 @@ const Index: FC = () => {
   return (
     <Layout>
       <Head title='Tasks' />
-
-      <div className={classNames.container}>
-        {!!error && <p>Something went wrong, please contact admin!</p>}
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {Object.keys(filteredTask).length > 0
-              ? Object.keys(filteredTask).map((key) => (
-                <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                  {renderCardList(filteredTask[key], isEditable)}
-                </Accordion>
-              ))
-              : !error && 'No Tasks Found'}
-          </>
-        )}
-      </div>
+        <TasksProvider >
+          <div className={classNames.container}>
+            {!!error && <p>Something went wrong, please contact admin!</p>}
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              <>
+                {Object.keys(filteredTask).length > 0
+                  ? Object.keys(filteredTask).map((key) => (
+                    <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
+                      {renderCardList(filteredTask[key], isEditable)}
+                    </Accordion>
+                  ))
+                  : !error && 'No Tasks Found'}
+              </>
+            )}
+          </div>
+      </TasksProvider>
     </Layout>
   );
 };
