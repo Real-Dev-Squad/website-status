@@ -1,14 +1,13 @@
-import React, { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC, useState, useEffect, useContext } from 'react';
+import useFetch from '@/hooks/useFetch';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
-import classNames from './task-details.module.scss';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import task from '@/interfaces/task.type';
-import { useState, useEffect, useContext } from 'react';
-import useFetch from '@/hooks/useFetch';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
+import task from '@/interfaces/task.type';
+import classNames from './task-details.module.scss';
 
 type Props = {
   url: string;
@@ -101,10 +100,10 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
 
   function renderLoadingComponent() {
     if (isLoading) {
-      return <p className={classNames['text_center']}>Loading...</p>;
+      return <p className={classNames.textCenter}>Loading...</p>;
     }
     if (error) {
-      return <p className={classNames['text_center']}>Something went wrong!</p>;
+      return <p className={classNames.textCenter}>Something went wrong!</p>;
     }
   }
 
@@ -113,10 +112,10 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       <NavBar />
       {renderLoadingComponent()}
       {!isLoading && !error && taskDetails && (
-        <div className={classNames['parent_container']}>
-          <div className={classNames['title_container']}>
+        <div className={classNames.parentContainer}>
+          <div className={classNames.titleContainer}>
             {!isEditing ? (
-              <span className={classNames['task_title']}>
+              <span className={classNames.taskTitle}>
                 {taskDetails.title}
               </span>
             ) : (
@@ -126,18 +125,18 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
             {!isEditing ? (
               renderButton('Edit', setIsEditing, true)
             ) : (
-              <div className={classNames['edit_mode']}>
+              <div className={classNames.editMode}>
                 {renderButton('Cancel', onCancel)}
                 {renderButton('Save', onSave)}
               </div>
             )}
           </div>
 
-          <section className={classNames['details_container']}>
-            <section className={classNames['left_container']}>
+          <section className={classNames.detailsContainer}>
+            <section className={classNames.leftContainer}>
               <TaskContainer title="Description" hasImg={false}>
                 {!isEditing ? (
-                  <p className={classNames['block_content']}>
+                  <p>
                     {!taskDetails.purpose
                       ? 'No description available'
                       : taskDetails.purpose}
@@ -159,7 +158,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               </TaskContainer>
             </section>
 
-            <section className={classNames['right_container']}>
+            <section className={classNames.rightContainer}>
               <TaskContainer
                 src="/participant_logo.png"
                 title="Participants"

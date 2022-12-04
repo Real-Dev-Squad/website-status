@@ -10,9 +10,9 @@ type Props = {
 const Details: FC<Props> = ({ detailType, value }) => {
   return (
     <div>
-      <span className={classNames['detail_type']}>{detailType}:</span>
+      <span className={classNames.detailType}>{detailType}:</span>
       <span
-        className={classNames['detail_value']}
+        className={classNames.detailValue}
         style={{ color: setColor[value] ?? 'black' }}
       >
         {value ?? 'N/A'}

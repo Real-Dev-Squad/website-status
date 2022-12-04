@@ -1,8 +1,8 @@
-.parent_container {
+.parentContainer {
   margin: 2rem 4rem 0;
 }
 
-.title_container {
+.titleContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -10,7 +10,7 @@
   margin-bottom: 1rem;
 }
 
-.task_title {
+.taskTitle{
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.778);
   padding: 0.5rem 0;
@@ -29,17 +29,17 @@
   cursor: pointer;
 }
 
-.details_container {
+.detailsContainer {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
-.left_container {
+.leftContainer {
   flex: 2;
 }
 
-.right_container {
+.rightContainer {
   flex: 1;
 }
 
@@ -50,17 +50,17 @@
   margin-bottom: 1rem;
 }
 
-.section_heading {
+.sectionHeading {
   font-weight: bold;
   font-size: 1.2rem;
 }
 
-.detail_type {
+.detailType {
   display: inline-block;
   width: 6rem;
 }
 
-.detail_value {
+.detailValue {
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -86,7 +86,7 @@
   padding-top: 0.5rem;
 }
 
-.edit_mode {
+.editMode {
   display: flex;
   gap: 1rem;
 }
@@ -99,12 +99,12 @@
   font-weight: bold;
 }
 
-.text_center {
+.textCenter {
   text-align: center;
 }
 
 @media only screen and (max-width: 750px) {
-  .details_container {
+  .detailsContainer {
     flex-direction: column;
   }
 }
