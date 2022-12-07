@@ -3,7 +3,7 @@ type taskItem = {
     itemType?: 'TASK'
     levelId: string
     levelName: string
-    levelNumber: number
+    levelValue: number
     tagId: string
     tagName: string
     tagType: 'SKILL'
