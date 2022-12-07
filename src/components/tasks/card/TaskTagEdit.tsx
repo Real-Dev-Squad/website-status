@@ -66,10 +66,10 @@ const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
     const { ERROR } = ToastTypes
     let tagOptions = taskTags;
     // filtering out tag options: if a skill is present then to remove it from the options
-    taskTagLevel
+    (taskTagLevel && taskTags)
     &&
-    taskTags?.forEach((tag) => {
-        taskTagLevel?.forEach(item => {
+    taskTags.forEach((tag) => {
+        taskTagLevel.forEach(item => {
             if(item.tagName === tag.name){
                 tagOptions = tagOptions && tagOptions.filter((tag) => tag.name !== item.tagName)
             }
