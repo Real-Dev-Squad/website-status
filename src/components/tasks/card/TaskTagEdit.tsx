@@ -16,10 +16,10 @@ type SelectComponentPropsType = {
     options: levelType[] | tagType[]
     name: 'tags' | 'levels'
     defaultOption: '--new tag--' | '--new level--'
-    setNewValueOnChange: React.Dispatch<React.SetStateAction<string | undefined>>
+    setNewValueOnChange: React.Dispatch<React.SetStateAction<any>>
     id: string
     label: string
-    value: string | undefined
+    value: string | number | undefined
 }
 
 
@@ -45,9 +45,9 @@ return (
             <option disabled selected>{defaultOption}</option>
             {
                 options?.map(option => (
-                    <option key={option.name} value={option.name}>
+                    <option key={option.id} value={option.name}>
                         {name === "levels" 
-                            ? `Level - ${option.name}`
+                            ? `Level - ${(option as levelType).value}`
                             : option.name
                         }
                     </option>
@@ -60,23 +60,28 @@ return (
 }
 
 const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
-    const [newLevelValue, setNewLevelValue] = useState<string>()
+    const [newLevelValue, setNewLevelValue] = useState<number>()
     const [newTagValue, setNewTagValue] = useState<string>()
-    const { taskLevels, taskTags } = useTasksContext()
+    const { taskLevels: levelOptions, taskTags } = useTasksContext()
     const { ERROR } = ToastTypes
+    let tagOptions = taskTags;
+    // filtering out tag options: if a skill is present then to remove it from the options
+    (taskTagLevel && taskTags)
+    &&
+    taskTags.forEach((tag) => {
+        taskTagLevel.forEach(item => {
+            if(item.tagName === tag.name){
+                tagOptions = tagOptions && tagOptions.filter((tag) => tag.name !== item.tagName)
+            }
+        })
+    })
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const tagToAdd = taskTags?.find(tag => tag.name === newTagValue)
-        const levelToAdd = taskLevels?.find(level => level.name === newLevelValue)
-        const isTagExists = taskTagLevel?.find((tagLevel) => {
-           return tagLevel.tagId === tagToAdd?.id
-        })
+        const tagToAdd = tagOptions?.find(tag => tag.name === newTagValue)
+        const levelToAdd = levelOptions?.find(level => level.value == newLevelValue)
+
         if(newTagValue && newLevelValue) {
-        if(isTagExists){
-            toast(ERROR,`Tag with Level already exists`);
-            return;
-        }
             if(levelToAdd && tagToAdd){
                 const taskItemToUpdate: taskItem = {
                     levelId: levelToAdd.id,
@@ -84,7 +89,7 @@ const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
                     tagId: tagToAdd.id,
                     tagName: tagToAdd.name,
                     tagType: "SKILL",
-                    levelNumber: levelToAdd.levelNumber
+                    levelValue: levelToAdd.value
                 }
                 updateTaskTagLevel(taskItemToUpdate, 'post')
             } else {
@@ -94,7 +99,7 @@ const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
             toast(ERROR, `Tag and Level values both needed`)
         }
     }
-    if (taskLevels && taskTags){
+    if (levelOptions && tagOptions){
     return(
         <>
                 <form className={classNames.addTaskTagLevel} onSubmit={handleSubmit}>
@@ -104,7 +109,7 @@ const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
                     label="select tag"
                     value={newTagValue}
                     name="tags"
-                    options={taskTags}
+                    options={tagOptions}
                     setNewValueOnChange={setNewTagValue}
                 />
                 <SelectComponent 
@@ -113,10 +118,10 @@ const TaskTagEdit = ({ updateTaskTagLevel,taskTagLevel }: TaskTagPropsType) => {
                     label="select level"
                     value={newLevelValue}
                     name="levels"
-                    options={taskLevels}
+                    options={levelOptions}
                     setNewValueOnChange={setNewLevelValue}
                 />
-                <button>Add</button>
+                <button className={classNames.addTagLevelBtn}>Add</button>
             </form>
         </>)
     }
