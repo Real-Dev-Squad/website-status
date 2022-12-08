@@ -45,7 +45,9 @@ return (
             <option disabled selected>{defaultOption}</option>
             {
                 options?.map(option => (
-                    <option key={option.id} value={option.name}>
+                    <option key={option.id}
+                            value={name === "levels" ? (option as levelType).value : option.name}
+                    >
                         {name === "levels" 
                             ? `Level - ${(option as levelType).value}`
                             : option.name
