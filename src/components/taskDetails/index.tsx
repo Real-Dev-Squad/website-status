@@ -54,7 +54,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const { response, error, isLoading } = useFetch(url);
   const { SUCCESS, ERROR } = ToastTypes;
   const { taskDetails } = state;
-  console.log(state.editedDetails);
 
   useEffect(() => {
     const fetchedData: task = { ...response.taskData };
