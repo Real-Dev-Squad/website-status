@@ -1,4 +1,12 @@
-import React, { ChangeEvent, FC, useState, useEffect, useContext } from 'react';
+import React, {
+  ChangeEvent,
+  FC,
+  useEffect,
+  useContext,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import useFetch from '@/hooks/useFetch';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import NavBar from '@/components/navBar/index';
@@ -14,19 +22,44 @@ type Props = {
   taskID: string;
 };
 
+const initialState = {
+  taskDetails: {} as task,
+  editedDetails: {} as task,
+};
+
+function reducer(state: any, action: any) {
+  switch (action.type) {
+    case 'setTaskDetails':
+      return {
+        ...state,
+        taskDetails: { ...state.taskDetails, ...action.payload },
+      };
+    case 'setEditedDetails':
+      return {
+        ...state,
+        editedDetails: { ...state.editedDetails, ...action.payload },
+      };
+    case 'reset':
+      return { ...state, editedDetails: {} };
+    default:
+      return state;
+  }
+}
+
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const isAuthorized = useContext(isUserAuthorizedContext);
-  const [isEditing, setIsEditing] = useState<Boolean>(false);
-  const [initialData, setInitialData] = useState<task>();
-  const [taskDetails, setTaskDetails] = useState<any>();
-  const [editedDetails, setEditedDetails] = useState({});
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const initialDataRef = useRef<task>();
   const { response, error, isLoading } = useFetch(url);
   const { SUCCESS, ERROR } = ToastTypes;
+  const { taskDetails } = state;
+  console.log(state.editedDetails);
 
   useEffect(() => {
     const fetchedData: task = { ...response.taskData };
-    setTaskDetails(fetchedData);
-    setInitialData(fetchedData);
+    dispatch({ type: 'setTaskDetails', payload: fetchedData });
+    initialDataRef.current = fetchedData;
   }, [isLoading, response]);
 
   function convertTimeStamp(timeStamp: string) {
@@ -40,33 +73,29 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const formData = {
       [event.target.name]: event.target.value,
     };
-    setEditedDetails((prv) => {
-      return { ...prv, ...formData };
-    });
-    setTaskDetails((prv: any) => {
-      return { ...prv, ...formData };
-    });
+    dispatch({ type: 'setEditedDetails', payload: formData });
+    dispatch({ type: 'setTaskDetails', payload: formData });
   }
 
   function onCancel() {
     setIsEditing(false);
-    setEditedDetails({});
-    setTaskDetails(initialData);
+    dispatch({ type: 'reset' });
+    dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
   }
 
   async function onSave() {
     setIsEditing(false);
     try {
-      const responseData = await updateTaskDetails(editedDetails, taskID);
+      const responseData = await updateTaskDetails(state.editedDetails, taskID);
       if (responseData.status === 204) {
-        setInitialData(taskDetails);
-        setEditedDetails({});
+        initialDataRef.current = state.taskDetails;
         toast(SUCCESS, 'Successfully saved');
       }
     } catch (err) {
       toast(ERROR, 'Could not save changes');
-      setTaskDetails(initialData);
+      dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
     }
+    dispatch({ type: 'reset' });
   }
 
   function renderTextarea(name: string, value: string) {
@@ -115,9 +144,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         <div className={classNames.parentContainer}>
           <div className={classNames.titleContainer}>
             {!isEditing ? (
-              <span className={classNames.taskTitle}>
-                {taskDetails.title}
-              </span>
+              <span className={classNames.taskTitle}>{taskDetails.title}</span>
             ) : (
               renderTextarea('title', taskDetails.title)
             )}

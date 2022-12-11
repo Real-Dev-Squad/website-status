@@ -13,7 +13,7 @@ const Details: FC<Props> = ({ detailType, value }) => {
       <span className={classNames.detailType}>{detailType}:</span>
       <span
         className={classNames.detailValue}
-        style={{ color: setColor[value] ?? 'black' }}
+        style={{ color: setColor?.[value] ?? 'black' }}
       >
         {value ?? 'N/A'}
       </span>
