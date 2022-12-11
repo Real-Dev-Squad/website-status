@@ -35,11 +35,7 @@ export const TasksProvider = ({children }: { children: React.ReactNode })=> {
                 url: ALL_LEVELS_URL
             })
             const { data } = await requestPromise;
-            const sortedTaskLevels = (data.levels).sort((a: levelType,b: levelType) => {
-                if(parseInt(a.name) < parseInt(b.name)) return -1;
-                if(parseInt(a.name) > parseInt(b.name)) return 1;
-                return 0
-            })
+            const sortedTaskLevels = (data.levels).sort((a: levelType,b: levelType) => a.value < b.value ? -1 : 1 )
             setTaskLevels(sortedTaskLevels)
            })();
     },[])

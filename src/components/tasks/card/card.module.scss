@@ -147,8 +147,10 @@ $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
   padding: 0.35em;
   border-radius: 20px;
   border: 2px solid $taskTagLevelBorder;
+  font-size: 0.85em;
+  font-weight: 500;
   small{
-    font-size: .75em;
+    font-size: 0.75em;
   }
 
   .removeTaskTagLevelBtn{
@@ -205,6 +207,10 @@ $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
     clip-path: polygon(100% 0%, 0 0%, 50% 100%);
     justify-self: end;
   }
+}
+
+.addTagLevelBtn {
+  cursor: pointer;
 }
 
 /* loading spinner  */
