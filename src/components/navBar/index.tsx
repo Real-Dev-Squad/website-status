@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
-import Link from 'next/link';
-import useAuthenticated from '@/hooks/useAuthenticated';
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import useAuthenticated from "@/hooks/useAuthenticated";
 import {
   LOGIN_URL,
   DEFAULT_AVATAR,
@@ -11,31 +11,73 @@ import {
   MEMBERS_URL,
   STATUS_URL,
   GITHUB_LOGO,
-  RDS_LOGO
-} from '@/components/constants/url'
-import Dropdown from '../Dropdown/Dropdown';
-import styles from '@/components/navBar/navBar.module.scss';
+  RDS_LOGO,
+  CROSS,
+} from "@/components/constants/url";
+import Dropdown from "../Dropdown/Dropdown";
+import styles from "@/components/navBar/navBar.module.scss";
 
 const NavBar = () => {
   const { userData, isLoggedIn } = useAuthenticated();
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+  let doc: HTMLElement;
+
+  const drawerStyles = {
+    left: toggleDrawer ? "0" : "-100%",
+  };
+
+  // funtion to toggle drawer.
+  function toggle() {
+    setToggleDrawer((prev) => !prev);
+  }
+
+  useEffect(() => {
+    if (toggleDrawer == true) {
+      doc = document?.querySelector("body")!;
+      doc.style.overflow = "hidden";
+    } else {
+      doc = document?.querySelector("body")!;
+      doc.style.overflow = "scroll";
+    }
+  }, [toggleDrawer]);
 
   return (
     <nav className={styles.navBar}>
-      <div className={styles.navLinks}>
-        <a className={styles.logo} href={HOME_URL}>
+      <div className={styles.ham} onClick={toggle} title="ham">
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+        <div className={styles.bar}></div>
+      </div>
+
+      <div className={styles.navLinks} id="drawer" style={drawerStyles}>
+        <div className={styles.cross} onClick={toggle} title="cancel">
+          <img src={CROSS} alt="cancel-button" className={styles.cross_img} />
+        </div>
+        <a className={styles.logo} href={HOME_URL} title="home">
           <img width="45px" height="45px" src={RDS_LOGO} alt="real-dev squad" />
         </a>
-        <a href={WELCOME_URL}>Welcome</a>
-        <a href={EVENTS_URL}>Events</a>
-        <a href={MEMBERS_URL}>Members</a>
-        <a href={CRYPTO_URL}>Crypto</a>
-        <a className={styles.active} href={STATUS_URL}>Status</a>
+        <a href={WELCOME_URL} title="welcome">
+          Welcome
+        </a>
+        <a href={EVENTS_URL} title="events">
+          Events
+        </a>
+        <a href={MEMBERS_URL} title="members">
+          Members
+        </a>
+        <a href={CRYPTO_URL} title="crypto">
+          Crypto
+        </a>
+        <a className={styles.active} title="status" href={STATUS_URL}>
+          Status
+        </a>
       </div>
+
       <div>
         {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
-            <a className={styles.signInLink}>
+            <a className={styles.signInLink} title="signIn">
               Sign In With GitHub
               <img
                 className={styles.githubLogo}
@@ -45,13 +87,20 @@ const NavBar = () => {
             </a>
           </Link>
         ) : (
-          <div className={styles.userGreet} onClick={() => setToggleDropdown(!toggleDropdown)}>
+          <div
+            className={styles.userGreet}
+            onClick={() => setToggleDropdown(!toggleDropdown)}
+          >
             <div className={styles.userGreetMsg}>
               Hello, {userData.firstName}
             </div>
             <img
               className={styles.userProfilePic}
-              src={userData.profilePicture ? `${userData.profilePicture}` : `${DEFAULT_AVATAR}`}
+              src={
+                userData.profilePicture
+                  ? `${userData.profilePicture}`
+                  : `${DEFAULT_AVATAR}`
+              }
               alt="Profile Pic"
               width="32px"
               height="32px"
@@ -61,7 +110,7 @@ const NavBar = () => {
         )}
       </div>
     </nav>
-  )
+  );
 };
 
 export default NavBar;

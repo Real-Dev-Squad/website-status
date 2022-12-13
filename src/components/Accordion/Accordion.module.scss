@@ -4,7 +4,7 @@
   width: 750px;
 
   @media (max-width: 767px) {
-    min-width: 300px;
+    min-width: 100vw;
     width: 70vw;
   }
 }
@@ -28,7 +28,8 @@
   }
 
   @media (max-width: 767px) {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    justify-content: space-between;
   }
 }
 
