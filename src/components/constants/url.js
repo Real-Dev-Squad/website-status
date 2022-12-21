@@ -16,3 +16,4 @@ export const RDS_LOGO = '/RDSLogo.png';
 export const GITHUB_LOGO = '/github-white.png';
 export const SIGNUP_LINK = 'https://my.realdevsquad.com/signup';
 export const LOGOUT_URL = 'https://api.realdevsquad.com/auth/signout';  
+export const IDLE_USERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/status?state=IDLE`;
