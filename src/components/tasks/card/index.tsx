@@ -1,5 +1,6 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
+import classNames from '@/components/tasks/card/card.module.scss';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
@@ -7,7 +8,11 @@ import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
-import classNames from '@/components/tasks/card/card.module.scss';
+import TaskLevelEdit from './TaskTagEdit';
+import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
+import fetch from '@/helperFunctions/fetch';
+import { toast,ToastTypes } from '@/helperFunctions/toast';
+import { ITEMS_URL, ITEM_BY_FILTER_URL } from '@/components/constants/url';
 
 const moment = require('moment');
 
@@ -28,15 +33,36 @@ const Card: FC<Props> = ({
   const [assigneeProfilePic, setAssigneeProfilePic] = useState(
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`,
   );
+  const { SUCCESS, ERROR } = ToastTypes;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
+  const [taskTagLevel, setTaskTagLevel] = useState<taskItem[]>()
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
     if (isAltKeyLongPressed) {
       setShowEditButton(true)
     }
   }, [keyLongPressed]);
+  useEffect(() => {
+    (async () => {
+      try{
+        const { requestPromise } = fetch(
+          { 
+            url: `${ITEM_BY_FILTER_URL}`,
+            params: {
+              itemType: 'TASK',
+              itemId: `${cardDetails.id}`
+            }
+          });
+        const { data: result } = await requestPromise
+        setTaskTagLevel(result.data)
+       } catch (err: any) {
+         toast(ERROR, err.message);
+       }
+    })()
+  },[])
   
   const context = useAppContext() ;
   const { actions } = context || {}
@@ -82,6 +108,41 @@ const Card: FC<Props> = ({
     }
   }
 
+  const updateTaskTagLevel = async (taskItemToUpdate: taskItem,method: 'delete' | 'post') => {
+    let body: taskItemPayload = {
+      itemId: cardDetails.id,
+      itemType: 'TASK'
+    };
+    try{
+      setIsLoading(true)
+      if(method === 'post'){
+          body.tagPayload = [{
+            levelId: taskItemToUpdate.levelId,
+            tagId: taskItemToUpdate.tagId
+          }] 
+      } else if (method === 'delete') {
+        body.tagId = taskItemToUpdate.tagId 
+        }
+      const { requestPromise } = fetch({
+        url: ITEMS_URL,
+        method,
+        data: body
+      })
+      const result = await requestPromise;
+      if(result.status === 200 &&  method === 'delete'){
+       taskTagLevel && setTaskTagLevel(taskTagLevel?.filter((item) => item.tagId !== taskItemToUpdate.tagId))
+      } else if (result.status === 200 && method === 'post') {
+        taskTagLevel 
+        ? setTaskTagLevel([...taskTagLevel,{itemId: cardDetails.id,...taskItemToUpdate}])
+        : setTaskTagLevel([{itemId: cardDetails.id,...taskItemToUpdate}])
+      }
+      setIsLoading(false)
+    } catch(err: any) {
+      setIsLoading(false)
+      toast(ERROR, err.message);
+    }
+  }
+  
   function inputParser(input: string) {
     const parsedDate = moment(new Date(parseInt(input, 10) * 1000))
     return parsedDate
@@ -148,9 +209,20 @@ const Card: FC<Props> = ({
     <div
       className={`
         ${classNames.card}
+        ${isLoading && classNames.pointerEventsNone}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
     >
+      {/* loading spinner */}
+      {
+      isLoading && 
+      <div className={classNames.loadingBg}>
+        <div className={classNames.spinner}>
+          <span className={classNames.screenReaderOnly}>loading</span>
+        </div>
+      </div>
+      }
+      
       <div className={classNames.cardItems}>
         <span
           className={classNames.cardTitle}
@@ -202,6 +274,24 @@ const Card: FC<Props> = ({
             {content.percentCompleted}% completed
           </span>
         </span>
+      </div>
+      <div className={`${classNames.taskTagLevelWrapper} ${shouldEdit && classNames.editMode}`}>
+            <div className={classNames.taskTagLevelContainer}>
+            {
+              taskTagLevel?.map((item) => (
+                <span key={item.tagId} className={classNames.taskTagLevel}>{item.tagName} <small><b>LVL:{item.levelValue}</b></small>{
+                  shouldEdit && isUserAuthorized &&
+                  (
+                    <span>
+                      <button className={classNames.removeTaskTagLevelBtn} onClick={
+                        () => updateTaskTagLevel(item,'delete')
+                        }>&#10060;</button>
+                    </span>)}
+                </span>
+                ))
+              }
+          </div>
+          {(shouldEdit && isUserAuthorized) && <TaskLevelEdit taskTagLevel={taskTagLevel} updateTaskTagLevel={updateTaskTagLevel}/>}
       </div>
       <div className={classNames.cardItems}>
         <span

@@ -4,6 +4,24 @@ $red: #ff0000;
 $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
+$taskTagLevelBorder: #4169e1;
+$taskTagLevelBg: hsla(225, 73%, 57%,0.5);
+
+.screenReaderOnly{ 
+  position: absolute; 
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px; 
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.pointerEventsNone{
+  pointer-events: none;
+}
 
 .card {
   display: flex;
@@ -13,6 +31,7 @@ $black: #252525;
   margin-bottom: 25px;
   justify-content: space-between;
   border: 1px solid #d9d9d9;
+  position: relative;
 }
 
 .cardItems {
@@ -101,3 +120,117 @@ $black: #252525;
   text-align: left;
   cursor: pointer;
 }
+
+.taskTagLevelWrapper{
+  display: flex;
+  padding-top: 0.5rem;
+  flex-wrap: wrap;
+}
+.taskTagLevelWrapper.editMode{
+  gap: 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.taskTagLevelContainer{
+  display: flex;
+  gap: 0.25rem
+}
+
+.taskTagLevel{
+  position: relative;
+  background-color: $taskTagLevelBg;
+  padding: 0.35em;
+  border-radius: 20px;
+  border: 2px solid $taskTagLevelBorder;
+  font-size: 0.85em;
+  font-weight: 500;
+  small{
+    font-size: 0.75em;
+  }
+
+  .removeTaskTagLevelBtn{
+    font-size: 0.35rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%,-40%);
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    outline: none;
+    border: 1px solid grey;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+  }
+}
+
+.addTaskTagLevel{
+  display: flex;
+  gap: 0.5rem;
+}
+
+.selectWrapper{
+  border: 1px solid $black;
+  border-radius: 0.25em;
+  padding: 0.25em 0.5em;
+  display: grid;
+  grid-template-areas: select;
+  align-items: center;
+  
+  .selectDropdown{
+    width: 100%;
+    appearance: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    outline: none;
+    border: none;
+    padding: 0 1em 0 0;
+    border-radius: 0.25em;
+    grid-area: select;
+    background: none;
+  }
+  
+  &::after {
+    content: "";
+    grid-area: select;
+    width: 0.7em;
+    height: 0.5em;
+    background-color: #041187;
+    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+    justify-self: end;
+  }
+}
+
+.addTagLevelBtn {
+  cursor: pointer;
+}
+
+/* loading spinner  */
+.loadingBg{
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-color: rgba(0, 0, 0,0.2);
+  display: grid;
+  place-content: center;
+  .spinner{
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+  
+    }
+}
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
