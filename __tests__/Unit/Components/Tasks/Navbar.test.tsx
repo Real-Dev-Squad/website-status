@@ -9,15 +9,11 @@ describe("Checking whether components are in place.", () => {
     expect(hamElement).toBeInTheDocument();
   });
 
-  test("whether drawer button is present on the navbar", () => {
+  test("whether drawer and signIn button is present on the navbar", () => {
     render(<Navbar />);
 
     const hamElement = screen.getByTitle(/ham/i);
     expect(hamElement).toBeInTheDocument();
-  });
-
-  test("whether signIn button is present on the navbar", () => {
-    render(<Navbar />);
 
     const signInButton = screen.getByTitle(/signIn/i);
     expect(signInButton).toBeInTheDocument();

@@ -16,6 +16,7 @@ import {
 } from "@/components/constants/url";
 import Dropdown from "../Dropdown/Dropdown";
 import styles from "@/components/navBar/navBar.module.scss";
+import Image from "next/image";
 
 const NavBar = () => {
   const { userData, isLoggedIn } = useAuthenticated();
@@ -52,10 +53,21 @@ const NavBar = () => {
 
       <div className={styles.navLinks} id="drawer" style={drawerStyles}>
         <div className={styles.cross} onClick={toggle} title="cancel">
-          <img src={CROSS} alt="cancel-button" className={styles.cross_img} />
+          <Image
+            src={CROSS}
+            alt="cancel-button"
+            width="20px"
+            height="20px"
+            className={styles.cross_img}
+          />
         </div>
         <a className={styles.logo} href={HOME_URL} title="home">
-          <img width="45px" height="45px" src={RDS_LOGO} alt="real-dev squad" />
+          <Image
+            width="45px"
+            height="45px"
+            src={RDS_LOGO}
+            alt="real-dev squad"
+          />
         </a>
         <a href={WELCOME_URL} title="welcome">
           Welcome
@@ -94,7 +106,7 @@ const NavBar = () => {
             <div className={styles.userGreetMsg}>
               Hello, {userData.firstName}
             </div>
-            <img
+            <Image
               className={styles.userProfilePic}
               src={
                 userData.profilePicture
