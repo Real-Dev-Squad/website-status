@@ -6,6 +6,7 @@ export type idleUserArray = {
 };
 
 export type idleUser = {
+  username: string
   id: string;
   picture: {
     url: string;

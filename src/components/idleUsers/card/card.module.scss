@@ -1,3 +1,5 @@
+$theme-blue: #1d1283;
+
 .card {
   border: 2px solid black;
   border-radius: 10px;
@@ -8,7 +10,6 @@
   flex-wrap: wrap;
   margin: 2rem;
   padding: 2rem;
-  cursor: pointer;
   align-items: center;
 
   img {
@@ -16,8 +17,13 @@
   }
 
   .name {
+    cursor: pointer;
     margin-top: 3%;
     font-size: 1rem;
     font-weight: 700;
+
+    &:hover{
+      color: $theme-blue
+    }
   }
 }
