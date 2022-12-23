@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Card from '@/components/idleUsers/card';
 import classNames from '@/components/idleUsers/section/section.module.scss';
-import { idleUserArray, idleUser } from '@/interfaces/idleUser.type';
+import { idleUserData, idleUser } from '@/interfaces/idleUser.type';
 
 function renderCards(content: idleUser[]) {
   return content.map((idleUser) => (
@@ -9,7 +9,7 @@ function renderCards(content: idleUser[]) {
   ));
 }
 
-const Section: FC<idleUserArray> = ({
+const Section: FC<idleUserData> = ({
   heading, content, error, isLoading,
 }) => (
   <div className={classNames.section}>

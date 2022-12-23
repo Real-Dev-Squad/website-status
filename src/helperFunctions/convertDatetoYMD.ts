@@ -1,6 +1,6 @@
-export default function convertDatetoYMD(timestamp: string) {
+export default function convertDatetoYMD(idleSince: string) {
   const today = new Date();
-  const idleSincedate = new Date(timestamp);
+  const idleSincedate = new Date(idleSince);
   const dateArray = idleSincedate.toISOString().split('-');
   const year = today.getFullYear();
   const month = today.getMonth() + 1;

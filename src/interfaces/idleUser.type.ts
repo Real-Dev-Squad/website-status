@@ -1,4 +1,4 @@
-export type idleUserArray = {
+export type idleUserData = {
   heading: string;
   content: idleUser[];
   error: string | null;

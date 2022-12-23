@@ -4,9 +4,10 @@ import Section from '@/components/idleUsers/section';
 import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 import { IDLE_USERS_URL } from '@/components/constants/url';
+import { idleUser } from '@/interfaces/idleUser.type';
 
 const IdleUsers: FC = () => {
-  const [idleUsersList, setIdleUsersList] = useState<[]>([]);
+  const [idleUsersList, setIdleUsersList] = useState<idleUser[]>([]);
 
   const {
     response,
