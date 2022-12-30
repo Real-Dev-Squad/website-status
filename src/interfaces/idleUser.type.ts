@@ -1,11 +1,12 @@
-export type idleUserData = {
+export type IdleUserArray = {
   heading: string;
-  content: idleUser[];
+  content: IdleUser[];
   error: string | null;
   isLoading: boolean;
 };
 
-export type idleUser = {
+export type IdleUser = {
+  username: string
   id: string;
   picture: {
     url: string;
