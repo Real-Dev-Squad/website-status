@@ -1,5 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Navbar from "@/components/navBar";
+import {
+  LOGIN_URL,
+  HOME_URL,
+  WELCOME_URL,
+  EVENTS_URL,
+  CRYPTO_URL,
+  MEMBERS_URL,
+  STATUS_URL,
+} from "@/components/constants/url";
 
 describe("Checking whether components are in place.", () => {
   test("whether navbar is present or not", () => {
@@ -37,7 +46,7 @@ describe("Checking whether components are in place.", () => {
   });
 });
 
-describe("Tesing the working of the drawer", () => {
+describe("Testing the working of the drawer", () => {
   test("whether drawer is opening and closing when ham or cross button clicked", () => {
     render(<Navbar />);
 
@@ -50,5 +59,32 @@ describe("Tesing the working of the drawer", () => {
 
     fireEvent.click(cancelButton);
     expect(drawer?.style.left).toBe("-100%");
+  });
+});
+
+describe("Testing navigation.", () => {
+  test("whether links have correct url.", () => {
+    render(<Navbar />);
+
+    // FOR HOME
+    expect(screen.getByTitle("home")).toHaveAttribute("href", HOME_URL);
+
+    // FOR WELCOME SITE
+    expect(screen.getByTitle("welcome")).toHaveAttribute("href", WELCOME_URL);
+
+    // FOR CRYPTO SITE
+    expect(screen.getByTitle("crypto")).toHaveAttribute("href", CRYPTO_URL);
+
+    // FOR MEMBERS SITE
+    expect(screen.getByTitle("members")).toHaveAttribute("href", MEMBERS_URL);
+
+    // FOR EVENTS SITE
+    expect(screen.getByTitle("events")).toHaveAttribute("href", EVENTS_URL);
+
+    // FOR STATUS SITE
+    expect(screen.getByTitle("status")).toHaveAttribute("href", STATUS_URL);
+
+    // FOR LOGIN/SIGNUP using github.
+    expect(screen.getByTitle("signIn")).toHaveAttribute("href", LOGIN_URL);
   });
 });

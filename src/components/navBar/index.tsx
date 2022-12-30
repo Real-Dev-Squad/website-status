@@ -22,7 +22,6 @@ const NavBar = () => {
   const { userData, isLoggedIn } = useAuthenticated();
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [toggleDrawer, setToggleDrawer] = useState(false);
-  let doc: HTMLElement;
 
   const drawerStyles = {
     left: toggleDrawer ? "0" : "-100%",
@@ -35,10 +34,10 @@ const NavBar = () => {
 
   useEffect(() => {
     if (toggleDrawer == true) {
-      doc = document?.querySelector("body")!;
+      let doc = document?.querySelector("body")!;
       doc.style.overflow = "hidden";
     } else {
-      doc = document?.querySelector("body")!;
+      let doc = document?.querySelector("body")!;
       doc.style.overflow = "scroll";
     }
   }, [toggleDrawer]);
@@ -88,10 +87,12 @@ const NavBar = () => {
 
       <div>
         {!isLoggedIn ? (
-          <Link href={LOGIN_URL}>
+          <Link href={LOGIN_URL} title="signIn">
             <a className={styles.signInLink} title="signIn">
               Sign In With GitHub
-              <img
+              <Image
+                height="16px"
+                width="16px"
                 className={styles.githubLogo}
                 src={GITHUB_LOGO}
                 alt="GitHub Icon"
