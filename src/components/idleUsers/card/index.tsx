@@ -9,16 +9,18 @@ type Props = {
   user: IdleUser
 }
 
+export const calculateIdleSince = (idleSince: string) => {
+  const presentDate = new Date();
+  return `${Math.ceil(
+    (presentDate.getTime() - parseInt(idleSince)) / (1000 * 3600 * 24),
+  )} days ago`;
+}
+
 const Card: FC<Props> = ({ user }) => {
   const userImg = user?.picture?.url
   const USER_PROFILE_URL = `https://members.realdevsquad.com/${user.username}`;
-  const idleFromDate = new Date(user.currentStatus.from);
-  const presentDate = new Date();
+  const idleSinceDate = calculateIdleSince(user.currentStatus.from)
 
-  const idleSince = `${Math.ceil(
-    (presentDate.getTime() - idleFromDate.getTime()) / (1000 * 3600 * 24),
-  )} days ago`;
-  
   return (
     <div
       className={classNames.card}
@@ -29,11 +31,12 @@ const Card: FC<Props> = ({ user }) => {
         alt={user.full_name}
         width={150}
         height={150}
+        data-testid='user-image'
       />
       <Link href={USER_PROFILE_URL}>
         <span className={classNames.name}>{user.full_name}</span>
       </Link>
-      <span>{idleSince}</span>
+      <span data-testid="idle-since">{idleSinceDate}</span>
     </div>
   );
 };

@@ -27,7 +27,7 @@ const IdleUsers: FC = () => {
       <Head title="Idle Users | Status Real Dev Squad" />
 
       <div className="container">
-        <Section heading="Idle Users" content={idleUsersList} error={error} isLoading={isLoading} />
+        <Section heading='Idle users' content={idleUsersList} error={error} isLoading={isLoading} />
       </div>
 
     </Layout>
