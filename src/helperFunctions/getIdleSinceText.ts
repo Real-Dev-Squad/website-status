@@ -6,7 +6,7 @@ const getIdleSinceText = (idleSince: string) => {
     (presentDate.getTime() - parseInt(idleSince)) / TOTAL_MILLISECONDS_IN_A_DAY,
   );
 
-  const differenceInHours = Math.abs(Math.round((presentDate.getTime() - parseInt(idleSince)) / 3600000));
+  const differenceInHours = Math.abs(Math.round((presentDate.getTime() - parseInt(idleSince)) / TOTAL_MILLISECONDS_IN_A_HOUR));
 
   if(differenceInDay > 1){
     return `${differenceInDay} days ago`;
