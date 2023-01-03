@@ -9,14 +9,14 @@
   margin: 2rem;
   padding: 2rem;
   cursor: pointer;
+  align-items: center;
 
   img {
     border-radius: 50%;
   }
 
   .name {
-    text-transform: capitalize;
-    text-align: center;
+    margin-top: 3%;
     font-size: 1rem;
     font-weight: 700;
   }
