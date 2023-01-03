@@ -4,9 +4,10 @@ import Section from '@/components/idleUsers/section';
 import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 import { IDLE_USERS_URL } from '@/components/constants/url';
+import { IdleUser } from '@/interfaces/idleUser.type';
 
 const IdleUsers: FC = () => {
-  const [idleUsersList, setIdleUsersList] = useState<[]>([]);
+  const [idleUsersList, setIdleUsersList] = useState<IdleUser[]>([]);
 
   const {
     response,
@@ -15,7 +16,7 @@ const IdleUsers: FC = () => {
   } = useFetch(IDLE_USERS_URL);
 
   useEffect(() => {
-    if ('allUserStatus' in response) {
+    if (response) {
       const idleUsers = response.allUserStatus;
       setIdleUsersList(idleUsers);
     }
@@ -26,7 +27,7 @@ const IdleUsers: FC = () => {
       <Head title="Idle Users | Status Real Dev Squad" />
 
       <div className="container">
-        <Section heading="Idle Users" content={idleUsersList} error={error} isLoading={isLoading} />
+        <Section heading='Idle users' content={idleUsersList} error={error} isLoading={isLoading} />
       </div>
 
     </Layout>
