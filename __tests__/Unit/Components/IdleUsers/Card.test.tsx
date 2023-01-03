@@ -23,9 +23,9 @@ describe("Idle User Card", () => {
         render(<Card user={user} />)
         const userImage = screen.getByTestId('user-image');
         const fullName = screen.getByText(user.full_name);
-        const idleSinceDate = calculateIdleSince(user.currentStatus.from);
-        const idleSinceText = screen.getByTestId('idle-since');
-        expect(idleSinceText).toHaveTextContent(idleSinceDate);
+        const idleSinceText = calculateIdleSince(user.currentStatus.from);
+        const idleSince = screen.getByTestId('idle-since');
+        expect(idleSince).toHaveTextContent(idleSinceText);
         expect(fullName).toBeInTheDocument();
         expect(userImage).toBeInTheDocument();
     });
