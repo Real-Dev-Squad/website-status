@@ -5,6 +5,7 @@ import { IdleUser } from '@/interfaces/idleUser.type';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import styles from '@/components/idleUsers/card/card.module.scss';
 import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
+import { MEMBERS_URL } from '@/components/constants/url';
 
 type Props = {
   user: IdleUser
@@ -12,8 +13,8 @@ type Props = {
 
 const Card: FC<Props> = ({ user }) => {
   const userImg = user?.picture?.url
-  const USER_PROFILE_URL = `https://members.realdevsquad.com/${user.username}`;
   const idleSinceText = getIdleSinceText(user.currentStatus.from)
+  const profileUrl = `${MEMBERS_URL}/${user.username}`
 
   return (
     <div
@@ -27,7 +28,7 @@ const Card: FC<Props> = ({ user }) => {
         height={150}
         data-testid='user-image'
       />
-      <Link href={USER_PROFILE_URL}>
+      <Link href={profileUrl}>
         <span className={styles.name}>{user.full_name}</span>
       </Link>
       <span data-testid="idle-since">{idleSinceText}</span>
