@@ -29,9 +29,9 @@ const Card: FC<Props> = ({ user }) => {
         data-testid='user-image'
       />
       <Link href={profileUrl}>
-        <span className={styles.name}>{user.full_name}</span>
+        <a className={styles.name}>{user.full_name}</a>
       </Link>
-      <span data-testid="idle-since">{idleSinceText}</span>
+      <span data-testid='idle-since'>{idleSinceText}</span>
     </div>
   );
 };
