@@ -28,8 +28,9 @@ describe("Idle User Card", () => {
         const fullName = screen.getByText(user.full_name);
         const idleSinceText = getIdleSinceText(user.currentStatus.from);
         const idleSince = screen.getByTestId('idle-since');
+        const cardLink = screen.getByTestId('profile-card');
         expect(fullName).toBeInTheDocument();
-        expect(fullName).toHaveAttribute('href', profileUrl )
+        expect(cardLink).toHaveAttribute('href', profileUrl )
         expect(idleSince).toHaveTextContent(idleSinceText);
         expect(userImage).toBeInTheDocument();
     });
