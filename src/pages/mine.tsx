@@ -32,7 +32,7 @@ const Mine: FC = () => {
   const { isLoggedIn, isLoading: isAuthenticating } = useAuthenticated();
 
   useEffect(() => {
-    if (isLoggedIn && Object.keys(response).length) {
+    if (isLoggedIn) {
       callAPI();
       setTasks(response);
     }
