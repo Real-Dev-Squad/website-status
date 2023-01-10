@@ -41,7 +41,7 @@ const Layout: FC<Props> = ({ children }) => {
           |
           {navBarContent('Stale PRs', '/stale-pr', router.pathname === '/stale-pr')}
           |
-          {navBarContent('Idle Members', '/idle-members', router.pathname === '/idle-members')}
+          {navBarContent('Idle Users', '/idle-users', router.pathname === '/idle-users')}
           {
             (dev)
             && (
