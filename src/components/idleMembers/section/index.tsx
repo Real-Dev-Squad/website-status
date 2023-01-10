@@ -1,15 +1,21 @@
 import { FC } from 'react';
-import Card from '@/components/idleUsers/card';
-import classNames from '@/components/idleUsers/section/section.module.scss';
-import { IdleUserArray, IdleUser } from '@/interfaces/idleUser.type';
+import Card from '@/components/idleMembers/card';
+import classNames from '@/components/idleMembers/section/section.module.scss';
 
-function renderCards(content: IdleUser[]) {
-  return content.map((idleUser) => (
-    <Card user={idleUser} key={idleUser.id} />
+type Props = {
+  heading: string
+  content: Array<string>
+  error: string | null
+  isLoading: boolean
+}
+
+function renderCards(content: Array<string>) {
+  return content.map((idleMember) => (
+    <Card idleMemberUserName={idleMember} key={idleMember} />
   ));
 }
 
-const Section: FC<IdleUserArray> = ({
+const Section: FC<Props> = ({
   heading, content, error, isLoading,
 }) => (
   <div className={classNames.section}>
