@@ -16,7 +16,7 @@ const IdleUsers: FC = () => {
   } = useFetch(IDLE_USERS_URL);
 
   useEffect(() => {
-    if (response) {
+    if (response?.allUserStatus) {
       const idleUsers = response.allUserStatus;
       setIdleUsersList(idleUsers);
     }
