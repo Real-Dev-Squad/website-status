@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import {
@@ -35,14 +35,14 @@ const NavBar = () => {
       <div>
         {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
-            <a className={styles.signInLink}>
+            <p className={styles.signInLink}>
               Sign In With GitHub
               <img
                 className={styles.githubLogo}
                 src={GITHUB_LOGO}
                 alt="GitHub Icon"
               />
-            </a>
+            </p>
           </Link>
         ) : (
           <div className={styles.userGreet} onClick={() => setToggleDropdown(!toggleDropdown)}>
