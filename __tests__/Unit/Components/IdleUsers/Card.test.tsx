@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
 import { MEMBERS_URL } from '@/components/constants/url';
 import { IdleUser } from '@/interfaces/idleUser.type';
