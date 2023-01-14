@@ -78,7 +78,7 @@
     "webpack": "^5.65.0"
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "lint-staged": {
     "*.+(ts|tsx)": [
