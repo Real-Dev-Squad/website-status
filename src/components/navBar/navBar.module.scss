@@ -2,23 +2,70 @@ $offset: 10px;
 $thickness: 3px;
 $white: #fff;
 $theme-blue: #1d1283;
+$red: #ff0000;
 $theme-active: #87d870;
 
 .navBar {
   display: flex;
   width: 100%;
+  height: 10vh;
   background-color: $theme-blue;
   align-items: center;
   overflow: hidden;
   flex-wrap: wrap;
   justify-content: space-between;
+  left: 0;
+
+  .cross {
+    display: inline;
+    text-align: right;
+    right: 0;
+    margin-right: 4vh;
+    position: absolute;
+    top: 4vh;
+    cursor: pointer;
+  }
+
+  .cross_img {
+    width: 1rem;
+  }
+
+  .block {
+    overflow: hidden;
+  }
+
+  .ham {
+    cursor: pointer;
+    color: $white;
+    margin-left: 3vh;
+
+    .bar {
+      height: 3px;
+      width: 25px;
+      display: block;
+      margin: 5px auto;
+      background-color: $white;
+    }
+  }
 
   .navLinks {
     display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 0;
+    width: 95vw;
+    height: 100vh;
+    z-index: 1;
+    background-color: white;
+    transition: 0.5s ease-in-out;
+    box-shadow: 0px 2px 35px 0px rgba(0, 0, 0, 0.75);
 
     a {
       display: block;
-      color: $white;
+      color: $theme-blue;
       font-weight: bolder;
       text-align: center;
       padding: 35px 2 * ($offset + $thickness)-1;
@@ -52,6 +99,7 @@ $theme-active: #87d870;
     font-weight: 200;
     margin-right: 0.625rem;
     text-decoration: none;
+    gap: 5px;
   }
 
   .githubLogo {
