@@ -2,7 +2,8 @@ import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
 import { MEMBERS_URL } from '@/components/constants/url';
 import { IdleUser } from '@/interfaces/idleUser.type';
-import Image from 'next/image';
+import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
+
 const user: IdleUser = {
     id: "H3vNvHtFfp1Y57tPNoQ1",
     currentStatus: {
@@ -31,7 +32,7 @@ describe("Idle User Card", () => {
         const idleSince = screen.getByTestId('idle-since');
         const cardLink = screen.getByTestId('profile-card');
 
-        const expectedIdleSinceText = '14 days ago';
+        const expectedIdleSinceText = getIdleSinceText(user.currentStatus.from);
 
         expect(fullName).toHaveTextContent(user.full_name);
         expect(cardLink).toHaveAttribute('href', profileUrl)
