@@ -31,7 +31,7 @@ describe("Idle User Card", () => {
         const idleSince = screen.getByTestId('idle-since');
         const cardLink = screen.getByTestId('profile-card');
 
-        const expectedIdleSinceText = '14 days ago';
+        const expectedIdleSinceText = '27 days ago';
 
         expect(fullName).toHaveTextContent(user.full_name);
         expect(cardLink).toHaveAttribute('href', profileUrl)

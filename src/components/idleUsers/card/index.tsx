@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { IdleUser } from '@/interfaces/idleUser.type';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import styles from '@/components/idleUsers/card/card.module.scss';
