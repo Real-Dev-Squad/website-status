@@ -17,6 +17,7 @@ const user = {
     },
     username: "theakashshukla"
 }
+
 describe("Idle User Card", () => {
 
     const profileUrl = `${MEMBERS_URL}/${user.username}`
