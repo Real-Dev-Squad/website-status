@@ -38,6 +38,6 @@ describe("Idle User Card", () => {
         expect(cardLink).toHaveAttribute('href', profileUrl)
         expect(idleSince).toHaveTextContent(expectedIdleSinceText);
         expect(userImage).toHaveAttribute('alt', user.full_name);
-        // expect(userImage).toHaveAttribute('src', user.picture.url); 
+        // expect(userImage).toHaveAttribute('src', user.picture.url);  //https://github.com/Real-Dev-Squad/website-status/issues/397
     });
 })
