@@ -24,11 +24,11 @@ import {
   VERIFIED,
   BLOCKED,
 } from '@/components/constants/task-status';
-import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
+import TaskList from '@/components/tasks/TaskList/TaskList';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -72,18 +72,6 @@ async function updateCardContent(id: string, cardDetails: task) {
   }
 }
 
-function renderCardList(tasks: task[], isEditable: boolean) {
-  const beautifiedTasks = beautifyTaskStatus(tasks);
-  return beautifiedTasks.map((item: task) => (
-    <Card
-      content={item}
-      key={item.id}
-      shouldEdit={isEditable}
-      onContentChange={async (id: string, newDetails: any) => isEditable
-        && updateCardContent(id, newDetails)}
-    />
-  ));
-}
 
 const Index: FC = () => {
   const { state: appState } = useAppContext();  
@@ -127,7 +115,7 @@ const Index: FC = () => {
                 {Object.keys(filteredTask).length > 0
                   ? Object.keys(filteredTask).map((key) => (
                     <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                      {renderCardList(filteredTask[key], isEditable)}
+                      <TaskList tasks={filteredTask[key]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={key == IN_PROGRESS}/>
                     </Accordion>
                   ))
                   : !error && 'No Tasks Found'}

@@ -209,6 +209,24 @@ $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
   cursor: pointer;
 }
 
+.seeMoreTasks{
+  cursor: pointer;
+  width: calc((100% / 3) - 8px);
+  padding: 1rem;
+  color: #fff;
+  background-color: #041187;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
+
+.seeMoreTasks:hover{
+  box-shadow: 0 1px .5rem rgba(89, 89, 89, 0.8);
+}
+
 /* loading spinner  */
 .loadingBg{
   position: absolute;
