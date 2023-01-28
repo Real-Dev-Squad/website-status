@@ -75,8 +75,8 @@ const Card: FC<Props> = ({
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
   const statusFontColor = !statusRedList.includes(cardDetails.status) ? '#00a337' : '#f83535';
-  const iconHeight = '25px';
-  const iconWidth = '25px';
+  const iconHeight = '25';
+  const iconWidth = '25';
 
   const date:string = !!localEndsOn ? getDateInString(localEndsOn) : '';
   const [dateTimes, setDateTimes] = useState(date);

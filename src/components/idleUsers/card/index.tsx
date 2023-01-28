@@ -17,8 +17,7 @@ const Card: FC<Props> = ({ user }) => {
   const profileUrl = `${MEMBERS_URL}/${user.username}`
 
   return (
-    <Link href={profileUrl}>
-      <a data-testid='profile-card' className={styles.card}>
+      <Link data-testid='profile-card' className={styles.card} href={profileUrl} > 
         <Image
           src={userImg || DUMMY_PROFILE}
           alt={user.full_name}
@@ -28,9 +27,7 @@ const Card: FC<Props> = ({ user }) => {
         />
         <p className={styles.name}>{user.full_name}</p>
         <span data-testid='idle-since'>{idleSinceText}</span>
-      </a>
-    </Link>
-
+      </Link> 
   );
 };
 
