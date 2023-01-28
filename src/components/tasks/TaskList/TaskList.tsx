@@ -1,5 +1,6 @@
 import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
 import task from "@/interfaces/task.type";
+import { useState } from "react";
 import Card from "../card";
 
 type TaksListProps = {
@@ -15,11 +16,21 @@ export default function TaskList({
   isEditable = false,
   hasLimit=false,
 }: TaksListProps) {
+  const initialTasksLimit = hasLimit ? 3 : tasks.length;
   const beautifiedTasks = beautifyTaskStatus(tasks);
+  const [tasksLimit, setTasksLimit] = useState<number>(initialTasksLimit);
+  const filteredTasks = getFilteredTasks();
+  function getFilteredTasks(){
+    if(!hasLimit) return beautifiedTasks;
+    return beautifiedTasks.slice(0 , tasksLimit);
+  }
+  function onSeeMoreTasksHandler(){
+      setTasksLimit(prevLimit => prevLimit + 5);
+  }
 
   return (
     <>
-    {beautifiedTasks.map((item: task) => (
+    {filteredTasks.map((item: task) => (
     <Card
       content={item}
       key={item.id}
@@ -29,6 +40,9 @@ export default function TaskList({
       }
     />
   ))}
+  {
+    hasLimit && filteredTasks.length !=  beautifiedTasks.length && <button type="button" onClick={onSeeMoreTasksHandler}>See More</button>
+  }
     </>
   )
 }

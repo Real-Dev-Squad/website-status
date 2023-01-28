@@ -31,11 +31,11 @@ describe("TaskList", function () {
   it("Should render TaskList", function () {
     render(<TaskList tasks={tasks} />);
 
-    const task = screen.queryByText(TASK.title);
     const _tasks = screen.queryAllByText(TASK.title);
 
-    expect(task).toBeInTheDocument();
     expect(_tasks).toHaveLength(10);
+    expect(_tasks[0]).toBeInTheDocument();
+    expect(_tasks[0]).toHaveTextContent(TASK.title)
   });
 
   it("Should render see more button", function () {
@@ -46,7 +46,7 @@ describe("TaskList", function () {
     expect(seeMore).toBeInTheDocument();
   });
 
-  it("Should render 3 tasks intially and then load and render more 5 tasks after see more button click event", function () {
+  it("Should render 3 tasks intially and then render more 5 tasks after click event", function () {
     render(<TaskList tasks={tasks} hasLimit={true} />);
 
     const _tasks = screen.queryAllByText(TASK.title);
@@ -54,10 +54,10 @@ describe("TaskList", function () {
 
     expect(_tasks).toHaveLength(3);
     fireEvent.click(seeMore);
-    expect(_tasks).toHaveLength(8);
+    expect(screen.queryAllByText(TASK.title)).toHaveLength(8);
   });
 
-  it("Shouldn't render see more button after all tasks load and render", function () {
+  it("Shouldn't render see more button after all tasks are loaded and rendered", function () {
     render(<TaskList tasks={tasks} hasLimit={true} />);
 
     const _tasks = screen.queryAllByText(TASK.title);
@@ -66,7 +66,7 @@ describe("TaskList", function () {
     expect(_tasks).toHaveLength(3);
     fireEvent.click(seeMore);
     fireEvent.click(seeMore);
-    expect(_tasks).toHaveLength(10);
+    expect(screen.queryAllByText(TASK.title)).toHaveLength(10);
     expect(seeMore).not.toBeInTheDocument();
   });
 });
