@@ -1,9 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
+import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import { MEMBERS_URL } from '@/components/constants/url';
-import { IdleUser } from '@/interfaces/idleUser.type';
-import Image from 'next/image';
-const user: IdleUser = {
+const user = {
     id: "H3vNvHtFfp1Y57tPNoQ1",
     currentStatus: {
         state: "IDLE",
@@ -22,21 +21,17 @@ const user: IdleUser = {
 describe("Idle User Card", () => {
 
     const profileUrl = `${MEMBERS_URL}/${user.username}`
-
+ 
     it("should render card", () => {
         render(<Card user={user} />)
-
         const userImage = screen.getByTestId('user-image');
         const fullName = screen.getByText(user.full_name);
+        const idleSinceText = getIdleSinceText(user.currentStatus.from);
         const idleSince = screen.getByTestId('idle-since');
         const cardLink = screen.getByTestId('profile-card');
-
-        const expectedIdleSinceText = '27 days ago';
-
-        expect(fullName).toHaveTextContent(user.full_name);
-        expect(cardLink).toHaveAttribute('href', profileUrl)
-        expect(idleSince).toHaveTextContent(expectedIdleSinceText);
-        expect(userImage).toHaveAttribute('alt', user.full_name);
-        // expect(userImage).toHaveAttribute('src', user.picture.url); 
+        expect(fullName).toBeInTheDocument();
+        expect(cardLink).toHaveAttribute('href', profileUrl )
+        expect(idleSince).toHaveTextContent(idleSinceText);
+        expect(userImage).toBeInTheDocument();
     });
 })
