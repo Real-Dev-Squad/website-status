@@ -1,10 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import { MEMBERS_URL } from '@/components/constants/url';
 import { IdleUser } from '@/interfaces/idleUser.type';
-import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 
 const user: IdleUser = {
     id: "H3vNvHtFfp1Y57tPNoQ1",
