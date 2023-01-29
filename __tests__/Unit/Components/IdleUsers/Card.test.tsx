@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
+import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import { MEMBERS_URL } from '@/components/constants/url';
 import { IdleUser } from '@/interfaces/idleUser.type';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
@@ -23,12 +25,12 @@ const user: IdleUser = {
 describe("Idle User Card", () => {
 
     const profileUrl = `${MEMBERS_URL}/${user.username}`
-
+ 
     it("should render card", () => {
         render(<Card user={user} />)
-
         const userImage = screen.getByTestId('user-image');
         const fullName = screen.getByText(user.full_name);
+        const idleSinceText = getIdleSinceText(user.currentStatus.from);
         const idleSince = screen.getByTestId('idle-since');
         const cardLink = screen.getByTestId('profile-card');
 

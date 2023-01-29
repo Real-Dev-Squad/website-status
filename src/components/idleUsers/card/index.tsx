@@ -22,18 +22,17 @@ const Card: FC<Props> = ({ user }) => {
   }
   
   return (
-    <a data-testid='profile-card' className={styles.card} href={profileUrl} >
-      <Image
-        src={userImg || DUMMY_PROFILE}
-        alt={user.full_name}
-        width={150}
-        height={150}
-        data-testid='user-image'
-        priority={true}
-      />
-      <p className={styles.name}>{fullName}</p>
-      <span data-testid='idle-since'>{idleSinceText}</span>
-    </a>
+      <Link data-testid='profile-card' className={styles.card} href={profileUrl} > 
+        <Image
+          src={userImg || DUMMY_PROFILE}
+          alt={user.full_name}
+          width={150}
+          height={150}
+          data-testid='user-image'
+        />
+        <p className={styles.name}>{user.full_name}</p>
+        <span data-testid='idle-since'>{idleSinceText}</span>
+      </Link> 
   );
 };
 
