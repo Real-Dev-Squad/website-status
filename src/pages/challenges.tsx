@@ -1,16 +1,16 @@
 import { FC, useState, useEffect } from 'react';
+import { useAppContext } from '@/context';
+import useFetch from '@/hooks/useFetch';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
-import useFetch from '@/hooks/useFetch';
 import challenge from '@/interfaces/challenge.type';
 import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL, LOGIN_URL } from '@/components/constants/url';
 import userData from '@/helperFunctions/getUser';
-import useAuthenticated from '@/hooks/useAuthenticated';
 
 const renderCardList = (challengeSection: challenge['content'], key: string, userId: string) => {
   if (key === 'Active') {
@@ -27,7 +27,9 @@ const Challenges: FC = () => {
     error,
     isLoading,
     callAPI } = useFetch(CHALLENGES_URL, {}, false);
-  const { isLoggedIn, isLoading: isAuthenticating } = useAuthenticated();
+  const context = useAppContext();
+  const { state } = context || {};
+  const { isLoading: isAuthenticating, isLoggedIn } = state;
 
   useEffect(() => {
     (async () => {

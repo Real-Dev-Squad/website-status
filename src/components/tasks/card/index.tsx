@@ -39,6 +39,10 @@ const Card: FC<Props> = ({
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const context = useAppContext();
+  const { actions, state } = context || {};
+
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
     if (isAltKeyLongPressed) {
@@ -46,26 +50,25 @@ const Card: FC<Props> = ({
     }
   }, [keyLongPressed]);
   useEffect(() => {
-    (async () => {
-      try{
-        const { requestPromise } = fetch(
-          { 
-            url: `${ITEM_BY_FILTER_URL}`,
-            params: {
-              itemType: 'TASK',
-              itemId: `${cardDetails.id}`
-            }
-          });
-        const { data: result } = await requestPromise
-        setTaskTagLevel(result.data)
-       } catch (err: any) {
-         toast(ERROR, err.message);
-       }
-    })()
-  },[])
-  
-  const context = useAppContext() ;
-  const { actions } = context || {}
+    if (state.isLoggedIn) {
+      (async () => {
+        try {
+          const { requestPromise } = fetch(
+            {
+              url: `${ITEM_BY_FILTER_URL}`,
+              params: {
+                itemType: 'TASK',
+                itemId: `${cardDetails.id}`
+              }
+            });
+          const { data: result } = await requestPromise
+          setTaskTagLevel(result.data)
+        } catch (err: any) {
+          toast(ERROR, err.message);
+        }
+      })()
+    }
+  }, [])
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
