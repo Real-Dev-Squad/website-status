@@ -51,7 +51,7 @@ const Mine: FC = () => {
                 <p>Something went wrong! Please contact admin</p>
               ) : (
                 <>
-                  {tasks.length > 0 ? (
+                  {tasks?.length > 0 ? (
                     <div>{CardList(tasks)}</div>
                   ) : (
                     <p>No Tasks Found</p>
