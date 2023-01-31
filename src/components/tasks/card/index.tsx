@@ -40,8 +40,7 @@ const Card: FC<Props> = ({
   const [keyLongPressed] = useKeyLongPressed();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const context = useAppContext();
-  const { actions, state } = context || {};
+  const { actions, state } = useAppContext();
 
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -49,9 +48,10 @@ const Card: FC<Props> = ({
       setShowEditButton(true)
     }
   }, [keyLongPressed]);
+  
   useEffect(() => {
-    if (state.isLoggedIn) {
-      (async () => {
+    if (state?.isLoggedIn) {
+      const getTaskTags = async () => {
         try {
           const { requestPromise } = fetch(
             {
@@ -66,9 +66,10 @@ const Card: FC<Props> = ({
         } catch (err: any) {
           toast(ERROR, err.message);
         }
-      })()
+      }
+      getTaskTags();
     }
-  }, [])
+  }, [state?.isLoggedIn])
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 

@@ -27,8 +27,7 @@ const Challenges: FC = () => {
     error,
     isLoading,
     callAPI } = useFetch(CHALLENGES_URL, {}, false);
-  const context = useAppContext();
-  const { state } = context || {};
+  const { state } = useAppContext();
   const { isLoading: isAuthenticating, isLoggedIn } = state;
 
   useEffect(() => {

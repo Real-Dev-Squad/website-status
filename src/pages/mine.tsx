@@ -29,8 +29,7 @@ const Mine: FC = () => {
     isLoading,
     callAPI
   } = useFetch(TASKS_URL, {}, false);
-  const context = useAppContext();
-  const { state } = context || {};
+  const { state } = useAppContext();
   const { isLoading: isAuthenticating, isLoggedIn } = state;
   useEffect(() => {
     if (isLoggedIn && !Object.keys(response).length) {
