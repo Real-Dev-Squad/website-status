@@ -6,6 +6,8 @@ $white: #e5e5e5;
 $black: #252525;
 $taskTagLevelBorder: #4169e1;
 $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
+$seeMoreTasksBg: #041187;
+$seeMoreTasksShadow: #595959cc;
 
 .screenReaderOnly{ 
   position: absolute; 
@@ -211,10 +213,10 @@ $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
 
 .seeMoreTasks{
   cursor: pointer;
-  width: calc((100% / 3) - 8px);
+  width: calc((100% / 3) - 0.5rem);
   padding: 1rem;
-  color: #fff;
-  background-color: #041187;
+  color: $white;
+  background-color: $seeMoreTasksBg;
   border: none;
   border-radius: 3px;
   font-size: 0.75rem;
@@ -224,7 +226,7 @@ $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
 }
 
 .seeMoreTasks:hover{
-  box-shadow: 0 1px .5rem rgba(89, 89, 89, 0.8);
+  box-shadow: 0 1px .5rem $seeMoreTasksShadow;
 }
 
 /* loading spinner  */
