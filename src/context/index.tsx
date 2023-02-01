@@ -1,12 +1,13 @@
 import { createContext, ReactNode, useContext, FC, useState } from 'react'
 import { useRouter } from 'next/router';
+import useAuthenticated from '@/hooks/useAuthenticated';
 
 interface Props {
     children?: ReactNode;
 }
 
 export type ContextType = {
-    state: { isEditMode: boolean };
+    state: { isEditMode: boolean, isLoggedIn: boolean, isLoading: boolean };
     actions: { onEditRoute: () => void }
 }
 const AppContext = createContext<ContextType | null>(null)
@@ -19,10 +20,13 @@ const AppWrapperContext: FC<Props> = ({ children }) => {
     const onEditRoute = () => {
         router.replace('?edit=true'); //TODO handle query better https://github.com/Real-Dev-Squad/website-status/issues/299 
     }
+    const { isLoggedIn, isLoading } = useAuthenticated();
     return (
         <AppContext.Provider value={{
             state: {
-                isEditMode
+                isEditMode,
+                isLoggedIn,
+                isLoading
             },
             actions: {
                 onEditRoute
