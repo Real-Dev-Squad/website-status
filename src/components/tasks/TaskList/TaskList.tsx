@@ -34,6 +34,10 @@ export default function TaskList({
   function onSeeMoreTasksHandler() {
     setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
   }
+  async function onContentChangeHandler(id: string, cardDetails: any){
+    if(!isEditable || !updateCardContent) return;
+    updateCardContent(id, cardDetails);
+  }
   
   return (
     <>
@@ -42,9 +46,7 @@ export default function TaskList({
           content={item}
           key={item.id}
           shouldEdit={isEditable}
-          onContentChange={async (id: string, newDetails: any) =>
-            isEditable && updateCardContent?.(id, newDetails)
-          }
+          onContentChange={onContentChangeHandler}
         />
       ))}
       {hasLimit && filteredTasks.length != beautifiedTasks.length && (
