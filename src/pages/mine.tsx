@@ -1,11 +1,11 @@
 import { FC, useState, useEffect } from 'react';
+import { useAppContext } from '@/context';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
-import useAuthenticated from '@/hooks/useAuthenticated';
 import { LOGIN_URL, TASKS_URL } from '@/components/constants/url';
 
 function CardList(tasks: task[]) {
@@ -29,14 +29,14 @@ const Mine: FC = () => {
     isLoading,
     callAPI
   } = useFetch(TASKS_URL, {}, false);
-  const { isLoggedIn, isLoading: isAuthenticating } = useAuthenticated();
-
+  const { state } = useAppContext();
+  const { isLoading: isAuthenticating, isLoggedIn } = state;
   useEffect(() => {
-    if (isLoggedIn && !Object.keys(response).length) {
+    if (isLoggedIn) {
       callAPI();
-      setTasks(response);
+      response?.length && setTasks(response);
     }
-  }, [isLoggedIn, response])
+  }, [isLoggedIn])
 
   return (
     <Layout>
@@ -51,7 +51,7 @@ const Mine: FC = () => {
                 <p>Something went wrong! Please contact admin</p>
               ) : (
                 <>
-                  {tasks.length > 0 ? (
+                  {tasks?.length > 0 ? (
                     <div>{CardList(tasks)}</div>
                   ) : (
                     <p>No Tasks Found</p>
