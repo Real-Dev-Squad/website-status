@@ -32,11 +32,11 @@ const Mine: FC = () => {
   const { state } = useAppContext();
   const { isLoading: isAuthenticating, isLoggedIn } = state;
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && !Object.keys(response).length) {
       callAPI();
-      response?.length && setTasks(response);
+      setTasks(response);
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, response])
 
   return (
     <Layout>
@@ -51,7 +51,7 @@ const Mine: FC = () => {
                 <p>Something went wrong! Please contact admin</p>
               ) : (
                 <>
-                  {tasks?.length > 0 ? (
+                  {tasks.length > 0 ? (
                     <div>{CardList(tasks)}</div>
                   ) : (
                     <p>No Tasks Found</p>
