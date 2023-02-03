@@ -16,9 +16,19 @@ type TaksListProps = {
   updateCardContent?: (id: string, cardDetails: task) => void;
 };
 
-function getFilteredTasks({hasLimit, tasksLimit, tasks}: {hasLimit: boolean, tasksLimit: number, tasks: task[]}) {
-  if (!hasLimit) return tasks;
-  return tasks.slice(0, tasksLimit);
+type FilterTasksProps = {
+  hasLimit?: boolean
+  tasksLimit: number
+  tasks: task[]
+}
+
+function getFilteredTasks({
+  hasLimit,
+  tasksLimit,
+  tasks,
+}: FilterTasksProps) {
+  if (!hasLimit) return tasks
+  return tasks.slice(0, tasksLimit)
 }
 
 export default function TaskList({
