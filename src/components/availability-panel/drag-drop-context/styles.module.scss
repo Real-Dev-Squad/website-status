@@ -41,7 +41,6 @@ $borderForItem: 2px solid #e0e0e0;
 .searchBoxContainer {
   display: flex;
   flex-direction: column;
-  display: none; // to be remove for next feature
   span {
     height: 1.5rem;
     width: 100%;
@@ -55,10 +54,15 @@ $borderForItem: 2px solid #e0e0e0;
   }
 
   input {
-    height: 2.5rem;
-    width: 32rem;
-    background: #ffffff;
-    border: 2px solid #646464;
+    display: flex;
+    width: 30rem;
+    margin: 1rem 0 2rem 0;
+    border: $borderForItem;
+    padding: 0.8rem;
+    align-items: center;
+    user-select: none;
+    color: $blueColor;
+    font-size: large;
     border-radius: 5px;
   }
 }
