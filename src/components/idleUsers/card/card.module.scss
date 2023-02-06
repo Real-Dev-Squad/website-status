@@ -13,11 +13,12 @@ $theme-pink: #e30464;
   margin: 2rem;
   align-items: center;
   text-decoration: none;
-  transition: all .38s ease-out;
+  transition: all 0.38s ease-out;
+  width: 15rem;
 
-  &:hover{
+  &:hover {
     color: $theme-pink;
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%)
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
   }
 
   img {
@@ -27,7 +28,7 @@ $theme-pink: #e30464;
   .name {
     font-size: 1rem;
     font-weight: 700;
-    width: 10rem;
+    width: 100%;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
