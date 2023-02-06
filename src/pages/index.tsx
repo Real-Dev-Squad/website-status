@@ -29,6 +29,8 @@ import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
+import Tabs from '@/components/Tabs/Tabs';
+import Tab from '@/components/Tabs/Tab';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -48,12 +50,10 @@ const STATUS_ORDER = [
   REGRESSION_CHECK,
   RELEASED,
   VERIFIED,
-];
-const statusActiveList = [
-  IN_PROGRESS,
-  BLOCKED,
-  SMOKE_TESTING,
-];
+] as const;
+
+type StatusOrderType = typeof STATUS_ORDER[number] //union of all status order
+
 async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
@@ -70,9 +70,14 @@ async function updateCardContent(id: string, cardDetails: task) {
     }
     toast(ERROR, err.message);
   }
-}
+} //service
 
-function renderCardList(tasks: task[], isEditable: boolean) {
+function renderCardList(tasks: task[], isEditable: boolean, taskKey: string) {
+  if (!tasks || !tasks?.length) {
+    return <div>
+      No {taskKey} tasks found
+    </div>
+  }
   const beautifiedTasks = beautifyTaskStatus(tasks);
   return beautifiedTasks.map((item: task) => (
     <Card
@@ -86,57 +91,71 @@ function renderCardList(tasks: task[], isEditable: boolean) {
 }
 
 const Index: FC = () => {
-  const { state: appState } = useAppContext();  
-  const [filteredTask, setFilteredTask] = useState<any>([]);
+  const { state: appState } = useAppContext();
+  const [filteredTask, setFilteredTask] = useState<any>(null);
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  const handleChange = (activeTabIndex: number) => setActiveTabIndex(activeTabIndex);
+
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-      tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
-        - STATUS_ORDER.indexOf(b.status));
-      const taskMap: any = [];
+      tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status as StatusOrderType)
+        - STATUS_ORDER.indexOf(b.status as StatusOrderType));
+      const taskMap: any = {};
       tasks.forEach((item) => {
         if (item.status in taskMap) {
           taskMap[item.status] = [...taskMap[item.status], item];
         } else {
           taskMap[item.status] = [item];
-        }
+        } //108 to 118
       });
-      setFilteredTask(taskMap);
+      if (Object.keys(taskMap)?.length) { // handles empty object
+        setFilteredTask(taskMap);
+      }
     }
 
-    return(() => {
-      setFilteredTask([]);
+    return (() => {
+      setFilteredTask(null);
     });
   }, [isLoading, response]);
 
   return (
     <Layout>
       <Head title='Tasks' />
-        <TasksProvider >
-          <div className={classNames.container}>
-            {!!error && <p>Something went wrong, please contact admin!</p>}
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : (
-              <>
-                {Object.keys(filteredTask).length > 0
-                  ? Object.keys(filteredTask).map((key) => (
-                    <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                      {renderCardList(filteredTask[key], isEditable)}
-                    </Accordion>
-                  ))
-                  : !error && 'No Tasks Found'}
-              </>
-            )}
-          </div>
+      <TasksProvider >
+        <div className={classNames.container}>
+          {!!error && <p>Something went wrong, please contact admin!</p>}
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <>
+              {filteredTask && !error &&
+                <Tabs active={activeTabIndex} onChange={handleChange}>
+                  {Object.keys(filteredTask).map((taskKey, index) => (
+                    <Tab title={taskKey} key={index}>
+                      {renderCardList(filteredTask[taskKey], isEditable, taskKey)}
+                    </Tab>
+                  ))}
+                </Tabs>
+              }
+            </>
+          )}
+        </div>
+        <div>
+
+        </div>
       </TasksProvider>
     </Layout>
   );
 };
 
 export default Index;
+/**
+ * comooponent to create feature flag that renders children
+ */
