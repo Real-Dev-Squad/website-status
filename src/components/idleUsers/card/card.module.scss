@@ -25,13 +25,12 @@ $theme-pink: #e30464;
   }
 
   .name {
-    display: flex;
     font-size: 1rem;
     font-weight: 700;
     width: 10rem;
     text-align: center;
-    height: 1.5rem;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
