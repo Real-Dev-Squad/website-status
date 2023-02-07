@@ -1,7 +1,6 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
@@ -24,11 +23,11 @@ import {
   VERIFIED,
   BLOCKED,
 } from '@/components/constants/task-status';
-import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
+import TaskList from '@/components/tasks/TaskList/TaskList';
 import Tabs from '@/components/Tabs/Tabs';
 import Tab from '@/components/Tabs/Tab';
 
@@ -70,25 +69,8 @@ async function updateCardContent(id: string, cardDetails: task) {
     }
     toast(ERROR, err.message);
   }
-} //service
-
-function renderCardList(tasks: task[], isEditable: boolean, taskKey: string) {
-  if (!tasks || !tasks?.length) {
-    return <div>
-      No {taskKey} tasks found
-    </div>
-  }
-  const beautifiedTasks = beautifyTaskStatus(tasks);
-  return beautifiedTasks.map((item: task) => (
-    <Card
-      content={item}
-      key={item.id}
-      shouldEdit={isEditable}
-      onContentChange={async (id: string, newDetails: any) => isEditable
-        && updateCardContent(id, newDetails)}
-    />
-  ));
 }
+
 
 const Index: FC = () => {
   const { state: appState } = useAppContext();
@@ -139,7 +121,7 @@ const Index: FC = () => {
                 <Tabs active={activeTabIndex} onChange={handleChange}>
                   {Object.keys(filteredTask).map((taskKey, index) => (
                     <Tab title={taskKey} key={index}>
-                      {renderCardList(filteredTask[taskKey], isEditable, taskKey)}
+                      <TaskList tasks={filteredTask[taskKey]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={taskKey == IN_PROGRESS} taskKey={taskKey}/>
                     </Tab>
                   ))}
                 </Tabs>
