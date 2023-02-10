@@ -24,7 +24,7 @@ describe("Idle User Card", () => {
  
     it("should render card", () => {
         render(<Card user={user} />)
-        const userImage = screen.getByTestId('user-image');
+        const userImage = screen.getByAltText(user.full_name);
         const fullName = screen.getByText(user.full_name);
         const idleSinceText = getIdleSinceText(user.currentStatus.from);
         const idleSince = screen.getByTestId('idle-since');

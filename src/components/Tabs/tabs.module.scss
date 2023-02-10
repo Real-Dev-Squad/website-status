@@ -11,6 +11,15 @@
 .activeTab {
   font-weight: bold;
   border: 1px solid #d4d4d5;
-  border-bottom: none;
   background: white;
+}
+
+.tabContainerClassName {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.tabsChildrenClassName {
+  width: 100%;
 }

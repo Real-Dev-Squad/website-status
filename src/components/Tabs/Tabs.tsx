@@ -10,28 +10,21 @@ interface Props {
   tabButtonClassName?: string
 }
 
-const Tabs: React.FC<Props> = ({ active, onChange, children, tabsChildrenClassName = "", tabContainerClassName="", tabButtonClassName }) => {
+const Tabs: React.FC<Props> = ({ active, onChange, children, tabsChildrenClassName = "", tabContainerClassName = "", tabButtonClassName }) => {
   return (
     <>
-      <div
-        style={{
-          display: "flex"
-        }}
-        className={tabContainerClassName}
-      >
+      <div className={styles.tabContainerClassName} >
         {children.map((child: JSX.Element, index) => (
           <button
             onClick={() => onChange(index)}
-            className={`${styles.tabButton} ${active === index && styles.activeTab} ${tabButtonClassName}`}
-            style={{
-              width: 100
-            }}
+            className={`${styles.tabButton} ${active === index && styles.activeTab} ${styles.tabButtonClassName}`}
+            key={index}
           >
             {child?.props?.title}
           </button>
         ))}
       </div>
-      <div className={tabsChildrenClassName}>{children[active]}</div>
+      <div className={styles.tabsChildrenClassName}>{children[active]}</div>
     </>
   );
 };

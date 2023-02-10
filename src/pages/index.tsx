@@ -4,54 +4,19 @@ import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
-import Accordion from '@/components/Accordion';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import {
-  ASSIGNED,
-  COMPLETED,
-  AVAILABLE,
-  IN_PROGRESS,
-  SMOKE_TESTING,
-  NEEDS_REVIEW,
-  IN_REVIEW,
-  APPROVED,
-  MERGED,
-  SANITY_CHECK,
-  REGRESSION_CHECK,
-  RELEASED,
-  VERIFIED,
-  BLOCKED,
-} from '@/components/constants/task-status';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import Tabs from '@/components/Tabs/Tabs';
 import Tab from '@/components/Tabs/Tab';
+import getTaskMap from '@/helperFunctions/getTaskMap';
+import { IN_PROGRESS } from '@/components/constants/task-status';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
-const STATUS_ORDER = [
-  ASSIGNED,
-  COMPLETED,
-  BLOCKED,
-  AVAILABLE,
-  IN_PROGRESS,
-  SMOKE_TESTING,
-  NEEDS_REVIEW,
-  IN_REVIEW,
-  APPROVED,
-  MERGED,
-  SANITY_CHECK,
-  REGRESSION_CHECK,
-  RELEASED,
-  VERIFIED,
-] as const;
-
-type StatusOrderType = typeof STATUS_ORDER[number] //union of all status order
 
 async function updateCardContent(id: string, cardDetails: task) {
   try {
@@ -85,18 +50,7 @@ const Index: FC = () => {
 
   useEffect(() => {
     if ('tasks' in response) {
-      const tasks = updateTasksStatus(response.tasks);
-      tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-      tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status as StatusOrderType)
-        - STATUS_ORDER.indexOf(b.status as StatusOrderType));
-      const taskMap: any = {};
-      tasks.forEach((item) => {
-        if (item.status in taskMap) {
-          taskMap[item.status] = [...taskMap[item.status], item];
-        } else {
-          taskMap[item.status] = [item];
-        } //108 to 118
-      });
+      const taskMap = getTaskMap(response.tasks);
       if (Object.keys(taskMap)?.length) { // handles empty object
         setFilteredTask(taskMap);
       }
@@ -110,6 +64,7 @@ const Index: FC = () => {
   return (
     <Layout>
       <Head title='Tasks' />
+      <div className={classNames.headline}>Tasks</div>
       <TasksProvider >
         <div className={classNames.container}>
           {!!error && <p>Something went wrong, please contact admin!</p>}
@@ -120,8 +75,8 @@ const Index: FC = () => {
               {filteredTask && !error &&
                 <Tabs active={activeTabIndex} onChange={handleChange}>
                   {Object.keys(filteredTask).map((taskKey, index) => (
-                    <Tab title={taskKey} key={index}>
-                      <TaskList tasks={filteredTask[taskKey]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={taskKey == IN_PROGRESS} taskKey={taskKey}/>
+                    <Tab title={taskKey} key={taskKey}>
+                      <TaskList tasks={filteredTask[taskKey]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={taskKey == IN_PROGRESS} taskKey={taskKey} />
                     </Tab>
                   ))}
                 </Tabs>
@@ -129,15 +84,9 @@ const Index: FC = () => {
             </>
           )}
         </div>
-        <div>
-
-        </div>
       </TasksProvider>
     </Layout>
   );
 };
 
 export default Index;
-/**
- * comooponent to create feature flag that renders children
- */

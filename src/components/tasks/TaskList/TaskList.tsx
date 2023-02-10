@@ -14,7 +14,7 @@ type TaksListProps = {
   isEditable?: boolean;
   hasLimit?: boolean;
   updateCardContent?: (id: string, cardDetails: task) => void;
-  taskKey: string
+  taskKey?: string
 };
 
 type FilterTasksProps = {

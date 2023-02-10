@@ -6,6 +6,18 @@
   text-align: center;
 }
 
+.headline,
+.container {
+  margin: auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.headline{
+  font-size: 2rem;
+  padding: 1% 0;
+  font-weight: 700;
+}
 
 .title {
   padding: 2rem;
