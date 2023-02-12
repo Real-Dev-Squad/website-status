@@ -1,6 +1,6 @@
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const SUBSCRIBE_TO_CHALLENGE_URL = `${BASE_URL}/challenges/subscribe`;
-export const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
+export const SELF_TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 export const USER_PROFILE_URL = 'https://my.realdevsquad.com/profile';
 export const HOME_URL = 'https://realdevsquad.com';
 export const WELCOME_URL = 'https://welcome.realdevsquad.com';
@@ -22,3 +22,4 @@ export const ITEMS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items`;
 export const ALL_TAGS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tags`;
 export const ALL_LEVELS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/levels`;
 export const ITEM_TYPES = { task: 'TASK' };
+export const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;

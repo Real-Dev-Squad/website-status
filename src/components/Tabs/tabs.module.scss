@@ -8,18 +8,26 @@
   cursor: pointer;
 }
 
-.activeTab {
-  font-weight: bold;
-  border: 1px solid #d4d4d5;
-  background: white;
-}
-
 .tabContainerClassName {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
 }
 
-.tabsChildrenClassName {
-  width: 100%;
+.active {
+  font-weight: bold;
+  border: 1px solid #d4d4d5;
+  background: white;
+}
+
+.open {
+  opacity: 1;
+}
+
+.closed {
+  display: none;
+}
+
+.heading{
+  text-align: left;
 }
