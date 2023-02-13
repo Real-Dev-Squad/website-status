@@ -35,7 +35,7 @@ const STATUS_ORDER = [
 ] as const;
 
 type StatusOrderType = typeof STATUS_ORDER[number] //union of all status order
-const getTaskMap = (tasksResponse:[]) => {
+const getTaskMap = (tasksResponse:task[]) => {
   const tasks = updateTasksStatus(tasksResponse);
   tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
   tasks.sort(

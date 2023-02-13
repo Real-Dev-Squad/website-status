@@ -38,15 +38,7 @@ const Index: FC = () => {
           ) : (
             <>
               {filteredTasks && !error &&
-                // <Tabs active={activeTabIndex} onChange={handleChange}>
-                //   {Object.keys(filteredTasks).map((taskKey, index) => (
-                //     <Tab title={taskKey} key={taskKey}>
-                //       <TaskList tasks={filteredTasks[taskKey]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={taskKey == IN_PROGRESS} taskKey={taskKey} />
-                //     </Tab>
-                //   ))}
-                // </Tabs>
                 <Tabs filteredTasks={filteredTasks} title='Tasks' />
-
               }
             </>
           )}

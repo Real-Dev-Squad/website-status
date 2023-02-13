@@ -5,14 +5,16 @@ import { useTabs } from '@/hooks/useTabs';
 import { useContext } from 'react';
 import TaskList from '../tasks/TaskList/TaskList';
 import task from '@/interfaces/task.type';
-
 import fetch from '@/helperFunctions/fetch';
-
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-
 import { IN_PROGRESS } from '@/components/constants/task-status';
 import { TASKS_URL } from '../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
+
+type TabsProps = {
+  filteredTasks: Array<task>
+  title: string
+};
 
 async function updateCardContent(id: string, cardDetails: task) {
   try {
@@ -31,48 +33,43 @@ async function updateCardContent(id: string, cardDetails: task) {
     toast(ERROR, err.message);
   }
 }
-function Temps({ filteredTasks, title }) {
+
+export default function Tabs({ filteredTasks, title }: TabsProps) {
   const { state: appState } = useAppContext();
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
-  const { openIndices, toggleIndex } = useTabs()
+  const { openIndices, toggleIndex } = useTabs();
+
   return (
     <div>
-      <h1 className={styles.heading}>{ title }</h1>
-      <div style={{ display: 'flex' }} className={styles.tabContainerClassName}>
-        {Object.keys(filteredTasks).map((item, index) => (
+      <h1 className={styles.heading}>{title}</h1>
+      <div className={styles.tabContainerClassName}>
+        {Object.keys(filteredTasks).map((filteredTask: string, index: number) => (
           <button
-            key={item}
+            key={index}
             className={`${styles.tabButton} ${openIndices.includes(index) && styles.active
               }`}
             onClick={() => toggleIndex(index)}
           >
-            {item}
+            {filteredTask}
           </button>
         ))}
       </div>
-      <div
-        style={{
-          position: 'relative',
-          minHeight: 120,
-        }}
-      >
-        {Object.keys(filteredTasks).map((item, index) => (
-          <div
-            key={index}
-            className={`${styles.tabItem} ${openIndices.includes(index) ? styles.open : styles.closed
-              }`}
-          >
-            <TaskList tasks={filteredTasks[item]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={item == IN_PROGRESS} taskKey={item} />
-            {/* <p>Hi, I am
-              {item}
-            </p> */}
-          </div>
-        ))}
-      </div>
+      {Object.keys(filteredTasks).map((filteredTask, index) => (
+        <div
+          key={index}
+          className={`${openIndices.includes(index) ? styles.open : styles.closed
+            }`}
+        >
+          <TaskList tasks={filteredTasks[filteredTask]}
+            isEditable={isEditable}
+            updateCardContent={updateCardContent}
+            hasLimit={filteredTask == IN_PROGRESS}
+            taskKey={filteredTask}
+          />
+        </div>
+      ))}
     </div>
   )
 }
-
-export default Temps

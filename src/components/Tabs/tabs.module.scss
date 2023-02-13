@@ -1,23 +1,26 @@
-.tabButton {
-  background: white;
-  border: none;
-  padding: 14px 9px 9px;
-  font-size: 0.8em;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  cursor: pointer;
+.heading {
+  text-align: left;
 }
 
 .tabContainerClassName {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-}
-
-.active {
-  font-weight: bold;
-  border: 1px solid #d4d4d5;
-  background: white;
+  
+  .tabButton {
+    background: white;
+    border: none;
+    padding: 14px 9px 9px;
+    font-size: 0.8em;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    cursor: pointer;
+  }
+  .active {
+    font-weight: bold;
+    border: 1px solid #d4d4d5;
+    background: white;
+  }
 }
 
 .open {
@@ -26,8 +29,4 @@
 
 .closed {
   display: none;
-}
-
-.heading{
-  text-align: left;
 }

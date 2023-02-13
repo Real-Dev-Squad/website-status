@@ -1,27 +1,21 @@
-import React from 'react'
+import React, { useReducer } from 'react'
 
-const actionTypes = {toggle_index: 'toggle_index'}
+const actionTypes = { toggle_index: 'toggle_index' }
 
-function accordionReducer(openIndices:[], action) {
+function tabReducer(openIndices: any[], action: { type: string; index: number; }) {
   switch (action.type) {
     case actionTypes.toggle_index: {
       const closing = openIndices.includes(action.index);
       return closing
-        ? openIndices.filter((i) => i !== action.index)
+        ? openIndices.filter((i: number) => i !== action.index)
         : [...openIndices, action.index]
     }
     default: {
-      throw new Error(`Unhandled type in accordionReducer: ${action.type}`)
+      throw new Error(`Unhandled type in tabReducer: ${action.type}`)
     }
   }
 }
 
-function useAccordion({reducer = accordionReducer} = {}) {
-  const [openIndices, dispatch] = React.useReducer(reducer, [0])
-  const toggleIndex = (index) =>
-    dispatch({type: actionTypes.toggle_index, index})
-  return {openIndices, toggleIndex}
-}
 
 function combineReducers(...reducers) {
   return (state, action) => {
@@ -31,6 +25,7 @@ function combineReducers(...reducers) {
     }
   }
 }
+
 function preventCloseReducer(openIndices, action) {
   if (action.type === actionTypes.toggle_index) {
     const closing = openIndices.includes(action.index)
@@ -41,6 +36,7 @@ function preventCloseReducer(openIndices, action) {
   }
 }
 
+
 function singleReducer(openIndices, action) {
   if (action.type === actionTypes.toggle_index) {
     const closing = openIndices.includes(action.index)
@@ -49,13 +45,21 @@ function singleReducer(openIndices, action) {
     }
   }
 }
-export function useTabs({reducer = () => {}} = {}) {
+
+function useAccordion({ reducer = tabReducer } = {}) {
+  const [openIndices, dispatch] = useReducer(reducer, [0])
+  const toggleIndex = (index: number) =>
+    dispatch({ type: actionTypes.toggle_index, index })
+  return { openIndices, toggleIndex }
+}
+
+export function useTabs({ reducer = () => { } } = {}) {
   return useAccordion({
     reducer: combineReducers(
       reducer,
       preventCloseReducer,
       singleReducer,
-      accordionReducer,
+      tabReducer,
     ),
   })
 }
