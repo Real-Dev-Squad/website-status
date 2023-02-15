@@ -23,6 +23,7 @@ const Card: FC<Props> = ({ user }) => {
           alt={user.full_name}
           width={150}
           height={150}
+          data-testid='user-image'
         />
         <p className={styles.name}>{user.full_name}</p>
         <span data-testid='idle-since'>{idleSinceText}</span>
