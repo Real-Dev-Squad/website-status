@@ -38,7 +38,6 @@ function singleReducer(openIndices: number[], action: { index: number, type: str
 
 function combineReducers(...reducers: any) {
   return (state: number[], action: { index: number, type: string }) => {
-    console.log(`${state} state , ${action} action`)
     for (const reducer of reducers) {
       const result = reducer(state, action)
       if (result) return result
