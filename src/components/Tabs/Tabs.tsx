@@ -12,7 +12,7 @@ import { TASKS_URL } from '../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 type TabsProps = {
-  filteredTasks: Array<task>
+  filteredTasks: task[]
   title: string
 };
 
@@ -36,9 +36,8 @@ async function updateCardContent(id: string, cardDetails: task) {
 
 export default function Tabs({ filteredTasks, title }: TabsProps) {
   const { state: appState } = useAppContext();
-  const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
-  const isEditable = isUserAuthorized && isEditMode;
+  const isEditable = isUserAuthorized && appState?.isEditMode;
   const { openIndices, toggleIndex } = useTabs();
 
   return (
