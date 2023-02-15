@@ -15,8 +15,6 @@ const Index: FC = () => {
   useEffect(() => {
     if ('tasks' in response) {
       const taskMap = getTaskMap(response.tasks);
-      console.log(taskMap);
-
       if (Object.keys(taskMap)?.length) { // handles empty object
         setFilteredTasks(taskMap);
       }
