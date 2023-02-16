@@ -7,9 +7,10 @@ import { TasksProvider } from '@/context/tasks.context';
 import getTaskMap from '@/helperFunctions/getTaskMap';
 import classNames from '@/styles/tasks.module.scss';
 import { TASKS_URL } from '@/components/constants/url';
+import task from '@/interfaces/task.type';
 
 const Index: FC = () => {
-  const [filteredTasks, setFilteredTasks] = useState<any>(null);
+  const [filteredTasks, setFilteredTasks] = useState<null | task>(null);
   const { response, error, isLoading } = useFetch(TASKS_URL);
 
   useEffect(() => {
