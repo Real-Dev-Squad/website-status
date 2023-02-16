@@ -1,3 +1,5 @@
+$light-grey: #d4d4d5;
+
 .heading {
   text-align: left;
 }
@@ -12,13 +14,12 @@
     border: none;
     padding: 14px 9px 9px;
     font-size: 0.8em;
-    border-top-right-radius: 3px;
-    border-top-left-radius: 3px;
+    border-radius: 3px 3px 0 0;
     cursor: pointer;
   }
   .active {
     font-weight: bold;
-    border: 1px solid #d4d4d5;
+    border: 1px solid $light-grey;
     background: white;
   }
 }
