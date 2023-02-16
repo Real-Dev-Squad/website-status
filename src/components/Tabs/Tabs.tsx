@@ -12,7 +12,7 @@ import { TASKS_URL } from '../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 type TabsProps = {
-  filteredTasks: task[]
+  filteredTasks: task[] | any
   title: string
 };
 
@@ -46,7 +46,7 @@ export default function Tabs({ filteredTasks, title }: TabsProps) {
       <div className={styles.tabContainerClassName}>
         {Object.keys(filteredTasks).map((filteredTask: string, index: number) => (
           <button
-            key={index}
+            key={filteredTask}
             className={`${styles.tabButton} ${openIndices.includes(index) && styles.active
               }`}
             onClick={() => toggleIndex(index)}
@@ -57,11 +57,11 @@ export default function Tabs({ filteredTasks, title }: TabsProps) {
       </div>
       {Object.keys(filteredTasks).map((filteredTask, index) => (
         <div
-          key={index}
+          key={filteredTask}
           className={`${openIndices.includes(index) ? styles.open : styles.closed
             }`}
         >
-          <TaskList tasks={filteredTasks[filteredTask]}
+          <TaskList tasks={filteredTasks[filteredTask as keyof typeof filteredTasks]}
             isEditable={isEditable}
             updateCardContent={updateCardContent}
             hasLimit={filteredTask == IN_PROGRESS}
