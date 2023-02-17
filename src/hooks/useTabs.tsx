@@ -1,15 +1,15 @@
 import React, { useReducer } from 'react';
 
 
-const actionTypes = { toggle_index: 'toggle_index' }
+const ACTION_TYPES = { toggle_Tab: 'toggle_Tab' }
 
-function tabReducer(openIndices: number[], action: { index: number, type: string }) {
+function tabReducer(openTabs: number[], action: { current_index: number, type: string }) {
   switch (action.type) {
-    case actionTypes.toggle_index: {
-      const closing = openIndices.includes(action.index);
+    case ACTION_TYPES.toggle_Tab: {
+      const closing = openTabs.includes(action.current_index);
       return closing
-        ? openIndices.filter((i: number) => i !== action.index)
-        : [...openIndices, action.index]
+        ? openTabs.filter((i: number) => i !== action.current_index)
+        : [...openTabs, action.current_index]
     }
     default: {
       throw new Error(`Unhandled type in tabReducer: ${action.type}`)
@@ -17,27 +17,27 @@ function tabReducer(openIndices: number[], action: { index: number, type: string
   }
 }
 
-function preventCloseReducer(openIndices: number[], action: { index: number, type: string }) {
-  if (action.type === actionTypes.toggle_index) {
-    const closing = openIndices.includes(action.index)
-    const isLast = openIndices.length < 2
+function preventCloseReducer(openTabs: number[], action: { current_index: number, type: string }) {
+  if (action.type === ACTION_TYPES.toggle_Tab) {
+    const closing = openTabs.includes(action.current_index)
+    const isLast = openTabs.length < 2
     if (closing && isLast) {
-      return openIndices
+      return openTabs
     }
   }
 }
 
-function singleReducer(openIndices: number[], action: { index: number, type: string }) {
-  if (action.type === actionTypes.toggle_index) {
-    const closing = openIndices.includes(action.index)
+function singleReducer(openTabs: number[], action: { current_index: number, type: string }) {
+  if (action.type === ACTION_TYPES.toggle_Tab) {
+    const closing = openTabs.includes(action.current_index)
     if (!closing) {
-      return [action.index]
+      return [action.current_index]
     }
   }
 }
 
 function combineReducers(...reducers: any) {
-  return (state: number[], action: { index: number, type: string }) => {
+  return (state: number[], action: { current_index: number, type: string }) => {
     for (const reducer of reducers) {
       const result = reducer(state, action)
       if (result) return result
@@ -46,10 +46,10 @@ function combineReducers(...reducers: any) {
 }
 
 function useTab({ reducer = tabReducer } = {}) {
-  const [openIndices, dispatch] = useReducer(reducer, [0])
-  const toggleIndex = (index: number) =>
-    dispatch({ type: actionTypes.toggle_index, index })
-  return { openIndices, toggleIndex }
+  const [openTabs, dispatch] = useReducer(reducer, [0])
+  const toggleTab = (current_index: number) =>
+    dispatch({ type: ACTION_TYPES.toggle_Tab, current_index })
+  return { openTabs, toggleTab }
 }
 
 export function useTabs({ reducer = () => { } } = {}) {

@@ -27,7 +27,8 @@ async function updateCardContent(id: string, cardDetails: task) {
     toast(SUCCESS, 'Changes have been saved !');
   } catch (err: any) {
     if ('response' in err) {
-      toast(ERROR, err.response.data.message);
+      const message = err?.response?.data?.message ?? err.message;
+      toast(ERROR, message);
       return;
     }
     toast(ERROR, err.message);
@@ -38,34 +39,34 @@ export default function Tabs({ filteredTasks, title }: TabsProps) {
   const { state: appState } = useAppContext();
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && appState?.isEditMode;
-  const { openIndices, toggleIndex } = useTabs();
+  const { openTabs, toggleTab } = useTabs();
 
   return (
     <div>
       <h1 className={styles.heading}>{title}</h1>
       <div className={styles.tabContainerClassName}>
-        {Object.keys(filteredTasks).map((filteredTask: string, index: number) => (
+        {Object.keys(filteredTasks).map((filteredTasksKey: string, index: number) => (
           <button
-            key={filteredTask}
-            className={`${styles.tabButton} ${openIndices.includes(index) && styles.active
+            key={filteredTasksKey}
+            className={`${styles.tabButton} ${openTabs.includes(index) && styles.active
               }`}
-            onClick={() => toggleIndex(index)}
+            onClick={() => toggleTab(index)}
           >
-            {filteredTask}
+            {filteredTasksKey}
           </button>
         ))}
       </div>
-      {Object.keys(filteredTasks).map((filteredTask, index) => (
+      {Object.keys(filteredTasks).map((filteredTasksKey: string, index: number) => (
         <div
-          key={filteredTask}
-          className={`${openIndices.includes(index) ? styles.open : styles.closed
+          key={filteredTasksKey}
+          className={`${openTabs.includes(index) ? styles.open : styles.closed
             }`}
         >
-          <TaskList tasks={filteredTasks[filteredTask as keyof typeof filteredTasks]}
+          <TaskList tasks={filteredTasks[filteredTasksKey as keyof typeof filteredTasks]}
             isEditable={isEditable}
             updateCardContent={updateCardContent}
-            hasLimit={filteredTask == IN_PROGRESS}
-            taskKey={filteredTask}
+            hasLimit={filteredTasksKey === IN_PROGRESS}
+            taskKey={filteredTasksKey}
           />
         </div>
       ))}
