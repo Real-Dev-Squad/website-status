@@ -12,7 +12,7 @@ import TaskLevelEdit from './TaskTagEdit';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
-import { ITEMS_URL, ITEM_BY_FILTER_URL } from '@/components/constants/url';
+import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES } from '@/components/constants/url';
 
 const moment = require('moment');
 
@@ -39,33 +39,38 @@ const Card: FC<Props> = ({
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { actions, state } = useAppContext();
+
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
     if (isAltKeyLongPressed) {
       setShowEditButton(true)
     }
   }, [keyLongPressed]);
-  useEffect(() => {
-    (async () => {
-      try{
-        const { requestPromise } = fetch(
-          { 
-            url: `${ITEM_BY_FILTER_URL}`,
-            params: {
-              itemType: 'TASK',
-              itemId: `${cardDetails.id}`
-            }
-          });
-        const { data: result } = await requestPromise
-        setTaskTagLevel(result.data)
-       } catch (err: any) {
-         toast(ERROR, err.message);
-       }
-    })()
-  },[])
   
-  const context = useAppContext() ;
-  const { actions } = context || {}
+  useEffect(() => {
+    if (state?.isLoggedIn) {
+      getTaskTags();
+    }
+  }, [state?.isLoggedIn])
+
+  const getTaskTags = async () => {
+    try {
+      const { requestPromise } = fetch(
+        {
+          url: ITEM_BY_FILTER_URL,
+          params: {
+            itemType: ITEM_TYPES.task,
+            itemId: `${cardDetails.id}`
+          }
+        });
+      const { data: result } = await requestPromise
+      setTaskTagLevel(result.data)
+    } catch (err: any) {
+      toast(ERROR, err.message);
+    }
+  }
 
   const contributorImageOnError = () => setAssigneeProfilePic('/dummyProfile.png');
 
