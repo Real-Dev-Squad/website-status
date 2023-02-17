@@ -12,15 +12,10 @@ type Props = {
 }
 
 const Card: FC<Props> = ({ user }) => {
-  const userImg = user?.picture?.url;
-  const idleSinceText = getIdleSinceText(user.currentStatus.from);
-  const profileUrl = `${MEMBERS_URL}/${user.username}`;
-  let fullName = user.full_name;
+  const userImg = user?.picture?.url
+  const idleSinceText = getIdleSinceText(user.currentStatus.from)
+  const profileUrl = `${MEMBERS_URL}/${user.username}`
 
-  if (fullName.length > 15) {
-    fullName = fullName.split(' ').slice(0, -1).join(' ');
-  }
-  
   return (
       <Link data-testid='profile-card' className={styles.card} href={profileUrl} > 
         <Image
