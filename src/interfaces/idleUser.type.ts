@@ -1,7 +1,7 @@
 export type IdleUserArray = {
   heading: string;
   content: IdleUser[];
-  error: string | null;
+  error: boolean;
   isLoading: boolean;
 };
 
