@@ -1,7 +1,7 @@
 export type IdleUserArray = {
   heading: string;
   content: IdleUser[];
-  error: boolean;
+  error: string | null;
   isLoading: boolean;
 };
 
@@ -11,14 +11,12 @@ export type IdleUser = {
   picture: {
     url: string;
   };
-  currentStatus: CurrentStatus;
+  currentStatus: {
+    state: string;
+    updatedAt: string;
+    from: string;
+    until: string;
+    message: string;
+  };
   full_name: string;
 };
-
-export type CurrentStatus = {
-  state: string;
-  updatedAt: string;
-  from: string;
-  until: string;
-  message: string;
-}

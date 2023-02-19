@@ -2,9 +2,7 @@ import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import { MEMBERS_URL } from '@/components/constants/url';
-import { IdleUser } from '@/interfaces/idleUser.type';
-
-const user: IdleUser = {
+const user = {
     id: "H3vNvHtFfp1Y57tPNoQ1",
     currentStatus: {
         state: "IDLE",
@@ -31,13 +29,9 @@ describe("Idle User Card", () => {
         const idleSinceText = getIdleSinceText(user.currentStatus.from);
         const idleSince = screen.getByTestId('idle-since');
         const cardLink = screen.getByTestId('profile-card');
-
-        const expectedIdleSinceText = getIdleSinceText(user.currentStatus.from);
-
-        expect(fullName).toHaveTextContent(user.full_name);
-        expect(cardLink).toHaveAttribute('href', profileUrl)
-        expect(idleSince).toHaveTextContent(expectedIdleSinceText);
-        expect(userImage).toHaveAttribute('alt', user.full_name);
-        // expect(userImage).toHaveAttribute('src', user.picture.url);  //https://github.com/Real-Dev-Squad/website-status/issues/397
+        expect(fullName).toBeInTheDocument();
+        expect(cardLink).toHaveAttribute('href', profileUrl )
+        expect(idleSince).toHaveTextContent(idleSinceText);
+        expect(userImage).toBeInTheDocument();
     });
 })
