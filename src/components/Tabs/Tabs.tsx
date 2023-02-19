@@ -38,38 +38,45 @@ async function updateCardContent(id: string, cardDetails: task) {
 export default function Tabs({ filteredTasks, title }: TabsProps) {
   const { state: appState } = useAppContext();
   const isUserAuthorized = useContext(isUserAuthorizedContext);
-  const isEditable = isUserAuthorized && appState?.isEditMode;
   const { openTabs, toggleTab } = useTabs();
+  
+  const isEditable = isUserAuthorized && appState?.isEditMode;
+
+  const tabHeaders = Object.keys(filteredTasks);
+
+  const tabButtons = tabHeaders.map((filteredTasksKey: string, index: number) => (
+    <button
+      key={filteredTasksKey}
+      className={`${styles.tabButton} ${openTabs.includes(index) && styles.active
+        }`}
+      onClick={() => toggleTab(index)}
+    >
+      {filteredTasksKey}
+    </button>
+  ))
+
+  const tabContent = tabHeaders.map((filteredTasksKey: string, index: number) => (
+    <div
+      key={filteredTasksKey}
+      className={`${openTabs.includes(index) ? styles.open : styles.closed
+        }`}
+    >
+      <TaskList tasks={filteredTasks[filteredTasksKey as keyof typeof filteredTasks]}
+        isEditable={isEditable}
+        updateCardContent={updateCardContent}
+        hasLimit={filteredTasksKey === IN_PROGRESS}
+        taskKey={filteredTasksKey}
+      />
+    </div>
+  ))
 
   return (
     <div>
       <h1 className={styles.heading}>{title}</h1>
       <div className={styles.tabContainerClassName}>
-        {Object.keys(filteredTasks).map((filteredTasksKey: string, index: number) => (
-          <button
-            key={filteredTasksKey}
-            className={`${styles.tabButton} ${openTabs.includes(index) && styles.active
-              }`}
-            onClick={() => toggleTab(index)}
-          >
-            {filteredTasksKey}
-          </button>
-        ))}
+        {tabButtons}
       </div>
-      {Object.keys(filteredTasks).map((filteredTasksKey: string, index: number) => (
-        <div
-          key={filteredTasksKey}
-          className={`${openTabs.includes(index) ? styles.open : styles.closed
-            }`}
-        >
-          <TaskList tasks={filteredTasks[filteredTasksKey as keyof typeof filteredTasks]}
-            isEditable={isEditable}
-            updateCardContent={updateCardContent}
-            hasLimit={filteredTasksKey === IN_PROGRESS}
-            taskKey={filteredTasksKey}
-          />
-        </div>
-      ))}
+      {tabContent}
     </div>
   )
 }
