@@ -51,7 +51,7 @@ export default function TaskList({
     updateCardContent(id, cardDetails);
   }
   
-  if (!tasks || !tasks?.length) {
+  if (!tasks?.length) {
     return <div>
       No {taskKey} tasks found
     </div>
