@@ -12,7 +12,7 @@ import { TASKS_URL } from '../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 type TabsProps = {
-  filteredTasks: task[] | any
+  filteredTasks: Record<string,task[]>
   title: string
 };
 

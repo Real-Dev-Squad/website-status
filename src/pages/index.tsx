@@ -10,7 +10,7 @@ import { TASKS_URL } from '@/components/constants/url';
 import task from '@/interfaces/task.type';
 
 const Index: FC = () => {
-  const [filteredTasks, setFilteredTasks] = useState<null | task>(null);
+  const [filteredTasks, setFilteredTasks] = useState<Record<string,task[]>>({});
   const { response, error, isLoading } = useFetch(TASKS_URL);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Index: FC = () => {
     }
 
     return (() => {
-      setFilteredTasks(null);
+      setFilteredTasks({});
     });
   }, [isLoading, response]);
 
