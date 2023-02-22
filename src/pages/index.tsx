@@ -98,7 +98,7 @@ const Index: FC = () => {
           ) : (
             <>
             <Tabs tabs={TABS} onSelect={onSelect} activeTab={activeTab} />
-            {activeTab}
+            <p data-testid='selectedTab'>{activeTab}</p>
             </>
           )}
         </div>

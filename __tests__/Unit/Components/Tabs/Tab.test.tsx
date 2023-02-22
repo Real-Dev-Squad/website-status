@@ -1,15 +1,11 @@
 import Tabs from '@/components/Tabs/Tabs';
-import { getByText, queryByText, render, screen } from '@testing-library/react';
-
-const tabs = ['ASSIGNED', 'COMPLETED', 'AVAILABLE','IN_PROGRESS', 'NEEDS_REVIEW', 'IN_REVIEW', 'VERIFIED',  'MERGED']
-
+import { getAllByRole, getByText, queryByText, render, screen } from '@testing-library/react';
+import { TABS } from '@/components/tasks/constants';
 describe('Tabs Component', () => {
   const onSelect = jest.fn();
-  it('should render 3 tabs', () => {
-    render(<Tabs tabs={tabs} activeTab='ASSIGNED' onSelect={onSelect} />);
-    // const assigned = screen.getByText(arr.);
-    // const available = screen.getByText(tabs.AVAILABLE);
-    // const completed = screen.getByText(tabs.COMPLETED);
+  it('should render all the buttons', () => {
+    render(<Tabs tabs={TABS} activeTab='ASSIGNED' onSelect={onSelect} />);
+    const tabLength = screen.queryAllByRole('button');
+    expect(tabLength.length).toBe(TABS.length);
   })
-
 });
