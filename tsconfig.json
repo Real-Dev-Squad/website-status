@@ -27,8 +27,10 @@
     "**/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "__tests__/**/*.tsx"
-, "__mocks__/styleMock.ts"  ],
+    "__tests__/**/*.tsx",
+    "__mocks__/styleMock.ts",
+    "src/components/Tabs"
+  ],
   "exclude": ["node_modules"],
   "types": ["node", "jest", "@testing-library/jest-dom"]
 }
