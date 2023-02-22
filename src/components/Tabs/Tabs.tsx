@@ -1,5 +1,4 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
-import task from '@/interfaces/task.type';
 
 type TabsProps = {
   tabs: string[];
@@ -21,7 +20,6 @@ export default function Tabs({ tabs, onSelect, activeTab }: TabsProps) {
       {tab}
     </button>
   ))
-  console.log(tabs);
 
   return (
     <div>
