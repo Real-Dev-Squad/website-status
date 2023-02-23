@@ -21,6 +21,7 @@ function CardList(tasks: task[]) {
   );
 }
 
+
 const Mine: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
   const {
@@ -32,12 +33,11 @@ const Mine: FC = () => {
   const { state } = useAppContext();
   const { isLoading: isAuthenticating, isLoggedIn } = state;
   useEffect(() => {
-    if (isLoggedIn && !Object.keys(response).length) {
-      callAPI();
-      setTasks(response);
+    if (isLoggedIn) {
+      if (JSON.stringify(response) === "{}") callAPI();
+      if (JSON.stringify(response) !== "{}") setTasks(response);
     }
   }, [isLoggedIn, response])
-
   return (
     <Layout>
       <Head title="Mine" />
@@ -51,11 +51,12 @@ const Mine: FC = () => {
                 <p>Something went wrong! Please contact admin</p>
               ) : (
                 <>
-                  {tasks.length > 0 ? (
-                    <div>{CardList(tasks)}</div>
-                  ) : (
-                    <p>No Tasks Found</p>
-                  )}
+                  {
+                    tasks.length > 0 && <div>{CardList(tasks)}</div>
+                  }
+                  {
+                    response?.length == 0 && tasks.length == 0 && <p>No Tasks Found</p>
+                  }
                 </>
               )
             ) : (
