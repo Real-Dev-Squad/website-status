@@ -5,7 +5,7 @@ describe('Tabs Component', () => {
   const onSelect = jest.fn();
   it('should render all the buttons', () => {
     render(<Tabs tabs={TABS} activeTab='ASSIGNED' onSelect={onSelect} />);
-    const presentTabs = screen.queryAllByRole('tab');
+    const presentTabs = screen.queryAllByRole('button');
     expect(presentTabs.length).toBe(TABS.length);
   });
 
@@ -21,5 +21,13 @@ describe('Tabs Component', () => {
     render(<Tabs tabs={TABS} activeTab='COMPLETED' onSelect={onSelect} />);
     const completedBtn = screen.getByText(/COMPLETED/);
     expect(completedBtn).toHaveClass('active')
+  });
+
+  it('should render all tabs passed with correct text', () => {
+    render(<Tabs tabs={TABS} activeTab='ASSIGNED' onSelect={onSelect} />);
+    const presentTabs = screen.getAllByRole('button');
+    for (let i = 0; i < presentTabs.length; i++) {
+      expect(presentTabs[i].textContent).toBe(TABS[i]);
+    }
   });
 });
