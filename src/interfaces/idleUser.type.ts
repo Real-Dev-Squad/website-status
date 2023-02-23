@@ -6,17 +6,19 @@ export type IdleUserArray = {
 };
 
 export type IdleUser = {
-  username: string
   id: string;
   picture: {
     url: string;
   };
-  currentStatus: {
-    state: string;
-    updatedAt: string;
-    from: string;
-    until: string;
-    message: string;
-  };
+  currentStatus: CurrentStatus;
   full_name: string;
+  username: string;
 };
+
+export type CurrentStatus = {
+  state: string;
+  updatedAt: string;
+  from: string;
+  until: string;
+  message: string;
+}
