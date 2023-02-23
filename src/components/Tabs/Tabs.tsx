@@ -10,6 +10,7 @@ export default function Tabs({ tabs, onSelect, activeTab }: TabsProps) {
 
   const tabButtons = tabs.map((tab: string, index: number) => (
     <button
+    role="tab"
     key={tab}
     onClick={() => onSelect(tab)}
     className={`${styles.tabButton} ${activeTab === tab && styles.active}`}
