@@ -12,21 +12,15 @@ export default function Tabs({ tabs, onSelect, activeTab }: TabsProps) {
     <button
     key={tab}
     onClick={() => onSelect(tab)}
-    className={`${styles.tabButton} ${activeTab === tab && styles.active}`}
-    style={{
-      width: 100
-    }}
+    className={`${styles.tabButton} ${activeTab === tab ? styles.active : "" }`}
     >
       {tab}
     </button>
   ))
 
   return (
-    <div>
-      <h1 className={styles.heading}></h1>
-      <div className={styles.tabContainerClassName}>
+      <div>
         {tabButtons}
       </div>
-    </div>
   )
 }
