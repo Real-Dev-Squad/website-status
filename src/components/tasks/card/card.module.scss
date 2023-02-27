@@ -6,6 +6,8 @@ $white: #e5e5e5;
 $black: #252525;
 $taskTagLevelBorder: #4169e1;
 $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
+$seeMoreTasksBg: #041187;
+$seeMoreTasksShadow: #595959cc;
 
 .screenReaderOnly{ 
   position: absolute; 
@@ -211,6 +213,24 @@ $taskTagLevelBg: hsla(225, 73%, 57%,0.5);
 
 .addTagLevelBtn {
   cursor: pointer;
+}
+
+.seeMoreTasks{
+  cursor: pointer;
+  width: calc((100% / 3) - 0.5rem);
+  padding: 1rem;
+  color: $white;
+  background-color: $seeMoreTasksBg;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
+
+.seeMoreTasks:hover{
+  box-shadow: 0 1px .5rem $seeMoreTasksShadow;
 }
 
 /* loading spinner  */

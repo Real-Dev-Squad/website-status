@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import useAuthenticated from '@/hooks/useAuthenticated';
+import Image from 'next/image';
 import {
   LOGIN_URL,
   DEFAULT_AVATAR,
@@ -24,7 +25,7 @@ const NavBar = () => {
     <nav className={styles.navBar}>
       <div className={styles.navLinks}>
         <a className={styles.logo} href={HOME_URL}>
-          <img width="45px" height="45px" src={RDS_LOGO} alt="real-dev squad" />
+          <Image width="45" height="45" src={RDS_LOGO} alt="real-dev squad" />
         </a>
         <a href={WELCOME_URL}>Welcome</a>
         <a href={EVENTS_URL}>Events</a>
@@ -35,26 +36,28 @@ const NavBar = () => {
       <div>
         {!isLoggedIn ? (
           <Link href={LOGIN_URL}>
-            <a className={styles.signInLink}>
+            <p className={styles.signInLink}>
               Sign In With GitHub
-              <img
+              <Image
                 className={styles.githubLogo}
                 src={GITHUB_LOGO}
+                height='20'
+                width='20'
                 alt="GitHub Icon"
               />
-            </a>
+            </p>
           </Link>
         ) : (
           <div className={styles.userGreet} onClick={() => setToggleDropdown(!toggleDropdown)}>
             <div className={styles.userGreetMsg}>
               Hello, {userData.firstName}
             </div>
-            <img
+            <Image
               className={styles.userProfilePic}
               src={userData.profilePicture ? `${userData.profilePicture}` : `${DEFAULT_AVATAR}`}
               alt="Profile Pic"
-              width="32px"
-              height="32px"
+              width="32"
+              height="32"
             />
             {toggleDropdown && <Dropdown />}
           </div>
