@@ -27,7 +27,7 @@ mkcert dev.realdevsquad.com localhost
 
 ## Add certificate in project
 
-Create a folder named **certificates** in your project's root directory. And then, Copy both the **dev.realdevsquad+1.com.pem** and **dev.realdevsquad.com+1-key.pem** files to the **certificates** folder.
+Create a folder named **certificate** in your project's root directory. And then, Copy both the **dev.realdevsquad+1.com.pem** and **dev.realdevsquad.com+1-key.pem** files to the **certificate** folder.
 
 ## References
 
