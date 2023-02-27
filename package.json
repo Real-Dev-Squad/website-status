@@ -7,6 +7,7 @@
     "run-command:dev-server": "next dev -p 3000",
     "run-command:reverse-ssl": "local-ssl-proxy --source 443 --target 3000",
     "dev": "run-p run-command:*",
+    "dev:server": "node server.js",
     "build": "next build",
     "start": "next start -p $PORT",
     "test": "jest --watch",

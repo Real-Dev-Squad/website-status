@@ -19,6 +19,12 @@ Firstly setup [Volta](https://docs.volta.sh/guide/getting-started) | [Why Volta?
 2. Run `yarn dev` 
 3. Visit dev website: `https://dev.realdevsquad.com`
 
+4. To enable mocking APIs for testing using [Mock Service worker](https://mswjs.io/), take the following steps:
+- [Create a certificate](https://github.com/Real-Dev-Squad/website-status/blob/develop/__mocks__/INSTALL_CERTIFICATE.md) for the server and add it to the new folder `certificate` in the root of the project.
+- Run the server with `yarn run dev:server`.
+- Then, in `.env.development` file, replace `OFF` with `ON` in `NEXT_PUBLIC_API_MOCKING`
+- Then go to https://dev.realdevsquad.com and you should see the "MOCKING ENABLED" message in the console.
+
 # Website
 
 - Status: https://status.realdevsquad.com/
