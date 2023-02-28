@@ -8,6 +8,7 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
+import { IdleUser } from '@/interfaces/idleUser.type';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -36,12 +37,17 @@ const AvailabilityPanel: FC = () => {
     };
     const fetchIdleUsers = async () => {
       try {
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/status?state=IDLE`;
         const { requestPromise } = fetch({ url });
         const fetchPromise = await requestPromise;
-        const { idleMemberUserNames } = fetchPromise.data;
-        const filterMembers = idleMemberUserNames.filter((username: string) => username);
-        const sortedIdleMembers = filterMembers.sort();
+        const { allUserStatus: idleUsers }: { allUserStatus: IdleUser[] } =
+          fetchPromise.data;
+
+        // Extract usernames from the idleUsers and sorting them in alphabetical order.
+        const sortedIdleMembers = idleUsers
+          .map((user) => user.username)
+          .sort((a, b) => a.localeCompare(b));
+
         setIdleMembersList(sortedIdleMembers);
         setError(false);
       } catch (Error) {
@@ -78,7 +84,7 @@ const AvailabilityPanel: FC = () => {
         <div className={classNames.heading}>Availability Panel</div>
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
-          <DragDropContextWrapper 
+          <DragDropContextWrapper
             idleMembers={idleMembersList}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
