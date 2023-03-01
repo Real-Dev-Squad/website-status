@@ -87,5 +87,9 @@
   },
   "msw": {
     "workerDirectory": "public"
+  },
+  "volta": {
+    "node": "18.14.2",
+    "yarn": "1.22.19"
   }
 }
