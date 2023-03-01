@@ -42,13 +42,9 @@ const AvailabilityPanel: FC = () => {
         const fetchPromise = await requestPromise;
         const { allUserStatus: idleUsers }: { allUserStatus: IdleUser[] } =
           fetchPromise.data;
+        const idleUserNames = idleUsers.map((user) => user.username);
 
-        // Extract usernames from the idleUsers and sorting them in alphabetical order.
-        const sortedIdleMembers = idleUsers
-          .map((user) => user.username)
-          .sort((a, b) => a.localeCompare(b));
-
-        setIdleMembersList(sortedIdleMembers);
+        setIdleMembersList(idleUserNames);
         setError(false);
       } catch (Error) {
         setError(true);
