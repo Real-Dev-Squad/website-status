@@ -1,4 +1,4 @@
-import Tabs from '@/components/Tabs/Tabs';
+import Tabs from '@/components/Tabs';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { TABS } from '@/components/tasks/constants';
 describe('Tabs Component', () => {
