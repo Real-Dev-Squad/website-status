@@ -7,13 +7,13 @@ const selfHandler = [
       ctx.status(200),
       ctx.json({
         id: "aTOG168A86JXY5wVosJx",
-        github_display_name: "Sirischa Achor",
+        github_display_name: "Mahima Khandelwal",
         github_id: "Maheima",
         roles: {
             member: true,
             archived: false
         },
-        last_name: "Achor",
+        last_name: "Khandelwal",
         username: "mahima",
         incompleteUserDetails: false,
         profileStatus: "BLOCKED",
@@ -22,7 +22,7 @@ const selfHandler = [
             url: "https://res.cloudinary.com/realdevsquad/image/upload/v1674639637/profile/aTOG168A86JXY5wVosJx/fj2c46kpmpy3gi8tl63s.jpg"
         },
         status: "active",
-        first_name: "Sirischa",
+        first_name: "Mahima",
         profileURL: "https://mahima-profile-service.onrender.com"
     })
     );
