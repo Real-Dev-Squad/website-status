@@ -1,7 +1,7 @@
 import taskHandlers from "./handlers/tasks.handler";
-import membersHandlers from "./handlers/members.handler";
+import selfHandler from "./handlers/self.handler";
 import idleUserHandler from './handlers/idle-users.handler';
 
-const handlers = [...taskHandlers, ...membersHandlers, ...idleUserHandler];
+const handlers = [...taskHandlers, ...selfHandler, ...idleUserHandler];
 
 export default handlers;
