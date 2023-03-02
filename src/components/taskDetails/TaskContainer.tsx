@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import Image from 'next/image';
 import classNames from './task-details.module.scss';
 
-const iconSize: string = '25px';
+const iconSize = 25;
 
 type Props = {
   children?: ReactNode;

@@ -1,34 +1,31 @@
-import { FC, useState, useEffect } from 'react';
-import { useAppContext } from '@/context';
-import Head from '@/components/head';
-import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
-import useFetch from '@/hooks/useFetch';
-import classNames from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
-import { LOGIN_URL, TASKS_URL } from '@/components/constants/url';
+import { FC, useState, useEffect } from "react";
+import { useAppContext } from "@/context";
+import Head from "@/components/head";
+import Layout from "@/components/Layout";
+import Card from "@/components/tasks/card";
+import useFetch from "@/hooks/useFetch";
+import classNames from "@/styles/tasks.module.scss";
+import task from "@/interfaces/task.type";
+import { LOGIN_URL, MY_TASKS_URL } from "@/components/constants/url";
 
 function CardList(tasks: task[]) {
-  return tasks.map(
-    (item: task) => (
-      <Card
-        content={item}
-        key={item.id}
-        shouldEdit={false}
-        onContentChange={undefined}
-      />
-    )
-  );
+  return tasks.map((item: task) => (
+    <Card
+      content={item}
+      key={item.id}
+      shouldEdit={false}
+      onContentChange={undefined}
+    />
+  ));
 }
 
 const Mine: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
-  const {
-    response,
-    error,
-    isLoading,
-    callAPI
-  } = useFetch(TASKS_URL, {}, false);
+  const { response, error, isLoading, callAPI } = useFetch(
+    MY_TASKS_URL,
+    {},
+    false
+  );
   const { state } = useAppContext();
   const { isLoading: isAuthenticating, isLoggedIn } = state;
   useEffect(() => {
@@ -36,7 +33,7 @@ const Mine: FC = () => {
       callAPI();
       setTasks(response);
     }
-  }, [isLoggedIn, response])
+  }, [isLoggedIn, response]);
 
   return (
     <Layout>
@@ -61,11 +58,7 @@ const Mine: FC = () => {
             ) : (
               <div>
                 <p>You are not Authorized</p>
-                <a
-                  href={LOGIN_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href={LOGIN_URL} target="_blank" rel="noreferrer">
                   Click here to Login
                 </a>
               </div>
