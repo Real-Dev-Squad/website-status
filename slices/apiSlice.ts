@@ -4,7 +4,7 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 export const statusApi = createApi({
   reducerPath: 'statusApi',
-  baseQuery: fetchBaseQuery({ baseUrl:process.env.NEXT_PUBLIC_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.realdevsquad.com' }),
   extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
       return action.payload[reducerPath];
