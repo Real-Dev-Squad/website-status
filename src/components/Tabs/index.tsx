@@ -1,5 +1,5 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
-import { TABS } from '../tasks/constants';
+import { TABS } from '@/interfaces/task.type';
 
 type TabsProps = {
   tabs: typeof TABS;
@@ -8,20 +8,17 @@ type TabsProps = {
 };
 
 export default function Tabs({ tabs, onSelect, activeTab }: TabsProps) {
-
-  const tabButtons = tabs.map((tab: string, index: number) => (
-    <button
-      key={tab}
-      onClick={() => onSelect(tab)}
-      className={`${styles.tabButton} ${activeTab === tab ? styles.active : ""}`}
-    >
-      {tab}
-    </button>
-  ))
-
   return (
-    <div>
-      {tabButtons}
-    </div>
+    <>
+      {tabs.map((tab: string) => (
+        <button
+          key={tab}
+          onClick={() => onSelect(tab)}
+          className={`${styles.tabButton} ${activeTab === tab ? styles.active : ""}`}
+        >
+          {tab}
+        </button>
+      ))}
+    </>
   )
 }
