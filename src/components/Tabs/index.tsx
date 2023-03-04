@@ -1,15 +1,15 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
-import { TABS } from '@/interfaces/task.type';
+import { Tab } from '@/interfaces/task.type';
 
 type TabsProps = {
-  tabs: typeof TABS;
-  onSelect: (tab: string) => void;
-  activeTab: string
+  tabs: Tab[];
+  onSelect: (tab: Tab) => void;
+  activeTab: Tab
 };
 
 const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) =>
   <>
-    {tabs.map((tab: string) => (
+    {tabs.map((tab: Tab) => (
       <button
         key={tab}
         onClick={() => onSelect(tab)}
