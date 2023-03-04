@@ -1,14 +1,14 @@
-import { FC, useState, useEffect } from 'react';
-import Head from '@/components/head';
-import Layout from '@/components/Layout';
-import task from '@/interfaces/task.type';
-import classNames from '@/styles/availabilityPanel.module.scss';
-import fetch from '@/helperFunctions/fetch';
 import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
-import { IdleUser } from '@/interfaces/idleUser.type';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import fetch from '@/helperFunctions/fetch';
+import fetchIdleUsers from '@/helperFunctions/fetchIdleUsers';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import task from '@/interfaces/task.type';
+import classNames from '@/styles/availabilityPanel.module.scss';
+import { FC, useEffect, useState } from 'react';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -17,6 +17,18 @@ const AvailabilityPanel: FC = () => {
   const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
   const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
+
+  const getAndSetIdleUserNames = async () => {
+    try {
+      const [idleUserNames, error] = await fetchIdleUsers();
+      setIdleMembersList(idleUserNames);
+      setError(error);
+    } catch (err) {
+      setError(true);
+    } finally {
+      setIsMemberLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -35,25 +47,9 @@ const AvailabilityPanel: FC = () => {
         setIsTaskLoading(false);
       }
     };
-    const fetchIdleUsers = async () => {
-      try {
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/status?state=IDLE`;
-        const { requestPromise } = fetch({ url });
-        const fetchPromise = await requestPromise;
-        const { allUserStatus: idleUsers }: { allUserStatus: IdleUser[] } =
-          fetchPromise.data;
-        const idleUserNames = idleUsers.map((user) => user.username);
 
-        setIdleMembersList(idleUserNames);
-        setError(false);
-      } catch (Error) {
-        setError(true);
-      } finally {
-        setIsMemberLoading(false);
-      }
-    };
     fetchTasks();
-    fetchIdleUsers();
+    getAndSetIdleUserNames();
   }, [refreshData]);
 
   let isErrorOrIsLoading;
