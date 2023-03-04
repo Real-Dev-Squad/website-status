@@ -7,18 +7,17 @@ type TabsProps = {
   activeTab: string
 };
 
-export default function Tabs({ tabs, onSelect, activeTab }: TabsProps) {
-  return (
-    <>
-      {tabs.map((tab: string) => (
-        <button
-          key={tab}
-          onClick={() => onSelect(tab)}
-          className={`${styles.tabButton} ${activeTab === tab ? styles.active : ""}`}
-        >
-          {tab}
-        </button>
-      ))}
-    </>
-  )
-}
+const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) =>
+  <>
+    {tabs.map((tab: string) => (
+      <button
+        key={tab}
+        onClick={() => onSelect(tab)}
+        className={`${styles.tabButton} ${activeTab === tab ? styles.active : ""}`}
+      >
+        {tab}
+      </button>
+    ))}
+  </>
+
+export default Tabs
