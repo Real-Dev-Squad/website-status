@@ -18,7 +18,7 @@ const AvailabilityPanel: FC = () => {
   const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
 
-  const getAndSetIdleUserNames = async () => {
+  const getAndSetIdleUsers = async () => {
     try {
       const [idleUserNames, error] = await fetchIdleUsers();
       setIdleMembersList(idleUserNames);
@@ -49,7 +49,7 @@ const AvailabilityPanel: FC = () => {
     };
 
     fetchTasks();
-    getAndSetIdleUserNames();
+    getAndSetIdleUsers();
   }, [refreshData]);
 
   let isErrorOrIsLoading;
