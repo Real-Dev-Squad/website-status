@@ -28,6 +28,7 @@ import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
+import { useGetAllTasksQuery } from 'slices/apiSlice';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
@@ -75,11 +76,13 @@ async function updateCardContent(id: string, cardDetails: task) {
 const Index: FC = () => {
   const { state: appState } = useAppContext();  
   const [filteredTask, setFilteredTask] = useState<any>([]);
-  const { response, error, isLoading } = useFetch(TASKS_URL);
+  // const { response, error, isLoading } = useFetch(TASKS_URL);
+  const { data: response, isError, isLoading } = useGetAllTasksQuery();
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
-  useEffect(() => {
+  console.log(response);
+ useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
@@ -100,13 +103,13 @@ const Index: FC = () => {
       setFilteredTask([]);
     });
   }, [isLoading, response]);
-
+ 
   return (
     <Layout>
       <Head title='Tasks' />
         <TasksProvider >
           <div className={classNames.container}>
-            {!!error && <p>Something went wrong, please contact admin!</p>}
+            {!!isError && <p>Something went wrong, please contact admin!</p>}
             {isLoading ? (
               <p>Loading...</p>
             ) : (
@@ -117,7 +120,7 @@ const Index: FC = () => {
                       <TaskList tasks={filteredTask[key]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={key == IN_PROGRESS}/>
                     </Accordion>
                   ))
-                  : !error && 'No Tasks Found'}
+                  : !isError && 'No Tasks Found'}
               </>
             )}
           </div>
