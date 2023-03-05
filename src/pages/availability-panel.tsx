@@ -19,15 +19,10 @@ const AvailabilityPanel: FC = () => {
   const [refreshData, setRefreshData] = useState<boolean>(false);
 
   const getAndSetIdleUsers = async () => {
-    try {
-      const [idleUserNames, error] = await fetchIdleUsers();
-      setIdleMembersList(idleUserNames);
-      setError(error);
-    } catch (err) {
-      setError(true);
-    } finally {
-      setIsMemberLoading(false);
-    }
+    const [idleUserNames, error] = await fetchIdleUsers();
+    setIdleMembersList(idleUserNames);
+    setError(error);
+    setIsMemberLoading(false);
   };
 
   useEffect(() => {
