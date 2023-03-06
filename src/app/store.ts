@@ -1,9 +1,10 @@
 import { configureStore, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { statusApi } from 'slices/apiSlice';
+import { api } from "@/app/services/api";
+
 export const store = configureStore({
   reducer: {
-    [statusApi.reducerPath]: statusApi.reducer,
+    [api.reducerPath]: api.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(statusApi.middleware),
+    getDefaultMiddleware().concat(api.middleware),
 });

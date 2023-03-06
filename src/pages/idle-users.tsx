@@ -2,12 +2,11 @@ import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Section from '@/components/idleUsers/section';
 import Layout from '@/components/Layout';
-import { IdleUser } from '@/interfaces/idleUser.type';
-import { useGetIdleStatusQuery } from 'slices/apiSlice';
+import { UserStatus } from '@/interfaces/userStatus.type';
+import { useGetIdleStatusQuery } from '@/app/services/status';
 
 const IdleUsers: FC = () => {
-  const [idleUsersList, setIdleUsersList] = useState<IdleUser[]>([]);
-
+  const [idleUsersList, setIdleUsersList] = useState<UserStatus[]>([]);
   const { data, isError, isLoading } = useGetIdleStatusQuery('IDLE');
 
   useEffect(() => {
