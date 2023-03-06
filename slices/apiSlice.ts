@@ -1,25 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
-import award from '@/interfaces/award.type';
+import task from '@/interfaces/task.type';
 
-interface ResponseData {
-  id: string,
-  title: string,
-  purpose: string,
-  featureUrl: string,
-  type: string,
-  links: string[],
-  endsOn: string,
-  startedOn: string,
-  status: string,
-  assignee?: string,
-  percentCompleted: number,
-  dependsOn: string[],
-  participants?: string[],
-  completionAward: award,
-  lossRate: award,
-  isNoteworthy: boolean,
-  createdBy: string
+interface TaskResponse {
+  message: string;
+  tasks: task[]
 }
 
 export const statusApi = createApi({
@@ -37,27 +22,10 @@ export const statusApi = createApi({
     getIdleStatus: builder.query({
       query: (state) => `users/status?state=${state}`,
     }),
-    getAllTasks: builder.query<ResponseData, void>({
+    getAllTasks: builder.query<TaskResponse, void>({
       query: () => '/tasks',
     }),
   }),
 });
-
-// export const tasksApi = createApi({
-//   reducerPath: 'tasksApi',
-//   baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_BASE_URL }),
-//   extractRehydrationInfo(action, { reducerPath }) {
-//     if (action.type === HYDRATE) {
-//       return action.payload[reducerPath];
-//     }
-//   },
-//   endpoints: (builder) => ({
-//     getAllTasks: builder.query<ResponseData, void>({
-//       query: () => '/tasks',
-//     }),
-//   }),
-// });
-
-// export const { useGetAllTasksQuery } = tasksApi
 
 export const { useGetAllStatusQuery, useGetIdleStatusQuery, useGetAllTasksQuery } = statusApi;
