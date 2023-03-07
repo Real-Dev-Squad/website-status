@@ -5,23 +5,23 @@ $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
 $taskTagLevelBorder: #4169e1;
-$taskTagLevelBg: hsla(225, 73%, 57%,0.5);
+$taskTagLevelBg: hsla(225, 73%, 57%, 0.5);
 $seeMoreTasksBg: #041187;
 $seeMoreTasksShadow: #595959cc;
 
-.screenReaderOnly{ 
-  position: absolute; 
+.screenReaderOnly {
+  position: absolute;
   width: 1px;
   height: 1px;
   padding: 0;
-  margin: -1px; 
+  margin: -1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }
 
-.pointerEventsNone{
+.pointerEventsNone {
   pointer-events: none;
 }
 
@@ -34,23 +34,24 @@ $seeMoreTasksShadow: #595959cc;
   justify-content: space-between;
   border: 1px solid #d9d9d9;
   position: relative;
+  border-radius: 10px;
 }
 
 .cardItems {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
 }
 
-.cardItems {
-  span {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 2px;
-    align-items: center;
-    margin-top: 10px;
-  }
-}
+// .cardItems {
+//   span {
+//     display: flex;
+//     flex-wrap: wrap;
+//     margin: 2px;
+//     align-items: center;
+//   }
+// }
 
 .cardTitle {
   font-size: 1.6rem;
@@ -87,7 +88,9 @@ $seeMoreTasksShadow: #595959cc;
 
 .progressContainer {
   width: 12rem;
-  flex-direction: column;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 .progressIndicator {
@@ -123,23 +126,23 @@ $seeMoreTasksShadow: #595959cc;
   cursor: pointer;
 }
 
-.taskTagLevelWrapper{
+.taskTagLevelWrapper {
   display: flex;
   padding-top: 0.5rem;
   flex-wrap: wrap;
 }
-.taskTagLevelWrapper.editMode{
+.taskTagLevelWrapper.editMode {
   gap: 0.75rem;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.taskTagLevelContainer{
+.taskTagLevelContainer {
   display: flex;
-  gap: 0.25rem
+  gap: 0.25rem;
 }
 
-.taskTagLevel{
+.taskTagLevel {
   position: relative;
   background-color: $taskTagLevelBg;
   padding: 0.35em;
@@ -147,16 +150,16 @@ $seeMoreTasksShadow: #595959cc;
   border: 2px solid $taskTagLevelBorder;
   font-size: 0.85em;
   font-weight: 500;
-  small{
+  small {
     font-size: 0.75em;
   }
 
-  .removeTaskTagLevelBtn{
+  .removeTaskTagLevelBtn {
     font-size: 0.35rem;
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(50%,-40%);
+    transform: translate(50%, -40%);
     border-radius: 50%;
     width: 15px;
     height: 15px;
@@ -168,20 +171,20 @@ $seeMoreTasksShadow: #595959cc;
   }
 }
 
-.addTaskTagLevel{
+.addTaskTagLevel {
   display: flex;
   gap: 0.5rem;
 }
 
-.selectWrapper{
+.selectWrapper {
   border: 1px solid $black;
   border-radius: 0.25em;
   padding: 0.25em 0.5em;
   display: grid;
   grid-template-areas: select;
   align-items: center;
-  
-  .selectDropdown{
+
+  .selectDropdown {
     width: 100%;
     appearance: none;
     cursor: pointer;
@@ -195,7 +198,7 @@ $seeMoreTasksShadow: #595959cc;
     grid-area: select;
     background: none;
   }
-  
+
   &::after {
     content: "";
     grid-area: select;
@@ -211,7 +214,7 @@ $seeMoreTasksShadow: #595959cc;
   cursor: pointer;
 }
 
-.seeMoreTasks{
+.seeMoreTasks {
   cursor: pointer;
   width: calc((100% / 3) - 0.5rem);
   padding: 1rem;
@@ -225,32 +228,33 @@ $seeMoreTasksShadow: #595959cc;
   letter-spacing: 0.15rem;
 }
 
-.seeMoreTasks:hover{
-  box-shadow: 0 1px .5rem $seeMoreTasksShadow;
+.seeMoreTasks:hover {
+  box-shadow: 0 1px 0.5rem $seeMoreTasksShadow;
 }
 
 /* loading spinner  */
-.loadingBg{
+.loadingBg {
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
   pointer-events: none;
-  background-color: rgba(0, 0, 0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   display: grid;
   place-content: center;
-  .spinner{
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-  
-    }
-}
-  @keyframes spin {
-    to { transform: rotate(360deg); }
+  .spinner {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
   }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
