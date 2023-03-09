@@ -28,9 +28,9 @@ import { useAppContext } from "@/context";
 import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
 import { TasksProvider } from "@/context/tasks.context";
 import TaskList from "@/components/tasks/TaskList/TaskList";
+import {TASKS_URL} from "@/components/constants/url";
 
 const { SUCCESS, ERROR } = ToastTypes;
-const MY_TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const STATUS_ORDER = [
   ASSIGNED,
@@ -52,7 +52,7 @@ const statusActiveList = [IN_PROGRESS, BLOCKED, SMOKE_TESTING];
 async function updateCardContent(id: string, cardDetails: task) {
   try {
     const { requestPromise } = fetch({
-      url: `${MY_TASKS_URL}/${id}`,
+      url: `${TASKS_URL}/${id}`,
       method: "patch",
       data: cardDetails,
     });
@@ -70,7 +70,7 @@ async function updateCardContent(id: string, cardDetails: task) {
 const Index: FC = () => {
   const { state: appState } = useAppContext();
   const [filteredTask, setFilteredTask] = useState<any>([]);
-  const { response, error, isLoading } = useFetch(MY_TASKS_URL);
+  const { response, error, isLoading } = useFetch(TASKS_URL);
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;

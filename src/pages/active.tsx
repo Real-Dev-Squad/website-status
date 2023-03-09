@@ -5,6 +5,7 @@ import Card from "@/components/tasks/card";
 import useFetch from "@/hooks/useFetch";
 import classNames from "@/styles/tasks.module.scss";
 import task from "@/interfaces/task.type";
+import {TASKS_URL} from "@/components/constants/url"
 import {
   BLOCKED,
   IN_PROGRESS,
@@ -13,7 +14,6 @@ import {
 import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
 import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
 
-const MY_TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 
 const renderCardList = (tasks: task[]) => {
   const beautifiedTasks = beautifyTaskStatus(tasks);
@@ -31,7 +31,7 @@ const Active: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
   const [activeTasks, setActiveTasks] = useState<any>(null);
   const statusActiveList = [BLOCKED, IN_PROGRESS, SMOKE_TESTING];
-  const { response, error, isLoading } = useFetch(MY_TASKS_URL);
+  const { response, error, isLoading } = useFetch(TASKS_URL);
 
   useEffect(() => {
     if ("tasks" in response) {

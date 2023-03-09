@@ -22,4 +22,4 @@ export const ITEMS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items`;
 export const ALL_TAGS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tags`;
 export const ALL_LEVELS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/levels`;
 export const ITEM_TYPES = { task: "TASK" };
-export const TASK_URL = "https://api.realdevsquad.com/tasks";
+export const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
