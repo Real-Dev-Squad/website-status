@@ -3,7 +3,7 @@ import Head from '@/components/head';
 import Section from '@/components/idleUsers/section';
 import Layout from '@/components/Layout';
 import { UserStatus } from '@/interfaces/userStatus.type';
-import { useGetIdleStatusQuery } from '@/app/services/status';
+import { useGetIdleStatusQuery } from '@/app/services/statusApi';
 
 const IdleUsers: FC = () => {
   const [idleUsersList, setIdleUsersList] = useState<UserStatus[]>([]);

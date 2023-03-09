@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import AppWrapperContext from '@/context';
 import IsUserAuthorizedContext from '@/context/isUserAuthorized';
 import { Provider } from 'react-redux';
-import { store } from '@/app/store';
+import { setupStore } from '@/app/store';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/index.scss';
 
@@ -14,7 +14,7 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <Provider store={store}>
+    <Provider store={setupStore()}>
         <AppWrapperContext>
           <IsUserAuthorizedContext>
             <ToastContainer />
