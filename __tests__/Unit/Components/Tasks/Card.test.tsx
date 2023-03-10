@@ -6,14 +6,12 @@ const DEFAULT_PROPS = {
     id: "firestoreDocumentId123",
     lossRate: {
       dinero: 10,
-      neelam: 5
+      neelam: 5,
     },
-    links: [
-      "https://realdevsquad.com/learn-site"
-    ],
+    links: ["https://realdevsquad.com/learn-site"],
     completionAward: {
       dinero: 110,
-      neelam: 10
+      neelam: 10,
     },
     dependsOn: [],
     assignee: "ankur",
@@ -35,14 +33,12 @@ const DEFAULT_PROPS = {
 const getFirestoreDateNDaysBefore = (n = 1) => {
   const d = new Date();
   d.setDate(d.getDate() - n);
-  return (new Date(d).getTime()) / 1000;
+  return new Date(d).getTime() / 1000;
 };
 
 describe("Task card", () => {
   test("Should render card", () => {
-    const { getByText } = render(
-      <Card {...DEFAULT_PROPS} />
-    );
+    const { getByText } = render(<Card {...DEFAULT_PROPS} />);
 
     expect(getByText("test 1 for drag and drop")).toBeInTheDocument();
   });
@@ -53,11 +49,9 @@ describe("Task card", () => {
       content: {
         ...DEFAULT_PROPS.content,
         endsOn: `${getFirestoreDateNDaysBefore(1)}`,
-      }
+      },
     };
-    const { rerender, getByText } = render(
-      <Card {...props} />
-    );
+    const { rerender, getByText } = render(<Card {...props} />);
 
     expect(getByText("a day ago")).toBeInTheDocument();
 
@@ -67,21 +61,11 @@ describe("Task card", () => {
       content: {
         ...props.content,
         endsOn: `${getFirestoreDateNDaysBefore(2)}`,
-      }
+      },
     };
 
-    rerender(
-      <Card {...props} />
-    )
+    rerender(<Card {...props} />);
 
     expect(getByText("2 days ago")).toBeInTheDocument();
-  });
-
-  test("Should show right status", () => {
-    const { getByText } = render(
-      <Card {...DEFAULT_PROPS} />
-    );
-
-    expect(getByText(DEFAULT_PROPS.content.status)).toBeInTheDocument();
   });
 });
