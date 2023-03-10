@@ -21,4 +21,19 @@ type task = {
   createdBy: string
 };
 
+enum Tab {
+  ASSIGNED = 'ASSIGNED',
+  COMPLETED = 'COMPLETED',
+  AVAILABLE = 'AVAILABLE',
+  NEEDS_REVIEW = 'NEEDS_REVIEW',
+  IN_REVIEW = 'IN_REVIEW',
+  VERIFIED = 'VERIFIED',
+  MERGED = 'MERGED'
+}
+
+const TABS = Object.values(Tab);
+
+export { TABS, Tab };
+
+
 export default task;
