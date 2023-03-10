@@ -43,16 +43,9 @@ $seeMoreTasksShadow: #595959cc;
   justify-content: space-between;
   align-items: center;
 }
-
-// .cardItems {
-//   span {
-//     display: flex;
-//     flex-wrap: wrap;
-//     margin: 2px;
-//     align-items: center;
-//   }
-// }
-
+.cardItems:not(:nth-child(1)) {
+  margin-top: 0.8rem;
+}
 .cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
@@ -68,6 +61,11 @@ $seeMoreTasksShadow: #595959cc;
 .cardStatusFont {
   font-size: 1.3rem;
   font-weight: 500;
+}
+.contributor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .contributorImage {
