@@ -1,6 +1,5 @@
 import { render, fireEvent } from "@testing-library/react";
 import { act } from "@testing-library/react-hooks";
-import userEvent from "@testing-library/user-event";
 import Card from "@/components/tasks/card/index";
 import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
 
