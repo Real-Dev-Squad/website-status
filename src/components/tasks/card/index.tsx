@@ -245,6 +245,7 @@ const Card: FC<Props> = ({
         ${isLoading && classNames.pointerEventsNone}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
+      data-testid="task-card"
     >
       {/* loading spinner */}
       {isLoading && (
@@ -283,7 +284,7 @@ const Card: FC<Props> = ({
           <span>{content.percentCompleted}% </span>
         </div>
       </div>
-      <div className={classNames.cardItems}>
+      <div className={classNames.dateInfo}>
         <div>
           <span className={classNames.cardSpecialFont}>
             Estimated completion{" "}
@@ -359,8 +360,8 @@ const Card: FC<Props> = ({
         </div>
       </div>
 
-      {((isUserAuthorized && showEditButton) || true) && (
-        <div className={classNames.editButton}>
+      {isUserAuthorized && showEditButton && (
+        <div className={classNames.editButton} data-testid="edit-button">
           <Image
             src="/pencil.webp"
             alt="edit Pencil"

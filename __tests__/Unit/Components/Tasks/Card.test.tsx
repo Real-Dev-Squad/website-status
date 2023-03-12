@@ -1,5 +1,8 @@
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
+import { act } from "@testing-library/react-hooks";
+import userEvent from "@testing-library/user-event";
 import Card from "@/components/tasks/card/index";
+import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
 
 const DEFAULT_PROPS = {
   content: {
@@ -36,6 +39,7 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
   return new Date(d).getTime() / 1000;
 };
 
+jest.useFakeTimers();
 describe("Task card", () => {
   test("Should render card", () => {
     const { getByText } = render(<Card {...DEFAULT_PROPS} />);
@@ -67,5 +71,20 @@ describe("Task card", () => {
     rerender(<Card {...props} />);
 
     expect(getByText("2 days ago")).toBeInTheDocument();
+  });
+  test("should show edit button when ALT key is long pressed", () => {
+    const { getByTestId, queryByTestId, rerender } = render(
+      <isUserAuthorizedContext.Provider value={true}>
+        <Card {...DEFAULT_PROPS} />
+      </isUserAuthorizedContext.Provider>
+    );
+    const component = getByTestId("task-card");
+
+    act(() => {
+      fireEvent.keyDown(component, { key: "Alt", code: "AltLeft" });
+      jest.advanceTimersByTime(300);
+    });
+
+    expect(queryByTestId("edit-button")).toBeInTheDocument();
   });
 });

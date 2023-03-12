@@ -1,6 +1,13 @@
-import { useEffect, useState, createContext, FC, Children, ReactNode } from "react";
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
+import {
+  useEffect,
+  useState,
+  createContext,
+  FC,
+  Children,
+  ReactNode,
+} from "react";
+import fetch from "@/helperFunctions/fetch";
+import { toast, ToastTypes } from "@/helperFunctions/toast";
 
 const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const { ERROR } = ToastTypes;
@@ -29,15 +36,15 @@ const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
     };
     fetchData();
 
-    return (() => {
+    return () => {
       setIsUserAuthorized(false);
-    });
+    };
   }, []);
-  return(
+  return (
     <isUserAuthorizedContext.Provider value={isUserAuthorized}>
       {children}
     </isUserAuthorizedContext.Provider>
-  )
-}
+  );
+};
 
-export default IsUserAuthorizedContext
+export default IsUserAuthorizedContext;
