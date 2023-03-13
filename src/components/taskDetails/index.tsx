@@ -40,7 +40,7 @@ function reducer(state: any, action: any) {
         editedDetails: { ...state.editedDetails, ...action.payload },
       };
     case 'reset':
-      return { ...state, editedDetails: {} };
+      return { ...state, taskDetails: { ...action.payload } };
     default:
       return state;
   }
@@ -94,7 +94,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       toast(ERROR, 'Could not save changes');
       dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
     }
-    dispatch({ type: 'reset' });
+    dispatch({ type: 'reset',  payload: initialDataRef.current });
   }
 
   function renderTextarea(name: string, value: string) {
