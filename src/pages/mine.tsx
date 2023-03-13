@@ -6,7 +6,7 @@ import Card from "@/components/tasks/card";
 import useFetch from "@/hooks/useFetch";
 import classNames from "@/styles/tasks.module.scss";
 import task from "@/interfaces/task.type";
-import { LOGIN_URL, MY_TASKS_URL } from "@/components/constants/url";
+import { LOGIN_URL, MINE_TASKS_URL } from "@/components/constants/url";
 
 function CardList(tasks: task[]) {
   return tasks.map((item: task) => (
@@ -22,7 +22,7 @@ function CardList(tasks: task[]) {
 const Mine: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
   const { response, error, isLoading, callAPI } = useFetch(
-    MY_TASKS_URL,
+    MINE_TASKS_URL,
     {},
     false
   );
