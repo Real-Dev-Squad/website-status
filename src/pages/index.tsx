@@ -28,10 +28,9 @@ import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
+import { TASKS_URL } from '@/components/constants/url';
 
 const { SUCCESS, ERROR } = ToastTypes;
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const STATUS_ORDER = [
   ASSIGNED,
   COMPLETED,
