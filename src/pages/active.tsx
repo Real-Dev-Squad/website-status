@@ -10,8 +10,7 @@ import {
 } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
-
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+import { TASKS_URL } from '@/components/constants/url';
 
 const renderCardList = (tasks: task[]) => {
   const beautifiedTasks = beautifyTaskStatus(tasks);
