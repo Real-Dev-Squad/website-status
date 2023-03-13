@@ -1,8 +1,8 @@
 import { useEffect, useState, createContext, FC, Children, ReactNode } from "react";
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { USER_SELF } from '@/components/constants/url';
 
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
 const { ERROR } = ToastTypes;
 export const isUserAuthorizedContext = createContext<Boolean>(false);
 
@@ -15,7 +15,7 @@ const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { requestPromise } = fetch({ url: SELF_URL });
+        const { requestPromise } = fetch({ url: USER_SELF });
         const { data } = await requestPromise;
         const userRoles = {
           adminUser: data.roles?.admin,
