@@ -1,4 +1,4 @@
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+export const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const SUBSCRIBE_TO_CHALLENGE_URL = `${BASE_URL}/challenges/subscribe`;
 export const MINE_TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
 export const USER_PROFILE_URL = 'https://my.realdevsquad.com/profile';
@@ -15,7 +15,7 @@ export const DEFAULT_AVATAR = '/Avatar.png';
 export const RDS_LOGO = '/RDSLogo.png';
 export const GITHUB_LOGO = '/github-white.png';
 export const SIGNUP_LINK = 'https://my.realdevsquad.com/signup';
-export const LOGOUT_URL = 'https://api.realdevsquad.com/auth/signout';
+export const LOGOUT_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signout`;
 export const IDLE_USERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/status?state=IDLE`;
 export const ITEM_BY_FILTER_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items/filter`;
 export const ITEMS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/items`;

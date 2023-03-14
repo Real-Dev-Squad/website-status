@@ -8,6 +8,7 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
+import { BASE_URL } from '@/components/constants/url';
 
 const AvailabilityPanel: FC = () => {
   const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
@@ -20,7 +21,7 @@ const AvailabilityPanel: FC = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+        const url = `${BASE_URL}/tasks`;
         const { requestPromise } = fetch({ url });
         const fetchPromise = await requestPromise;
         const { tasks } = fetchPromise.data;
