@@ -5,7 +5,6 @@ import Card from "@/components/tasks/card";
 import useFetch from "@/hooks/useFetch";
 import classNames from "@/styles/tasks.module.scss";
 import task from "@/interfaces/task.type";
-import {TASKS_URL} from "@/components/constants/url"
 import {
   BLOCKED, IN_PROGRESS, SMOKE_TESTING,
 } from '@/components/constants/task-status';
