@@ -25,7 +25,7 @@ const Completed: FC = () => {
   const [tasks, setTasks] = useState<task[]>([]);
   const [completeTasks, setCompleteTasks] = useState<any>(null);
 
-  const { response, error, isLoading } = useFetch(MY_TASKS_URL);
+  const { response, error, isLoading } = useFetch(TASKS_URL);
 
   useEffect(() => {
     if ("tasks" in response) {
