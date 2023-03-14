@@ -22,16 +22,16 @@ import {
   RELEASED,
   VERIFIED,
   BLOCKED,
-} from "@/components/constants/task-status";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
-import { useAppContext } from "@/context";
-import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
-import { TasksProvider } from "@/context/tasks.context";
-import TaskList from "@/components/tasks/TaskList/TaskList";
-import {TASKS_URL} from "@/components/constants/url";
+} from '@/components/constants/task-status';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { useAppContext } from '@/context';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import { TasksProvider } from '@/context/tasks.context';
+import TaskList from '@/components/tasks/TaskList/TaskList';
+import { TASKS_URL } from '@/components/constants/url';
 
 const { SUCCESS, ERROR } = ToastTypes;
-const SELF_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`;
+
 const STATUS_ORDER = [
   ASSIGNED,
   COMPLETED,

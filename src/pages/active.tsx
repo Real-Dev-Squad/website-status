@@ -7,12 +7,11 @@ import classNames from "@/styles/tasks.module.scss";
 import task from "@/interfaces/task.type";
 import {TASKS_URL} from "@/components/constants/url"
 import {
-  BLOCKED,
-  IN_PROGRESS,
-  SMOKE_TESTING,
-} from "@/components/constants/task-status";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
-import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
+  BLOCKED, IN_PROGRESS, SMOKE_TESTING,
+} from '@/components/constants/task-status';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
+import { TASKS_URL } from '@/components/constants/url';
 
 
 const renderCardList = (tasks: task[]) => {

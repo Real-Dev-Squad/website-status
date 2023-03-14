@@ -1,18 +1,18 @@
-import type { FC } from "react";
-import { useState, useEffect } from "react";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import Card from "@/components/tasks/card";
-import useFetch from "@/hooks/useFetch";
-import classNames from "@/styles/tasks.module.scss";
-import task from "@/interfaces/task.type";
-import { COMPLETED } from "@/components/constants/task-status";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
 
-const MY_TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+import type { FC } from 'react';
+import { useState, useEffect } from 'react';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import Card from '@/components/tasks/card';
+import useFetch from '@/hooks/useFetch';
+import classNames from '@/styles/tasks.module.scss';
+import task from '@/interfaces/task.type';
+import { COMPLETED } from '@/components/constants/task-status';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { TASKS_URL } from '@/components/constants/url';
 
-const renderCardList = (tasks: task[]) =>
-  tasks.map((item: task) => (
+const renderCardList = (tasks: task[]) => tasks.map(
+  (item: task) => (
     <Card
       content={item}
       key={item.id}
