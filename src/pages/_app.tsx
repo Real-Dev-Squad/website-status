@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/index.scss';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
-  require('../../__mocks__/mswInit');
+  require('../../__mocks__/index');
 }
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {

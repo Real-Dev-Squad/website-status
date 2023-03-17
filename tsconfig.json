@@ -28,7 +28,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "__tests__/**/*.tsx"
-, "__mocks__/styleMock.ts"  ],
+, "__mocks__/styleMock.ts", "server.ts"  ],
   "exclude": ["node_modules"],
   "types": ["node", "jest", "@testing-library/jest-dom"]
 }
