@@ -29,6 +29,9 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
+import { NO_TASKS_FOUND_MESSAGE, TASKS_FETCH_ERROR_MESSAGE } from '@/components/constants/error-messages';
+import Tabs from '@/components/Tabs';
+import { Tab } from '@/interfaces/task.type';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const STATUS_ORDER = [
@@ -70,33 +73,42 @@ async function updateCardContent(id: string, cardDetails: task) {
   }
 }
 
+const EmptyTaskListLabel:React.FC = ()=>{
+  return <p className={classNames.emptyTaskListLabel}>{NO_TASKS_FOUND_MESSAGE}</p>;
+}
 
 const Index: FC = () => {
   const { state: appState } = useAppContext();  
-  const [filteredTask, setFilteredTask] = useState<any>([]);
+  const [filteredTask, setFilteredTask] = useState<{[key:string]: task[]}>({});
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
+  const [activeTab, setActiveTab] = useState(Tab.ASSIGNED)
+  
+  const onSelect = (tab: Tab) => {
+    setActiveTab(tab);
+  }
+
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
       tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
       tasks.sort((a: task, b: task) => STATUS_ORDER.indexOf(a.status)
         - STATUS_ORDER.indexOf(b.status));
-      const taskMap: any = [];
-      tasks.forEach((item) => {
-        if (item.status in taskMap) {
-          taskMap[item.status] = [...taskMap[item.status], item];
+      const taskMap = tasks.reduce<{[key:string]: task[]}>((taskGroups,task) => {
+        if (task.status in taskGroups) {
+          taskGroups[task.status] = [...taskGroups[task.status], task];
         } else {
-          taskMap[item.status] = [item];
+          taskGroups[task.status] = [task];
         }
-      });
+        return taskGroups;
+      },{});
       setFilteredTask(taskMap);
     }
 
     return(() => {
-      setFilteredTask([]);
+      setFilteredTask({});
     });
   }, [isLoading, response]);
 
@@ -105,18 +117,22 @@ const Index: FC = () => {
       <Head title='Tasks' />
         <TasksProvider >
           <div className={classNames.container}>
-            {!!error && <p>Something went wrong, please contact admin!</p>}
+            {!!error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
             {isLoading ? (
               <p>Loading...</p>
             ) : (
               <>
                 {Object.keys(filteredTask).length > 0
-                  ? Object.keys(filteredTask).map((key) => (
-                    <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                      <TaskList tasks={filteredTask[key]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={key == IN_PROGRESS}/>
-                    </Accordion>
-                  ))
-                  : !error && 'No Tasks Found'}
+                  ? <div className={classNames.tasksContainer}>
+                      <div className={classNames.tabsContainer}>
+                        <Tabs tabs={Object.values(Tab) as Tab[]} onSelect={onSelect} activeTab={activeTab}/>
+                      </div>
+                      <div>
+                        {filteredTask[activeTab] ? <TaskList tasks={filteredTask[activeTab]} isEditable={isEditable} updateCardContent={updateCardContent}/>
+                        :<EmptyTaskListLabel/>}
+                      </div>
+                    </div>
+                  : !error && <EmptyTaskListLabel/>}
               </>
             )}
           </div>
