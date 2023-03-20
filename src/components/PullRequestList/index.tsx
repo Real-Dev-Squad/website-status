@@ -5,6 +5,7 @@ import PullRequest from '@/components/pullRequests';
 import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
+import { BASE_URL } from '../constants/url';
 
 type pullRequestType = {
   title: string;
@@ -61,7 +62,7 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
   const [page, setPage] = useState(1);
   const [isBottom, setIsBottom] = useState(false);
   const numberOfCards = getNumberOfCards();
-  const prUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
+  const prUrl = `${BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
   const {
     response,
     error,

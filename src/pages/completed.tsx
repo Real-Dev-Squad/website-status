@@ -8,8 +8,7 @@ import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import { COMPLETED } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
-
-const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+import { TASKS_URL } from '@/components/constants/url';
 
 const renderCardList = (tasks: task[]) => tasks.map(
   (item: task) => (
