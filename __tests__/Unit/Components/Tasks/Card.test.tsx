@@ -77,6 +77,14 @@ describe("Task card", () => {
         <Card {...DEFAULT_PROPS} />
       </isUserAuthorizedContext.Provider>
     );
+
+    act(() => {
+      const event = new KeyboardEvent("keydown", { key: "Shift" });
+      document.dispatchEvent(event);
+      jest.advanceTimersByTime(300);
+    });
+    // this will cause setShowUpdatedTaskCard(true)
+
     const component = getByTestId("task-card");
 
     act(() => {

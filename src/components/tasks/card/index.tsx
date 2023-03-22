@@ -12,7 +12,7 @@ import {
   COMPLETED,
   VERIFIED,
 } from "@/components/constants/beautified-task-status";
-import { ALT_KEY } from "@/components/constants/key";
+import { ALT_KEY, SHIFT_KEY } from "@/components/constants/key";
 import TaskLevelEdit from "./TaskTagEdit";
 import taskItem, { taskItemPayload } from "@/interfaces/taskItem.type";
 import fetch from "@/helperFunctions/fetch";
@@ -54,9 +54,11 @@ const Card: FC<Props> = ({
 
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
+    const isShiftKeyLongPressed = keyLongPressed === SHIFT_KEY;
     if (isAltKeyLongPressed) {
       setShowEditButton(true);
     }
+    if (isShiftKeyLongPressed) setShowUpdatedTaskCard(true);
   }, [keyLongPressed]);
 
   useEffect(() => {
