@@ -7,10 +7,8 @@ export const useKeyLongPressed = (): [string] => {
     let timerId: ReturnType<typeof setTimeout>;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-
-      console.log({ key: event.key });
       timerId = setTimeout(() => {
-      setKeyLongPressed(event.key);
+        setKeyLongPressed(event.key);
       }, 300);
     };
     const handleKeyUp = () => {

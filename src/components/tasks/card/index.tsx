@@ -87,7 +87,6 @@ const Card: FC<Props> = ({
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
 
-  // if (cardDetails.status == "Available") console.log(cardDetails, content);
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
   const statusFontColor = !statusRedList.includes(cardDetails.status)
