@@ -1,47 +1,52 @@
-
 import { setupServer } from 'msw/node';
-import { useGetUsersQuery, useGetUsersByLinkQuery, useGetUsersByUsernameQuery } from '@/app/services/usersApi';
-import { usersHandler } from "../../../__mocks__/handlers/users.handler";
+import { useGetIdleStatusQuery } from "@/app/services/statusApi";
+import idleUserHandler from '../../../__mocks__/handlers/idle-users.handler';
+import React, { PropsWithChildren } from 'react';
+import { act, renderHook } from '@testing-library/react-hooks';
+import { Provider } from 'react-redux';
+import { store } from "@/app/store";
 
+const server = setupServer(...idleUserHandler);
 
-import React, { PropsWithChildren } from 'react'
-import { renderHook } from '@testing-library/react'
-import type { RenderOptions } from '@testing-library/react'
-import type { PreloadedState } from '@reduxjs/toolkit'
-import { Provider } from 'react-redux'
-import { setupStore } from '@/app/store'
-import type { AppStore,RootState } from '@/app/store'
-
-interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: PreloadedState<RootState>
-  store?: AppStore
-}
-
-const server = setupServer(...usersHandler);
-
-beforeAll(() => server.listen());
+beforeAll(() => {
+  server.listen();
+});
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-
-export function renderWithProviders<P, R>(
-  callback: (props: P) => R,
-  {
-    preloadedState = {},
-    store = setupStore(preloadedState),
-    ...renderOptions
-  }: ExtendedRenderOptions = {}
-) {
-  function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
-    return <Provider store={store}>{children}</Provider>
-  }
-  return { store, ...renderHook(callback, { wrapper: Wrapper, ...renderOptions }) }
+function Wrapper({ children }: PropsWithChildren<{}>): JSX.Element {
+  return <Provider store={store()}>{children}</Provider>;
 }
 
 describe('useGetUsersQuery', () => {
   test('returns users', async () => {
+    const { result, waitForNextUpdate } = renderHook(() => useGetIdleStatusQuery("IDLE"), {
+      wrapper: Wrapper,
+    });
+    const initialResponse = result.current;
+    expect(initialResponse.data).toBeUndefined();
+    expect(initialResponse.isLoading).toBe(true);
+    console.log({initialResponse})
+    await act(() => waitForNextUpdate());
+    const nextResponse = result.current;
+    console.log({nextResponse})
+    expect(nextResponse.data).not.toBeUndefined();
+    expect(nextResponse.isLoading).toBe(false);
+    expect(nextResponse.isSuccess).toBe(true);
+  });
   
-    const { result } = renderWithProviders(() => useGetUsersQuery())
-    expect(result.current.data).toBeUndefined();
+  test('returns 400 state param missing', async () => {
+    const { result, waitForNextUpdate } = renderHook(() => useGetIdleStatusQuery(""), {
+      wrapper: Wrapper,
+    });
+    const initialResponse = result.current;
+    expect(initialResponse.data).toBeUndefined();
+    expect(initialResponse.isLoading).toBe(true);
+
+    await act(() => waitForNextUpdate());
+
+    const nextResponse = result.current;
+    expect(nextResponse.data).toBeUndefined();
+    expect(nextResponse.isError).toBe(true);
   });
 });

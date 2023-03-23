@@ -10,7 +10,7 @@ export type UserStatus = {
   id: string;
   picture: {
     url: string;
-    publicId: string
+    publicId?: string
   };
   currentStatus: {
     state: string;
