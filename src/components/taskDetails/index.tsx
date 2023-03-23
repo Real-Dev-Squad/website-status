@@ -142,7 +142,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       {!isLoading && !error && taskDetails && (
         <div className={classNames.parentContainer}>
           <div className={classNames.titleContainer}>
-          text
             {!isEditing ? (
               <span className={classNames.taskTitle}>{taskDetails.title}</span>
             ) : (

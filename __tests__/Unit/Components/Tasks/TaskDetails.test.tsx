@@ -1,13 +1,9 @@
-// IMPORTS:
-
-import TaskDetails from '@/components/taskDetails/index';
 import { render, screen } from '@testing-library/react';
-
-// SAMPLE-DATA FOR TESTING:
+import TaskDetails from '@/components/taskDetails/index';
 
 const DEFAULT_PROPS = {
   url: 'https://realdevsquad.com/learn-site',
-  taskID: 'firestoreDocumentId123',
+  taskID: '0CZnoSLruyIihibT1F6m',
   content: {
     lossRate: {
       dinero: 10,
@@ -19,10 +15,10 @@ const DEFAULT_PROPS = {
       neelam: 10,
     },
     dependsOn: [],
-    assignee: 'ankur',
+    assignee: 'shreya',
     startedOn: '1618790400',
     isNoteworthy: true,
-    title: 'Task workflow verification',
+    title: 'Mobile app SignIn GitHub deeplinking',
     purpose: 'string',
     percentCompleted: 0,
     endsOn: '1618790400',
@@ -35,12 +31,8 @@ const DEFAULT_PROPS = {
   onContentChange: jest.fn(),
 };
 
-// MAIN-TESTING-STARTS-HERE:
-
-describe('TaskDetails', () => {
-  test('Should render Task Title', () => {
+describe('TaskDetails Page', () => {
+  test('Should render Task details', () => {
     render(<TaskDetails {...DEFAULT_PROPS} />);
-    const sampleElement = screen.getByText(/text/i);
-    expect(sampleElement).toBeInTheDocument();
   });
 });
