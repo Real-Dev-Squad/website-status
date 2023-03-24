@@ -6,7 +6,7 @@ import { useGetIdleStatusQuery } from 'slices/apiSlice';
 
 const IdleUsers: FC = () => {
   const {
-    data: idleUsersList,
+    data: idleUsersList = [],
     isError,
     isLoading,
   } = useGetIdleStatusQuery('IDLE');
@@ -18,7 +18,7 @@ const IdleUsers: FC = () => {
       <div className='container'>
         <Section
           heading='Idle users'
-          content={idleUsersList ?? []}
+          content={idleUsersList}
           isLoading={isLoading}
           error={isError}
         />
