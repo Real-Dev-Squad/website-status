@@ -1,12 +1,12 @@
 import { setupServer } from 'msw/node';
 import { useGetUsersQuery, useGetUsersByLinkQuery, useGetUsersByUsernameQuery } from "@/app/services/usersApi";
-import usersHandler from '../../../__mocks__/handlers/users.handler';
+import handlers from '../../../__mocks__/handlers';
 import React, { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { store } from "@/app/store";
 
-const server = setupServer(...usersHandler);
+const server = setupServer(...handlers);
 
 beforeAll(() => {
   server.listen();

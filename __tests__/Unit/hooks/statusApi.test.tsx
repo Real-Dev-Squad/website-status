@@ -1,12 +1,12 @@
 import { setupServer } from 'msw/node';
 import { useGetIdleStatusQuery, useGetAllStatusQuery } from "@/app/services/statusApi";
-import userStatusHandler from '../../../__mocks__/handlers/users-status.handler';
+import handlers from '../../../__mocks__/handlers';
 import React, { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { store } from "@/app/store";
 
-const server = setupServer(...userStatusHandler);
+const server = setupServer(...handlers);
 
 beforeAll(() => {
   server.listen();
