@@ -1,5 +1,7 @@
+import { IdleUser } from '@/interfaces/idleUser.type';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
+import { TGetIdleUsersResponse } from './types';
 
 export const statusApi = createApi({
   reducerPath: 'statusApi',
@@ -13,7 +15,7 @@ export const statusApi = createApi({
     getAllStatus: builder.query({
       query: () => 'users/status',
     }),
-    getIdleStatus: builder.query({
+    getIdleStatus: builder.query<TGetIdleUsersResponse, string>({
       query: (state) => `users/status?state=${state}`,
     }),
   }),
