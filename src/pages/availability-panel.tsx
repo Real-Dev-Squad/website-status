@@ -1,62 +1,34 @@
 import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
-import { AVAILABLE } from '@/components/constants/task-status';
+import { AVAILABLE } from '@/components/constants/beautified-task-status';
 import { FEATURE } from '@/components/constants/task-type';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import fetch from '@/helperFunctions/fetch';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task from '@/interfaces/task.type';
+import { useGetIdleStatusQuery, useGetAllTasksQuery } from '@/slices/apiSlice';
 import classNames from '@/styles/availabilityPanel.module.scss';
-import { FC, useEffect, useState } from 'react';
-import { useGetIdleStatusQuery } from 'slices/apiSlice';
+import { FC } from 'react';
 
 const AvailabilityPanel: FC = () => {
-  const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
-  const [error, setError] = useState<boolean>(false);
-  const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
-  const [refreshData, setRefreshData] = useState<boolean>(false);
+  const {
+    data: idleMembers,
+    isLoading: isIdleMembersLoading,
+    refetch: reFetchIdleMembers,
+  } = useGetIdleStatusQuery('IDLE');
+  const idleMembersUserNames = idleMembers?.map((member) => member.username);
 
-  const { data: idleMembersList, isLoading: isMemberLoading } =
-    useGetIdleStatusQuery('IDLE');
-  const idleMembersUserNames =
-    idleMembersList?.map((member) => member.username) ?? [];
+  const {
+    data: allTasks = [],
+    isLoading: isAllTasksLoading,
+    refetch: refetchAllTasks,
+  } = useGetAllTasksQuery(null);
+  const unAssignedTasks = updateTasksStatus(allTasks).filter(
+    (item: task) => item.status === AVAILABLE && item.type === FEATURE
+  );
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
-        const { requestPromise } = fetch({ url });
-        const fetchPromise = await requestPromise;
-        const { tasks } = fetchPromise.data;
-        const unassigned = updateTasksStatus(tasks).filter(
-          (item: task) => item.status === AVAILABLE && item.type === FEATURE
-        );
-        setUnAssignedTasks(unassigned);
-      } catch (Error) {
-        setError(true);
-      } finally {
-        setIsTaskLoading(false);
-      }
-    };
-
-    fetchTasks();
-  }, [refreshData]);
-
-  let isErrorOrIsLoading;
-  if (error) {
-    isErrorOrIsLoading = (
-      <span className={classNames.statusMessage}>
-        Something went wrong, please contact admin!
-      </span>
-    );
-  } else if (isTaskLoading || isMemberLoading) {
-    isErrorOrIsLoading = (
-      <span className={classNames.statusMessage}>Loading...</span>
-    );
-  }
-
-  const getData = () => {
-    setRefreshData(!refreshData);
+  const handleRefreshData = async () => {
+    await reFetchIdleMembers();
+    await refetchAllTasks();
   };
 
   return (
@@ -64,13 +36,19 @@ const AvailabilityPanel: FC = () => {
       <Head title='Availability Panel' />
       <div>
         <div className={classNames.heading}>Availability Panel</div>
-        {isErrorOrIsLoading}
-        {!isErrorOrIsLoading && (
+
+        {isIdleMembersLoading || isAllTasksLoading ? (
+          <span className={classNames.statusMessage}>Loading...</span>
+        ) : unAssignedTasks && idleMembersUserNames ? (
           <DragDropContextWrapper
             idleMembers={idleMembersUserNames}
             unAssignedTasks={unAssignedTasks}
-            refreshData={getData}
+            refreshData={handleRefreshData}
           />
+        ) : (
+          <span className={classNames.statusMessage}>
+            Something went wrong, please contact admin!
+          </span>
         )}
       </div>
     </Layout>
