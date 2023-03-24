@@ -17,6 +17,7 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
+      "@/slices/*": ["slices/*"],
       "@/*": ["src/*"]
     },
     "incremental": true
