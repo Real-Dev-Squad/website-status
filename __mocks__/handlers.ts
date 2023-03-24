@@ -1,6 +1,6 @@
 import taskHandlers from "./handlers/tasks.handler";
 import selfHandler from "./handlers/self.handler";
-import idleUserHandler from './handlers/idle-users.handler';
+import idleUserHandler from './handlers/users-status.handler';
 import tagsHandler from './handlers/tags.handler';
 import levelsHandler from './handlers/levels.handler'
 

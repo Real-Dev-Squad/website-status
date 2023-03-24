@@ -1,47 +1,57 @@
 import { rest } from "msw";
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
+import usersData from "../db/users";
 
-export const usersHandler = [
-    rest.get(`${URL}/users`,(_, res, ctx) => {
+const usersHandler = [
+    rest.get(`${URL}/users`,(req, res, ctx) => {
+        const searchParamToMatch = req.url.searchParams.get('search') ?? ""
+        const nextIdToMatch = req.url.searchParams.get('next')
+        const prevIdToMatch = req.url.searchParams.get('prev')
+        const size = parseInt(req.url.searchParams.get('size'))
+        let nextId;
+        let prevId;
+
+        let filteredUsers = usersData.filter((userObj) => {
+            return (!searchParamToMatch || userObj.username.startsWith(searchParamToMatch))
+        })
+
+        if(nextIdToMatch) {
+            const index = filteredUsers.findIndex(userObj => {
+                return (
+                    userObj.id === nextIdToMatch
+                    )   
+                })
+                const startIndex = index + 1
+                const endIndex = startIndex + size
+                filteredUsers = filteredUsers.slice(startIndex, endIndex)
+            } else if (prevIdToMatch) {
+            const index = filteredUsers.findIndex(userObj => {
+                return (
+                    userObj.id === nextIdToMatch
+                )   
+               })
+            
+            const startIndex = index - filteredUsers.length
+            const endIndex = startIndex + size
+            filteredUsers = filteredUsers.slice(startIndex, endIndex)
+        } else {
+            filteredUsers = filteredUsers.slice(0,size)
+        }
+        nextId = filteredUsers[filteredUsers.length - 1].id ?? ""
+        prevId = filteredUsers[0].id ?? ""
+
         return res(
             ctx.status(200),
             ctx.json({
             message: "Users returned successfully!",
-            users: [
-                {
-                id: "GuqNDIo4iLrV1ecxa1aC",
-                twitter_id: "19sriram",
-                roles: {
-                    archived: false
-                },
-                company_name: "Juniper networks ",
-                first_name: "Sriram",
-                linkedin_id: "uiram",
-                incompleteUserDetails: false,
-                yoe: "5",
-                github_display_name: "Sriram",
-                designation: "Front end engineer",
-                username: "19sriram",
-                github_id: "19sriram",
-                last_name: "Raghunathan"
-                },
-                {
-                id: "AtPcqKV6BDqfmkSRxolE",
-                github_display_name: "Shobhit Kumar",
-                twitter_id: "shobhit_1998",
-                linkedin_id: "shobhitkumar0",
-                roles: {
-                    archived: false
-                },
-                username: "4everlearning",
-                first_name: "Shobhit",
-                incompleteUserDetails: false,
-                github_id: "shobhit-coder",
-                last_name: "Kumar",
-                yoe: 2
-                }
-            ]
+            users: filteredUsers,
+            links: {
+                next: nextId ? `/users?size=${size}&next=${nextId}&search=${searchParamToMatch}` : "",
+                prev: prevId ? `/users?size=${size}&prev=${prevId}&search=${searchParamToMatch}` : "",   
+            }
             })
         )
     })
 ]
+
+export default usersHandler;

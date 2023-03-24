@@ -1,14 +1,15 @@
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const idleUserHandler = [
+const userStatusHandler = [
   rest.get(`${URL}/users/status`, (req, res, ctx) => {
 
     if(req.url.searchParams.get("state") === "IDLE") {
       return res(
         ctx.status(200),
         ctx.json({
-          message: 'All User Status found successfully.',
+          message: 'Idle user status returned successfully',
+          totalUserStatus: 2,
           allUserStatus: [
             {
               id: 'P8ZEJ2ICrIYzRCbbqexH',
@@ -46,12 +47,44 @@ const idleUserHandler = [
     }
     else {
       return res(
-        ctx.status(400),
-        ctx.json({ 
-          message: "Missing state param"
-        }))
+        ctx.status(200),
+        ctx.json({
+          message: 'All user status returned successfully',
+          allUserStatus: [
+            {
+              id: 'JwYni9ZOztObSvzUaCwL',
+              currentStatus: {
+                state: 'IDLE',
+                from: '1670869800000',
+                until: '',
+                updatedAt: '1670869989059',
+                message: 'django, python\n',
+              },
+              full_name: 'Vinayak Trivedi',
+              picture: {
+                url: 'https://res.cloudinary.com/realdevsquad/image/upload/v1660416701/profile/2LEt2spMNDUCpkjmbsfa/pmtjfsf2pmk1cdfxrtvr.jpg',
+              },
+              username: 'vinayak',
+            },
+            {
+              id: 'nfuuHym5Bg8JSlKUFoaY',
+              currentStatus: {
+                from: '1671561000000',
+                updatedAt: '1671530865798',
+                message: 'React, JavaScript',
+                state: '',
+              },
+              full_name: 'Manikandan Eakambaram',
+              picture: {
+                url: 'https://res.cloudinary.com/realdevsquad/image/upload/v1671530531/profile/0dgFZOEAsyffmTR4XxFX/owjju9nu9ca29o8bbqwf.jpg',
+              },
+              username: 'manikandan-av',
+            }
+          ],
+        })
+      );
     }
   }),
 ];
 
-export default idleUserHandler;
+export default userStatusHandler;
