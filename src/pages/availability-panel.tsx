@@ -4,26 +4,22 @@ import { FEATURE } from '@/components/constants/task-type';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import fetch from '@/helperFunctions/fetch';
-import fetchIdleUsers from '@/helperFunctions/fetchIdleUsers';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task from '@/interfaces/task.type';
 import classNames from '@/styles/availabilityPanel.module.scss';
 import { FC, useEffect, useState } from 'react';
+import { useGetIdleStatusQuery } from 'slices/apiSlice';
 
 const AvailabilityPanel: FC = () => {
-  const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
   const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
   const [error, setError] = useState<boolean>(false);
   const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
-  const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
   const [refreshData, setRefreshData] = useState<boolean>(false);
 
-  const getAndSetIdleUsers = async () => {
-    const [idleUserNames, error] = await fetchIdleUsers();
-    setIdleMembersList(idleUserNames);
-    setError(error);
-    setIsMemberLoading(false);
-  };
+  const { data: idleMembersList, isLoading: isMemberLoading } =
+    useGetIdleStatusQuery('IDLE');
+  const idleMembersUserNames =
+    idleMembersList?.map((member) => member.username) ?? [];
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -44,7 +40,6 @@ const AvailabilityPanel: FC = () => {
     };
 
     fetchTasks();
-    getAndSetIdleUsers();
   }, [refreshData]);
 
   let isErrorOrIsLoading;
@@ -72,7 +67,7 @@ const AvailabilityPanel: FC = () => {
         {isErrorOrIsLoading}
         {!isErrorOrIsLoading && (
           <DragDropContextWrapper
-            idleMembers={idleMembersList}
+            idleMembers={idleMembersUserNames}
             unAssignedTasks={unAssignedTasks}
             refreshData={getData}
           />
