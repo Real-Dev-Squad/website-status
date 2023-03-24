@@ -15,8 +15,10 @@ export const statusApi = createApi({
     getAllStatus: builder.query({
       query: () => 'users/status',
     }),
-    getIdleStatus: builder.query<TGetIdleUsersResponse, string>({
+    getIdleStatus: builder.query<IdleUser[], string>({
       query: (state) => `users/status?state=${state}`,
+      transformResponse: (response: TGetIdleUsersResponse) =>
+        response.allUserStatus,
     }),
   }),
 });
