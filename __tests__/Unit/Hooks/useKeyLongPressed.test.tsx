@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { useKeyLongPressed } from './useKeyLongPressed';
+import { useKeyLongPressed } from '../../../src/hooks/useKeyLongPressed';
 
 jest.useFakeTimers();
 describe('useKeyLongPressed', () => {
