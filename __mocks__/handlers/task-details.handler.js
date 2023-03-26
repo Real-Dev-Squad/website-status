@@ -2,40 +2,34 @@ import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const taskDetailsHandler = [
-  rest.get(`${URL}/tasks/0CZnoSLruyIihibT1F6m`, (_, res, ctx) => {
+  rest.get(`${URL}/tasks/6KhcLU3yr45dzjQIVm0J/details`, (_, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
-        message: 'Task Details found successfully.',
-        taskDetails: [
+        message: 'task returned successfully',
+        taskData: [
           {
-            url: 'https://realdevsquad.com/learn-site',
-            taskID: '0CZnoSLruyIihibT1F6m',
-            content: {
-              lossRate: {
-                dinero: 10,
-                neelam: 5,
-              },
-              links: ['https://realdevsquad.com/learn-site'],
-              completionAward: {
-                dinero: 110,
-                neelam: 10,
-              },
-              dependsOn: [],
-              assignee: 'shreya',
-              startedOn: '1618790400',
-              isNoteworthy: true,
-              title: 'Mobile app SignIn GitHub deeplinking',
-              purpose: 'string',
-              percentCompleted: 0,
-              endsOn: '1618790400',
-              status: 'assigned',
-              featureUrl: 'string',
-              type: 'feature',
-              createdBy: 'ankush',
+            id: '6KhcLU3yr45dzjQIVm0J',
+            isNoteworthy: true,
+            lossRate: {
+              dinero: 0,
+              neelam: 0,
             },
-            shouldEdit: false,
-            onContentChange: jest.fn(),
+            purpose: 'string',
+            endsOn: 1618790400,
+            title: 'test 1 for drag and drop',
+            status: 'assigned',
+            assignee: 'ankur',
+            links: ['null'],
+            dependsOn: ['null'],
+            percentCompleted: 0,
+            type: 'string',
+            startedOn: 1618790410,
+            featureUrl: 'string',
+            completionAward: {
+              neelam: 0,
+              dinero: 110,
+            },
           },
         ],
       })
@@ -44,3 +38,5 @@ const taskDetailsHandler = [
 ];
 
 export default taskDetailsHandler;
+
+// [MSW] 18:29:45 GET https://localhost/tasks//details (200 OK)

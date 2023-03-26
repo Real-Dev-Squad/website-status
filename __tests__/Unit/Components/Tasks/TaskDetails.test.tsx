@@ -1,38 +1,36 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import TaskDetails from '@/components/taskDetails/index';
+import { url } from 'inspector';
 
-const DEFAULT_PROPS = {
+const details = {
   url: 'https://realdevsquad.com/learn-site',
-  taskID: '0CZnoSLruyIihibT1F6m',
-  content: {
-    lossRate: {
-      dinero: 10,
-      neelam: 5,
-    },
-    links: ['https://realdevsquad.com/learn-site'],
-    completionAward: {
-      dinero: 110,
-      neelam: 10,
-    },
-    dependsOn: [],
-    assignee: 'shreya',
-    startedOn: '1618790400',
-    isNoteworthy: true,
-    title: 'Mobile app SignIn GitHub deeplinking',
-    purpose: 'string',
-    percentCompleted: 0,
-    endsOn: '1618790400',
-    status: 'assigned',
-    featureUrl: 'string',
-    type: 'feature',
-    createdBy: 'ankush',
+  taskID: '6KhcLU3yr45dzjQIVm0J',
+  isNoteworthy: true,
+  lossRate: {
+    dinero: 0,
+    neelam: 0,
   },
-  shouldEdit: false,
-  onContentChange: jest.fn(),
+  purpose: 'string',
+  endsOn: 1618790400,
+  title: 'test 1 for drag and drop',
+  status: 'assigned',
+  assignee: 'ankur',
+  links: ['null'],
+  dependsOn: ['null'],
+  percentCompleted: 0,
+  type: 'string',
+  startedOn: 1618790410,
+  featureUrl: 'string',
+  completionAward: {
+    neelam: 0,
+    dinero: 110,
+  },
 };
 
 describe('TaskDetails Page', () => {
-  test('Should render Task details', () => {
-    render(<TaskDetails {...DEFAULT_PROPS} />);
+  test('Should show loading text when data is loading', () => {
+    render(<TaskDetails {...details} />);
+    const loadingText = screen.getByText(/loading/i);
+    expect(loadingText).toBeInTheDocument();
   });
 });
