@@ -54,7 +54,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
   const { response, error, isLoading } = useFetch(url);
   const { SUCCESS, ERROR } = ToastTypes;
   const { taskDetails } = state;
-
   useEffect(() => {
     const fetchedData: task = { ...response.taskData };
     dispatch({ type: 'setTaskDetails', payload: fetchedData });
@@ -94,7 +93,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       toast(ERROR, 'Could not save changes');
       dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
     }
-    dispatch({ type: 'reset',  payload: initialDataRef.current });
+    dispatch({ type: 'reset', payload: initialDataRef.current });
   }
 
   function renderTextarea(name: string, value: string) {
@@ -103,6 +102,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         className={classNames['textarea']}
         name={name}
         value={value}
+        data-testid="edit button"
         onChange={(event) => handleChange(event)}
       />
     );
@@ -134,20 +134,26 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       return <p className={classNames.textCenter}>Something went wrong!</p>;
     }
   }
+  // console.log('is editing --->', isEditing);
+  // console.log('error --->', Boolean(error));
+  // console.log('taskdetails data --->', taskDetails);
+  // console.log('isEditing --->', isEditing);
 
   return (
     <>
       <NavBar />
       {renderLoadingComponent()}
+
       {!isLoading && !error && taskDetails && (
         <div className={classNames.parentContainer}>
           <div className={classNames.titleContainer}>
             {!isEditing ? (
-              <span className={classNames.taskTitle}>{taskDetails.title}</span>
+              <span data-testid="task-title" className={classNames.taskTitle}>
+                {taskDetails[0]?.title}
+              </span>
             ) : (
-              renderTextarea('title', taskDetails.title)
+              renderTextarea('title', taskDetails[0]?.title)
             )}
-
             {!isEditing ? (
               renderButton('Edit', setIsEditing, true)
             ) : (
@@ -163,23 +169,29 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               <TaskContainer title="Description" hasImg={false}>
                 {!isEditing ? (
                   <p>
-                    {!taskDetails.purpose
+                    {!taskDetails[0]?.purpose
                       ? 'No description available'
-                      : taskDetails.purpose}
+                      : taskDetails[0]?.purpose}
                   </p>
                 ) : (
-                  renderTextarea('purpose', taskDetails.purpose)
+                  renderTextarea('purpose', taskDetails[0]?.purpose)
                 )}
               </TaskContainer>
               <TaskContainer title="Details" hasImg={false}>
                 <div className={classNames['sub_details_grid_container']}>
-                  <Details detailType={'Type'} value={taskDetails.type} />
+                  <Details detailType={'Type'} value={taskDetails[0]?.type} />
                   <Details
                     detailType={'Priority'}
-                    value={taskDetails.priority}
+                    value={taskDetails[0]?.priority}
                   />
-                  <Details detailType={'Status'} value={taskDetails.status} />
-                  <Details detailType={'Link'} value={taskDetails.featureUrl} />
+                  <Details
+                    detailType={'Status'}
+                    value={taskDetails[0]?.status}
+                  />
+                  <Details
+                    detailType={'Link'}
+                    value={taskDetails[0]?.featureUrl}
+                  />
                 </div>
               </TaskContainer>
             </section>
@@ -193,9 +205,9 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                 <Details
                   detailType={'Assignee'}
                   value={
-                    taskDetails.type === 'feature'
-                      ? taskDetails.assignee
-                      : taskDetails.participants?.join(' , ')
+                    taskDetails[0]?.type === 'feature'
+                      ? taskDetails[0]?.assignee
+                      : taskDetails[0]?.participants?.join(' , ')
                   }
                 />
                 <Details detailType={'Reporter'} value={'Ankush'} />
@@ -207,11 +219,11 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               >
                 <Details
                   detailType={'StartedOn'}
-                  value={convertTimeStamp(taskDetails.startedOn)}
+                  value={convertTimeStamp(taskDetails[0]?.startedOn)}
                 />
                 <Details
                   detailType={'EndsOn'}
-                  value={convertTimeStamp(taskDetails.endsOn)}
+                  value={convertTimeStamp(taskDetails[0]?.endsOn)}
                 />
               </TaskContainer>
             </section>

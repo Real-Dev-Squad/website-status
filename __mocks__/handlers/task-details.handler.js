@@ -23,7 +23,7 @@ const taskDetailsHandler = [
             links: ['null'],
             dependsOn: ['null'],
             percentCompleted: 0,
-            type: 'string',
+            type: 'feature',
             startedOn: 1618790410,
             featureUrl: 'string',
             completionAward: {
@@ -38,5 +38,3 @@ const taskDetailsHandler = [
 ];
 
 export default taskDetailsHandler;
-
-// [MSW] 18:29:45 GET https://localhost/tasks//details (200 OK)
