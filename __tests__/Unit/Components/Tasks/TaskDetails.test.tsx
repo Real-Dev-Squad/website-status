@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  logRoles,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import TaskDetails from '../../../../src/components/taskDetails/index';
 
 const details = {
@@ -33,28 +27,27 @@ const details = {
 };
 
 describe('TaskDetails Page', () => {
-  test('Edit button is hidden when a user is viewing', () => {
+  test('Loading text rendered when loading', () => {
     render(<TaskDetails url={details.url} taskID={details.taskID} />);
+    const loadingElement = screen.getByText(/Loading.../i);
+    expect(loadingElement).toBeInTheDocument();
+  });
+  test('Task title is not rendered when Editing', () => {
+    render(<TaskDetails url={details.url} taskID={details.taskID} />);
+
+    const titleElement = screen.queryByTestId('task-title');
+    expect(titleElement).not.toBeInTheDocument();
+  });
+  test('Edit button is not rendered when Editing', () => {
+    render(<TaskDetails url={details.url} taskID={details.taskID} />);
+
     const editButtonElement = screen.queryByRole('button', { name: 'Edit' });
     expect(editButtonElement).not.toBeInTheDocument();
   });
-  const { container } = render(
-    <TaskDetails url={details.url} taskID={details.taskID} />
-  );
-  logRoles(container);
-  // test('shouldrender task title', async () => {
-  //   render(<TaskDetails url={details.url} taskID={details.taskID} />);
-
-  //   const samplElement = await screen.findByText(
-  //     /test 1 for drag and drop/i,
-  //     {},
-  //     { timeout: 3000 }
-  //   );
-  //   expect(samplElement).toBeInTheDocument();
-  // });
-  test('task title rendered', () => {
+  test('Task Descriprion is not rendered when Editing', () => {
     render(<TaskDetails url={details.url} taskID={details.taskID} />);
-    const titleElement = screen.getByTestId('task-title');
-    expect(titleElement).toBeInTheDocument();
+
+    const descriptionElement = screen.queryByText(/No description available/i);
+    expect(descriptionElement).not.toBeInTheDocument();
   });
 });

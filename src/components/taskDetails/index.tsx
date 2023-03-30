@@ -134,25 +134,20 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
       return <p className={classNames.textCenter}>Something went wrong!</p>;
     }
   }
-  // console.log('is editing --->', isEditing);
-  // console.log('error --->', Boolean(error));
-  // console.log('taskdetails data --->', taskDetails);
-  // console.log('isEditing --->', isEditing);
 
   return (
     <>
       <NavBar />
       {renderLoadingComponent()}
-
       {!isLoading && !error && taskDetails && (
         <div className={classNames.parentContainer}>
           <div className={classNames.titleContainer}>
-            {!isEditing ? (
+            {isEditing ? (
+              renderTextarea('title', taskDetails[0]?.title)
+            ) : (
               <span data-testid="task-title" className={classNames.taskTitle}>
                 {taskDetails[0]?.title}
               </span>
-            ) : (
-              renderTextarea('title', taskDetails[0]?.title)
             )}
             {!isEditing ? (
               renderButton('Edit', setIsEditing, true)
@@ -167,14 +162,14 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
           <section className={classNames.detailsContainer}>
             <section className={classNames.leftContainer}>
               <TaskContainer title="Description" hasImg={false}>
-                {!isEditing ? (
+                {isEditing ? (
+                  renderTextarea('purpose', taskDetails[0]?.purpose)
+                ) : (
                   <p>
                     {!taskDetails[0]?.purpose
                       ? 'No description available'
                       : taskDetails[0]?.purpose}
                   </p>
-                ) : (
-                  renderTextarea('purpose', taskDetails[0]?.purpose)
                 )}
               </TaskContainer>
               <TaskContainer title="Details" hasImg={false}>
