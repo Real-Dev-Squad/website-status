@@ -13,12 +13,12 @@ export const statusApi = api.injectEndpoints({
             query: () => '/users/status',
             providesTags: ['Status']
           }),
-          getIdleStatus: build.query<StatusResponse, string>({
+        getStatus: build.query<StatusResponse, string>({
             query: (state) => `/users/status?state=${state}`,
             providesTags: ['Status']
-          }),
+        }),
     })
 })
 
 
-export const { useGetAllStatusQuery, useGetIdleStatusQuery } = statusApi;
+export const { useGetAllStatusQuery, useGetStatusQuery } = statusApi;

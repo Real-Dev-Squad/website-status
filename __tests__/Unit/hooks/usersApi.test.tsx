@@ -33,6 +33,7 @@ describe('useGetUsersQuery', () => {
     expect(nextResponse.data).not.toBeUndefined();
     expect(nextResponse.isLoading).toBe(false);
     expect(nextResponse.isSuccess).toBe(true);
+    expect(nextResponse.data?.users).toHaveLength(2);
   });
   
 });
@@ -52,9 +53,10 @@ describe('useGetUsersByLinkQuery', () => {
     await act(() => nextPageWait());
     const nextPageResponse = nextPageResult.current
 
-    expect(nextPageResponse.data).not.toBeUndefined();
+    expect(nextPageResponse.data).toBeDefined();
     expect(nextPageResponse.isLoading).toBe(false);
     expect(nextPageResponse.isSuccess).toBe(true);
+    expect(nextPageResponse.data?.users).toBeDefined();
     expect(nextPageResponse.data?.links.next).toBeDefined()
     expect(nextPageResponse.data?.links.prev).toBeDefined()
     
@@ -65,9 +67,10 @@ describe('useGetUsersByLinkQuery', () => {
     await act(() => prevPageWait());
     const prevPageResponse = prevPageResult.current
 
-    expect(prevPageResponse.data).not.toBeUndefined();
+    expect(prevPageResponse.data).toBeDefined();
     expect(prevPageResponse.isLoading).toBe(false);
     expect(prevPageResponse.isSuccess).toBe(true);
+    expect(nextPageResponse.data?.users).toBeDefined();
     expect(prevPageResponse.data?.links.next).toBeDefined()
     expect(prevPageResponse.data?.links.prev).toBeDefined()
     
@@ -85,10 +88,16 @@ describe('useGetUsersByUsernameQuery', () => {
     expect(initialResponse.isLoading).toBe(true);
 
     await act(() => waitForNextUpdate());
+
     const nextResponse = result.current;
+    const users = nextResponse.data?.users
     expect(nextResponse.data).not.toBeUndefined();
+    expect(users).toHaveLength(2);  
     expect(nextResponse.isLoading).toBe(false);
     expect(nextResponse.isSuccess).toBe(true);
+    users?.forEach((user) => {
+      expect(user.username).toMatch(/^mu/)
+    })
   });
   
 });

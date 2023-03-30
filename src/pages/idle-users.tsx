@@ -3,11 +3,11 @@ import Head from '@/components/head';
 import Section from '@/components/idleUsers/section';
 import Layout from '@/components/Layout';
 import { UserStatus } from '@/interfaces/userStatus.type';
-import { useGetIdleStatusQuery } from '@/app/services/statusApi';
+import { useGetStatusQuery } from '@/app/services/statusApi';
 
 const IdleUsers: FC = () => {
   const [idleUsersList, setIdleUsersList] = useState<UserStatus[]>([]);
-  const { data, isError, isLoading } = useGetIdleStatusQuery('IDLE');
+  const { data, isError, isLoading } = useGetStatusQuery('IDLE');
 
   useEffect(() => {
     if (data?.allUserStatus) {
