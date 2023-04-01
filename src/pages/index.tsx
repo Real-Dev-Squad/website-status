@@ -4,7 +4,8 @@ import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
-import Accordion from '@/components/Accordion';
+import Tabs from '@/components/Tabs';
+import { Tab } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -23,6 +24,7 @@ import {
   VERIFIED,
   BLOCKED,
 } from '@/components/constants/task-status';
+import {TASKS_FETCH_ERROR_MESSAGE, NO_TASKS_FOUND_MESSAGE} from '@/components/constants/messages';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
@@ -78,6 +80,11 @@ const Index: FC = () => {
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
+  const [activeTab, setActiveTab] = useState(Tab.ASSIGNED)
+
+  const onSelect = (tab: Tab) => {
+    setActiveTab(tab);
+  }
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
@@ -100,23 +107,45 @@ const Index: FC = () => {
     });
   }, [isLoading, response]);
 
+  const renderTabSection = () => (
+    <div className={classNames.tabsContainer}>
+      <Tabs
+        tabs={Object.values(Tab) as Tab[]}
+        onSelect={onSelect}
+        activeTab={activeTab}
+      />
+    </div>
+  );
+
+  const renderTaskList = () => (
+    <div>
+      {filteredTask[activeTab] ? (
+        <TaskList
+          tasks={filteredTask[activeTab]}
+          isEditable={isEditable}
+          updateCardContent={updateCardContent}
+        />
+      ) : (
+        <p>{NO_TASKS_FOUND_MESSAGE}</p>
+      )}
+    </div>
+  );
   return (
     <Layout>
       <Head title='Tasks' />
         <TasksProvider >
           <div className={classNames.container}>
-            {!!error && <p>Something went wrong, please contact admin!</p>}
+            {!!error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
             {isLoading ? (
               <p>Loading...</p>
             ) : (
               <>
                 {Object.keys(filteredTask).length > 0
-                  ? Object.keys(filteredTask).map((key) => (
-                    <Accordion open={(statusActiveList.includes(key))} title={key} key={key}>
-                      <TaskList tasks={filteredTask[key]} isEditable={isEditable} updateCardContent={updateCardContent} hasLimit={key == IN_PROGRESS}/>
-                    </Accordion>
-                  ))
-                  : !error && 'No Tasks Found'}
+                  ? <div className={classNames.tasksContainer}>
+                    {renderTabSection()}
+                    {renderTaskList()}
+                  </div>
+                  : !error && <p>{NO_TASKS_FOUND_MESSAGE}</p>}
               </>
             )}
           </div>
