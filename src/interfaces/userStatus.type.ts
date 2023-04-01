@@ -21,3 +21,9 @@ export type UserStatus = {
   };
   full_name: string;
 };
+
+export enum UserStatusType {
+  IDLE = 'IDLE',
+  ACTIVE= 'ACTIVE',
+  OOO = 'OOO'
+}

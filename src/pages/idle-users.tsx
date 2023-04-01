@@ -4,10 +4,11 @@ import Section from '@/components/idleUsers/section';
 import Layout from '@/components/Layout';
 import { UserStatus } from '@/interfaces/userStatus.type';
 import { useGetStatusQuery } from '@/app/services/statusApi';
+import { UserStatusType } from '@/interfaces/userStatus.type';
 
 const IdleUsers: FC = () => {
   const [idleUsersList, setIdleUsersList] = useState<UserStatus[]>([]);
-  const { data, isError, isLoading } = useGetStatusQuery('IDLE');
+  const { data, isError, isLoading } = useGetStatusQuery(UserStatusType.IDLE);
 
   useEffect(() => {
     if (data?.allUserStatus) {
