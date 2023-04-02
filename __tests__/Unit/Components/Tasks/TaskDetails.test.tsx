@@ -1,29 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import TaskDetails from '../../../../src/components/taskDetails/index';
+import TaskDetails from '@/components/taskDetails';
 
 const details = {
   url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
   taskID: '6KhcLU3yr45dzjQIVm0J',
-  isNoteworthy: true,
-  lossRate: {
-    dinero: 0,
-    neelam: 0,
-  },
-  purpose: 'string',
-  endsOn: 1618790400,
-  title: 'test 1 for drag and drop',
-  status: 'assigned',
-  assignee: 'ankur',
-  links: ['null'],
-  dependsOn: ['null'],
-  percentCompleted: 0,
-  type: 'feature',
-  startedOn: 1618790410,
-  featureUrl: 'string',
-  completionAward: {
-    neelam: 0,
-    dinero: 110,
-  },
 };
 
 describe('TaskDetails Page', () => {
