@@ -1,9 +1,13 @@
-import { render, fireEvent, fireEvent } from "@testing-library/react";
-import { act } from "@testing-library/react-hooks";
-import userEvent from "@testing-library/user-event";
+import { render, fireEvent } from "@testing-library/react";
 import { act } from "@testing-library/react-hooks";
 import Card from "@/components/tasks/card/index";
 import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
+import { RouterContext } from "next/dist/shared/lib/router-context";
+import {
+  createMockRouter,
+  renderWithRouter,
+} from "@/test_utils/createMockRouter";
+import { NextRouter } from "next/router";
 
 const DEFAULT_PROPS = {
   content: {
@@ -43,7 +47,9 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 jest.useFakeTimers();
 describe("Task card", () => {
   test("Should render card", () => {
-    const { getByText } = render(<Card {...DEFAULT_PROPS} />);
+    const { getByText } = renderWithRouter(<Card {...DEFAULT_PROPS} />, {
+      query: { dev: "true" },
+    });
 
     expect(getByText("test 1 for drag and drop")).toBeInTheDocument();
   });
@@ -56,7 +62,7 @@ describe("Task card", () => {
         endsOn: `${getFirestoreDateNDaysBefore(1)}`,
       },
     };
-    const { rerender, getByText } = render(<Card {...props} />);
+    const { rerender, getByText } = renderWithRouter(<Card {...props} />);
 
     expect(getByText("a day ago")).toBeInTheDocument();
 
@@ -69,15 +75,20 @@ describe("Task card", () => {
       },
     };
 
-    rerender(<Card {...props} />);
+    rerender(
+      <RouterContext.Provider value={createMockRouter({}) as NextRouter}>
+        <Card {...props} />
+      </RouterContext.Provider>
+    );
 
     expect(getByText("2 days ago")).toBeInTheDocument();
   });
   test("should show edit button when ALT key is long pressed", () => {
-    const { getByTestId, queryByTestId, rerender } = render(
+    const { getByTestId, queryByTestId } = renderWithRouter(
       <isUserAuthorizedContext.Provider value={true}>
         <Card {...DEFAULT_PROPS} />
-      </isUserAuthorizedContext.Provider>
+      </isUserAuthorizedContext.Provider>,
+      { query: { dev: "true" } }
     );
     const component = getByTestId("task-card");
 
@@ -89,10 +100,11 @@ describe("Task card", () => {
     expect(queryByTestId("edit-button")).toBeInTheDocument();
   });
   test("should show edit button when ALT key is long pressed", () => {
-    const { getByTestId, queryByTestId, rerender } = render(
+    const { getByTestId, queryByTestId } = renderWithRouter(
       <isUserAuthorizedContext.Provider value={true}>
         <Card {...DEFAULT_PROPS} />
-      </isUserAuthorizedContext.Provider>
+      </isUserAuthorizedContext.Provider>,
+      { query: { dev: "true" } }
     );
 
     act(() => {

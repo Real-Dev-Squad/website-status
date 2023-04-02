@@ -22,6 +22,7 @@ import {
   ITEM_BY_FILTER_URL,
   ITEM_TYPES,
 } from "@/components/constants/url";
+import { useRouter } from "next/router";
 
 const moment = require("moment");
 
@@ -36,7 +37,7 @@ const Card: FC<Props> = ({
   shouldEdit = false,
   onContentChange = () => undefined,
 }) => {
-  const [showUpdatedTaskCard, setShowUpdatedTaskCard] = useState(false);
+ 
   const statusRedList = [BLOCKED];
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
   const cardDetails = content;
@@ -49,16 +50,18 @@ const Card: FC<Props> = ({
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const { actions, state } = useAppContext();
+  const router = useRouter();
+  const { query } = router;
+  const dev = !!query.dev;
 
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
-    const isShiftKeyLongPressed = keyLongPressed === SHIFT_KEY;
+
     if (isAltKeyLongPressed) {
       setShowEditButton(true);
     }
-    if (isShiftKeyLongPressed) setShowUpdatedTaskCard(true);
+ 
   }, [keyLongPressed]);
 
   useEffect(() => {
@@ -240,7 +243,9 @@ const Card: FC<Props> = ({
     actions.onEditRoute();
   };
 
-  if (showUpdatedTaskCard)
+
+  // show redesign only on dev 
+  if (dev)
     return (
       <div
         className={`
