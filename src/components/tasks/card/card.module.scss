@@ -36,16 +36,22 @@ $seeMoreTasksShadow: #595959cc;
   position: relative;
   border-radius: 10px;
 }
-
+.card_updated{
+  border-radius: 10px;
+}
 .cardItems {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
 }
-.cardItems:not(:nth-child(1)) {
+.card_updated .cardItems:not(:nth-child(1)) {
   margin-top: 0.8rem;
 }
+.dateInfo {
+  margin-top: 0.8rem;
+}
+
 .cardTitle {
   font-size: 1.6rem;
   font-weight: 500;
@@ -67,7 +73,11 @@ $seeMoreTasksShadow: #595959cc;
   align-items: center;
   gap: 1rem;
 }
-
+.contributor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .contributorImage {
   img {
     border-radius: 40%;
@@ -90,7 +100,12 @@ $seeMoreTasksShadow: #595959cc;
   gap: 1rem;
   align-items: center;
 }
-
+.progressContainerUpdated {
+  width: 12rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
 .progressIndicator {
   width: 100%;
   height: 0.6rem;

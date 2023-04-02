@@ -22,6 +22,7 @@ import {
   ITEM_BY_FILTER_URL,
   ITEM_TYPES,
 } from "@/components/constants/url";
+import { useRouter } from "next/router";
 
 const moment = require("moment");
 
@@ -48,11 +49,14 @@ const Card: FC<Props> = ({
   const [showEditButton, setShowEditButton] = useState(false);
   const [keyLongPressed] = useKeyLongPressed();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const { actions, state } = useAppContext();
+  const router = useRouter();
+  const { query } = router;
+  const dev = !!query.dev;
 
   useEffect(() => {
     const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
+
     if (isAltKeyLongPressed) {
       setShowEditButton(true);
     }
@@ -86,7 +90,6 @@ const Card: FC<Props> = ({
   const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
   const fromNowStartedOn = moment(localStartedOn).fromNow();
 
-  // if (cardDetails.status == "Available") console.log(cardDetails, content);
   const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
   const fromNowEndsOn = moment(localEndsOn).fromNow();
   const statusFontColor = !statusRedList.includes(cardDetails.status)
@@ -238,13 +241,152 @@ const Card: FC<Props> = ({
     actions.onEditRoute();
   };
 
-  return (
-    <div
-      className={`
+  // show redesign only on dev
+  if (dev)
+    return (
+      <div
+        className={`
         ${classNames.card}
+        ${classNames.card_updated}
         ${isLoading && classNames.pointerEventsNone}
         ${isTaskOverdue() && classNames.overdueTask}
     `}
+        data-testid="task-card"
+      >
+        {/* loading spinner */}
+        {isLoading && (
+          <div className={classNames.loadingBg}>
+            <div className={classNames.spinner}>
+              <span className={classNames.screenReaderOnly}>loading</span>
+            </div>
+          </div>
+        )}
+
+        <div className={classNames.cardItems}>
+          <h2
+            className={classNames.cardTitle}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleChange(e, "title")}
+            role="button"
+            tabIndex={0}
+          >
+            {cardDetails.title}
+          </h2>
+          {/* progress bar */}
+          <div className={classNames.progressContainerUpdated}>
+            <div className={classNames.progressIndicator}>
+              <div
+                className={`
+                ${handleProgressColor(
+                  content.percentCompleted,
+                  content.startedOn,
+                  content.endsOn
+                )}
+                ${classNames.progressStyle}
+              `}
+                style={{ width: `${content.percentCompleted}%` }}
+              ></div>
+            </div>
+            <span>{content.percentCompleted}% </span>
+          </div>
+        </div>
+        <div className={classNames.dateInfo}>
+          <div>
+            <span className={classNames.cardSpecialFont}>
+              Estimated completion{" "}
+            </span>
+            {renderDate(fromNowEndsOn, shouldEdit)}
+          </div>
+          <span
+            className={classNames.cardSpecialFont}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleChange(e, "startedOn")}
+            role="button"
+            tabIndex={0}
+          >
+            {cardDetails.status == "Available"
+              ? "Not started "
+              : `Started on ${fromNowStartedOn}`}
+          </span>
+        </div>
+
+        <div className={classNames.cardItems}>
+          <div className={classNames.contributor}>
+            <span className={classNames.cardSpecialFont}>Assigned to </span>
+            <span className={classNames.contributorImage}>
+              <Image
+                src={assigneeProfilePic}
+                alt="Assignee profile picture"
+                onError={contributorImageOnError}
+                width={30}
+                height={30}
+              />
+            </span>
+            <span
+              className={classNames.cardStrongFont}
+              contentEditable={shouldEdit}
+              onKeyPress={(e) => handleChange(e, "assignee")}
+              role="button"
+              tabIndex={0}
+            >
+              {cardDetails.assignee}
+            </span>
+          </div>
+          <div
+            className={`${classNames.taskTagLevelWrapper} ${
+              shouldEdit && classNames.editMode
+            }`}
+          >
+            <div className={classNames.taskTagLevelContainer}>
+              {taskTagLevel?.map((item) => (
+                <span key={item.tagId} className={classNames.taskTagLevel}>
+                  {item.tagName}{" "}
+                  <small>
+                    <b>LVL:{item.levelValue}</b>
+                  </small>
+                  {shouldEdit && isUserAuthorized && (
+                    <span>
+                      <button
+                        className={classNames.removeTaskTagLevelBtn}
+                        onClick={() => updateTaskTagLevel(item, "delete")}
+                      >
+                        &#10060;
+                      </button>
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+            {shouldEdit && isUserAuthorized && (
+              <TaskLevelEdit
+                taskTagLevel={taskTagLevel}
+                updateTaskTagLevel={updateTaskTagLevel}
+              />
+            )}
+          </div>
+        </div>
+
+        {isUserAuthorized && showEditButton && (
+          <div className={classNames.editButton} data-testid="edit-button">
+            <Image
+              src="/pencil.webp"
+              alt="edit Pencil"
+              width={iconWidth}
+              height={iconHeight}
+              onClick={onEditEnabled}
+            />
+          </div>
+        )}
+      </div>
+    );
+
+  return (
+    <div
+      className={`
+          ${classNames.card}
+          ${isLoading && classNames.pointerEventsNone}
+          ${isTaskOverdue() && classNames.overdueTask}
+      `}
     >
       {/* loading spinner */}
       {isLoading && (
@@ -256,7 +398,7 @@ const Card: FC<Props> = ({
       )}
 
       <div className={classNames.cardItems}>
-        <h2
+        <span
           className={classNames.cardTitle}
           contentEditable={shouldEdit}
           onKeyPress={(e) => handleChange(e, "title")}
@@ -264,32 +406,84 @@ const Card: FC<Props> = ({
           tabIndex={0}
         >
           {cardDetails.title}
-        </h2>
-        {/* progress bar */}
-        <div className={classNames.progressContainer}>
+        </span>
+        <span>
+          <span className={classNames.cardSpecialFont}>Status:</span>
+          <span
+            className={classNames.cardStatusFont}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleChange(e, "status")}
+            style={{ color: statusFontColor }}
+            role="button"
+            tabIndex={0}
+          >
+            {cardDetails.status}
+          </span>
+        </span>
+      </div>
+      <div className={classNames.cardItems}>
+        <span>
+          <Image
+            src="/calendar-icon.png"
+            alt="calendar icon"
+            width={iconWidth}
+            height={iconHeight}
+          />
+          <span className={classNames.cardSpecialFont}>Due Date</span>
+          {renderDate(fromNowEndsOn, shouldEdit)}
+        </span>
+      </div>
+      <div className={classNames.cardItems}>
+        <span className={classNames.progressContainer}>
           <div className={classNames.progressIndicator}>
             <div
               className={`
-                ${handleProgressColor(
-                  content.percentCompleted,
-                  content.startedOn,
-                  content.endsOn
-                )}
-                ${classNames.progressStyle}
-              `}
+                  ${handleProgressColor(
+                    content.percentCompleted,
+                    content.startedOn,
+                    content.endsOn
+                  )}
+                  ${classNames.progressStyle}
+                `}
               style={{ width: `${content.percentCompleted}%` }}
             ></div>
           </div>
-          <span>{content.percentCompleted}% </span>
+          <span>{content.percentCompleted}% completed</span>
+        </span>
+      </div>
+      <div
+        className={`${classNames.taskTagLevelWrapper} ${
+          shouldEdit && classNames.editMode
+        }`}
+      >
+        <div className={classNames.taskTagLevelContainer}>
+          {taskTagLevel?.map((item) => (
+            <span key={item.tagId} className={classNames.taskTagLevel}>
+              {item.tagName}{" "}
+              <small>
+                <b>LVL:{item.levelValue}</b>
+              </small>
+              {shouldEdit && isUserAuthorized && (
+                <span>
+                  <button
+                    className={classNames.removeTaskTagLevelBtn}
+                    onClick={() => updateTaskTagLevel(item, "delete")}
+                  >
+                    &#10060;
+                  </button>
+                </span>
+              )}
+            </span>
+          ))}
         </div>
+        {shouldEdit && isUserAuthorized && (
+          <TaskLevelEdit
+            taskTagLevel={taskTagLevel}
+            updateTaskTagLevel={updateTaskTagLevel}
+          />
+        )}
       </div>
       <div className={classNames.cardItems}>
-        <div>
-          <span className={classNames.cardSpecialFont}>
-            Estimated completion{" "}
-          </span>
-          {renderDate(fromNowEndsOn, shouldEdit)}
-        </div>
         <span
           className={classNames.cardSpecialFont}
           contentEditable={shouldEdit}
@@ -297,24 +491,10 @@ const Card: FC<Props> = ({
           role="button"
           tabIndex={0}
         >
-          {cardDetails.status == "Available"
-            ? "Not started "
-            : `Started on ${fromNowStartedOn}`}
+          Started {fromNowStartedOn}
         </span>
-      </div>
-
-      <div className={classNames.cardItems}>
-        <div className={classNames.contributor}>
-          <span className={classNames.cardSpecialFont}>Assigned to </span>
-          <span className={classNames.contributorImage}>
-            <Image
-              src={assigneeProfilePic}
-              alt="Assignee profile picture"
-              onError={contributorImageOnError}
-              width={30}
-              height={30}
-            />
-          </span>
+        <span>
+          <span className={classNames.cardSpecialFont}>Assignee:</span>
           <span
             className={classNames.cardStrongFont}
             contentEditable={shouldEdit}
@@ -324,42 +504,18 @@ const Card: FC<Props> = ({
           >
             {cardDetails.assignee}
           </span>
-        </div>
-        <div
-          className={`${classNames.taskTagLevelWrapper} ${
-            shouldEdit && classNames.editMode
-          }`}
-        >
-          <div className={classNames.taskTagLevelContainer}>
-            {taskTagLevel?.map((item) => (
-              <span key={item.tagId} className={classNames.taskTagLevel}>
-                {item.tagName}{" "}
-                <small>
-                  <b>LVL:{item.levelValue}</b>
-                </small>
-                {shouldEdit && isUserAuthorized && (
-                  <span>
-                    <button
-                      className={classNames.removeTaskTagLevelBtn}
-                      onClick={() => updateTaskTagLevel(item, "delete")}
-                    >
-                      &#10060;
-                    </button>
-                  </span>
-                )}
-              </span>
-            ))}
-          </div>
-          {shouldEdit && isUserAuthorized && (
-            <TaskLevelEdit
-              taskTagLevel={taskTagLevel}
-              updateTaskTagLevel={updateTaskTagLevel}
+          <span className={classNames.contributorImage}>
+            <Image
+              src={assigneeProfilePic}
+              alt="Assignee profile picture"
+              onError={contributorImageOnError}
+              width={45}
+              height={45}
             />
-          )}
-        </div>
+          </span>
+        </span>
       </div>
-
-      {((isUserAuthorized && showEditButton) || true) && (
+      {isUserAuthorized && showEditButton && (
         <div className={classNames.editButton}>
           <Image
             src="/pencil.webp"
