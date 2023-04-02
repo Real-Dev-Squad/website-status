@@ -24,7 +24,7 @@ const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
         const { adminUser, superUser } = userRoles;
         setIsUserAuthorized(!!adminUser || !!superUser);
       } catch (err: any) {
-        toast(ERROR, err.message);
+        console.error(err)
       }
     };
     fetchData();
