@@ -29,7 +29,7 @@ const tasks = Array.from({ length: 10 }).map((_, index) => ({ ...TASK, id: TASK.
 
 describe("TaskList", function () {
   it("Should render TaskList", function () {
-    render(<TaskList tasks={tasks} />);
+    render(<TaskList tasks={tasks} updateTask={jest.fn()} />);
 
     const _tasks = screen.queryAllByText(TASK.title);
 
@@ -39,7 +39,7 @@ describe("TaskList", function () {
   });
 
   it("Should render see more button", function () {
-    render(<TaskList tasks={tasks} hasLimit={true} />);
+    render(<TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />);
 
     const seeMore = screen.getByRole("button", { name: /see more/i });
 
@@ -47,7 +47,7 @@ describe("TaskList", function () {
   });
 
   it("Should render 3 tasks intially and then render more 5 tasks after click event", function () {
-    render(<TaskList tasks={tasks} hasLimit={true} />);
+    render(<TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />);
 
     const _tasks = screen.queryAllByText(TASK.title);
     const seeMore = screen.getByRole("button", { name: /see more/i });
@@ -58,7 +58,7 @@ describe("TaskList", function () {
   });
 
   it("Shouldn't render see more button after all tasks are loaded and rendered", function () {
-    render(<TaskList tasks={tasks} hasLimit={true} />);
+    render(<TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />);
 
     const _tasks = screen.queryAllByText(TASK.title);
     const seeMore = screen.getByRole("button", { name: /see more/i });
