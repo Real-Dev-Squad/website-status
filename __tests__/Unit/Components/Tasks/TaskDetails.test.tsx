@@ -12,7 +12,7 @@ describe('TaskDetails Page', () => {
     const loadingElement = screen.getByText(/Loading.../i);
     expect(loadingElement).toBeInTheDocument();
   });
-  test('Task title is not rendered when Editing', () => {
+  test('Task title is Editable in Editing mode ', () => {
     render(<TaskDetails url={details.url} taskID={details.taskID} />);
 
     const titleElement = screen.queryByTestId('task-title');
@@ -24,7 +24,7 @@ describe('TaskDetails Page', () => {
     const editButtonElement = screen.queryByRole('button', { name: 'Edit' });
     expect(editButtonElement).not.toBeInTheDocument();
   });
-  test('Task Descriprion is not rendered when Editing', () => {
+  test('Task Description is Editable in Editing mode', () => {
     render(<TaskDetails url={details.url} taskID={details.taskID} />);
 
     const descriptionElement = screen.queryByText(/No description available/i);
