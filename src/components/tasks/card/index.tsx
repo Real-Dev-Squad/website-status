@@ -12,7 +12,8 @@ import TaskLevelEdit from './TaskTagEdit';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
-import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES } from '@/components/constants/url';
+import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES, TASKS_URL } from '@/components/constants/url';
+import styles from "@/components/issues/Card.module.scss";
 
 const moment = require('moment');
 
@@ -20,12 +21,17 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange?: (changeId: string, changeObject: object) => void;
+  updateTask?: (taskId: string, details: {
+    status?: string;
+    assignee?: string;
+  }) => void;
 };
 
 const Card: FC<Props> = ({
   content,
   shouldEdit = false,
   onContentChange = () => undefined,
+  updateTask = () => undefined
 }) => {
   const statusRedList = [BLOCKED];
   const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
@@ -201,13 +207,78 @@ const Card: FC<Props> = ({
           role='button'
           tabIndex={0}
         >
-          {fromNowEndsOn}
+          {!cardDetails.endsOn  ? "TBD" : fromNowEndsOn}
       </span>
       )
   }
 
   const onEditEnabled = () => {
     actions.onEditRoute()
+  }
+
+  const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
+  const hasTaskAssignee = () => cardDetails.assignee ?? false;
+  const isIssueClosed = () => cardDetails.github?.issue?.status === "closed";
+  const isTaskComplete = () => cardDetails.status === "Completed";
+
+  const showAssignButton = () =>
+		hasIssueAssignee() && !hasTaskAssignee() && !isIssueClosed() && !isTaskComplete();
+
+  // assign the task to the issue assignee
+  const handleAssignToIssueAssignee = async () => {
+		setIsLoading(true);
+		try {
+      const data = {
+        assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
+        status: "ASSIGNED",
+      }
+			const { requestPromise } = fetch({
+				url: `${TASKS_URL}/${cardDetails.id}`,
+				method: "patch",
+				data,
+			});
+			await requestPromise;
+      updateTask(cardDetails.id, data);
+			toast(SUCCESS, "Task assigned successfully!");
+			setIsLoading(false);
+		} catch (err: any) {
+			setIsLoading(false);
+			if ("response" in err) {
+				toast(ERROR, err.response.data.message);
+				return;
+			}
+			toast(ERROR, err.message);
+		}
+	};
+
+  const getFormattedClosedAtDate = () => {
+    const closedAt = cardDetails?.github?.issue?.closedAt;
+    return getDateInString(new Date(closedAt ?? ""));
+  }
+
+  const handleCloseTask = async() => {
+    setIsLoading(true);
+		try {
+      const data = {
+        status: "COMPLETED",
+      }
+			const { requestPromise } = fetch({
+				url: `${TASKS_URL}/${cardDetails.id}`,
+				method: "patch",
+				data,
+			});
+			await requestPromise;
+      updateTask(cardDetails.id, data);
+			toast(SUCCESS, "Task status changed successfully!");
+			setIsLoading(false);
+		} catch (err: any) {
+			setIsLoading(false);
+			if ("response" in err) {
+				toast(ERROR, err.response.data.message);
+				return;
+			}
+			toast(ERROR, err.message);
+		}
   }
 
   return (
@@ -308,10 +379,17 @@ const Card: FC<Props> = ({
         >
           Started
           {' '}
-          {fromNowStartedOn}
+          {cardDetails.startedOn ? "TBD" : fromNowStartedOn}
         </span>
-        <span>
-          <span className={classNames.cardSpecialFont}>Assignee:</span>
+        {
+            // Assigne to button if task was created from an issue
+            showAssignButton() ?
+            <button className={styles.card__top__button} type="button" onClick={handleAssignToIssueAssignee}>
+              {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
+            </button>
+            :
+            <span>
+              <span className={classNames.cardSpecialFont}>Assignee:</span>
           <span
             className={classNames.cardStrongFont}
             contentEditable={shouldEdit}
@@ -333,7 +411,26 @@ const Card: FC<Props> = ({
             />
           </span>
         </span>
+      }
       </div>
+      {
+        // Suggest to close task if issue was closed
+        cardDetails.status !== "Completed" && isIssueClosed() && 
+          <div className={classNames.cardItems}>
+            <span
+              className={classNames.cardSpecialFont}
+              contentEditable={shouldEdit}
+              onKeyPress={(e) => handleChange(e, 'startedOn')}
+              role="button"
+              tabIndex={0}
+            >
+              The issue was closed on {getFormattedClosedAtDate()}
+            </span>
+            <button className={styles.card__top__button} type="button" onClick={handleCloseTask}>
+              Close the task
+            </button>
+          </div>
+      }
       {isUserAuthorized && showEditButton &&
         <div className={classNames.editButton}>
           <Image src='/pencil.webp'

@@ -31,6 +31,7 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
+import useUpdateTask from '@/hooks/useUpdateTask';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const STATUS_ORDER = [
@@ -81,6 +82,7 @@ const Index: FC = () => {
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
   const [activeTab, setActiveTab] = useState(Tab.ASSIGNED)
+  const updateTask = useUpdateTask(filteredTask, setFilteredTask);
 
   const onSelect = (tab: Tab) => {
     setActiveTab(tab);
@@ -124,6 +126,7 @@ const Index: FC = () => {
           tasks={filteredTask[activeTab]}
           isEditable={isEditable}
           updateCardContent={updateCardContent}
+          updateTask={updateTask}
         />
       ) : (
         <p>{NO_TASKS_FOUND_MESSAGE}</p>

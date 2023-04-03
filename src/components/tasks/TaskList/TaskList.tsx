@@ -14,6 +14,10 @@ type TaksListProps = {
   isEditable?: boolean;
   hasLimit?: boolean;
   updateCardContent?: (id: string, cardDetails: task) => void;
+  updateTask: (taskId: string, details: {
+    status?: string;
+    assignee?: string;
+  }) => void;
 };
 
 type FilterTasksProps = {
@@ -36,6 +40,7 @@ export default function TaskList({
   updateCardContent,
   isEditable = false,
   hasLimit = false,
+  updateTask
 }: TaksListProps) {
   const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
   const beautifiedTasks = beautifyTaskStatus(tasks);
@@ -57,6 +62,7 @@ export default function TaskList({
           key={item.id}
           shouldEdit={isEditable}
           onContentChange={onContentChangeHandler}
+          updateTask={updateTask}
         />
       ))}
       {hasLimit && filteredTasks.length != beautifiedTasks.length && (
