@@ -32,10 +32,9 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 			const data = {
 				title: issue.title,
 				type: "feature",
-
 				status: "AVAILABLE",
 				percentCompleted: 0,
-				priority: "HIGH",
+				priority: "TBD",
 				github: {
 					issue: { ...getIssueInfo() },
 				},
