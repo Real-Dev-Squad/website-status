@@ -229,17 +229,19 @@ const Card: FC<Props> = ({
         assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
         status: "ASSIGNED",
       }
+      
+      // Update start date when assigning the task to the issue assignee
+      if(!cardDetails.startedOn) {
+        data.startedOn = new Date().getTime() / 1000;
+      }
+
 			const { requestPromise } = fetch({
 				url: `${TASKS_URL}/${cardDetails.id}`,
 				method: "patch",
 				data,
 			});
 			await requestPromise;
-
-      // Update start date when assigning the task to the issue assignee
-      if(!cardDetails.startedOn) {
-        data.startedOn = new Date().getTime() / 1000;
-      }
+   
       updateTask(cardDetails.id, data);
 			toast(SUCCESS, "Task assigned successfully!");
 			setIsLoading(false);
