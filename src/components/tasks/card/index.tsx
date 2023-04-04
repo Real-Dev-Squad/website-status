@@ -9,7 +9,7 @@ import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
-import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
+import taskItem, { taskItemPayload, updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
 import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES, TASKS_URL } from '@/components/constants/url';
@@ -21,10 +21,7 @@ type Props = {
   content: task;
   shouldEdit: boolean;
   onContentChange?: (changeId: string, changeObject: object) => void;
-  updateTask?: (taskId: string, details: {
-    status?: string;
-    assignee?: string;
-  }) => void;
+  updateTask?: (taskId: string, details: updateTaskDetails) => void;
 };
 
 const Card: FC<Props> = ({
@@ -228,7 +225,7 @@ const Card: FC<Props> = ({
   const handleAssignToIssueAssignee = async () => {
 		setIsLoading(true);
 		try {
-      const data = {
+      const data: updateTaskDetails = {
         assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
         status: "ASSIGNED",
       }
@@ -238,6 +235,11 @@ const Card: FC<Props> = ({
 				data,
 			});
 			await requestPromise;
+
+      // Update start date when assigning the task to the issue assignee
+      if(!cardDetails.startedOn) {
+        data.startedOn = new Date().getTime() / 1000;
+      }
       updateTask(cardDetails.id, data);
 			toast(SUCCESS, "Task assigned successfully!");
 			setIsLoading(false);
@@ -379,7 +381,7 @@ const Card: FC<Props> = ({
         >
           Started
           {' '}
-          {cardDetails.startedOn ? "TBD" : fromNowStartedOn}
+            {!cardDetails.startedOn ? "TBD" : fromNowStartedOn}
         </span>
         {
             // Assigne to button if task was created from an issue

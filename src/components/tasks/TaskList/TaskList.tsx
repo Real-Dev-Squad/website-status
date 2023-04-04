@@ -8,16 +8,14 @@ import {
   ADD_MORE_TASKS_LIMIT,
 } from '../constants'
 import styles from '../card/card.module.scss'
+import { updateTaskDetails } from '@/interfaces/taskItem.type'
 
 type TaksListProps = {
   tasks: task[];
   isEditable?: boolean;
   hasLimit?: boolean;
   updateCardContent?: (id: string, cardDetails: task) => void;
-  updateTask: (taskId: string, details: {
-    status?: string;
-    assignee?: string;
-  }) => void;
+  updateTask: (taskId: string, details: updateTaskDetails) => void;
 };
 
 type FilterTasksProps = {
