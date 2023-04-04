@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 
 type fetchParams = {
-  url: string;
-  method?: 'get' | 'patch' | 'post' | 'delete';
-  params?: any | null;
-  data?: null | any;
-  headers?: null | object;
-  options?: object | null;
+    url: string;
+    method?: "get" | "patch" | "post" | "delete";
+    params?: any | null;
+    data?: null | any;
+    headers?: null | object;
+    options?: object | null;
 };
 
 /**
@@ -20,32 +20,32 @@ type fetchParams = {
  */
 
 const fetch = ({
-  url,
-  method = 'get',
-  params = null,
-  data = null,
-  headers = null,
-  options = {},
-}: fetchParams):{ requestPromise: Promise<any>, cancelApi: () => void } => {
-  const { CancelToken } = axios;
-  const source = CancelToken.source();
-  const requestPromise = axios({
-    method,
-    url,
-    params,
-    data,
-    headers: {
-      'Content-type': 'application/json',
-      ...headers,
-    },
-    withCredentials: true,
-    cancelToken: source.token,
-    ...options,
-  });
-  return {
-    requestPromise,
-    cancelApi: source.cancel,
-  };
+	url,
+	method = "get",
+	params = null,
+	data = null,
+	headers = null,
+	options = {},
+}: fetchParams): { requestPromise: Promise<any>; cancelApi: () => void } => {
+	const { CancelToken } = axios;
+	const source = CancelToken.source();
+	const requestPromise = axios({
+		method,
+		url,
+		params,
+		data,
+		headers: {
+			"Content-type": "application/json",
+			...headers,
+		},
+		withCredentials: true,
+		cancelToken: source.token,
+		...options,
+	});
+	return {
+		requestPromise,
+		cancelApi: source.cancel,
+	};
 };
 
 export default fetch;
