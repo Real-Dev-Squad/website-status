@@ -143,10 +143,10 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         <div className={classNames.parentContainer}>
           <div className={classNames.titleContainer}>
             {isEditing ? (
-              renderTextarea('title', taskDetails[0]?.title)
+              renderTextarea('title', taskDetails?.title)
             ) : (
               <span data-testid="task-title" className={classNames.taskTitle}>
-                {taskDetails[0]?.title}
+                {taskDetails?.title}
               </span>
             )}
             {!isEditing ? (
@@ -163,29 +163,26 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
             <section className={classNames.leftContainer}>
               <TaskContainer title="Description" hasImg={false}>
                 {isEditing ? (
-                  renderTextarea('purpose', taskDetails[0]?.purpose)
+                  renderTextarea('purpose', taskDetails?.purpose)
                 ) : (
                   <p>
-                    {!taskDetails[0]?.purpose
+                    {!taskDetails?.purpose
                       ? 'No description available'
-                      : taskDetails[0]?.purpose}
+                      : taskDetails?.purpose}
                   </p>
                 )}
               </TaskContainer>
               <TaskContainer title="Details" hasImg={false}>
                 <div className={classNames['sub_details_grid_container']}>
-                  <Details detailType={'Type'} value={taskDetails[0]?.type} />
+                  <Details detailType={'Type'} value={taskDetails?.type} />
                   <Details
                     detailType={'Priority'}
-                    value={taskDetails[0]?.priority}
+                    value={taskDetails?.priority}
                   />
-                  <Details
-                    detailType={'Status'}
-                    value={taskDetails[0]?.status}
-                  />
+                  <Details detailType={'Status'} value={taskDetails?.status} />
                   <Details
                     detailType={'Link'}
-                    value={taskDetails[0]?.featureUrl}
+                    value={taskDetails?.featureUrl}
                   />
                 </div>
               </TaskContainer>
@@ -200,9 +197,9 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                 <Details
                   detailType={'Assignee'}
                   value={
-                    taskDetails[0]?.type === 'feature'
-                      ? taskDetails[0]?.assignee
-                      : taskDetails[0]?.participants?.join(' , ')
+                    taskDetails?.type === 'feature'
+                      ? taskDetails?.assignee
+                      : taskDetails?.participants?.join(' , ')
                   }
                 />
                 <Details detailType={'Reporter'} value={'Ankush'} />
@@ -214,11 +211,11 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
               >
                 <Details
                   detailType={'StartedOn'}
-                  value={convertTimeStamp(taskDetails[0]?.startedOn)}
+                  value={convertTimeStamp(taskDetails?.startedOn)}
                 />
                 <Details
                   detailType={'EndsOn'}
-                  value={convertTimeStamp(taskDetails[0]?.endsOn)}
+                  value={convertTimeStamp(taskDetails?.endsOn)}
                 />
               </TaskContainer>
             </section>
