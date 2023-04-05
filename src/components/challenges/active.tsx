@@ -37,50 +37,50 @@ type ActiveProps = {
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Active: FC<ActiveProps> = ({ content, userId }) => {
-	const [isUserSubscribed, setUserSubscribed] = useState(
-		content.is_user_subscribed
-	);
+    const [isUserSubscribed, setUserSubscribed] = useState(
+        content.is_user_subscribed
+    );
 
-	const subscibeUser = async () => {
-		try {
-			const url = SUBSCRIBE_TO_CHALLENGE_URL;
-			const data = {
-				challenge_id: content.id,
-				user_id: userId,
-			};
-			const { requestPromise } = fetch({
-				url,
-				method: "post",
-				data,
-			});
-			const response = await requestPromise;
-			setUserSubscribed(response.data.is_user_subscribed);
-			toast(SUCCESS, "You have subscribed to the challenges");
-		} catch (error: any) {
-			if ("response" in error) {
-				toast(ERROR, error.response.data.message);
-				return;
-			}
-			toast(ERROR, error.message);
-		}
-	};
+    const subscibeUser = async () => {
+        try {
+            const url = SUBSCRIBE_TO_CHALLENGE_URL;
+            const data = {
+                challenge_id: content.id,
+                user_id: userId,
+            };
+            const { requestPromise } = fetch({
+                url,
+                method: "post",
+                data,
+            });
+            const response = await requestPromise;
+            setUserSubscribed(response.data.is_user_subscribed);
+            toast(SUCCESS, "You have subscribed to the challenges");
+        } catch (error: any) {
+            if ("response" in error) {
+                toast(ERROR, error.response.data.message);
+                return;
+            }
+            toast(ERROR, error.message);
+        }
+    };
 
-	return (
-		<Card
-			title={{ text: content.title }}
-			data={details(content)}
-			participants={participantsDetails(content)}
-			button={
-				!isUserSubscribed
-					? {
-						text: "I will do this",
-						onClick: subscibeUser,
-					}
-					: undefined
-			}
-			key={content.title}
-		/>
-	);
+    return (
+        <Card
+            title={{ text: content.title }}
+            data={details(content)}
+            participants={participantsDetails(content)}
+            button={
+                !isUserSubscribed
+                    ? {
+                          text: "I will do this",
+                          onClick: subscibeUser,
+                      }
+                    : undefined
+            }
+            key={content.title}
+        />
+    );
 };
 
 export default Active;

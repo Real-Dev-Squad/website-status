@@ -13,37 +13,37 @@ export type ContextType = {
 const AppContext = createContext<ContextType | null>(null);
 
 const AppWrapperContext: FC<Props> = ({ children }) => {
-	const router = useRouter();
-	const { query } = router;
-	const { edit: editQuery } = query;
-	const isEditMode = editQuery === "true";
-	const onEditRoute = () => {
-		router.replace("?edit=true"); //TODO handle query better https://github.com/Real-Dev-Squad/website-status/issues/299
-	};
-	const { isLoggedIn, isLoading } = useAuthenticated();
-	return (
-		<AppContext.Provider
-			value={{
-				state: {
-					isEditMode,
-					isLoggedIn,
-					isLoading,
-				},
-				actions: {
-					onEditRoute,
-				},
-			}}
-		>
-			{children}
-		</AppContext.Provider>
-	);
+    const router = useRouter();
+    const { query } = router;
+    const { edit: editQuery } = query;
+    const isEditMode = editQuery === "true";
+    const onEditRoute = () => {
+        router.replace("?edit=true"); //TODO handle query better https://github.com/Real-Dev-Squad/website-status/issues/299
+    };
+    const { isLoggedIn, isLoading } = useAuthenticated();
+    return (
+        <AppContext.Provider
+            value={{
+                state: {
+                    isEditMode,
+                    isLoggedIn,
+                    isLoading,
+                },
+                actions: {
+                    onEditRoute,
+                },
+            }}
+        >
+            {children}
+        </AppContext.Provider>
+    );
 };
 
 export const useAppContext = () => {
-	const context = useContext(AppContext) as ContextType;
-	if (context === undefined) {
-		throw new Error("useAppContext must be used within a CountProvider");
-	}
-	return context || {};
+    const context = useContext(AppContext) as ContextType;
+    if (context === undefined) {
+        throw new Error("useAppContext must be used within a CountProvider");
+    }
+    return context || {};
 };
 export default AppWrapperContext;

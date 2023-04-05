@@ -8,19 +8,19 @@ type TabsProps = {
 };
 
 const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
-	<>
-		{tabs.map((tab: Tab) => (
-			<button
-				key={tab}
-				onClick={() => onSelect(tab)}
-				className={`${styles.tabButton} ${
-					activeTab === tab ? styles.active : ""
-				}`}
-			>
-				{tab}
-			</button>
-		))}
-	</>
+    <>
+        {tabs.map((tab: Tab) => (
+            <button
+                key={tab}
+                onClick={() => onSelect(tab)}
+                className={`${styles.tabButton} ${
+                    activeTab === tab ? styles.active : ""
+                }`}
+            >
+                {tab}
+            </button>
+        ))}
+    </>
 );
 
 export default Tabs;

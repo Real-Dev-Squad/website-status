@@ -20,32 +20,32 @@ type fetchParams = {
  */
 
 const fetch = ({
-	url,
-	method = "get",
-	params = null,
-	data = null,
-	headers = null,
-	options = {},
+    url,
+    method = "get",
+    params = null,
+    data = null,
+    headers = null,
+    options = {},
 }: fetchParams): { requestPromise: Promise<any>; cancelApi: () => void } => {
-	const { CancelToken } = axios;
-	const source = CancelToken.source();
-	const requestPromise = axios({
-		method,
-		url,
-		params,
-		data,
-		headers: {
-			"Content-type": "application/json",
-			...headers,
-		},
-		withCredentials: true,
-		cancelToken: source.token,
-		...options,
-	});
-	return {
-		requestPromise,
-		cancelApi: source.cancel,
-	};
+    const { CancelToken } = axios;
+    const source = CancelToken.source();
+    const requestPromise = axios({
+        method,
+        url,
+        params,
+        data,
+        headers: {
+            "Content-type": "application/json",
+            ...headers,
+        },
+        withCredentials: true,
+        cancelToken: source.token,
+        ...options,
+    });
+    return {
+        requestPromise,
+        cancelApi: source.cancel,
+    };
 };
 
 export default fetch;

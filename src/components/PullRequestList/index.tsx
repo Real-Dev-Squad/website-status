@@ -20,120 +20,120 @@ type PullRequestListProps = {
 };
 
 function getNumberOfCards() {
-	const screenHeight = globalThis.innerHeight;
-	const screenWidth = globalThis.innerWidth;
-	const cardHeight = 147;
-	const minCardWidth = 300;
-	const maxCardsHorizontally = 3;
-	const minCardsHorizontally = 1;
+    const screenHeight = globalThis.innerHeight;
+    const screenWidth = globalThis.innerWidth;
+    const cardHeight = 147;
+    const minCardWidth = 300;
+    const maxCardsHorizontally = 3;
+    const minCardsHorizontally = 1;
 
-	const cardWidth =
+    const cardWidth =
         screenWidth / 4 > minCardWidth ? screenWidth / 4 : minCardWidth;
 
-	const checkForSmallDisplays =
+    const checkForSmallDisplays =
         Math.floor(screenWidth / cardWidth) > minCardsHorizontally
-        	? Math.floor(screenWidth / minCardWidth)
-        	: minCardsHorizontally;
+            ? Math.floor(screenWidth / minCardWidth)
+            : minCardsHorizontally;
 
-	const horizontalNumberOfCards =
+    const horizontalNumberOfCards =
         maxCardsHorizontally > checkForSmallDisplays
-        	? checkForSmallDisplays
-        	: maxCardsHorizontally;
+            ? checkForSmallDisplays
+            : maxCardsHorizontally;
 
-	const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
-	return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
+    const verticalNumberOfCards = Math.floor(screenHeight / cardHeight);
+    return Math.floor(verticalNumberOfCards * horizontalNumberOfCards);
 }
 
 function ScrollTop() {
-	const topMargin =
+    const topMargin =
         (document.documentElement && document.documentElement.scrollTop) ||
         document.body.scrollTop;
-	return topMargin;
+    return topMargin;
 }
 function ScrollHeight() {
-	const WindowHeight =
+    const WindowHeight =
         (document.documentElement && document.documentElement.scrollHeight) ||
         document.body.scrollHeight;
-	return WindowHeight;
+    return WindowHeight;
 }
 
 const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
-	const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
-	const [noData, setNoData] = useState(false);
-	const [page, setPage] = useState(1);
-	const [isBottom, setIsBottom] = useState(false);
-	const numberOfCards = getNumberOfCards();
-	const prUrl = `${BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
-	const { response, error, isLoading } = useFetch(prUrl);
+    const [pullRequests, setPullRequests] = useState<pullRequestType[]>([]);
+    const [noData, setNoData] = useState(false);
+    const [page, setPage] = useState(1);
+    const [isBottom, setIsBottom] = useState(false);
+    const numberOfCards = getNumberOfCards();
+    const prUrl = `${BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
+    const { response, error, isLoading } = useFetch(prUrl);
 
-	useEffect(() => {
-		if (!response?.pullRequests?.length && page > 1) {
-			setNoData(true);
-		}
-		if (response?.pullRequests?.length > 0) {
-			setPullRequests((pullRequest) => [
-				...pullRequest,
-				...response.pullRequests,
-			]);
-			setIsBottom(false);
-		}
-	}, [response]);
+    useEffect(() => {
+        if (!response?.pullRequests?.length && page > 1) {
+            setNoData(true);
+        }
+        if (response?.pullRequests?.length > 0) {
+            setPullRequests((pullRequest) => [
+                ...pullRequest,
+                ...response.pullRequests,
+            ]);
+            setIsBottom(false);
+        }
+    }, [response]);
 
-	useEffect(() => {
-		if (isBottom && !noData) {
-			setPage((page) => page + 1);
-		}
-	}, [isBottom]);
+    useEffect(() => {
+        if (isBottom && !noData) {
+            setPage((page) => page + 1);
+        }
+    }, [isBottom]);
 
-	useEffect(() => {
-		const onScroll = () => {
-			const scrollTop = ScrollTop();
-			const scrollHeight = ScrollHeight();
-			if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
-				setIsBottom(true);
-			}
-		};
-		window.addEventListener("scroll", onScroll);
-		return () => window.removeEventListener("scroll", onScroll);
-	}, []);
+    useEffect(() => {
+        const onScroll = () => {
+            const scrollTop = ScrollTop();
+            const scrollHeight = ScrollHeight();
+            if (scrollTop + window.innerHeight + 50 >= scrollHeight) {
+                setIsBottom(true);
+            }
+        };
+        window.addEventListener("scroll", onScroll);
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
 
-	return (
-		<Layout>
-			<Head title="PRs" />
-			<div className={styles.scroll}>
-				{error && (
-					<p className={styles.center_text}>
+    return (
+        <Layout>
+            <Head title="PRs" />
+            <div className={styles.scroll}>
+                {error && (
+                    <p className={styles.center_text}>
                         Something went wrong! Please contact admin
-					</p>
-				)}
-				<div className={styles.prContainer}>
-					{pullRequests.map((pullRequest: pullRequestType) => {
-						const {
-							title,
-							username,
-							createdAt,
-							updatedAt,
-							url: link,
-						} = pullRequest;
-						return (
-							<PullRequest
-								key={link}
-								title={title}
-								username={username}
-								createdAt={createdAt}
-								updatedAt={updatedAt}
-								url={link}
-							/>
-						);
-					})}
-					{isLoading &&
+                    </p>
+                )}
+                <div className={styles.prContainer}>
+                    {pullRequests.map((pullRequest: pullRequestType) => {
+                        const {
+                            title,
+                            username,
+                            createdAt,
+                            updatedAt,
+                            url: link,
+                        } = pullRequest;
+                        return (
+                            <PullRequest
+                                key={link}
+                                title={title}
+                                username={username}
+                                createdAt={createdAt}
+                                updatedAt={updatedAt}
+                                url={link}
+                            />
+                        );
+                    })}
+                    {isLoading &&
                         [...Array(15)].map((e: number) => (
-                        	<CardShimmer key={e} />
+                            <CardShimmer key={e} />
                         ))}
-				</div>
-			</div>
-		</Layout>
-	);
+                </div>
+            </div>
+        </Layout>
+    );
 };
 
 export default PullRequestList;

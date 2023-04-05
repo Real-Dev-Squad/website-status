@@ -3,9 +3,9 @@ import Card from "../card";
 import task from "@/interfaces/task.type";
 import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
 import {
-	SEE_MORE,
-	INITIAL_TASKS_LIMIT,
-	ADD_MORE_TASKS_LIMIT,
+    SEE_MORE,
+    INITIAL_TASKS_LIMIT,
+    ADD_MORE_TASKS_LIMIT,
 } from "../constants";
 import styles from "../card/card.module.scss";
 
@@ -23,51 +23,51 @@ type FilterTasksProps = {
 };
 
 function getFilteredTasks({ hasLimit, tasksLimit, tasks }: FilterTasksProps) {
-	if (!hasLimit) return tasks;
-	return tasks.slice(0, tasksLimit);
+    if (!hasLimit) return tasks;
+    return tasks.slice(0, tasksLimit);
 }
 
 export default function TaskList({
-	tasks,
-	updateCardContent,
-	isEditable = false,
-	hasLimit = false,
+    tasks,
+    updateCardContent,
+    isEditable = false,
+    hasLimit = false,
 }: TaksListProps) {
-	const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
-	const beautifiedTasks = beautifyTaskStatus(tasks);
-	const [tasksLimit, setTasksLimit] = useState<number>(initialTasksLimit);
-	const filteredTasks = getFilteredTasks({
-		tasks: beautifiedTasks,
-		hasLimit,
-		tasksLimit,
-	});
-	function onSeeMoreTasksHandler() {
-		setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
-	}
-	async function onContentChangeHandler(id: string, cardDetails: any) {
-		if (!isEditable || !updateCardContent) return;
-		updateCardContent(id, cardDetails);
-	}
+    const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
+    const beautifiedTasks = beautifyTaskStatus(tasks);
+    const [tasksLimit, setTasksLimit] = useState<number>(initialTasksLimit);
+    const filteredTasks = getFilteredTasks({
+        tasks: beautifiedTasks,
+        hasLimit,
+        tasksLimit,
+    });
+    function onSeeMoreTasksHandler() {
+        setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
+    }
+    async function onContentChangeHandler(id: string, cardDetails: any) {
+        if (!isEditable || !updateCardContent) return;
+        updateCardContent(id, cardDetails);
+    }
 
-	return (
-		<>
-			{filteredTasks.map((item: task) => (
-				<Card
-					content={item}
-					key={item.id}
-					shouldEdit={isEditable}
-					onContentChange={onContentChangeHandler}
-				/>
-			))}
-			{hasLimit && filteredTasks.length != beautifiedTasks.length && (
-				<button
-					type="button"
-					onClick={onSeeMoreTasksHandler}
-					className={styles.seeMoreTasks}
-				>
-					{SEE_MORE}
-				</button>
-			)}
-		</>
-	);
+    return (
+        <>
+            {filteredTasks.map((item: task) => (
+                <Card
+                    content={item}
+                    key={item.id}
+                    shouldEdit={isEditable}
+                    onContentChange={onContentChangeHandler}
+                />
+            ))}
+            {hasLimit && filteredTasks.length != beautifiedTasks.length && (
+                <button
+                    type="button"
+                    onClick={onSeeMoreTasksHandler}
+                    className={styles.seeMoreTasks}
+                >
+                    {SEE_MORE}
+                </button>
+            )}
+        </>
+    );
 }

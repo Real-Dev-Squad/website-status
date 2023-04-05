@@ -31,12 +31,12 @@ type CompleteProps = {
 };
 
 const Complete: FC<CompleteProps> = ({ content }) => (
-	<Card
-		title={{ text: content.title }}
-		data={details(content)}
-		participants={participantsDetails(content)}
-		key={content.title}
-	/>
+    <Card
+        title={{ text: content.title }}
+        data={details(content)}
+        participants={participantsDetails(content)}
+        key={content.title}
+    />
 );
 
 export default Complete;

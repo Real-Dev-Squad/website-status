@@ -11,11 +11,11 @@ enum ToastTypes {
 }
 
 const toast = (type: ToastTypes, message: string) =>
-	toastify[type](message, {
-		position: toastify.POSITION.TOP_RIGHT,
-		autoClose: DELAY,
-		pauseOnHover: false,
-		draggable: false,
-	});
+    toastify[type](message, {
+        position: toastify.POSITION.TOP_RIGHT,
+        autoClose: DELAY,
+        pauseOnHover: false,
+        draggable: false,
+    });
 
 export { toast, ToastTypes };

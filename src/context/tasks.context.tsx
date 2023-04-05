@@ -10,47 +10,47 @@ export type TaskContextType = {
 };
 
 const TasksContext = createContext<TaskContextType>({
-	taskTags: [],
-	taskLevels: [],
+    taskTags: [],
+    taskLevels: [],
 });
 
 export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
-	const [taskTags, setTaskTags] = useState<tagType[] | null>(null);
-	const [taskLevels, setTaskLevels] = useState<levelType[] | null>(null);
-	const value = {
-		taskTags,
-		taskLevels,
-	};
-	useEffect(() => {
-		(async () => {
-			const { requestPromise } = fetch({
-				url: ALL_TAGS_URL,
-			});
-			const { data } = await requestPromise;
-			setTaskTags(data.tags);
-		})();
+    const [taskTags, setTaskTags] = useState<tagType[] | null>(null);
+    const [taskLevels, setTaskLevels] = useState<levelType[] | null>(null);
+    const value = {
+        taskTags,
+        taskLevels,
+    };
+    useEffect(() => {
+        (async () => {
+            const { requestPromise } = fetch({
+                url: ALL_TAGS_URL,
+            });
+            const { data } = await requestPromise;
+            setTaskTags(data.tags);
+        })();
 
-		(async () => {
-			const { requestPromise } = fetch({
-				url: ALL_LEVELS_URL,
-			});
-			const { data } = await requestPromise;
-			const sortedTaskLevels = data.levels.sort(
-				(a: levelType, b: levelType) => (a.value < b.value ? -1 : 1)
-			);
-			setTaskLevels(sortedTaskLevels);
-		})();
-	}, []);
+        (async () => {
+            const { requestPromise } = fetch({
+                url: ALL_LEVELS_URL,
+            });
+            const { data } = await requestPromise;
+            const sortedTaskLevels = data.levels.sort(
+                (a: levelType, b: levelType) => (a.value < b.value ? -1 : 1)
+            );
+            setTaskLevels(sortedTaskLevels);
+        })();
+    }, []);
 
-	return (
-		<TasksContext.Provider value={value}>{children}</TasksContext.Provider>
-	);
+    return (
+        <TasksContext.Provider value={value}>{children}</TasksContext.Provider>
+    );
 };
 
 export const useTasksContext = () => {
-	const context: TaskContextType = useContext(TasksContext);
-	if (!context) {
-		throw new Error("useTasksContext must be used within a TasksProvider");
-	}
-	return context;
+    const context: TaskContextType = useContext(TasksContext);
+    if (!context) {
+        throw new Error("useTasksContext must be used within a TasksProvider");
+    }
+    return context;
 };
