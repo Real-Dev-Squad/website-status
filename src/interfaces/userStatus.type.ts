@@ -1,15 +1,16 @@
-export type IdleUserArray = {
+export type UserStatusArray = {
   heading: string;
-  content: IdleUser[];
+  content: UserStatus[];
   error: boolean;
   isLoading: boolean;
 };
 
-export type IdleUser = {
+export type UserStatus = {
   username: string
   id: string;
   picture: {
     url: string;
+    publicId?: string
   };
   currentStatus: {
     state: string;
@@ -20,3 +21,9 @@ export type IdleUser = {
   };
   full_name: string;
 };
+
+export enum UserStatusType {
+  IDLE = 'IDLE',
+  ACTIVE= 'ACTIVE',
+  OOO = 'OOO'
+}

@@ -4,9 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import AppWrapperContext from '@/context';
 import IsUserAuthorizedContext from '@/context/isUserAuthorized';
 import { Provider } from 'react-redux';
-import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
-import { statusApi } from 'slices/apiSlice';
-import { store } from 'store';
+import { store } from '@/app/store';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/index.scss';
 
@@ -15,16 +13,15 @@ if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
 }
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+  const rdxStore = store()
   return (
-    <Provider store={store}>
-      <ApiProvider api={statusApi}>
+    <Provider store={rdxStore}>
         <AppWrapperContext>
           <IsUserAuthorizedContext>
             <ToastContainer />
             <Component {...pageProps} />
           </IsUserAuthorizedContext>
         </AppWrapperContext>
-      </ApiProvider>
     </Provider>
   );
 }
