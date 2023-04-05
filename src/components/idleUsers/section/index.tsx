@@ -1,15 +1,15 @@
 import { FC } from 'react';
 import Card from '@/components/idleUsers/card';
 import classNames from '@/components/idleUsers/section/section.module.scss';
-import { IdleUserArray, IdleUser } from '@/interfaces/idleUser.type';
+import { UserStatusArray, UserStatus } from '@/interfaces/userStatus.type';
 
-function renderCards(content: IdleUser[]) {
+function renderCards(content: UserStatus[]) {
   return content.map((idleUser) => (
     <Card user={idleUser} key={idleUser.id} />
   ));
 }
 
-const Section: FC<IdleUserArray> = ({
+const Section: FC<UserStatusArray> = ({
   heading, content, error, isLoading,
 }) => (
   <div className={classNames.section}>
