@@ -221,7 +221,6 @@ const Card: FC<Props> = ({
         ${isTaskOverdue() && classNames.overdueTask}
     `}
     >
-      {/* loading spinner */}
       {
       isLoading && 
       <div className={classNames.loadingBg}>
@@ -233,11 +232,11 @@ const Card: FC<Props> = ({
       
       <div className={classNames.cardItems}>
     <Link
-    prefetch={false}
     href={{
       pathname: "/tasks/[id]",
     }}
     as={`/tasks/${cardDetails.id}`}
+    style={{ textDecoration: 'none' }}
   >
         <span
           className={classNames.cardTitle}
