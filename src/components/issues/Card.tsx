@@ -36,7 +36,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 				percentCompleted: 0,
 				priority: "TBD",
 				github: {
-					issue: { ...getIssueInfo() },
+					issue: getIssueInfo(),
 				},
 			};
 
