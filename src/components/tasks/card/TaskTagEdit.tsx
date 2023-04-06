@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import classNames from "@/components/tasks/card/card.module.scss";
-import { useTasksContext } from "@/context/tasks.context";
-import levelType from "@/interfaces/level.type";
-import tagType from "@/interfaces/tag.type";
-import taskItem from "@/interfaces/taskItem.type";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
+import classNames from '@/components/tasks/card/card.module.scss';
+import { useTasksContext } from '@/context/tasks.context';
+import levelType from '@/interfaces/level.type';
+import tagType from '@/interfaces/tag.type';
+import taskItem from '@/interfaces/taskItem.type';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 type TaskTagPropsType = {
     taskTagLevel: taskItem[] | undefined;
     updateTaskTagLevel: (
         taskItemToUpdate: taskItem,
-        method: "delete" | "post"
+        method: 'delete' | 'post'
     ) => void;
 };
 
 type SelectComponentPropsType = {
     options: levelType[] | tagType[];
-    name: "tags" | "levels";
-    defaultOption: "--new tag--" | "--new level--";
+    name: 'tags' | 'levels';
+    defaultOption: '--new tag--' | '--new level--';
     setNewValueOnChange: React.Dispatch<React.SetStateAction<any>>;
     id: string;
     label: string;
@@ -56,12 +56,12 @@ const SelectComponent = ({
                         <option
                             key={option.id}
                             value={
-                                name === "levels"
+                                name === 'levels'
                                     ? (option as levelType).value
                                     : option.name
                             }
                         >
-                            {name === "levels"
+                            {name === 'levels'
                                 ? `Level - ${(option as levelType).value}`
                                 : option.name}
                         </option>
@@ -108,15 +108,15 @@ const TaskTagEdit = ({
                     levelName: levelToAdd.name,
                     tagId: tagToAdd.id,
                     tagName: tagToAdd.name,
-                    tagType: "SKILL",
+                    tagType: 'SKILL',
                     levelValue: levelToAdd.value,
                 };
-                updateTaskTagLevel(taskItemToUpdate, "post");
+                updateTaskTagLevel(taskItemToUpdate, 'post');
             } else {
-                toast(ERROR, "Tag and Level values are missing");
+                toast(ERROR, 'Tag and Level values are missing');
             }
         } else {
-            toast(ERROR, "Tag and Level values both needed");
+            toast(ERROR, 'Tag and Level values both needed');
         }
     };
     if (levelOptions && tagOptions) {

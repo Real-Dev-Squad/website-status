@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
 type fetchParams = {
     url: string;
-    method?: "get" | "patch" | "post" | "delete";
+    method?: 'get' | 'patch' | 'post' | 'delete';
     params?: any | null;
     data?: null | any;
     headers?: null | object;
@@ -21,7 +21,7 @@ type fetchParams = {
 
 const fetch = ({
     url,
-    method = "get",
+    method = 'get',
     params = null,
     data = null,
     headers = null,
@@ -35,7 +35,7 @@ const fetch = ({
         params,
         data,
         headers: {
-            "Content-type": "application/json",
+            'Content-type': 'application/json',
             ...headers,
         },
         withCredentials: true,

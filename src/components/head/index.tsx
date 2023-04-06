@@ -1,5 +1,5 @@
-import { FC } from "react";
-import Head from "next/head";
+import { FC } from 'react';
+import Head from 'next/head';
 
 type CustomHeadProps = {
     title: string;

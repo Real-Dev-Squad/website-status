@@ -1,14 +1,14 @@
-import { FC, useState, useEffect } from "react";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import task from "@/interfaces/task.type";
-import classNames from "@/styles/availabilityPanel.module.scss";
-import fetch from "@/helperFunctions/fetch";
-import DragDropContextWrapper from "@/components/availability-panel/drag-drop-context/index";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
-import { AVAILABLE } from "@/components/constants/task-status";
-import { FEATURE } from "@/components/constants/task-type";
-import { BASE_URL } from "@/components/constants/url";
+import { FC, useState, useEffect } from 'react';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import task from '@/interfaces/task.type';
+import classNames from '@/styles/availabilityPanel.module.scss';
+import fetch from '@/helperFunctions/fetch';
+import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { AVAILABLE } from '@/components/constants/task-status';
+import { FEATURE } from '@/components/constants/task-type';
+import { BASE_URL } from '@/components/constants/url';
 
 const AvailabilityPanel: FC = () => {
     const [idleMembersList, setIdleMembersList] = useState<string[]>([]);

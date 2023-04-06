@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 export const useKeyLongPressed = (): [string] => {
-    const [keyLongPressed, setKeyLongPressed] = useState("");
+    const [keyLongPressed, setKeyLongPressed] = useState('');
 
     useEffect(() => {
         let timerId: ReturnType<typeof setTimeout>;
@@ -13,15 +13,15 @@ export const useKeyLongPressed = (): [string] => {
         };
         const handleKeyUp = () => {
             clearTimeout(timerId);
-            setKeyLongPressed("");
+            setKeyLongPressed('');
         };
 
-        document.addEventListener("keydown", handleKeyDown);
-        document.addEventListener("keyup", handleKeyUp);
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
         return () => {
             clearTimeout(timerId);
-            document.removeEventListener("keydown", handleKeyDown);
-            document.removeEventListener("keyup", handleKeyUp);
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
         };
     }, []);
 

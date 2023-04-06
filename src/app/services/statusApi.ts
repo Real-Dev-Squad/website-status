@@ -1,5 +1,5 @@
-import { api } from "./api";
-import { UserStatus } from "@/interfaces/userStatus.type";
+import { api } from './api';
+import { UserStatus } from '@/interfaces/userStatus.type';
 
 type StatusResponse = {
     message: string;
@@ -10,12 +10,12 @@ type StatusResponse = {
 export const statusApi = api.injectEndpoints({
     endpoints: (build) => ({
         getAllStatus: build.query<StatusResponse, void>({
-            query: () => "/users/status",
-            providesTags: ["Status"],
+            query: () => '/users/status',
+            providesTags: ['Status'],
         }),
         getStatus: build.query<StatusResponse, string>({
             query: (state) => `/users/status?state=${state}`,
-            providesTags: ["Status"],
+            providesTags: ['Status'],
         }),
     }),
 });

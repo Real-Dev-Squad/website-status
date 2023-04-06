@@ -1,7 +1,7 @@
-import { FC } from "react";
-import Card from "@/components/idleUsers/card";
-import classNames from "@/components/idleUsers/section/section.module.scss";
-import { UserStatusArray, UserStatus } from "@/interfaces/userStatus.type";
+import { FC } from 'react';
+import Card from '@/components/idleUsers/card';
+import classNames from '@/components/idleUsers/section/section.module.scss';
+import { UserStatusArray, UserStatus } from '@/interfaces/userStatus.type';
 
 function renderCards(content: UserStatus[]) {
     return content.map((idleUser) => (

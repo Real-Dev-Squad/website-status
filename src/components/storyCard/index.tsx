@@ -1,6 +1,6 @@
-import { FC, Fragment } from "react";
-import Image from "next/image";
-import styles from "@/components/storyCard/storyCard.module.scss";
+import { FC, Fragment } from 'react';
+import Image from 'next/image';
+import styles from '@/components/storyCard/storyCard.module.scss';
 
 interface TaskProps {
     id: string;
@@ -97,7 +97,7 @@ const StoryCard: FC<Props> = ({ data }) => {
             <div className={styles.taskStatus}>
                 <div className={styles.statusInfo}>
                     Status:
-                    {status === "Active" ? (
+                    {status === 'Active' ? (
                         <span className={styles.subtaskStatus}>{status}</span>
                     ) : (
                         <Image
@@ -109,9 +109,9 @@ const StoryCard: FC<Props> = ({ data }) => {
                     )}
                 </div>
                 <div>
-                    {ownerInfo("Feature", owners.feature)}
-                    {ownerInfo("Backend", owners.backend)}
-                    {ownerInfo("Frontend", owners.frontend)}
+                    {ownerInfo('Feature', owners.feature)}
+                    {ownerInfo('Backend', owners.backend)}
+                    {ownerInfo('Frontend', owners.frontend)}
                 </div>
             </div>
         </div>

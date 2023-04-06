@@ -1,13 +1,13 @@
-import { useState } from "react";
-import Card from "../card";
-import task from "@/interfaces/task.type";
-import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
+import { useState } from 'react';
+import Card from '../card';
+import task from '@/interfaces/task.type';
+import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import {
     SEE_MORE,
     INITIAL_TASKS_LIMIT,
     ADD_MORE_TASKS_LIMIT,
-} from "../constants";
-import styles from "../card/card.module.scss";
+} from '../constants';
+import styles from '../card/card.module.scss';
 
 type TaksListProps = {
     tasks: task[];

@@ -1,12 +1,12 @@
-import { FC, useState, useEffect } from "react";
-import { useAppContext } from "@/context";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import Card from "@/components/tasks/card";
-import useFetch from "@/hooks/useFetch";
-import classNames from "@/styles/tasks.module.scss";
-import task from "@/interfaces/task.type";
-import { LOGIN_URL, TASKS_URL } from "@/components/constants/url";
+import { FC, useState, useEffect } from 'react';
+import { useAppContext } from '@/context';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import Card from '@/components/tasks/card';
+import useFetch from '@/hooks/useFetch';
+import classNames from '@/styles/tasks.module.scss';
+import task from '@/interfaces/task.type';
+import { LOGIN_URL, TASKS_URL } from '@/components/constants/url';
 
 function CardList(tasks: task[]) {
     return tasks.map((item: task) => (

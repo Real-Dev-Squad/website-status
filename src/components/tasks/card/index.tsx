@@ -1,29 +1,29 @@
-import { FC, useState, useEffect, useContext } from "react";
-import Image from "next/image";
-import classNames from "@/components/tasks/card/card.module.scss";
-import { useAppContext } from "@/context";
-import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
-import getDateInString from "@/helperFunctions/getDateInString";
-import { useKeyLongPressed } from "@/hooks/useKeyLongPressed";
-import task from "@/interfaces/task.type";
+import { FC, useState, useEffect, useContext } from 'react';
+import Image from 'next/image';
+import classNames from '@/components/tasks/card/card.module.scss';
+import { useAppContext } from '@/context';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import getDateInString from '@/helperFunctions/getDateInString';
+import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
+import task from '@/interfaces/task.type';
 import {
     AVAILABLE,
     BLOCKED,
     COMPLETED,
     VERIFIED,
-} from "@/components/constants/beautified-task-status";
-import { ALT_KEY } from "@/components/constants/key";
-import TaskLevelEdit from "./TaskTagEdit";
-import taskItem, { taskItemPayload } from "@/interfaces/taskItem.type";
-import fetch from "@/helperFunctions/fetch";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
+} from '@/components/constants/beautified-task-status';
+import { ALT_KEY } from '@/components/constants/key';
+import TaskLevelEdit from './TaskTagEdit';
+import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     ITEMS_URL,
     ITEM_BY_FILTER_URL,
     ITEM_TYPES,
-} from "@/components/constants/url";
+} from '@/components/constants/url';
 
-import moment from "moment";
+import moment from 'moment';
 
 type Props = {
     content: task;
@@ -81,7 +81,7 @@ const Card: FC<Props> = ({
     };
 
     const contributorImageOnError = () =>
-        setAssigneeProfilePic("/dummyProfile.png");
+        setAssigneeProfilePic('/dummyProfile.png');
 
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -89,12 +89,12 @@ const Card: FC<Props> = ({
     const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
     const statusFontColor = !statusRedList.includes(cardDetails.status)
-        ? "#00a337"
-        : "#f83535";
-    const iconHeight = "25";
-    const iconWidth = "25";
+        ? '#00a337'
+        : '#f83535';
+    const iconHeight = '25';
+    const iconWidth = '25';
 
-    const date: string = localEndsOn ? getDateInString(localEndsOn) : "";
+    const date: string = localEndsOn ? getDateInString(localEndsOn) : '';
     const [dateTimes, setDateTimes] = useState(date);
 
     function isTaskOverdue() {
@@ -105,22 +105,22 @@ const Card: FC<Props> = ({
     }
 
     function stripHtml(html: string) {
-        const tmp = document.createElement("DIV");
+        const tmp = document.createElement('DIV');
         tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || "";
+        return tmp.textContent || tmp.innerText || '';
     }
 
     function handleChange(
         event: any,
         changedProperty: keyof typeof cardDetails
     ) {
-        if (event.key === "Enter") {
+        if (event.key === 'Enter') {
             const toChange: any = cardDetails;
             toChange[changedProperty] = stripHtml(event.target.innerHTML);
 
             if (
-                changedProperty === "endsOn" ||
-                changedProperty === "startedOn"
+                changedProperty === 'endsOn' ||
+                changedProperty === 'startedOn'
             ) {
                 const toTimeStamp =
                     new Date(`${event.target.value}`).getTime() / 1000;
@@ -135,22 +135,22 @@ const Card: FC<Props> = ({
 
     const updateTaskTagLevel = async (
         taskItemToUpdate: taskItem,
-        method: "delete" | "post"
+        method: 'delete' | 'post'
     ) => {
         const body: taskItemPayload = {
             itemId: cardDetails.id,
-            itemType: "TASK",
+            itemType: 'TASK',
         };
         try {
             setIsLoading(true);
-            if (method === "post") {
+            if (method === 'post') {
                 body.tagPayload = [
                     {
                         levelId: taskItemToUpdate.levelId,
                         tagId: taskItemToUpdate.tagId,
                     },
                 ];
-            } else if (method === "delete") {
+            } else if (method === 'delete') {
                 body.tagId = taskItemToUpdate.tagId;
             }
             const { requestPromise } = fetch({
@@ -159,14 +159,14 @@ const Card: FC<Props> = ({
                 data: body,
             });
             const result = await requestPromise;
-            if (result.status === 200 && method === "delete") {
+            if (result.status === 200 && method === 'delete') {
                 taskTagLevel &&
                     setTaskTagLevel(
                         taskTagLevel?.filter(
                             (item) => item.tagId !== taskItemToUpdate.tagId
                         )
                     );
-            } else if (result.status === 200 && method === "post") {
+            } else if (result.status === 200 && method === 'post') {
                 taskTagLevel
                     ? setTaskTagLevel([
                           ...taskTagLevel,
@@ -196,8 +196,8 @@ const Card: FC<Props> = ({
         const endDate = inputParser(endsOn);
 
         // It provides us with total days that are there for the the project and number of days left
-        const totalDays = endDate.diff(startDate, "days");
-        const daysLeft = endDate.diff(new Date(), "days");
+        const totalDays = endDate.diff(startDate, 'days');
+        const daysLeft = endDate.diff(new Date(), 'days');
 
         // It provides the percentage of days left
         const percentageOfDaysLeft = (daysLeft / totalDays) * 100;
@@ -238,7 +238,7 @@ const Card: FC<Props> = ({
                 <input
                     type="date"
                     onChange={(e) => setDateTimes(e.target.value)}
-                    onKeyPress={(e) => handleChange(e, "endsOn")}
+                    onKeyPress={(e) => handleChange(e, 'endsOn')}
                     value={dateTimes}
                 />
             );
@@ -281,7 +281,7 @@ const Card: FC<Props> = ({
                 <span
                     className={classNames.cardTitle}
                     contentEditable={shouldEdit}
-                    onKeyPress={(e) => handleChange(e, "title")}
+                    onKeyPress={(e) => handleChange(e, 'title')}
                     role="button"
                     tabIndex={0}
                 >
@@ -292,7 +292,7 @@ const Card: FC<Props> = ({
                     <span
                         className={classNames.cardStatusFont}
                         contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, "status")}
+                        onKeyPress={(e) => handleChange(e, 'status')}
                         style={{ color: statusFontColor }}
                         role="button"
                         tabIndex={0}
@@ -342,7 +342,7 @@ const Card: FC<Props> = ({
                             key={item.tagId}
                             className={classNames.taskTagLevel}
                         >
-                            {item.tagName}{" "}
+                            {item.tagName}{' '}
                             <small>
                                 <b>LVL:{item.levelValue}</b>
                             </small>
@@ -353,7 +353,7 @@ const Card: FC<Props> = ({
                                             classNames.removeTaskTagLevelBtn
                                         }
                                         onClick={() =>
-                                            updateTaskTagLevel(item, "delete")
+                                            updateTaskTagLevel(item, 'delete')
                                         }
                                     >
                                         &#10060;
@@ -374,7 +374,7 @@ const Card: FC<Props> = ({
                 <span
                     className={classNames.cardSpecialFont}
                     contentEditable={shouldEdit}
-                    onKeyPress={(e) => handleChange(e, "startedOn")}
+                    onKeyPress={(e) => handleChange(e, 'startedOn')}
                     role="button"
                     tabIndex={0}
                 >
@@ -387,7 +387,7 @@ const Card: FC<Props> = ({
                     <span
                         className={classNames.cardStrongFont}
                         contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, "assignee")}
+                        onKeyPress={(e) => handleChange(e, 'assignee')}
                         role="button"
                         tabIndex={0}
                     >

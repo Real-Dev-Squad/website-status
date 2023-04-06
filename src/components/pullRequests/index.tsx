@@ -1,6 +1,6 @@
-import { FC } from "react";
-import Card from "@/components/Card/index";
-import prDetails from "@/components/pullRequests/PRDetails";
+import { FC } from 'react';
+import Card from '@/components/Card/index';
+import prDetails from '@/components/pullRequests/PRDetails';
 
 interface pullRequestType {
     title: string;

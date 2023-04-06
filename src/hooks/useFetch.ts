@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import fetch from "@/helperFunctions/fetch";
+import { useState, useEffect } from 'react';
+import fetch from '@/helperFunctions/fetch';
 
 type EmptyFunction = () => void;
 
@@ -13,7 +13,7 @@ const useFetch = (url: string, options: object = {}, isCall = true) => {
         try {
             const { requestPromise, cancelApi } = fetch({
                 url,
-                method: "get",
+                method: 'get',
                 ...options,
             });
             cancel = cancelApi;
@@ -33,7 +33,7 @@ const useFetch = (url: string, options: object = {}, isCall = true) => {
         }
 
         return () => {
-            if (typeof cancel == "function") {
+            if (typeof cancel == 'function') {
                 cancel();
             }
             setError(null);

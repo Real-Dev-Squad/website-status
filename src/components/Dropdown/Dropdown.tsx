@@ -1,12 +1,12 @@
-import Link from "next/link";
-import { LOGOUT_URL, USER_PROFILE_URL } from "../constants/url";
-import styles from "@/components/Dropdown/dropdown.module.scss";
+import Link from 'next/link';
+import { LOGOUT_URL, USER_PROFILE_URL } from '../constants/url';
+import styles from '@/components/Dropdown/dropdown.module.scss';
 
 const Dropdown = () => {
     const logout = () => {
         fetch(LOGOUT_URL, {
-            method: "GET",
-            credentials: "include",
+            method: 'GET',
+            credentials: 'include',
         }).then(() => {
             location.reload();
         });

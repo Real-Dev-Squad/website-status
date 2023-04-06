@@ -4,7 +4,7 @@ type tagType = {
     id: string;
     name: string;
     reason?: string;
-    type: "SKILL";
+    type: 'SKILL';
 };
 
 export default tagType;

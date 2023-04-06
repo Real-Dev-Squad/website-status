@@ -1,9 +1,9 @@
-import { FC } from "react";
-import Card from "@/components/Card/index";
-import prDetails from "@/components/pullRequests/PRDetails";
-import classNames from "@/components/pullRequests/section/section.module.scss";
+import { FC } from 'react';
+import Card from '@/components/Card/index';
+import prDetails from '@/components/pullRequests/PRDetails';
+import classNames from '@/components/pullRequests/section/section.module.scss';
 
-import moment from "moment";
+import moment from 'moment';
 
 type pullRequestType = {
     title: string;

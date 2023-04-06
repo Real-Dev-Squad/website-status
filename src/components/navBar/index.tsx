@@ -1,7 +1,7 @@
-import { useState } from "react";
-import Link from "next/link";
-import useAuthenticated from "@/hooks/useAuthenticated";
-import Image from "next/image";
+import { useState } from 'react';
+import Link from 'next/link';
+import useAuthenticated from '@/hooks/useAuthenticated';
+import Image from 'next/image';
 import {
     LOGIN_URL,
     DEFAULT_AVATAR,
@@ -13,9 +13,9 @@ import {
     STATUS_URL,
     GITHUB_LOGO,
     RDS_LOGO,
-} from "@/components/constants/url";
-import Dropdown from "../Dropdown/Dropdown";
-import styles from "@/components/navBar/navBar.module.scss";
+} from '@/components/constants/url';
+import Dropdown from '../Dropdown/Dropdown';
+import styles from '@/components/navBar/navBar.module.scss';
 
 const NavBar = () => {
     const { userData, isLoggedIn } = useAuthenticated();

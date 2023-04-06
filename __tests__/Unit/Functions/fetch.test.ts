@@ -1,15 +1,15 @@
-import fetch from "@/helperFunctions/fetch";
-import mockAxios from "jest-mock-axios";
+import fetch from '@/helperFunctions/fetch';
+import mockAxios from 'jest-mock-axios';
 
-describe("Test fetch", () => {
+describe('Test fetch', () => {
     afterEach(() => {
         mockAxios.reset();
     });
 
-    test("Should call axios", async () => {
+    test('Should call axios', async () => {
         const catchFn = jest.fn();
         const thenFn = jest.fn();
-        const { requestPromise } = fetch({ url: "http://localhost" });
+        const { requestPromise } = fetch({ url: 'http://localhost' });
 
         requestPromise.then(thenFn).catch(catchFn);
 

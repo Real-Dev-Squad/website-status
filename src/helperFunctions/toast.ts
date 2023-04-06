@@ -1,13 +1,13 @@
 // toast is imported as toastify to avoid declaration conflicts with local toast function
 
-import { toast as toastify } from "react-toastify";
+import { toast as toastify } from 'react-toastify';
 
 const DELAY = 3000;
 enum ToastTypes {
-    INFO = "info",
-    SUCCESS = "success",
-    WARNING = "warning",
-    ERROR = "error",
+    INFO = 'info',
+    SUCCESS = 'success',
+    WARNING = 'warning',
+    ERROR = 'error',
 }
 
 const toast = (type: ToastTypes, message: string) =>

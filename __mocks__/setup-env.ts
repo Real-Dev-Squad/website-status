@@ -1,4 +1,4 @@
-import {server} from "./server.js";
+import {server} from './server.js';
 
 beforeAll(() => server.listen());
 // if you need to add a handler after calling setupServer for some specific test

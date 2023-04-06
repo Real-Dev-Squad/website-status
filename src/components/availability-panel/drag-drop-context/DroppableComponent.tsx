@@ -1,7 +1,7 @@
-import { FC } from "react";
-import { Droppable } from "react-beautiful-dnd";
-import { droppableComponent } from "@/interfaces/availabilityPanel.type";
-import DraggableComponent from "@/components/availability-panel/drag-drop-context//DraggableComponent";
+import { FC } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
+import { droppableComponent } from '@/interfaces/availabilityPanel.type';
+import DraggableComponent from '@/components/availability-panel/drag-drop-context//DraggableComponent';
 
 const DroppableComponent: FC<droppableComponent> = ({
     droppableId,
@@ -10,7 +10,7 @@ const DroppableComponent: FC<droppableComponent> = ({
     isTaskOnDrag,
 }) => (
     <div>
-        {droppableId === "tasks" ? (
+        {droppableId === 'tasks' ? (
             <Droppable droppableId="tasks" isCombineEnabled={!isTaskOnDrag}>
                 {(provided) => (
                     <div ref={provided.innerRef}>

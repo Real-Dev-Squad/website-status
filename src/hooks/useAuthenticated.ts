@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import {
     USER_SELF,
     DEFAULT_AVATAR,
     SIGNUP_LINK,
-} from "@/components/constants/url";
-import fetch from "@/helperFunctions/fetch";
+} from '@/components/constants/url';
+import fetch from '@/helperFunctions/fetch';
 
 type Userdata = {
     userName: string;
@@ -21,8 +21,8 @@ type HooksReturnType = {
 const useAuthenticated = (): HooksReturnType => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<Userdata>({
-        userName: "",
-        firstName: "",
+        userName: '',
+        firstName: '',
         profilePicture: DEFAULT_AVATAR,
     });
 
@@ -35,7 +35,7 @@ const useAuthenticated = (): HooksReturnType => {
                 const { requestPromise } = fetch({ url: USER_SELF });
                 const { data } = await requestPromise;
                 if (data.incompleteUserDetails) {
-                    window.open(`${SIGNUP_LINK}`, "_blank", "noopener");
+                    window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
                 }
                 setUserData({
                     userName: data.username,

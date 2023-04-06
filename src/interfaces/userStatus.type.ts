@@ -23,7 +23,7 @@ export type UserStatus = {
 };
 
 export enum UserStatusType {
-    IDLE = "IDLE",
-    ACTIVE = "ACTIVE",
-    OOO = "OOO",
+    IDLE = 'IDLE',
+    ACTIVE = 'ACTIVE',
+    OOO = 'OOO',
 }

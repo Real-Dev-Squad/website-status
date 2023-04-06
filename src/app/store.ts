@@ -1,5 +1,5 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { api } from "@/app/services/api";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { api } from '@/app/services/api';
 
 const rootReducer = combineReducers({
     [api.reducerPath]: api.reducer,
@@ -15,4 +15,4 @@ export const store = () => {
 
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof store>;
-export type AppDispatch = AppStore["dispatch"];
+export type AppDispatch = AppStore['dispatch'];

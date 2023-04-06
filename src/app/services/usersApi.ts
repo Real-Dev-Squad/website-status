@@ -1,5 +1,5 @@
-import { api } from "./api";
-import userType from "@/interfaces/user.type";
+import { api } from './api';
+import userType from '@/interfaces/user.type';
 
 type UsersResponse = {
     message: string;
@@ -20,15 +20,15 @@ export const usersApi = api.injectEndpoints({
         getUsersByUsername: build.query<UsersResponse, UsernameQueryArgs>({
             query: ({ searchString, size = 5 }) =>
                 `/users?search=${searchString}&size=${size}`,
-            providesTags: ["Users"],
+            providesTags: ['Users'],
         }),
         getUsersByLink: build.query<UsersResponse, { paginatedLink: string }>({
             query: ({ paginatedLink }) => paginatedLink,
-            providesTags: ["Users"],
+            providesTags: ['Users'],
         }),
         getUsers: build.query<UsersResponse, { size?: number }>({
             query: ({ size = 5 }) => `/users?size=${size}`,
-            providesTags: ["Users"],
+            providesTags: ['Users'],
         }),
     }),
 });

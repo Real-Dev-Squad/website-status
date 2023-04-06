@@ -5,10 +5,10 @@ import {
     FC,
     Children,
     ReactNode,
-} from "react";
-import fetch from "@/helperFunctions/fetch";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
-import { USER_SELF } from "@/components/constants/url";
+} from 'react';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { USER_SELF } from '@/components/constants/url';
 
 const { ERROR } = ToastTypes;
 export const isUserAuthorizedContext = createContext<boolean>(false);

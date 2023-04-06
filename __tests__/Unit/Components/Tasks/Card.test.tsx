@@ -1,30 +1,30 @@
-import { render } from "@testing-library/react";
-import Card from "@/components/tasks/card/index";
+import { render } from '@testing-library/react';
+import Card from '@/components/tasks/card/index';
 
 const DEFAULT_PROPS = {
     content: {
-        id: "firestoreDocumentId123",
+        id: 'firestoreDocumentId123',
         lossRate: {
             dinero: 10,
             neelam: 5,
         },
-        links: ["https://realdevsquad.com/learn-site"],
+        links: ['https://realdevsquad.com/learn-site'],
         completionAward: {
             dinero: 110,
             neelam: 10,
         },
         dependsOn: [],
-        assignee: "ankur",
-        startedOn: "1618790400",
+        assignee: 'ankur',
+        startedOn: '1618790400',
         isNoteworthy: true,
-        title: "test 1 for drag and drop",
-        purpose: "string",
+        title: 'test 1 for drag and drop',
+        purpose: 'string',
         percentCompleted: 0,
-        endsOn: "1618790400",
-        status: "assigned",
-        featureUrl: "string",
-        type: "feature",
-        createdBy: "ankush",
+        endsOn: '1618790400',
+        status: 'assigned',
+        featureUrl: 'string',
+        type: 'feature',
+        createdBy: 'ankush',
     },
     shouldEdit: false,
     onContentChange: jest.fn(),
@@ -36,14 +36,14 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
     return new Date(d).getTime() / 1000;
 };
 
-describe("Task card", () => {
-    test("Should render card", () => {
+describe('Task card', () => {
+    test('Should render card', () => {
         const { getByText } = render(<Card {...DEFAULT_PROPS} />);
 
-        expect(getByText("test 1 for drag and drop")).toBeInTheDocument();
+        expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
     });
 
-    test("Should show n days ago for due tasks", () => {
+    test('Should show n days ago for due tasks', () => {
         let props = {
             ...DEFAULT_PROPS,
             content: {
@@ -53,7 +53,7 @@ describe("Task card", () => {
         };
         const { rerender, getByText } = render(<Card {...props} />);
 
-        expect(getByText("a day ago")).toBeInTheDocument();
+        expect(getByText('a day ago')).toBeInTheDocument();
 
         // With updated props
         props = {
@@ -66,10 +66,10 @@ describe("Task card", () => {
 
         rerender(<Card {...props} />);
 
-        expect(getByText("2 days ago")).toBeInTheDocument();
+        expect(getByText('2 days ago')).toBeInTheDocument();
     });
 
-    test("Should show right status", () => {
+    test('Should show right status', () => {
         const { getByText } = render(<Card {...DEFAULT_PROPS} />);
 
         expect(getByText(DEFAULT_PROPS.content.status)).toBeInTheDocument();

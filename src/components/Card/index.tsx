@@ -1,8 +1,8 @@
-import { FC } from "react";
-import classNames from "@/components/Card/card.module.scss";
-import Image from "next/image";
+import { FC } from 'react';
+import classNames from '@/components/Card/card.module.scss';
+import Image from 'next/image';
 
-const DUMMY_PROFILE_PICTURE = "dummyProfile.png";
+const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
 
 export type Props = {
     title: {
@@ -55,12 +55,12 @@ const Card: FC<Props> = ({
       `}
             onClick={() => {
                 if (title.link) {
-                    window.open(title.link, "_blank");
+                    window.open(title.link, '_blank');
                 }
             }}
             onKeyDown={() => {
                 if (title.link) {
-                    window.open(title.link, "_blank");
+                    window.open(title.link, '_blank');
                 }
             }}
             role="button"
@@ -86,7 +86,7 @@ const Card: FC<Props> = ({
                             alt={assignee.userName}
                             onError={assignee.onError}
                         />
-                        <strong>{assignee.userName || "No contributor"}</strong>
+                        <strong>{assignee.userName || 'No contributor'}</strong>
                     </div>
                 </div>
             )}

@@ -1,18 +1,18 @@
-import { FC, useState, useEffect, createContext, useRef } from "react";
-import Image from "next/image";
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { dragDropProps } from "@/interfaces/availabilityPanel.type";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
-import task from "@/interfaces/task.type";
-import fetch from "@/helperFunctions/fetch";
-import { ASSIGNED } from "@/components/constants/task-status";
-import DroppableComponent from "./DroppableComponent";
-import classNames from "@/components/availability-panel/drag-drop-context/styles.module.scss";
+import { FC, useState, useEffect, createContext, useRef } from 'react';
+import Image from 'next/image';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { dragDropProps } from '@/interfaces/availabilityPanel.type';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import task from '@/interfaces/task.type';
+import fetch from '@/helperFunctions/fetch';
+import { ASSIGNED } from '@/components/constants/task-status';
+import DroppableComponent from './DroppableComponent';
+import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import {
     THOUSAND_MILLI_SECONDS,
     FOURTEEN_DAYS,
     SECONDS_IN_A_DAY,
-} from "@/components/constants/date";
+} from '@/components/constants/date';
 
 type NotFoundErrorProps = {
     message: string;
@@ -20,7 +20,7 @@ type NotFoundErrorProps = {
 
 const { SUCCESS, ERROR } = ToastTypes;
 
-const NotFoundError: FC<NotFoundErrorProps> = ({ message = "Not found" }) => (
+const NotFoundError: FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
     <div className={classNames.emptyArray}>
         <Image src="/ghost.png" alt="ghost" width={160} height={190} />
         <span className={classNames.emptyText}>{message}</span>
@@ -75,14 +75,14 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
 
             const { requestPromise } = fetch({
                 url,
-                method: "patch",
+                method: 'patch',
                 data,
             });
             await requestPromise;
-            toast(SUCCESS, "Successfully Assigned Task");
+            toast(SUCCESS, 'Successfully Assigned Task');
             return [taskId, assignee];
         } catch (error: any) {
-            if ("response" in error) {
+            if ('response' in error) {
                 toast(ERROR, error.response.data.message);
                 return [taskId, assignee];
             }
@@ -92,7 +92,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
     };
 
     const onDragStart = (result: DragEvent | any) => {
-        const isTask = result.source.droppableId === "tasks";
+        const isTask = result.source.droppableId === 'tasks';
         if (isTask) {
             setIsTaskOnDrag(true);
         } else {
@@ -106,7 +106,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
             result.destination &&
             result.source.droppableId === result.destination.droppableId
         ) {
-            const isIdTask = result.source.droppableId === "tasks";
+            const isIdTask = result.source.droppableId === 'tasks';
             const array = isIdTask ? taskList : memberList;
             const items: Array<any> = reorder(
                 array,
@@ -131,11 +131,11 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
             ];
             setDraggableIds(ref.current);
             const taskId =
-                result.combine.droppableId === "tasks"
+                result.combine.droppableId === 'tasks'
                     ? result.combine.draggableId
                     : result.draggableId;
             const assignee =
-                result.combine.droppableId === "tasks"
+                result.combine.droppableId === 'tasks'
                     ? result.draggableId
                     : result.combine.draggableId;
             const res: Array<string> = await assignTask(taskId, assignee);

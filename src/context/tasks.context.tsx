@@ -1,8 +1,8 @@
-import fetch from "@/helperFunctions/fetch";
-import React, { createContext, useContext, useState, useEffect } from "react";
-import levelType from "@/interfaces/level.type";
-import tagType from "@/interfaces/tag.type";
-import { ALL_LEVELS_URL, ALL_TAGS_URL } from "@/components/constants/url";
+import fetch from '@/helperFunctions/fetch';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import levelType from '@/interfaces/level.type';
+import tagType from '@/interfaces/tag.type';
+import { ALL_LEVELS_URL, ALL_TAGS_URL } from '@/components/constants/url';
 
 export type TaskContextType = {
     taskTags: tagType[] | null;
@@ -50,7 +50,7 @@ export const TasksProvider = ({ children }: { children: React.ReactNode }) => {
 export const useTasksContext = () => {
     const context: TaskContextType = useContext(TasksContext);
     if (!context) {
-        throw new Error("useTasksContext must be used within a TasksProvider");
+        throw new Error('useTasksContext must be used within a TasksProvider');
     }
     return context;
 };

@@ -1,7 +1,7 @@
-import { FC } from "react";
-import Card from "@/components/Card/index";
-import details from "@/components/challenges/details";
-import participantsDetails from "@/components/challenges/participants";
+import { FC } from 'react';
+import Card from '@/components/Card/index';
+import details from '@/components/challenges/details';
+import participantsDetails from '@/components/challenges/participants';
 
 type CompleteProps = {
     content: {

@@ -2,12 +2,12 @@ import {
     Draggable,
     DraggingStyle,
     NotDraggingStyle,
-} from "react-beautiful-dnd";
-import { FC, useContext } from "react";
-import { draggableProps } from "@/interfaces/availabilityPanel.type";
-import classNames from "@/components/availability-panel/drag-drop-context/styles.module.scss";
-import { disableDrag } from ".";
-import Image from "next/image";
+} from 'react-beautiful-dnd';
+import { FC, useContext } from 'react';
+import { draggableProps } from '@/interfaces/availabilityPanel.type';
+import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import { disableDrag } from '.';
+import Image from 'next/image';
 
 const imageGenerator = (name: string) =>
     `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
@@ -19,11 +19,11 @@ const getItemStyle = (
 ) => {
     let color: string;
     if (undraggable) {
-        color = "darkgrey";
+        color = 'darkgrey';
     } else if (isDragging) {
-        color = "#d1d1d1";
+        color = '#d1d1d1';
     } else {
-        color = "white";
+        color = 'white';
     }
     const style = {
         background: color,
@@ -35,7 +35,7 @@ const getItemStyle = (
 const DraggableComponent: FC<draggableProps> = ({
     draggableId,
     index,
-    title = "",
+    title = '',
 }) => {
     const draggableIds = useContext(disableDrag);
     return (
@@ -60,7 +60,7 @@ const DraggableComponent: FC<draggableProps> = ({
                     {title.length ? (
                         <div>{title}</div>
                     ) : (
-                        <div style={{ display: "flex", alignItems: "center" }}>
+                        <div style={{ display: 'flex', alignItems: 'center' }}>
                             <Image
                                 src={imageGenerator(draggableId)}
                                 alt={draggableId}
@@ -68,7 +68,7 @@ const DraggableComponent: FC<draggableProps> = ({
                                 height={52}
                                 onError={(e) => {
                                     (e.target as HTMLImageElement).src =
-                                        "dummyProfile.png";
+                                        'dummyProfile.png';
                                 }}
                             />
                             <span>{draggableId}</span>

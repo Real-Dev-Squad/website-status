@@ -1,18 +1,18 @@
-import { FC, useState, useEffect } from "react";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import Card from "@/components/tasks/card";
-import useFetch from "@/hooks/useFetch";
-import classNames from "@/styles/tasks.module.scss";
-import task from "@/interfaces/task.type";
+import { FC, useState, useEffect } from 'react';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import Card from '@/components/tasks/card';
+import useFetch from '@/hooks/useFetch';
+import classNames from '@/styles/tasks.module.scss';
+import task from '@/interfaces/task.type';
 import {
     BLOCKED,
     IN_PROGRESS,
     SMOKE_TESTING,
-} from "@/components/constants/task-status";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
-import beautifyTaskStatus from "@/helperFunctions/beautifyTaskStatus";
-import { TASKS_URL } from "@/components/constants/url";
+} from '@/components/constants/task-status';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
+import { TASKS_URL } from '@/components/constants/url';
 
 const renderCardList = (tasks: task[]) => {
     const beautifiedTasks = beautifyTaskStatus(tasks);
@@ -33,7 +33,7 @@ const Active: FC = () => {
     const { response, error, isLoading } = useFetch(TASKS_URL);
 
     useEffect(() => {
-        if ("tasks" in response) {
+        if ('tasks' in response) {
             setTasks(updateTasksStatus(response.tasks));
             const active = tasks.filter((item: task) =>
                 statusActiveList.includes(item.status)

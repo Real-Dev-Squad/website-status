@@ -1,10 +1,10 @@
-import React from "react";
-import classNames from "@/components/footer/footer.module.scss";
+import React from 'react';
+import classNames from '@/components/footer/footer.module.scss';
 
 const Footer = () => (
     <footer className={classNames.infoRepo}>
         <p>
-            The contents of this website are deployed from this{" "}
+            The contents of this website are deployed from this{' '}
             <a
                 href="https://github.com/Real-Dev-Squad/website-status"
                 target="_blank"

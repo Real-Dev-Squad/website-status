@@ -1,4 +1,4 @@
-import award from "@/interfaces/award.type";
+import award from '@/interfaces/award.type';
 
 type task = {
     id: string;
@@ -21,14 +21,14 @@ type task = {
 };
 
 enum Tab {
-    ASSIGNED = "ASSIGNED",
-    COMPLETED = "COMPLETED",
-    AVAILABLE = "AVAILABLE",
-    IN_PROGRESS = "IN_PROGRESS",
-    NEEDS_REVIEW = "NEEDS_REVIEW",
-    IN_REVIEW = "IN_REVIEW",
-    VERIFIED = "VERIFIED",
-    MERGED = "MERGED",
+    ASSIGNED = 'ASSIGNED',
+    COMPLETED = 'COMPLETED',
+    AVAILABLE = 'AVAILABLE',
+    IN_PROGRESS = 'IN_PROGRESS',
+    NEEDS_REVIEW = 'NEEDS_REVIEW',
+    IN_REVIEW = 'IN_REVIEW',
+    VERIFIED = 'VERIFIED',
+    MERGED = 'MERGED',
 }
 
 const TABS = Object.values(Tab);

@@ -1,6 +1,6 @@
-import React, { VFC, useState, PropsWithChildren, KeyboardEvent } from "react";
-import styles from "@/components/Accordion/Accordion.module.scss";
-import { ENTER_KEY, SPACE_KEY } from "@/components/constants/key";
+import React, { VFC, useState, PropsWithChildren, KeyboardEvent } from 'react';
+import styles from '@/components/Accordion/Accordion.module.scss';
+import { ENTER_KEY, SPACE_KEY } from '@/components/constants/key';
 
 type AccordionProps = {
     title: string;
@@ -39,7 +39,7 @@ const Accordion: VFC<Props> = ({ title, open = true, children }) => {
                 role="button"
             >
                 {title}
-                <span>{isOpen ? "-" : "+"}</span>
+                <span>{isOpen ? '-' : '+'}</span>
             </div>
             <div
                 data-testid="accordion-content"

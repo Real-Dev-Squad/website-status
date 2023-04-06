@@ -1,13 +1,13 @@
-import { FC, useState, useEffect, useContext } from "react";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import useFetch from "@/hooks/useFetch";
-import classNames from "@/styles/tasks.module.scss";
-import task from "@/interfaces/task.type";
-import Tabs from "@/components/Tabs";
-import { Tab } from "@/interfaces/task.type";
-import fetch from "@/helperFunctions/fetch";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
+import { FC, useState, useEffect, useContext } from 'react';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import useFetch from '@/hooks/useFetch';
+import classNames from '@/styles/tasks.module.scss';
+import task from '@/interfaces/task.type';
+import Tabs from '@/components/Tabs';
+import { Tab } from '@/interfaces/task.type';
+import fetch from '@/helperFunctions/fetch';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     ASSIGNED,
     COMPLETED,
@@ -23,17 +23,17 @@ import {
     RELEASED,
     VERIFIED,
     BLOCKED,
-} from "@/components/constants/task-status";
+} from '@/components/constants/task-status';
 import {
     TASKS_FETCH_ERROR_MESSAGE,
     NO_TASKS_FOUND_MESSAGE,
-} from "@/components/constants/messages";
-import updateTasksStatus from "@/helperFunctions/updateTasksStatus";
-import { useAppContext } from "@/context";
-import { isUserAuthorizedContext } from "@/context/isUserAuthorized";
-import { TasksProvider } from "@/context/tasks.context";
-import TaskList from "@/components/tasks/TaskList/TaskList";
-import { TASKS_URL } from "@/components/constants/url";
+} from '@/components/constants/messages';
+import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { useAppContext } from '@/context';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import { TasksProvider } from '@/context/tasks.context';
+import TaskList from '@/components/tasks/TaskList/TaskList';
+import { TASKS_URL } from '@/components/constants/url';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const STATUS_ORDER = [
@@ -57,13 +57,13 @@ async function updateCardContent(id: string, cardDetails: task) {
     try {
         const { requestPromise } = fetch({
             url: `${TASKS_URL}/${id}`,
-            method: "patch",
+            method: 'patch',
             data: cardDetails,
         });
         await requestPromise;
-        toast(SUCCESS, "Changes have been saved !");
+        toast(SUCCESS, 'Changes have been saved !');
     } catch (err: any) {
-        if ("response" in err) {
+        if ('response' in err) {
             toast(ERROR, err.response.data.message);
             return;
         }
@@ -84,7 +84,7 @@ const Index: FC = () => {
         setActiveTab(tab);
     };
     useEffect(() => {
-        if ("tasks" in response) {
+        if ('tasks' in response) {
             const tasks = updateTasksStatus(response.tasks);
             tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
             tasks.sort(

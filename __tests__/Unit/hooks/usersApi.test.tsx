@@ -1,14 +1,14 @@
-import { setupServer } from "msw/node";
+import { setupServer } from 'msw/node';
 import {
     useGetUsersQuery,
     useGetUsersByLinkQuery,
     useGetUsersByUsernameQuery,
-} from "@/app/services/usersApi";
-import handlers from "../../../__mocks__/handlers";
-import React, { PropsWithChildren } from "react";
-import { act, renderHook } from "@testing-library/react-hooks";
-import { Provider } from "react-redux";
-import { store } from "@/app/store";
+} from '@/app/services/usersApi';
+import handlers from '../../../__mocks__/handlers';
+import React, { PropsWithChildren } from 'react';
+import { act, renderHook } from '@testing-library/react-hooks';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 
 const server = setupServer(...handlers);
 
@@ -24,8 +24,8 @@ function Wrapper({
     return <Provider store={store()}>{children}</Provider>;
 }
 
-describe("useGetUsersQuery", () => {
-    test("returns users", async () => {
+describe('useGetUsersQuery', () => {
+    test('returns users', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () => useGetUsersQuery({ size: 2 }),
             {
@@ -46,8 +46,8 @@ describe("useGetUsersQuery", () => {
     });
 });
 
-describe("useGetUsersByLinkQuery", () => {
-    test("returns users", async () => {
+describe('useGetUsersByLinkQuery', () => {
+    test('returns users', async () => {
         const { result: initialResult, waitForNextUpdate: initialWait } =
             renderHook(() => useGetUsersQuery({ size: 2 }), {
                 wrapper: Wrapper,
@@ -60,7 +60,7 @@ describe("useGetUsersByLinkQuery", () => {
             renderHook(
                 () =>
                     useGetUsersByLinkQuery({
-                        paginatedLink: initialResponse.data?.links.next ?? "",
+                        paginatedLink: initialResponse.data?.links.next ?? '',
                     }),
                 {
                     wrapper: Wrapper,
@@ -81,7 +81,7 @@ describe("useGetUsersByLinkQuery", () => {
             renderHook(
                 () =>
                     useGetUsersByLinkQuery({
-                        paginatedLink: nextPageResponse.data?.links.prev ?? "",
+                        paginatedLink: nextPageResponse.data?.links.prev ?? '',
                     }),
                 {
                     wrapper: Wrapper,
@@ -99,10 +99,10 @@ describe("useGetUsersByLinkQuery", () => {
     });
 });
 
-describe("useGetUsersByUsernameQuery", () => {
-    test("returns users by username prefix", async () => {
+describe('useGetUsersByUsernameQuery', () => {
+    test('returns users by username prefix', async () => {
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetUsersByUsernameQuery({ searchString: "mu", size: 2 }),
+            () => useGetUsersByUsernameQuery({ searchString: 'mu', size: 2 }),
             {
                 wrapper: Wrapper,
             }

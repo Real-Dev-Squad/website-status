@@ -1,5 +1,5 @@
-import styles from "@/components/Tabs/Tabs.module.scss";
-import { Tab } from "@/interfaces/task.type";
+import styles from '@/components/Tabs/Tabs.module.scss';
+import { Tab } from '@/interfaces/task.type';
 
 type TabsProps = {
     tabs: Tab[];
@@ -14,7 +14,7 @@ const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
                 key={tab}
                 onClick={() => onSelect(tab)}
                 className={`${styles.tabButton} ${
-                    activeTab === tab ? styles.active : ""
+                    activeTab === tab ? styles.active : ''
                 }`}
             >
                 {tab}

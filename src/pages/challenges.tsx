@@ -1,23 +1,23 @@
-import { FC, useState, useEffect } from "react";
-import { useAppContext } from "@/context";
-import useFetch from "@/hooks/useFetch";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import Active from "@/components/challenges/active";
-import Complete from "@/components/challenges/complete";
-import Accordion from "@/components/Accordion";
-import challenge from "@/interfaces/challenge.type";
-import userType from "@/interfaces/user.type";
-import classNames from "@/styles/tasks.module.scss";
-import { CHALLENGES_URL, LOGIN_URL } from "@/components/constants/url";
-import userData from "@/helperFunctions/getUser";
+import { FC, useState, useEffect } from 'react';
+import { useAppContext } from '@/context';
+import useFetch from '@/hooks/useFetch';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import Active from '@/components/challenges/active';
+import Complete from '@/components/challenges/complete';
+import Accordion from '@/components/Accordion';
+import challenge from '@/interfaces/challenge.type';
+import userType from '@/interfaces/user.type';
+import classNames from '@/styles/tasks.module.scss';
+import { CHALLENGES_URL, LOGIN_URL } from '@/components/constants/url';
+import userData from '@/helperFunctions/getUser';
 
 const renderCardList = (
-    challengeSection: challenge["content"],
+    challengeSection: challenge['content'],
     key: string,
     userId: string
 ) => {
-    if (key === "Active") {
+    if (key === 'Active') {
         return challengeSection.map((item) => (
             <Active content={item} key={item.id} userId={userId} />
         ));
@@ -47,8 +47,8 @@ const Challenges: FC = () => {
     useEffect(() => {
         if (isLoggedIn && !Object.keys(response).length) {
             callAPI();
-            if ("challenges" in response) {
-                const challenges: challenge["content"] = response.challenges;
+            if ('challenges' in response) {
+                const challenges: challenge['content'] = response.challenges;
                 const challengeMap: any = [];
                 challengeMap.Active = challenges.filter(
                     (task) => task.is_active

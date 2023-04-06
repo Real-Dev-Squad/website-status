@@ -1,11 +1,11 @@
-import { FC, useState, useEffect } from "react";
-import Head from "@/components/head";
-import Layout from "@/components/Layout";
-import PullRequest from "@/components/pullRequests";
-import CardShimmer from "@/components/Loaders/cardShimmer";
-import useFetch from "@/hooks/useFetch";
-import styles from "./PullRequestList.module.scss";
-import { BASE_URL } from "../constants/url";
+import { FC, useState, useEffect } from 'react';
+import Head from '@/components/head';
+import Layout from '@/components/Layout';
+import PullRequest from '@/components/pullRequests';
+import CardShimmer from '@/components/Loaders/cardShimmer';
+import useFetch from '@/hooks/useFetch';
+import styles from './PullRequestList.module.scss';
+import { BASE_URL } from '../constants/url';
 
 type pullRequestType = {
     title: string;
@@ -93,8 +93,8 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
                 setIsBottom(true);
             }
         };
-        window.addEventListener("scroll", onScroll);
-        return () => window.removeEventListener("scroll", onScroll);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     return (

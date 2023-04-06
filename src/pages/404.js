@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Layout from "@/components/Layout";
-import styles from "@/components/Layout/Layout.module.scss";
+import Link from 'next/link';
+import Layout from '@/components/Layout';
+import styles from '@/components/Layout/Layout.module.scss';
 
 export default function PageNotFound() {
     return (

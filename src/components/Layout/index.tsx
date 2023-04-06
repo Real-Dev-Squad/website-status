@@ -1,16 +1,16 @@
-import { FC, ReactNode } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import Footer from "@/components/footer";
-import styles from "@/components/Layout/Layout.module.scss";
-import NavBar from "@/components/navBar";
+import { FC, ReactNode } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Footer from '@/components/footer';
+import styles from '@/components/Layout/Layout.module.scss';
+import NavBar from '@/components/navBar';
 
 interface Props {
     children?: ReactNode;
 }
 
 const navBarContent = (title: string, refUrl: string, isActive = false) => {
-    const linkClasses = `${styles.link} ${isActive ? styles.active : ""}`;
+    const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;
 
     return (
         <Link href={refUrl} passHref>
@@ -33,42 +33,42 @@ const Layout: FC<Props> = ({ children }) => {
             <NavBar />
             <div className={styles.wrapper}>
                 <div className={styles.header}>
-                    {navBarContent("Tasks", "/", router.pathname === "/")}|
+                    {navBarContent('Tasks', '/', router.pathname === '/')}|
                     {navBarContent(
-                        "Mine",
-                        "/mine",
-                        router.pathname === "/mine"
+                        'Mine',
+                        '/mine',
+                        router.pathname === '/mine'
                     )}
                     |
                     {navBarContent(
-                        "DS",
-                        "/challenges",
-                        router.pathname === "/challenges"
+                        'DS',
+                        '/challenges',
+                        router.pathname === '/challenges'
                     )}
                     |
                     {navBarContent(
-                        "Open PRs",
-                        "/openPRs",
-                        router.pathname === "/openPRs"
+                        'Open PRs',
+                        '/openPRs',
+                        router.pathname === '/openPRs'
                     )}
                     |
                     {navBarContent(
-                        "Stale PRs",
-                        "/stale-pr",
-                        router.pathname === "/stale-pr"
+                        'Stale PRs',
+                        '/stale-pr',
+                        router.pathname === '/stale-pr'
                     )}
                     |
                     {navBarContent(
-                        "Idle Users",
-                        "/idle-users",
-                        router.pathname === "/idle-users"
+                        'Idle Users',
+                        '/idle-users',
+                        router.pathname === '/idle-users'
                     )}
                     {dev && (
                         <>
                             |
                             {navBarContent(
-                                "Availability Panel",
-                                "/availability-panel"
+                                'Availability Panel',
+                                '/availability-panel'
                             )}
                         </>
                     )}

@@ -1,2 +1,2 @@
-declare module "*.scss";
-import "@testing-library/jest-dom/extend-expect";
+declare module '*.scss';
+import '@testing-library/jest-dom/extend-expect';

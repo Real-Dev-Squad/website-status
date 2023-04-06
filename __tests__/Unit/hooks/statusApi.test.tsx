@@ -1,13 +1,13 @@
-import { setupServer } from "msw/node";
+import { setupServer } from 'msw/node';
 import {
     useGetStatusQuery,
     useGetAllStatusQuery,
-} from "@/app/services/statusApi";
-import handlers from "../../../__mocks__/handlers";
-import React, { PropsWithChildren } from "react";
-import { act, renderHook } from "@testing-library/react-hooks";
-import { Provider } from "react-redux";
-import { store } from "@/app/store";
+} from '@/app/services/statusApi';
+import handlers from '../../../__mocks__/handlers';
+import React, { PropsWithChildren } from 'react';
+import { act, renderHook } from '@testing-library/react-hooks';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 
 const server = setupServer(...handlers);
 
@@ -23,10 +23,10 @@ function Wrapper({
     return <Provider store={store()}>{children}</Provider>;
 }
 
-describe("useGetStatusQuery", () => {
-    test("returns idle status users", async () => {
+describe('useGetStatusQuery', () => {
+    test('returns idle status users', async () => {
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetStatusQuery("IDLE"),
+            () => useGetStatusQuery('IDLE'),
             {
                 wrapper: Wrapper,
             }
@@ -41,18 +41,18 @@ describe("useGetStatusQuery", () => {
         const usersDataWithStatus = nextResponse?.data?.allUserStatus;
         expect(nextResponse.data).not.toBeUndefined();
         expect(nextResponse.data?.message).toEqual(
-            "Idle user status returned successfully"
+            'Idle user status returned successfully'
         );
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
         usersDataWithStatus?.forEach((userState) => {
-            expect(userState.currentStatus.state).toEqual("IDLE");
+            expect(userState.currentStatus.state).toEqual('IDLE');
         });
     });
 });
 
-describe("useGetAllStatusQuery", () => {
-    test("returns all status users", async () => {
+describe('useGetAllStatusQuery', () => {
+    test('returns all status users', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () => useGetAllStatusQuery(),
             {
@@ -68,7 +68,7 @@ describe("useGetAllStatusQuery", () => {
         const nextResponse = result.current;
         expect(nextResponse.data).not.toBeUndefined();
         expect(nextResponse.data?.message).toEqual(
-            "All user status returned successfully"
+            'All user status returned successfully'
         );
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);

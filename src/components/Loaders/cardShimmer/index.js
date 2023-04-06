@@ -1,5 +1,5 @@
-import React from "react";
-import classNames from "./cardShimmer.module.scss";
+import React from 'react';
+import classNames from './cardShimmer.module.scss';
 
 const CardShimmer = () => (
     <div className={`${classNames.card} ${classNames.br}`}>
