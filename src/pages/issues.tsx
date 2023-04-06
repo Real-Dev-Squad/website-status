@@ -4,9 +4,11 @@ import IssueList from "../components/issues/IssueList";
 import classNames from "@/styles/issues.module.scss";
 import Layout from "@/components/Layout";
 import Head from "@/components/head";
-import { ISSUES_FETCH_ERROR_MESSAGE, NO_ISSUES_FOUND_MESSAGE } from "@/components/constants/messages";
+import {
+	ISSUES_FETCH_ERROR_MESSAGE,
+	NO_ISSUES_FOUND_MESSAGE,
+} from "@/components/constants/messages";
 
-const ISSUES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/issues/website-backend`;
 const Issues: FC = () => {
 	const [issueList, setissueList] = useState<[]>([]);
 
