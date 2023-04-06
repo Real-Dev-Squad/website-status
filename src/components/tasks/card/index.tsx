@@ -257,7 +257,7 @@ const Card: FC<Props> = ({
 
   const getFormattedClosedAtDate = () => {
     const closedAt = cardDetails?.github?.issue?.closedAt;
-    return getDateInString(new Date(closedAt ?? ""));
+    return getDateInString(new Date(closedAt ?? Date.now()));
   }
 
   const handleCloseTask = async() => {
