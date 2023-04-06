@@ -8,6 +8,7 @@ import {
 	ISSUES_FETCH_ERROR_MESSAGE,
 	NO_ISSUES_FOUND_MESSAGE,
 } from "@/components/constants/messages";
+import { ISSUES_URL } from "@/components/constants/url";
 
 const Issues: FC = () => {
 	const [issueList, setissueList] = useState<[]>([]);
