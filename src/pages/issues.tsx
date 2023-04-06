@@ -21,10 +21,6 @@ const Issues: FC = () => {
 	});
 
 	useEffect(() => {
-		(async () => {})();
-	}, []);
-
-	useEffect(() => {
 		if ("issues" in response) {
 			const issues = response.issues;
 			const onlyIssues = issues.filter(
