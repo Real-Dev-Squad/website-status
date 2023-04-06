@@ -1,3 +1,7 @@
+$white: #fff;
+$theme-blue: #1d1283;
+$light-black: rgba(0, 0, 0, 0.778);
+
 .parentContainer {
   margin: 2rem 4rem 0;
 }
@@ -10,9 +14,9 @@
   margin-bottom: 1rem;
 }
 
-.taskTitle{
+.taskTitle {
   font-size: 1.5rem;
-  color: rgba(0, 0, 0, 0.778);
+  color: $light-black;
   padding: 0.5rem 0;
   font-weight: bold;
 }
@@ -21,8 +25,8 @@
   display: block;
   font-size: 1rem;
   width: 5rem;
-  background-color: #1d1283;
-  color: white;
+  background-color: $theme-blue;
+  color: $white;
   border-radius: 0.5rem;
   padding: 0.5rem;
   font-weight: bold;
@@ -45,7 +49,7 @@
 
 .details_section_parent_container {
   padding: 0.5rem 1rem;
-  background-color: #f0f0f0;
+  background-color: $white;
   border-radius: 8px;
   margin-bottom: 1rem;
 }
@@ -95,7 +99,7 @@
   width: 100%;
   padding: 0.5rem 0.5rem;
   border-radius: 0.5rem;
-  background-color: #f0f0f0;
+  background-color: $white;
   font-weight: bold;
 }
 
