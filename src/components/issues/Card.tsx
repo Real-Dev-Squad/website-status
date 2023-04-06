@@ -2,9 +2,9 @@ import { FC, useState } from "react";
 import styles from "@/components/issues/Card.module.scss";
 import { toast, ToastTypes } from "@/helperFunctions/toast";
 
-const TASK_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/`;
 import fetch from "@/helperFunctions/fetch";
 import { IssueCardProps } from "@/interfaces/issueProps.type";
+import { TASKS_URL } from "../constants/url";
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
@@ -28,7 +28,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 	const handleClick = async () => {
 		try {
 			setIsLoading(true);
-			const url = TASK_URL;
+			const url = TASKS_URL;
 			const data = {
 				title: issue.title,
 				type: "feature",
