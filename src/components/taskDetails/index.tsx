@@ -10,13 +10,12 @@ import React, {
 import useFetch from '@/hooks/useFetch';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import NavBar from '@/components/navBar/index';
-import TaskContainer from './TaskContainer';
-import Details from './Details';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
-
+import TaskContainer from './TaskContainer';
+import Details from './Details';
 type Props = {
   url: string;
   taskID: string;

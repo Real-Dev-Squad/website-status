@@ -1,4 +1,5 @@
 import { FC, useState, useEffect, useContext } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useAppContext } from '@/context';
@@ -8,15 +9,11 @@ import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
 import { AVAILABLE, BLOCKED, COMPLETED, VERIFIED } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
-import TaskLevelEdit from './TaskTagEdit';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
-
 import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES } from '@/components/constants/url';
-import Link from 'next/link';
-
-
+import TaskLevelEdit from './TaskTagEdit';
 const moment = require('moment');
 
 type Props = {
