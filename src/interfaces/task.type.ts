@@ -31,6 +31,19 @@ enum Tab {
   MERGED = 'MERGED',
 }
 
+export type FilteredTasks = {
+  [Tab.ASSIGNED]: task[],
+  [Tab.COMPLETED]: task[],
+  [Tab.AVAILABLE]: task[],
+  [Tab.IN_PROGRESS]: task[],
+  [Tab.NEEDS_REVIEW]: task[],
+  [Tab.IN_REVIEW]: task[],
+  [Tab.VERIFIED]: task[],
+  [Tab.MERGED]: task[],
+};
+
+export type TabState = Tab.ASSIGNED | Tab.COMPLETED | Tab.AVAILABLE | Tab.IN_PROGRESS | Tab.NEEDS_REVIEW | Tab.IN_REVIEW | Tab.VERIFIED | Tab.MERGED;
+
 const TABS = Object.values(Tab);
 
 export { TABS, Tab };

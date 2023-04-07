@@ -254,3 +254,40 @@ $seeMoreTasksShadow: #595959cc;
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
+  
+.assigneeList {
+  padding: 0;
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 1;
+  padding: 0.5rem 1rem;
+  width: 100%;
+  border: 1px solid $white;
+  margin-top: 0.5rem;
+  * {
+    padding: 0;
+  }
+  li {
+    cursor: pointer;
+  }
+}
+
+.assigneeList li + li {
+  padding-top: 0.25rem;
+  margin-top: 0.25rem;
+  border-top: 1px solid $white;
+}
+
+.pageBtnContainer {
+  display: flex;
+  justify-content: space-between;
+
+  .cursor {
+    border-radius: 50%;
+    border: none;
+    font-weight: 700;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+  }
+}

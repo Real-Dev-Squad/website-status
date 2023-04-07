@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useEffect, useContext } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import useFetch from '@/hooks/useFetch';
@@ -6,8 +6,6 @@ import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import Tabs from '@/components/Tabs';
 import { Tab } from '@/interfaces/task.type';
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
   ASSIGNED,
   COMPLETED,
@@ -28,11 +26,10 @@ import {TASKS_FETCH_ERROR_MESSAGE, NO_TASKS_FOUND_MESSAGE} from '@/components/co
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import { TasksProvider } from '@/context/tasks.context';
+import { useTasksContext } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
 
-const { SUCCESS, ERROR } = ToastTypes;
 const STATUS_ORDER = [
   ASSIGNED,
   COMPLETED,
@@ -54,37 +51,21 @@ const statusActiveList = [
   BLOCKED,
   SMOKE_TESTING,
 ];
-async function updateCardContent(id: string, cardDetails: task) {
-  try {
-    const { requestPromise } = fetch({
-      url: `${TASKS_URL}/${id}`,
-      method: 'patch',
-      data: cardDetails,
-    });
-    await requestPromise;
-    toast(SUCCESS, 'Changes have been saved !');
-  } catch (err: any) {
-    if ('response' in err) {
-      toast(ERROR, err.response.data.message);
-      return;
-    }
-    toast(ERROR, err.message);
-  }
-}
+
 
 
 const Index: FC = () => {
   const { state: appState } = useAppContext();  
-  const [filteredTask, setFilteredTask] = useState<any>([]);
+  const { filteredTasks, setFilteredTasks, activeTab, setActiveTab, updateCardContent } = useTasksContext()
   const { response, error, isLoading } = useFetch(TASKS_URL);
   const { isEditMode } = appState;
   const isUserAuthorized = useContext(isUserAuthorizedContext);
   const isEditable = isUserAuthorized && isEditMode;
-  const [activeTab, setActiveTab] = useState(Tab.ASSIGNED)
 
   const onSelect = (tab: Tab) => {
     setActiveTab(tab);
   }
+  
   useEffect(() => {
     if ('tasks' in response) {
       const tasks = updateTasksStatus(response.tasks);
@@ -99,14 +80,16 @@ const Index: FC = () => {
           taskMap[item.status] = [item];
         }
       });
-      setFilteredTask(taskMap);
+      setFilteredTasks(taskMap);
     }
 
     return(() => {
-      setFilteredTask([]);
+      setFilteredTasks(null);
     });
   }, [isLoading, response]);
 
+  console.log(filteredTasks && filteredTasks[activeTab], filteredTasks)
+  
   const renderTabSection = () => (
     <div className={classNames.tabsContainer}>
       <Tabs
@@ -119,9 +102,9 @@ const Index: FC = () => {
 
   const renderTaskList = () => (
     <div>
-      {filteredTask[activeTab] ? (
+      {(filteredTasks && filteredTasks[activeTab]) ? (
         <TaskList
-          tasks={filteredTask[activeTab]}
+          tasks={filteredTasks[activeTab]}
           isEditable={isEditable}
           updateCardContent={updateCardContent}
         />
@@ -133,14 +116,13 @@ const Index: FC = () => {
   return (
     <Layout>
       <Head title='Tasks' />
-        <TasksProvider >
           <div className={classNames.container}>
             {!!error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
             {isLoading ? (
               <p>Loading...</p>
             ) : (
               <>
-                {Object.keys(filteredTask).length > 0
+                {(filteredTasks && Object.keys(filteredTasks).length > 0)
                   ? <div className={classNames.tasksContainer}>
                     {renderTabSection()}
                     {renderTaskList()}
@@ -149,7 +131,6 @@ const Index: FC = () => {
               </>
             )}
           </div>
-      </TasksProvider>
     </Layout>
   );
 };

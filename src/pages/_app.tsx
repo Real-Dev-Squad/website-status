@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/index.scss';
+import { TasksProvider } from '@/context/tasks.context';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
   require('../../__mocks__/index');
@@ -19,7 +20,9 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
         <AppWrapperContext>
           <IsUserAuthorizedContext>
             <ToastContainer />
-            <Component {...pageProps} />
+            <TasksProvider>
+              <Component {...pageProps} />
+            </TasksProvider>
           </IsUserAuthorizedContext>
         </AppWrapperContext>
     </Provider>

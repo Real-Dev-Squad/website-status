@@ -13,6 +13,7 @@ import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast,ToastTypes } from '@/helperFunctions/toast';
 import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES } from '@/components/constants/url';
+import UserSearch from '@/components/tasks/card/UserSearch';
 
 const moment = require('moment');
 
@@ -312,15 +313,15 @@ const Card: FC<Props> = ({
         </span>
         <span>
           <span className={classNames.cardSpecialFont}>Assignee:</span>
-          <span
-            className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'assignee')}
-            role="button"
-            tabIndex={0}
-          >
-            {cardDetails.assignee}
-          </span>
+          {shouldEdit 
+          ? <UserSearch cardId={cardDetails.id} currentAssignee={cardDetails.assignee} onContentChange={onContentChange}/>
+          : <span
+          className={classNames.cardStrongFont}
+          role="button"
+          tabIndex={0}
+        >
+          {cardDetails.assignee}
+        </span>}
           <span
             className={classNames.contributorImage}
           >

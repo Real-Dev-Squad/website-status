@@ -1,4 +1,4 @@
-type userType = {
+type UserType = {
   id: string;
   company?: string;
   twitter_id?: string;
@@ -26,4 +26,4 @@ type userType = {
   last_name?: string;
 };
 
-export default userType;
+export default UserType;
