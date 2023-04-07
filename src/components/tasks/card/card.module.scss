@@ -5,252 +5,253 @@ $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
 $taskTagLevelBorder: #4169e1;
-$taskTagLevelBg: hsla(225, 73%, 57%,0.5);
+$taskTagLevelBg: hsla(225, 73%, 57%, 0.5);
 $seeMoreTasksBg: #041187;
 $seeMoreTasksShadow: #595959cc;
 
-.screenReaderOnly{ 
-  position: absolute; 
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px; 
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.screenReaderOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
-.pointerEventsNone{
-  pointer-events: none;
+.pointerEventsNone {
+    pointer-events: none;
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  margin-bottom: 25px;
-  justify-content: space-between;
-  border: 1px solid #d9d9d9;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    margin-bottom: 25px;
+    justify-content: space-between;
+    border: 1px solid #d9d9d9;
+    position: relative;
 }
 
 .cardItems {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.cardItems {
-  span {
     display: flex;
     flex-wrap: wrap;
-    margin: 2px;
-    align-items: center;
-    margin-top: 10px;
-  }
+    justify-content: space-between;
+}
+
+.cardItems {
+    span {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 2px;
+        align-items: center;
+        margin-top: 10px;
+    }
 }
 
 .cardTitle {
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: #041187;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: #041187;
 }
 
 .cardSpecialFont {
-  font-size: 1.1rem;
-  font-weight: 500;
-  color: #aeaeae;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #aeaeae;
 }
 
 .cardStatusFont {
-  font-size: 1.3rem;
-  font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 500;
 }
 
 .contributorImage {
-  img {
-    border-radius: 40%;
-  }
+    img {
+        border-radius: 40%;
+    }
 }
 
 .cardStrongFont {
-  font-size: 1.3rem;
-  font-weight: 500;
+    font-size: 1.3rem;
+    font-weight: 500;
 }
 
 .overdueTask {
-  border: solid red 2px;
-  background-color: #ffebee;
+    border: solid red 2px;
+    background-color: #ffebee;
 }
 
 .progressContainer {
-  width: 12rem;
-  flex-direction: column;
+    width: 12rem;
+    flex-direction: column;
 }
 
 .progressIndicator {
-  width: 100%;
-  height: 0.6rem;
-  background-color: $white;
-  border: 2px solid $black;
-  border-radius: 1rem;
+    width: 100%;
+    height: 0.6rem;
+    background-color: $white;
+    border: 2px solid $black;
+    border-radius: 1rem;
 }
 
 .progressStyle {
-  height: 0.4rem;
-  border-radius: 1rem;
+    height: 0.4rem;
+    border-radius: 1rem;
 }
 
 .progressGreen {
-  background-color: $green;
+    background-color: $green;
 }
 
 .progressOrange {
-  background-color: $orange;
+    background-color: $orange;
 }
 
 .progressRed {
-  background-color: $red;
+    background-color: $red;
 }
 
 .progressYellow {
-  background-color: $yellow;
+    background-color: $yellow;
 }
 .editButton {
-  text-align: left;
-  cursor: pointer;
-}
-
-.taskTagLevelWrapper{
-  display: flex;
-  padding-top: 0.5rem;
-  flex-wrap: wrap;
-}
-.taskTagLevelWrapper.editMode{
-  gap: 0.75rem;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.taskTagLevelContainer{
-  display: flex;
-  gap: 0.25rem
-}
-
-.taskTagLevel{
-  position: relative;
-  background-color: $taskTagLevelBg;
-  padding: 0.35em;
-  border-radius: 20px;
-  border: 2px solid $taskTagLevelBorder;
-  font-size: 0.85em;
-  font-weight: 500;
-  small{
-    font-size: 0.75em;
-  }
-
-  .removeTaskTagLevelBtn{
-    font-size: 0.35rem;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(50%,-40%);
-    border-radius: 50%;
-    width: 15px;
-    height: 15px;
-    outline: none;
-    border: 1px solid grey;
-    display: grid;
-    place-content: center;
+    text-align: left;
     cursor: pointer;
-  }
 }
 
-.addTaskTagLevel{
-  display: flex;
-  gap: 0.5rem;
+.taskTagLevelWrapper {
+    display: flex;
+    padding-top: 0.5rem;
+    flex-wrap: wrap;
+}
+.taskTagLevelWrapper.editMode {
+    gap: 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
-.selectWrapper{
-  border: 1px solid $black;
-  border-radius: 0.25em;
-  padding: 0.25em 0.5em;
-  display: grid;
-  grid-template-areas: select;
-  align-items: center;
-  
-  .selectDropdown{
-    width: 100%;
-    appearance: none;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    outline: none;
-    border: none;
-    padding: 0 1em 0 0;
+.taskTagLevelContainer {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.taskTagLevel {
+    position: relative;
+    background-color: $taskTagLevelBg;
+    padding: 0.35em;
+    border-radius: 20px;
+    border: 2px solid $taskTagLevelBorder;
+    font-size: 0.85em;
+    font-weight: 500;
+    small {
+        font-size: 0.75em;
+    }
+
+    .removeTaskTagLevelBtn {
+        font-size: 0.35rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -40%);
+        border-radius: 50%;
+        width: 15px;
+        height: 15px;
+        outline: none;
+        border: 1px solid grey;
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+    }
+}
+
+.addTaskTagLevel {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.selectWrapper {
+    border: 1px solid $black;
     border-radius: 0.25em;
-    grid-area: select;
-    background: none;
-  }
-  
-  &::after {
-    content: "";
-    grid-area: select;
-    width: 0.7em;
-    height: 0.5em;
-    background-color: #041187;
-    clip-path: polygon(100% 0%, 0 0%, 50% 100%);
-    justify-self: end;
-  }
+    padding: 0.25em 0.5em;
+    display: grid;
+    grid-template-areas: select;
+    align-items: center;
+
+    .selectDropdown {
+        width: 100%;
+        appearance: none;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+        outline: none;
+        border: none;
+        padding: 0 1em 0 0;
+        border-radius: 0.25em;
+        grid-area: select;
+        background: none;
+    }
+
+    &::after {
+        content: '';
+        grid-area: select;
+        width: 0.7em;
+        height: 0.5em;
+        background-color: #041187;
+        clip-path: polygon(100% 0%, 0 0%, 50% 100%);
+        justify-self: end;
+    }
 }
 
 .addTagLevelBtn {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-.seeMoreTasks{
-  cursor: pointer;
-  width: calc((100% / 3) - 0.5rem);
-  padding: 1rem;
-  color: $white;
-  background-color: $seeMoreTasksBg;
-  border: none;
-  border-radius: 3px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15rem;
+.seeMoreTasks {
+    cursor: pointer;
+    width: calc((100% / 3) - 0.5rem);
+    padding: 1rem;
+    color: $white;
+    background-color: $seeMoreTasksBg;
+    border: none;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15rem;
 }
 
-.seeMoreTasks:hover{
-  box-shadow: 0 1px .5rem $seeMoreTasksShadow;
+.seeMoreTasks:hover {
+    box-shadow: 0 1px 0.5rem $seeMoreTasksShadow;
 }
 
 /* loading spinner  */
-.loadingBg{
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  pointer-events: none;
-  background-color: rgba(0, 0, 0,0.2);
-  display: grid;
-  place-content: center;
-  .spinner{
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      border: 3px solid rgba(255,255,255,0.3);
-      border-radius: 50%;
-      border-top-color: #fff;
-      animation: spin 1s ease-in-out infinite;
-  
+.loadingBg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: grid;
+    place-content: center;
+    .spinner {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
     }
 }
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

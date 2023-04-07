@@ -1,21 +1,21 @@
 .heading {
-  font-size: 3.5rem;
-  font-weight: bold;
-  text-align: center;
-  color: #041484;
-  margin-bottom: 1rem;
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #041484;
+    margin-bottom: 1rem;
 }
 
 .section {
-  height: 100%;
-  min-width: 17rem;
-  font-size: 1rem;
+    height: 100%;
+    min-width: 17rem;
+    font-size: 1rem;
 }
 
 .cardContainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-wrap: wrap;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
 }

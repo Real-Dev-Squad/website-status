@@ -4,7 +4,7 @@ const URL = process.env.NEXT_PUBLIC_BASE_URL;
 const userStatusHandler = [
   rest.get(`${URL}/users/status`, (req, res, ctx) => {
 
-    if(req.url.searchParams.get("state") === "IDLE") {
+    if(req.url.searchParams.get('state') === 'IDLE') {
       return res(
         ctx.status(200),
         ctx.json({

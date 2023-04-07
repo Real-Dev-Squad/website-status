@@ -5,78 +5,78 @@ $theme-blue: #1d1283;
 $theme-active: #87d870;
 
 .navBar {
-  display: flex;
-  width: 100%;
-  background-color: $theme-blue;
-  align-items: center;
-  overflow: hidden;
-  flex-wrap: wrap;
-  justify-content: space-between;
-
-  .navLinks {
     display: flex;
-
-    a {
-      display: block;
-      color: $white;
-      font-weight: bolder;
-      text-align: center;
-      padding: 35px 2 * ($offset + $thickness)-1;
-      text-decoration: none;
-
-      &:hover {
-        color: $theme-active;
-      }
-    }
-
-    .active {
-      color: $theme-active;
-      text-decoration: underline;
-      text-decoration-thickness: $thickness;
-      text-underline-offset: $offset;
-    }
-
-    .logo {
-      padding: ($offset + $thickness)+7;
-    }
-  }
-  .signInLink {
-    border-radius: 6px;
-    padding: 5px;
+    width: 100%;
     background-color: $theme-blue;
-    color: $white;
-    border: 1px solid $white;
-    display: flex;
-    justify-content: space-around;
-    font-size: 13px;
-    font-weight: 200;
-    margin-right: 0.625rem;
-    text-decoration: none;
     align-items: center;
-  }
+    overflow: hidden;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-  .githubLogo {
-    margin-left: 0.25rem;
-    border-radius: 50%;
-  }
+    .navLinks {
+        display: flex;
 
-  .userProfilePic {
-    border-radius: 50%;
-    display: inline;
-    vertical-align: middle;
-  }
+        a {
+            display: block;
+            color: $white;
+            font-weight: bolder;
+            text-align: center;
+            padding: 35px 2 * ($offset + $thickness)-1;
+            text-decoration: none;
 
-  .userGreet {
-    align-items: center;
-    padding: ($offset + $thickness)+7;
-    cursor: pointer;
-  }
+            &:hover {
+                color: $theme-active;
+            }
+        }
 
-  .userGreetMsg {
-    display: inline;
-    vertical-align: middle;
-    margin-right: 0.625rem;
-    color: $white;
-    font-weight: 600;
-  }
+        .active {
+            color: $theme-active;
+            text-decoration: underline;
+            text-decoration-thickness: $thickness;
+            text-underline-offset: $offset;
+        }
+
+        .logo {
+            padding: ($offset + $thickness)+7;
+        }
+    }
+    .signInLink {
+        border-radius: 6px;
+        padding: 5px;
+        background-color: $theme-blue;
+        color: $white;
+        border: 1px solid $white;
+        display: flex;
+        justify-content: space-around;
+        font-size: 13px;
+        font-weight: 200;
+        margin-right: 0.625rem;
+        text-decoration: none;
+        align-items: center;
+    }
+
+    .githubLogo {
+        margin-left: 0.25rem;
+        border-radius: 50%;
+    }
+
+    .userProfilePic {
+        border-radius: 50%;
+        display: inline;
+        vertical-align: middle;
+    }
+
+    .userGreet {
+        align-items: center;
+        padding: ($offset + $thickness)+7;
+        cursor: pointer;
+    }
+
+    .userGreetMsg {
+        display: inline;
+        vertical-align: middle;
+        margin-right: 0.625rem;
+        color: $white;
+        font-weight: 600;
+    }
 }
