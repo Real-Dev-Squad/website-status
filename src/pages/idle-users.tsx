@@ -7,26 +7,30 @@ import { useGetStatusQuery } from '@/app/services/statusApi';
 import { UserStatusType } from '@/interfaces/userStatus.type';
 
 const IdleUsers: FC = () => {
-  const [idleUsersList, setIdleUsersList] = useState<UserStatus[]>([]);
-  const { data, isError, isLoading } = useGetStatusQuery(UserStatusType.IDLE);
+    const [idleUsersList, setIdleUsersList] = useState<UserStatus[]>([]);
+    const { data, isError, isLoading } = useGetStatusQuery(UserStatusType.IDLE);
 
-  useEffect(() => {
-    if (data?.allUserStatus) {
-      const idleUsers = data.allUserStatus;
-      setIdleUsersList(idleUsers);
-    }
-  }, [isLoading, data]);
+    useEffect(() => {
+        if (data?.allUserStatus) {
+            const idleUsers = data.allUserStatus;
+            setIdleUsersList(idleUsers);
+        }
+    }, [isLoading, data]);
 
-  return (
-    <Layout>
-      <Head title="Idle Users | Status Real Dev Squad" />
+    return (
+        <Layout>
+            <Head title="Idle Users | Status Real Dev Squad" />
 
-      <div className="container">
-        <Section heading='Idle users' content={idleUsersList} isLoading={isLoading} error={isError} />
-      </div>
-
-    </Layout>
-  );
+            <div className="container">
+                <Section
+                    heading="Idle users"
+                    content={idleUsersList}
+                    isLoading={isLoading}
+                    error={isError}
+                />
+            </div>
+        </Layout>
+    );
 };
 
 export default IdleUsers;
