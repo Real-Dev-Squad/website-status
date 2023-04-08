@@ -5,40 +5,40 @@ $theme-active: #87d870;
 $black: #000;
 
 .dropdown {
-  width: 180px;
-  background-color: $white;
-  border: 2px solid $black;
-  border-radius: 0.5rem;
-  color: $black;
-  position: absolute;
-  top: 58px;
-  right: 16px;
-  z-index: 100;
-
-  .dropdownList {
-    padding: 0;
-    margin: 0;
-  }
-
-  .dropdownItem {
-    padding: 1rem;
-    margin: 0 auto;
-    list-style-type: none;
-    cursor: pointer;
-  }
-
-  .dropdownItem:hover {
-    background-color: $dropdown-hover;
+    width: 180px;
+    background-color: $white;
+    border: 2px solid $black;
     border-radius: 0.5rem;
-  } 
-
-  .dropdownLink{
     color: $black;
-    text-decoration: none;
-  }
-  .line {
-    border: none;
-    border-bottom: 2px solid $black;
-    margin: 0;
-  }
+    position: absolute;
+    top: 58px;
+    right: 16px;
+    z-index: 100;
+
+    .dropdownList {
+        padding: 0;
+        margin: 0;
+    }
+
+    .dropdownItem {
+        padding: 1rem;
+        margin: 0 auto;
+        list-style-type: none;
+        cursor: pointer;
+    }
+
+    .dropdownItem:hover {
+        background-color: $dropdown-hover;
+        border-radius: 0.5rem;
+    }
+
+    .dropdownLink {
+        color: $black;
+        text-decoration: none;
+    }
+    .line {
+        border: none;
+        border-bottom: 2px solid $black;
+        margin: 0;
+    }
 }
