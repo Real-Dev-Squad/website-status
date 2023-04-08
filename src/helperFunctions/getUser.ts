@@ -10,7 +10,7 @@ const userData = async () => {
     const response = await requestPromise;
     return response.data;
   } catch (error) {
-    console.error(error)
+    console.error(error);
     return error;
   }
 };

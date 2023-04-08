@@ -1,33 +1,33 @@
 .layout {
-  margin: 0 auto;
-  max-width: 100%;
-  flex-direction: column;
-  display: flex;
-  min-height: 100%;
+    margin: 0 auto;
+    max-width: 100%;
+    flex-direction: column;
+    display: flex;
+    min-height: 100%;
 }
 
 .header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 10px;
 }
 
 .wrapper {
-  margin: 0 2em;
+    margin: 0 2em;
 }
 
 .link {
-  padding: 10px;
-  text-decoration: none;
-  font-weight: bold;
-  color: #041484;
-  cursor: pointer;
-  background: none;
-  border: none;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #041484;
+    cursor: pointer;
+    background: none;
+    border: none;
 }
 
 .active {
-  color: #E30464;
+    color: #e30464;
 }

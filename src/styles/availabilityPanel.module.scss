@@ -1,22 +1,22 @@
 $blueColor: #041484;
 
 .heading {
-  font-size: 3rem;
-  font-weight: bold;
-  text-align: center;
-  color: $blueColor;
-  margin-bottom: 1rem;
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    color: $blueColor;
+    margin-bottom: 1rem;
 }
 .statusMessage {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  font-weight: bold;
-  color: $blueColor;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    font-weight: bold;
+    color: $blueColor;
 }
 
 @media (max-width: 340px) {
-  .heading {
-    font-size: 2rem;
-  }
+    .heading {
+        font-size: 2rem;
+    }
 }
