@@ -30,7 +30,7 @@ const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
         };
         const { adminUser, superUser } = userRoles;
         setIsUserAuthorized(!!adminUser || !!superUser);
-      } catch (err: unknown) {
+      } catch (err) {
         console.error(err);
       }
     };
