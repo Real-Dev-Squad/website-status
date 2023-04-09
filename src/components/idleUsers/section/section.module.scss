@@ -1,0 +1,29 @@
+.heading {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #041484;
+    margin-bottom: 1rem;
+}
+
+.section {
+    height: 100%;
+    min-width: 17rem;
+    font-size: 1rem;
+}
+
+.cardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: auto 2rem;
+}
+
+.statusMessage {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    font-weight: bold;
+    color: #041484;
+}

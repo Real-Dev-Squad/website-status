@@ -1,0 +1,17 @@
+$theme-grey: #d4d4d5;
+
+.tabButton {
+    background: white;
+    border: none;
+    padding: 12px 8px 8px;
+    font-size: 0.8em;
+    border-radius: 2px 2px 0 0;
+    cursor: pointer;
+}
+
+.active {
+    font-weight: bold;
+    border: 1px solid $theme-grey;
+    border-bottom: none;
+    background: white;
+}

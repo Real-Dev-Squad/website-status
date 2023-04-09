@@ -1,8 +1,5 @@
 module.exports = {
-  future: {
-    webpack5: true,
-  },
-  images: {
-    domains: ["raw.githubusercontent.com"],
-  },
+	images: {
+		domains: ['raw.githubusercontent.com', 'res.cloudinary.com'],
+	},
 };
