@@ -83,21 +83,15 @@ describe('Task card', () => {
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
-    test('should show edit button when ALT key is long pressed', () => {
+    test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <isUserAuthorizedContext.Provider value={true}>
                 <Card {...DEFAULT_PROPS} />
             </isUserAuthorizedContext.Provider>,
-            { query: { dev: 'true' } }
+            {}
         );
-        const component = getByTestId('task-card');
 
-        act(() => {
-            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
-            jest.advanceTimersByTime(300);
-        });
-
-        expect(queryByTestId('edit-button')).toBeInTheDocument();
+        expect(queryByTestId('task-card')).not.toBeInTheDocument();
     });
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
@@ -106,13 +100,6 @@ describe('Task card', () => {
             </isUserAuthorizedContext.Provider>,
             { query: { dev: 'true' } }
         );
-
-        act(() => {
-            const event = new KeyboardEvent('keydown', { key: 'Shift' });
-            document.dispatchEvent(event);
-            jest.advanceTimersByTime(300);
-        });
-        // this will cause setShowUpdatedTaskCard(true)
 
         const component = getByTestId('task-card');
 
