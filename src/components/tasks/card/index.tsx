@@ -133,6 +133,21 @@ const Card: FC<Props> = ({
         }
     }
 
+    function handelDateChange(
+        event: React.ChangeEvent<HTMLInputElement>,
+        changedProperty: keyof typeof cardDetails
+    ) {
+        const toChange: any = cardDetails;
+        if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
+            const toTimeStamp =
+                new Date(`${event.target.value}`).getTime() / 1000;
+            toChange[changedProperty] = toTimeStamp;
+            onContentChange(toChange.id, {
+                [changedProperty]: toChange[changedProperty],
+            });
+        }
+    }
+
     const updateTaskTagLevel = async (
         taskItemToUpdate: taskItem,
         method: 'delete' | 'post'
@@ -237,8 +252,10 @@ const Card: FC<Props> = ({
             return (
                 <input
                     type="date"
-                    onChange={(e) => setDateTimes(e.target.value)}
-                    onKeyPress={(e) => handleChange(e, 'endsOn')}
+                    onChange={(e) => {
+                        setDateTimes(e.target.value);
+                        handelDateChange(e, 'endsOn');
+                    }}
                     value={dateTimes}
                 />
             );
