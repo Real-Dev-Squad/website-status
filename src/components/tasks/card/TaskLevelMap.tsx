@@ -21,7 +21,7 @@ export const TaskLevelMap = ({
         <div className={classNames.taskTagLevelContainer}>
             {taskTagLevel?.map((item) => (
                 <span key={item.tagId} className={classNames.taskTagLevel}>
-                    {item.tagName}{' '}
+                    {item.tagName}
                     <small>
                         <b>LVL:{item.levelValue}</b>
                     </small>

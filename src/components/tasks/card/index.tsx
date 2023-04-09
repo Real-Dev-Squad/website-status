@@ -271,6 +271,7 @@ const Card: FC<Props> = ({
                 width={iconWidth}
                 height={iconHeight}
                 onClick={onEditEnabled}
+                tabIndex={0}
             />
         </div>
     );
