@@ -25,6 +25,8 @@ import {
 import { useRouter } from 'next/router';
 
 import moment from 'moment';
+import { Loader } from './Loader';
+import { TaskLevelMap } from './TaskLevelMap';
 
 type Props = {
     content: task;
@@ -52,7 +54,7 @@ const Card: FC<Props> = ({
     const { actions, state } = useAppContext();
     const router = useRouter();
     const { query } = router;
-    const dev = !!query.dev;
+    const isNewCardEnabled = !!query.dev;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -261,64 +263,74 @@ const Card: FC<Props> = ({
     const onEditEnabled = () => {
         actions.onEditRoute();
     };
+    const EditButton = () => (
+        <div className={classNames.editButton} data-testid="edit-button">
+            <Image
+                src="/pencil.webp"
+                alt="edit"
+                width={iconWidth}
+                height={iconHeight}
+                onClick={onEditEnabled}
+            />
+        </div>
+    );
 
-    // show redesign only on dev
-    if (dev)
-        return (
+    const ProgressIndicator = () => (
+        <div className={classNames.progressIndicator}>
             <div
                 className={`
-        ${classNames.card}
-        ${classNames.card_updated}
-        ${isLoading && classNames.pointerEventsNone}
-        ${isTaskOverdue() && classNames.overdueTask}
-    `}
-                data-testid="task-card"
-            >
-                {/* loading spinner */}
-                {isLoading && (
-                    <div className={classNames.loadingBg}>
-                        <div className={classNames.spinner}>
-                            <span className={classNames.screenReaderOnly}>
-                                loading
-                            </span>
-                        </div>
-                    </div>
-                )}
-
-                <div className={classNames.cardItems}>
-                    <h2
-                        className={classNames.cardTitle}
-                        contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, 'title')}
-                        role="button"
-                        tabIndex={0}
-                    >
-                        {cardDetails.title}
-                    </h2>
-                    {/* progress bar */}
-                    <div className={classNames.progressContainerUpdated}>
-                        <div className={classNames.progressIndicator}>
-                            <div
-                                className={`
                 ${handleProgressColor(
                     content.percentCompleted,
                     content.startedOn,
                     content.endsOn
                 )}
                 ${classNames.progressStyle}
-              `}
-                                style={{
-                                    width: `${content.percentCompleted}%`,
-                                }}
-                            ></div>
-                        </div>
+                `}
+                style={{
+                    width: `${content.percentCompleted}%`,
+                }}
+            ></div>
+        </div>
+    );
+    const CardTitle = () => (
+        <h2
+            className={classNames.cardTitle}
+            contentEditable={shouldEdit}
+            onKeyPress={(e) => handleChange(e, 'title')}
+            role="button"
+            tabIndex={0}
+        >
+            {cardDetails.title}
+        </h2>
+    );
+
+    // show redesign only on dev
+    if (isNewCardEnabled)
+        return (
+            <div
+                className={`
+                ${classNames.card}
+                ${classNames.card_updated}
+                ${isLoading && classNames.pointerEventsNone}
+                ${isTaskOverdue() && classNames.overdueTask}
+    `}
+                data-testid="task-card"
+            >
+                {/* loading spinner */}
+                {isLoading && <Loader />}
+
+                <div className={classNames.cardItems}>
+                    <CardTitle />
+                    {/* progress bar */}
+                    <div className={classNames.progressContainerUpdated}>
+                        <ProgressIndicator />
                         <span>{content.percentCompleted}% </span>
                     </div>
                 </div>
                 <div className={classNames.dateInfo}>
                     <div>
                         <span className={classNames.cardSpecialFont}>
-                            Estimated completion{' '}
+                            Estimated completion
                         </span>
                         {renderDate(fromNowEndsOn, shouldEdit)}
                     </div>
@@ -329,7 +341,7 @@ const Card: FC<Props> = ({
                         role="button"
                         tabIndex={0}
                     >
-                        {cardDetails.status == 'Available'
+                        {cardDetails.status === AVAILABLE
                             ? 'Not started '
                             : `Started on ${fromNowStartedOn}`}
                     </span>
@@ -338,12 +350,12 @@ const Card: FC<Props> = ({
                 <div className={classNames.cardItems}>
                     <div className={classNames.contributor}>
                         <span className={classNames.cardSpecialFont}>
-                            Assigned to{' '}
+                            Assigned to
                         </span>
                         <span className={classNames.contributorImage}>
                             <Image
                                 src={assigneeProfilePic}
-                                alt="Assignee profile picture"
+                                alt={`profile picture of ${cardDetails.assignee}`}
                                 onError={contributorImageOnError}
                                 width={30}
                                 height={30}
@@ -364,36 +376,11 @@ const Card: FC<Props> = ({
                             shouldEdit && classNames.editMode
                         }`}
                     >
-                        <div className={classNames.taskTagLevelContainer}>
-                            {taskTagLevel?.map((item) => (
-                                <span
-                                    key={item.tagId}
-                                    className={classNames.taskTagLevel}
-                                >
-                                    {item.tagName}{' '}
-                                    <small>
-                                        <b>LVL:{item.levelValue}</b>
-                                    </small>
-                                    {shouldEdit && isUserAuthorized && (
-                                        <span>
-                                            <button
-                                                className={
-                                                    classNames.removeTaskTagLevelBtn
-                                                }
-                                                onClick={() =>
-                                                    updateTaskTagLevel(
-                                                        item,
-                                                        'delete'
-                                                    )
-                                                }
-                                            >
-                                                &#10060;
-                                            </button>
-                                        </span>
-                                    )}
-                                </span>
-                            ))}
-                        </div>
+                        <TaskLevelMap
+                            taskTagLevel={taskTagLevel}
+                            shouldEdit={shouldEdit}
+                            updateTaskTagLevel={updateTaskTagLevel}
+                        />
                         {shouldEdit && isUserAuthorized && (
                             <TaskLevelEdit
                                 taskTagLevel={taskTagLevel}
@@ -403,41 +390,20 @@ const Card: FC<Props> = ({
                     </div>
                 </div>
 
-                {isUserAuthorized && showEditButton && (
-                    <div
-                        className={classNames.editButton}
-                        data-testid="edit-button"
-                    >
-                        <Image
-                            src="/pencil.webp"
-                            alt="edit Pencil"
-                            width={iconWidth}
-                            height={iconHeight}
-                            onClick={onEditEnabled}
-                        />
-                    </div>
-                )}
+                {isUserAuthorized && showEditButton && <EditButton />}
             </div>
         );
 
     return (
         <div
             className={`
-          ${classNames.card}
-          ${isLoading && classNames.pointerEventsNone}
-          ${isTaskOverdue() && classNames.overdueTask}
+            ${classNames.card}
+            ${isLoading && classNames.pointerEventsNone}
+            ${isTaskOverdue() && classNames.overdueTask}
       `}
         >
             {/* loading spinner */}
-            {isLoading && (
-                <div className={classNames.loadingBg}>
-                    <div className={classNames.spinner}>
-                        <span className={classNames.screenReaderOnly}>
-                            loading
-                        </span>
-                    </div>
-                </div>
-            )}
+            {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
                 <span
@@ -477,19 +443,8 @@ const Card: FC<Props> = ({
             </div>
             <div className={classNames.cardItems}>
                 <span className={classNames.progressContainer}>
-                    <div className={classNames.progressIndicator}>
-                        <div
-                            className={`
-                  ${handleProgressColor(
-                      content.percentCompleted,
-                      content.startedOn,
-                      content.endsOn
-                  )}
-                  ${classNames.progressStyle}
-                `}
-                            style={{ width: `${content.percentCompleted}%` }}
-                        ></div>
-                    </div>
+                    <ProgressIndicator />
+
                     <span>{content.percentCompleted}% completed</span>
                 </span>
             </div>
@@ -498,33 +453,11 @@ const Card: FC<Props> = ({
                     shouldEdit && classNames.editMode
                 }`}
             >
-                <div className={classNames.taskTagLevelContainer}>
-                    {taskTagLevel?.map((item) => (
-                        <span
-                            key={item.tagId}
-                            className={classNames.taskTagLevel}
-                        >
-                            {item.tagName}{' '}
-                            <small>
-                                <b>LVL:{item.levelValue}</b>
-                            </small>
-                            {shouldEdit && isUserAuthorized && (
-                                <span>
-                                    <button
-                                        className={
-                                            classNames.removeTaskTagLevelBtn
-                                        }
-                                        onClick={() =>
-                                            updateTaskTagLevel(item, 'delete')
-                                        }
-                                    >
-                                        &#10060;
-                                    </button>
-                                </span>
-                            )}
-                        </span>
-                    ))}
-                </div>
+                <TaskLevelMap
+                    taskTagLevel={taskTagLevel}
+                    shouldEdit={shouldEdit}
+                    updateTaskTagLevel={updateTaskTagLevel}
+                />
                 {shouldEdit && isUserAuthorized && (
                     <TaskLevelEdit
                         taskTagLevel={taskTagLevel}
@@ -550,7 +483,6 @@ const Card: FC<Props> = ({
                         className={classNames.cardStrongFont}
                         contentEditable={shouldEdit}
                         onKeyPress={(e) => handleChange(e, 'assignee')}
-                        role="button"
                         tabIndex={0}
                     >
                         {cardDetails.assignee}
@@ -566,17 +498,7 @@ const Card: FC<Props> = ({
                     </span>
                 </span>
             </div>
-            {isUserAuthorized && showEditButton && (
-                <div className={classNames.editButton}>
-                    <Image
-                        src="/pencil.webp"
-                        alt="edit Pencil"
-                        width={iconWidth}
-                        height={iconHeight}
-                        onClick={onEditEnabled}
-                    />
-                </div>
-            )}
+            {isUserAuthorized && showEditButton && <EditButton />}
         </div>
     );
 };

@@ -34,7 +34,6 @@ $seeMoreTasksShadow: #595959cc;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-    border-radius: 10px;
 }
 .card_updated {
     border-radius: 10px;
@@ -97,7 +96,7 @@ $seeMoreTasksShadow: #595959cc;
 .progressContainer {
     width: 12rem;
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
     align-items: center;
 }
 .progressContainerUpdated {
