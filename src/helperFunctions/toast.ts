@@ -2,19 +2,20 @@
 
 import { toast as toastify } from 'react-toastify';
 
-const DELAY: number = 3000;
+const DELAY = 3000;
 enum ToastTypes {
-  INFO = 'info',
-  SUCCESS = 'success',
-  WARNING = 'warning',
-  ERROR = 'error'
+    INFO = 'info',
+    SUCCESS = 'success',
+    WARNING = 'warning',
+    ERROR = 'error',
 }
 
-const toast = (type: ToastTypes, message: string) => toastify[type](message, {
-  position: toastify.POSITION.TOP_RIGHT,
-  autoClose: DELAY,
-  pauseOnHover: false,
-  draggable: false,
-});
+const toast = (type: ToastTypes, message: string) =>
+    toastify[type](message, {
+        position: toastify.POSITION.TOP_RIGHT,
+        autoClose: DELAY,
+        pauseOnHover: false,
+        draggable: false,
+    });
 
 export { toast, ToastTypes };
