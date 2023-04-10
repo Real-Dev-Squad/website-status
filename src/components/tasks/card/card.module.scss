@@ -47,6 +47,7 @@ $seeMoreTasksShadow: #595959cc;
 .card_updated .cardItems:not(:nth-child(1)) {
     margin-top: 0.8rem;
 }
+
 .dateInfo {
     margin-top: 0.8rem;
 }
@@ -72,11 +73,7 @@ $seeMoreTasksShadow: #595959cc;
     align-items: center;
     gap: 1rem;
 }
-.contributor {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
+
 .contributorImage {
     img {
         border-radius: 40%;
@@ -99,12 +96,14 @@ $seeMoreTasksShadow: #595959cc;
     flex-direction: column;
     align-items: center;
 }
+
 .progressContainerUpdated {
     width: 12rem;
     display: flex;
     gap: 1rem;
     align-items: center;
 }
+
 .progressIndicator {
     width: 100%;
     height: 0.6rem;
