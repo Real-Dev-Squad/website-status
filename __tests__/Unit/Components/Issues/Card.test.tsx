@@ -33,11 +33,6 @@ describe("Issue card", () => {
 		expect(
 			screen.getByText(`Opened on ${date} by ${issueCreatedBy}`)
 		).toBeInTheDocument();
-	});
-
-	test("Should render convert to task button", () => {
-		const screen = render(<Card issue={DEFAULT_PROPS} />);
-
 		expect(screen.getByRole("button")).toHaveTextContent("Convert to task");
 	});
 });
