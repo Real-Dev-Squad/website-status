@@ -3,17 +3,17 @@ import Card from '@/components/issues/Card';
 import { IssueItem } from '@/interfaces/issueItem.type';
 
 type IssueListProps = {
-	list: IssueItem[];
+    list: IssueItem[];
 };
 
 const IssueList: FC<IssueListProps> = ({ list = [] }) => {
-	return (
-		<>
-			{list.map((issue: any) => (
-				<Card key={issue.id} issue={issue} />
-			))}
-		</>
-	);
+    return (
+        <>
+            {list.map((issue: any) => (
+                <Card key={issue.id} issue={issue} />
+            ))}
+        </>
+    );
 };
 
 export default IssueList;

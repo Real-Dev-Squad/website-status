@@ -14,26 +14,34 @@ import {
 } from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
-import taskItem, { taskItemPayload, updateTaskDetails } from '@/interfaces/taskItem.type';
+import taskItem, {
+    taskItemPayload,
+    updateTaskDetails,
+} from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
-import { toast,ToastTypes } from '@/helperFunctions/toast';
-import { ITEMS_URL, ITEM_BY_FILTER_URL, ITEM_TYPES, TASKS_URL } from '@/components/constants/url';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import {
+    ITEMS_URL,
+    ITEM_BY_FILTER_URL,
+    ITEM_TYPES,
+    TASKS_URL,
+} from '@/components/constants/url';
 import styles from '@/components/issues/Card.module.scss';
 
 import moment from 'moment';
 
 type Props = {
-  content: task;
-  shouldEdit: boolean;
-  onContentChange?: (changeId: string, changeObject: object) => void;
-  updateTask?: (taskId: string, details: updateTaskDetails) => void;
+    content: task;
+    shouldEdit: boolean;
+    onContentChange?: (changeId: string, changeObject: object) => void;
+    updateTask?: (taskId: string, details: updateTaskDetails) => void;
 };
 
 const Card: FC<Props> = ({
-  content,
-  shouldEdit = false,
-  onContentChange = () => undefined,
-  updateTask = () => undefined
+    content,
+    shouldEdit = false,
+    onContentChange = () => undefined,
+    updateTask = () => undefined,
 }) => {
     const statusRedList = [BLOCKED];
     const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
@@ -231,105 +239,107 @@ const Card: FC<Props> = ({
         return classNames.progressYellow;
     }
 
-  function renderDate(fromNowEndsOn: string, shouldEdit: boolean){
-    if(shouldEdit){
-      return(
-        <input
-        type='date'
-        onChange={(e) => setDateTimes(e.target.value)}
-        onKeyPress={(e) => handleChange(e, 'endsOn')}
-        value={dateTimes}
-      />
-      );
-    } 
-    return(  
-      <span
-          className={classNames.cardStrongFont}
-          role='button'
-          tabIndex={0}
-        >
-          {!cardDetails.endsOn  ? 'TBD' : fromNowEndsOn}
-      </span>
-      );
-  }    
+    function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
+        if (shouldEdit) {
+            return (
+                <input
+                    type="date"
+                    onChange={(e) => setDateTimes(e.target.value)}
+                    onKeyPress={(e) => handleChange(e, 'endsOn')}
+                    value={dateTimes}
+                />
+            );
+        }
+        return (
+            <span
+                className={classNames.cardStrongFont}
+                role="button"
+                tabIndex={0}
+            >
+                {!cardDetails.endsOn ? 'TBD' : fromNowEndsOn}
+            </span>
+        );
+    }
 
-  const onEditEnabled = () => {
-    actions.onEditRoute();
-};
+    const onEditEnabled = () => {
+        actions.onEditRoute();
+    };
 
-  const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
-  const hasTaskAssignee = () => cardDetails.assignee ?? false;
-  const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
-  const isTaskComplete = () => cardDetails.status === 'Completed';
+    const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
+    const hasTaskAssignee = () => cardDetails.assignee ?? false;
+    const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
+    const isTaskComplete = () => cardDetails.status === 'Completed';
 
-  const showAssignButton = () =>
-		hasIssueAssignee() && !hasTaskAssignee() && !isIssueClosed() && !isTaskComplete();
+    const showAssignButton = () =>
+        hasIssueAssignee() &&
+        !hasTaskAssignee() &&
+        !isIssueClosed() &&
+        !isTaskComplete();
 
-  // assign the task to the issue assignee
-  const handleAssignToIssueAssignee = async () => {
-		setIsLoading(true);
-		try {
-      const data: updateTaskDetails = {
-        assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
-        status: 'ASSIGNED',
-      };
-      
-      // Update start date when assigning the task to the issue assignee
-      if(!cardDetails.startedOn) {
-        data.startedOn = new Date().getTime() / 1000;
-      }
+    // assign the task to the issue assignee
+    const handleAssignToIssueAssignee = async () => {
+        setIsLoading(true);
+        try {
+            const data: updateTaskDetails = {
+                assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
+                status: 'ASSIGNED',
+            };
 
-			const { requestPromise } = fetch({
-				url: `${TASKS_URL}/${cardDetails.id}`,
-				method: 'patch',
-				data,
-			});
-			await requestPromise;
-   
-      updateTask(cardDetails.id, data);
-			toast(SUCCESS, 'Task assigned successfully!');
-			setIsLoading(false);
-		} catch (err: any) {
-			setIsLoading(false);
-			if ('response' in err) {
-				toast(ERROR, err.response.data.message);
-				return;
-			}
-			toast(ERROR, err.message);
-		}
-	};
+            // Update start date when assigning the task to the issue assignee
+            if (!cardDetails.startedOn) {
+                data.startedOn = new Date().getTime() / 1000;
+            }
 
-  const getFormattedClosedAtDate = () => {
-    const closedAt = cardDetails?.github?.issue?.closedAt;
-    return getDateInString(new Date(closedAt ?? Date.now()));
-  };
+            const { requestPromise } = fetch({
+                url: `${TASKS_URL}/${cardDetails.id}`,
+                method: 'patch',
+                data,
+            });
+            await requestPromise;
 
-  const handleCloseTask = async() => {
-    setIsLoading(true);
-		try {
-      const data = {
-        status: 'COMPLETED',
-      };
-			const { requestPromise } = fetch({
-				url: `${TASKS_URL}/${cardDetails.id}`,
-				method: 'patch',
-				data,
-			});
-			await requestPromise;
-      updateTask(cardDetails.id, data);
-			toast(SUCCESS, 'Task status changed successfully!');
-			setIsLoading(false);
-		} catch (err: any) {
-			setIsLoading(false);
-			if ('response' in err) {
-				toast(ERROR, err.response.data.message);
-				return;
-			}
-			toast(ERROR, err.message);
-		}
-  };
+            updateTask(cardDetails.id, data);
+            toast(SUCCESS, 'Task assigned successfully!');
+            setIsLoading(false);
+        } catch (err: any) {
+            setIsLoading(false);
+            if ('response' in err) {
+                toast(ERROR, err.response.data.message);
+                return;
+            }
+            toast(ERROR, err.message);
+        }
+    };
 
-  
+    const getFormattedClosedAtDate = () => {
+        const closedAt = cardDetails?.github?.issue?.closedAt;
+        return getDateInString(new Date(closedAt ?? Date.now()));
+    };
+
+    const handleCloseTask = async () => {
+        setIsLoading(true);
+        try {
+            const data = {
+                status: 'COMPLETED',
+            };
+            const { requestPromise } = fetch({
+                url: `${TASKS_URL}/${cardDetails.id}`,
+                method: 'patch',
+                data,
+            });
+            await requestPromise;
+            updateTask(cardDetails.id, data);
+            toast(SUCCESS, 'Task status changed successfully!');
+            setIsLoading(false);
+        } catch (err: any) {
+            setIsLoading(false);
+            if ('response' in err) {
+                toast(ERROR, err.response.data.message);
+                return;
+            }
+            toast(ERROR, err.message);
+        }
+    };
+
     return (
         <div
             className={`
@@ -442,76 +452,76 @@ const Card: FC<Props> = ({
                     />
                 )}
             </div>
-      <div className={classNames.cardItems}>
-        <span
-          className={classNames.cardSpecialFont}
-          contentEditable={shouldEdit}
-          onKeyPress={(e) => handleChange(e, 'startedOn')}
-          role="button"
-          tabIndex={0}
-        >
-          Started
-          {' '}
-            {!cardDetails.startedOn ? 'TBD' : fromNowStartedOn}
-        </span>
-        {
-            // Assigne to button if task was created from an issue
-            showAssignButton() ?
-            <button className={styles.card__top__button} type="button" onClick={handleAssignToIssueAssignee}>
-              {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
-            </button>
-            :
-            <span>
-              <span className={classNames.cardSpecialFont}>Assignee:</span>
-          <span
-            className={classNames.cardStrongFont}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'assignee')}
-            role="button"
-            tabIndex={0}
-          >
-            {cardDetails.assignee}
-          </span>
-          <span
-            className={classNames.contributorImage}
-          >
-            <Image
-              src={assigneeProfilePic}
-              alt="Assignee profile picture"
-              onError={contributorImageOnError}
-              width={45}
-              height={45}
-            />
-          </span>
-        </span>
-      }
-      </div>
-      {
-        // Suggest to close task if issue was closed
-        cardDetails.status !== 'Completed' && isIssueClosed() && 
-          <div className={classNames.cardItems}>
-            <span
-              className={classNames.cardSpecialFont}
-              contentEditable={shouldEdit}
-              onKeyPress={(e) => handleChange(e, 'startedOn')}
-              role="button"
-              tabIndex={0}
-            >
-              The issue was closed on {getFormattedClosedAtDate()}
-            </span>
-            <button className={styles.card__top__button} type="button" onClick={handleCloseTask}>
-              Close the task
-            </button>
-          </div>
-      }
-      {isUserAuthorized && showEditButton &&
-        <div className={classNames.editButton}>
-          <Image src='/pencil.webp'
-            alt='edit Pencil'
-            width={iconWidth}
-            height={iconHeight}
-            onClick={onEditEnabled}
-          />
+            <div className={classNames.cardItems}>
+                <span
+                    className={classNames.cardSpecialFont}
+                    contentEditable={shouldEdit}
+                    onKeyPress={(e) => handleChange(e, 'startedOn')}
+                    role="button"
+                    tabIndex={0}
+                >
+                    Started {!cardDetails.startedOn ? 'TBD' : fromNowStartedOn}
+                </span>
+                {
+                    // Assigne to button if task was created from an issue
+                    showAssignButton() ? (
+                        <button
+                            className={styles.card__top__button}
+                            type="button"
+                            onClick={handleAssignToIssueAssignee}
+                        >
+                            {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
+                        </button>
+                    ) : (
+                        <span>
+                            <span className={classNames.cardSpecialFont}>
+                                Assignee:
+                            </span>
+                            <span
+                                className={classNames.cardStrongFont}
+                                contentEditable={shouldEdit}
+                                onKeyPress={(e) => handleChange(e, 'assignee')}
+                                role="button"
+                                tabIndex={0}
+                            >
+                                {cardDetails.assignee}
+                            </span>
+                            <span className={classNames.contributorImage}>
+                                <Image
+                                    src={assigneeProfilePic}
+                                    alt="Assignee profile picture"
+                                    onError={contributorImageOnError}
+                                    width={45}
+                                    height={45}
+                                />
+                            </span>
+                        </span>
+                    )
+                }
+            </div>
+            {
+                // Suggest to close task if issue was closed
+                cardDetails.status !== 'Completed' && isIssueClosed() && (
+                    <div className={classNames.cardItems}>
+                        <span
+                            className={classNames.cardSpecialFont}
+                            contentEditable={shouldEdit}
+                            onKeyPress={(e) => handleChange(e, 'startedOn')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            The issue was closed on {getFormattedClosedAtDate()}
+                        </span>
+                        <button
+                            className={styles.card__top__button}
+                            type="button"
+                            onClick={handleCloseTask}
+                        >
+                            Close the task
+                        </button>
+                    </div>
+                )
+            }
             {isUserAuthorized && showEditButton && (
                 <div className={classNames.editButton}>
                     <Image
@@ -523,7 +533,6 @@ const Card: FC<Props> = ({
                     />
                 </div>
             )}
-        </div>}
         </div>
     );
 };

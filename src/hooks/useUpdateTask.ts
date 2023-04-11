@@ -8,50 +8,50 @@ import task from '@/interfaces/task.type';
  */
 
 const useUpdateTask = (
-	filteredTask: any[],
-	setFilteredTask: (tasks: any[]) => void
+    filteredTask: any[],
+    setFilteredTask: (tasks: any[]) => void
 ) => {
-	const updateTask = (
-		taskId: string,
-		details: {
-			status?: string;
-			assignee?: string;
-		}
-	) => {
-		const tasks: any = [];
+    const updateTask = (
+        taskId: string,
+        details: {
+            status?: string;
+            assignee?: string;
+        }
+    ) => {
+        const tasks: any = [];
 
-		for (const taskStatus in filteredTask) {
-			const taskList: task[] = filteredTask[taskStatus];
+        for (const taskStatus in filteredTask) {
+            const taskList: task[] = filteredTask[taskStatus];
 
-			taskList.forEach((task: task) => {
-				if (task.id === taskId) {
-					const newTask = {
-						...task,
-						...details,
-					};
-					let newStatus = details.status;
-					if (!newStatus) {
-						newStatus = taskStatus;
-					}
-					if (newStatus in tasks) {
-						tasks[newStatus] = [...tasks[newStatus], newTask];
-					} else {
-						tasks[newStatus] = [newTask];
-					}
-				} else {
-					if (taskStatus in tasks) {
-						tasks[taskStatus] = [...tasks[taskStatus], task];
-					} else {
-						tasks[taskStatus] = [task];
-					}
-				}
-			});
-		}
+            taskList.forEach((task: task) => {
+                if (task.id === taskId) {
+                    const newTask = {
+                        ...task,
+                        ...details,
+                    };
+                    let newStatus = details.status;
+                    if (!newStatus) {
+                        newStatus = taskStatus;
+                    }
+                    if (newStatus in tasks) {
+                        tasks[newStatus] = [...tasks[newStatus], newTask];
+                    } else {
+                        tasks[newStatus] = [newTask];
+                    }
+                } else {
+                    if (taskStatus in tasks) {
+                        tasks[taskStatus] = [...tasks[taskStatus], task];
+                    } else {
+                        tasks[taskStatus] = [task];
+                    }
+                }
+            });
+        }
 
-		setFilteredTask(tasks);
-	};
+        setFilteredTask(tasks);
+    };
 
-	return updateTask;
+    return updateTask;
 };
 
 export default useUpdateTask;
