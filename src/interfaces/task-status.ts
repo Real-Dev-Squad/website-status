@@ -3,4 +3,6 @@ export enum TASK_STATUS {
     BLOCKED = 'Blocked',
     COMPLETED = 'Completed',
     VERIFIED = 'Verified',
+    IN_PROGRESS = 'IN_PROGRESS',
+    ASSIGNED = 'ASSIGNED',
 }

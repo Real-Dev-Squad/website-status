@@ -1,5 +1,4 @@
 import award from '@/interfaces/award.type';
-import { TASK_STATUS } from './task-status';
 
 type task = {
     id: string;
@@ -10,7 +9,7 @@ type task = {
     links: string[];
     endsOn: string;
     startedOn: string;
-    status: TASK_STATUS;
+    status: string;
     assignee?: string;
     percentCompleted: number;
     dependsOn: string[];

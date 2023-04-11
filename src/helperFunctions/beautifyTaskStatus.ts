@@ -1,3 +1,4 @@
+import { TASK_STATUS } from '@/interfaces/task-status';
 import task from '../interfaces/task.type';
 
 const beautifyTaskStatus = (tasks: Array<task>) => {
@@ -8,7 +9,7 @@ const beautifyTaskStatus = (tasks: Array<task>) => {
             .split('_')
             .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
             .join(' ');
-        task.status = beautifiedTaskStatus;
+        task.status = beautifiedTaskStatus as TASK_STATUS;
         return task;
     });
     return taskList;

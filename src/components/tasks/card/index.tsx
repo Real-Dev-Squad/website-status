@@ -93,7 +93,9 @@ const Card: FC<Props> = ({
 
     const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
-    const statusFontColor = !statusRedList.includes(cardDetails.status)
+    const statusFontColor = !statusRedList.includes(
+        cardDetails.status as TASK_STATUS
+    )
         ? '#00a337'
         : '#f83535';
     const iconHeight = '25';
@@ -105,7 +107,8 @@ const Card: FC<Props> = ({
     function isTaskOverdue() {
         const timeLeft = localEndsOn.valueOf() - Date.now();
         return (
-            !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0
+            !statusNotOverDueList.includes(cardDetails.status as TASK_STATUS) &&
+            timeLeft <= 0
         );
     }
 
