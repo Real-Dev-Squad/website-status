@@ -50,12 +50,12 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 			setTaskExists(true);
 			setIsLoading(false);
 		} catch (error: any) {
+			setIsLoading(false);
 			if ("response" in error) {
 				toast(ERROR, error.response.data.message);
 				return;
 			}
 			toast(ERROR, error.message);
-			setIsLoading(false);
 		}
 	};
 
@@ -72,7 +72,10 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 						<p className="card__body">{issue.body}</p>
 						{issue.assignee ? "Assigned to " + issue.assignee.login : ""}
 						<p className={styles.card__link}>
-							Issue Link : <a href={issue.html_url}>{issue.html_url}</a>{" "}
+							Issue Link :{" "}
+							<a href={issue.html_url} target="_blank" rel="noreferrer">
+								{issue.html_url}
+							</a>{" "}
 						</p>
 					</div>
 
