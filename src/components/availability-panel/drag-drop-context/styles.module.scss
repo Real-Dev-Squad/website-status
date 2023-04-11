@@ -2,132 +2,136 @@ $blueColor: #041484;
 $borderForItem: 2px solid #e0e0e0;
 
 .flexContainer {
-  display: flex;
-  justify-content: space-around;
-  padding: 2rem;
-  margin: 0 2rem;
-  position: relative;
-  margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-around;
+    padding: 2rem;
+    margin: 0 2rem;
+    position: relative;
+    margin-bottom: 2rem;
 }
 
 .emptyArray {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 32rem;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 32rem;
+    margin-bottom: 1rem;
 }
 
-.emptyText{
-  font-weight: bold;
-  text-align: center;
-  font-size: 1rem;
+.emptyText {
+    font-weight: bold;
+    text-align: center;
+    font-size: 1rem;
 }
 
 .statusMessage {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  font-weight: bold;
-  color: $blueColor;
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    font-weight: bold;
+    color: $blueColor;
 }
 
 .divider {
-  border-left: 1px solid #d9d9d9;
-  position: absolute;
-  height: 100%;
+    border-left: 1px solid #d9d9d9;
+    position: absolute;
+    height: 100%;
 }
 
 .searchBoxContainer {
-  display: flex;
-  flex-direction: column;
-  display: none; // to be remove for next feature
-  span {
-    height: 1.5rem;
-    width: 100%;
-    font-size: 1.5rem;
-    color: $blueColor;
-    margin-bottom: 0.5rem;
-  }
+    display: flex;
+    flex-direction: column;
+    display: none; // to be remove for next feature
+    span {
+        height: 1.5rem;
+        width: 100%;
+        font-size: 1.5rem;
+        color: $blueColor;
+        margin-bottom: 0.5rem;
+    }
 
-  .searchText {
-    cursor: pointer;
-  }
+    .searchText {
+        cursor: pointer;
+    }
 
-  input {
-    height: 2.5rem;
-    width: 32rem;
-    background: #ffffff;
-    border: 2px solid #646464;
-    border-radius: 5px;
-  }
+    input {
+        height: 2.5rem;
+        width: 32rem;
+        background: #ffffff;
+        border: 2px solid #646464;
+        border-radius: 5px;
+    }
 }
 
 .heading {
-  display: none;
-  height: 2.5rem;
-  width: 32rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  background-color: rgb(209, 209, 209);
+    display: none;
+    height: 2.5rem;
+    width: 32rem;
+    margin: 0.5rem 0;
+    border-radius: 5px;
+    background-color: rgb(209, 209, 209);
 }
 
 .taskItem {
-  padding: 0.8rem;
-  width: 30rem;
-  margin: 1rem 0;
-  display: flex;
-  align-items: center;
-  color: $blueColor;
-  font-size: large;
-  border: $borderForItem;
-  border-radius: 5px;
-  user-select: none;
+    padding: 0.8rem;
+    width: 30rem;
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    color: $blueColor;
+    font-size: large;
+    border: $borderForItem;
+    border-radius: 5px;
+    user-select: none;
 }
 
 .memberCard {
-  display: flex;
-  width: 30rem;
-  margin: 1rem 0;
-  border: $borderForItem;
-  padding: 0.8rem;
-  align-items: center;
-  flex-wrap: wrap;
-  user-select: none;
+    display: flex;
+    width: 30rem;
+    margin: 1rem 0;
+    border: $borderForItem;
+    padding: 0.8rem;
+    align-items: center;
+    flex-wrap: wrap;
+    user-select: none;
 
-  img {
-    border-radius: 50%;
-  }
+    img {
+        border-radius: 50%;
+    }
 
-  span {
-    padding-left: 1rem;
-    font-weight: bold;
-    font-size: 1rem;
-    color: #646464;
-  }
+    span {
+        padding-left: 1rem;
+        font-weight: bold;
+        font-size: 1rem;
+        color: #646464;
+    }
 }
 
 @media only screen and (max-width: 1200px) {
-  .divider {
-    position: relative;
-    margin-bottom: 1rem;
-    border-top: 1px solid #d9d9d9;
-  }
-  .flexContainer {
-    flex-direction: column;
-    margin: 0;
-  }
-
-  .searchBoxContainer {
-    input {
-      width: auto;
+    .divider {
+        position: relative;
+        margin-bottom: 1rem;
+        border-top: 1px solid #d9d9d9;
     }
-  }
+    .flexContainer {
+        flex-direction: column;
+        margin: 0;
+    }
 
-.heading, .taskItem, .memberCard { width: auto}
+    .searchBoxContainer {
+        input {
+            width: auto;
+        }
+    }
 
-  .emptyArray {
-    align-items: center;
-    width: auto;
-  }
+    .heading,
+    .taskItem,
+    .memberCard {
+        width: auto;
+    }
+
+    .emptyArray {
+        align-items: center;
+        width: auto;
+    }
 }

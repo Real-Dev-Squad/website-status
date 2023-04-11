@@ -1,4 +1,4 @@
-import task from "@/interfaces/task.type";
+import task from '@/interfaces/task.type';
 
 /**
  *

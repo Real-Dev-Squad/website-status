@@ -1,97 +1,97 @@
 .card {
-  box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.65);
-  border-radius: 10px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-  
-  .title {
-    width: 100%;
-    color: #041484;
-    font-size: 2rem;
-    font-weight: bold;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  
-    margin-bottom: 1rem;
-  }
-
-  .card:hover {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-
-  .cardFooter {
+    box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.65);
+    border-radius: 10px;
+    padding: 1.5rem;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    margin-bottom: 2rem;
 
-    .profilePicture {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 6em;
+    .title {
+        width: 100%;
+        color: #041484;
+        font-size: 2rem;
+        font-weight: bold;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
 
-      & > img {
-        width: 3em;
-        border-radius: 50%;
-      }
+        margin-bottom: 1rem;
     }
-  } 
 
-  .statusLable {
-    color: grey;
-    font-weight: bold;
-  }
+    .card:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+            0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
 
-  .Center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1rem;
+    .cardFooter {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
 
-    .participantsLists {
-      list-style: none;
-      display: flex;
-      vertical-align: top;
-      margin-top: 0;
+        .profilePicture {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 6em;
 
-      .participantsList > img {
-        border-radius: 50%;
-        width: 3rem;
-        height: 3rem;
-        margin-left: -20px;
-      }
-    } 
-  }
+            & > img {
+                width: 3em;
+                border-radius: 50%;
+            }
+        }
+    }
+
+    .statusLable {
+        color: grey;
+        font-weight: bold;
+    }
+
+    .Center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+
+        .participantsLists {
+            list-style: none;
+            display: flex;
+            vertical-align: top;
+            margin-top: 0;
+
+            .participantsList > img {
+                border-radius: 50%;
+                width: 3rem;
+                height: 3rem;
+                margin-left: -20px;
+            }
+        }
+    }
 }
 
-.links{
-  text-decoration: none;
-  cursor:pointer;
-
-  .activeBtn{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #4fb90d;
-    color: white;
-    border: 2px solid black;
-    border-radius: 5px;
-    padding: 0.5rem 1rem;
-    font: inherit;
+.links {
+    text-decoration: none;
     cursor: pointer;
-    font-weight: bolder;
-    font-size: 1.5rem;
-  }
 
-  .activeBtn:hover,
-  .activeBtn:active {
-    background: darkgreen;
-  }
+    .activeBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #4fb90d;
+        color: white;
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        font: inherit;
+        cursor: pointer;
+        font-weight: bolder;
+        font-size: 1.5rem;
+    }
+
+    .activeBtn:hover,
+    .activeBtn:active {
+        background: darkgreen;
+    }
 }
-

@@ -1,14 +1,14 @@
-import { FC, useState, useEffect } from "react";
-import useFetch from "@/hooks/useFetch";
-import IssueList from "../components/issues/IssueList";
-import classNames from "@/styles/issues.module.scss";
-import Layout from "@/components/Layout";
-import Head from "@/components/head";
+import { FC, useState, useEffect } from 'react';
+import useFetch from '@/hooks/useFetch';
+import IssueList from '../components/issues/IssueList';
+import classNames from '@/styles/issues.module.scss';
+import Layout from '@/components/Layout';
+import Head from '@/components/head';
 import {
 	ISSUES_FETCH_ERROR_MESSAGE,
 	NO_ISSUES_FOUND_MESSAGE,
-} from "@/components/constants/messages";
-import { ISSUES_URL } from "@/components/constants/url";
+} from '@/components/constants/messages';
+import { ISSUES_URL } from '@/components/constants/url';
 
 const Issues: FC = () => {
 	const [issueList, setissueList] = useState<[]>([]);
@@ -24,11 +24,11 @@ const Issues: FC = () => {
 	});
 
 	useEffect(() => {
-		if ("issues" in response) {
+		if ('issues' in response) {
 			const issues = response.issues;
 			const onlyIssues = issues.filter(
 				(issue: { hasOwnProperty: (arg0: string) => any }) =>
-					!issue.hasOwnProperty("pull_request")
+					 !Object.prototype.hasOwnProperty.call(issue, 'pull_request')
 			);
 			setissueList(onlyIssues);
 		}

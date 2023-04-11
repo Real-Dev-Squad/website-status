@@ -1,10 +1,10 @@
-import { FC, useState } from "react";
-import styles from "@/components/issues/Card.module.scss";
-import { toast, ToastTypes } from "@/helperFunctions/toast";
+import { FC, useState } from 'react';
+import styles from '@/components/issues/Card.module.scss';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 
-import fetch from "@/helperFunctions/fetch";
-import { IssueCardProps } from "@/interfaces/issueProps.type";
-import { TASKS_URL } from "../constants/url";
+import fetch from '@/helperFunctions/fetch';
+import { IssueCardProps } from '@/interfaces/issueProps.type';
+import { TASKS_URL } from '../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
@@ -31,10 +31,10 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 			const url = TASKS_URL;
 			const data = {
 				title: issue.title,
-				type: "feature",
-				status: "AVAILABLE",
+				type: 'feature',
+				status: 'AVAILABLE',
 				percentCompleted: 0,
-				priority: "TBD",
+				priority: 'TBD',
 				github: {
 					issue: getIssueInfo(),
 				},
@@ -42,16 +42,16 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 
 			const { requestPromise } = fetch({
 				url,
-				method: "post",
+				method: 'post',
 				data,
 			});
 			await requestPromise;
-			toast(SUCCESS, "Added the task");
+			toast(SUCCESS, 'Added the task');
 			setTaskExists(true);
 			setIsLoading(false);
 		} catch (error: any) {
 			setIsLoading(false);
-			if ("response" in error) {
+			if ('response' in error) {
 				toast(ERROR, error.response.data.message);
 				return;
 			}
@@ -69,13 +69,13 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 							Opened on {created} by {issue.user.login}
 							<br></br>
 						</p>
-						<p className="card__body">{issue.body}</p>
-						{issue.assignee ? "Assigned to " + issue.assignee.login : ""}
+						<p className='card__body'>{issue.body}</p>
+						{issue.assignee ? 'Assigned to ' + issue.assignee.login : ''}
 						<p className={styles.card__link}>
-							Issue Link :{" "}
-							<a href={issue.html_url} target="_blank" rel="noreferrer">
+							Issue Link :{' '}
+							<a href={issue.html_url} target='_blank' rel='noreferrer'>
 								{issue.html_url}
-							</a>{" "}
+							</a>{' '}
 						</p>
 					</div>
 

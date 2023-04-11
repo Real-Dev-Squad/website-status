@@ -11,4 +11,4 @@ export const MERGED = 'MERGED';
 export const SANITY_CHECK = 'SANITY_CHECK';
 export const REGRESSION_CHECK = 'REGRESSION_CHECK';
 export const RELEASED = 'RELEASED';
-export const VERIFIED = "VERIFIED";
+export const VERIFIED = 'VERIFIED';

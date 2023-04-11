@@ -1,6 +1,6 @@
-import { FC } from "react";
-import Card from "@/components/issues/Card";
-import { IssueItem } from "@/interfaces/issueItem.type";
+import { FC } from 'react';
+import Card from '@/components/issues/Card';
+import { IssueItem } from '@/interfaces/issueItem.type';
 
 type IssueListProps = {
 	list: IssueItem[];
