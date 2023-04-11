@@ -6,12 +6,6 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
-import {
-    AVAILABLE,
-    BLOCKED,
-    COMPLETED,
-    VERIFIED,
-} from '@/components/constants/beautified-task-status';
 import { ALT_KEY } from '@/components/constants/key';
 import TaskLevelEdit from './TaskTagEdit';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
@@ -27,6 +21,7 @@ import { useRouter } from 'next/router';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
+import { TASK_STATUS } from '@/interfaces/task-status';
 
 type Props = {
     content: task;
@@ -39,8 +34,12 @@ const Card: FC<Props> = ({
     shouldEdit = false,
     onContentChange = () => undefined,
 }) => {
-    const statusRedList = [BLOCKED];
-    const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE];
+    const statusRedList = [TASK_STATUS.BLOCKED];
+    const statusNotOverDueList = [
+        TASK_STATUS.COMPLETED,
+        TASK_STATUS.VERIFIED,
+        TASK_STATUS.AVAILABLE,
+    ];
     const cardDetails = content;
     const [assigneeProfilePic, setAssigneeProfilePic] = useState(
         `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
@@ -342,7 +341,7 @@ const Card: FC<Props> = ({
                         role="button"
                         tabIndex={0}
                     >
-                        {cardDetails.status === AVAILABLE
+                        {cardDetails.status === TASK_STATUS.AVAILABLE
                             ? 'Not started '
                             : `Started on ${fromNowStartedOn}`}
                     </span>

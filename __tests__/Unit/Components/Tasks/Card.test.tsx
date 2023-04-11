@@ -8,6 +8,7 @@ import {
     renderWithRouter,
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
+import { TASK_STATUS } from '@/interfaces/task-status';
 
 const DEFAULT_PROPS = {
     content: {
@@ -29,7 +30,7 @@ const DEFAULT_PROPS = {
         purpose: 'string',
         percentCompleted: 0,
         endsOn: '1618790400',
-        status: 'assigned',
+        status: TASK_STATUS.COMPLETED,
         featureUrl: 'string',
         type: 'feature',
         createdBy: 'ankush',

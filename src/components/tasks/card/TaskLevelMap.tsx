@@ -18,16 +18,17 @@ export const TaskLevelMap = ({
     const isUserAuthorized = useContext(isUserAuthorizedContext);
 
     return (
-        <div className={classNames.taskTagLevelContainer}>
+        <div className={classNames.taskTagLevelContainer} >
             {taskTagLevel?.map((item) => (
-                <span key={item.tagId} className={classNames.taskTagLevel}>
+                <span key={item.tagId} className={classNames.taskTagLevel} data-testid='tag-name'>
                     {item.tagName}
-                    <small>
+                    <small data-testid='level'>
                         <b>LVL:{item.levelValue}</b>
                     </small>
                     {shouldEdit && isUserAuthorized && (
                         <span>
                             <button
+                            data-testid='delete-btn'
                                 className={classNames.removeTaskTagLevelBtn}
                                 onClick={() =>
                                     updateTaskTagLevel(item, 'delete')
