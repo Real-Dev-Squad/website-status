@@ -11,7 +11,7 @@ import {
 import { ISSUES_URL } from '@/components/constants/url';
 
 const Issues: FC = () => {
-    const [issueList, setissueList] = useState<[]>([]);
+    const [issueList, setIssueList] = useState<[]>([]);
 
     const { response, error, isLoading } = useFetch(ISSUES_URL, {
         data: {
@@ -30,7 +30,7 @@ const Issues: FC = () => {
                 (issue: { hasOwnProperty: (arg0: string) => any }) =>
                     !Object.prototype.hasOwnProperty.call(issue, 'pull_request')
             );
-            setissueList(onlyIssues);
+            setIssueList(onlyIssues);
         }
     }, [isLoading, response]);
 
