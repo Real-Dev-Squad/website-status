@@ -21,18 +21,12 @@ const DEFAULT_PROPS: IssueItem = {
 describe('Issue card', () => {
     test('Should render issue information correctly', () => {
         const screen = render(<Card issue={DEFAULT_PROPS} />);
-
-        const issueTitle =
-            'Status view to all features being built for our app';
-        const issueLink =
-            'https://github.com/Real-Dev-Squad/todo-action-items/issues/11';
-        const issueCreatedBy = 'ankushdharkar';
         const date = new Date(DEFAULT_PROPS.created_at).toDateString();
 
-        expect(screen.getByText(issueTitle)).toBeInTheDocument();
-        expect(screen.getByText(issueLink)).toBeInTheDocument();
+        expect(screen.getByText(DEFAULT_PROPS.title)).toBeInTheDocument();
+        expect(screen.getByText(DEFAULT_PROPS.html_url)).toBeInTheDocument();
         expect(
-            screen.getByText(`Opened on ${date} by ${issueCreatedBy}`)
+            screen.getByText(`Opened on ${date} by ${DEFAULT_PROPS.user.login}`)
         ).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('Convert to task');
     });
