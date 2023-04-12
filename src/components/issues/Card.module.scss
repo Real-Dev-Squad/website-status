@@ -1,4 +1,8 @@
 .card {
+    --card-text: #78716c;
+    --card-link-text: #2563eb;
+    --card-link-bg: #dbeafe;
+
     padding: 1rem;
     width: 100%;
     background: #fff;
@@ -27,7 +31,6 @@
 .card__top__details {
     flex: 1;
     max-width: 75%;
-    width: 100%;
     overflow-x: clip;
 }
 
@@ -44,12 +47,12 @@
     & p {
         font-size: 0.875rem;
         font-weight: 500;
-        color: #78716c;
+        color: var(--card-text);
     }
 }
 
 .card__top__details__desc {
-    color: #78716c;
+    color: var(--card-text);
 }
 
 .card__top__button {
@@ -58,8 +61,8 @@
     font-size: 0.875rem;
     border: none;
     border-radius: 0.25rem;
-    background: #dbeafe;
-    color: #2563eb;
+    background: var(--card-link-bg);
+    color: var(--card-link-text);
     font-weight: 500;
     cursor: pointer;
     margin: 10px 0 0;
@@ -80,10 +83,10 @@
     font-size: 12px;
     line-height: 140%;
     /* or 17px */
-    color: #78716c;
+    color: var(--card-text);
 
     & a {
-        color: #2563eb;
+        color: var(--card-link-text);
     }
 }
 
@@ -93,8 +96,8 @@
     font-size: 0.875rem;
     border: none;
     border-radius: 1.25rem;
-    background: #dbeafe;
-    color: #2563eb;
+    background: var(--card-link-bg);
+    color:  var(--card-link-text);
     font-weight: 500;
 }
 
