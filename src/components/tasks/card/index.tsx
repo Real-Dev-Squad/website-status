@@ -279,15 +279,23 @@ const Card: FC<Props> = ({
             )}
 
             <div className={classNames.cardItems}>
-                <span
-                    className={classNames.cardTitle}
-                    contentEditable={shouldEdit}
-                    onKeyPress={(e) => handleChange(e, 'title')}
-                    role="button"
-                    tabIndex={0}
+                <Link
+                    href={{
+                        pathname: '/tasks/[id]',
+                    }}
+                    as={`/tasks/${cardDetails.id}`}
+                    style={{ textDecoration: 'none' }}
                 >
-                    {cardDetails.title}
-                </span>
+                    <span
+                        className={classNames.cardTitle}
+                        contentEditable={shouldEdit}
+                        onKeyPress={(e) => handleChange(e, 'title')}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        {cardDetails.title}
+                    </span>
+                </Link>
                 <span>
                     <span className={classNames.cardSpecialFont}>Status:</span>
                     <span
