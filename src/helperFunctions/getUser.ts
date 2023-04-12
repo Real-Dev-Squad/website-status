@@ -5,7 +5,6 @@ const userData = async () => {
   try {
     const { requestPromise } = fetch({
       url: USER_SELF,
-      method: 'get',
     });
     const response = await requestPromise;
     return response.data;
