@@ -1,6 +1,6 @@
 export type IssueItem = {
     id: number;
-    title: string | null | undefined;
+    title: string;
     user: {
         login: string | null | undefined;
     };
@@ -16,7 +16,7 @@ export type IssueItem = {
         id: null | undefined | number;
         name: string | null | undefined;
     }[];
-    state: string | null | undefined;
+    state: string;
     assignees?: any[] | null | undefined;
     created_at: string | number | Date;
     updated_at?: string | number | Date;
