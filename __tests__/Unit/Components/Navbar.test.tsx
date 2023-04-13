@@ -57,4 +57,10 @@ describe('Navbar', () => {
         expect(statusLink).toHaveAttribute('href', 'https://status.realdevsquad.com');
     });
 
+    test('whether logo is rendering or not', () => {
+        const { getByTestId } = render(<NavBar />);
+        const logo = getByTestId('logo');
+        expect(logo).toBeInTheDocument();
+    });
+
 });
