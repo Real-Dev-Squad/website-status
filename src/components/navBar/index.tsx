@@ -22,10 +22,10 @@ const NavBar = () => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
 
     return (
-        <nav className={styles.navBar}>
+        <nav data-testid="navbar" className={styles.navBar}>
             <div className={styles.navLinks}>
                 <a className={styles.logo} href={HOME_URL}>
-                    <Image
+                    <Image data-testid="logo"
                         width="45"
                         height="45"
                         src={RDS_LOGO}
