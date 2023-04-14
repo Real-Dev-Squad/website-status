@@ -25,8 +25,8 @@ const Issues: FC = () => {
 
     useEffect(() => {
         if ('issues' in response) {
-            const issues = response.issues;
-            const onlyIssues = issues.filter(
+            const issuesAndPullRequests = response.issues;
+            const onlyIssues = issuesAndPullRequests.filter(
                 (issue: { hasOwnProperty: (arg0: string) => any }) =>
                     !Object.prototype.hasOwnProperty.call(issue, 'pull_request')
             );
