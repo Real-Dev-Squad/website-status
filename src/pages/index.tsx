@@ -35,6 +35,7 @@ import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
 import useUpdateTask from '@/hooks/useUpdateTask';
+import groupTasksByStatus from '@/utils/groupTasksByStatus';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const STATUS_ORDER = [
@@ -94,14 +95,7 @@ const Index: FC = () => {
                     STATUS_ORDER.indexOf(a.status) -
                     STATUS_ORDER.indexOf(b.status)
             );
-            const taskMap: any = [];
-            tasks.forEach((item) => {
-                if (item.status in taskMap) {
-                    taskMap[item.status] = [...taskMap[item.status], item];
-                } else {
-                    taskMap[item.status] = [item];
-                }
-            });
+            const taskMap: any = groupTasksByStatus(tasks);
             setFilteredTask(taskMap);
         }
 
