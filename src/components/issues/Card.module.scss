@@ -1,8 +1,8 @@
-.card {
-    --card-text: #78716c;
-    --card-link-text: #2563eb;
-    --card-link-bg: #dbeafe;
+$card-text: #78716c;
+$card-link-text: #2563eb;
+$card-link-bg: #dbeafe;
 
+.card {
     padding: 1rem;
     width: 100%;
     background: #fff;
@@ -47,12 +47,12 @@
     & p {
         font-size: 0.875rem;
         font-weight: 500;
-        color: var(--card-text);
+        color: $card-text;
     }
 }
 
 .card__top__details__desc {
-    color: var(--card-text);
+    color: $card-text;
 }
 
 .card__top__button {
@@ -61,8 +61,8 @@
     font-size: 0.875rem;
     border: none;
     border-radius: 0.25rem;
-    background: var(--card-link-bg);
-    color: var(--card-link-text);
+    background: $card-link-bg;
+    color: $card-link-text;
     font-weight: 500;
     cursor: pointer;
     margin: 10px 0 0;
@@ -83,10 +83,10 @@
     font-size: 12px;
     line-height: 140%;
     /* or 17px */
-    color: var(--card-text);
+    color: $card-text;
 
     & a {
-        color: var(--card-link-text);
+        color: $card-link-text;
     }
 }
 
@@ -96,8 +96,8 @@
     font-size: 0.875rem;
     border: none;
     border-radius: 1.25rem;
-    background: var(--card-link-bg);
-    color:  var(--card-link-text);
+    background: $card-link-bg;
+    color: $card-link-text;
     font-weight: 500;
 }
 
