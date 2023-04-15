@@ -2,9 +2,8 @@ import { FC, useState, useContext } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import classNames from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
+import task, { TABS, Tab } from '@/interfaces/task.type';
 import Tabs from '@/components/Tabs';
-import { Tab } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -72,7 +71,7 @@ const Index: FC = () => {
     const renderTabSection = () => (
         <div className={classNames.tabsContainer}>
             <Tabs
-                tabs={Object.values(Tab) as Tab[]}
+                tabs={TABS as Tab[]}
                 onSelect={onSelect}
                 activeTab={activeTab}
             />
