@@ -18,23 +18,24 @@ interface Props {
 }
 
 const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
-    const [isUserAuthorized, setIsUserAuthorized] = useState<boolean>(false);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const { requestPromise } = fetch({ url: USER_SELF });
-                const { data } = await requestPromise;
-                const userRoles = {
-                    adminUser: data.roles?.admin,
-                    superUser: data.roles?.super_user,
-                };
-                const { adminUser, superUser } = userRoles;
-                setIsUserAuthorized(!!adminUser || !!superUser);
-            } catch (err: any) {
-                toast(ERROR, err.message);
-            }
+  const [isUserAuthorized, setIsUserAuthorized] = useState<boolean>(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { requestPromise } = fetch({ url: USER_SELF });
+        const { data } = await requestPromise;
+        const userRoles = {
+          adminUser: data.roles?.admin,
+          superUser: data.roles?.super_user,
         };
-        fetchData();
+        const { adminUser, superUser } = userRoles;
+        setIsUserAuthorized(!!adminUser || !!superUser);
+      } catch (err) {
+        console.error(err);
+        setIsUserAuthorized(false);
+      }
+    };
+    fetchData();
 
         return () => {
             setIsUserAuthorized(false);
