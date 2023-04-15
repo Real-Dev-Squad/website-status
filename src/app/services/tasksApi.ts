@@ -8,7 +8,7 @@ type TasksQueryResponse = {
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAllTasks: builder.query<TasksQueryResponse, unknown>({
+        getAllTasks: builder.query<TasksQueryResponse, void>({
             query: () => '/tasks',
             providesTags: ['Tasks'],
             transformResponse: (response: TasksQueryResponse) => {
@@ -20,7 +20,7 @@ export const tasksApi = api.injectEndpoints({
                 };
             },
         }),
-        getMineTasks: builder.query<TasksQueryResponse, unknown>({
+        getMineTasks: builder.query<TasksQueryResponse, void>({
             query: () => '/tasks/mine',
             providesTags: ['Tasks'],
         }),

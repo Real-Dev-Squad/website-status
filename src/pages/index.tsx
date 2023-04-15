@@ -47,7 +47,7 @@ async function updateCardContent(id: string, cardDetails: task) {
 
 const Index: FC = () => {
     const { state: appState } = useAppContext();
-    const { data: response, isError, isLoading } = useGetAllTasksQuery(null);
+    const { data: response, isError, isLoading } = useGetAllTasksQuery();
     const { isEditMode } = appState;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
@@ -96,7 +96,7 @@ const Index: FC = () => {
             <Head title="Tasks" />
             <TasksProvider>
                 <div className={classNames.container}>
-                    {!!isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
+                    {isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
                     {isLoading ? (
                         <p>Loading...</p>
                     ) : (
