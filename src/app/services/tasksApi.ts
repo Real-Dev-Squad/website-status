@@ -1,23 +1,17 @@
 import task from '@/interfaces/task.type';
 import { api } from './api';
 
-type TasksQueryResponse = {
-    message: string;
-    tasks: task[];
-};
+type TasksQueryResponse = { message: string; tasks: task[] };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAllTasks: builder.query<TasksQueryResponse, void>({
+        getAllTasks: builder.query<task[], void>({
             query: () => '/tasks',
             providesTags: ['Tasks'],
             transformResponse: (response: TasksQueryResponse) => {
-                return {
-                    ...response,
-                    tasks: response.tasks.sort(
-                        (a: task, b: task) => +a.endsOn - +b.endsOn
-                    ),
-                };
+                return response?.tasks?.sort(
+                    (a: task, b: task) => +a.endsOn - +b.endsOn
+                );
             },
         }),
         getMineTasks: builder.query<TasksQueryResponse, void>({

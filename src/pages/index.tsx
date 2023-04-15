@@ -47,7 +47,7 @@ async function updateCardContent(id: string, cardDetails: task) {
 
 const Index: FC = () => {
     const { state: appState } = useAppContext();
-    const { data: response, isError, isLoading } = useGetAllTasksQuery();
+    const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
     const { isEditMode } = appState;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
@@ -57,16 +57,17 @@ const Index: FC = () => {
         setActiveTab(tab);
     };
 
-    const tasksGroupedByStatus = updateTasksStatus(
-        response?.tasks || []
-    ).reduce((acc: Record<string, task[]>, curr: task) => {
-        return acc[curr.status as keyof task]
-            ? {
-                  ...acc,
-                  [curr.status]: [...acc[curr.status as keyof task], curr],
-              }
-            : { ...acc, [curr.status]: [curr] };
-    }, {});
+    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+        (acc: Record<string, task[]>, curr: task) => {
+            return acc[curr.status as keyof task]
+                ? {
+                      ...acc,
+                      [curr.status]: [...acc[curr.status as keyof task], curr],
+                  }
+                : { ...acc, [curr.status]: [curr] };
+        },
+        {}
+    );
 
     const renderTabSection = () => (
         <div className={classNames.tabsContainer}>
