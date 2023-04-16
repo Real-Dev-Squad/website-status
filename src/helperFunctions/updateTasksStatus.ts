@@ -11,12 +11,12 @@ const updateTasksStatus = (tasks: Array<task>) => {
         blocked = 'BLOCKED',
     }
 
-    tasks.forEach((taskItem, index) => {
-        taskList.push(taskItem);
-        taskList[index].status =
-            Status[taskList[index].status as keyof typeof Status];
+    return tasks.map((taskItem, index) => {
+        return {
+            ...taskItem,
+            status: Status[taskList[index].status as keyof typeof Status],
+        };
     });
-    return tasks;
 };
 
 export default updateTasksStatus;
