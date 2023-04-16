@@ -10,7 +10,7 @@ export const taskTagsApi = api.injectEndpoints({
             query: ({ itemId }) =>
                 `${ITEM_BY_FILTER_URL}/?itemType=TASK&itemId=${itemId}`,
             providesTags: (_result, _err, { itemId }) => [
-                { type: 'TASK', itemId },
+                { type: 'TaskTag', itemId },
             ],
             transformResponse: (response: TasksQueryResponse) => {
                 return response.data;
@@ -36,7 +36,9 @@ export const taskTagsApi = api.injectEndpoints({
                 };
                 return { url: ITEMS_URL, method: 'POST', data: body };
             },
-            invalidatesTags: () => [{ type: 'TASK' }],
+            invalidatesTags: (_result, _err, { itemId }) => [
+                { type: 'TaskTag', itemId },
+            ],
         }),
         deleteTaskTagLevel: build.mutation<
             taskItem[],
@@ -50,7 +52,9 @@ export const taskTagsApi = api.injectEndpoints({
                 };
                 return { url: ITEMS_URL, method: 'DELETE', data: body };
             },
-            invalidatesTags: () => [{ type: 'TASK' }],
+            invalidatesTags: (_result, _err, { itemId }) => [
+                { type: 'TaskTag', itemId },
+            ],
         }),
     }),
 });
