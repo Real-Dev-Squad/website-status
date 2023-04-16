@@ -1,119 +1,119 @@
 $white: #fff;
 $theme-blue: #1d1283;
 $light-black: rgba(0, 0, 0, 0.778);
-
+$off-white: #f0f0f0;
 .parentContainer {
-  margin: 2rem 4rem 0;
+    margin: 2rem 4rem 0;
 }
 
 .titleContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 1rem;
 }
 
 .taskTitle {
-  font-size: 1.5rem;
-  color: $light-black;
-  padding: 0.5rem 0;
-  font-weight: bold;
+    font-size: 1.5rem;
+    color: $light-black;
+    padding: 0.5rem 0;
+    font-weight: bold;
 }
 
 .button {
-  display: block;
-  font-size: 1rem;
-  width: 5rem;
-  background-color: $theme-blue;
-  color: $white;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  font-weight: bold;
-  cursor: pointer;
+    display: block;
+    font-size: 1rem;
+    width: 5rem;
+    background-color: $theme-blue;
+    color: $white;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .detailsContainer {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 }
 
 .leftContainer {
-  flex: 2;
+    flex: 2;
 }
 
 .rightContainer {
-  flex: 1;
+    flex: 1;
 }
 
 .details_section_parent_container {
-  padding: 0.5rem 1rem;
-  background-color: $white;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: $off-white;
+    border-radius: 8px;
+    margin-bottom: 1rem;
 }
 
 .sectionHeading {
-  font-weight: bold;
-  font-size: 1.2rem;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .detailType {
-  display: inline-block;
-  width: 6rem;
+    display: inline-block;
+    width: 6rem;
 }
 
 .detailValue {
-  text-transform: uppercase;
-  font-weight: bold;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
 .sub_details_grid_container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1rem;
 }
 
 .sub_details_flex_container {
-  padding: 2rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .details_container_with_header_image {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.5rem;
-  padding-top: 0.5rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
 }
 
 .editMode {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
 }
 
 .textarea {
-  width: 100%;
-  padding: 0.5rem 0.5rem;
-  border-radius: 0.5rem;
-  background-color: $white;
-  font-weight: bold;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: $white;
+    font-weight: bold;
 }
 
 .textCenter {
-  text-align: center;
+    text-align: center;
 }
 
 @media only screen and (max-width: 750px) {
-  .detailsContainer {
-    flex-direction: column;
-  }
+    .detailsContainer {
+        flex-direction: column;
+    }
 }
 @media only screen and (max-width: 520px) {
-  .sub_details_container {
-    grid-template-columns: 1fr;
-  }
+    .sub_details_container {
+        grid-template-columns: 1fr;
+    }
 }
