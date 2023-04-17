@@ -29,6 +29,8 @@ import {
 import styles from '@/components/issues/Card.module.scss';
 
 import moment from 'moment';
+import { Loader } from './Loader';
+import { TaskLevelMap } from './TaskLevelMap';
 
 type Props = {
     content: task;
@@ -140,6 +142,21 @@ const Card: FC<Props> = ({
         }
     }
 
+    function handelDateChange(
+        event: React.ChangeEvent<HTMLInputElement>,
+        changedProperty: keyof typeof cardDetails
+    ) {
+        const toChange: any = cardDetails;
+        if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
+            const toTimeStamp =
+                new Date(`${event.target.value}`).getTime() / 1000;
+            toChange[changedProperty] = toTimeStamp;
+            onContentChange(toChange.id, {
+                [changedProperty]: toChange[changedProperty],
+            });
+        }
+    }
+
     const updateTaskTagLevel = async (
         taskItemToUpdate: taskItem,
         method: 'delete' | 'post'
@@ -244,8 +261,10 @@ const Card: FC<Props> = ({
             return (
                 <input
                     type="date"
-                    onChange={(e) => setDateTimes(e.target.value)}
-                    onKeyPress={(e) => handleChange(e, 'endsOn')}
+                    onChange={(e) => {
+                        setDateTimes(e.target.value);
+                        handelDateChange(e, 'endsOn');
+                    }}
                     value={dateTimes}
                 />
             );
@@ -349,15 +368,7 @@ const Card: FC<Props> = ({
     `}
         >
             {/* loading spinner */}
-            {isLoading && (
-                <div className={classNames.loadingBg}>
-                    <div className={classNames.spinner}>
-                        <span className={classNames.screenReaderOnly}>
-                            loading
-                        </span>
-                    </div>
-                </div>
-            )}
+            {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
                 <span
@@ -418,33 +429,11 @@ const Card: FC<Props> = ({
                     shouldEdit && classNames.editMode
                 }`}
             >
-                <div className={classNames.taskTagLevelContainer}>
-                    {taskTagLevel?.map((item) => (
-                        <span
-                            key={item.tagId}
-                            className={classNames.taskTagLevel}
-                        >
-                            {item.tagName}{' '}
-                            <small>
-                                <b>LVL:{item.levelValue}</b>
-                            </small>
-                            {shouldEdit && isUserAuthorized && (
-                                <span>
-                                    <button
-                                        className={
-                                            classNames.removeTaskTagLevelBtn
-                                        }
-                                        onClick={() =>
-                                            updateTaskTagLevel(item, 'delete')
-                                        }
-                                    >
-                                        &#10060;
-                                    </button>
-                                </span>
-                            )}
-                        </span>
-                    ))}
-                </div>
+                <TaskLevelMap
+                    taskTagLevel={taskTagLevel}
+                    updateTaskTagLevel={updateTaskTagLevel}
+                    shouldEdit={shouldEdit}
+                />
                 {shouldEdit && isUserAuthorized && (
                     <TaskLevelEdit
                         taskTagLevel={taskTagLevel}

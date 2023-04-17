@@ -1,27 +1,14 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useContext } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
+import task, { TABS, Tab } from '@/interfaces/task.type';
 import Tabs from '@/components/Tabs';
-import { Tab } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
-    ASSIGNED,
-    COMPLETED,
-    AVAILABLE,
     IN_PROGRESS,
     SMOKE_TESTING,
-    NEEDS_REVIEW,
-    IN_REVIEW,
-    APPROVED,
-    MERGED,
-    SANITY_CHECK,
-    REGRESSION_CHECK,
-    RELEASED,
-    VERIFIED,
     BLOCKED,
 } from '@/components/constants/task-status';
 import {
@@ -36,24 +23,10 @@ import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
 import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
+import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 
 const { SUCCESS, ERROR } = ToastTypes;
-const STATUS_ORDER = [
-    ASSIGNED,
-    COMPLETED,
-    BLOCKED,
-    AVAILABLE,
-    IN_PROGRESS,
-    SMOKE_TESTING,
-    NEEDS_REVIEW,
-    IN_REVIEW,
-    APPROVED,
-    MERGED,
-    SANITY_CHECK,
-    REGRESSION_CHECK,
-    RELEASED,
-    VERIFIED,
-];
+
 const statusActiveList = [IN_PROGRESS, BLOCKED, SMOKE_TESTING];
 async function updateCardContent(id: string, cardDetails: task) {
     try {
@@ -75,8 +48,7 @@ async function updateCardContent(id: string, cardDetails: task) {
 
 const Index: FC = () => {
     const { state: appState } = useAppContext();
-    const [filteredTask, setFilteredTask] = useState<any>([]);
-    const { response, error, isLoading } = useFetch(TASKS_URL);
+    const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
     const { isEditMode } = appState;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
@@ -98,16 +70,27 @@ const Index: FC = () => {
             const taskMap: any = groupTasksByStatus(tasks);
             setFilteredTask(taskMap);
         }
-
         return () => {
             setFilteredTask([]);
         };
     }, [isLoading, response]);
 
+    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+        (acc: Record<string, task[]>, curr: task) => {
+            return acc[curr.status as keyof task]
+                ? {
+                      ...acc,
+                      [curr.status]: [...acc[curr.status as keyof task], curr],
+                  }
+                : { ...acc, [curr.status]: [curr] };
+        },
+        {}
+    );
+
     const renderTabSection = () => (
         <div className={classNames.tabsContainer}>
             <Tabs
-                tabs={Object.values(Tab) as Tab[]}
+                tabs={TABS as Tab[]}
                 onSelect={onSelect}
                 activeTab={activeTab}
             />
@@ -116,9 +99,9 @@ const Index: FC = () => {
 
     const renderTaskList = () => (
         <div>
-            {filteredTask[activeTab] ? (
+            {tasksGroupedByStatus[activeTab] ? (
                 <TaskList
-                    tasks={filteredTask[activeTab]}
+                    tasks={tasksGroupedByStatus[activeTab]}
                     isEditable={isEditable}
                     updateCardContent={updateCardContent}
                     updateTask={updateTask}
@@ -134,18 +117,18 @@ const Index: FC = () => {
             <Head title="Tasks" />
             <TasksProvider>
                 <div className={classNames.container}>
-                    {!!error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
+                    {isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
                     {isLoading ? (
                         <p>Loading...</p>
                     ) : (
                         <>
-                            {Object.keys(filteredTask).length > 0 ? (
+                            {Object.keys(tasksGroupedByStatus).length > 0 ? (
                                 <div className={classNames.tasksContainer}>
                                     {renderTabSection()}
                                     {renderTaskList()}
                                 </div>
                             ) : (
-                                !error && <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                                !isError && <p>{NO_TASKS_FOUND_MESSAGE}</p>
                             )}
                         </>
                     )}
