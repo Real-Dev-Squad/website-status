@@ -3,7 +3,7 @@ import useUpdateTask from '@/hooks/useUpdateTask';
 import { tasks } from '../../../__mocks__/db/tasks';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
 
-describe('useUdateTask hook', () => {
+describe('useUpdateTask hook', () => {
     test('should update the given status of taskId passed', async () => {
         const setTasks = jest.fn();
         const groupedTasks = groupTasksByStatus(tasks);
