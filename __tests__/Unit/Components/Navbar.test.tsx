@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import NavBar from '../../../src/components/navBar';
-import * as  authHooks from '@/hooks/useAuthenticated';
+import * as authHooks from '@/hooks/useAuthenticated';
 
 describe('Navbar', () => {
     test('renders the Navbar component', () => {
@@ -11,18 +11,15 @@ describe('Navbar', () => {
     });
 
     test('user whether loggedIn or not', () => {
-
-        jest.spyOn(authHooks, 'default').mockImplementation(() => (
-            {
-                userData: {
-                    userName: 'IamYash',
-                    firstName: 'Yash',
-                    profilePicture: '',
-                },
-                isLoggedIn: true,
-                isLoading: true
-            }
-        ));
+        jest.spyOn(authHooks, 'default').mockImplementation(() => ({
+            userData: {
+                userName: 'IamYash',
+                firstName: 'Yash',
+                profilePicture: '',
+            },
+            isLoggedIn: true,
+            isLoading: true,
+        }));
         render(<NavBar />);
         expect(screen.getByText('Hello, Yash'));
     });
@@ -50,11 +47,26 @@ describe('Navbar', () => {
         const cryptoLink = screen.getByRole('link', { name: 'Crypto' });
         const statusLink = screen.getByRole('link', { name: 'Status' });
 
-        expect(welcomelink).toHaveAttribute('href', 'https://welcome.realdevsquad.com');
-        expect(eventLink).toHaveAttribute('href', 'https://www.realdevsquad.com/events.html');
-        expect(memberLink).toHaveAttribute('href', 'https://members.realdevsquad.com');
-        expect(cryptoLink).toHaveAttribute('href', 'https://crypto.realdevsquad.com');
-        expect(statusLink).toHaveAttribute('href', 'https://status.realdevsquad.com');
+        expect(welcomelink).toHaveAttribute(
+            'href',
+            'https://welcome.realdevsquad.com'
+        );
+        expect(eventLink).toHaveAttribute(
+            'href',
+            'https://www.realdevsquad.com/events.html'
+        );
+        expect(memberLink).toHaveAttribute(
+            'href',
+            'https://members.realdevsquad.com'
+        );
+        expect(cryptoLink).toHaveAttribute(
+            'href',
+            'https://crypto.realdevsquad.com'
+        );
+        expect(statusLink).toHaveAttribute(
+            'href',
+            'https://status.realdevsquad.com'
+        );
     });
 
     test('whether logo is rendering or not', () => {
@@ -62,5 +74,4 @@ describe('Navbar', () => {
         const logo = getByTestId('logo');
         expect(logo).toBeInTheDocument();
     });
-
 });

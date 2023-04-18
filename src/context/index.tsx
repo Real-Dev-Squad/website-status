@@ -18,7 +18,7 @@ const AppWrapperContext: FC<Props> = ({ children }) => {
     const { edit: editQuery } = query;
     const isEditMode = editQuery === 'true';
     const onEditRoute = () => {
-        router.push({ query: 'edit=true' }, undefined, { shallow: true }); 
+        router.push({ query: 'edit=true' }, undefined, { shallow: true });
     };
     const { isLoggedIn, isLoading } = useAuthenticated();
     return (

@@ -3,7 +3,7 @@ import { BASE_URL } from '@/components/constants/url';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL,
-    credentials: 'include'
+    credentials: 'include',
 });
 
 export const api = createApi({
