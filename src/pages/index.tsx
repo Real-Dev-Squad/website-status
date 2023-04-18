@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState, useContext, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import classNames from '@/styles/tasks.module.scss';
@@ -7,8 +7,19 @@ import Tabs from '@/components/Tabs';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
+    ASSIGNED,
+    COMPLETED,
+    AVAILABLE,
     IN_PROGRESS,
     SMOKE_TESTING,
+    NEEDS_REVIEW,
+    IN_REVIEW,
+    APPROVED,
+    MERGED,
+    SANITY_CHECK,
+    REGRESSION_CHECK,
+    RELEASED,
+    VERIFIED,
     BLOCKED,
 } from '@/components/constants/task-status';
 import {
@@ -24,8 +35,25 @@ import { TASKS_URL } from '@/components/constants/url';
 import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
+import useFetch from '@/hooks/useFetch';
 
 const { SUCCESS, ERROR } = ToastTypes;
+const STATUS_ORDER = [
+    ASSIGNED,
+    COMPLETED,
+    BLOCKED,
+    AVAILABLE,
+    IN_PROGRESS,
+    SMOKE_TESTING,
+    NEEDS_REVIEW,
+    IN_REVIEW,
+    APPROVED,
+    MERGED,
+    SANITY_CHECK,
+    REGRESSION_CHECK,
+    RELEASED,
+    VERIFIED,
+];
 
 const statusActiveList = [IN_PROGRESS, BLOCKED, SMOKE_TESTING];
 async function updateCardContent(id: string, cardDetails: task) {
@@ -53,6 +81,8 @@ const Index: FC = () => {
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
+    const [filteredTask, setFilteredTask] = useState<any>([]);
+    const { response } = useFetch(TASKS_URL);
     const updateTask = useUpdateTask(filteredTask, setFilteredTask);
 
     const onSelect = (tab: Tab) => {
@@ -99,9 +129,9 @@ const Index: FC = () => {
 
     const renderTaskList = () => (
         <div>
-            {tasksGroupedByStatus[activeTab] ? (
+            {filteredTask[activeTab] ? (
                 <TaskList
-                    tasks={tasksGroupedByStatus[activeTab]}
+                    tasks={filteredTask[activeTab]}
                     isEditable={isEditable}
                     updateCardContent={updateCardContent}
                     updateTask={updateTask}
@@ -122,7 +152,7 @@ const Index: FC = () => {
                         <p>Loading...</p>
                     ) : (
                         <>
-                            {Object.keys(tasksGroupedByStatus).length > 0 ? (
+                            {Object.keys(filteredTask).length > 0 ? (
                                 <div className={classNames.tasksContainer}>
                                     {renderTabSection()}
                                     {renderTaskList()}
