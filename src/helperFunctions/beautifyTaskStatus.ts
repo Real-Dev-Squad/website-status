@@ -1,4 +1,3 @@
-import { TASK_STATUS } from '@/interfaces/task-status';
 import task from '../interfaces/task.type';
 
 const beautifyTaskStatus = (tasks: Array<task>) => {

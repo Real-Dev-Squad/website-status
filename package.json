@@ -1,9 +1,9 @@
 {
-"name": "status",
-"version": "1.0.0",
-"description": "Shows a status of the ongoing projects being done",
+ "name": "status",
+ "version": "1.0.0",
+ "description": "Shows a status of the ongoing projects being done",
 "main": "index.js",
-"scripts": {
+ "scripts": {
     "run-command:dev-server": "next dev -p 3000",
     "run-command:reverse-ssl": "local-ssl-proxy --source 443 --target 3000",
     "dev": "run-p run-command:*",
@@ -18,14 +18,14 @@
     "prettier": "npx prettier src __tests__ --check",
     "prettier:fix": "npm run prettier -- --write"
 },
-"repository": {
+ "repository": {
     "type": "git",
     "url": "https://github.com/Real-Dev-Squad/website-status.git"
 },
-"keywords": [],
-"author": "",
-"license": "ISC",
-"dependencies": {
+ "keywords": [],
+ "author": "",
+ "license": "ISC",
+ "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "axios": "^1.2.2",
     "moment": "^2.29.4",
@@ -39,7 +39,7 @@
     "sass": "^1.45.2",
     "sass-loader": "^13.0.2"
 },
-"devDependencies": {
+ "devDependencies": {
     "@babel/core": "^7.16.7",
     "@storybook/addon-actions": "^6.4.9",
     "@storybook/addon-essentials": "^6.4.9",
@@ -86,18 +86,18 @@
     "whatwg-fetch": "^3.6.2",
     "husky": "8.0.3"
 },
-"engines": {
+ "engines": {
     "node": "18.x"
 },
-"lint-staged": {
+ "lint-staged": {
     "*.+(ts|tsx)": [
     "eslint ."
     ]
 },
-"msw": {
+ "msw": {
     "workerDirectory": "public"
 },
-"volta": {
+ "volta": {
     "node": "18.14.2",
     "yarn": "1.22.19"
 }
