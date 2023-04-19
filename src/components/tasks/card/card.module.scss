@@ -35,21 +35,21 @@ $seeMoreTasksShadow: #595959cc;
     border: 1px solid #d9d9d9;
     position: relative;
 }
-
+.card_updated {
+    border-radius: 10px;
+}
 .cardItems {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
+}
+.card_updated .cardItems:not(:nth-child(1)) {
+    margin-top: 0.8rem;
 }
 
-.cardItems {
-    span {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 2px;
-        align-items: center;
-        margin-top: 10px;
-    }
+.dateInfo {
+    margin-top: 0.8rem;
 }
 
 .cardTitle {
@@ -72,6 +72,11 @@ $seeMoreTasksShadow: #595959cc;
     font-size: 1.3rem;
     font-weight: 500;
 }
+.contributor {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
 .contributorImage {
     img {
@@ -91,7 +96,16 @@ $seeMoreTasksShadow: #595959cc;
 
 .progressContainer {
     width: 12rem;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.progressContainerUpdated {
+    width: 12rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
 .progressIndicator {

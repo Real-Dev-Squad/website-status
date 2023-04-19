@@ -1,4 +1,5 @@
 import TaskList from '@/components/tasks/TaskList/TaskList';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { render, screen, fireEvent } from '@testing-library/react';
 
 const TASK = {
@@ -32,7 +33,7 @@ const tasks = Array.from({ length: 10 }).map((_, index) => ({
 
 describe('TaskList', function () {
     it('Should render TaskList', function () {
-        render(<TaskList tasks={tasks} />);
+        renderWithRouter(<TaskList tasks={tasks} />);
 
         const _tasks = screen.queryAllByText(TASK.title);
 
@@ -42,7 +43,7 @@ describe('TaskList', function () {
     });
 
     it('Should render see more button', function () {
-        render(<TaskList tasks={tasks} hasLimit={true} />);
+        renderWithRouter(<TaskList tasks={tasks} hasLimit={true} />);
 
         const seeMore = screen.getByRole('button', { name: /see more/i });
 
@@ -50,7 +51,7 @@ describe('TaskList', function () {
     });
 
     it('Should render 3 tasks intially and then render more 5 tasks after click event', function () {
-        render(<TaskList tasks={tasks} hasLimit={true} />);
+        renderWithRouter(<TaskList tasks={tasks} hasLimit={true} />);
 
         const _tasks = screen.queryAllByText(TASK.title);
         const seeMore = screen.getByRole('button', { name: /see more/i });
@@ -61,7 +62,7 @@ describe('TaskList', function () {
     });
 
     it('Shouldn\'t render see more button after all tasks are loaded and rendered', function () {
-        render(<TaskList tasks={tasks} hasLimit={true} />);
+        renderWithRouter(<TaskList tasks={tasks} hasLimit={true} />);
 
         const _tasks = screen.queryAllByText(TASK.title);
         const seeMore = screen.getByRole('button', { name: /see more/i });
