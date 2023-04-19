@@ -6,6 +6,7 @@ import React, {
     useReducer,
     useRef,
     useState,
+    ChangeEventHandler,
 } from 'react';
 import useFetch from '@/hooks/useFetch';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
@@ -18,6 +19,43 @@ import classNames from './task-details.module.scss';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import taskDetailsReducer from './taskDetails.reducer';
+
+type ButtonProps = {
+    buttonName: string;
+    clickHandler: (value: any) => void;
+    value?: boolean;
+};
+type TextAreaProps = {
+    name: string;
+    value: string;
+    onChange: ChangeEventHandler;
+};
+function Button(props: ButtonProps) {
+    const { buttonName, clickHandler, value } = props;
+
+    return (
+        <button
+            type="button"
+            className={classNames['button']}
+            onClick={() => clickHandler(value)}
+        >
+            {buttonName}
+        </button>
+    );
+}
+function Textarea(props: TextAreaProps) {
+    const { name, value, onChange } = props;
+    return (
+        <textarea
+            className={classNames['textarea']}
+            name={name}
+            value={value}
+            data-testid="edit button"
+            onChange={onChange}
+        />
+    );
+}
+
 type Props = {
     url: string;
     taskID: string;
@@ -79,36 +117,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         dispatch({ type: 'reset', payload: initialDataRef.current });
     }
 
-    function renderTextarea(name: string, value: string) {
-        return (
-            <textarea
-                className={classNames['textarea']}
-                name={name}
-                value={value}
-                data-testid="edit button"
-                onChange={(event) => handleChange(event)}
-            />
-        );
-    }
-
-    function renderButton(
-        buttonName: string,
-        clickHandler: (value: any) => void,
-        value?: boolean
-    ) {
-        if (isAuthorized) {
-            return (
-                <button
-                    type="button"
-                    className={classNames['button']}
-                    onClick={() => clickHandler(value)}
-                >
-                    {buttonName}
-                </button>
-            );
-        }
-    }
-
     function renderLoadingComponent() {
         if (isLoading) {
             return <p className={classNames.textCenter}>Loading...</p>;
@@ -131,7 +139,11 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                 <div className={classNames.parentContainer}>
                     <div className={classNames.titleContainer}>
                         {isEditing ? (
-                            renderTextarea('title', taskDetails?.title)
+                            <Textarea
+                                name="title"
+                                value={taskDetails?.title}
+                                onChange={handleChange}
+                            />
                         ) : (
                             <span
                                 data-testid="task-title"
@@ -141,11 +153,23 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                             </span>
                         )}
                         {!isEditing ? (
-                            renderButton('Edit', setIsEditing, true)
+                            isAuthorized && (
+                                <Button
+                                    buttonName="Edit"
+                                    clickHandler={setIsEditing}
+                                    value={true}
+                                />
+                            )
                         ) : (
                             <div className={classNames.editMode}>
-                                {renderButton('Cancel', onCancel)}
-                                {renderButton('Save', onSave)}
+                                <Button
+                                    buttonName="Cancel"
+                                    clickHandler={onCancel}
+                                />
+                                <Button
+                                    buttonName="Save"
+                                    clickHandler={onSave}
+                                />
                             </div>
                         )}
                     </div>
@@ -154,10 +178,11 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                         <section className={classNames.leftContainer}>
                             <TaskContainer title="Description" hasImg={false}>
                                 {isEditing ? (
-                                    renderTextarea(
-                                        'purpose',
-                                        taskDetails?.purpose
-                                    )
+                                    <Textarea
+                                        name="purpose"
+                                        value={taskDetails?.purpose}
+                                        onChange={handleChange}
+                                    />
                                 ) : (
                                     <p>
                                         {!taskDetails?.purpose
