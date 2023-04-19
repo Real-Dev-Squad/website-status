@@ -20,12 +20,28 @@ import styles from '@/components/navBar/navBar.module.scss';
 const NavBar = () => {
     const { userData, isLoggedIn } = useAuthenticated();
     const [toggleDropdown, setToggleDropdown] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
 
     return (
         <nav data-testid="navbar" className={styles.navBar}>
-            <div className={styles.navLinks}>
+            <div
+                className={styles.hamburgerIcon}
+                onClick={() => setShowMenu(!showMenu)}
+            >
+                <img
+                    src="/ham.png"
+                    alt="hamburger_logo"
+                    className={styles.icon}
+                />
+            </div>
+            {/* <div
+                className={`${
+                    showMenu ? `${styles.navBarMenu}` : `${styles.navLinks}`
+                }`}
+            >
                 <a className={styles.logo} href={HOME_URL}>
-                    <Image data-testid="logo"
+                    <Image
+                        data-testid="logo"
                         width="45"
                         height="45"
                         src={RDS_LOGO}
@@ -36,15 +52,49 @@ const NavBar = () => {
                 <a href={EVENTS_URL}>Events</a>
                 <a href={MEMBERS_URL}>Members</a>
                 <a href={CRYPTO_URL}>Crypto</a>
-                <a className={styles.active} href={STATUS_URL}>
-                    Status
-                </a>
+                <a href={STATUS_URL}>Status</a>
+            </div> */}
+            <div
+                className={`${
+                    showMenu ? `${styles.navBarMenu}` : `${styles.navLinks}`
+                }`}
+            >
+                <ul>
+                    <li>
+                        <a className={styles.logo} href={HOME_URL}>
+                            <Image
+                                data-testid="logo"
+                                width="45"
+                                height="45"
+                                src={RDS_LOGO}
+                                alt="real-dev squad"
+                            />
+                        </a>
+                    </li>
+                    <li>
+                        <a href={WELCOME_URL}>Welcome</a>
+                    </li>
+                    <li>
+                        <a href={EVENTS_URL}>Events</a>
+                    </li>
+                    <li>
+                        <a href={MEMBERS_URL}>Members</a>
+                    </li>
+                    <li>
+                        <a href={CRYPTO_URL}>Crypto</a>
+                    </li>
+                    <li>
+                        <a href={STATUS_URL} className={styles.active}>
+                            Status
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div>
+            <div className={styles.userProfile}>
                 {!isLoggedIn ? (
                     <Link href={LOGIN_URL}>
-                        <p className={styles.signInLink}>
-                            Sign In With GitHub
+                        <button className={styles.signInLink}>
+                            Sign In With Github
                             <Image
                                 className={styles.githubLogo}
                                 src={GITHUB_LOGO}
@@ -52,7 +102,7 @@ const NavBar = () => {
                                 width="20"
                                 alt="GitHub Icon"
                             />
-                        </p>
+                        </button>
                     </Link>
                 ) : (
                     <div
