@@ -9,7 +9,6 @@ $theme-active: #87d870;
     width: 100%;
     background-color: $theme-blue;
     align-items: center;
-    overflow: hidden;
     flex-wrap: wrap;
     justify-content: space-between;
 
@@ -86,17 +85,10 @@ $theme-active: #87d870;
     ul li {
         list-style: none;
     }
-    ul {
+    .navLinks ul {
         display: flex;
         flex-direction: row;
     }
-
-    .navBarMenu {
-        overflow: hidden;
-        display: flex;
-        flex-direction: row;
-    }
-
     .active {
         color: $theme-active;
         text-decoration: underline;
@@ -148,7 +140,6 @@ $theme-active: #87d870;
         background: white;
         display: inline-block;
         width: 100%;
-        // padding: 1px 0px;
     }
 
     .navBarMenu ul {
@@ -174,6 +165,7 @@ $theme-active: #87d870;
         position: absolute;
         top: 10px;
         right: 20px;
+        z-index: 50;
     }
 
     .signInLink {

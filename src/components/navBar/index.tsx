@@ -34,26 +34,6 @@ const NavBar = () => {
                     className={styles.icon}
                 />
             </div>
-            {/* <div
-                className={`${
-                    showMenu ? `${styles.navBarMenu}` : `${styles.navLinks}`
-                }`}
-            >
-                <a className={styles.logo} href={HOME_URL}>
-                    <Image
-                        data-testid="logo"
-                        width="45"
-                        height="45"
-                        src={RDS_LOGO}
-                        alt="real-dev squad"
-                    />
-                </a>
-                <a href={WELCOME_URL}>Welcome</a>
-                <a href={EVENTS_URL}>Events</a>
-                <a href={MEMBERS_URL}>Members</a>
-                <a href={CRYPTO_URL}>Crypto</a>
-                <a href={STATUS_URL}>Status</a>
-            </div> */}
             <div
                 className={`${
                     showMenu ? `${styles.navBarMenu}` : `${styles.navLinks}`
