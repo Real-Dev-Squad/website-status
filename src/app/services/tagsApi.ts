@@ -19,10 +19,9 @@ export const tagssApi = api.injectEndpoints({
             query: () => ALL_LEVELS_URL,
             providesTags: ['Levels'],
             transformResponse: (response: LevelsResponse) => {
-                return response.levels;
-                // .sort((a: levelType, b: levelType) =>
-                //     a.value < b.value ? -1 : 1
-                // );
+                return response.levels.sort((a: levelType, b: levelType) =>
+                    a.value < b.value ? -1 : 1
+                );
             },
         }),
     }),
