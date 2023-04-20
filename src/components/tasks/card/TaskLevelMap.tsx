@@ -10,7 +10,8 @@ type Props = {
 };
 export const TaskLevelMap = ({ taskTagLevel, shouldEdit, itemId }: Props) => {
     const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const [deleteTaskTagLevel, { isLoading }] = useDeleteTaskTagLevelMutation();
+    // console.log(isUserAuthorized);
+    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
     return (
         <div className={classNames.taskTagLevelContainer}>
             {taskTagLevel?.map((item) => (
@@ -30,7 +31,7 @@ export const TaskLevelMap = ({ taskTagLevel, shouldEdit, itemId }: Props) => {
                                 className={classNames.removeTaskTagLevelBtn}
                                 onClick={() =>
                                     deleteTaskTagLevel({
-                                        taskItemToUpdate: item,
+                                        taskItemToDelete: item,
                                         itemId,
                                     })
                                 }

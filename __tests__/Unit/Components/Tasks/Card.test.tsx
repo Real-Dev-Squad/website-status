@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
 import Card from '@/components/tasks/card/index';
+import { store } from '@/app/store';
+import { Provider } from 'react-redux';
 
 const DEFAULT_PROPS = {
     content: {
@@ -38,7 +40,11 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 
 describe('Task card', () => {
     test('Should render card', () => {
-        const { getByText } = render(<Card {...DEFAULT_PROPS} />);
+        const { getByText } = render(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>
+        );
 
         expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
     });
@@ -51,7 +57,11 @@ describe('Task card', () => {
                 endsOn: `${getFirestoreDateNDaysBefore(1)}`,
             },
         };
-        const { rerender, getByText } = render(<Card {...props} />);
+        const { rerender, getByText } = render(
+            <Provider store={store()}>
+                <Card {...props} />
+            </Provider>
+        );
 
         expect(getByText('a day ago')).toBeInTheDocument();
 
@@ -64,13 +74,21 @@ describe('Task card', () => {
             },
         };
 
-        rerender(<Card {...props} />);
+        rerender(
+            <Provider store={store()}>
+                <Card {...props} />
+            </Provider>
+        );
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
 
     test('Should show right status', () => {
-        const { getByText } = render(<Card {...DEFAULT_PROPS} />);
+        const { getByText } = render(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>
+        );
 
         expect(getByText(DEFAULT_PROPS.content.status)).toBeInTheDocument();
     });

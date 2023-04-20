@@ -42,13 +42,13 @@ export const taskTagsApi = api.injectEndpoints({
         }),
         deleteTaskTagLevel: build.mutation<
             taskItem[],
-            { taskItemToUpdate: Partial<taskItem>; itemId: string }
+            { taskItemToDelete: Partial<taskItemPayload>; itemId: string }
         >({
-            query: ({ taskItemToUpdate, itemId }) => {
+            query: ({ taskItemToDelete, itemId }) => {
                 const body: taskItemPayload = {
                     itemId: itemId,
                     itemType: 'TASK',
-                    tagId: taskItemToUpdate.tagId,
+                    tagId: taskItemToDelete.tagId,
                 };
                 return { url: ITEMS_URL, method: 'DELETE', data: body };
             },
