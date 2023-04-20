@@ -18,7 +18,6 @@ import {
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { useAppContext } from '@/context';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
@@ -94,25 +93,24 @@ const Index: FC = () => {
     return (
         <Layout>
             <Head title="Tasks" />
-            <TasksProvider>
-                <div className={classNames.container}>
-                    {isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
-                    {isLoading ? (
-                        <p>Loading...</p>
-                    ) : (
-                        <>
-                            {Object.keys(tasksGroupedByStatus).length > 0 ? (
-                                <div className={classNames.tasksContainer}>
-                                    {renderTabSection()}
-                                    {renderTaskList()}
-                                </div>
-                            ) : (
-                                !isError && <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                            )}
-                        </>
-                    )}
-                </div>
-            </TasksProvider>
+
+            <div className={classNames.container}>
+                {isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <>
+                        {Object.keys(tasksGroupedByStatus).length > 0 ? (
+                            <div className={classNames.tasksContainer}>
+                                {renderTabSection()}
+                                {renderTaskList()}
+                            </div>
+                        ) : (
+                            !isError && <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                        )}
+                    </>
+                )}
+            </div>
         </Layout>
     );
 };
