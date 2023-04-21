@@ -1,7 +1,16 @@
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
+import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+import {
+    createMockRouter,
+    renderWithRouter,
+} from '@/test_utils/createMockRouter';
+import { NextRouter } from 'next/router';
+import { TASK_STATUS } from '@/interfaces/task-status';
 
 const DEFAULT_PROPS = {
     content: {
@@ -23,7 +32,7 @@ const DEFAULT_PROPS = {
         purpose: 'string',
         percentCompleted: 0,
         endsOn: '1618790400',
-        status: 'assigned',
+        status: TASK_STATUS.COMPLETED,
         featureUrl: 'string',
         type: 'feature',
         createdBy: 'ankush',
@@ -38,12 +47,16 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
     return new Date(d).getTime() / 1000;
 };
 
+jest.useFakeTimers();
 describe('Task card', () => {
     test('Should render card', () => {
-        const { getByText } = render(
+        const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
-            </Provider>
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
         );
 
         expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
@@ -57,7 +70,7 @@ describe('Task card', () => {
                 endsOn: `${getFirestoreDateNDaysBefore(1)}`,
             },
         };
-        const { rerender, getByText } = render(
+        const { rerender, getByText } = renderWithRouter(
             <Provider store={store()}>
                 <Card {...props} />
             </Provider>
@@ -76,20 +89,41 @@ describe('Task card', () => {
 
         rerender(
             <Provider store={store()}>
-                <Card {...props} />
+                <RouterContext.Provider
+                    value={createMockRouter({}) as NextRouter}
+                >
+                    <Card {...props} />
+                </RouterContext.Provider>
             </Provider>
         );
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
-
-    test('Should show right status', () => {
-        const { getByText } = render(
-            <Provider store={store()}>
+    test('should show the redesign only with feature flag on', () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <isUserAuthorizedContext.Provider value={true}>
                 <Card {...DEFAULT_PROPS} />
-            </Provider>
+            </isUserAuthorizedContext.Provider>,
+            {}
         );
 
-        expect(getByText(DEFAULT_PROPS.content.status)).toBeInTheDocument();
+        expect(queryByTestId('task-card')).not.toBeInTheDocument();
+    });
+    test('should show edit button when ALT key is long pressed', () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <isUserAuthorizedContext.Provider value={true}>
+                <Card {...DEFAULT_PROPS} />
+            </isUserAuthorizedContext.Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        const component = getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        expect(queryByTestId('edit-button')).toBeInTheDocument();
     });
 });

@@ -3,7 +3,7 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
 import { useContext } from 'react';
 type Props = {
-    taskTagLevel: taskItem[] | undefined;
+    taskTagLevel?: taskItem[];
     itemId: string;
     shouldEdit: boolean;
     deleteTaskTagLevel: any;
