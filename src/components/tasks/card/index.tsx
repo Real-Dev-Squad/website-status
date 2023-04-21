@@ -1,4 +1,5 @@
 import { FC, useState, useEffect, useContext } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useAppContext } from '@/context';
@@ -7,7 +8,6 @@ import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
 import { ALT_KEY } from '@/components/constants/key';
-import TaskLevelEdit from './TaskTagEdit';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
@@ -17,6 +17,7 @@ import {
     ITEM_TYPES,
 } from '@/components/constants/url';
 import { useRouter } from 'next/router';
+import TaskLevelEdit from './TaskTagEdit';
 
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -426,15 +427,23 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <span
-                    className={classNames.cardTitle}
-                    contentEditable={shouldEdit}
-                    onKeyPress={(e) => handleChange(e, 'title')}
-                    role="button"
-                    tabIndex={0}
+                <Link
+                    href={{
+                        pathname: '/tasks/[id]',
+                    }}
+                    as={`/tasks/${cardDetails.id}`}
+                    style={{ textDecoration: 'none' }}
                 >
-                    {cardDetails.title}
-                </span>
+                    <span
+                        className={classNames.cardTitle}
+                        contentEditable={shouldEdit}
+                        onKeyPress={(e) => handleChange(e, 'title')}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        {cardDetails.title}
+                    </span>
+                </Link>
                 <span>
                     <span className={classNames.cardSpecialFont}>Status:</span>
                     <span
