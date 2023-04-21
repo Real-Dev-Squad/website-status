@@ -9,16 +9,18 @@ import React, {
     ChangeEventHandler,
 } from 'react';
 import useFetch from '@/hooks/useFetch';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import NavBar from '@/components/navBar/index';
+import TaskContainer from './TaskContainer';
+import Details from './Details';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import taskDetailsReducer from './taskDetails.reducer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
-import TaskContainer from './TaskContainer';
-import Details from './Details';
-import taskDetailsReducer from './taskDetails.reducer';
+
+
 
 type ButtonProps = {
     buttonName: string;
