@@ -19,7 +19,10 @@ import { ToastTypes } from '@/helperFunctions/toast';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
-import { useGetTaskTagsQuery } from '@/app/services/taskTagApi';
+import {
+    useDeleteTaskTagLevelMutation,
+    useGetTaskTagsQuery,
+} from '@/app/services/taskTagApi';
 
 type Props = {
     content: task;
@@ -51,6 +54,7 @@ const Card: FC<Props> = ({
     } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
+    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
 
     const { actions, state } = useAppContext();
 
@@ -280,6 +284,7 @@ const Card: FC<Props> = ({
                     taskTagLevel={taskTagLevel}
                     itemId={cardDetails.id}
                     shouldEdit={shouldEdit}
+                    deleteTaskTagLevel={deleteTaskTagLevel}
                 />
                 {shouldEdit && isUserAuthorized && (
                     <TaskLevelEdit

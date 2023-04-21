@@ -1,20 +1,11 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { TaskLevelMap } from '@/components/tasks/card/TaskLevelMap';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
 
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
-import { setupServer } from 'msw/node';
-import handlers from '../../../../__mocks__/handlers';
 
-const server = setupServer(...handlers);
-
-beforeAll(() => {
-    server.listen();
-});
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
 describe('TaskLevelMap', () => {
     const taskTagLevel: taskItem[] = [
@@ -22,7 +13,6 @@ describe('TaskLevelMap', () => {
             tagId: '1',
             tagName: 'Tag 1',
             levelValue: 1,
-            itemId: '1',
             itemType: 'TASK',
             levelId: '1',
             levelName: 'easy',
@@ -32,7 +22,6 @@ describe('TaskLevelMap', () => {
             tagId: '2',
             tagName: 'Tag 2',
             levelValue: 2,
-            itemId: '1',
             itemType: 'TASK',
             levelId: '1',
             levelName: 'easy',
@@ -41,11 +30,13 @@ describe('TaskLevelMap', () => {
     ];
 
     it('renders a list of task tags', () => {
+        const deleteTaskTagLevel = jest.fn();
         renderWithProviders(
             <TaskLevelMap
                 taskTagLevel={taskTagLevel}
                 shouldEdit={false}
                 itemId={'1'}
+                deleteTaskTagLevel={deleteTaskTagLevel}
             />
         );
 
@@ -58,16 +49,17 @@ describe('TaskLevelMap', () => {
     });
 
     it('renders a list of task tags with remove button when shouldEdit and isUserAuthorized are true', () => {
+        const deleteTaskTagLevel = jest.fn();
         renderWithProviders(
             <isUserAuthorizedContext.Provider value={true}>
                 <TaskLevelMap
                     taskTagLevel={taskTagLevel}
                     shouldEdit={true}
                     itemId={'1'}
+                    deleteTaskTagLevel={deleteTaskTagLevel}
                 />
             </isUserAuthorizedContext.Provider>
         );
-        // const updateTaskTagLevel = jest.fn();
 
         const tagElements = screen.getAllByTestId('tag-name');
         expect(tagElements).toHaveLength(2);
@@ -77,7 +69,9 @@ describe('TaskLevelMap', () => {
 
         fireEvent.click(removeButtons[0]);
 
-        expect(tagElements).toHaveLength(2);
-        // expect(updateTaskTagLevel).toHaveBeenCalledWith(taskTagLevel[0]);
+        expect(deleteTaskTagLevel).toHaveBeenCalledWith({
+            taskItemToDelete: taskTagLevel[0],
+            itemId: '1',
+        });
     });
 });

@@ -1,4 +1,3 @@
-import { useDeleteTaskTagLevelMutation } from '@/app/services/taskTagApi';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
@@ -7,11 +6,16 @@ type Props = {
     taskTagLevel: taskItem[] | undefined;
     itemId: string;
     shouldEdit: boolean;
+    deleteTaskTagLevel: any;
 };
-export const TaskLevelMap = ({ taskTagLevel, shouldEdit, itemId }: Props) => {
+export const TaskLevelMap = ({
+    taskTagLevel,
+    shouldEdit,
+    itemId,
+    deleteTaskTagLevel,
+}: Props) => {
     const isUserAuthorized = useContext(isUserAuthorizedContext);
-    // console.log(isUserAuthorized);
-    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
+
     return (
         <div className={classNames.taskTagLevelContainer}>
             {taskTagLevel?.map((item) => (
