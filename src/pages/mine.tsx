@@ -6,7 +6,7 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
-import { LOGIN_URL, TASKS_URL } from '@/components/constants/url';
+import { LOGIN_URL, MINE_TASKS_URL } from '@/components/constants/url';
 
 function CardList(tasks: task[]) {
     return tasks.map(
@@ -30,6 +30,11 @@ const Mine: FC = () => {
       isLoading,
       callAPI
     } = useFetch(TASKS_URL, {}, false);
+    const { response, error, isLoading, callAPI } = useFetch(
+      MINE_TASKS_URL,
+        {},
+        false
+    );
     const { state } = useAppContext();
     const { isLoading: isAuthenticating, isLoggedIn } = state;
     useEffect(() => {
