@@ -90,27 +90,24 @@ const Index: FC = () => {
             )}
         </div>
     );
+
+    const renderContent = () => {
+        if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+
+        if (isLoading) return <p>Loading...</p>;
+
+        return (
+            <div className={classNames.tasksContainer}>
+                {renderTabSection()}
+                {renderTaskList()}
+            </div>
+        );
+    };
     return (
         <Layout>
             <Head title="Tasks" />
 
-            <div className={classNames.container}>
-                {isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : (
-                    <>
-                        {Object.keys(tasksGroupedByStatus).length > 0 ? (
-                            <div className={classNames.tasksContainer}>
-                                {renderTabSection()}
-                                {renderTaskList()}
-                            </div>
-                        ) : (
-                            !isError && <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                        )}
-                    </>
-                )}
-            </div>
+            <div className={classNames.container}>{renderContent()}</div>
         </Layout>
     );
 };
