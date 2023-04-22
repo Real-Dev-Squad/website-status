@@ -91,7 +91,7 @@ const Index: FC = () => {
         </div>
     );
 
-    const renderContent = () => {
+    const Content = () => {
         if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
         if (isLoading) return <p>Loading...</p>;
@@ -107,7 +107,7 @@ const Index: FC = () => {
         <Layout>
             <Head title="Tasks" />
 
-            <div className={classNames.container}>{renderContent()}</div>
+            <div className={classNames.container}><Content/></div>
         </Layout>
     );
 };
