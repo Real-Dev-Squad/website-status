@@ -9,31 +9,36 @@ import task from '@/interfaces/task.type';
 import { LOGIN_URL, TASKS_URL } from '@/components/constants/url';
 
 function CardList(tasks: task[]) {
-    return tasks.map((item: task) => (
+    return tasks.map(
+      (item: task) => (
         <Card
-            content={item}
-            key={item.id}
-            shouldEdit={false}
-            onContentChange={undefined}
+          content={item}
+          key={item.id}
+          shouldEdit={false}
+          onContentChange={undefined}
         />
-    ));
-}
+      )
+    );
+  }
+
 
 const Mine: FC = () => {
     const [tasks, setTasks] = useState<task[]>([]);
-    const { response, error, isLoading, callAPI } = useFetch(
-        TASKS_URL,
-        {},
-        false
-    );
+    const {
+      response,
+      error,
+      isLoading,
+      callAPI
+    } = useFetch(TASKS_URL, {}, false);
     const { state } = useAppContext();
     const { isLoading: isAuthenticating, isLoggedIn } = state;
     useEffect(() => {
-        if (isLoggedIn && !Object.keys(response).length) {
+        if (JSON.stringify(response) === "{}") {
             callAPI();
+          } else {
             setTasks(response);
-        }
-    }, [isLoggedIn, response]);
+          }   
+    }, [isLoggedIn, response])
 
     return (
         <Layout>
@@ -50,10 +55,10 @@ const Mine: FC = () => {
                                 </p>
                             ) : (
                                 <>
-                                    {tasks.length > 0 ? (
-                                        <div>{CardList(tasks)}</div>
+                                    {response?.length > 0 ? (
+                                    <div>{CardList(tasks)}</div>
                                     ) : (
-                                        <p>No Tasks Found</p>
+                                    <p>No Tasks Found</p>
                                     )}
                                 </>
                             )
