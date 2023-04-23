@@ -20,7 +20,7 @@ $theme-active: #87d870;
             color: $white;
             font-weight: bolder;
             text-align: center;
-            padding: 35px 2 * ($offset + $thickness)-1;
+            padding: 0px 25px;
             text-decoration: none;
 
             &:hover {
@@ -36,7 +36,7 @@ $theme-active: #87d870;
         }
 
         .logo {
-            padding: ($offset + $thickness)+7;
+            padding: 0;
         }
     }
     .signInLink {
@@ -88,6 +88,8 @@ $theme-active: #87d870;
     .navLinks ul {
         display: flex;
         flex-direction: row;
+        align-items: center;
+        gap: 1rem;
     }
     .active {
         color: $theme-active;
