@@ -1,6 +1,8 @@
+import { store } from '@/app/store';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 const TASK = {
     id: 'firestoreDocumentId123',
@@ -33,7 +35,11 @@ const tasks = Array.from({ length: 10 }).map((_, index) => ({
 
 describe('TaskList', function () {
     it('Should render TaskList', function () {
-        renderWithRouter(<TaskList tasks={tasks} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} />
+            </Provider>
+        );
 
         const _tasks = screen.queryAllByText(TASK.title);
 
@@ -43,7 +49,11 @@ describe('TaskList', function () {
     });
 
     it('Should render see more button', function () {
-        renderWithRouter(<TaskList tasks={tasks} hasLimit={true} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} hasLimit={true} />
+            </Provider>
+        );
 
         const seeMore = screen.getByRole('button', { name: /see more/i });
 
@@ -51,7 +61,11 @@ describe('TaskList', function () {
     });
 
     it('Should render 3 tasks intially and then render more 5 tasks after click event', function () {
-        renderWithRouter(<TaskList tasks={tasks} hasLimit={true} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} hasLimit={true} />
+            </Provider>
+        );
 
         const _tasks = screen.queryAllByText(TASK.title);
         const seeMore = screen.getByRole('button', { name: /see more/i });
@@ -62,7 +76,11 @@ describe('TaskList', function () {
     });
 
     it('Shouldn\'t render see more button after all tasks are loaded and rendered', function () {
-        renderWithRouter(<TaskList tasks={tasks} hasLimit={true} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} hasLimit={true} />
+            </Provider>
+        );
 
         const _tasks = screen.queryAllByText(TASK.title);
         const seeMore = screen.getByRole('button', { name: /see more/i });

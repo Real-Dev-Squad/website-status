@@ -8,14 +8,7 @@ import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
 import { ALT_KEY } from '@/components/constants/key';
-import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
-import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-import {
-    ITEMS_URL,
-    ITEM_BY_FILTER_URL,
-    ITEM_TYPES,
-} from '@/components/constants/url';
+import { ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 
@@ -23,6 +16,10 @@ import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import {
+    useDeleteTaskTagLevelMutation,
+    useGetTaskTagsQuery,
+} from '@/app/services/taskTagApi';
 
 type Props = {
     content: task;
@@ -47,10 +44,19 @@ const Card: FC<Props> = ({
     );
     const { SUCCESS, ERROR } = ToastTypes;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const [taskTagLevel, setTaskTagLevel] = useState<taskItem[]>();
+
     const [showEditButton, setShowEditButton] = useState(false);
     const [keyLongPressed] = useKeyLongPressed();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const {
+        data: taskTagLevel,
+        isError,
+        isLoading,
+    } = useGetTaskTagsQuery({
+        itemId: cardDetails.id,
+    });
+    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
+
     const { actions, state } = useAppContext();
     const router = useRouter();
     const { query } = router;
@@ -63,28 +69,6 @@ const Card: FC<Props> = ({
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
-
-    useEffect(() => {
-        if (state?.isLoggedIn) {
-            getTaskTags();
-        }
-    }, [state?.isLoggedIn]);
-
-    const getTaskTags = async () => {
-        try {
-            const { requestPromise } = fetch({
-                url: ITEM_BY_FILTER_URL,
-                params: {
-                    itemType: ITEM_TYPES.task,
-                    itemId: `${cardDetails.id}`,
-                },
-            });
-            const { data: result } = await requestPromise;
-            setTaskTagLevel(result.data);
-        } catch (err: any) {
-            toast(ERROR, err.message);
-        }
-    };
 
     const contributorImageOnError = () =>
         setAssigneeProfilePic('/dummyProfile.png');
@@ -156,56 +140,6 @@ const Card: FC<Props> = ({
             });
         }
     }
-
-    const updateTaskTagLevel = async (
-        taskItemToUpdate: taskItem,
-        method: 'delete' | 'post'
-    ) => {
-        const body: taskItemPayload = {
-            itemId: cardDetails.id,
-            itemType: 'TASK',
-        };
-        try {
-            setIsLoading(true);
-            if (method === 'post') {
-                body.tagPayload = [
-                    {
-                        levelId: taskItemToUpdate.levelId,
-                        tagId: taskItemToUpdate.tagId,
-                    },
-                ];
-            } else if (method === 'delete') {
-                body.tagId = taskItemToUpdate.tagId;
-            }
-            const { requestPromise } = fetch({
-                url: ITEMS_URL,
-                method,
-                data: body,
-            });
-            const result = await requestPromise;
-            if (result.status === 200 && method === 'delete') {
-                taskTagLevel &&
-                    setTaskTagLevel(
-                        taskTagLevel?.filter(
-                            (item) => item.tagId !== taskItemToUpdate.tagId
-                        )
-                    );
-            } else if (result.status === 200 && method === 'post') {
-                taskTagLevel
-                    ? setTaskTagLevel([
-                          ...taskTagLevel,
-                          { itemId: cardDetails.id, ...taskItemToUpdate },
-                      ])
-                    : setTaskTagLevel([
-                          { itemId: cardDetails.id, ...taskItemToUpdate },
-                      ]);
-            }
-            setIsLoading(false);
-        } catch (err: any) {
-            setIsLoading(false);
-            toast(ERROR, err.message);
-        }
-    };
 
     function inputParser(input: string) {
         const parsedDate = moment(new Date(parseInt(input, 10) * 1000));
@@ -400,12 +334,13 @@ const Card: FC<Props> = ({
                         <TaskLevelMap
                             taskTagLevel={taskTagLevel}
                             shouldEdit={shouldEdit}
-                            updateTaskTagLevel={updateTaskTagLevel}
+                            itemId={cardDetails.id}
+                            deleteTaskTagLevel={deleteTaskTagLevel}
                         />
                         {shouldEdit && isUserAuthorized && (
                             <TaskLevelEdit
                                 taskTagLevel={taskTagLevel}
-                                updateTaskTagLevel={updateTaskTagLevel}
+                                itemId={cardDetails.id}
                             />
                         )}
                     </div>
@@ -484,13 +419,14 @@ const Card: FC<Props> = ({
             >
                 <TaskLevelMap
                     taskTagLevel={taskTagLevel}
+                    itemId={cardDetails.id}
                     shouldEdit={shouldEdit}
-                    updateTaskTagLevel={updateTaskTagLevel}
+                    deleteTaskTagLevel={deleteTaskTagLevel}
                 />
                 {shouldEdit && isUserAuthorized && (
                     <TaskLevelEdit
                         taskTagLevel={taskTagLevel}
-                        updateTaskTagLevel={updateTaskTagLevel}
+                        itemId={cardDetails.id}
                     />
                 )}
             </div>

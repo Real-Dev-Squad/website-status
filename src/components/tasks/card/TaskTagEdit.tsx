@@ -6,13 +6,11 @@ import levelType from '@/interfaces/level.type';
 import tagType from '@/interfaces/tag.type';
 import taskItem from '@/interfaces/taskItem.type';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useUpdateTaskTagLevelMutation } from '@/app/services/taskTagApi';
 
 type TaskTagPropsType = {
     taskTagLevel: taskItem[] | undefined;
-    updateTaskTagLevel: (
-        taskItemToUpdate: taskItem,
-        method: 'delete' | 'post'
-    ) => void;
+    itemId: string;
 };
 
 type SelectComponentPropsType = {
@@ -72,14 +70,14 @@ const SelectComponent = ({
     );
 };
 
-const TaskTagEdit = ({
-    updateTaskTagLevel,
-    taskTagLevel,
-}: TaskTagPropsType) => {
+const TaskTagEdit = ({ taskTagLevel, itemId }: TaskTagPropsType) => {
     const [newLevelValue, setNewLevelValue] = useState<number>();
     const [newTagValue, setNewTagValue] = useState<string>();
     const { taskLevels: levelOptions, taskTags } = useTasksContext();
     const { ERROR } = ToastTypes;
+    const [updateTaskTagLevel, { isLoading: isUpdateTaskTagLevelLoading }] =
+        useUpdateTaskTagLevelMutation();
+
     let tagOptions = taskTags;
     // filtering out tag options: if a skill is present then to remove it from the options
     taskTagLevel &&
@@ -111,7 +109,7 @@ const TaskTagEdit = ({
                     tagType: 'SKILL',
                     levelValue: levelToAdd.value,
                 };
-                updateTaskTagLevel(taskItemToUpdate, 'post');
+                updateTaskTagLevel({ taskItemToUpdate, itemId });
             } else {
                 toast(ERROR, 'Tag and Level values are missing');
             }
