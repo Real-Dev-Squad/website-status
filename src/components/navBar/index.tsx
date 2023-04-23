@@ -25,6 +25,7 @@ const NavBar = () => {
     return (
         <nav data-testid="navbar" className={styles.navBar}>
             <div
+                data-testid="hamburgerIcon"
                 className={styles.hamburgerIcon}
                 onClick={() => setShowMenu(!showMenu)}
             >
