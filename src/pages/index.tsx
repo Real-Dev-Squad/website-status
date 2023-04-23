@@ -67,27 +67,13 @@ const Index: FC = () => {
         {}
     );
 
-    const renderTabSection = () => (
+    const TabSection = () => (
         <div className={classNames.tabsContainer}>
             <Tabs
                 tabs={TABS as Tab[]}
                 onSelect={onSelect}
                 activeTab={activeTab}
             />
-        </div>
-    );
-
-    const renderTaskList = () => (
-        <div>
-            {tasksGroupedByStatus[activeTab] ? (
-                <TaskList
-                    tasks={tasksGroupedByStatus[activeTab]}
-                    isEditable={isEditable}
-                    updateCardContent={updateCardContent}
-                />
-            ) : (
-                <p>{NO_TASKS_FOUND_MESSAGE}</p>
-            )}
         </div>
     );
 
@@ -98,8 +84,18 @@ const Index: FC = () => {
 
         return (
             <div className={classNames.tasksContainer}>
-                {renderTabSection()}
-                {renderTaskList()}
+                <TabSection />
+                <div>
+                    {tasksGroupedByStatus[activeTab] ? (
+                        <TaskList
+                            tasks={tasksGroupedByStatus[activeTab]}
+                            isEditable={isEditable}
+                            updateCardContent={updateCardContent}
+                        />
+                    ) : (
+                        <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                    )}
+                </div>
             </div>
         );
     };
@@ -107,7 +103,9 @@ const Index: FC = () => {
         <Layout>
             <Head title="Tasks" />
 
-            <div className={classNames.container}><Content/></div>
+            <div className={classNames.container}>
+                <Content />
+            </div>
         </Layout>
     );
 };
