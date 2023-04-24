@@ -51,26 +51,11 @@ describe('Navbar', () => {
         const cryptoLink = screen.getByRole('link', { name: 'Crypto' });
         const statusLink = screen.getByRole('link', { name: 'Status' });
 
-        expect(welcomelink).toHaveAttribute(
-            'href',
-            'https://welcome.realdevsquad.com'
-        );
-        expect(eventLink).toHaveAttribute(
-            'href',
-            'https://www.realdevsquad.com/events.html'
-        );
-        expect(memberLink).toHaveAttribute(
-            'href',
-            'https://members.realdevsquad.com'
-        );
-        expect(cryptoLink).toHaveAttribute(
-            'href',
-            'https://crypto.realdevsquad.com'
-        );
-        expect(statusLink).toHaveAttribute(
-            'href',
-            'https://status.realdevsquad.com'
-        );
+        expect(welcomelink).toHaveAttribute('href', 'https://welcome.realdevsquad.com');
+        expect(eventLink).toHaveAttribute('href', 'https://www.realdevsquad.com/events.html');
+        expect(memberLink).toHaveAttribute('href', 'https://members.realdevsquad.com');
+        expect(cryptoLink).toHaveAttribute('href', 'https://crypto.realdevsquad.com');
+        expect(statusLink).toHaveAttribute('href', 'https://status.realdevsquad.com');
     });
 
     test('whether logo is rendering or not', async () => {
