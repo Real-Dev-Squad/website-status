@@ -101,9 +101,11 @@ describe('Task card', () => {
     });
     test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
-            <isUserAuthorizedContext.Provider value={true}>
-                <Card {...DEFAULT_PROPS} />
-            </isUserAuthorizedContext.Provider>,
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <Card {...DEFAULT_PROPS} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
             {}
         );
 
@@ -111,9 +113,11 @@ describe('Task card', () => {
     });
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
-            <isUserAuthorizedContext.Provider value={true}>
-                <Card {...DEFAULT_PROPS} />
-            </isUserAuthorizedContext.Provider>,
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <Card {...DEFAULT_PROPS} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
             { query: { dev: 'true' } }
         );
 

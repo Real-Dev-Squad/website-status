@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import classNames from '@/components/tasks/card/card.module.scss';
-import { useTasksContext } from '@/context/tasks.context';
 import levelType from '@/interfaces/level.type';
 import tagType from '@/interfaces/tag.type';
 import taskItem from '@/interfaces/taskItem.type';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useUpdateTaskTagLevelMutation } from '@/app/services/taskTagApi';
+import { useGetLevelsQuery, useGetTagsQuery } from '@/app/services/tagsApi';
 
 type TaskTagPropsType = {
     taskTagLevel: taskItem[] | undefined;
@@ -73,7 +73,9 @@ const SelectComponent = ({
 const TaskTagEdit = ({ taskTagLevel, itemId }: TaskTagPropsType) => {
     const [newLevelValue, setNewLevelValue] = useState<number>();
     const [newTagValue, setNewTagValue] = useState<string>();
-    const { taskLevels: levelOptions, taskTags } = useTasksContext();
+    const { data: taskTags } = useGetTagsQuery();
+    const { data: levelOptions } = useGetLevelsQuery();
+
     const { ERROR } = ToastTypes;
     const [updateTaskTagLevel, { isLoading: isUpdateTaskTagLevelLoading }] =
         useUpdateTaskTagLevelMutation();
