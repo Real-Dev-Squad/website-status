@@ -1,4 +1,4 @@
-type userType = {
+export type userDataType = {
     id: string;
     company?: string;
     twitter_id?: string;
@@ -14,7 +14,9 @@ type userType = {
     instagram_id?: string;
     roles: {
         archived: boolean;
-        member: boolean;
+        admin: boolean;
+        super_user: boolean;
+        memeber: boolean;
     };
     designation?: string;
     profileURL?: string;
@@ -26,4 +28,4 @@ type userType = {
     last_name?: string;
 };
 
-export default userType;
+

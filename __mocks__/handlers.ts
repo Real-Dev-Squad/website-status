@@ -6,6 +6,7 @@ import levelsHandler from './handlers/levels.handler';
 import usersHandler from './handlers/users.handler';
 import taskTagsHandler from './handlers/taskTags.handler';
 import taskDetailsHandler from './handlers/task-details.handler';
+import userHandler from './handlers/user.handler';
 
 const handlers = [
     ...taskHandlers,
@@ -16,6 +17,7 @@ const handlers = [
     ...usersHandler,
     ...taskTagsHandler,
     ...taskDetailsHandler,
+    ...userHandler,
 ];
 
 export default handlers;
