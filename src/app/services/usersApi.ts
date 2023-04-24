@@ -1,9 +1,10 @@
 import { api } from './api';
-import userType from '@/interfaces/user.type';
+import { userDataType } from '@/interfaces/user.type';
+('@/interfaces/user.type');
 
 type UsersResponse = {
     message: string;
-    users: userType[];
+    users: userDataType[];
     links: {
         next: string;
         prev: string;
