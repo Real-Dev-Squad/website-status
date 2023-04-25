@@ -61,7 +61,7 @@ export const TasksContent = () => {
     // TODO: the below code should removed when mutation for updating tasks is implemented
     const [filteredTask, setFilteredTask] = useState<any>([]);
     // TODO: the below code should removed when mutation for updating tasks is implemented
-    const { response, isLoading: loading, error } = useFetch(TASKS_URL);
+    const { response, isLoading, error } = useFetch(TASKS_URL);
     // TODO: the below code should removed when mutation for updating tasks is implemented
     const updateTask = useUpdateTask(filteredTask, setFilteredTask);
 
@@ -85,7 +85,7 @@ export const TasksContent = () => {
         return () => {
             setFilteredTask([]);
         };
-    }, [loading, response]);
+    }, [isLoading, response]);
 
     // TODO: the below code should be used when mutation for updating tasks is implemented
     /*
@@ -104,7 +104,7 @@ export const TasksContent = () => {
 
     if (error) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
-    if (loading) return <p>Loading...</p>;
+    if (isLoading) return <p>Loading...</p>;
 
     return (
         <div className={classNames.tasksContainer}>
