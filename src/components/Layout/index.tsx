@@ -39,6 +39,7 @@ const Layout: FC<Props> = ({ children }) => {
                         '/issues',
                         router.pathname === '/issues'
                     )}
+                    |
                     {navBarContent(
                         'Mine',
                         '/mine',
