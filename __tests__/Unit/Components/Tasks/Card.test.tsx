@@ -136,6 +136,7 @@ describe('Task card', () => {
             ...DEFAULT_PROPS,
             content: {
                 ...DEFAULT_PROPS.content,
+                status: TASK_STATUS.ASSIGNED,
                 github: {
                     issue: {
                         closedAt: '2023-04-02T17:31:50',
@@ -146,7 +147,11 @@ describe('Task card', () => {
             },
         };
 
-        const screen = render(<Card {...PROPS} />);
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
 
         const closeTaskBtn = screen.getByRole('button', {
             name: /Close the task/i,
@@ -159,7 +164,6 @@ describe('Task card', () => {
             ...DEFAULT_PROPS,
             content: {
                 ...DEFAULT_PROPS.content,
-                status: 'Completed',
                 github: {
                     issue: {
                         closedAt: '2023-04-02T17:31:50',
@@ -170,7 +174,11 @@ describe('Task card', () => {
             },
         };
 
-        const screen = render(<Card {...PROPS} />);
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
 
         const closeTaskBtn = screen.queryByRole('button', {
             name: /Close the task/i,
@@ -200,7 +208,11 @@ describe('Task card', () => {
             },
         };
 
-        const screen = render(<Card {...PROPS} />);
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
 
         const closeTaskBtn = screen.queryByRole('button', {
             name: /Assign to ankush/i,
@@ -213,7 +225,6 @@ describe('Task card', () => {
             ...DEFAULT_PROPS,
             content: {
                 ...DEFAULT_PROPS.content,
-                status: 'Completed',
                 assignee: undefined,
                 github: {
                     issue: {
@@ -230,7 +241,11 @@ describe('Task card', () => {
             },
         };
 
-        const screen = render(<Card {...PROPS} />);
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
 
         const closeTaskBtn = screen.queryByRole('button', {
             name: /Assign to ankush/i,
