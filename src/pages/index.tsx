@@ -84,7 +84,7 @@ const Index: FC = () => {
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
     // TODO: the below code should removed when mutation for updating tasks is implemented
     const [filteredTask, setFilteredTask] = useState<any>([]);
-     // TODO: the below code should removed when mutation for updating tasks is implemented
+    // TODO: the below code should removed when mutation for updating tasks is implemented
     const { response, isLoading: loading, error } = useFetch(TASKS_URL);
     // TODO: the below code should removed when mutation for updating tasks is implemented
     const updateTask = useUpdateTask(filteredTask, setFilteredTask);
