@@ -355,6 +355,7 @@ const Card: FC<Props> = ({
             <button
                 className={styles.card__top__button}
                 type="button"
+                disabled={loading}
                 onClick={handleAssignToIssueAssignee}
             >
                 {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
@@ -377,6 +378,7 @@ const Card: FC<Props> = ({
                 <button
                     className={styles.card__top__button}
                     type="button"
+                    disabled={loading}
                     onClick={handleCloseTask}
                 >
                     Close the task
