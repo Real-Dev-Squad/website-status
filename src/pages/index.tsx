@@ -76,18 +76,24 @@ async function updateCardContent(id: string, cardDetails: task) {
 
 const Index: FC = () => {
     const { state: appState } = useAppContext();
-    const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
+    // TODO: the below code should be used when mutation for updating tasks is implemented
+    // const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
     const { isEditMode } = appState;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
+    // TODO: the below code should removed when mutation for updating tasks is implemented
     const [filteredTask, setFilteredTask] = useState<any>([]);
-    const { response } = useFetch(TASKS_URL);
+     // TODO: the below code should removed when mutation for updating tasks is implemented
+    const { response, isLoading: loading, error } = useFetch(TASKS_URL);
+    // TODO: the below code should removed when mutation for updating tasks is implemented
     const updateTask = useUpdateTask(filteredTask, setFilteredTask);
 
     const onSelect = (tab: Tab) => {
         setActiveTab(tab);
     };
+
+    // TODO: the useEffect should be removed when mutation for updating tasks is implemented
     useEffect(() => {
         if ('tasks' in response) {
             const tasks = updateTasksStatus(response.tasks);
@@ -103,19 +109,20 @@ const Index: FC = () => {
         return () => {
             setFilteredTask([]);
         };
-    }, [isLoading, response]);
+    }, [loading, response]);
 
-    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
-        (acc: Record<string, task[]>, curr: task) => {
-            return acc[curr.status as keyof task]
-                ? {
-                      ...acc,
-                      [curr.status]: [...acc[curr.status as keyof task], curr],
-                  }
-                : { ...acc, [curr.status]: [curr] };
-        },
-        {}
-    );
+    // TODO: the below code should be used when mutation for updating tasks is implemented
+    // const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+    //     (acc: Record<string, task[]>, curr: task) => {
+    //         return acc[curr.status as keyof task]
+    //             ? {
+    //                   ...acc,
+    //                   [curr.status]: [...acc[curr.status as keyof task], curr],
+    //               }
+    //             : { ...acc, [curr.status]: [curr] };
+    //     },
+    //     {}
+    // );
 
     const renderTabSection = () => (
         <div className={classNames.tabsContainer}>
@@ -147,8 +154,8 @@ const Index: FC = () => {
             <Head title="Tasks" />
             <TasksProvider>
                 <div className={classNames.container}>
-                    {isError && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
-                    {isLoading ? (
+                    {error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
+                    {loading ? (
                         <p>Loading...</p>
                     ) : (
                         <>
@@ -158,7 +165,7 @@ const Index: FC = () => {
                                     {renderTaskList()}
                                 </div>
                             ) : (
-                                !isError && <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                                !error && <p>{NO_TASKS_FOUND_MESSAGE}</p>
                             )}
                         </>
                     )}
