@@ -11,17 +11,9 @@ import { ALT_KEY } from '@/components/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
-import taskItem, {
-    taskItemPayload,
-    updateTaskDetails,
-} from '@/interfaces/taskItem.type';
+import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
-import {
-    ITEMS_URL,
-    ITEM_BY_FILTER_URL,
-    ITEM_TYPES,
-    TASKS_URL,
-} from '@/components/constants/url';
+import { TASKS_URL } from '@/components/constants/url';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
