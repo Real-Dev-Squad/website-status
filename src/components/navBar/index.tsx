@@ -16,12 +16,17 @@ import {
 } from '@/components/constants/url';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
+import { useGetUserQuery } from '@/app/services/userApi';
+import { Loader } from '../tasks/card/Loader';
 
 const NavBar = () => {
-    const { userData, isLoggedIn } = useAuthenticated();
+    const isLoggedIn = true;
+    const { data: userData, isLoading } = useGetUserQuery();
+    // const { userData, isLoggedIn } = useAuthenticated();
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
+    if (isLoading) return <Loader />;
     return (
         <nav data-testid="navbar" className={styles.navBar}>
             <div
@@ -91,13 +96,13 @@ const NavBar = () => {
                         onClick={() => setToggleDropdown(!toggleDropdown)}
                     >
                         <div className={styles.userGreetMsg}>
-                            Hello, {userData.firstName}
+                            Hello, {userData?.first_name}
                         </div>
                         <Image
                             className={styles.userProfilePic}
                             src={
-                                userData.profilePicture
-                                    ? `${userData.profilePicture}`
+                                userData?.picture?.url
+                                    ? `${userData?.picture?.url}`
                                     : `${DEFAULT_AVATAR}`
                             }
                             alt="Profile Pic"

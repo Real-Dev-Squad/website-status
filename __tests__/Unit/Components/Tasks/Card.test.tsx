@@ -1,6 +1,8 @@
 import { render, fireEvent } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
+import { store } from '@/app/store';
+import { Provider } from 'react-redux';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import {
@@ -48,9 +50,14 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 jest.useFakeTimers();
 describe('Task card', () => {
     test('Should render card', () => {
-        const { getByText } = renderWithRouter(<Card {...DEFAULT_PROPS} />, {
-            query: { dev: 'true' },
-        });
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
 
         expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
     });
@@ -63,7 +70,11 @@ describe('Task card', () => {
                 endsOn: `${getFirestoreDateNDaysBefore(1)}`,
             },
         };
-        const { rerender, getByText } = renderWithRouter(<Card {...props} />);
+        const { rerender, getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...props} />
+            </Provider>
+        );
 
         expect(getByText('a day ago')).toBeInTheDocument();
 
@@ -77,18 +88,24 @@ describe('Task card', () => {
         };
 
         rerender(
-            <RouterContext.Provider value={createMockRouter({}) as NextRouter}>
-                <Card {...props} />
-            </RouterContext.Provider>
+            <Provider store={store()}>
+                <RouterContext.Provider
+                    value={createMockRouter({}) as NextRouter}
+                >
+                    <Card {...props} />
+                </RouterContext.Provider>
+            </Provider>
         );
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
     test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
-            <isUserAuthorizedContext.Provider value={true}>
-                <Card {...DEFAULT_PROPS} />
-            </isUserAuthorizedContext.Provider>,
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <Card {...DEFAULT_PROPS} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
             {}
         );
 
@@ -96,9 +113,11 @@ describe('Task card', () => {
     });
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
-            <isUserAuthorizedContext.Provider value={true}>
-                <Card {...DEFAULT_PROPS} />
-            </isUserAuthorizedContext.Provider>,
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <Card {...DEFAULT_PROPS} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
             { query: { dev: 'true' } }
         );
 

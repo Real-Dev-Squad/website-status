@@ -4,16 +4,15 @@ import taskItem from '@/interfaces/taskItem.type';
 import { useContext } from 'react';
 type Props = {
     taskTagLevel?: taskItem[];
-    updateTaskTagLevel: (
-        taskItemToUpdate: taskItem,
-        method: 'delete' | 'post'
-    ) => void;
+    itemId: string;
     shouldEdit: boolean;
+    deleteTaskTagLevel: any;
 };
 export const TaskLevelMap = ({
     taskTagLevel,
     shouldEdit,
-    updateTaskTagLevel,
+    itemId,
+    deleteTaskTagLevel,
 }: Props) => {
     const isUserAuthorized = useContext(isUserAuthorizedContext);
 
@@ -35,7 +34,10 @@ export const TaskLevelMap = ({
                                 data-testid="delete-btn"
                                 className={classNames.removeTaskTagLevelBtn}
                                 onClick={() =>
-                                    updateTaskTagLevel(item, 'delete')
+                                    deleteTaskTagLevel({
+                                        taskItemToDelete: item,
+                                        itemId,
+                                    })
                                 }
                             >
                                 &#10060;
