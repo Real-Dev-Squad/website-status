@@ -1,11 +1,9 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useContext, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
+import task, { TABS, Tab } from '@/interfaces/task.type';
 import Tabs from '@/components/Tabs';
-import { Tab } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -34,6 +32,10 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { TasksProvider } from '@/context/tasks.context';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { TASKS_URL } from '@/components/constants/url';
+import useUpdateTask from '@/hooks/useUpdateTask';
+import groupTasksByStatus from '@/utils/groupTasksByStatus';
+import { useGetAllTasksQuery } from '@/app/services/tasksApi';
+import useFetch from '@/hooks/useFetch';
 
 const { SUCCESS, ERROR } = ToastTypes;
 const STATUS_ORDER = [
@@ -52,6 +54,7 @@ const STATUS_ORDER = [
     RELEASED,
     VERIFIED,
 ];
+
 const statusActiveList = [IN_PROGRESS, BLOCKED, SMOKE_TESTING];
 async function updateCardContent(id: string, cardDetails: task) {
     try {
@@ -73,16 +76,24 @@ async function updateCardContent(id: string, cardDetails: task) {
 
 const Index: FC = () => {
     const { state: appState } = useAppContext();
-    const [filteredTask, setFilteredTask] = useState<any>([]);
-    const { response, error, isLoading } = useFetch(TASKS_URL);
+    // TODO: the below code should be used when mutation for updating tasks is implemented
+    // const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
     const { isEditMode } = appState;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
+    // TODO: the below code should removed when mutation for updating tasks is implemented
+    const [filteredTask, setFilteredTask] = useState<any>([]);
+    // TODO: the below code should removed when mutation for updating tasks is implemented
+    const { response, isLoading: loading, error } = useFetch(TASKS_URL);
+    // TODO: the below code should removed when mutation for updating tasks is implemented
+    const updateTask = useUpdateTask(filteredTask, setFilteredTask);
 
     const onSelect = (tab: Tab) => {
         setActiveTab(tab);
     };
+
+    // TODO: the useEffect should be removed when mutation for updating tasks is implemented
     useEffect(() => {
         if ('tasks' in response) {
             const tasks = updateTasksStatus(response.tasks);
@@ -92,26 +103,31 @@ const Index: FC = () => {
                     STATUS_ORDER.indexOf(a.status) -
                     STATUS_ORDER.indexOf(b.status)
             );
-            const taskMap: any = [];
-            tasks.forEach((item) => {
-                if (item.status in taskMap) {
-                    taskMap[item.status] = [...taskMap[item.status], item];
-                } else {
-                    taskMap[item.status] = [item];
-                }
-            });
+            const taskMap: any = groupTasksByStatus(tasks);
             setFilteredTask(taskMap);
         }
-
         return () => {
             setFilteredTask([]);
         };
-    }, [isLoading, response]);
+    }, [loading, response]);
+
+    // TODO: the below code should be used when mutation for updating tasks is implemented
+    // const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+    //     (acc: Record<string, task[]>, curr: task) => {
+    //         return acc[curr.status as keyof task]
+    //             ? {
+    //                   ...acc,
+    //                   [curr.status]: [...acc[curr.status as keyof task], curr],
+    //               }
+    //             : { ...acc, [curr.status]: [curr] };
+    //     },
+    //     {}
+    // );
 
     const renderTabSection = () => (
         <div className={classNames.tabsContainer}>
             <Tabs
-                tabs={Object.values(Tab) as Tab[]}
+                tabs={TABS as Tab[]}
                 onSelect={onSelect}
                 activeTab={activeTab}
             />
@@ -125,19 +141,21 @@ const Index: FC = () => {
                     tasks={filteredTask[activeTab]}
                     isEditable={isEditable}
                     updateCardContent={updateCardContent}
+                    updateTask={updateTask}
                 />
             ) : (
                 <p>{NO_TASKS_FOUND_MESSAGE}</p>
             )}
         </div>
     );
+
     return (
         <Layout>
             <Head title="Tasks" />
             <TasksProvider>
                 <div className={classNames.container}>
-                    {!!error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
-                    {isLoading ? (
+                    {error && <p>{TASKS_FETCH_ERROR_MESSAGE}</p>}
+                    {loading ? (
                         <p>Loading...</p>
                     ) : (
                         <>
