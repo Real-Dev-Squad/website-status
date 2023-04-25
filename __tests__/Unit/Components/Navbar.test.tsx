@@ -1,31 +1,35 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import NavBar from '../../../src/components/navBar';
 import * as authHooks from '@/hooks/useAuthenticated';
+import { renderWithProviders } from '@/test-utils/renderWithProvider';
+import { setupServer } from 'msw/node';
+import handlers from '../../../__mocks__/handlers';
+
+const server = setupServer(...handlers);
+
+beforeAll(() => {
+    server.listen();
+});
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 describe('Navbar', () => {
-    test('renders the Navbar component', () => {
-        const { getByTestId } = render(<NavBar />);
-        const navbar = getByTestId('navbar');
-        expect(navbar).toBeInTheDocument();
+    test('check for loading state', () => {
+        const { getByTestId } = renderWithProviders(<NavBar />);
+        const loader = getByTestId('loader');
+        expect(loader).toBeInTheDocument();
     });
 
-    test('user whether loggedIn or not', () => {
-        jest.spyOn(authHooks, 'default').mockImplementation(() => ({
-            userData: {
-                userName: 'IamYash',
-                firstName: 'Yash',
-                profilePicture: '',
-            },
-            isLoggedIn: true,
-            isLoading: true,
-        }));
-        render(<NavBar />);
-        expect(screen.getByText('Hello, Yash'));
+    test('user whether loggedIn or not', async () => {
+        renderWithProviders(<NavBar />);
+        const navbar = await screen.findAllByTestId('navbar');
+        expect(screen.getByText('Hello, Mahima'));
     });
 
-    test('renders Navbar Links', () => {
-        render(<NavBar />);
+    test('renders Navbar Links', async () => {
+        renderWithProviders(<NavBar />);
+        await screen.findAllByTestId('navbar');
         const homeLink = screen.getByRole('link', { name: 'Welcome' });
         const eventLink = screen.getByRole('link', { name: 'Events' });
         const memberLink = screen.getByRole('link', { name: 'Members' });
@@ -39,8 +43,9 @@ describe('Navbar', () => {
         expect(statusLink).toBeInTheDocument();
     });
 
-    test('should navigate to different route when different navbar link is clicked', () => {
-        render(<NavBar />);
+    test('should navigate to different route when different navbar link is clicked', async () => {
+        renderWithProviders(<NavBar />);
+        await screen.findAllByTestId('navbar');
         const welcomelink = screen.getByRole('link', { name: 'Welcome' });
         const eventLink = screen.getByRole('link', { name: 'Events' });
         const memberLink = screen.getByRole('link', { name: 'Members' });
@@ -69,8 +74,9 @@ describe('Navbar', () => {
         );
     });
 
-    test('whether logo is rendering or not', () => {
-        const { getByTestId } = render(<NavBar />);
+    test('whether logo is rendering or not', async () => {
+        const { getByTestId } = renderWithProviders(<NavBar />);
+        await screen.findAllByTestId('navbar');
         const logo = getByTestId('logo');
         expect(logo).toBeInTheDocument();
     });

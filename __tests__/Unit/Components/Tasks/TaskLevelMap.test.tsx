@@ -1,14 +1,18 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { TaskLevelMap } from '@/components/tasks/card/TaskLevelMap';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+import taskItem from '@/interfaces/taskItem.type';
+
+import { renderWithProviders } from '@/test-utils/renderWithProvider';
+
+
 describe('TaskLevelMap', () => {
-    const taskTagLevel = [
+    const taskTagLevel: taskItem[] = [
         {
             tagId: '1',
             tagName: 'Tag 1',
-            levelValue: '1',
-            itemId: '1',
+            levelValue: 1,
             itemType: 'TASK',
             levelId: '1',
             levelName: 'easy',
@@ -17,8 +21,7 @@ describe('TaskLevelMap', () => {
         {
             tagId: '2',
             tagName: 'Tag 2',
-            levelValue: '2',
-            itemId: '1',
+            levelValue: 2,
             itemType: 'TASK',
             levelId: '1',
             levelName: 'easy',
@@ -27,11 +30,13 @@ describe('TaskLevelMap', () => {
     ];
 
     it('renders a list of task tags', () => {
-        render(
+        const deleteTaskTagLevel = jest.fn();
+        renderWithProviders(
             <TaskLevelMap
                 taskTagLevel={taskTagLevel}
                 shouldEdit={false}
-                updateTaskTagLevel={jest.fn()}
+                itemId={'1'}
+                deleteTaskTagLevel={deleteTaskTagLevel}
             />
         );
 
@@ -44,13 +49,14 @@ describe('TaskLevelMap', () => {
     });
 
     it('renders a list of task tags with remove button when shouldEdit and isUserAuthorized are true', () => {
-        const updateTaskTagLevel = jest.fn();
-        render(
+        const deleteTaskTagLevel = jest.fn();
+        renderWithProviders(
             <isUserAuthorizedContext.Provider value={true}>
                 <TaskLevelMap
                     taskTagLevel={taskTagLevel}
                     shouldEdit={true}
-                    updateTaskTagLevel={updateTaskTagLevel}
+                    itemId={'1'}
+                    deleteTaskTagLevel={deleteTaskTagLevel}
                 />
             </isUserAuthorizedContext.Provider>
         );
@@ -62,9 +68,10 @@ describe('TaskLevelMap', () => {
         expect(removeButtons).toHaveLength(2);
 
         fireEvent.click(removeButtons[0]);
-        expect(updateTaskTagLevel).toHaveBeenCalledWith(
-            taskTagLevel[0],
-            'delete'
-        );
+
+        expect(deleteTaskTagLevel).toHaveBeenCalledWith({
+            taskItemToDelete: taskTagLevel[0],
+            itemId: '1',
+        });
     });
 });

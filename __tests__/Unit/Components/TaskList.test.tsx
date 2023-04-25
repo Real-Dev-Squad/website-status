@@ -1,10 +1,17 @@
+import { store } from '@/app/store';
 import TaskList from '@/components/tasks/TaskList/TaskList';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { screen, fireEvent } from '@testing-library/react';
 import { TASK, tasks } from '../../../__mocks__/db/tasks';
+import { Provider } from 'react-redux';
 
 describe('TaskList', function () {
     it('Should render TaskList', function () {
-        render(<TaskList tasks={tasks} updateTask={jest.fn()} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} updateTask={jest.fn()} />
+            </Provider>
+        );
 
         const _tasks = screen.queryAllByText(TASK.title);
 
@@ -14,8 +21,10 @@ describe('TaskList', function () {
     });
 
     it('Should render see more button', function () {
-        render(
-            <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
+            </Provider>
         );
 
         const seeMore = screen.getByRole('button', { name: /see more/i });
@@ -24,8 +33,10 @@ describe('TaskList', function () {
     });
 
     it('Should render 3 tasks intially and then render more 5 tasks after click event', function () {
-        render(
-            <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
+            </Provider>
         );
 
         const _tasks = screen.queryAllByText(TASK.title);
@@ -37,8 +48,10 @@ describe('TaskList', function () {
     });
 
     it('Shouldn\'t render see more button after all tasks are loaded and rendered', function () {
-        render(
-            <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
+            </Provider>
         );
 
         const _tasks = screen.queryAllByText(TASK.title);
