@@ -1,74 +1,67 @@
 import { FC, useState, useEffect } from 'react';
-import { useAppContext } from '@/context';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
-import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
-import { LOGIN_URL, MINE_TASKS_URL } from '@/components/constants/url';
+import { LOGIN_URL } from '@/components/constants/url';
+import useAuthenticated from '@/hooks/useAuthenticated';
+import { useGetMineTasksQuery } from '@/app/services/tasksApi';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { Loader } from '@/components/tasks/card/Loader';
 
-function CardList(tasks: task[]) {
-    return tasks.map((item: task) => (
-        <Card
-            content={item}
-            key={item.id}
-            shouldEdit={false}
-            onContentChange={undefined}
-        />
-    ));
+function CardList({ tasks }: { tasks: task[] }) {
+    return (
+        <>
+            {tasks.map((item: task) => (
+                <Card
+                    content={item}
+                    key={item.id}
+                    shouldEdit={false}
+                    onContentChange={undefined}
+                />
+            ))}
+        </>
+    );
 }
 
+const Content = () => {
+    const { data: tasks, error, isLoading } = useGetMineTasksQuery(skipToken);
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Something went wrong! Please contact admin</p>;
+    if (tasks && tasks.length)
+        return (
+            <div>
+                <CardList tasks={tasks} />
+            </div>
+        );
+    return <p>No Tasks Found</p>;
+};
+
 const Mine: FC = () => {
-    const [tasks, setTasks] = useState<task[]>([]);
-    const { response, error, isLoading, callAPI } = useFetch(
-      MINE_TASKS_URL,
-        {},
-        false
-    );
-    const { state } = useAppContext();
-    const { isLoading: isAuthenticating, isLoggedIn } = state;
-    useEffect(() => {
-        if (isLoggedIn && !Object.keys(response).length) {
-            callAPI();
-            setTasks(response);
-        }
-    }, [isLoggedIn, response]);
+    const { isLoading: isAuthenticating, isLoggedIn } = useAuthenticated();
 
     return (
         <Layout>
             <Head title="Mine" />
             <div className={classNames.container}>
                 <div className={classNames.container}>
-                    {!isAuthenticating &&
-                        (isLoggedIn ? (
-                            isLoading ? (
-                                <p>Loading...</p>
-                            ) : error ? (
-                                <p>
-                                    Something went wrong! Please contact admin
-                                </p>
-                            ) : (
-                                <>
-                                    {tasks.length > 0 ? (
-                                        <div>{CardList(tasks)}</div>
-                                    ) : (
-                                        <p>No Tasks Found</p>
-                                    )}
-                                </>
-                            )
-                        ) : (
-                            <div>
-                                <p>You are not Authorized</p>
-                                <a
-                                    href={LOGIN_URL}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    Click here to Login
-                                </a>
-                            </div>
-                        ))}
+                    {isAuthenticating ? (
+                        <Loader />
+                    ) : isLoggedIn ? (
+                        <Content />
+                    ) : (
+                        <div>
+                            <p>You are not Authorized</p>
+                            <a
+                                href={LOGIN_URL}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Click here to Login
+                            </a>
+                        </div>
+                    )}
                 </div>
             </div>
         </Layout>

@@ -1,6 +1,6 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { useAppContext } from '@/context';
+
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
@@ -12,11 +12,12 @@ import {
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import updateCardContent from '@/helperFunctions/updateCardContent';
+import { useEditMode } from '@/hooks/useEditMode';
 
 export const TasksContent = () => {
-    const { state: appState } = useAppContext();
+    const { isEditMode } = useEditMode();
     const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
-    const { isEditMode } = appState;
+
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
