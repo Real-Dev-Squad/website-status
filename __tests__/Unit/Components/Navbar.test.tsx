@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import NavBar from '../../../src/components/navBar';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
@@ -24,6 +24,13 @@ describe('Navbar', () => {
         renderWithProviders(<NavBar />);
         const navbar = await screen.findAllByTestId('navbar');
         expect(screen.getByText('Hello, Mahima'));
+    });
+
+    test('renders the hamburger icon', async () => {
+        const { getByTestId } = renderWithProviders(<NavBar />);
+        await screen.findAllByTestId('navbar');
+        const hamburgerIcon = getByTestId('hamburgerIcon');
+        expect(hamburgerIcon).toBeInTheDocument();
     });
 
     test('renders Navbar Links', async () => {
