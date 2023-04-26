@@ -1,0 +1,158 @@
+.standupContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.standupBanner {
+    background-color: #1c325e;
+    width: 83.6875%;
+    height: 12%;
+    color: #ffffff;
+    padding: 24px 0 24px 49px;
+    border-radius: 8px;
+}
+
+.standupBanner p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.standupBanner p span {
+    color: #f1416c;
+    text-decoration: underline;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
+    padding: 0px 20px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.buttonContainer button {
+    width: 128px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.continueButton {
+    background: #1e429f;
+    font-size: 14px;
+    line-height: 150%;
+    margin-right: 10px;
+}
+
+.updateButton {
+    background-color: #d61f69;
+    letter-spacing: 0.5px;
+}
+
+.standupUpdateContainer {
+    width: 50.63625%;
+    margin-top: 50px;
+}
+
+.standupForm {
+    margin-top: 35px;
+}
+
+.standupUpdateContainer h1 {
+    color: #1e429f;
+    font-family: 'Inter', sans-serif;
+    font-size: 2.2rem;
+}
+
+.yesterdayUpdate h1,
+.todayUpdate h1,
+.blockerUpdate h1 {
+    color: #6b7280;
+    font-size: 1.4rem;
+    margin-top: 40px;
+}
+
+.inputFlield {
+    height: 58px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    padding: 5px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    font-family: 'Inter', sans-serif;
+}
+
+.inputFlield:focus {
+    border: 1px solid #1c64f2;
+    outline: none;
+}
+
+.submitButton {
+    width: 209px;
+    height: 52px;
+    margin-top: 45px;
+    border-radius: 8px;
+    background: #e5e7eb;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 946px) {
+    .standupUpdateContainer {
+        width: 64.63625%;
+    }
+}
+
+@media (max-width: 600px) {
+    .standupBanner {
+        width: 100%;
+    }
+
+    .standupBanner p {
+        font-size: 16px;
+        word-wrap: break-word;
+    }
+
+    .standupUpdateContainer {
+        width: 76.63625%;
+    }
+
+    .standupUpdateContainer h1 {
+        font-size: 1.6rem;
+    }
+
+    .yesterdayUpdate h1,
+    .todayUpdate h1,
+    .blockerUpdate h1 {
+        font-size: 1rem;
+    }
+
+    .submitButton {
+        width: 150px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 375px) {
+    .standupUpdateContainer {
+        width: 100%;
+    }
+}

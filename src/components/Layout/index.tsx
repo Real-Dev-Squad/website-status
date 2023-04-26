@@ -41,6 +41,12 @@ const Layout: FC<Props> = ({ children }) => {
                     )}
                     |
                     {navBarContent(
+                        'Standup',
+                        '/standup',
+                        router.pathname === '/standup'
+                    )}
+                    |
+                    {navBarContent(
                         'DS',
                         '/challenges',
                         router.pathname === '/challenges'
