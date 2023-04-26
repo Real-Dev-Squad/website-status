@@ -5,22 +5,7 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
 import { useContext, useState, useEffect } from 'react';
-import {
-    ASSIGNED,
-    COMPLETED,
-    AVAILABLE,
-    IN_PROGRESS,
-    SMOKE_TESTING,
-    NEEDS_REVIEW,
-    IN_REVIEW,
-    APPROVED,
-    MERGED,
-    SANITY_CHECK,
-    REGRESSION_CHECK,
-    RELEASED,
-    VERIFIED,
-    BLOCKED,
-} from '@/components/constants/task-status';
+import { STATUS_ORDER } from '@/components/constants/task-status';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
@@ -32,23 +17,6 @@ import updateCardContent from '@/helperFunctions/updateCardContent';
 import useFetch from '@/hooks/useFetch';
 import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
-
-const STATUS_ORDER = [
-    ASSIGNED,
-    COMPLETED,
-    BLOCKED,
-    AVAILABLE,
-    IN_PROGRESS,
-    SMOKE_TESTING,
-    NEEDS_REVIEW,
-    IN_REVIEW,
-    APPROVED,
-    MERGED,
-    SANITY_CHECK,
-    REGRESSION_CHECK,
-    RELEASED,
-    VERIFIED,
-];
 
 export const TasksContent = () => {
     const { state: appState } = useAppContext();
