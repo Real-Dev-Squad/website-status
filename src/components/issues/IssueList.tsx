@@ -9,7 +9,7 @@ type IssueListProps = {
 const IssueList: FC<IssueListProps> = ({ list = [] }) => {
     return (
         <>
-            {list.map((issue: any) => (
+            {list.map((issue: IssueItem) => (
                 <Card key={issue.id} issue={issue} />
             ))}
         </>
