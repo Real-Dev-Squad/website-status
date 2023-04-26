@@ -9,6 +9,7 @@ import {
 import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { USER_SELF } from '@/components/constants/url';
+import { useGetUserDataQuery } from '@/app/services/usersApi';
 
 const { ERROR } = ToastTypes;
 export const isUserAuthorizedContext = createContext<boolean>(false);
@@ -19,23 +20,20 @@ interface Props {
 
 const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
   const [isUserAuthorized, setIsUserAuthorized] = useState<boolean>(false);
+  const {data,isError, error,isSuccess} = useGetUserDataQuery({});
+  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { requestPromise } = fetch({ url: USER_SELF });
-        const { data } = await requestPromise;
+    if(isSuccess){
         const userRoles = {
-          adminUser: data.roles?.admin,
-          superUser: data.roles?.super_user,
+          adminUser: data?.roles?.admin,
+          superUser: data?.roles?.super_user,
         };
         const { adminUser, superUser } = userRoles;
         setIsUserAuthorized(!!adminUser || !!superUser);
-      } catch (err) {
-        console.error(err);
+      }else if(isError){
+        console.error(error);
         setIsUserAuthorized(false);
       }
-    };
-    fetchData();
 
         return () => {
             setIsUserAuthorized(false);

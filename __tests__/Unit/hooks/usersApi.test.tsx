@@ -3,6 +3,7 @@ import {
     useGetUsersQuery,
     useGetUsersByLinkQuery,
     useGetUsersByUsernameQuery,
+    useGetUserDataQuery
 } from '@/app/services/usersApi';
 import handlers from '../../../__mocks__/handlers';
 import React, { PropsWithChildren } from 'react';
@@ -122,5 +123,44 @@ describe('useGetUsersByUsernameQuery', () => {
         users?.forEach((user) => {
             expect(user.username).toMatch(/^mu/);
         });
+    });
+});
+
+describe('useGetUserDataQuery', () => {
+    test('returns users data', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetUserDataQuery({}),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const data = {
+          id: 'aTOG168A86JXY5wVosJx',
+          github_display_name: 'Mahima Khandelwal',
+          github_id: 'Maheima',
+          roles: { member: true, archived: false },
+          last_name: 'Khandelwal',
+          username: 'mahima',
+          incompleteUserDetails: false,
+          profileStatus: 'BLOCKED',
+          picture: {
+            publicId: 'profile/aTOG168A86JXY5wVosJx/fj2c46kpmpy3gi8tl63s',
+            url: 'https://res.cloudinary.com/realdevsquad/image/upload/v1674639637/profile/aTOG168A86JXY5wVosJx/fj2c46kpmpy3gi8tl63s.jpg'
+          },
+          status: 'active',
+          first_name: 'Mahima',
+          profileURL: 'https://mahima-profile-service.onrender.com'
+        };
+        const userData = nextResponse.data;
+        expect(userData).toEqual(data);
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
     });
 });
