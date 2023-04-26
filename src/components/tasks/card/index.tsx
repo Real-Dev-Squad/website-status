@@ -1,5 +1,4 @@
 import { FC, useState, useEffect, useContext } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useAppContext } from '@/context';
@@ -20,6 +19,7 @@ import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
+import { CardTitleWrapper } from './CardTitleWrapper';
 
 type Props = {
     content: task;
@@ -247,17 +247,6 @@ const Card: FC<Props> = ({
             ></div>
         </div>
     );
-    const CardTitle = () => (
-        <h2
-            className={classNames.cardTitle}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'title')}
-            role="button"
-            tabIndex={0}
-        >
-            {cardDetails.title}
-        </h2>
-    );
 
     // show redesign only on dev
     if (isNewCardEnabled)
@@ -273,9 +262,24 @@ const Card: FC<Props> = ({
             >
                 {/* loading spinner */}
                 {isLoading && <Loader />}
-
+                {/* <CardTitle /> */}
                 <div className={classNames.cardItems}>
-                    <CardTitle />
+                    <CardTitleWrapper
+                        to="/tasks/[id]"
+                        condition={isNewCardEnabled}
+                        taskId={cardDetails.id}
+                    >
+                        <span
+                            className={classNames.cardTitle}
+                            contentEditable={shouldEdit}
+                            onKeyPress={(e) => handleChange(e, 'title')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {cardDetails.title}
+                        </span>
+                    </CardTitleWrapper>
+
                     {/* progress bar */}
                     <div className={classNames.progressContainerUpdated}>
                         <ProgressIndicator />
@@ -362,13 +366,7 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <Link
-                    href={{
-                        pathname: '/tasks/[id]',
-                    }}
-                    as={`/tasks/${cardDetails.id}`}
-                    style={{ textDecoration: 'none' }}
-                >
+                <CardTitleWrapper condition={isNewCardEnabled}>
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
@@ -378,7 +376,7 @@ const Card: FC<Props> = ({
                     >
                         {cardDetails.title}
                     </span>
-                </Link>
+                </CardTitleWrapper>
                 <span>
                     <span className={classNames.cardSpecialFont}>Status:</span>
                     <span
