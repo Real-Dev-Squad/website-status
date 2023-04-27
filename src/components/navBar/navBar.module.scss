@@ -103,7 +103,6 @@ $theme-active: #87d870;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        // border: 2px solid red;
         position: relative;
         .navLinks {
             a {
@@ -132,14 +131,14 @@ $theme-active: #87d870;
         padding: 18px;
         cursor: pointer;
         font-size: 20px;
-        color: white;
+        color: $white;
     }
     .icon {
         height: 32px;
     }
 
     .navBarMenu {
-        background: white;
+        background: $white;
         display: inline-block;
         width: 100%;
     }
