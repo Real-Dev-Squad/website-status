@@ -8,25 +8,25 @@ interface CardTitleWrapperProps {
     taskId?: string;
 }
 
-interface InternalLinkProps {
-    href: {
-        pathname: string;
-    };
-    children: ReactNode;
-    id?: string;
-}
+// interface InternalLinkProps {
+//     href: {
+//         pathname: string;
+//     };
+//     children: ReactNode;
+//     id?: string;
+// }
 
-const InternalLink = ({ href, id, children }: InternalLinkProps) => {
-    return (
-        <Link
-            href={href}
-            as={`/tasks/${id}`}
-            style={{ textDecoration: 'none' }}
-        >
-            {children}
-        </Link>
-    );
-};
+// const InternalLink = ({ href, id, children }: InternalLinkProps) => {
+//     return (
+//         <Link
+//             href={href}
+//             as={`/tasks/${id}`}
+//             style={{ textDecoration: 'none' }}
+//         >
+//             {children}
+//         </Link>
+//     );
+// };
 
 export const CardTitleWrapper: FC<CardTitleWrapperProps> = ({
     children,
@@ -35,14 +35,23 @@ export const CardTitleWrapper: FC<CardTitleWrapperProps> = ({
     taskId,
 }) => {
     return !!condition && to ? (
-        <InternalLink
-            href={{
-                pathname: '/tasks/[id]',
-            }}
-            id={taskId}
-        >
-            {children}
-        </InternalLink>
+        // <InternalLink
+            // href={{
+            //     pathname: '/tasks/[id]',
+            // }}
+        //     id={taskId}
+        // >
+        //     {children}
+        // </InternalLink>
+        <Link
+        href={{
+            pathname: '/tasks/[id]',
+        }}
+        as={`/tasks/${taskId}`}
+        style={{ textDecoration: 'none' }}
+    >
+        {children}
+    </Link>
     ) : (
         <>{children}</>
     );
