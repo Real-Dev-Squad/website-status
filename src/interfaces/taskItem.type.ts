@@ -19,4 +19,10 @@ export type taskItemPayload = {
     tagId?: string;
 };
 
+export type updateTaskDetails = {
+    startedOn?: number;
+    assignee?: string;
+    status?: string;
+};
+
 export default taskItem;

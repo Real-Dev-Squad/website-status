@@ -1,43 +1,15 @@
 import { store } from '@/app/store';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
+import { TASK, tasks } from '../../../__mocks__/db/tasks';
 import { Provider } from 'react-redux';
-
-const TASK = {
-    id: 'firestoreDocumentId123',
-    lossRate: {
-        dinero: 10,
-        neelam: 5,
-    },
-    links: ['https://realdevsquad.com/learn-site'],
-    completionAward: {
-        dinero: 110,
-        neelam: 10,
-    },
-    dependsOn: [],
-    assignee: 'shmbajaj',
-    startedOn: '1618790400',
-    isNoteworthy: true,
-    title: 'Testing and Determinsitic State',
-    purpose: 'string',
-    percentCompleted: 0,
-    endsOn: '1618790400',
-    status: 'progress',
-    featureUrl: 'progress',
-    type: 'feature',
-    createdBy: 'shmbajaj',
-};
-const tasks = Array.from({ length: 10 }).map((_, index) => ({
-    ...TASK,
-    id: TASK.id + index,
-}));
 
 describe('TaskList', function () {
     it('Should render TaskList', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList tasks={tasks} />
+                <TaskList tasks={tasks} updateTask={jest.fn()} />
             </Provider>
         );
 
@@ -51,7 +23,7 @@ describe('TaskList', function () {
     it('Should render see more button', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList tasks={tasks} hasLimit={true} />
+                <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
             </Provider>
         );
 
@@ -63,7 +35,7 @@ describe('TaskList', function () {
     it('Should render 3 tasks intially and then render more 5 tasks after click event', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList tasks={tasks} hasLimit={true} />
+                <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
             </Provider>
         );
 
@@ -78,7 +50,7 @@ describe('TaskList', function () {
     it('Shouldn\'t render see more button after all tasks are loaded and rendered', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList tasks={tasks} hasLimit={true} />
+                <TaskList tasks={tasks} hasLimit={true} updateTask={jest.fn()} />
             </Provider>
         );
 
