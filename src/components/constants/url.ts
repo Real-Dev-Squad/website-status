@@ -24,3 +24,4 @@ export const ALL_LEVELS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/levels`;
 export const ITEM_TYPES = { task: 'TASK' };
 export const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 export const USERS_URL = `${BASE_URL}/users`;
+export const PROGRESS_UPDATES_URL = `${BASE_URL}/progressupdates`;
