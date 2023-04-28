@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 
@@ -30,9 +30,9 @@ const StandUp: FC = () => {
                             <h1>Standup Update</h1>
                             <div className={styles.standupForm}>
                                 <div className={styles.yesterdayUpdate}>
-                                    <h1 className={styles.updateHeading}>
+                                    <label className={styles.updateHeading}>
                                         On March 11, 2023
-                                    </h1>
+                                    </label>
                                     <input
                                         type="text"
                                         className={styles.inputFlield}
@@ -40,9 +40,9 @@ const StandUp: FC = () => {
                                     />
                                 </div>
                                 <div className={styles.todayUpdate}>
-                                    <h1 className={styles.updateHeading}>
+                                    <label className={styles.updateHeading}>
                                         Today
-                                    </h1>
+                                    </label>
                                     <input
                                         type="text"
                                         className={styles.inputFlield}
@@ -50,9 +50,9 @@ const StandUp: FC = () => {
                                     />
                                 </div>
                                 <div className={styles.blockerUpdate}>
-                                    <h1 className={styles.updateHeading}>
+                                    <label className={styles.updateHeading}>
                                         Blockers
-                                    </h1>
+                                    </label>
                                     <input
                                         type="text"
                                         className={styles.inputFlield}
