@@ -4,10 +4,11 @@ import Layout from '@/components/Layout';
 
 import { addStandup } from '@/interfaces/standup.type';
 import { FormatDate } from '@/utils/FormatDate';
-import { LOGIN_URL } from '@/components/constants/url';
+import { LOGIN_URL } from '@/constants/url';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import StandUpContainer from '@/components/standup';
-import { useAppContext } from '@/context';
+import { useGetUserQuery } from '@/app/services/userApi';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 
 const StandUp: FC = () => {
     const [update, setUpdate] = useState<addStandup>({
@@ -20,8 +21,7 @@ const StandUp: FC = () => {
 
     const { isLoggedIn, isLoading } = useAuthenticated();
 
-    const { state } = useAppContext();
-    const { isLoading: isAuthenticating } = state;
+    const { isLoading: isAuthenticating } = useGetUserQuery(skipToken);
 
     const yesterdayDate = FormatDate();
 
