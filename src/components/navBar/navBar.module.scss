@@ -121,7 +121,7 @@ $theme-active: #87d870;
     }
 
     .showLogo {
-        display: none !important;
+        display: none;
     }
 
     .hamburgerIcon {
@@ -158,7 +158,7 @@ $theme-active: #87d870;
     }
 
     .navBarMenu li a {
-        text-decoration: none !important;
+        text-decoration: none;
         color: $theme-blue;
     }
 
