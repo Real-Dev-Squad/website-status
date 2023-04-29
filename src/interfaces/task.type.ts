@@ -18,6 +18,19 @@ type task = {
     lossRate: award;
     isNoteworthy: boolean;
     createdBy: string;
+    github?: {
+        issue: {
+            assignee?: string;
+            status: string;
+            id: number;
+            closedAt?: string;
+            assigneeRdsInfo?: {
+                firstName: string | null | undefined;
+                lastName: string | null | undefined;
+                username: string;
+            };
+        };
+    };
 };
 
 enum Tab {
