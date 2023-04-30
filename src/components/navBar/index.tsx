@@ -45,7 +45,7 @@ const NavBar = () => {
                     showMenu ? `${styles.navBarMenu}` : `${styles.navLinks}`
                 }`}
             >
-                <ul>
+                <ul className={styles.mobile_menu}>
                     <li>
                         <a className={styles.logo} href={HOME_URL}>
                             <Image

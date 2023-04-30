@@ -82,10 +82,10 @@ $theme-active: #87d870;
     .hamburgerIcon {
         display: none;
     }
-    ul li {
+    .mobile_menu > li {
         list-style: none;
     }
-    .navLinks ul {
+    .navLinks .mobile_menu {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -112,8 +112,16 @@ $theme-active: #87d870;
                 display: none;
             }
         }
+        .hamburgerIcon {
+            display: inline-block;
+            height: 73px;
+            width: 73px;
+            padding: 18px;
+            cursor: pointer;
+            font-size: 20px;
+            color: $white;
+        }
     }
-
     .signInLink {
         position: absolute;
         top: 10px;
@@ -124,15 +132,6 @@ $theme-active: #87d870;
         display: none;
     }
 
-    .hamburgerIcon {
-        display: inline-block !important;
-        height: 73px;
-        width: 73px;
-        padding: 18px;
-        cursor: pointer;
-        font-size: 20px;
-        color: $white;
-    }
     .icon {
         height: 32px;
     }
@@ -143,7 +142,7 @@ $theme-active: #87d870;
         width: 100%;
     }
 
-    .navBarMenu ul {
+    .navBarMenu .mobile_menu {
         display: flex;
         flex-direction: column;
         box-shadow: 0px 10px 15px rgb(0 0 0 / 50%);
@@ -166,18 +165,17 @@ $theme-active: #87d870;
         position: absolute;
         top: 10px;
         right: 20px;
-        z-index: 50;
     }
 
     .signInLink {
         width: 10rem;
     }
 
-    .navBarMenu ul li a:hover {
+    .navBarMenu .mobile_menu > li a:hover {
         color: $theme-active;
     }
 
-    .navBarMenu ul li a:active {
+    .navBarMenu .mobile_menu > li a:active {
         color: $theme-active;
     }
 }
