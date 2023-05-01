@@ -13,8 +13,11 @@ const StandUp: FC = () => {
                     <div className={styles.standupContainer}>
                         <div className={styles.standupBanner}>
                             <p>
-                                You have <span>2 missed</span> Standup updates
-                                this week
+                                You have
+                                <span data-testid="missed-updates">
+                                    2 missed
+                                </span>
+                                Standup updates this week
                             </p>
                             <p>Let&apos;s try to avoid having zero days </p>
                             <div className={styles.buttonContainer}>
@@ -37,6 +40,7 @@ const StandUp: FC = () => {
                                         type="text"
                                         className={styles.inputFlield}
                                         placeholder="e.g Raised PR for adding new config"
+                                        data-testid="yesterday-input-update"
                                     />
                                 </div>
                                 <div className={styles.todayUpdate}>
@@ -47,6 +51,7 @@ const StandUp: FC = () => {
                                         type="text"
                                         className={styles.inputFlield}
                                         placeholder="e.g Refactor signup to support Google login"
+                                        data-testid="today-input-update"
                                     />
                                 </div>
                                 <div className={styles.blockerUpdate}>
@@ -57,6 +62,7 @@ const StandUp: FC = () => {
                                         type="text"
                                         className={styles.inputFlield}
                                         placeholder="e.g Waiting on identity team to deploy FF"
+                                        data-testid="blocker-input-update"
                                     />
                                 </div>
                                 <button className={styles.submitButton}>
