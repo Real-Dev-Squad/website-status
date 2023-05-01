@@ -219,7 +219,7 @@ const Card: FC<Props> = ({
         <div className={classNames.editButton} data-testid="edit-button">
             <Image
                 src="/pencil.webp"
-                alt="edit"
+                alt="pencil icon to represent edit button"
                 width={iconWidth}
                 height={iconHeight}
                 onClick={onEditRoute}
