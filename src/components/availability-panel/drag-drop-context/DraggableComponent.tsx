@@ -5,12 +5,12 @@ import {
 } from 'react-beautiful-dnd';
 import { FC, useContext } from 'react';
 import { draggableProps } from '@/interfaces/availabilityPanel.type';
+import { DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
+import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { disableDrag } from '.';
 import Image from 'next/image';
 
-const imageGenerator = (name: string) =>
-    `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${name}/img.png`;
 
 const getItemStyle = (
     isDragging: boolean,
@@ -38,6 +38,12 @@ const DraggableComponent: FC<draggableProps> = ({
     title = '',
 }) => {
     const draggableIds = useContext(disableDrag);
+        const { data: userResponse } = useGetUsersByUsernameQuery({
+        searchString: draggableId,
+        size: 1,
+    });
+    const draggableUserImageURL: string =
+        userResponse?.users[0]?.picture?.url || placeholderImageURL;
     return (
         <Draggable
             key={draggableId}
@@ -62,14 +68,10 @@ const DraggableComponent: FC<draggableProps> = ({
                     ) : (
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                             <Image
-                                src={imageGenerator(draggableId)}
+                                src={draggableUserImageURL}
                                 alt={draggableId}
                                 width={52}
                                 height={52}
-                                onError={(e) => {
-                                    (e.target as HTMLImageElement).src =
-                                        'dummyProfile.png';
-                                }}
                             />
                             <span>{draggableId}</span>
                         </div>
