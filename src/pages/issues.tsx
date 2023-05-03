@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, ChangeEvent } from 'react';
 import IssueList from '../components/issues/IssueList';
 import classNames from '@/styles/issues.module.scss';
 import Layout from '@/components/Layout';
@@ -8,11 +8,11 @@ import {
     NO_ISSUES_FOUND_MESSAGE,
 } from '@/components/constants/messages';
 import { ISSUES_URL } from '@/components/constants/url';
-import axios from 'axios';
+import { IssueItem } from '@/interfaces/issueItem.type';
 
 type SearchFieldProps = {
     searchText: string;
-    onSearchTextChanged: (event: any) => void;
+    onSearchTextChanged: (event: ChangeEvent<HTMLInputElement>) => void;
     onSearchTextSubmitted: () => void;
     loading: boolean;
 };
@@ -43,9 +43,9 @@ const SearchField = ({
 };
 
 const Issues: FC = () => {
-    const [issueList, setIssueList] = useState<[]>([]);
-    const [searchText, setSearchText] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
+    const [issueList, setIssueList] = useState<IssueItem[]>([]);
+    const [searchText, setSearchText] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<null | any>(null);
 
     const fetchIssues = async () => {
@@ -54,11 +54,14 @@ const Issues: FC = () => {
             const res = await fetch(`${ISSUES_URL}?q=${searchText}`);
             const data = await res.json();
             if ('issues' in data) {
+                // GitHub treats issues and PRs as issues
+                // Filtering issues out from the response
                 const issuesAndPullRequests: any = data.issues;
-                const onlyIssues = issuesAndPullRequests.filter(
-                    (issue: { hasOwnProperty: (arg0: string) => any }) =>
+                // The issue is a PR if the object has a key "pull_request"
+                const onlyIssues: IssueItem[] = issuesAndPullRequests.filter(
+                    (item: any) =>
                         !Object.prototype.hasOwnProperty.call(
-                            issue,
+                            item,
                             'pull_request'
                         )
                 );
@@ -67,6 +70,7 @@ const Issues: FC = () => {
             setIsLoading(false);
             setError(null);
         } catch (error) {
+            console.error(error);
             setIssueList([]);
             setError(error);
             setIsLoading(false);
@@ -77,7 +81,8 @@ const Issues: FC = () => {
         fetchIssues();
     }, []);
 
-    const onSearchTextChanged = (e: any) => setSearchText(e.target.value);
+    const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) =>
+        setSearchText(e.target.value);
 
     return (
         <Layout>
