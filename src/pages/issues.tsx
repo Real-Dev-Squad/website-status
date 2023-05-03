@@ -84,6 +84,18 @@ const Issues: FC = () => {
     const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) =>
         setSearchText(e.target.value);
 
+    let renderElement = <p>Loading...</p>;
+
+    if (!isLoading) {
+        if (error) {
+            renderElement = <p>{ISSUES_FETCH_ERROR_MESSAGE}</p>;
+        } else if (issueList.length) {
+            renderElement = <IssueList list={issueList} />;
+        } else {
+            renderElement = <p>{NO_ISSUES_FOUND_MESSAGE}</p>;
+        }
+    }
+
     return (
         <Layout>
             <Head title="Issues" />
@@ -94,18 +106,7 @@ const Issues: FC = () => {
                     onSearchTextSubmitted={fetchIssues}
                     loading={isLoading}
                 />
-                {!isLoading && !!error && <p>{ISSUES_FETCH_ERROR_MESSAGE}</p>}
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : (
-                    <>
-                        {issueList.length > 0 ? (
-                            <IssueList list={issueList} />
-                        ) : (
-                            !error && NO_ISSUES_FOUND_MESSAGE
-                        )}
-                    </>
-                )}
+                {renderElement}
             </div>
         </Layout>
     );
