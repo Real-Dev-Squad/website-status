@@ -14,6 +14,8 @@ import TaskLevelEdit from './TaskTagEdit';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { TASKS_URL } from '@/components/constants/url';
+import { DUMMY_NAME, DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -23,6 +25,7 @@ import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
+import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 
 type Props = {
     content: task;
@@ -44,9 +47,12 @@ const Card: FC<Props> = ({
         TASK_STATUS.AVAILABLE,
     ];
     const cardDetails = content;
-    const [assigneeProfilePic, setAssigneeProfilePic] = useState(
-        `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
-    );
+        const { data: userResponse } = useGetUsersByUsernameQuery({
+        searchString: cardDetails.assignee,
+        size: MAX_SEARCH_RESULTS,
+    });
+    const assigneeProfileImageURL: string =
+        userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
 
@@ -76,9 +82,6 @@ const Card: FC<Props> = ({
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
-
-    const contributorImageOnError = () =>
-        setAssigneeProfilePic('/dummyProfile.png');
 
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -430,9 +433,8 @@ const Card: FC<Props> = ({
                         </span>
                         <span className={classNames.contributorImage}>
                             <Image
-                                src={assigneeProfilePic}
-                                alt={`profile picture of ${cardDetails.assignee}`}
-                                onError={contributorImageOnError}
+                                src={assigneeProfileImageURL}
+                                alt={cardDetails.assignee || DUMMY_NAME}
                                 width={30}
                                 height={30}
                             />
@@ -586,9 +588,8 @@ const Card: FC<Props> = ({
                             </span>
                             <span className={classNames.contributorImage}>
                                 <Image
-                                    src={assigneeProfilePic}
-                                    alt="Assignee profile picture"
-                                    onError={contributorImageOnError}
+                                    src={assigneeProfileImageURL}
+                                    alt={cardDetails.assignee || DUMMY_NAME}
                                     width={45}
                                     height={45}
                                 />
