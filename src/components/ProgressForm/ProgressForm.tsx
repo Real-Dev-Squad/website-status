@@ -1,5 +1,6 @@
 import NavBar from '../navBar';
 import InputWithQuestions from './InputWithQuestions';
+import ProgressHeader from './ProgressHeader';
 
 const questions = [
     {
@@ -55,6 +56,7 @@ const ProgressForm = () => {
     return (
         <>
             <NavBar />
+            <ProgressHeader/>
             <h2>{getFormattedDate()}</h2>
             <form>
                 {questions.map((question) => {

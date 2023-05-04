@@ -19,8 +19,7 @@ import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
-
-
+import { STATUS_URL } from '../constants/url';
 
 type ButtonProps = {
     buttonName: string;
@@ -220,6 +219,13 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
+                            <button
+                                onClick={() => {
+                                    document.location = `${STATUS_URL}/progress/${taskID}?dev=true`;
+                                }}
+                            >
+                                Update Progress
+                            </button>
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
