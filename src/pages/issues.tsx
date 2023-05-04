@@ -9,6 +9,7 @@ import {
 } from '@/components/constants/messages';
 import { ISSUES_URL } from '@/components/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
+import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 
 type SearchFieldProps = {
     searchText: string;
@@ -56,10 +57,11 @@ const Issues: FC = () => {
             if ('issues' in data) {
                 // GitHub treats issues and PRs as issues
                 // Filtering issues out from the response
-                const issuesAndPullRequests: any = data.issues;
+                const issuesAndPullRequests: PullRequestAndIssueItem[] =
+                    data.issues;
                 // The issue is a PR if the object has a key "pull_request"
                 const onlyIssues: IssueItem[] = issuesAndPullRequests.filter(
-                    (item: any) =>
+                    (item: PullRequestAndIssueItem) =>
                         !Object.prototype.hasOwnProperty.call(
                             item,
                             'pull_request'
