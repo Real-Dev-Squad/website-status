@@ -3,6 +3,7 @@ import { FC, useContext } from 'react';
 import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
 import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import { disableDrag } from '.';
 import Image from 'next/image';
@@ -36,7 +37,7 @@ const DraggableComponent: FC<draggableProps> = ({
     const draggableIds = useContext(disableDrag);
         const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: draggableId,
-        size: 1,
+        size: MAX_SEARCH_RESULTS,
     });
     const draggableUserImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
