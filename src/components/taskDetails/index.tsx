@@ -20,8 +20,6 @@ import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
 
-
-
 type ButtonProps = {
     buttonName: string;
     clickHandler: (value: any) => void;
