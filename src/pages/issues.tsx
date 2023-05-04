@@ -45,7 +45,7 @@ const SearchField = ({
 const Issues: FC = () => {
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
     const [searchText, setSearchText] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);
 
     const fetchIssues = async () => {
