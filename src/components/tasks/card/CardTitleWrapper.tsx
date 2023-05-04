@@ -3,18 +3,18 @@ import Link from 'next/link';
 
 interface CardTitleWrapperProps {
     children?: ReactNode;
-    condition: boolean;
+    shouldDisplayLink: boolean;
     to?: string;
     taskId?: string;
 }
 
 export const CardTitleWrapper: FC<CardTitleWrapperProps> = ({
     children,
-    condition,
+    shouldDisplayLink,
     to,
     taskId,
 }) => {
-    if (!!condition && to) {
+    if (shouldDisplayLink && to) {
         return (
             <Link
                 href={{

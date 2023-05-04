@@ -382,11 +382,10 @@ const Card: FC<Props> = ({
             >
                 {/* loading spinner */}
                 {isLoading && <Loader />}
-                {/* <CardTitle /> */}
                 <div className={classNames.cardItems}>
                     <CardTitleWrapper
                         to="/tasks/[id]"
-                        condition={isNewCardEnabled}
+                        shouldDisplayLink={isNewCardEnabled}
                         taskId={cardDetails.id}
                     >
                         <span
@@ -492,7 +491,7 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <CardTitleWrapper condition={isNewCardEnabled}>
+                <CardTitleWrapper shouldDisplayLink={isNewCardEnabled}>
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
