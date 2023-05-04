@@ -14,7 +14,7 @@ import TaskLevelEdit from './TaskTagEdit';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { TASKS_URL } from '@/components/constants/url';
-import { DUMMY_PROFILE as placeholderImageURL} from '@/components/constants/display-sections';
+import { DUMMY_NAME, DUMMY_PROFILE as placeholderImageURL} from '@/components/constants/display-sections';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -433,7 +433,7 @@ const Card: FC<Props> = ({
                         <span className={classNames.contributorImage}>
                             <Image
                                 src={assigneeProfileImageURL}
-                                alt={cardDetails.assignee || 'dummy profile'}
+                                alt={cardDetails.assignee || DUMMY_NAME}
                                 width={30}
                                 height={30}
                             />

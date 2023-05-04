@@ -1,13 +1,9 @@
-import {
-    Draggable,
-    DraggingStyle,
-    NotDraggingStyle,
-} from 'react-beautiful-dnd';
-import { FC, useContext } from 'react';
-import { draggableProps } from '@/interfaces/availabilityPanel.type';
-import { DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
-import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import { FC, useContext } from 'react';
+import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
+import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
+import { DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
+import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import { disableDrag } from '.';
 import Image from 'next/image';
 
