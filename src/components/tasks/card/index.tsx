@@ -588,7 +588,7 @@ const Card: FC<Props> = ({
                             <span className={classNames.contributorImage}>
                                 <Image
                                     src={assigneeProfileImageURL}
-                                    alt={cardDetails.assignee || 'dummy profile'}
+                                    alt={cardDetails.assignee || DUMMY_NAME}
                                     width={45}
                                     height={45}
                                 />
