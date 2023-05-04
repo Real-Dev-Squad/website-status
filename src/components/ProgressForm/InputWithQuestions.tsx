@@ -5,12 +5,12 @@ interface inputProps {
     question: string;
 }
 
-const InputWithQuestions = (props:inputProps) => {
+const InputWithQuestions = ({name, question}:inputProps) => {
     const [answer, setAnswer] = useState('');
     return (
         <>
-            <label aria-label={props.name}>{props.question}</label>
-            <textarea value={answer} onChange={(e)=>setAnswer(e.target.value)} name={props.name}/>
+            <label htmlFor={name} aria-label={name}>{question}</label>
+            <textarea value={answer} onChange={(e)=>setAnswer(e.target.value)} id={name}/>
         </>
     );
 };
