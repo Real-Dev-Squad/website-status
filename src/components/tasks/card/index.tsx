@@ -8,32 +8,37 @@ import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
 import { ALT_KEY } from '@/components/constants/key';
-import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
-import fetch from '@/helperFunctions/fetch';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import {
-    ITEMS_URL,
-    ITEM_BY_FILTER_URL,
-    ITEM_TYPES,
-} from '@/components/constants/url';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
-
+import { updateTaskDetails } from '@/interfaces/taskItem.type';
+import fetch from '@/helperFunctions/fetch';
+import { TASKS_URL } from '@/components/constants/url';
+import { DUMMY_NAME, DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
+import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import {
+    useDeleteTaskTagLevelMutation,
+    useGetTaskTagsQuery,
+} from '@/app/services/taskTagApi';
+import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 
 type Props = {
     content: task;
     shouldEdit: boolean;
     onContentChange?: (changeId: string, changeObject: object) => void;
+    updateTask?: (taskId: string, details: updateTaskDetails) => void;
 };
 
 const Card: FC<Props> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
+    updateTask = () => undefined,
 }) => {
     const statusRedList = [TASK_STATUS.BLOCKED];
     const statusNotOverDueList = [
@@ -42,15 +47,29 @@ const Card: FC<Props> = ({
         TASK_STATUS.AVAILABLE,
     ];
     const cardDetails = content;
-    const [assigneeProfilePic, setAssigneeProfilePic] = useState(
-        `${process.env.NEXT_PUBLIC_GITHUB_IMAGE_URL}/${cardDetails.assignee}/img.png`
-    );
+        const { data: userResponse } = useGetUsersByUsernameQuery({
+        searchString: cardDetails.assignee,
+        size: MAX_SEARCH_RESULTS,
+    });
+    const assigneeProfileImageURL: string =
+        userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
     const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const [taskTagLevel, setTaskTagLevel] = useState<taskItem[]>();
+
     const [showEditButton, setShowEditButton] = useState(false);
     const [keyLongPressed] = useKeyLongPressed();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    // TODO: the below state should be removed when mutation for updating tasks is implemented
+    const [loading, setLoading] = useState<boolean>(false);
+
+    const {
+        data: taskTagLevel,
+        isError,
+        isLoading,
+    } = useGetTaskTagsQuery({
+        itemId: cardDetails.id,
+    });
+    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
+
     const { actions, state } = useAppContext();
     const router = useRouter();
     const { query } = router;
@@ -63,31 +82,6 @@ const Card: FC<Props> = ({
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
-
-    useEffect(() => {
-        if (state?.isLoggedIn) {
-            getTaskTags();
-        }
-    }, [state?.isLoggedIn]);
-
-    const getTaskTags = async () => {
-        try {
-            const { requestPromise } = fetch({
-                url: ITEM_BY_FILTER_URL,
-                params: {
-                    itemType: ITEM_TYPES.task,
-                    itemId: `${cardDetails.id}`,
-                },
-            });
-            const { data: result } = await requestPromise;
-            setTaskTagLevel(result.data);
-        } catch (err: any) {
-            toast(ERROR, err.message);
-        }
-    };
-
-    const contributorImageOnError = () =>
-        setAssigneeProfilePic('/dummyProfile.png');
 
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -157,56 +151,6 @@ const Card: FC<Props> = ({
         }
     }
 
-    const updateTaskTagLevel = async (
-        taskItemToUpdate: taskItem,
-        method: 'delete' | 'post'
-    ) => {
-        const body: taskItemPayload = {
-            itemId: cardDetails.id,
-            itemType: 'TASK',
-        };
-        try {
-            setIsLoading(true);
-            if (method === 'post') {
-                body.tagPayload = [
-                    {
-                        levelId: taskItemToUpdate.levelId,
-                        tagId: taskItemToUpdate.tagId,
-                    },
-                ];
-            } else if (method === 'delete') {
-                body.tagId = taskItemToUpdate.tagId;
-            }
-            const { requestPromise } = fetch({
-                url: ITEMS_URL,
-                method,
-                data: body,
-            });
-            const result = await requestPromise;
-            if (result.status === 200 && method === 'delete') {
-                taskTagLevel &&
-                    setTaskTagLevel(
-                        taskTagLevel?.filter(
-                            (item) => item.tagId !== taskItemToUpdate.tagId
-                        )
-                    );
-            } else if (result.status === 200 && method === 'post') {
-                taskTagLevel
-                    ? setTaskTagLevel([
-                          ...taskTagLevel,
-                          { itemId: cardDetails.id, ...taskItemToUpdate },
-                      ])
-                    : setTaskTagLevel([
-                          { itemId: cardDetails.id, ...taskItemToUpdate },
-                      ]);
-            }
-            setIsLoading(false);
-        } catch (err: any) {
-            setIsLoading(false);
-            toast(ERROR, err.message);
-        }
-    };
-
     function inputParser(input: string) {
         const parsedDate = moment(new Date(parseInt(input, 10) * 1000));
         return parsedDate;
@@ -275,7 +219,7 @@ const Card: FC<Props> = ({
                 role="button"
                 tabIndex={0}
             >
-                {fromNowEndsOn}
+                {!cardDetails.endsOn ? 'TBD' : fromNowEndsOn}
             </span>
         );
     }
@@ -283,6 +227,82 @@ const Card: FC<Props> = ({
     const onEditEnabled = () => {
         actions.onEditRoute();
     };
+
+    const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
+    const hasTaskAssignee = () => cardDetails.assignee ?? false;
+    const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
+    const isTaskComplete = () => cardDetails.status === 'Completed';
+
+    const showAssignButton = () =>
+        hasIssueAssignee() &&
+        !hasTaskAssignee() &&
+        !isIssueClosed() &&
+        !isTaskComplete();
+
+    // assign the task to the issue assignee
+    const handleAssignToIssueAssignee = async () => {
+        setLoading(true);
+        try {
+            const data: updateTaskDetails = {
+                assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
+                status: 'ASSIGNED',
+            };
+
+            // Update start date when assigning the task to the issue assignee
+            if (!cardDetails.startedOn) {
+                data.startedOn = new Date().getTime() / 1000;
+            }
+
+            const { requestPromise } = fetch({
+                url: `${TASKS_URL}/${cardDetails.id}`,
+                method: 'patch',
+                data,
+            });
+            await requestPromise;
+
+            updateTask(cardDetails.id, data);
+            toast(SUCCESS, 'Task assigned successfully!');
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            if ('response' in err) {
+                toast(ERROR, err.response.data.message);
+                return;
+            }
+            toast(ERROR, err.message);
+        }
+    };
+
+    const getFormattedClosedAtDate = () => {
+        const closedAt = cardDetails?.github?.issue?.closedAt;
+        return getDateInString(new Date(closedAt ?? Date.now()));
+    };
+
+    const handleCloseTask = async () => {
+        setLoading(true);
+        try {
+            const data = {
+                status: 'COMPLETED',
+            };
+            const { requestPromise } = fetch({
+                url: `${TASKS_URL}/${cardDetails.id}`,
+                method: 'patch',
+                data,
+            });
+            await requestPromise;
+            updateTask(cardDetails.id, data);
+            toast(SUCCESS, 'Task status changed successfully!');
+            setLoading(false);
+        } catch (err: any) {
+            setLoading(false);
+            if ('response' in err) {
+                toast(ERROR, err.response.data.message);
+                return;
+            }
+            toast(ERROR, err.message);
+        }
+    };
+
     const EditButton = () => (
         <div className={classNames.editButton} data-testid="edit-button">
             <Image
@@ -325,6 +345,43 @@ const Card: FC<Props> = ({
         </h2>
     );
 
+    const AssigneeButton = () => {
+        return (
+            <button
+                className={styles.card__top__button}
+                type="button"
+                disabled={loading}
+                onClick={handleAssignToIssueAssignee}
+            >
+                {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
+            </button>
+        );
+    };
+
+    const CloseTaskButton = () => {
+        return (
+            <div className={classNames.cardItems}>
+                <span
+                    className={classNames.cardSpecialFont}
+                    contentEditable={shouldEdit}
+                    onKeyPress={(e) => handleChange(e, 'startedOn')}
+                    role="button"
+                    tabIndex={0}
+                >
+                    The issue was closed on {getFormattedClosedAtDate()}
+                </span>
+                <button
+                    className={styles.card__top__button}
+                    type="button"
+                    disabled={loading}
+                    onClick={handleCloseTask}
+                >
+                    Close the task
+                </button>
+            </div>
+        );
+    };
+
     // show redesign only on dev
     if (isNewCardEnabled)
         return (
@@ -363,21 +420,21 @@ const Card: FC<Props> = ({
                         tabIndex={0}
                     >
                         {cardDetails.status === TASK_STATUS.AVAILABLE
-                            ? 'Not started '
+                            ? 'Not started'
                             : `Started on ${fromNowStartedOn}`}
                     </span>
                 </div>
-
-                <div className={classNames.cardItems}>
+                {showAssignButton() ? (
+                    <AssigneeButton />
+                ) : (
                     <div className={classNames.contributor}>
                         <span className={classNames.cardSpecialFont}>
                             Assigned to
                         </span>
                         <span className={classNames.contributorImage}>
                             <Image
-                                src={assigneeProfilePic}
-                                alt={`profile picture of ${cardDetails.assignee}`}
-                                onError={contributorImageOnError}
+                                src={assigneeProfileImageURL}
+                                alt={cardDetails.assignee || DUMMY_NAME}
                                 width={30}
                                 height={30}
                             />
@@ -392,6 +449,9 @@ const Card: FC<Props> = ({
                             {cardDetails.assignee}
                         </span>
                     </div>
+                )}
+
+                <div className={classNames.cardItems}>
                     <div
                         className={`${classNames.taskTagLevelWrapper} ${
                             shouldEdit && classNames.editMode
@@ -400,17 +460,20 @@ const Card: FC<Props> = ({
                         <TaskLevelMap
                             taskTagLevel={taskTagLevel}
                             shouldEdit={shouldEdit}
-                            updateTaskTagLevel={updateTaskTagLevel}
+                            itemId={cardDetails.id}
+                            deleteTaskTagLevel={deleteTaskTagLevel}
                         />
                         {shouldEdit && isUserAuthorized && (
                             <TaskLevelEdit
                                 taskTagLevel={taskTagLevel}
-                                updateTaskTagLevel={updateTaskTagLevel}
+                                itemId={cardDetails.id}
                             />
                         )}
                     </div>
                 </div>
-
+                {cardDetails.status !== 'Completed' && isIssueClosed() && (
+                    <CloseTaskButton />
+                )}
                 {isUserAuthorized && showEditButton && <EditButton />}
             </div>
         );
@@ -484,13 +547,14 @@ const Card: FC<Props> = ({
             >
                 <TaskLevelMap
                     taskTagLevel={taskTagLevel}
+                    itemId={cardDetails.id}
                     shouldEdit={shouldEdit}
-                    updateTaskTagLevel={updateTaskTagLevel}
+                    deleteTaskTagLevel={deleteTaskTagLevel}
                 />
                 {shouldEdit && isUserAuthorized && (
                     <TaskLevelEdit
                         taskTagLevel={taskTagLevel}
-                        updateTaskTagLevel={updateTaskTagLevel}
+                        itemId={cardDetails.id}
                     />
                 )}
             </div>
@@ -502,31 +566,44 @@ const Card: FC<Props> = ({
                     role="button"
                     tabIndex={0}
                 >
-                    Started {fromNowStartedOn}
+                    Started {!cardDetails.startedOn ? 'TBD' : fromNowStartedOn}
                 </span>
-                <span>
-                    <span className={classNames.cardSpecialFont}>
-                        Assignee:
-                    </span>
-                    <span
-                        className={classNames.cardStrongFont}
-                        contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, 'assignee')}
-                        tabIndex={0}
-                    >
-                        {cardDetails.assignee}
-                    </span>
-                    <span className={classNames.contributorImage}>
-                        <Image
-                            src={assigneeProfilePic}
-                            alt="Assignee profile picture"
-                            onError={contributorImageOnError}
-                            width={45}
-                            height={45}
-                        />
-                    </span>
-                </span>
+                {
+                    // Assigne to button if task was created from an issue
+                    showAssignButton() ? (
+                        <AssigneeButton />
+                    ) : (
+                        <span>
+                            <span className={classNames.cardSpecialFont}>
+                                Assignee:
+                            </span>
+                            <span
+                                className={classNames.cardStrongFont}
+                                contentEditable={shouldEdit}
+                                onKeyPress={(e) => handleChange(e, 'assignee')}
+                                role="button"
+                                tabIndex={0}
+                            >
+                                {cardDetails.assignee}
+                            </span>
+                            <span className={classNames.contributorImage}>
+                                <Image
+                                    src={assigneeProfileImageURL}
+                                    alt={cardDetails.assignee || DUMMY_NAME}
+                                    width={45}
+                                    height={45}
+                                />
+                            </span>
+                        </span>
+                    )
+                }
             </div>
+            {
+                // Suggest to close task if issue was closed
+                cardDetails.status !== 'Completed' && isIssueClosed() && (
+                    <CloseTaskButton />
+                )
+            }
             {isUserAuthorized && showEditButton && <EditButton />}
         </div>
     );

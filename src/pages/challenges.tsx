@@ -7,10 +7,10 @@ import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import challenge from '@/interfaces/challenge.type';
-import userType from '@/interfaces/user.type';
 import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL, LOGIN_URL } from '@/components/constants/url';
-import userData from '@/helperFunctions/getUser';
+import { useGetUserQuery } from '@/app/services/userApi';
+import { skipToken } from '@reduxjs/toolkit/dist/query';
 
 const renderCardList = (
     challengeSection: challenge['content'],
@@ -29,7 +29,7 @@ const renderCardList = (
 
 const Challenges: FC = () => {
     const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
-    const [user, setUser] = useState<userType>(Object);
+    const { data: user } = useGetUserQuery(skipToken);
     const { response, error, isLoading, callAPI } = useFetch(
         CHALLENGES_URL,
         {},
@@ -37,12 +37,6 @@ const Challenges: FC = () => {
     );
     const { state } = useAppContext();
     const { isLoading: isAuthenticating, isLoggedIn } = state;
-
-    useEffect(() => {
-        (async () => {
-            setUser(await userData());
-        })();
-    }, []);
 
     useEffect(() => {
         if (isLoggedIn && !Object.keys(response).length) {
@@ -87,7 +81,7 @@ const Challenges: FC = () => {
                                                     {renderCardList(
                                                         filteredChallenge[key],
                                                         key,
-                                                        user.id
+                                                        user?.id ?? ''
                                                     )}
                                                 </Accordion>
                                             )

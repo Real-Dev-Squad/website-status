@@ -1,6 +1,8 @@
 import { render, fireEvent } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
+import { store } from '@/app/store';
+import { Provider } from 'react-redux';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import {
@@ -48,9 +50,14 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 jest.useFakeTimers();
 describe('Task card', () => {
     test('Should render card', () => {
-        const { getByText } = renderWithRouter(<Card {...DEFAULT_PROPS} />, {
-            query: { dev: 'true' },
-        });
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
 
         expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
     });
@@ -63,7 +70,11 @@ describe('Task card', () => {
                 endsOn: `${getFirestoreDateNDaysBefore(1)}`,
             },
         };
-        const { rerender, getByText } = renderWithRouter(<Card {...props} />);
+        const { rerender, getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...props} />
+            </Provider>
+        );
 
         expect(getByText('a day ago')).toBeInTheDocument();
 
@@ -77,18 +88,24 @@ describe('Task card', () => {
         };
 
         rerender(
-            <RouterContext.Provider value={createMockRouter({}) as NextRouter}>
-                <Card {...props} />
-            </RouterContext.Provider>
+            <Provider store={store()}>
+                <RouterContext.Provider
+                    value={createMockRouter({}) as NextRouter}
+                >
+                    <Card {...props} />
+                </RouterContext.Provider>
+            </Provider>
         );
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
     test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
-            <isUserAuthorizedContext.Provider value={true}>
-                <Card {...DEFAULT_PROPS} />
-            </isUserAuthorizedContext.Provider>,
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <Card {...DEFAULT_PROPS} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
             {}
         );
 
@@ -96,9 +113,11 @@ describe('Task card', () => {
     });
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
-            <isUserAuthorizedContext.Provider value={true}>
-                <Card {...DEFAULT_PROPS} />
-            </isUserAuthorizedContext.Provider>,
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <Card {...DEFAULT_PROPS} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
             { query: { dev: 'true' } }
         );
 
@@ -110,5 +129,127 @@ describe('Task card', () => {
         });
 
         expect(queryByTestId('edit-button')).toBeInTheDocument();
+    });
+
+    it('Should render "Close task" button when parent issue is closed', function () {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                status: TASK_STATUS.ASSIGNED,
+                github: {
+                    issue: {
+                        closedAt: '2023-04-02T17:31:50',
+                        status: 'closed',
+                        id: 12278,
+                    },
+                },
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
+
+        const closeTaskBtn = screen.getByRole('button', {
+            name: /Close the task/i,
+        });
+        expect(closeTaskBtn).toBeInTheDocument();
+    });
+
+    it('Should not render "Close task" button when parent issue is closed but the task was already completed', function () {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                github: {
+                    issue: {
+                        closedAt: '2023-04-02T17:31:50',
+                        status: 'closed',
+                        id: 12278,
+                    },
+                },
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
+
+        const closeTaskBtn = screen.queryByRole('button', {
+            name: /Close the task/i,
+        });
+        expect(closeTaskBtn).not.toBeInTheDocument();
+    });
+
+    it('Should render "Assign to username" button when parent issue has an assignee and is open, the task is available and has not been assigned', function () {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                status: 'Available',
+                assignee: undefined,
+                github: {
+                    issue: {
+                        assignee: 'ankushdharkar',
+                        status: 'open',
+                        id: 12278,
+                        assigneeRdsInfo: {
+                            username: 'ankush',
+                            firstName: 'Ankush',
+                            lastName: 'Dharkar',
+                        },
+                    },
+                },
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
+
+        const closeTaskBtn = screen.queryByRole('button', {
+            name: /Assign to ankush/i,
+        });
+        expect(closeTaskBtn).toBeInTheDocument();
+    });
+
+    it('Should not render "Assign to username" button when parent issue has an assignee and is open, the task status is "Completed" and has not been assigned', function () {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                assignee: undefined,
+                github: {
+                    issue: {
+                        assignee: 'ankushdharkar',
+                        status: 'open',
+                        id: 12278,
+                        assigneeRdsInfo: {
+                            username: 'ankush',
+                            firstName: 'Ankush',
+                            lastName: 'Dharkar',
+                        },
+                    },
+                },
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
+
+        const closeTaskBtn = screen.queryByRole('button', {
+            name: /Assign to ankush/i,
+        });
+        expect(closeTaskBtn).not.toBeInTheDocument();
     });
 });
