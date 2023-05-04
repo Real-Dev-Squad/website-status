@@ -18,6 +18,7 @@ import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/components/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -51,7 +52,7 @@ const Card: FC<Props> = ({
     const cardDetails = content;
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
-        size: 1,
+        size: MAX_SEARCH_RESULTS,
     });
     const assigneeProfileImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
