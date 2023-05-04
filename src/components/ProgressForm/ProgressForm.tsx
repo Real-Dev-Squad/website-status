@@ -1,6 +1,7 @@
 import NavBar from '../navBar';
 import InputWithQuestions from './InputWithQuestions';
 import ProgressHeader from './ProgressHeader';
+import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 const questions = [
     {
@@ -57,8 +58,9 @@ const ProgressForm = () => {
         <>
             <NavBar />
             <ProgressHeader/>
-            <h2>{getFormattedDate()}</h2>
-            <form>
+            <form className={styles.form}>
+                <h1 className={styles.formHeading}>Task Updates</h1>
+                <h2 className={styles.date}>on {getFormattedDate()}</h2>
                 {questions.map((question) => {
                     return (
                         <InputWithQuestions
@@ -68,7 +70,7 @@ const ProgressForm = () => {
                         />
                     );
                 })}
-                <button type='submit'>Submit</button>
+                <button className={styles.buttonDisabled} type="submit">Submit</button>
             </form>
         </>
     );
