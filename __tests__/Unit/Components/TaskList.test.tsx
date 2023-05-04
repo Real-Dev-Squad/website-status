@@ -55,7 +55,7 @@ describe('TaskList', function () {
         expect(screen.queryAllByText(TASK.title)).toHaveLength(8);
     });
 
-    it('Shouldn\'t render see more button after all tasks are loaded and rendered', function () {
+    it('Should not render see more button after all tasks are loaded and rendered', function () {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskList
