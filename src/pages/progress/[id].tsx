@@ -11,7 +11,7 @@ const ProgressUpdatesPage = () => {
         return <PageNotFound />;
     }
 
-    return <ProgressLayout/>;
+    return <ProgressLayout />;
 };
 
 export default ProgressUpdatesPage;

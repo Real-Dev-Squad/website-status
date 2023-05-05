@@ -6,9 +6,9 @@ import ProgressForm from './ProgressForm';
 function ProgressLayout() {
     return (
         <>
-            <NavBar/>
-            <ProgressHeader/>
-            <ProgressForm/>
+            <NavBar />
+            <ProgressHeader />
+            <ProgressForm />
         </>
     );
 }

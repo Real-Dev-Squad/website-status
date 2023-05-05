@@ -1,15 +1,14 @@
 $base-unit: 4px;
 $color-blue: #041187;
-$color-red: #E30062;
-$color-green: #85DA6B;
-$color-disabled: #E5E7EB;
-$diff-margin: $base-unit*15;
-$similar-margin: $base-unit*8;
-$section-padding-top-bottom: $base-unit*30;
-$section-padding-left-right: $base-unit*25;
+$color-red: #e30062;
+$color-green: #85da6b;
+$color-disabled: #e5e7eb;
+$diff-margin: $base-unit * 15;
+$similar-margin: $base-unit * 8;
+$section-padding-top-bottom: $base-unit * 30;
+$section-padding-left-right: $base-unit * 25;
 
-
-.header{
+.header {
     margin: $diff-margin auto;
     background-color: $color-blue;
     color: white;
@@ -18,61 +17,61 @@ $section-padding-left-right: $base-unit*25;
     padding-left: $section-padding-left-right;
     width: 95%;
     border: 1px solid $color-red;
-    font-size: $base-unit*4;
+    font-size: $base-unit * 4;
 }
 
-.mark{
+.mark {
     color: $color-red;
     text-decoration: underline;
 }
 
-.form{
+.form {
     margin: $diff-margin auto;
     padding: 0 $section-padding-left-right;
 }
 
-.formHeading{
+.formHeading {
     color: $color-blue;
 }
 
-.date{
+.date {
     opacity: 50%;
     margin: $diff-margin auto;
 }
 
-.inputComponent{
+.inputComponent {
     margin: $diff-margin auto;
 }
 
-.label{
-    font-size: $base-unit*5;
+.label {
+    font-size: $base-unit * 5;
     display: block;
     margin-bottom: $similar-margin;
 }
 
-.input{
+.input {
     width: 90%;
     display: block;
     resize: none;
-    padding: $base-unit*2;
-    border-radius: $base-unit*2;
+    padding: $base-unit * 2;
+    border-radius: $base-unit * 2;
 }
 
-.buttonActive{
+.buttonActive {
     background-color: $color-blue;
     color: white;
-    padding: $base-unit*4 $base-unit*8;
-    border-radius: $base-unit*2;
+    padding: $base-unit * 4 $base-unit * 8;
+    border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
-    font-size: $base-unit*4;
+    font-size: $base-unit * 4;
 }
 
-.buttonDisabled{
+.buttonDisabled {
     cursor: not-allowed;
     background-color: $color-disabled;
     color: black;
-    padding: $base-unit*4 $base-unit*8;
-    border-radius: $base-unit*2;
+    padding: $base-unit * 4 $base-unit * 8;
+    border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
-    font-size: $base-unit*4;
+    font-size: $base-unit * 4;
 }

@@ -19,7 +19,7 @@ describe('Progress page test', function () {
         expect(button.type).toBe('submit');
     });
 
-    it('should return 404 if no id is passed', function (){
+    it('should return 404 if no id is passed', function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdatesPage />
@@ -31,7 +31,7 @@ describe('Progress page test', function () {
         expect(headings[0].innerHTML).toBe('404 - Page Not Found');
     });
 
-    it('should return 404 if no dev flag is passed', function (){
+    it('should return 404 if no dev flag is passed', function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdatesPage />
