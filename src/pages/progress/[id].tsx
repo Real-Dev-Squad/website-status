@@ -1,17 +1,17 @@
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import PageNotFound from '../404';
-import ProgressForm from '@/components/ProgressForm/ProgressForm';
+import ProgressLayout from '@/components/ProgressForm/ProgressLayout';
 
 const ProgressUpdatesPage = () => {
     const router = useRouter();
-    const id = router.query?.id as string;
-    const devMode = router.query?.dev as string;
 
-    if(!id || devMode !== 'true'){
-        return <PageNotFound/>;
+    const { id, dev } = router.query;
+
+    if (!id || dev !== 'true') {
+        return <PageNotFound />;
     }
 
-    return <ProgressForm/>;
+    return <ProgressLayout/>;
 };
 
 export default ProgressUpdatesPage;

@@ -1,6 +1,5 @@
-import NavBar from '../navBar';
+import getCurrentDate from '@/utils/getLatestDate';
 import InputWithQuestions from './InputWithQuestions';
-import ProgressHeader from './ProgressHeader';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 const questions = [
@@ -21,58 +20,22 @@ const questions = [
     },
 ];
 
-const getFormattedDate = (): string => {
-    const date = new Date();
-    const month = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ];
-
-    const daysInWeek = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-    ];
-
-    return `${daysInWeek[date.getDay()]}, ${date.getDate()} ${
-        month[date.getMonth()]
-    } ${date.getFullYear()}`;
-};
-
 const ProgressForm = () => {
     return (
-        <>
-            <NavBar />
-            <ProgressHeader/>
-            <form className={styles.form}>
-                <h1 className={styles.formHeading}>Task Updates</h1>
-                <h2 className={styles.date}>on {getFormattedDate()}</h2>
-                {questions.map((question) => {
-                    return (
-                        <InputWithQuestions
-                            key={question.id}
-                            name={question.name}
-                            question={question.question}
-                        />
-                    );
-                })}
-                <button className={styles.buttonDisabled} type="submit">Submit</button>
-            </form>
-        </>
+        <form className={styles.form}>
+            <h1 className={styles.formHeading}>Task Updates</h1>
+            <h2 className={styles.date}>on {getCurrentDate()}</h2>
+            {questions.map((question) => (
+                <InputWithQuestions
+                    key={question.id}
+                    name={question.name}
+                    question={question.question}
+                />
+            ))}
+            <button className={styles.buttonDisabled} type="submit">
+                Submit
+            </button>
+        </form>
     );
 };
 

@@ -1,10 +1,12 @@
 import InputWithQuestions from '@/components/ProgressForm/InputWithQuestions';
 import { fireEvent, render, screen } from '@testing-library/react';
 
+const name = 'Test-Question';
+
 describe.only('Input field with label', function () {
     it('Should render a input field with appropriate label', function () {
-        render(<InputWithQuestions name="Test-Question" question="This is a test question"/>);
-        const input = screen.getByLabelText('Test-Question');
+        render(<InputWithQuestions name={name} question="This is a test question"/>);
+        const input = screen.getByLabelText(name);
         expect(input).toBeInTheDocument();
     });
 
