@@ -99,7 +99,7 @@ describe('Task card', () => {
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
-    
+
     test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
