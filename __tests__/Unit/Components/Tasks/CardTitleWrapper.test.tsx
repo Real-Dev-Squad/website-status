@@ -9,7 +9,7 @@ const titleProps = {
 
 describe('CardTitleWrapper', () => {
     test('Card title should be a link when there is feature flag', () => {
-        render(<CardTitleWrapper condition={true} {...titleProps} />);
+        render(<CardTitleWrapper shouldDisplayLink ={true} {...titleProps} />);
         waitFor(() => {
             expect(
                 screen.getByRole('link', {
