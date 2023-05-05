@@ -27,5 +27,3 @@ export type userDataType = {
     linkedin_id?: string;
     last_name?: string;
 };
-
-
