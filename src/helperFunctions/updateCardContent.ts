@@ -1,18 +1,14 @@
 import task from '@/interfaces/task.type';
+import { useUpdateCardContentMutation } from '../app/services/tasksApi';
 import { ToastTypes, toast } from './toast';
-import fetch from './fetch';
-import { TASKS_URL } from '@/constants/url';
 
 const { SUCCESS, ERROR } = ToastTypes;
 
 async function updateCardContent(id: string, cardDetails: task) {
+    const [updateCardContent] = useUpdateCardContentMutation();
+
     try {
-        const { requestPromise } = fetch({
-            url: `${TASKS_URL}/${id}`,
-            method: 'patch',
-            data: cardDetails,
-        });
-        await requestPromise;
+        await updateCardContent({ id, cardDetails });
         toast(SUCCESS, 'Changes have been saved !');
     } catch (err: any) {
         if ('response' in err) {

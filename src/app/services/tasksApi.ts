@@ -1,6 +1,6 @@
 import task from '@/interfaces/task.type';
 import { api } from './api';
-import { MINE_TASKS_URL } from '@/constants/url';
+import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
 
@@ -19,7 +19,20 @@ export const tasksApi = api.injectEndpoints({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
+        updateCardContent: builder.mutation({
+            query: ({ cardDetails, id }) => {
+                return {
+                    url: `"${TASKS_URL}/${id}"`,
+                    method: 'PATCH',
+                    data: cardDetails,
+                };
+            },
+        }),
     }),
 });
 
-export const { useGetAllTasksQuery, useGetMineTasksQuery } = tasksApi;
+export const {
+    useGetAllTasksQuery,
+    useGetMineTasksQuery,
+    useUpdateCardContentMutation,
+} = tasksApi;
