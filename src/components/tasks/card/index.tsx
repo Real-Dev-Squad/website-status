@@ -2,7 +2,7 @@ import { FC, useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-import { useAppContext } from '@/context';
+
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
@@ -29,6 +29,7 @@ import {
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
+import { useEditMode } from '@/hooks/useEditMode';
 
 type Props = {
     content: task;
@@ -73,7 +74,7 @@ const Card: FC<Props> = ({
     });
     const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
 
-    const { actions, state } = useAppContext();
+    const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
     const isNewCardEnabled = !!query.dev;
@@ -227,10 +228,6 @@ const Card: FC<Props> = ({
         );
     }
 
-    const onEditEnabled = () => {
-        actions.onEditRoute();
-    };
-
     const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
     const hasTaskAssignee = () => cardDetails.assignee ?? false;
     const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
@@ -313,7 +310,7 @@ const Card: FC<Props> = ({
                 alt="edit"
                 width={iconWidth}
                 height={iconHeight}
-                onClick={onEditEnabled}
+                onClick={onEditRoute}
                 tabIndex={0}
             />
         </div>
