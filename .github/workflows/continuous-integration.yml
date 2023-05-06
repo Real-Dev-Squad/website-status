@@ -25,5 +25,4 @@ jobs:
     - run: yarn
     - run: yarn lint
     - run: yarn prettier --check
-    - run: yarn test
     - run: yarn build

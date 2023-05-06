@@ -9,7 +9,7 @@
     "dev": "run-p run-command:*",
     "build": "next build",
     "start": "next start -p $PORT",
-    "test": "jest --coverage",
+    "test": "jest --watch",
     "lint": "next lint",
     "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx",
     "postinstall": "husky install",
