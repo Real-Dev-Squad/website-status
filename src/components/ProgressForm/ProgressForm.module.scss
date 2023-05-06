@@ -1,4 +1,5 @@
 $base-unit: 4px;
+$base-font-size: 0.3rem;
 $color-blue: #041187;
 $color-red: #e30062;
 $color-green: #85da6b;
@@ -44,7 +45,7 @@ $section-padding-left-right: $base-unit * 25;
 }
 
 .label {
-    font-size: $base-unit * 5;
+    font-size: $base-font-size * 5;
     display: block;
     margin-bottom: $similar-margin;
 }
@@ -63,7 +64,7 @@ $section-padding-left-right: $base-unit * 25;
     padding: $base-unit * 4 $base-unit * 8;
     border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
-    font-size: $base-unit * 4;
+    font-size: $base-font-size * 4;
 }
 
 .buttonDisabled {
@@ -73,5 +74,5 @@ $section-padding-left-right: $base-unit * 25;
     padding: $base-unit * 4 $base-unit * 8;
     border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
-    font-size: $base-unit * 4;
+    font-size: $base-font-size * 4;
 }
