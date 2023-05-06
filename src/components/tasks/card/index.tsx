@@ -29,6 +29,7 @@ import {
 } from '@/app/services/taskTagApi';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
+import { isNewCardDesignEnabled } from '@/components/constants/FeatureFlags';
 
 type Props = {
     content: task;
@@ -375,7 +376,7 @@ const Card: FC<Props> = ({
     };
 
     // show redesign only on dev
-    if (isNewCardEnabled)
+    if (isNewCardDesignEnabled)
         return (
             <div
                 className={`
@@ -416,7 +417,9 @@ const Card: FC<Props> = ({
                         <span className={classNames.cardSpecialFont}>
                             Estimated completion
                         </span>
-                        {renderDate(fromNowEndsOn, shouldEdit)}
+                        <span className={classNames.completionDate}>
+                            {renderDate(fromNowEndsOn, shouldEdit)}
+                        </span>
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
