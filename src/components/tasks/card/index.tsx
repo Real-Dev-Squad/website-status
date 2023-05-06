@@ -1,5 +1,4 @@
 import { FC, useState, useEffect, useContext } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { useAppContext } from '@/context';
@@ -29,6 +28,7 @@ import {
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
+import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/components/constants/FeatureFlags';
 
 type Props = {
@@ -337,17 +337,6 @@ const Card: FC<Props> = ({
             ></div>
         </div>
     );
-    const CardTitle = () => (
-        <h2
-            className={classNames.cardTitle}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'title')}
-            role="button"
-            tabIndex={0}
-        >
-            {cardDetails.title}
-        </h2>
-    );
 
     const AssigneeButton = () => {
         return (
@@ -400,9 +389,23 @@ const Card: FC<Props> = ({
             >
                 {/* loading spinner */}
                 {isLoading && <Loader />}
-
                 <div className={classNames.cardItems}>
-                    <CardTitle />
+                    <ConditionalLinkWrapper
+                        redirectingPath="/tasks/[id]"
+                        shouldDisplayLink={isNewCardEnabled}
+                        taskId={cardDetails.id}
+                    >
+                        <span
+                            className={classNames.cardTitle}
+                            contentEditable={shouldEdit}
+                            onKeyPress={(e) => handleChange(e, 'title')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {cardDetails.title}
+                        </span>
+                    </ConditionalLinkWrapper>
+
                     {/* progress bar */}
                     <div className={classNames.progressContainerUpdated}>
                         <ProgressIndicator />
@@ -496,13 +499,7 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <Link
-                    href={{
-                        pathname: '/tasks/[id]',
-                    }}
-                    as={`/tasks/${cardDetails.id}`}
-                    style={{ textDecoration: 'none' }}
-                >
+                <ConditionalLinkWrapper shouldDisplayLink={isNewCardEnabled}>
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
@@ -512,7 +509,7 @@ const Card: FC<Props> = ({
                     >
                         {cardDetails.title}
                     </span>
-                </Link>
+                </ConditionalLinkWrapper>
                 <span>
                     <span className={classNames.cardSpecialFont}>Status:</span>
                     <span
