@@ -6,7 +6,6 @@ import taskItem from '@/interfaces/taskItem.type';
 
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 
-
 describe('TaskLevelMap', () => {
     const taskTagLevel: taskItem[] = [
         {

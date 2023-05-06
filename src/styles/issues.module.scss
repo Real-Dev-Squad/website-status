@@ -1,3 +1,25 @@
+$link-text: #2563eb;
+$link-bg: #dbeafe;
+$border-color: #d9d9d9;
+
+@mixin issues-button {
+    background-color: $link-bg;
+    color: $link-text;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:disabled {
+        background-color: #f5f5f4;
+        color: #57534e;
+        cursor: default;
+    }
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -6,4 +28,25 @@
     max-width: 750px;
     width: 100%;
     margin: auto;
+}
+
+.searchFieldContainer {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    margin: 1rem auto;
+}
+
+.issueSearchInput {
+    flex: 1;
+    display: block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    border: 1px solid $border-color;
+}
+
+.issuesSearchSubmitButton {
+    @include issues-button;
+    border: 1px solid $border-color;
 }
