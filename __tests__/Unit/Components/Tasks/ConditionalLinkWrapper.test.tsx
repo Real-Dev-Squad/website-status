@@ -1,15 +1,17 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { CardTitleWrapper } from '@/components/tasks/card/CardTitleWrapper';
+import { ConditionalLinkWrapper } from '@/components/tasks/card/ConditionalLinkWrapper';
 
 const titleProps = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
 };
 
-describe('CardTitleWrapper', () => {
+describe('ConditionalLinkWrapper', () => {
     test('Card title should be a link when there is feature flag', () => {
-        render(<CardTitleWrapper shouldDisplayLink ={true} {...titleProps} />);
+        render(
+            <ConditionalLinkWrapper shouldDisplayLink={true} {...titleProps} />
+        );
         waitFor(() => {
             expect(
                 screen.getByRole('link', {

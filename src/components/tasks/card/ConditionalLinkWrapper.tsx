@@ -1,24 +1,24 @@
 import { FC, ReactNode } from 'react';
 import Link from 'next/link';
 
-interface CardTitleWrapperProps {
+interface ConditionalLinkWrapperProps {
     children?: ReactNode;
     shouldDisplayLink: boolean;
-    to?: string;
+    redirectingPath?: string;
     taskId?: string;
 }
 
-export const CardTitleWrapper: FC<CardTitleWrapperProps> = ({
+export const ConditionalLinkWrapper: FC<ConditionalLinkWrapperProps> = ({
     children,
     shouldDisplayLink,
-    to,
+    redirectingPath,
     taskId,
 }) => {
-    if (shouldDisplayLink && to) {
+    if (shouldDisplayLink && redirectingPath) {
         return (
             <Link
                 href={{
-                    pathname: '/tasks/[id]',
+                    pathname: redirectingPath,
                 }}
                 as={`/tasks/${taskId}`}
                 style={{ textDecoration: 'none' }}

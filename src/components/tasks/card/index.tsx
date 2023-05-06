@@ -28,7 +28,7 @@ import {
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
-import { CardTitleWrapper } from './CardTitleWrapper';
+import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 
 type Props = {
     content: task;
@@ -389,8 +389,8 @@ const Card: FC<Props> = ({
                 {/* loading spinner */}
                 {isLoading && <Loader />}
                 <div className={classNames.cardItems}>
-                    <CardTitleWrapper
-                        to="/tasks/[id]"
+                    <ConditionalLinkWrapper
+                        redirectingPath="/tasks/[id]"
                         shouldDisplayLink={isNewCardEnabled}
                         taskId={cardDetails.id}
                     >
@@ -403,7 +403,7 @@ const Card: FC<Props> = ({
                         >
                             {cardDetails.title}
                         </span>
-                    </CardTitleWrapper>
+                    </ConditionalLinkWrapper>
 
                     {/* progress bar */}
                     <div className={classNames.progressContainerUpdated}>
@@ -496,7 +496,7 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <CardTitleWrapper shouldDisplayLink={isNewCardEnabled}>
+                <ConditionalLinkWrapper shouldDisplayLink={isNewCardEnabled}>
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
@@ -506,7 +506,7 @@ const Card: FC<Props> = ({
                     >
                         {cardDetails.title}
                     </span>
-                </CardTitleWrapper>
+                </ConditionalLinkWrapper>
                 <span>
                     <span className={classNames.cardSpecialFont}>Status:</span>
                     <span
