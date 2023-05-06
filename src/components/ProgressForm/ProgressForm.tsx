@@ -1,24 +1,7 @@
 import getCurrentDate from '@/utils/getLatestDate';
 import InputWithQuestions from './InputWithQuestions';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
-
-const questions = [
-    {
-        id: 1,
-        name: 'progress',
-        question: 'Task Progress after the previous update',
-    },
-    {
-        id: 2,
-        name: 'plan',
-        question: 'Planned progress before the next update',
-    },
-    {
-        id: 3,
-        name: 'blockers',
-        question: 'List down any blockers that you have',
-    },
-];
+import { questions } from '../constants/ProgressUpdates';
 
 const ProgressForm = () => {
     return (
