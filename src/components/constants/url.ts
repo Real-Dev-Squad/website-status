@@ -1,7 +1,7 @@
 export const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 export const SUBSCRIBE_TO_CHALLENGE_URL = `${BASE_URL}/challenges/subscribe`;
 export const MINE_TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/self`;
-export const USER_PROFILE_URL = 'https://dev.realdevsquad.com/profile';
+export const USER_PROFILE_URL = 'https://my.realdevsquad.com/profile';
 export const HOME_URL = 'https://realdevsquad.com';
 export const WELCOME_URL = 'https://welcome.realdevsquad.com';
 export const EVENTS_URL = 'https://www.realdevsquad.com/events.html';
