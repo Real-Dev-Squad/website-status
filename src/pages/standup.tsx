@@ -1,79 +1,71 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 
-import styles from '@/styles/standup.module.scss';
+import { addStandup } from '@/interfaces/standup.type';
+import { FormatDate } from '@/utils/FormatDate';
+import { LOGIN_URL } from '@/components/constants/url';
+import useAuthenticated from '@/hooks/useAuthenticated';
+import StandUpContainer from '@/components/standup';
+import { useAppContext } from '@/context';
 
 const StandUp: FC = () => {
+    const [update, setUpdate] = useState<addStandup>({
+        type: 'user',
+        completed: '',
+        planned: '',
+        blockers: '',
+    });
+    const [buttonDisable, setButtonDisable] = useState<boolean>(true);
+
+    const { isLoggedIn, isLoading } = useAuthenticated();
+
+    const { state } = useAppContext();
+    const { isLoading: isAuthenticating } = state;
+
+    const yesterdayDate = FormatDate();
+
+    const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setButtonDisable(false);
+        setUpdate({ type: 'user', completed: '', planned: '', blockers: '' });
+        setButtonDisable(true);
+        console.log(update);
+    };
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setUpdate({
+            ...update,
+            [event.target.name]: event.target.value,
+        });
+    };
+
     return (
-        <>
-            <Layout>
-                <Head title="Standup" />
-                <div className="container">
-                    <div className={styles.standupContainer}>
-                        <div className={styles.standupBanner}>
-                            <p>
-                                You have
-                                <span data-testid="missed-updates">
-                                    2 missed
-                                </span>
-                                Standup updates this week
-                            </p>
-                            <p>Let&apos;s try to avoid having zero days </p>
-                            <div className={styles.buttonContainer}>
-                                <button className={styles.continueButton}>
-                                    continue
-                                </button>
-                                <button className={styles.updateButton}>
-                                    Fill Old Updates
-                                </button>
-                            </div>
-                        </div>
-                        <div className={styles.standupUpdateContainer}>
-                            <h1>Standup Update</h1>
-                            <div className={styles.standupForm}>
-                                <div className={styles.yesterdayUpdate}>
-                                    <label className={styles.updateHeading}>
-                                        On March 11, 2023
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className={styles.inputFlield}
-                                        placeholder="e.g Raised PR for adding new config"
-                                        data-testid="yesterday-input-update"
-                                    />
-                                </div>
-                                <div className={styles.todayUpdate}>
-                                    <label className={styles.updateHeading}>
-                                        Today
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className={styles.inputFlield}
-                                        placeholder="e.g Refactor signup to support Google login"
-                                        data-testid="today-input-update"
-                                    />
-                                </div>
-                                <div className={styles.blockerUpdate}>
-                                    <label className={styles.updateHeading}>
-                                        Blockers
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className={styles.inputFlield}
-                                        placeholder="e.g Waiting on identity team to deploy FF"
-                                        data-testid="blocker-input-update"
-                                    />
-                                </div>
-                                <button className={styles.submitButton}>
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+        <Layout>
+            <Head title="Standup" />
+            {!isAuthenticating && isLoggedIn ? (
+                isLoading ? (
+                    <p>Loading...</p>
+                ) : (
+                    <StandUpContainer
+                        handleChange={handleChange}
+                        handleFormSubmission={handleFormSubmission}
+                        buttonDisable={buttonDisable}
+                        yesterdayDate={yesterdayDate}
+                        completed={update.completed}
+                        blockers={update.blockers}
+                        planned={update.planned}
+                    />
+                )
+            ) : (
+                <div>
+                    <p>You are not Authorized</p>
+                    <a href={LOGIN_URL} target="_blank" rel="noreferrer">
+                        Click here to Login
+                    </a>
                 </div>
-            </Layout>
-        </>
+            )}
+        </Layout>
     );
 };
 

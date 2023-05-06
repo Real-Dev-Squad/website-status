@@ -1,59 +1,35 @@
-import StandUp from '@/pages/standup';
-import { RouterContext } from 'next/dist/shared/lib/router-context';
-import { NextRouter } from 'next/router';
-import { Provider } from 'react-redux';
-import { store } from '@/app/store';
-import {
-    createMockRouter,
-    renderWithRouter,
-} from '@/test_utils/createMockRouter';
+import StandUpContainer from '@/components/standup';
+import { render, screen } from '@testing-library/react';
+
+const DEFAULT_Props = {
+    handleChange: jest.fn(),
+    handleFormSubmission: jest.fn(),
+    buttonDisable: false,
+    yesterdayDate: 'May 5, 2023',
+    completed: 'Working on a backend Go project',
+    blockers: 'Implement error handling for API endpoints',
+    planned: 'Waiting for database access credentials',
+};
 
 describe('Standup', () => {
     test('renders the missed updates of the user', () => {
-        const { queryByTestId } = renderWithRouter(
-            <Provider store={store()}>
-                <RouterContext.Provider
-                    value={createMockRouter({}) as NextRouter}
-                ></RouterContext.Provider>
-                <StandUp />
-            </Provider>
-        );
-
-        expect(queryByTestId('missed-updates')).toBeInTheDocument();
+        render(<StandUpContainer {...DEFAULT_Props} />);
+        expect(screen.getByTestId('missed-updates')).toBeInTheDocument();
     });
     test('renders the yesterday Update Input', () => {
-        const { queryByTestId } = renderWithRouter(
-            <Provider store={store()}>
-                <RouterContext.Provider
-                    value={createMockRouter({}) as NextRouter}
-                ></RouterContext.Provider>
-                <StandUp />
-            </Provider>
-        );
-
-        expect(queryByTestId('yesterday-input-update')).toBeInTheDocument();
+        render(<StandUpContainer {...DEFAULT_Props} />);
+        expect(
+            screen.queryByTestId('yesterday-input-update')
+        ).toBeInTheDocument();
     });
     test('renders the Today Update Input', () => {
-        const { queryByTestId } = renderWithRouter(
-            <Provider store={store()}>
-                <RouterContext.Provider
-                    value={createMockRouter({}) as NextRouter}
-                ></RouterContext.Provider>
-                <StandUp />
-            </Provider>
-        );
-        expect(queryByTestId('today-input-update')).toBeInTheDocument();
+        render(<StandUpContainer {...DEFAULT_Props} />);
+        expect(screen.queryByTestId('today-input-update')).toBeInTheDocument();
     });
     test('renders the blocker Input', () => {
-        const { queryByTestId } = renderWithRouter(
-            <Provider store={store()}>
-                <RouterContext.Provider
-                    value={createMockRouter({}) as NextRouter}
-                ></RouterContext.Provider>
-                <StandUp />
-            </Provider>
-        );
-
-        expect(queryByTestId('blocker-input-update')).toBeInTheDocument();
+        render(<StandUpContainer {...DEFAULT_Props} />);
+        expect(
+            screen.queryByTestId('blocker-input-update')
+        ).toBeInTheDocument();
     });
 });

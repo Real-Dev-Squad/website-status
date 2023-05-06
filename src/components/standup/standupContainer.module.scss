@@ -36,37 +36,7 @@ $radius: 8px;
 .standupBanner p span {
     color: $theme-FrenchRose;
     text-decoration: underline;
-}
-
-.buttonContainer {
-    display: flex;
-    flex-direction: row;
-    padding: 0px 20px;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.buttonContainer button {
-    width: 128px;
-    height: 40px;
-    border-radius: $radius;
-    border: none;
-    cursor: pointer;
-    color: $theme-white;
-    font-weight: 500;
-    letter-spacing: 1px;
-}
-
-.continueButton {
-    background: $theme-FunBlue;
-    font-size: 14px;
-    line-height: 150%;
-    margin-right: 10px;
-}
-
-.updateButton {
-    background-color: $theme-CeriseRed;
-    letter-spacing: 0.5px;
+    margin: 0 4px;
 }
 
 .standupUpdateContainer {
@@ -106,7 +76,7 @@ $radius: 8px;
     border-radius: $radius;
     border: 1px solid $theme-Mischka;
     background: $theme-white;
-    padding: 5px;
+    padding: 1rem;
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;
@@ -124,25 +94,40 @@ $radius: 8px;
     height: 52px;
     margin-top: 45px;
     border-radius: $radius;
-    background: $theme-AthensGray;
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;
     font-family: 'Inter', sans-serif;
     border: none;
     cursor: pointer;
+    letter-spacing: 0.9px;
+}
+
+.submitButton:active {
+    background: $theme-FunBlue;
+    color: $theme-white;
+}
+
+.activeButton {
+    background: $theme-FunBlue;
+    color: $theme-white;
+}
+
+.nonActiveButton {
+    background: $theme-AthensGray;
 }
 
 @media (max-width: 946px) {
     .standupUpdateContainer {
-        width: 64.63625%;
+        width: 76.63625%;
     }
 }
 
 @media (max-width: 600px) {
     .standupBanner {
         width: 100%;
-        padding: 15px 0 15px 20px;
+        padding: 16px 0 8px 4px;
+        text-align: center;
     }
 
     .standupBanner p {
@@ -151,7 +136,8 @@ $radius: 8px;
     }
 
     .standupUpdateContainer {
-        width: 76.63625%;
+        width: 100%;
+        margin-top: 4px;
     }
 
     .standupUpdateContainer h1 {
@@ -162,9 +148,6 @@ $radius: 8px;
     .todayUpdate label,
     .blockerUpdate label {
         font-size: 1rem;
-    }
-    .inputFlield {
-        padding: 3px;
     }
 
     .submitButton {
