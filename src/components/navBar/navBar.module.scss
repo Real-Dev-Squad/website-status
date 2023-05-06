@@ -9,7 +9,6 @@ $theme-active: #87d870;
     width: 100%;
     background-color: $theme-blue;
     align-items: center;
-    overflow: hidden;
     flex-wrap: wrap;
     justify-content: space-between;
 
@@ -21,7 +20,7 @@ $theme-active: #87d870;
             color: $white;
             font-weight: bolder;
             text-align: center;
-            padding: 35px 2 * ($offset + $thickness)-1;
+            padding: 0px 25px;
             text-decoration: none;
 
             &:hover {
@@ -37,7 +36,7 @@ $theme-active: #87d870;
         }
 
         .logo {
-            padding: ($offset + $thickness)+7;
+            padding: 0;
         }
     }
     .signInLink {
@@ -78,5 +77,105 @@ $theme-active: #87d870;
         margin-right: 0.625rem;
         color: $white;
         font-weight: 600;
+    }
+
+    .hamburgerIcon {
+        display: none;
+    }
+    .mobile_menu > li {
+        list-style: none;
+    }
+    .navLinks .mobile_menu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+    }
+    .active {
+        color: $theme-active;
+        text-decoration: underline;
+        text-decoration-thickness: $thickness;
+        text-underline-offset: $offset;
+    }
+}
+@media (max-width: 970px) {
+    .navBar {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        position: relative;
+        .navLinks {
+            a {
+                padding: 10px 40px;
+                text-align: left;
+                color: $theme-blue;
+                display: none;
+            }
+        }
+        .hamburgerIcon {
+            display: inline-block;
+            height: 73px;
+            width: 73px;
+            padding: 18px;
+            cursor: pointer;
+            font-size: 20px;
+            color: $white;
+        }
+    }
+    .signInLink {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .showLogo {
+        display: none;
+    }
+
+    .icon {
+        height: 32px;
+    }
+
+    .navBarMenu {
+        background: $white;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .navBarMenu .mobile_menu {
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0px 10px 15px rgb(0 0 0 / 50%);
+        width: 100%;
+    }
+
+    .navBarMenu li {
+        padding: 12px 40px;
+        font-size: 16px;
+        text-align: left;
+        font: 700 16px Roboto, sans-serif;
+    }
+
+    .navBarMenu li a {
+        text-decoration: none;
+        color: $theme-blue;
+    }
+
+    .userProfile {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+    }
+
+    .signInLink {
+        width: 10rem;
+    }
+
+    .navBarMenu .mobile_menu > li a:hover {
+        color: $theme-active;
+    }
+
+    .navBarMenu .mobile_menu > li a:active {
+        color: $theme-active;
     }
 }
