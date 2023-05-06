@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
+import { inputPropsTypes } from '@/types/ProgressUpdates';
 
-interface inputProps {
-    name: string;
-    question: string;
-}
-
-const InputWithQuestions = ({ name, question }: inputProps) => {
+const InputWithQuestions = ({ name, question }: inputPropsTypes) => {
     const [answer, setAnswer] = useState('');
     return (
         <>
