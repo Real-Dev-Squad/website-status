@@ -1,23 +1,17 @@
 export type taskDetailsDataType = {
-    id: string;
-    isNoteworthy: boolean;
-    lossRate: {
-        dinero: number;
-        neelam: number;
-    };
-    purpose: string;
-    endsOn: number;
-    title: string;
-    status: string;
-    assignee: string;
-    links: string[];
-    dependsOn: string[];
-    percentCompleted: number;
-    type: string;
-    startedOn: number;
-    featureUrl: string;
-    completionAward: {
-        neelam: number;
-        dinero: number;
+    message?: string;
+    taskData?: {
+        assignee: string;
+        completionAward: { dinero: number; neelam: number };
+        createdBy: string;
+        endsOn: number;
+        isNoteworthy: boolean;
+        lossRate: { dinero: number; neelam: number };
+        percentCompleted: number;
+        priority: string;
+        startedOn: number;
+        status: string;
+        title: string;
+        type: string;
     };
 };

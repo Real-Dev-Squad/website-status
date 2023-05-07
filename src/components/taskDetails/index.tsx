@@ -8,7 +8,6 @@ import React, {
     useState,
     ChangeEventHandler,
 } from 'react';
-import useFetch from '@/hooks/useFetch';
 import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
@@ -19,6 +18,7 @@ import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
+import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
 
 type ButtonProps = {
     buttonName: string;
@@ -70,15 +70,15 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const isAuthorized = useContext(isUserAuthorizedContext);
     const [state, dispatch] = useReducer(taskDetailsReducer, initialState);
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const initialDataRef = useRef<Record<string, any> | task>({});
-    const { response, error, isLoading } = useFetch(url);
+    const initialDataRef = useRef<Record<string, any> | undefined>({});
+    const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
     const { SUCCESS, ERROR } = ToastTypes;
     const { taskDetails } = state;
     useEffect(() => {
-        const fetchedData: task = { ...response.taskData };
+        const fetchedData = data?.taskData;
         dispatch({ type: 'setTaskDetails', payload: fetchedData });
         initialDataRef.current = fetchedData;
-    }, [isLoading, response]);
+    }, [isLoading, data]);
 
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -121,7 +121,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         if (isLoading) {
             return <p className={classNames.textCenter}>Loading...</p>;
         }
-        if (error) {
+        if (isError) {
             return (
                 <p className={classNames.textCenter}>Something went wrong!</p>
             );
@@ -129,7 +129,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     }
 
     const shouldRenderParentContainer = () =>
-        !isLoading && !error && taskDetails;
+        !isLoading && !isError && taskDetails;
 
     return (
         <>
