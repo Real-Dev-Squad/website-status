@@ -22,7 +22,7 @@ function CardList(tasks: task[]) {
 const Mine: FC = () => {
     const [tasks, setTasks] = useState<task[]>([]);
     const { response, error, isLoading, callAPI } = useFetch(
-      MINE_TASKS_URL,
+        MINE_TASKS_URL,
         {},
         false
     );
