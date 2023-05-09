@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
@@ -7,7 +7,6 @@ import task from '@/interfaces/task.type';
 import { LOGIN_URL } from '@/components/constants/url';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { Loader } from '@/components/tasks/card/Loader';
 
 function CardList({ tasks }: { tasks: task[] }) {
@@ -26,7 +25,7 @@ function CardList({ tasks }: { tasks: task[] }) {
 }
 
 const Content = () => {
-    const { data: tasks, error, isLoading } = useGetMineTasksQuery(skipToken);
+    const { data: tasks, error, isLoading } = useGetMineTasksQuery();
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! Please contact admin</p>;
     if (tasks && tasks.length)
