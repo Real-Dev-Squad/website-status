@@ -6,8 +6,8 @@ import Head from '@/components/head';
 import {
     ISSUES_FETCH_ERROR_MESSAGE,
     NO_ISSUES_FOUND_MESSAGE,
-} from '@/components/constants/messages';
-import { ISSUES_URL } from '@/components/constants/url';
+} from '@/constants/messages';
+import { ISSUES_URL } from '@/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 
