@@ -6,18 +6,18 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
-import { ALT_KEY } from '@/components/constants/key';
+import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
-} from '@/components/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
+} from '@/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/constants/constants';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -29,7 +29,7 @@ import {
 } from '@/app/services/taskTagApi';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
-import { isNewCardDesignEnabled } from '@/components/constants/FeatureFlags';
+import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 
 type Props = {
     content: task;

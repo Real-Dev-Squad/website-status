@@ -1,7 +1,7 @@
 import {
     TOTAL_MILLISECONDS_IN_A_DAY,
     TOTAL_MILLISECONDS_IN_A_HOUR,
-} from '@/components/constants/date';
+} from '@/constants/date';
 
 const getIdleSinceText = (idleSince: string) => {
     const presentDate = new Date();
