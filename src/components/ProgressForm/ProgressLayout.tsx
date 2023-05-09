@@ -12,11 +12,11 @@ function ProgressLayout() {
         <>
             <NavBar />
             <ProgressHeader />
-            <div className={styles.container}>
+            <section className={styles.container}>
                 <h1 className={styles.formHeading}>Task Updates</h1>
-                <h2 className={styles.date}>on {getCurrentDate()}</h2>
-            </div>
-            <ProgressForm />
+                <h2 className={styles.date}>On {getCurrentDate()}</h2>
+                <ProgressForm />
+            </section>
         </>
     );
 }
