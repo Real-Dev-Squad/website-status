@@ -5,11 +5,7 @@ import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
-import {
-    BLOCKED,
-    IN_PROGRESS,
-    SMOKE_TESTING,
-} from '@/constants/task-status';
+import { BLOCKED, IN_PROGRESS, SMOKE_TESTING } from '@/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import { TASKS_URL } from '@/constants/url';
