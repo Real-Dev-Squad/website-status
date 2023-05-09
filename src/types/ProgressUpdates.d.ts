@@ -9,9 +9,14 @@ export interface progressStates {
     blockers: string;
 }
 
+interface dispatchParams {
+    type: string;
+    value: string;
+}
+
 export interface inputPropsTypes {
     name: string;
     question: string;
     value: string;
-    onChange: any;
+    onChange: (dispatchParams) => void;
 }
