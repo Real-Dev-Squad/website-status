@@ -1,6 +1,6 @@
 import InputWithQuestions from './InputWithQuestions';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
-import { questions } from '../constants/ProgressUpdates';
+import { questions } from '@/constants/ProgressUpdates';
 
 const ProgressForm = () => {
     return (

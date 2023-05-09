@@ -1,4 +1,4 @@
-import { daysInWeek, month } from '@/components/constants/ProgressUpdates';
+import { daysInWeek, month } from '@/constants/ProgressUpdates';
 
 const getCurrentDate = (): string => {
     const date = new Date();
