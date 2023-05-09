@@ -1,5 +1,5 @@
 import InputWithQuestions from '@/components/ProgressForm/InputWithQuestions';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 const name = 'Test-Question';
 const func = jest.fn();
