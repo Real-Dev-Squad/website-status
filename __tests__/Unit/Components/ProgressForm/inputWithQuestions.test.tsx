@@ -10,7 +10,7 @@ describe('Input field with label', function () {
             <InputWithQuestions
                 name={name}
                 question="This is a test question"
-                value=''
+                value=""
                 onChange={func}
             />
         );

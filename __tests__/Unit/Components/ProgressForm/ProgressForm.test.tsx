@@ -57,5 +57,4 @@ describe('Progress form', function () {
 
         expect(button.className).toBe('buttonEnabled');
     });
-
 });

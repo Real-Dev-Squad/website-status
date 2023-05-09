@@ -1,6 +1,6 @@
 export interface reducerAction {
     type: string;
-    value: string
+    value: string;
 }
 
 export interface progressStates {

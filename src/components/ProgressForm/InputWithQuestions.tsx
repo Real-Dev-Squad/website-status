@@ -1,7 +1,12 @@
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 import { inputPropsTypes } from '@/types/ProgressUpdates';
 
-const InputWithQuestions = ({ name, question, value, onChange }: inputPropsTypes) => {
+const InputWithQuestions = ({
+    name,
+    question,
+    value,
+    onChange,
+}: inputPropsTypes) => {
     return (
         <div className={styles.inputComponent}>
             <label className={styles.label} htmlFor={name} aria-label={name}>
@@ -10,7 +15,9 @@ const InputWithQuestions = ({ name, question, value, onChange }: inputPropsTypes
             <textarea
                 className={styles.input}
                 value={value}
-                onChange={(e) => onChange({type:name, value:e.target.value})}
+                onChange={(e) =>
+                    onChange({ type: name, value: e.target.value })
+                }
                 id={name}
             />
         </div>

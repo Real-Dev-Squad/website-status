@@ -4,26 +4,32 @@ import { questions } from '@/constants/ProgressUpdates';
 import { progressStates, reducerAction } from '@/types/ProgressUpdates';
 import { useReducer } from 'react';
 
-const initialState= {
+const initialState = {
     progress: '',
     plan: '',
     blockers: '',
 };
 
 const reducer = (state: progressStates, action: reducerAction) => {
-    switch(action.type){
-        case 'progress': return {...state, progress:action.value};
-        case 'plan': return{...state, plan:action.value};
-        case 'blockers': return{...state, blockers:action.value};
-        default: return state;
+    switch (action.type) {
+        case 'progress':
+            return { ...state, progress: action.value };
+        case 'plan':
+            return { ...state, plan: action.value };
+        case 'blockers':
+            return { ...state, blockers: action.value };
+        default:
+            return state;
     }
 };
 
 const ProgressForm = () => {
-
     const [state, dispatch] = useReducer(reducer, initialState);
     const manager = [state.progress, state.plan, state.blockers];
-    const buttonSyle = state.progress&&state.plan&&state.blockers ? styles.buttonEnabled : styles.buttonDisabled;
+    const buttonSyle =
+        state.progress && state.plan && state.blockers
+            ? styles.buttonEnabled
+            : styles.buttonDisabled;
 
     return (
         <form className={styles.form}>
@@ -33,10 +39,14 @@ const ProgressForm = () => {
                     name={question.name}
                     question={question.question}
                     value={manager[index]}
-                    onChange = {dispatch}
+                    onChange={dispatch}
                 />
             ))}
-            <button className={buttonSyle} onClick={(e)=>e.preventDefault()} type="submit">
+            <button
+                className={buttonSyle}
+                onClick={(e) => e.preventDefault()}
+                type="submit"
+            >
                 Submit
             </button>
         </form>
