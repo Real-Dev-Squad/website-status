@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-    USER_SELF,
-    DEFAULT_AVATAR,
-    SIGNUP_LINK,
-} from '@/constants/url';
+import { USER_SELF, DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
 import fetch from '@/helperFunctions/fetch';
 
 type Userdata = {
