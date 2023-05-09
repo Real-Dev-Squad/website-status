@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
-import { MEMBERS_URL } from '@/components/constants/url';
+import { MEMBERS_URL } from '@/constants/url';
 const user = {
     id: 'H3vNvHtFfp1Y57tPNoQ1',
     currentStatus: {

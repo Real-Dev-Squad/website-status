@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LOGOUT_URL, USER_PROFILE_URL } from '../constants/url';
+import { LOGOUT_URL, USER_PROFILE_URL } from '../../constants/url';
 import styles from '@/components/Dropdown/dropdown.module.scss';
 
 const Dropdown = () => {

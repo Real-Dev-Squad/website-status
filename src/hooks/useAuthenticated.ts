@@ -3,7 +3,7 @@ import {
     USER_SELF,
     DEFAULT_AVATAR,
     SIGNUP_LINK,
-} from '@/components/constants/url';
+} from '@/constants/url';
 import fetch from '@/helperFunctions/fetch';
 
 type Userdata = {

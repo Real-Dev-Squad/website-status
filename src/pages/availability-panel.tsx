@@ -8,7 +8,7 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/components/constants/task-status';
 import { FEATURE } from '@/components/constants/task-type';
-import { BASE_URL } from '@/components/constants/url';
+import { BASE_URL } from '@/constants/url';
 
 const AvailabilityPanel: FC = () => {
     const [idleMembersList, setIdleMembersList] = useState<string[]>([]);

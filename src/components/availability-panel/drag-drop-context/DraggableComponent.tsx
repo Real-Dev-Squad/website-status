@@ -7,7 +7,7 @@ import {
 } from 'react-beautiful-dnd';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
+import { MAX_SEARCH_RESULTS } from '@/constants/constants';
 import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import { disableDrag } from '.';
 import Image from 'next/image';

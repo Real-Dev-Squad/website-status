@@ -12,7 +12,7 @@ import {
 } from '@/components/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 
 const renderCardList = (tasks: task[]) => {
     const beautifiedTasks = beautifyTaskStatus(tasks);

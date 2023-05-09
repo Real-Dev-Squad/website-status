@@ -9,8 +9,8 @@ import { STATUS_ORDER } from '@/components/constants/task-status';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
-} from '../constants/messages';
-import { TASKS_URL } from '@/components/constants/url';
+} from '../../constants/messages';
+import { TASKS_URL } from '@/constants/url';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import updateCardContent from '@/helperFunctions/updateCardContent';

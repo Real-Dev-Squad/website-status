@@ -1,4 +1,4 @@
-import { ALL_LEVELS_URL, ALL_TAGS_URL } from '@/components/constants/url';
+import { ALL_LEVELS_URL, ALL_TAGS_URL } from '@/constants/url';
 import { api } from './api';
 import tagType from '@/interfaces/tag.type';
 import levelType from '@/interfaces/level.type';
