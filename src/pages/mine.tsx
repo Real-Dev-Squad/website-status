@@ -31,6 +31,7 @@ const Mine: FC = () => {
     useEffect(() => {
         if (isLoggedIn && !Object.keys(response).length) {
             callAPI();
+        } else {
             setTasks(response);
         }
     }, [isLoggedIn, response]);
