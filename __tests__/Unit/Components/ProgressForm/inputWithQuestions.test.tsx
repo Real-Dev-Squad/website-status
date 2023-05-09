@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 const name = 'Test-Question';
 
-describe.only('Input field with label', function () {
+describe('Input field with label', function () {
     it('Should render a input field with appropriate label', function () {
         render(
             <InputWithQuestions
