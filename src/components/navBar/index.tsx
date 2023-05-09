@@ -21,11 +21,10 @@ import { Loader } from '../tasks/card/Loader';
 
 const NavBar = () => {
     const isLoggedIn = true;
-    const { data: userData, isLoading } = useGetUserQuery();
+    const { data: userData } = useGetUserQuery();
     // const { userData, isLoggedIn } = useAuthenticated();
     const [toggleDropdown, setToggleDropdown] = useState(false);
 
-    if (isLoading) return <Loader />;
     return (
         <nav data-testid="navbar" className={styles.navBar}>
             <div className={styles.navLinks}>
