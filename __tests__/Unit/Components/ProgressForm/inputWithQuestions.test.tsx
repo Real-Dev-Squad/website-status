@@ -1,5 +1,6 @@
-import InputWithQuestions from '@/components/ProgressForm/InputWithQuestions';
 import { render, screen } from '@testing-library/react';
+
+import InputWithQuestions from '@/components/ProgressForm/InputWithQuestions';
 
 const name = 'Test-Question';
 const func = jest.fn();

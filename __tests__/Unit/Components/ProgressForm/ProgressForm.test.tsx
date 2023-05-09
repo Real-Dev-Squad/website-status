@@ -1,6 +1,8 @@
-import ProgressForm from '@/components/ProgressForm/ProgressForm';
-import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { fireEvent, screen } from '@testing-library/react';
+
+import { renderWithProviders } from '@/test-utils/renderWithProvider';
+
+import ProgressForm from '@/components/ProgressForm/ProgressForm';
 
 const mockOnClick = jest.fn();
 

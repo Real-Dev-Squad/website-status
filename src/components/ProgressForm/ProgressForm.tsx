@@ -1,8 +1,11 @@
+import { useReducer } from 'react';
+
 import InputWithQuestions from './InputWithQuestions';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
-import { questions } from '@/constants/ProgressUpdates';
+
 import { progressStates, reducerAction } from '@/types/ProgressUpdates';
-import { useReducer } from 'react';
+
+import { questions } from '@/constants/ProgressUpdates';
 
 const initialState = {
     progress: '',

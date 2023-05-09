@@ -1,8 +1,10 @@
-import { store } from '@/app/store';
-import ProgressUpdatesPage from '@/pages/progress/[id]';
-import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+
+import { store } from '@/app/store';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+
+import ProgressUpdatesPage from '@/pages/progress/[id]';
 
 describe('Progress page test', function () {
     it('Renders a form', function () {

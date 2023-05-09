@@ -1,9 +1,11 @@
 import React from 'react';
+
+import getCurrentDate from '@/utils/getLatestDate';
+
 import NavBar from '../navBar';
 import ProgressHeader from './ProgressHeader';
 import ProgressForm from './ProgressForm';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
-import getCurrentDate from '@/utils/getLatestDate';
 
 function ProgressLayout() {
     return (

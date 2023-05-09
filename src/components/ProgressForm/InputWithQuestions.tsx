@@ -1,5 +1,5 @@
-import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 import { inputPropsTypes } from '@/types/ProgressUpdates';
+import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 const InputWithQuestions = ({
     name,
