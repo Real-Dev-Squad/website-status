@@ -5,7 +5,7 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
 import { useContext, useState, useEffect } from 'react';
-import { STATUS_ORDER } from '@/components/constants/task-status';
+import { STATUS_ORDER } from '@/constants/task-status';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,

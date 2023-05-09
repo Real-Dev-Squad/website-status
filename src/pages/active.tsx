@@ -9,7 +9,7 @@ import {
     BLOCKED,
     IN_PROGRESS,
     SMOKE_TESTING,
-} from '@/components/constants/task-status';
+} from '@/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import { TASKS_URL } from '@/constants/url';
