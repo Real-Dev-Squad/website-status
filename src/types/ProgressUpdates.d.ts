@@ -20,3 +20,13 @@ export interface inputPropsTypes {
     value: string;
     onChange: (dispatchParams) => void;
 }
+
+interface question{
+    id: number;
+    name: string;
+    question: string;
+}
+
+export interface formProps{
+    questions: Array<question>;
+}
