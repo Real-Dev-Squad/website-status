@@ -8,7 +8,7 @@ import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
-import { CHALLENGES_URL, LOGIN_URL } from '@/components/constants/url';
+import { CHALLENGES_URL, LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import useAuthenticated from '@/hooks/useAuthenticated';

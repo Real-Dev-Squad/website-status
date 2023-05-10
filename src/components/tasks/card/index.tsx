@@ -1,5 +1,4 @@
 import { FC, useState, useEffect, useContext } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 
@@ -7,18 +6,18 @@ import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
-import { ALT_KEY } from '@/components/constants/key';
+import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
-} from '@/components/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
+} from '@/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/constants/constants';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -30,6 +29,8 @@ import {
 } from '@/app/services/taskTagApi';
 import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
+import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
+import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 
 type Props = {
     content: task;
@@ -334,17 +335,6 @@ const Card: FC<Props> = ({
             ></div>
         </div>
     );
-    const CardTitle = () => (
-        <h2
-            className={classNames.cardTitle}
-            contentEditable={shouldEdit}
-            onKeyPress={(e) => handleChange(e, 'title')}
-            role="button"
-            tabIndex={0}
-        >
-            {cardDetails.title}
-        </h2>
-    );
 
     const AssigneeButton = () => {
         return (
@@ -384,7 +374,7 @@ const Card: FC<Props> = ({
     };
 
     // show redesign only on dev
-    if (isNewCardEnabled)
+    if (isNewCardDesignEnabled)
         return (
             <div
                 className={`
@@ -397,9 +387,23 @@ const Card: FC<Props> = ({
             >
                 {/* loading spinner */}
                 {isLoading && <Loader />}
-
                 <div className={classNames.cardItems}>
-                    <CardTitle />
+                    <ConditionalLinkWrapper
+                        redirectingPath="/tasks/[id]"
+                        shouldDisplayLink={isNewCardEnabled}
+                        taskId={cardDetails.id}
+                    >
+                        <span
+                            className={classNames.cardTitle}
+                            contentEditable={shouldEdit}
+                            onKeyPress={(e) => handleChange(e, 'title')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {cardDetails.title}
+                        </span>
+                    </ConditionalLinkWrapper>
+
                     {/* progress bar */}
                     <div className={classNames.progressContainerUpdated}>
                         <ProgressIndicator />
@@ -411,7 +415,9 @@ const Card: FC<Props> = ({
                         <span className={classNames.cardSpecialFont}>
                             Estimated completion
                         </span>
-                        {renderDate(fromNowEndsOn, shouldEdit)}
+                        <span className={classNames.completionDate}>
+                            {renderDate(fromNowEndsOn, shouldEdit)}
+                        </span>
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
@@ -491,13 +497,7 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <Link
-                    href={{
-                        pathname: '/tasks/[id]',
-                    }}
-                    as={`/tasks/${cardDetails.id}`}
-                    style={{ textDecoration: 'none' }}
-                >
+                <ConditionalLinkWrapper shouldDisplayLink={isNewCardEnabled}>
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
@@ -507,7 +507,7 @@ const Card: FC<Props> = ({
                     >
                         {cardDetails.title}
                     </span>
-                </Link>
+                </ConditionalLinkWrapper>
                 <span>
                     <span className={classNames.cardSpecialFont}>Status:</span>
                     <span

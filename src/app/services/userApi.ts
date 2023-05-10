@@ -1,4 +1,4 @@
-import { USER_SELF } from '@/components/constants/url';
+import { USER_SELF } from '@/constants/url';
 import { api } from './api';
 import { userDataType } from '@/interfaces/user.type';
 

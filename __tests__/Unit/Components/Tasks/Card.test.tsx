@@ -99,18 +99,18 @@ describe('Task card', () => {
 
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
+
     test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
-                <isUserAuthorizedContext.Provider value={true}>
-                    <Card {...DEFAULT_PROPS} />
-                </isUserAuthorizedContext.Provider>
+                <Card {...DEFAULT_PROPS} />
             </Provider>,
             {}
         );
 
-        expect(queryByTestId('task-card')).not.toBeInTheDocument();
+        expect(queryByTestId('task-card')).toBeInTheDocument();
     });
+
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
@@ -118,7 +118,7 @@ describe('Task card', () => {
                     <Card {...DEFAULT_PROPS} />
                 </isUserAuthorizedContext.Provider>
             </Provider>,
-            { query: { dev: 'true' } }
+            {}
         );
 
         const component = getByTestId('task-card');
