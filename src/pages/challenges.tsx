@@ -1,16 +1,14 @@
 import { FC, useState, useEffect } from 'react';
 import { useAppContext } from '@/context';
-import useFetch from '@/hooks/useFetch';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
-import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
-import { CHALLENGES_URL, LOGIN_URL } from '@/components/constants/url';
-import { useGetUserQuery } from '@/app/services/userApi';
-import { skipToken } from '@reduxjs/toolkit/dist/query';
+import { LOGIN_URL } from '@/components/constants/url';
+import { useGetChallengesQuery } from '@/app/services/challengesApi';
+import challenge from '@/interfaces/challenge.type';
 
 const renderCardList = (
     challengeSection: challenge['content'],
@@ -29,20 +27,16 @@ const renderCardList = (
 
 const Challenges: FC = () => {
     const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
-    const { data: user } = useGetUserQuery(skipToken);
-    const { response, error, isLoading, callAPI } = useFetch(
-        CHALLENGES_URL,
-        {},
-        false
-    );
+    const { data, isLoading, error } = useGetChallengesQuery();
+    
+    const challengesResponse = data?.challenges;
     const { state } = useAppContext();
     const { isLoading: isAuthenticating, isLoggedIn } = state;
 
     useEffect(() => {
-        if (isLoggedIn && !Object.keys(response).length) {
-            callAPI();
-            if ('challenges' in response) {
-                const challenges: challenge['content'] = response.challenges;
+        if (isLoggedIn && !Object.keys(challengesResponse).length) {
+            if ('challenges' in challengesResponse) {
+                const challenges: challenge['content'] = data.challenges;
                 const challengeMap: any = [];
                 challengeMap.Active = challenges.filter(
                     (task) => task.is_active
@@ -53,7 +47,7 @@ const Challenges: FC = () => {
                 setFilteredChallenge(challengeMap);
             }
         }
-    }, [isLoggedIn, response]);
+    }, [isLoggedIn, data]);
 
     return (
         <Layout>
