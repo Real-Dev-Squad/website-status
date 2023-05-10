@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { UserStatus } from '@/interfaces/userStatus.type';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import styles from '@/components/idleUsers/card/card.module.scss';
-import { DUMMY_PROFILE } from '@/components/constants/display-sections.js';
-import { MEMBERS_URL } from '@/components/constants/url';
+import { DUMMY_PROFILE } from '@/constants/display-sections.js';
+import { MEMBERS_URL } from '@/constants/url';
 
 type Props = {
     user: UserStatus;

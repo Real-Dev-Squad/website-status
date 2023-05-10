@@ -3,7 +3,7 @@ import Card from '@/components/Card/index';
 import details from '@/components/challenges/details';
 import participantsDetails from '@/components/challenges/participants';
 import fetch from '@/helperFunctions/fetch';
-import { SUBSCRIBE_TO_CHALLENGE_URL } from '@/components/constants/url';
+import { SUBSCRIBE_TO_CHALLENGE_URL } from '@/constants/url';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 type ActiveProps = {

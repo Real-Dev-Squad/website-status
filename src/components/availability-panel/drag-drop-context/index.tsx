@@ -5,14 +5,14 @@ import { dragDropProps } from '@/interfaces/availabilityPanel.type';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
-import { ASSIGNED } from '@/components/constants/task-status';
+import { ASSIGNED } from '@/constants/task-status';
 import DroppableComponent from './DroppableComponent';
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import {
     THOUSAND_MILLI_SECONDS,
     FOURTEEN_DAYS,
     SECONDS_IN_A_DAY,
-} from '@/components/constants/date';
+} from '@/constants/date';
 
 type NotFoundErrorProps = {
     message: string;
