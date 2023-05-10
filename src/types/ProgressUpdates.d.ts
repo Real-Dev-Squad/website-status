@@ -21,12 +21,12 @@ export interface inputPropsTypes {
     onChange: (dispatchParams) => void;
 }
 
-interface question{
+interface question {
     id: number;
     name: string;
     question: string;
 }
 
-export interface formProps{
+export interface formProps {
     questions: Array<question>;
 }

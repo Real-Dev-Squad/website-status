@@ -3,7 +3,11 @@ import { useReducer } from 'react';
 import InputWithQuestions from './InputWithQuestions';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
-import { formProps, progressStates, reducerAction } from '@/types/ProgressUpdates';
+import {
+    formProps,
+    progressStates,
+    reducerAction,
+} from '@/types/ProgressUpdates';
 
 const initialState = {
     progress: '',
@@ -24,7 +28,7 @@ const reducer = (state: progressStates, action: reducerAction) => {
     }
 };
 
-const ProgressForm = ({ questions }:formProps) => {
+const ProgressForm = ({ questions }: formProps) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const manager = [state.progress, state.plan, state.blockers];
     const buttonSyle =
