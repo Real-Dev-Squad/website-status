@@ -1,4 +1,4 @@
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 import { api } from './api';
 import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 
