@@ -1,13 +1,16 @@
 import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { FC, useContext } from 'react';
-import { Draggable, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
+import {
+    Draggable,
+    DraggingStyle,
+    NotDraggingStyle,
+} from 'react-beautiful-dnd';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
-import { DUMMY_PROFILE as placeholderImageURL } from '@/components/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/components/constants/constants';
+import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sections';
+import { MAX_SEARCH_RESULTS } from '@/constants/constants';
 import { draggableProps } from '@/interfaces/availabilityPanel.type';
 import { disableDrag } from '.';
 import Image from 'next/image';
-
 
 const getItemStyle = (
     isDragging: boolean,
@@ -35,7 +38,7 @@ const DraggableComponent: FC<draggableProps> = ({
     title = '',
 }) => {
     const draggableIds = useContext(disableDrag);
-        const { data: userResponse } = useGetUsersByUsernameQuery({
+    const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: draggableId,
         size: MAX_SEARCH_RESULTS,
     });

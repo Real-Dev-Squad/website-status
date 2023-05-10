@@ -1,6 +1,6 @@
 import React, { VFC, useState, PropsWithChildren, KeyboardEvent } from 'react';
 import styles from '@/components/Accordion/Accordion.module.scss';
-import { ENTER_KEY, SPACE_KEY } from '@/components/constants/key';
+import { ENTER_KEY, SPACE_KEY } from '@/constants/key';
 
 type AccordionProps = {
     title: string;

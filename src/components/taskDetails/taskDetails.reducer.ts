@@ -1,7 +1,7 @@
 import task from '@/interfaces/task.type';
 
 interface State {
-    taskDetails: Record<string, any> |  task;
+    taskDetails: Record<string, any> | task;
     editedDetails: Record<string, any> | task;
 }
 

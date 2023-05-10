@@ -1,5 +1,5 @@
 import fetch from '@/helperFunctions/fetch';
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 
 const updateTaskDetails = async (editedDetails = {}, taskID = '') => {
     try {

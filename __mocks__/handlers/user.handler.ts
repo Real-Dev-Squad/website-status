@@ -1,4 +1,4 @@
-import { USERS_URL, USER_SELF } from '@/components/constants/url';
+import { USERS_URL, USER_SELF } from '@/constants/url';
 import usersData from '../db/users';
 import { rest } from 'msw';
 
