@@ -35,6 +35,8 @@ $section-padding-left-right: $base-unit * 25;
 
 .formHeading {
     color: $color-blue;
+    margin: $diff-margin auto;
+    padding: 0 $section-padding-left-right;
 }
 
 .date {

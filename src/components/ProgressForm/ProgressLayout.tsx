@@ -14,8 +14,8 @@ function ProgressLayout() {
         <>
             <NavBar />
             <ProgressHeader />
+            <h1 className={styles.formHeading}>Task Updates</h1>
             <section className={styles.container}>
-                <h1 className={styles.formHeading}>Task Updates</h1>
                 <h2 className={styles.date}>On {getCurrentDate()}</h2>
                 <ProgressForm questions={questions} />
             </section>
