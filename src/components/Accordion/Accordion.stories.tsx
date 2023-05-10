@@ -6,10 +6,7 @@ import Accordion, { Props } from './index';
 export default {
     title: 'Example/Accordion',
     component: Accordion,
-    argTypes: {
-        title: { control: 'text' },
-        open: { control: 'boolean' },
-    },
+    argTypes: { title: { control: 'text' }, open: { control: 'boolean' } },
 } as Meta;
 
 const Template: Story<Props> = (args) => <Accordion {...args} />;
