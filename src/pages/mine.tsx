@@ -26,6 +26,7 @@ function CardList({ tasks }: { tasks: task[] }) {
 
 const Content = () => {
     const { data: tasks, error, isLoading } = useGetMineTasksQuery();
+
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! Please contact admin</p>;
     if (tasks && tasks.length)

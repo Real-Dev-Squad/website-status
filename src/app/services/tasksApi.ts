@@ -1,6 +1,6 @@
 import task from '@/interfaces/task.type';
 import { api } from './api';
-import { MINE_TASKS_URL } from '@/components/constants/url';
+import { MINE_TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
 
