@@ -1,0 +1,42 @@
+$base-unit: 4px;
+$base-font-size: 0.3rem;
+$color-blue: #041187;
+$color-red: #e30062;
+$color-green: #85da6b;
+$color-disabled: #e5e7eb;
+$color-white: #fff;
+$color-black: #000;
+$diff-margin: $base-unit * 15;
+$similar-margin: $base-unit * 8;
+$section-padding-top-bottom: $base-unit * 30;
+$section-padding-left-right: $base-unit * 25;
+
+.container {
+    margin: $diff-margin auto;
+}
+
+.searchLabel {
+    font-size: $base-font-size * 5;
+    padding-left: $section-padding-left-right;
+    padding-right: $base-unit * 8;
+    color: $color-blue;
+}
+
+.searchBar {
+    background-color: $color-disabled;
+    border-radius: $base-unit * 2;
+    border: none;
+    width: 70%;
+    height: $base-unit * 15;
+    font-size: $base-font-size * 5;
+}
+
+.searchBtn {
+    margin-left: $base-unit * 8;
+    background-color: $color-blue;
+    color: $color-white;
+    height: $base-unit * 15;
+    border-radius: $base-unit * 2;
+    border: none;
+    width: $base-unit * 40;
+}
