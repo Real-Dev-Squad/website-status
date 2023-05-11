@@ -1,21 +1,12 @@
 import React, { KeyboardEvent, useState } from 'react';
 import styles from '@/components/Dashboard/Dashboard.module.scss';
 
-interface searchProps {
-    label: string;
-}
-
-const search = (query: string) => {
-    const searchValues = query.split(',');
-    console.log('Searching', searchValues);
-};
-
-function Searchbar({ label }: searchProps) {
+function Searchbar({ label, handleSearch }: searchProps) {
     const [query, setQuery] = useState('');
 
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key == 'Enter') {
-            search(query);
+            handleSearch(query);
         }
     };
 
@@ -35,7 +26,7 @@ function Searchbar({ label }: searchProps) {
             <button
                 type="submit"
                 onClick={() => {
-                    search(query);
+                    handleSearch(query);
                 }}
                 className={styles.searchBtn}
             >

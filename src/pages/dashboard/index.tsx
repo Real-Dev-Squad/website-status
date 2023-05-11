@@ -4,6 +4,11 @@ import PageNotFound from '../404';
 import NavBar from '@/components/navBar';
 import Searchbar from '@/components/Dashboard/Searchbar';
 
+const search = (query: string) => {
+    const searchValues = query.split(',');
+    console.log('Searching', searchValues);
+};
+
 const DashboardPage = () => {
     const router = useRouter();
 
@@ -15,7 +20,7 @@ const DashboardPage = () => {
     return (
         <>
             <NavBar />
-            <Searchbar label="Users" />
+            <Searchbar label="Users" handleSearch={search} />
         </>
     );
 };
