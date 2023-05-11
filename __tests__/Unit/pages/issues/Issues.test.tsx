@@ -4,8 +4,8 @@ import { store } from '@/app/store';
 import { Provider } from 'react-redux';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { setupServer } from 'msw/node';
-import handlers from '../../../__mocks__/handlers';
-import { issuesNoDataFoundHandler } from '../../../__mocks__/handlers/issues.handler';
+import handlers from '../../../../__mocks__/handlers';
+import { issuesNoDataFoundHandler } from '../../../../__mocks__/handlers/issues.handler';
 
 const server = setupServer(...handlers);
 
