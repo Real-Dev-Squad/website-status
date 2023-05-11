@@ -1,11 +1,6 @@
 import React, { KeyboardEvent, useState } from 'react';
 import styles from '@/components/Dashboard/Dashboard.module.scss';
 
-interface searchProps {
-    label: string;
-    handleSearch: (query: string) => void;
-}
-
 function Searchbar({ label, handleSearch }: searchProps) {
     const [query, setQuery] = useState('');
 
