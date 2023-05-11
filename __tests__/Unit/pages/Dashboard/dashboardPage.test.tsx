@@ -3,18 +3,6 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { screen } from '@testing-library/react';
-import { setupServer } from 'msw/node';
-import handlers from '../../../../__mocks__/handlers';
-
-const server = setupServer(...handlers);
-
-beforeAll(() => {
-    server.listen();
-});
-
-afterEach(() => server.resetHandlers());
-
-afterAll(() => server.close());
 
 describe('dashboard page test', function () {
     it('checks if the page is rendered with exact components', function () {
