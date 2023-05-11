@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import PageNotFound from '../404';
-import DashboardLayout from '@/components/Dashboard/DashboardLayout';
+import NavBar from '@/components/navBar';
+import Searchbar from '@/components/Dashboard/Searchbar';
 
 const DashboardPage = () => {
     const router = useRouter();
@@ -11,7 +12,12 @@ const DashboardPage = () => {
     if (dev !== 'true') {
         return <PageNotFound />;
     }
-    return <DashboardLayout />;
+    return (
+        <>
+            <NavBar />
+            <Searchbar label="Users" />
+        </>
+    );
 };
 
 export default DashboardPage;
