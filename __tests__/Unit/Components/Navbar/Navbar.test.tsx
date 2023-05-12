@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import NavBar from '../../../src/components/navBar';
+import NavBar from '../../../../src/components/navBar';
 import * as authHooks from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
-import handlers from '../../../__mocks__/handlers';
+import handlers from '../../../../__mocks__/handlers';
 
 const server = setupServer(...handlers);
 

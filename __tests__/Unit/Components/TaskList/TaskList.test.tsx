@@ -2,7 +2,7 @@ import { store } from '@/app/store';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { screen, fireEvent } from '@testing-library/react';
-import { TASK, tasks } from '../../../__mocks__/db/tasks';
+import { TASK, tasks } from '../../../../__mocks__/db/tasks';
 import { Provider } from 'react-redux';
 
 describe('TaskList', function () {
