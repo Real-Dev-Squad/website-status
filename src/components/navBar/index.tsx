@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import useAuthenticated from '@/hooks/useAuthenticated';
 import Image from 'next/image';
 import {
     LOGIN_URL,
