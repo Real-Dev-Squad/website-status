@@ -13,7 +13,6 @@ import {
 import { TASKS_URL } from '@/constants/url';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import updateCardContent from '@/helperFunctions/updateCardContent';
 import useFetch from '@/hooks/useFetch';
 import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
@@ -82,7 +81,6 @@ export const TasksContent = () => {
                     <TaskList
                         tasks={filteredTask[activeTab]}
                         isEditable={isEditable}
-                        updateCardContent={updateCardContent}
                         updateTask={updateTask}
                     />
                 ) : (

@@ -19,7 +19,7 @@ export const tasksApi = api.injectEndpoints({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
-        updateCardContent: builder.mutation({
+        updateTaskDetailsById: builder.mutation({
             query: ({ cardDetails, id }) => {
                 return {
                     url: `"${TASKS_URL}/${id}"`,
@@ -34,5 +34,5 @@ export const tasksApi = api.injectEndpoints({
 export const {
     useGetAllTasksQuery,
     useGetMineTasksQuery,
-    useUpdateCardContentMutation,
+    useUpdateTaskDetailsByIdMutation,
 } = tasksApi;

@@ -9,12 +9,12 @@ import {
 } from '../constants';
 import styles from '../card/card.module.scss';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
+import { useUpdateTaskDetailsByIdMutation } from '../../../app/services/tasksApi';
 
 type TaksListProps = {
     tasks: task[];
     isEditable?: boolean;
     hasLimit?: boolean;
-    updateCardContent?: (id: string, cardDetails: task) => void;
     updateTask: (taskId: string, details: updateTaskDetails) => void;
 };
 
@@ -31,7 +31,6 @@ function getFilteredTasks({ hasLimit, tasksLimit, tasks }: FilterTasksProps) {
 
 export default function TaskList({
     tasks,
-    updateCardContent,
     isEditable = false,
     hasLimit = false,
     updateTask,
@@ -44,14 +43,15 @@ export default function TaskList({
         hasLimit,
         tasksLimit,
     });
+    const [updateTaskDetailsById] = useUpdateTaskDetailsByIdMutation();
+
     function onSeeMoreTasksHandler() {
         setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
     }
     async function onContentChangeHandler(id: string, cardDetails: any) {
-        if (!isEditable || !updateCardContent) return;
-        updateCardContent(id, cardDetails);
+        if (!isEditable || !updateTaskDetailsById) return;
+        updateTaskDetailsById({ id, cardDetails });
     }
-
     return (
         <>
             {filteredTasks.map((item: task) => (
