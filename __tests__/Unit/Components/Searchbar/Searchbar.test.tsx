@@ -20,7 +20,6 @@ describe('test searchbar component', function () {
 
         const input = screen.getByLabelText('test-label') as HTMLInputElement;
 
-        fireEvent.click(input);
         fireEvent.change(input, { target: { value: '123,456' } });
         expect(input.value).toBe('123,456');
     });
