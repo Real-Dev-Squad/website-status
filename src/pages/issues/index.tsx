@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, ChangeEvent } from 'react';
-import IssueList from '../components/issues/IssueList';
+import IssueList from '../../components/issues/IssueList';
 import classNames from '@/styles/issues.module.scss';
 import Layout from '@/components/Layout';
 import Head from '@/components/head';
