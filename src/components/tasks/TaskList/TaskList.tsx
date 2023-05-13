@@ -49,7 +49,7 @@ export default function TaskList({
         setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
     }
     async function onContentChangeHandler(id: string, cardDetails: any) {
-        if (!isEditable || !updateTaskDetailsById) return;
+        if (!isEditable) return;
         updateTaskDetailsById({ id, cardDetails });
     }
     return (
