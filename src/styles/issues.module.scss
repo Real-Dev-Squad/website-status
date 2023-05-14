@@ -48,10 +48,6 @@ $color-disabled: #e5e7eb;
     border-radius: 0.25rem;
     border: none;
     background-color: $color-disabled;
-
-    &:focus {
-        outline: none;
-    }
 }
 
 .issuesSearchSubmitButton {
