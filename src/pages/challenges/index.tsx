@@ -1,6 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-
-import useFetch from '@/hooks/useFetch';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
@@ -8,10 +6,11 @@ import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import challenge from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
-import { CHALLENGES_URL, LOGIN_URL } from '@/constants/url';
+import { LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import useAuthenticated from '@/hooks/useAuthenticated';
+import { useGetChallengesQuery } from '@/app/services/challengesApi';
 
 const renderCardList = (
     challengeSection: challenge['content'],
@@ -33,17 +32,12 @@ const Challenges: FC = () => {
     const { data: user, isLoading: isAuthenticating } =
         useGetUserQuery(skipToken);
     const { isLoggedIn } = useAuthenticated();
-    const { response, error, isLoading, callAPI } = useFetch(
-        CHALLENGES_URL,
-        {},
-        false
-    );
+    const { data, isLoading, isError } = useGetChallengesQuery();
 
     useEffect(() => {
-        if (isLoggedIn && !Object.keys(response).length) {
-            callAPI();
-            if ('challenges' in response) {
-                const challenges: challenge['content'] = response.challenges;
+        if (isLoggedIn && data !== undefined) {
+            if ('challenges' in data) {
+                const challenges: challenge['content'] = data.challenges;
                 const challengeMap: any = [];
                 challengeMap.Active = challenges.filter(
                     (task) => task.is_active
@@ -54,7 +48,7 @@ const Challenges: FC = () => {
                 setFilteredChallenge(challengeMap);
             }
         }
-    }, [isLoggedIn, response]);
+    }, [isLoggedIn, data]);
 
     return (
         <Layout>
@@ -65,7 +59,7 @@ const Challenges: FC = () => {
                     (isLoggedIn ? (
                         isLoading ? (
                             <p>Loading...</p>
-                        ) : error ? (
+                        ) : isError ? (
                             <p>Something went wrong! Please contact admin</p>
                         ) : (
                             <>

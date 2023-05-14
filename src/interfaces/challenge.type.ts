@@ -1,4 +1,4 @@
-type challenge = {
+type challengeDataType = {
     content: {
         id: number;
         title: string;
@@ -26,4 +26,4 @@ type challenge = {
     screen: string;
 };
 
-export default challenge;
+export default challengeDataType;
