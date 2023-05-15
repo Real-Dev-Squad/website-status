@@ -60,7 +60,10 @@ const Challenges: FC = () => {
                         isLoading ? (
                             <p>Loading...</p>
                         ) : isError ? (
-                            <p>Something went wrong! Please contact admin</p>
+                            <p>
+                                An unexpected error has occurred. Please contact
+                                the administrator for assistance.
+                            </p>
                         ) : (
                             <>
                                 {Object.keys(filteredChallenge).length > 0 ? (
