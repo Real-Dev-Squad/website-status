@@ -1,4 +1,4 @@
-import { ITEMS_URL, ITEM_BY_FILTER_URL } from '@/components/constants/url';
+import { ITEMS_URL, ITEM_BY_FILTER_URL } from '@/constants/url';
 import { api } from './api';
 import taskItem, { taskItemPayload } from '@/interfaces/taskItem.type';
 

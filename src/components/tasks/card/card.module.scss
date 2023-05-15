@@ -72,11 +72,15 @@ $seeMoreTasksShadow: #595959cc;
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-top: 0.8rem;
+}
+.completionDate {
+    padding-left: 0.5rem;
 }
 
 .contributorImage {
     img {
-        border-radius: 40%;
+        border-radius: 50%;
     }
 }
 

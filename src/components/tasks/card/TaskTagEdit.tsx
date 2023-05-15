@@ -77,8 +77,7 @@ const TaskTagEdit = ({ taskTagLevel, itemId }: TaskTagPropsType) => {
     const { data: levelOptions } = useGetLevelsQuery();
 
     const { ERROR } = ToastTypes;
-    const [updateTaskTagLevel, { isLoading: isUpdateTaskTagLevelLoading }] =
-        useUpdateTaskTagLevelMutation();
+    const [updateTaskTagLevel] = useUpdateTaskTagLevelMutation();
 
     let tagOptions = taskTags;
     // filtering out tag options: if a skill is present then to remove it from the options

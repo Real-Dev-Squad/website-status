@@ -1,28 +1,28 @@
 import classNames from '@/styles/tasks.module.scss';
 // import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { useAppContext } from '@/context';
+
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
 import { useContext, useState, useEffect } from 'react';
-import { STATUS_ORDER } from '@/components/constants/task-status';
+import { STATUS_ORDER } from '@/constants/task-status';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
-} from '../constants/messages';
-import { TASKS_URL } from '@/components/constants/url';
+} from '../../constants/messages';
+import { TASKS_URL } from '@/constants/url';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import updateCardContent from '@/helperFunctions/updateCardContent';
 import useFetch from '@/hooks/useFetch';
 import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
+import { useEditMode } from '@/hooks/useEditMode';
 
 export const TasksContent = () => {
-    const { state: appState } = useAppContext();
     // TODO: the below code should be used when mutation for updating tasks is implemented
     // const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
-    const { isEditMode } = appState;
+    const { isEditMode } = useEditMode();
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);

@@ -19,6 +19,7 @@ import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
+import { useRouter } from 'next/router';
 
 type ButtonProps = {
     buttonName: string;
@@ -67,6 +68,7 @@ const initialState = {
 };
 
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
+    const router = useRouter();
     const isAuthorized = useContext(isUserAuthorizedContext);
     const [state, dispatch] = useReducer(taskDetailsReducer, initialState);
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -218,6 +220,13 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
+                            <button
+                                onClick={() =>
+                                    router.push(`/progress/${taskID}?dev=true`)
+                                }
+                            >
+                                Update Progress
+                            </button>
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
