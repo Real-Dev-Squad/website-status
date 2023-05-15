@@ -65,9 +65,10 @@ const NavBar = () => {
                     <li>
                         <a href={MEMBERS_URL}>Members</a>
                     </li>
-                    <li>
+                    {/* TODO: Uncomment when crypto page is ready */}
+                    {/* <li>
                         <a href={CRYPTO_URL}>Crypto</a>
-                    </li>
+                    </li> */}
                     <li>
                         <a href={STATUS_URL} className={styles.active}>
                             Status
