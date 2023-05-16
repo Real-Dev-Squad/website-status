@@ -25,7 +25,13 @@ const SearchField = ({
     loading,
 }: SearchFieldProps) => {
     return (
-        <div className={classNames.searchFieldContainer}>
+        <form
+            className={classNames.searchFieldContainer}
+            onSubmit={(e) => {
+                e.preventDefault();
+                onSearchTextSubmitted();
+            }}
+        >
             <input
                 placeholder="Enter query string to search issues"
                 value={searchText}
@@ -39,7 +45,7 @@ const SearchField = ({
             >
                 Submit
             </button>
-        </div>
+        </form>
     );
 };
 
