@@ -12,7 +12,7 @@ export const challengesApi = api.injectEndpoints({
             query: () => '/challenges',
             providesTags: ['Challenges'],
             transformResponse: (response: ChallengesQueryResponse) => {
-                return response;
+                return response.challenges;
             },
         }),
     }),

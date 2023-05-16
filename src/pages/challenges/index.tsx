@@ -36,8 +36,8 @@ const Challenges: FC = () => {
 
     useEffect(() => {
         if (isLoggedIn && data !== undefined) {
-            if ('challenges' in data) {
-                const challenges: challenge['content'] = data.challenges;
+            if (data) {
+                const challenges: challenge['content'] = data;
                 const challengeMap: any = [];
                 challengeMap.Active = challenges.filter(
                     (task) => task.is_active
