@@ -21,6 +21,7 @@ export const api = createApi({
         'Tags',
         'Levels',
         'STANDUP',
+        'Mine_Tasks',
     ],
     /**
      * This api has endpoints injected in adjacent files,
