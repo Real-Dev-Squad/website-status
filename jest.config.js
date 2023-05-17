@@ -18,6 +18,9 @@ module.exports = {
 
 		// Handle absolute imports
 		'^@/(.*)$': '<rootDir>/src/$1',
+
+		//react-markdown
+		'react-markdown': '<rootDir>/node_modules/react-markdown/react-markdown.min.js',
 	},
 	testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
 	testEnvironment: 'jsdom',
