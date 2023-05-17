@@ -7,12 +7,12 @@ $theme-CeriseRed: #d61f69;
 $theme-PaleSky: #6b7280;
 $theme-Mischka: #d1d5db;
 $theme-AthensGray: #e5e7eb;
-$radius: 8px;
+$radius: 0.5rem;
 
 .standupContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
+    margin-top: 1.875rem;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -23,29 +23,29 @@ $radius: 8px;
     width: 83.6875%;
     height: 12%;
     color: $theme-white;
-    padding: 24px 0 24px 49px;
+    padding: 1.5rem 0 1.5rem 3.0625rem;
     border-radius: $radius;
 }
 
 .standupBanner p {
     font-family: 'Poppins', sans-serif;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 600;
 }
 
 .standupBanner p span {
     color: $theme-FrenchRose;
     text-decoration: underline;
-    margin: 0 4px;
+    margin: 0 0.25rem;
 }
 
 .standupUpdateContainer {
     width: 50.63625%;
-    margin-top: 50px;
+    margin-top: 3.125rem;
 }
 
 .standupForm {
-    margin-top: 35px;
+    margin-top: 2.1875rem;
 }
 
 .standupUpdateContainer h1 {
@@ -57,7 +57,7 @@ $radius: 8px;
 .yesterdayUpdate,
 .todayUpdate,
 .blockerUpdate {
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
 }
 
 .yesterdayUpdate label,
@@ -65,8 +65,8 @@ $radius: 8px;
 .blockerUpdate label {
     color: $theme-PaleSky;
     font-size: 1.4rem;
-    margin-top: 40px;
-    margin-bottom: 10px;
+    margin-top: 2.5rem;
+    margin-bottom: 0.625rem;
     font-family: 'Inter', sans-serif;
 }
 
@@ -78,10 +78,10 @@ $radius: 8px;
     background: $theme-white;
     padding: 1rem;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 150%;
     font-family: 'Inter', sans-serif;
-    margin-top: 13px;
+    margin-top: 0.8125rem;
 }
 
 .inputFlield:focus {
@@ -90,12 +90,12 @@ $radius: 8px;
 }
 
 .submitButton {
-    width: 209px;
-    height: 52px;
-    margin-top: 45px;
+    width: 13.0625rem;
+    height: 3.25rem;
+    margin-top: 2.8125rem;
     border-radius: $radius;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 150%;
     font-family: 'Inter', sans-serif;
     border: none;
@@ -126,18 +126,18 @@ $radius: 8px;
 @media (max-width: 600px) {
     .standupBanner {
         width: 100%;
-        padding: 16px 0 8px 4px;
+        padding: 1rem 0 0.5rem 0.25rem;
         text-align: center;
     }
 
     .standupBanner p {
-        font-size: 16px;
+        font-size: 1rem;
         word-wrap: break-word;
     }
 
     .standupUpdateContainer {
         width: 100%;
-        margin-top: 4px;
+        margin-top: 0.25rem;
     }
 
     .standupUpdateContainer h1 {
@@ -149,18 +149,9 @@ $radius: 8px;
     .blockerUpdate label {
         font-size: 1rem;
     }
-    .inputFlield {
-        padding: 3px;
-    }
 
     .submitButton {
-        width: 150px;
-        height: 40px;
-    }
-}
-
-@media (max-width: 375px) {
-    .standupUpdateContainer {
-        width: 100%;
+        width: 9.375rem;
+        height: 2.5rem;
     }
 }

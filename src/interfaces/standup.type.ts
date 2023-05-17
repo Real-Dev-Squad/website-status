@@ -1,4 +1,4 @@
-export type addStandup = {
+export type standupUpdateType = {
     type: string;
     completed: string;
     planned: string;

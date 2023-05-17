@@ -45,14 +45,14 @@ const Layout: FC<Props> = ({ children }) => {
                         '/mine',
                         router.pathname === '/mine'
                     )}
-                    {/* TODO: Uncomment when DS(Chanllenges) is ready */}
-                    {/* |
+                    |
                     {navBarContent(
                         'Standup',
                         '/standup',
                         router.pathname === '/standup'
                     )}
-                    |
+                    {/* TODO: Uncomment when DS(Chanllenges) is ready */}
+                    {/* |
                     {navBarContent(
                         'DS',
                         '/challenges',

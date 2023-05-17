@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import styles from '@/components/standup/standupContainer.module.scss';
 import { Standup } from '@/interfaces/standup.type';
@@ -14,8 +14,8 @@ const StandUpContainer: FC<Standup> = ({
 }: Standup) => {
     return (
         <>
-            <section className="container">
-                <section className={styles.standupContainer}>
+            <main className="container">
+                <div className={styles.standupContainer}>
                     <section className={styles.standupBanner}>
                         <p>
                             You have
@@ -99,8 +99,8 @@ const StandUpContainer: FC<Standup> = ({
                             </button>
                         </form>
                     </section>
-                </section>
-            </section>
+                </div>
+            </main>
         </>
     );
 };
