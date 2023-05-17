@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 
-import { addStandup } from '@/interfaces/standup.type';
+import { standupUpdateType } from '@/interfaces/standup.type';
 import { FormatDate } from '@/utils/FormatDate';
 import { LOGIN_URL } from '@/constants/url';
 import useAuthenticated from '@/hooks/useAuthenticated';
@@ -11,7 +11,7 @@ import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 
 const StandUp: FC = () => {
-    const [update, setUpdate] = useState<addStandup>({
+    const [standupUpdate, setStandupUpdate] = useState<standupUpdateType>({
         type: 'user',
         completed: '',
         planned: '',
@@ -28,14 +28,19 @@ const StandUp: FC = () => {
     const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setButtonDisable(false);
-        setUpdate({ type: 'user', completed: '', planned: '', blockers: '' });
+        setStandupUpdate({
+            type: 'user',
+            completed: '',
+            planned: '',
+            blockers: '',
+        });
         setButtonDisable(true);
-        console.log(update);
+        console.log(standupUpdate);
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUpdate({
-            ...update,
+        setStandupUpdate({
+            ...standupUpdate,
             [event.target.name]: event.target.value,
         });
     };
@@ -52,9 +57,9 @@ const StandUp: FC = () => {
                         handleFormSubmission={handleFormSubmission}
                         buttonDisable={buttonDisable}
                         yesterdayDate={yesterdayDate}
-                        completed={update.completed}
-                        blockers={update.blockers}
-                        planned={update.planned}
+                        completed={standupUpdate.completed}
+                        blockers={standupUpdate.blockers}
+                        planned={standupUpdate.planned}
                     />
                 )
             ) : (
