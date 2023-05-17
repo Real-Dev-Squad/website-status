@@ -37,6 +37,10 @@ const StandUp: FC = () => {
             planned: '',
             blockers: '',
         });
+        //needed to set the button disabled=true so that it
+        // is clickable for the next time on the same day if user has
+        // to submit it
+        setButtonDisable(true);
         console.log(standupUpdate);
     };
 
