@@ -22,10 +22,5 @@
         "semi": ["error", "always"],
         "react/react-in-jsx-scope": "off",
         "no-mixed-spaces-and-tabs": "off"
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
     }
 }
