@@ -80,7 +80,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                     {issue.body ?? 'No description provided'}
                 </ReactMarkdown>
             </div>
-            {issue.assignee ? 'Assigned to ' + issue.assignee.login : ''}
+            {issue.assignee && 'Assigned to ' + issue.assignee.login}
             <p className={styles.card__link}>
                 Issue Link :{' '}
                 <a href={issue.html_url} target="_blank" rel="noreferrer">
