@@ -11,7 +11,7 @@ $card-text: #78716c;
     transition: 0.2s ease-out;
     display: flex;
     flex-direction: column;
-    margin: 1rem auto;
+    margin: 2rem auto;
     justify-content: space-between;
     position: relative;
 
@@ -22,39 +22,50 @@ $card-text: #78716c;
     }
 }
 
-.card__top__details__button {
+.card__top {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
+    gap: 2rem;
+}
 
-    @media (max-width: 48rem) {
-        flex-direction: column;
-        align-items: center;
+.card__top__details {
+    flex: 1;
+    max-width: 75%;
+    overflow-x: clip;
+}
+
+.card__top__details__meta_data {
+    margin: 0 0 0.75rem;
+
+    & h2 {
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin: 0 0 0.25rem;
+        color: #1c1917;
     }
+
+    & p {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: $card-text;
+    }
+}
+
+.card__top__details__desc {
+    color: $card-text;
 }
 
 .card__top__button {
     @include styles.issues-button;
-    min-width: 9rem;
-    margin-left: 0.5rem;
-}
-
-.card__issue_created__by {
-    margin: 0.2rem 0;
-}
-
-.card__body__description {
-    img {
-        max-width: 100%;
-        height: auto;
-    }
 }
 
 .card__link {
+    width: 440px;
+
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 12px;
     line-height: 140%;
     /* or 17px */
     color: $card-text;
