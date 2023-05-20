@@ -103,6 +103,9 @@ $seeMoreTasksShadow: #595959cc;
 .cardStrongFont {
     font-size: 1.3rem;
     font-weight: 500;
+    border-radius: 5px;
+    background-color: #adadad;
+    min-width: 100px;
 }
 
 .overdueTask {
