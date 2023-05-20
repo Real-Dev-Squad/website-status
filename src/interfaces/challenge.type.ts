@@ -1,4 +1,5 @@
 type challengeDataType = {
+    is_active: boolean;
     content: {
         id: number;
         title: string;

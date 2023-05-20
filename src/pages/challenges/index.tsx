@@ -37,15 +37,7 @@ const Challenges: FC = () => {
     useEffect(() => {
         if (isLoggedIn && data !== undefined) {
             if (data) {
-                const challenges: challenge['content'] = data;
-                const challengeMap: any = [];
-                challengeMap.Active = challenges.filter(
-                    (task) => task.is_active
-                );
-                challengeMap.Completed = challenges.filter(
-                    (task) => !task.is_active
-                );
-                setFilteredChallenge(challengeMap);
+                setFilteredChallenge(data);
             }
         }
     }, [isLoggedIn, data]);

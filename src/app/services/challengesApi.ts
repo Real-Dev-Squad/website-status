@@ -6,13 +6,23 @@ type ChallengesQueryResponse = {
     challenges: challengeDataType[];
 };
 
+type ChallengeMap = {
+    Active: challengeDataType[];
+    Completed: challengeDataType[];
+};
+
 export const challengesApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getChallenges: builder.query<ChallengesQueryResponse, void>({
+        getChallenges: builder.query<ChallengeMap, void>({
             query: () => '/challenges',
             providesTags: ['Challenges'],
             transformResponse: (response: ChallengesQueryResponse) => {
-                return response.challenges;
+                const challenges = response?.challenges;
+                const challengeMap: ChallengeMap = {
+                    Active: challenges?.filter((task) => task.is_active),
+                    Completed: challenges?.filter((task) => !task.is_active),
+                };
+                return challengeMap;
             },
         }),
     }),
