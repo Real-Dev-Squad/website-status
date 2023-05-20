@@ -1,7 +1,7 @@
 import StandUpContainer from '@/components/standup';
 import { render, screen } from '@testing-library/react';
 
-const DEFAULT_Props = {
+const defaultProps = {
     handleChange: jest.fn(),
     handleFormSubmission: jest.fn(),
     buttonDisable: false,
@@ -13,21 +13,21 @@ const DEFAULT_Props = {
 
 describe('Standup', () => {
     test('renders the missed updates of the user', () => {
-        render(<StandUpContainer {...DEFAULT_Props} />);
+        render(<StandUpContainer {...defaultProps} />);
         expect(screen.getByTestId('missed-updates')).toBeInTheDocument();
     });
     test('renders the yesterday Update Input', () => {
-        render(<StandUpContainer {...DEFAULT_Props} />);
+        render(<StandUpContainer {...defaultProps} />);
         expect(
             screen.queryByTestId('yesterday-input-update')
         ).toBeInTheDocument();
     });
     test('renders the Today Update Input', () => {
-        render(<StandUpContainer {...DEFAULT_Props} />);
+        render(<StandUpContainer {...defaultProps} />);
         expect(screen.queryByTestId('today-input-update')).toBeInTheDocument();
     });
     test('renders the blocker Input', () => {
-        render(<StandUpContainer {...DEFAULT_Props} />);
+        render(<StandUpContainer {...defaultProps} />);
         expect(
             screen.queryByTestId('blocker-input-update')
         ).toBeInTheDocument();

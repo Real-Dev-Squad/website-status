@@ -20,7 +20,7 @@ $radius: 0.5rem;
 
 .standupBanner {
     background-color: $theme-Biscay;
-    width: 83.6875%;
+    width: 83.7%;
     height: 12%;
     color: $theme-white;
     padding: 1.5rem 0 1.5rem 3.0625rem;
@@ -40,7 +40,7 @@ $radius: 0.5rem;
 }
 
 .standupUpdateContainer {
-    width: 50.63625%;
+    width: 50.7%;
     margin-top: 3.125rem;
 }
 
@@ -52,25 +52,21 @@ $radius: 0.5rem;
     color: $theme-FunBlue;
     font-family: 'Inter', sans-serif;
     font-size: 2.2rem;
+    padding-left: 1rem;
 }
 
-.yesterdayUpdate,
-.todayUpdate,
-.blockerUpdate {
+.formFields {
     margin-bottom: 1.25rem;
+    border: none;
 }
 
-.yesterdayUpdate label,
-.todayUpdate label,
-.blockerUpdate label {
+.updateHeading {
     color: $theme-PaleSky;
     font-size: 1.4rem;
-    margin-top: 2.5rem;
-    margin-bottom: 0.625rem;
     font-family: 'Inter', sans-serif;
 }
 
-.inputFlield {
+.inputField {
     height: 58px;
     width: 100%;
     border-radius: $radius;
@@ -81,10 +77,11 @@ $radius: 0.5rem;
     font-size: 0.875rem;
     line-height: 150%;
     font-family: 'Inter', sans-serif;
-    margin-top: 0.8125rem;
+    margin-top: 0.8rem;
+    margin-bottom: 2.5rem;
 }
 
-.inputFlield:focus {
+.inputField:focus {
     border: 1px solid $theme-CornFlowerBlue;
     outline: none;
 }
@@ -92,7 +89,6 @@ $radius: 0.5rem;
 .submitButton {
     width: 13.0625rem;
     height: 3.25rem;
-    margin-top: 2.8125rem;
     border-radius: $radius;
     font-weight: 400;
     font-size: 0.875rem;
@@ -101,6 +97,7 @@ $radius: 0.5rem;
     border: none;
     cursor: pointer;
     letter-spacing: 0.9px;
+    margin-left: 1rem;
 }
 
 .submitButton:active {
@@ -119,7 +116,7 @@ $radius: 0.5rem;
 
 @media (max-width: 946px) {
     .standupUpdateContainer {
-        width: 76.63625%;
+        width: 76.7%;
     }
 }
 
@@ -144,9 +141,7 @@ $radius: 0.5rem;
         font-size: 1.6rem;
     }
 
-    .yesterdayUpdate label,
-    .todayUpdate label,
-    .blockerUpdate label {
+    .updateHeading {
         font-size: 1rem;
     }
 

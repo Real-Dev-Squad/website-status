@@ -5,7 +5,7 @@ export type standupUpdateType = {
     blockers: string;
 };
 
-export interface Standup {
+export type Standup = {
     handleFormSubmission: (e: React.FormEvent<HTMLFormElement>) => void;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     yesterdayDate: string;
@@ -13,4 +13,13 @@ export interface Standup {
     completed: string;
     planned: string;
     blockers: string;
-}
+};
+
+export type InputProps = {
+    // id: string;
+    placeholder: string;
+    name: string;
+    value: string;
+    dataTestId: string;
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
