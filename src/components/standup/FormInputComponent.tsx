@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 
 import styles from '@/components/standup/standupContainer.module.scss';
 import { InputProps } from '@/interfaces/standup.type';
@@ -26,4 +26,4 @@ const FormInputComponent: FC<InputProps> = ({
     );
 };
 
-export default FormInputComponent;
+export default React.memo(FormInputComponent);

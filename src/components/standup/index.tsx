@@ -38,7 +38,11 @@ const StandUpContainer: FC = () => {
     useEffect(() => {
         const isValid = isVaidate();
         setButtonDisable(!isValid);
-    }, [standupUpdate.completed, standupUpdate.planned]);
+    }, [
+        standupUpdate.completed,
+        standupUpdate.planned,
+        standupUpdate.blockers,
+    ]);
 
     const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
