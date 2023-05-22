@@ -35,7 +35,7 @@ describe('useGetChallengesQuery', () => {
         await act(() => waitForNextUpdate());
         const nextResponse = result.current;
 
-        expect(nextResponse.data).not.toBeUndefined();
+        expect(nextResponse.data).toBeDefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
         expect(nextResponse.data).toBeDefined();
