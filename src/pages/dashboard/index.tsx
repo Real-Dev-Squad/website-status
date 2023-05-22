@@ -20,7 +20,7 @@ const DashboardPage = () => {
     return (
         <>
             <NavBar />
-            <Searchbar label="Users" handleSearch={search} />
+            <Searchbar label="Users" />
         </>
     );
 };
