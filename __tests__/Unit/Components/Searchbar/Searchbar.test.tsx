@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 let testFunc;
 
-jest.mock('../../../../src/utils/splitNSearch', () => ({
+jest.mock('@/src/utils/splitNSearch', () => ({
     splitNSearch: jest.fn(),
 }));
 describe('test searchbar component', function () {
