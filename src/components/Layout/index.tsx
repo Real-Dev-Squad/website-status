@@ -1,9 +1,10 @@
-import { FC, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
+import navBarContentMock from '@/constants/navbar-Content';
 
 interface Props {
     children?: ReactNode;
@@ -33,49 +34,15 @@ const Layout: FC<Props> = ({ children }) => {
             <NavBar />
             <div className={styles.wrapper}>
                 <div className={styles.header}>
-                    {navBarContent('Tasks', '/', router.pathname === '/')}|
-                    {navBarContent(
-                        'Issues',
-                        '/issues',
-                        router.pathname === '/issues'
-                    )}
-                    |
-                    {navBarContent(
-                        'Mine',
-                        '/mine',
-                        router.pathname === '/mine'
-                    )}
-                    |
-                    {navBarContent(
-                        'Standup',
-                        '/standup',
-                        router.pathname === '/standup'
-                    )}
-                    {/* TODO: Uncomment when DS(Chanllenges) is ready */}
-                    {/* |
-                    {navBarContent(
-                        'DS',
-                        '/challenges',
-                        router.pathname === '/challenges'
-                    )} */}
-                    |
-                    {navBarContent(
-                        'Open PRs',
-                        '/openPRs',
-                        router.pathname === '/openPRs'
-                    )}
-                    |
-                    {navBarContent(
-                        'Stale PRs',
-                        '/stale-pr',
-                        router.pathname === '/stale-pr'
-                    )}
-                    |
-                    {navBarContent(
-                        'Idle Users',
-                        '/idle-users',
-                        router.pathname === '/idle-users'
-                    )}
+                    {navBarContentMock.map((element, index) => (
+                        <React.Fragment key={index}>
+                            {navBarContent(
+                                element.title,
+                                element.refURL,
+                                router.pathname === element.pathName
+                            )}
+                        </React.Fragment>
+                    ))}
                     {dev && (
                         <>
                             |

@@ -1,21 +1,55 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
+
+import FormInputComponent from './FormInputComponent';
+import { standupUpdateType } from '@/interfaces/standup.type';
+import { getYesterdayDate } from '@/utils/getYesterdayDate';
 
 import styles from '@/components/standup/standupContainer.module.scss';
-import { Standup } from '@/interfaces/standup.type';
-import FormInputComponent from './FormInputComponent';
 
-const StandUpContainer: FC<Standup> = ({
-    handleFormSubmission,
-    handleChange,
-    yesterdayDate,
-    buttonDisable,
-    completed,
-    planned,
-    blockers,
-}: Standup) => {
+const StandUpContainer: FC = () => {
+    const [standupUpdate, setStandupUpdate] = useState<standupUpdateType>({
+        type: 'user',
+        completed: '',
+        planned: '',
+        blockers: '',
+    });
+
+    const [buttonDisable, setButtonDisable] = useState<boolean>(true);
+
+    const yesterdayDate = getYesterdayDate();
+
     const buttonStyleClass = buttonDisable
         ? `${styles.nonActiveButton}`
         : `${styles.activeButton}`;
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setStandupUpdate((prevStandupUpdate) => ({
+            ...prevStandupUpdate,
+            [event.target.name]: event.target.value,
+        }));
+    };
+    const isVaidate = () => {
+        return (
+            standupUpdate.completed !== '' &&
+            standupUpdate.planned !== '' &&
+            standupUpdate.blockers !== ''
+        );
+    };
+    useEffect(() => {
+        const isValid = isVaidate();
+        setButtonDisable(!isValid);
+    }, [standupUpdate.completed, standupUpdate.planned]);
+
+    const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setStandupUpdate({
+            type: 'user',
+            completed: '',
+            planned: '',
+            blockers: '',
+        });
+        console.log(standupUpdate);
+    };
 
     return (
         <>
@@ -33,9 +67,7 @@ const StandUpContainer: FC<Standup> = ({
                         <h1>Standup Update</h1>
                         <form
                             className={styles.standupForm}
-                            onSubmit={(e: React.ChangeEvent<HTMLFormElement>) =>
-                                handleFormSubmission(e)
-                            }
+                            onSubmit={handleFormSubmission}
                         >
                             <fieldset className={styles.formFields}>
                                 <label
@@ -48,7 +80,7 @@ const StandUpContainer: FC<Standup> = ({
                                     dataTestId="yesterday-input-update"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
-                                    value={completed}
+                                    value={standupUpdate.completed}
                                     handleChange={handleChange}
                                 />
                                 <label className={styles.updateHeading}>
@@ -58,7 +90,7 @@ const StandUpContainer: FC<Standup> = ({
                                     dataTestId="today-input-update"
                                     placeholder="e.g Refactor signup to support Google login"
                                     name="planned"
-                                    value={planned}
+                                    value={standupUpdate.planned}
                                     handleChange={handleChange}
                                 />
 
@@ -69,7 +101,7 @@ const StandUpContainer: FC<Standup> = ({
                                     dataTestId="blocker-input-update"
                                     placeholder="e.g Waiting on identity team to deploy FF"
                                     name="blockers"
-                                    value={blockers}
+                                    value={standupUpdate.blockers}
                                     handleChange={handleChange}
                                 />
                             </fieldset>
