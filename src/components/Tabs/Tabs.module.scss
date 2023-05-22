@@ -5,7 +5,8 @@ $theme-grey: #d4d4d5;
     border: none;
     padding: 12px 8px 8px;
     font-size: 0.8em;
-    border-radius: 2px 2px 0 0;
+    border-radius: 5px 5px 0 0;
+    border-bottom: 1px solid $theme-grey;
     cursor: pointer;
 }
 

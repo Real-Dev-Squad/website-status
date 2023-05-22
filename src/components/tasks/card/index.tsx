@@ -67,14 +67,10 @@ const Card: FC<Props> = ({
     // TODO: the below state should be removed when mutation for updating tasks is implemented
     const [loading, setLoading] = useState<boolean>(false);
 
-    const {
-        data: taskTagLevel,
-        isError,
-        isLoading,
-    } = useGetTaskTagsQuery({
+    const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
-    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
+    const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
 
     const { onEditRoute } = useEditMode();
     const router = useRouter();
