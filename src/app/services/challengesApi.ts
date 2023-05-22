@@ -17,7 +17,7 @@ export const challengesApi = api.injectEndpoints({
             query: () => '/challenges',
             providesTags: ['Challenges'],
             transformResponse: (response: ChallengesQueryResponse) => {
-                const challenges = response?.challenges;
+                const challenges = response?.challenges || [];
                 const challengeMap: ChallengeMap = {
                     Active: challenges?.filter((task) => task.is_active),
                     Completed: challenges?.filter((task) => !task.is_active),
