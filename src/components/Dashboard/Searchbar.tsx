@@ -1,12 +1,13 @@
 import React, { KeyboardEvent, useState } from 'react';
 import styles from '@/components/Dashboard/Dashboard.module.scss';
+import { splitNSearch } from '@/utils/splitNSearch';
 
-function Searchbar({ label, handleSearch }: searchProps) {
+function Searchbar({ label }: searchProps) {
     const [query, setQuery] = useState('');
 
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
-            handleSearch(query);
+            splitNSearch(query);
         }
     };
 
@@ -26,7 +27,7 @@ function Searchbar({ label, handleSearch }: searchProps) {
             <button
                 type="submit"
                 onClick={() => {
-                    handleSearch(query);
+                    splitNSearch(query);
                 }}
                 className={styles.searchBtn}
             >

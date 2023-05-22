@@ -1,22 +1,22 @@
 import Searchbar from '@/components/Dashboard/Searchbar';
+import { splitNSearch } from '@/utils/splitNSearch';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-let mockFn: jest.Func;
+let testFunc;
 
-beforeEach(() => {
-    mockFn = jest.fn();
-});
-
+jest.mock('../../../../src/utils/splitNSearch', () => ({
+    splitNSearch: jest.fn(),
+}));
 describe('test searchbar component', function () {
     it('renders the searchbar with appropriate label', function () {
-        render(<Searchbar label="test-label" handleSearch={mockFn} />);
+        render(<Searchbar label="test-label" />);
 
         const label = screen.getByLabelText('test-label');
         expect(label).toBeInTheDocument();
     });
 
     it('checks if we can type into the searchbar', function () {
-        render(<Searchbar label="test-label" handleSearch={mockFn} />);
+        render(<Searchbar label="test-label" />);
 
         const input = screen.getByLabelText('test-label') as HTMLInputElement;
 
@@ -25,7 +25,7 @@ describe('test searchbar component', function () {
     });
 
     it('tests if the click handler is called', function () {
-        render(<Searchbar label="test-label" handleSearch={mockFn} />);
+        render(<Searchbar label="test-label" />);
 
         const input = screen.getByLabelText('test-label') as HTMLInputElement;
 
@@ -34,26 +34,26 @@ describe('test searchbar component', function () {
         fireEvent.change(input, { tatget: { value: '123' } });
         fireEvent.click(searchButton);
 
-        expect(mockFn).toBeCalledTimes(1);
+        expect(splitNSearch).toBeCalledTimes(1);
     });
 
     it('tests if enter key calls search', function () {
-        render(<Searchbar label="test-label" handleSearch={mockFn} />);
+        render(<Searchbar label="test-label" />);
 
         const input = screen.getByLabelText('test-label') as HTMLInputElement;
 
         fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', charCode: 13 });
 
-        expect(mockFn).toBeCalledTimes(1);
+        expect(splitNSearch).toBeCalledTimes(2);
     });
 
     it('tests other key down events do not call search', function () {
-        render(<Searchbar label="test-label" handleSearch={mockFn} />);
+        render(<Searchbar label="test-label" />);
 
         const input = screen.getByLabelText('test-label') as HTMLInputElement;
 
         fireEvent.keyDown(input, { key: 'A', code: 'KeyA' });
 
-        expect(mockFn).toBeCalledTimes(0);
+        expect(splitNSearch).toBeCalledTimes(2);
     });
 });
