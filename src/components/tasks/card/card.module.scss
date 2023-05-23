@@ -45,9 +45,12 @@ $seeMoreTasksShadow: #595959cc;
 }
 .cardItems {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 48rem) {
+        flex-wrap: wrap;
+    }
 }
 .card_updated .cardItems:not(:nth-child(1)) {
     margin-top: 0.8rem;
@@ -59,8 +62,16 @@ $seeMoreTasksShadow: #595959cc;
 
 .cardTitle {
     font-size: 1.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-weight: 500;
     color: #041187;
+
+    @media (max-width: 48rem) {
+        width: 100%;
+        white-space: normal;
+    }
 }
 
 .cardSpecialFont {
