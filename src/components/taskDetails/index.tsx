@@ -3,7 +3,6 @@ import React, {
     FC,
     useEffect,
     useContext,
-    useReducer,
     useRef,
     useState,
     ChangeEventHandler,
@@ -12,14 +11,14 @@ import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import taskDetailsReducer from './taskDetails.reducer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
-import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
+import {
+    useGetTaskDetailsQuery,
+    useUpdateTaskDetailsMutation,
+} from '@/app/services/taskDetailsApi';
 
 type ButtonProps = {
     buttonName: string;
@@ -33,7 +32,6 @@ type TextAreaProps = {
 };
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
-
     return (
         <button
             type="button"
@@ -62,23 +60,26 @@ type Props = {
     taskID: string;
 };
 
-const initialState = {
-    taskDetails: {} as task,
-    editedDetails: {} as task,
-};
-
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const router = useRouter();
     const isAuthorized = useContext(isUserAuthorizedContext);
-    const [state, dispatch] = useReducer(taskDetailsReducer, initialState);
+
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
     const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
     const { SUCCESS, ERROR } = ToastTypes;
-    const { taskDetails } = state;
+
+    const taskDetailsData = data?.taskData;
+    const [taskDetails, setTaskDetails] = useState<
+        Record<string, any> | undefined
+    >({});
+    const [editedDetails, setEditedDetails] = useState({});
+
+    const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+
     useEffect(() => {
         const fetchedData = data?.taskData;
-        dispatch({ type: 'setTaskDetails', payload: fetchedData });
+        setTaskDetails(taskDetailsData);
         initialDataRef.current = fetchedData;
     }, [isLoading, data]);
 
@@ -86,37 +87,28 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const formData = {
+            ...taskDetails,
             [event.target.name]: event.target.value,
         };
-        dispatch({ type: 'setEditedDetails', payload: formData });
-        dispatch({ type: 'setTaskDetails', payload: formData });
+        setEditedDetails(formData);
+        setTaskDetails(formData);
     }
 
     function onCancel() {
         setIsEditing(false);
-        dispatch({ type: 'reset' });
-        dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
+        setTaskDetails(initialDataRef.current);
     }
 
     async function onSave() {
         setIsEditing(false);
-        try {
-            const responseData = await updateTaskDetails(
-                state.editedDetails,
-                taskID
-            );
-            if (responseData.status === 204) {
-                initialDataRef.current = state.taskDetails;
-                toast(SUCCESS, 'Successfully saved');
-            }
-        } catch (err) {
-            toast(ERROR, 'Could not save changes');
-            dispatch({
-                type: 'setTaskDetails',
-                payload: initialDataRef.current,
-            });
-        }
-        dispatch({ type: 'reset', payload: initialDataRef.current });
+        updateTaskDetails({
+            editedDetails,
+            taskID,
+        })
+            .unwrap()
+            .then(() => toast(SUCCESS, 'Successfully saved'))
+            .catch((error) => toast(ERROR, error.data.message));
+        setTaskDetails(initialDataRef.current);
     }
 
     function renderLoadingComponent() {
@@ -130,8 +122,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
         }
     }
 
-    const shouldRenderParentContainer = () =>
-        !isLoading && !isError && taskDetails;
+    const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
     return (
         <>

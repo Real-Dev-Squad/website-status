@@ -8,7 +8,22 @@ export const taskDetailsApi = api.injectEndpoints({
             query: (taskId): string => `${TASKS_URL}/${taskId}/details`,
             providesTags: ['TaskDetails'],
         }),
+
+        updateTaskDetails: build.mutation({
+            query: ({ editedDetails, taskID }) => {
+                return {
+                    url: `${TASKS_URL + '/' + taskID}`,
+                    method: 'PATCH',
+                    body: {
+                        title: editedDetails.title,
+                        purpose: editedDetails.purpose,
+                    },
+                };
+            },
+            invalidatesTags: ['TaskDetails'],
+        }),
     }),
 });
 
-export const { useGetTaskDetailsQuery } = taskDetailsApi;
+export const { useGetTaskDetailsQuery, useUpdateTaskDetailsMutation } =
+    taskDetailsApi;
