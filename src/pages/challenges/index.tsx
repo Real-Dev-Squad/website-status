@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import { useAppContext } from '@/context';
+
 import useFetch from '@/hooks/useFetch';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
@@ -11,6 +11,7 @@ import classNames from '@/styles/tasks.module.scss';
 import { CHALLENGES_URL, LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
+import useAuthenticated from '@/hooks/useAuthenticated';
 
 const renderCardList = (
     challengeSection: challenge['content'],
@@ -29,14 +30,14 @@ const renderCardList = (
 
 const Challenges: FC = () => {
     const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
-    const { data: user } = useGetUserQuery(skipToken);
+    const { data: user, isLoading: isAuthenticating } =
+        useGetUserQuery(skipToken);
+    const { isLoggedIn } = useAuthenticated();
     const { response, error, isLoading, callAPI } = useFetch(
         CHALLENGES_URL,
         {},
         false
     );
-    const { state } = useAppContext();
-    const { isLoading: isAuthenticating, isLoggedIn } = state;
 
     useEffect(() => {
         if (isLoggedIn && !Object.keys(response).length) {

@@ -14,12 +14,19 @@ export const api = createApi({
      */
     tagTypes: [
         'Users',
+
         'Status',
+
         'Tasks',
         'TaskDetails',
+
+        'Mine_Tasks',
         'TaskTag',
+
         'User',
+
         'Tags',
+
         'Levels',
     ],
     /**

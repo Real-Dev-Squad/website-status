@@ -51,7 +51,6 @@ describe('test task tag API', () => {
 
         const loadedResponse = result.current[1];
         expect(loadedResponse.data).not.toBeUndefined();
-        console.log(loadedResponse.data);
         expect(loadedResponse.isLoading).toBe(false);
         expect(loadedResponse.isSuccess).toBe(true);
     });

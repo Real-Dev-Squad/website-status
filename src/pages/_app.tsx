@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import type { AppProps } from 'next/app';
 import { ToastContainer } from 'react-toastify';
-import AppWrapperContext from '@/context';
 import IsUserAuthorizedContext from '@/context/isUserAuthorized';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -16,12 +15,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
     const rdxStore = store();
     return (
         <Provider store={rdxStore}>
-            <AppWrapperContext>
-                <IsUserAuthorizedContext>
-                    <ToastContainer />
-                    <Component {...pageProps} />
-                </IsUserAuthorizedContext>
-            </AppWrapperContext>
+            <IsUserAuthorizedContext>
+                <ToastContainer />
+                <Component {...pageProps} />
+            </IsUserAuthorizedContext>
         </Provider>
     );
 };

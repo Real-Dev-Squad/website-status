@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import NavBar from '../../../src/components/navBar';
+import NavBar from '../../../../src/components/navBar';
 import * as authHooks from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
-import handlers from '../../../__mocks__/handlers';
+import handlers from '../../../../__mocks__/handlers';
 
 const server = setupServer(...handlers);
 
@@ -40,13 +40,15 @@ describe('Navbar', () => {
         const homeLink = screen.getByRole('link', { name: 'Welcome' });
         const eventLink = screen.getByRole('link', { name: 'Events' });
         const memberLink = screen.getByRole('link', { name: 'Members' });
-        const cryptoLink = screen.getByRole('link', { name: 'Crypto' });
+        // TODO: Uncomment when crypto is added
+        // const cryptoLink = screen.getByRole('link', { name: 'Crypto' });
         const statusLink = screen.getByRole('link', { name: 'Status' });
 
         expect(homeLink).toBeInTheDocument();
         expect(eventLink).toBeInTheDocument();
         expect(memberLink).toBeInTheDocument();
-        expect(cryptoLink).toBeInTheDocument();
+        // TODO: Uncomment when crypto is added
+        // expect(cryptoLink).toBeInTheDocument();
         expect(statusLink).toBeInTheDocument();
     });
 
@@ -56,7 +58,8 @@ describe('Navbar', () => {
         const welcomelink = screen.getByRole('link', { name: 'Welcome' });
         const eventLink = screen.getByRole('link', { name: 'Events' });
         const memberLink = screen.getByRole('link', { name: 'Members' });
-        const cryptoLink = screen.getByRole('link', { name: 'Crypto' });
+        // TODO: Uncomment when crypto is added
+        // const cryptoLink = screen.getByRole('link', { name: 'Crypto' });
         const statusLink = screen.getByRole('link', { name: 'Status' });
 
         expect(welcomelink).toHaveAttribute(
@@ -71,10 +74,11 @@ describe('Navbar', () => {
             'href',
             'https://members.realdevsquad.com'
         );
-        expect(cryptoLink).toHaveAttribute(
-            'href',
-            'https://crypto.realdevsquad.com'
-        );
+        // TODO: Uncomment when crypto is added
+        // expect(cryptoLink).toHaveAttribute(
+        //     'href',
+        //     'https://crypto.realdevsquad.com'
+        // );
         expect(statusLink).toHaveAttribute(
             'href',
             'https://status.realdevsquad.com'

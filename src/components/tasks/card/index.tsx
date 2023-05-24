@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-import { useAppContext } from '@/context';
+
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
@@ -27,6 +27,7 @@ import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
+import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
@@ -62,19 +63,16 @@ const Card: FC<Props> = ({
 
     const [showEditButton, setShowEditButton] = useState(false);
     const [keyLongPressed] = useKeyLongPressed();
+
     // TODO: the below state should be removed when mutation for updating tasks is implemented
     const [loading, setLoading] = useState<boolean>(false);
 
-    const {
-        data: taskTagLevel,
-        isError,
-        isLoading,
-    } = useGetTaskTagsQuery({
+    const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
-    const [deleteTaskTagLevel, result] = useDeleteTaskTagLevelMutation();
+    const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
 
-    const { actions, state } = useAppContext();
+    const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
     const isNewCardEnabled = !!query.dev;
@@ -228,10 +226,6 @@ const Card: FC<Props> = ({
         );
     }
 
-    const onEditEnabled = () => {
-        actions.onEditRoute();
-    };
-
     const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
     const hasTaskAssignee = () => cardDetails.assignee ?? false;
     const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
@@ -311,10 +305,10 @@ const Card: FC<Props> = ({
         <div className={classNames.editButton} data-testid="edit-button">
             <Image
                 src="/pencil.webp"
-                alt="edit"
+                alt="pencil icon to represent edit button"
                 width={iconWidth}
                 height={iconHeight}
-                onClick={onEditEnabled}
+                onClick={onEditRoute}
                 tabIndex={0}
             />
         </div>

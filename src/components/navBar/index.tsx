@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import useAuthenticated from '@/hooks/useAuthenticated';
 import Image from 'next/image';
 import {
     LOGIN_URL,
@@ -66,9 +65,10 @@ const NavBar = () => {
                     <li>
                         <a href={MEMBERS_URL}>Members</a>
                     </li>
-                    <li>
+                    {/* TODO: Uncomment when crypto page is ready */}
+                    {/* <li>
                         <a href={CRYPTO_URL}>Crypto</a>
-                    </li>
+                    </li> */}
                     <li>
                         <a href={STATUS_URL} className={styles.active}>
                             Status
