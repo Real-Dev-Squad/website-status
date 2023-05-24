@@ -38,7 +38,6 @@ describe('useGetUserQuery', () => {
         expect(nextResponse.data).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
-        console.log(nextResponse.data);
         expect(nextResponse.data).toBeDefined();
     });
 });

@@ -1,0 +1,82 @@
+$base-unit: 4px;
+$base-font-size: 0.3rem;
+$color-blue: #041187;
+$color-red: #e30062;
+$color-green: #85da6b;
+$color-disabled: #e5e7eb;
+$color-white: #fff;
+$color-black: #000;
+$diff-margin: $base-unit * 15;
+$similar-margin: $base-unit * 8;
+$section-padding-top-bottom: $base-unit * 30;
+$section-padding-left-right: $base-unit * 25;
+
+.header {
+    margin: $diff-margin auto;
+    background-color: $color-blue;
+    color: $color-white;
+    padding-top: $section-padding-top-bottom;
+    padding-bottom: $section-padding-top-bottom;
+    padding-left: $section-padding-left-right;
+    width: 95%;
+    border: 1px solid $color-red;
+    font-size: $base-unit * 4;
+}
+
+.mark {
+    color: $color-red;
+    text-decoration: underline;
+}
+
+.container {
+    margin: $diff-margin auto;
+    padding: 0 $section-padding-left-right;
+}
+
+.formHeading {
+    color: $color-blue;
+    margin: $diff-margin auto;
+    padding: 0 $section-padding-left-right;
+}
+
+.date {
+    opacity: 50%;
+    margin: $diff-margin auto;
+}
+
+.inputComponent {
+    margin: $diff-margin auto;
+}
+
+.label {
+    font-size: $base-font-size * 5;
+    display: block;
+    margin-bottom: $similar-margin;
+}
+
+.input {
+    width: 90%;
+    display: block;
+    resize: none;
+    padding: $base-unit * 2;
+    border-radius: $base-unit * 2;
+}
+
+.buttonEnabled {
+    background-color: $color-blue;
+    color: $color-white;
+    padding: $base-unit * 4 $base-unit * 8;
+    border-radius: $base-unit * 2;
+    margin-bottom: $diff-margin;
+    font-size: $base-font-size * 4;
+}
+
+.buttonDisabled {
+    cursor: not-allowed;
+    background-color: $color-disabled;
+    color: $color-black;
+    padding: $base-unit * 4 $base-unit * 8;
+    border-radius: $base-unit * 2;
+    margin-bottom: $diff-margin;
+    font-size: $base-font-size * 4;
+}

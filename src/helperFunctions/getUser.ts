@@ -1,4 +1,4 @@
-import { USER_SELF } from '@/components/constants/url';
+import { USER_SELF } from '@/constants/url';
 import fetch from '@/helperFunctions/fetch';
 
 const userData = async () => {

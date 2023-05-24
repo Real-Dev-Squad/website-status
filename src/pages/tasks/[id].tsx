@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import TaskDetails from '@/components/taskDetails';
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 import PageNotFound from '@/pages/404';
 const TaskDetailsPage = () => {
     const router = useRouter();

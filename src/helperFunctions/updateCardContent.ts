@@ -1,7 +1,7 @@
 import task from '@/interfaces/task.type';
 import { ToastTypes, toast } from './toast';
 import fetch from './fetch';
-import { TASKS_URL } from '@/components/constants/url';
+import { TASKS_URL } from '@/constants/url';
 
 const { SUCCESS, ERROR } = ToastTypes;
 

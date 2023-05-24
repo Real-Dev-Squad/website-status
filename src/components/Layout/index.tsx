@@ -49,12 +49,13 @@ const Layout: FC<Props> = ({ children }) => {
                         '/mine',
                         router.pathname === '/mine'
                     )}
-                    |
+                    {/* TODO: Uncomment when DS(Chanllenges) is ready */}
+                    {/* |
                     {navBarContent(
                         'DS',
                         '/challenges',
                         router.pathname === '/challenges'
-                    )}
+                    )} */}
                     |
                     {navBarContent(
                         'Open PRs',

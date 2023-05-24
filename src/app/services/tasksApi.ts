@@ -1,11 +1,12 @@
 import task from '@/interfaces/task.type';
 import { api } from './api';
+import { MINE_TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAllTasks: builder.query<task[], void>({
+        getAllTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => '/tasks',
             providesTags: ['Tasks'],
             transformResponse: (response: TasksQueryResponse) => {
@@ -14,9 +15,9 @@ export const tasksApi = api.injectEndpoints({
                 );
             },
         }),
-        getMineTasks: builder.query<TasksQueryResponse, void>({
-            query: () => '/tasks/mine',
-            providesTags: ['Tasks'],
+        getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
+            query: () => MINE_TASKS_URL,
+            providesTags: ['Mine_Tasks'],
         }),
     }),
 });

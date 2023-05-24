@@ -4,7 +4,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
-import { TASKS_URL } from '../constants/url';
+import { TASKS_URL } from '../../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {

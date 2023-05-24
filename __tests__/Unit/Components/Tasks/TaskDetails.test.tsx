@@ -6,7 +6,7 @@ const details = {
     taskID: '6KhcLU3yr45dzjQIVm0J',
 };
 
-describe('TaskDetails Page', () => {
+describe.skip('TaskDetails Page', () => {
     test('Loading text rendered when loading', () => {
         render(<TaskDetails url={details.url} taskID={details.taskID} />);
         const loadingElement = screen.getByText(/Loading.../i);

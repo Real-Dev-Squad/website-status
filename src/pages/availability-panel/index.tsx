@@ -6,9 +6,9 @@ import classNames from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
 import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
-import { AVAILABLE } from '@/components/constants/task-status';
-import { FEATURE } from '@/components/constants/task-type';
-import { BASE_URL } from '@/components/constants/url';
+import { AVAILABLE } from '@/constants/task-status';
+import { FEATURE } from '@/constants/task-type';
+import { BASE_URL } from '@/constants/url';
 
 const AvailabilityPanel: FC = () => {
     const [idleMembersList, setIdleMembersList] = useState<string[]>([]);

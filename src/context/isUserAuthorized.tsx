@@ -1,16 +1,6 @@
-import {
-    useEffect,
-    useState,
-    createContext,
-    FC,
-    Children,
-    ReactNode,
-} from 'react';
+import { useEffect, useState, createContext, FC, ReactNode } from 'react';
 import fetch from '@/helperFunctions/fetch';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { USER_SELF } from '@/components/constants/url';
-
-const { ERROR } = ToastTypes;
+import { USER_SELF } from '@/constants/url';
 export const isUserAuthorizedContext = createContext<boolean>(false);
 
 interface Props {

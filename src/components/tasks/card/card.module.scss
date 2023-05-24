@@ -34,15 +34,23 @@ $seeMoreTasksShadow: #595959cc;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
+    width: 50rem;
+
+    @media (max-width: 48rem) {
+        width: 100%;
+    }
 }
 .card_updated {
     border-radius: 10px;
 }
 .cardItems {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: 48rem) {
+        flex-wrap: wrap;
+    }
 }
 .card_updated .cardItems:not(:nth-child(1)) {
     margin-top: 0.8rem;
@@ -54,12 +62,16 @@ $seeMoreTasksShadow: #595959cc;
 
 .cardTitle {
     font-size: 1.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-weight: 500;
     color: #041187;
-}
 
-.cardTitle:hover {
-    cursor: pointer;
+    @media (max-width: 48rem) {
+        width: 100%;
+        white-space: normal;
+    }
 }
 
 .cardSpecialFont {
@@ -76,11 +88,15 @@ $seeMoreTasksShadow: #595959cc;
     display: flex;
     align-items: center;
     gap: 1rem;
+    margin-top: 0.8rem;
+}
+.completionDate {
+    padding-left: 0.5rem;
 }
 
 .contributorImage {
     img {
-        border-radius: 40%;
+        border-radius: 50%;
     }
 }
 

@@ -1,13 +1,13 @@
 import { FC, useState, useEffect, ChangeEvent } from 'react';
-import IssueList from '../components/issues/IssueList';
+import IssueList from '../../components/issues/IssueList';
 import classNames from '@/styles/issues.module.scss';
 import Layout from '@/components/Layout';
 import Head from '@/components/head';
 import {
     ISSUES_FETCH_ERROR_MESSAGE,
     NO_ISSUES_FOUND_MESSAGE,
-} from '@/components/constants/messages';
-import { ISSUES_URL } from '@/components/constants/url';
+} from '@/constants/messages';
+import { ISSUES_URL } from '@/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 
@@ -25,7 +25,13 @@ const SearchField = ({
     loading,
 }: SearchFieldProps) => {
     return (
-        <div className={classNames.searchFieldContainer}>
+        <form
+            className={classNames.searchFieldContainer}
+            onSubmit={(e) => {
+                e.preventDefault();
+                onSearchTextSubmitted();
+            }}
+        >
             <input
                 placeholder="Enter query string to search issues"
                 value={searchText}
@@ -39,7 +45,7 @@ const SearchField = ({
             >
                 Submit
             </button>
-        </div>
+        </form>
     );
 };
 
