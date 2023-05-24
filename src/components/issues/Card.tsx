@@ -76,7 +76,11 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             </div>
             <p className={styles.card__issue_created__by}>
                 Opened on {created} by
-                <a href={issue.user.html_url} target="_blank" rel="noreferrer">
+                <a
+                    href={issue.user.html_url ?? '#'}
+                    target="_blank"
+                    rel="noreferrer"
+                >
                     {issue.user.login}
                 </a>
             </p>
@@ -90,7 +94,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 <p className={styles.card__assignee}>
                     Assigned to:
                     <a
-                        href={issue.assignee?.html_url}
+                        href={issue.assignee?.html_url ?? '#'}
                         target="_blank"
                         rel="noreferrer"
                     >
