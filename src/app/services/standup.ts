@@ -3,7 +3,7 @@ import { api } from './api';
 
 export const standupApi = api.injectEndpoints({
     endpoints: (build) => ({
-        addStandUp: build.mutation<void, standupUpdateType>({
+        addStandup: build.mutation<void, standupUpdateType>({
             query: (standupUpdate) => ({
                 url: '/progress',
                 method: 'POST',

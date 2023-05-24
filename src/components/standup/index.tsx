@@ -52,13 +52,12 @@ const StandUpContainer: FC = () => {
             planned: '',
             blockers: '',
         });
-        console.log(standupUpdate);
     };
 
     return (
         <>
             <section className="container">
-                <section className={styles.standupContainer}>
+                <div className={styles.standupContainer}>
                     <div className={styles.standupBanner}>
                         <p>
                             You have
@@ -117,7 +116,7 @@ const StandUpContainer: FC = () => {
                             </button>
                         </form>
                     </div>
-                </section>
+                </div>
             </section>
         </>
     );
