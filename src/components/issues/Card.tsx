@@ -63,7 +63,6 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     return (
         <div className={styles.card}>
             <div className={styles.card__top__details__button}>
-                {/* <h2 className={styles.card__title}>{issue.title}</h2> */}
                 <h2 className={styles.card__title}>
                     <MarkdownRenderer content={issue.title} />
                 </h2>
@@ -76,15 +75,29 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 </button>
             </div>
             <p className={styles.card__issue_created__by}>
-                Opened on {created} by {issue.user.login}
+                Opened on {created} by
+                <a href={issue.user.html_url} target="_blank" rel="noreferrer">
+                    {issue.user.login}
+                </a>
             </p>
             <div className="card__body">
                 <MarkdownRenderer
                     className={styles.card__body}
-                    content={issue.body ?? ''}
+                    content={issue.body ?? 'No description provided.'}
                 />
             </div>
-            {issue.assignee && 'Assigned to ' + issue.assignee.login}
+            {issue.assignee && (
+                <p className={styles.card__assignee}>
+                    Assigned to:
+                    <a
+                        href={issue.assignee?.html_url}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {issue.assignee?.login}
+                    </a>
+                </p>
+            )}
             <p className={styles.card__link}>
                 Issue Link :{' '}
                 <a href={issue.html_url} target="_blank" rel="noreferrer">
