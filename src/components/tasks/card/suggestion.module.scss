@@ -1,0 +1,45 @@
+.suggestions {
+    border: 1px solid #999;
+    list-style: none;
+    margin-top: 0;
+    max-height: 10rem;
+    padding-left: 0;
+    max-width: 10rem;
+    min-width: 7rem;
+    overflow: auto;
+    background-color: white;
+    position: absolute;
+    top: 20px;
+    left: -120px;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.suggestions::-webkit-scrollbar {
+    display: none;
+}
+
+.suggestions {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.suggestions li {
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.suggestions li img {
+    margin-left: auto;
+}
+
+.no-suggestions {
+    color: #ef0b0b;
+
+    position: absolute;
+    top: 20px;
+    left: -120px;
+    z-index: 100;
+    min-width: 5rem;
+}

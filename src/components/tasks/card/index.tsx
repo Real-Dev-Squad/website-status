@@ -31,6 +31,7 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import SuggestionBox from './SuggestionBox';
 
 type Props = {
     content: task;
@@ -62,7 +63,10 @@ const Card: FC<Props> = ({
     const isUserAuthorized = useContext(isUserAuthorizedContext);
 
     const [showEditButton, setShowEditButton] = useState(false);
+
     const [keyLongPressed] = useKeyLongPressed();
+
+    const [assigneeName, setAssigneeName] = useState('');
 
     // TODO: the below state should be removed when mutation for updating tasks is implemented
     const [loading, setLoading] = useState<boolean>(false);
@@ -84,6 +88,8 @@ const Card: FC<Props> = ({
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
+
+    const [showSuggestion, setShowSuggestion] = useState(false);
 
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -369,6 +375,23 @@ const Card: FC<Props> = ({
         );
     };
 
+    const handleAssigneeName = (e: any) => {
+        setAssigneeName(e.target.value);
+        setShowSuggestion(true);
+    };
+
+    const handleClick = (userName: string) => {
+        setAssigneeName(userName);
+        setShowSuggestion((prev) => !prev);
+    };
+
+    const mockUsernames = [
+        'fakhruddin-kw',
+        'riitk',
+        'bhavika-t',
+        'amitprakash',
+    ];
+
     // show redesign only on dev
     if (isNewCardDesignEnabled)
         return (
@@ -442,15 +465,26 @@ const Card: FC<Props> = ({
                                 height={30}
                             />
                         </span>
-                        <span
+                        <input
                             className={classNames.cardStrongFont}
                             contentEditable={shouldEdit}
-                            onKeyPress={(e) => handleChange(e, 'assignee')}
+                            onKeyPress={(e) => {
+                                handleChange(e, 'assignee');
+                            }}
+                            onChange={handleAssigneeName}
+                            value={assigneeName}
                             role="button"
                             tabIndex={0}
-                        >
-                            {cardDetails.assignee}
-                        </span>
+                        />
+
+                        {showSuggestion && (
+                            <SuggestionBox
+                                assigneeName={assigneeName}
+                                githubUsername={mockUsernames}
+                                showSuggestion={showSuggestion}
+                                onClickName={handleClick}
+                            />
+                        )}
                     </div>
                 )}
 
