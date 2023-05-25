@@ -385,13 +385,6 @@ const Card: FC<Props> = ({
         setShowSuggestion((prev) => !prev);
     };
 
-    const mockUsernames = [
-        'fakhruddin-kw',
-        'riitk',
-        'bhavika-t',
-        'amitprakash',
-    ];
-
     // show redesign only on dev
     if (isNewCardDesignEnabled)
         return (
@@ -480,7 +473,6 @@ const Card: FC<Props> = ({
                         {showSuggestion && (
                             <SuggestionBox
                                 assigneeName={assigneeName}
-                                githubUsername={mockUsernames}
                                 showSuggestion={showSuggestion}
                                 onClickName={handleClick}
                             />

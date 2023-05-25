@@ -4,7 +4,7 @@
     margin-top: 0;
     max-height: 10rem;
     padding-left: 0;
-    max-width: 10rem;
+    max-width: 15rem;
     min-width: 7rem;
     overflow: auto;
     background-color: white;
@@ -28,6 +28,7 @@
     padding: 0.5rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .suggestions li img {
@@ -35,7 +36,17 @@
 }
 
 .no-suggestions {
-    color: #ef0b0b;
+    color: #666464;
+
+    position: absolute;
+    top: 20px;
+    left: -120px;
+    z-index: 100;
+    min-width: 5rem;
+}
+
+.loading {
+    color: #666464;
 
     position: absolute;
     top: 20px;
