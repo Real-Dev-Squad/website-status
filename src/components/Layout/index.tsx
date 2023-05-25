@@ -41,6 +41,7 @@ const Layout: FC<Props> = ({ children }) => {
                                 element.refURL,
                                 router.pathname === element.pathName
                             )}
+                            {element.pipeSymbol}
                         </React.Fragment>
                     ))}
                     {dev && (
