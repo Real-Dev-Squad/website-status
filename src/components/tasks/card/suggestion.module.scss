@@ -4,7 +4,7 @@
     margin-top: 0;
     max-height: 10rem;
     padding-left: 0;
-    max-width: 15rem;
+    max-width: 12rem;
     min-width: 7rem;
     overflow: auto;
     background-color: white;
@@ -29,10 +29,20 @@
     display: flex;
     align-items: center;
     cursor: pointer;
+    transition: linear background-color 0.3s;
+    opacity: 85%;
+    border-bottom: 1px solid black;
+}
+
+.suggestions li:hover {
+    background-color: #bcb7b7;
+    opacity: 100%;
 }
 
 .suggestions li img {
     margin-left: auto;
+
+    border-radius: 50%;
 }
 
 .no-suggestions {
