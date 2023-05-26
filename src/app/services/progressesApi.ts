@@ -6,10 +6,10 @@ export const progressesApi = api.injectEndpoints({
             query: (payload) => ({
                 url: '/progresses',
                 method: 'POST',
-                body: payload,
+                body: JSON.stringify(payload),
                 headers: {
                     credentials: 'include',
-                    'Content-type': 'application/json; charset=UTF-8',
+                    'Content-type': 'application/json',
                 },
             }),
         }),
