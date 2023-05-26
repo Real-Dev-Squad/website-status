@@ -6,7 +6,6 @@ export type standupUpdateType = {
 };
 
 export type InputProps = {
-    // id: string;
     placeholder: string;
     name: string;
     value: string;

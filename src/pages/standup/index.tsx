@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 
@@ -8,7 +8,7 @@ import StandUpContainer from '@/components/standup';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 
-const StandUp: FC = () => {
+const StandUp: FC = memo(function StandUp() {
     const { isLoggedIn, isLoading } = useAuthenticated();
 
     const { isLoading: isAuthenticating } = useGetUserQuery(skipToken);
@@ -36,6 +36,6 @@ const StandUp: FC = () => {
             {handleConditionalRendering()}
         </Layout>
     );
-};
+});
 
 export default StandUp;

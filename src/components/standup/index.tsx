@@ -28,7 +28,7 @@ const StandUpContainer: FC = () => {
             [event.target.name]: event.target.value,
         }));
     };
-    const isVaidate = () => {
+    const isValidate = () => {
         return (
             standupUpdate.completed !== '' &&
             standupUpdate.planned !== '' &&
@@ -36,13 +36,9 @@ const StandUpContainer: FC = () => {
         );
     };
     useEffect(() => {
-        const isValid = isVaidate();
+        const isValid = isValidate();
         setButtonDisable(!isValid);
-    }, [
-        standupUpdate.completed,
-        standupUpdate.planned,
-        standupUpdate.blockers,
-    ]);
+    }, [standupUpdate.completed, standupUpdate.planned]);
 
     const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -111,6 +107,7 @@ const StandUpContainer: FC = () => {
                             <button
                                 className={`${styles.submitButton} ${buttonStyleClass}`}
                                 disabled={!buttonDisable}
+                                type="submit"
                             >
                                 Submit
                             </button>
