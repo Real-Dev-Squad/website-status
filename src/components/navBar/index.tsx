@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import {
     LOGIN_URL,
     DEFAULT_AVATAR,
@@ -19,7 +20,7 @@ import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
 
 const NavBar = () => {
-    const isLoggedIn = true;
+    const isLoggedIn = useContext(isUserAuthorizedContext);
     const { data: userData } = useGetUserQuery();
     // const { userData, isLoggedIn } = useAuthenticated();
     const [toggleDropdown, setToggleDropdown] = useState(false);
