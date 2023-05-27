@@ -6,7 +6,7 @@ export const taskDetailsApi = api.injectEndpoints({
     endpoints: (build) => ({
         getTaskDetails: build.query<taskDetailsDataType, string>({
             query: (taskId): string => `${TASKS_URL}/${taskId}/details`,
-            providesTags: ['TaskDetails'],
+            providesTags: ['Task_Details'],
         }),
 
         updateTaskDetails: build.mutation({
@@ -20,7 +20,7 @@ export const taskDetailsApi = api.injectEndpoints({
                     },
                 };
             },
-            invalidatesTags: ['TaskDetails'],
+            invalidatesTags: ['Task_Details'],
         }),
     }),
 });

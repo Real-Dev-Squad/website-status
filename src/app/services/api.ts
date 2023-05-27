@@ -16,7 +16,7 @@ export const api = createApi({
         'Users',
         'Status',
         'Tasks',
-        'TaskDetails',
+        'Task_Details',
         'Mine_Tasks',
         'TaskTag',
         'User',
