@@ -9,7 +9,7 @@ import { TASKS_URL } from '../../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
-    const created = new Date(issue.created_at).toDateString();
+    const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -75,7 +75,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 </button>
             </div>
             <p className={styles.card__issue_created__by}>
-                Opened on {created} by
+                Opened on {date} by
                 <a
                     href={issue.user.html_url ?? '#'}
                     target="_blank"
