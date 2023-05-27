@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sections';
-import classes from '@/components/tasks/card/suggestion.module.scss';
+import classNames from '@/components/tasks/card/suggestion.module.scss';
 import fetch from '@/helperFunctions/fetch';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
@@ -33,10 +33,8 @@ const SuggestionBox: FC<Props> = ({
         usersData.map((data: userDataType) => {
             suggestedUsers.push({
                 github_id: data.github_id,
-                profileImageUrl: data.picture
+                profileImageUrl: data?.picture?.url
                     ? data.picture.url
-                        ? data.picture.url
-                        : placeholderImageURL
                     : placeholderImageURL,
             });
         });
@@ -65,7 +63,7 @@ const SuggestionBox: FC<Props> = ({
     if (showSuggestion && assigneeName) {
         if (suggestions.length) {
             suggestionList = (
-                <ul className={classes['suggestions']}>
+                <ul className={classNames['suggestions']}>
                     {suggestions.map((suggestion: GithubInfo) => {
                         return (
                             <li
@@ -85,7 +83,7 @@ const SuggestionBox: FC<Props> = ({
             );
         } else {
             suggestionList = (
-                <span className={classes['no-suggestions']}>
+                <span className={classNames['no-suggestions']}>
                     User not found!
                 </span>
             );
@@ -94,7 +92,9 @@ const SuggestionBox: FC<Props> = ({
 
     return (
         <div style={{ position: 'relative' }}>
-            {loading && <span className={classes['loading']}>Loading..</span>}
+            {loading && (
+                <span className={classNames['loading']}>Loading..</span>
+            )}
             {!loading && suggestionList}
         </div>
     );
