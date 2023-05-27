@@ -12,3 +12,20 @@ export type InputProps = {
     dataTestId: string;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+
+export type userDetails = {
+    data: [
+        {
+            blockers: string;
+            completed: string;
+            createdAt: number;
+            date: number;
+            id: string;
+            planned: string;
+            type: string;
+            userId: string;
+        }
+    ];
+    message: string;
+    count: number;
+};

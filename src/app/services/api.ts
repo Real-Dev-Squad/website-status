@@ -22,6 +22,7 @@ export const api = createApi({
         'Levels',
         'Standup',
         'Mine_Tasks',
+        'MissedUpdate',
     ],
     /**
      * This api has endpoints injected in adjacent files,

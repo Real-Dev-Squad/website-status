@@ -1,10 +1,17 @@
 import { FC, useState, useEffect } from 'react';
 
+import styles from '@/components/standup/standupContainer.module.scss';
+
+import {
+    useAddStandupMutation,
+    useUserStandupDetailsQuery,
+} from '@/app/services/standup';
+import { useGetUserQuery } from '@/app/services/userApi';
+
 import FormInputComponent from './FormInputComponent';
 import { standupUpdateType } from '@/interfaces/standup.type';
 import { getYesterdayDate } from '@/utils/getYesterdayDate';
-
-import styles from '@/components/standup/standupContainer.module.scss';
+import { getTotalMissedUpdate } from '@/utils/getTotalMissedUpdate';
 
 const StandUpContainer: FC = () => {
     const [standupUpdate, setStandupUpdate] = useState<standupUpdateType>({
@@ -15,6 +22,11 @@ const StandUpContainer: FC = () => {
     });
 
     const [buttonDisable, setButtonDisable] = useState<boolean>(true);
+    const [addStandup] = useAddStandupMutation();
+    const { data: user } = useGetUserQuery();
+    const { data: userStandupdata } = useUserStandupDetailsQuery(user?.id);
+    const standupDates = userStandupdata?.data?.map((element) => element.date);
+    const totalMissedUpdate = getTotalMissedUpdate(standupDates || []);
 
     const yesterdayDate = getYesterdayDate();
 
@@ -40,7 +52,9 @@ const StandUpContainer: FC = () => {
         setButtonDisable(!isValid);
     }, [standupUpdate.completed, standupUpdate.planned]);
 
-    const handleFormSubmission = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleFormSubmission = async (
+        event: React.FormEvent<HTMLFormElement>
+    ) => {
         event.preventDefault();
         setStandupUpdate({
             type: 'user',
@@ -48,6 +62,7 @@ const StandUpContainer: FC = () => {
             planned: '',
             blockers: '',
         });
+        await addStandup(standupUpdate);
     };
 
     return (
@@ -57,7 +72,9 @@ const StandUpContainer: FC = () => {
                     <div className={styles.standupBanner}>
                         <p>
                             You have
-                            <span data-testid="missed-updates">2 missed</span>
+                            <span data-testid="missed-updates">
+                                {totalMissedUpdate} missed
+                            </span>
                             Standup updates this week
                         </p>
                         <p>Let&apos;s try to avoid having zero days </p>
