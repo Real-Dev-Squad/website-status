@@ -357,7 +357,7 @@ const Card: FC<Props> = ({
                 <span
                     className={classNames.cardSpecialFont}
                     contentEditable={shouldEdit}
-                    onKeyPress={(e) => handleChange(e, 'startedOn')}
+                    onKeyDown={(e) => handleChange(e, 'startedOn')}
                     role="button"
                     tabIndex={0}
                 >
@@ -408,7 +408,7 @@ const Card: FC<Props> = ({
                         <span
                             className={classNames.cardTitle}
                             contentEditable={shouldEdit}
-                            onKeyPress={(e) => handleChange(e, 'title')}
+                            onKeyDown={(e) => handleChange(e, 'title')}
                             role="button"
                             tabIndex={0}
                         >
@@ -434,7 +434,7 @@ const Card: FC<Props> = ({
                     <span
                         className={classNames.cardSpecialFont}
                         contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, 'startedOn')}
+                        onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
                     >
@@ -461,7 +461,7 @@ const Card: FC<Props> = ({
                         <input
                             className={classNames.cardStrongFont}
                             contentEditable={shouldEdit}
-                            onKeyPress={(e) => {
+                            onKeyDown={(e) => {
                                 handleChange(e, 'assignee');
                             }}
                             onChange={handleAssigneeName}
@@ -523,7 +523,7 @@ const Card: FC<Props> = ({
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, 'title')}
+                        onKeyDown={(e) => handleChange(e, 'title')}
                         role="button"
                         tabIndex={0}
                     >
@@ -535,7 +535,7 @@ const Card: FC<Props> = ({
                     <span
                         className={classNames.cardStatusFont}
                         contentEditable={shouldEdit}
-                        onKeyPress={(e) => handleChange(e, 'status')}
+                        onKeyDown={(e) => handleChange(e, 'status')}
                         style={{ color: statusFontColor }}
                         role="button"
                         tabIndex={0}
@@ -585,7 +585,7 @@ const Card: FC<Props> = ({
                 <span
                     className={classNames.cardSpecialFont}
                     contentEditable={shouldEdit}
-                    onKeyPress={(e) => handleChange(e, 'startedOn')}
+                    onKeyDown={(e) => handleChange(e, 'startedOn')}
                     role="button"
                     tabIndex={0}
                 >
@@ -603,7 +603,7 @@ const Card: FC<Props> = ({
                             <span
                                 className={classNames.cardStrongFont}
                                 contentEditable={shouldEdit}
-                                onKeyPress={(e) => handleChange(e, 'assignee')}
+                                onKeyDown={(e) => handleChange(e, 'assignee')}
                                 role="button"
                                 tabIndex={0}
                             >
