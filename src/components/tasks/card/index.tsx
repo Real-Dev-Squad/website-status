@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useEffect, useContext, ChangeEventHandler } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 
@@ -375,7 +375,7 @@ const Card: FC<Props> = ({
         );
     };
 
-    const handleAssigneeName = (e: any) => {
+    const handleAssigneeName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         setShowSuggestion(true);
     };

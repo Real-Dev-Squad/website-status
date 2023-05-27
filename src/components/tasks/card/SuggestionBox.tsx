@@ -1,18 +1,14 @@
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sections';
 import classes from '@/components/tasks/card/suggestion.module.scss';
 import fetch from '@/helperFunctions/fetch';
 import { userDataType } from '@/interfaces/user.type';
+import { GithubInfo } from '@/interfaces/suggestionBox.type';
 
 type Props = {
     assigneeName: string;
     showSuggestion: boolean;
     onClickName: (userName: string) => void;
-};
-
-type GithubInfo = {
-    github_id: string;
-    url: string;
 };
 
 const SuggestionBox: FC<Props> = ({
@@ -23,8 +19,8 @@ const SuggestionBox: FC<Props> = ({
     const [loading, setLoading] = useState<boolean>(false);
     const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
 
-    const clickHandler = (e: any) => {
-        onClickName(e.target.innerText);
+    const clickHandler = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+        onClickName(e.currentTarget.innerText);
     };
 
     const fetchUsers = async () => {
@@ -37,7 +33,7 @@ const SuggestionBox: FC<Props> = ({
         usersData.map((data: userDataType) => {
             suggestedUsers.push({
                 github_id: data.github_id,
-                url: data.picture
+                profileImageUrl: data.picture
                     ? data.picture.url
                         ? data.picture.url
                         : placeholderImageURL
@@ -50,7 +46,7 @@ const SuggestionBox: FC<Props> = ({
     };
 
     useEffect(() => {
-        let timerId: any;
+        let timerId: NodeJS.Timeout;
         if (assigneeName) {
             timerId = setTimeout(() => {
                 fetchUsers();
@@ -78,7 +74,7 @@ const SuggestionBox: FC<Props> = ({
                             >
                                 <span>{suggestion.github_id}</span>
                                 <img
-                                    src={suggestion.url}
+                                    src={suggestion.profileImageUrl}
                                     width={20}
                                     height={20}
                                 />
