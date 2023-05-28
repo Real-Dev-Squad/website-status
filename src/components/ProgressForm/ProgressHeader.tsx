@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 function ProgressHeader() {
     const router = useRouter();
     const id = router.query.id;
-    const { data: date } = useGetLatestProgressQuery(`taskId=${id}`);
+    const { data } = useGetLatestProgressQuery(`taskId=${id}`);
     const currentDate = new Date();
-    const lastUpdateDate = new Date(date as number);
+    const lastUpdateDate = new Date(data?.date as number);
     return (
         <header className={styles.header}>
             <p>
