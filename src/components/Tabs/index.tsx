@@ -17,7 +17,7 @@ const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
                     activeTab === tab ? styles.active : ''
                 }`}
             >
-                {tab.split('_').join('')}
+                {tab.split('_').join(' ')}
             </button>
         ))}
     </>
