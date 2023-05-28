@@ -30,3 +30,13 @@ interface question {
 export interface formProps {
     questions: Array<question>;
 }
+
+export interface fetchedProgress {
+    id: string;
+    date: number;
+}
+
+export interface taskProgressResponse {
+    message: string;
+    data: Array<fetchedProgress>;
+}
