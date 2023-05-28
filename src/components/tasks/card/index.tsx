@@ -31,6 +31,7 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 
 type Props = {
     content: task;
@@ -386,7 +387,7 @@ const Card: FC<Props> = ({
                 <div className={classNames.cardItems}>
                     <ConditionalLinkWrapper
                         redirectingPath="/tasks/[id]"
-                        shouldDisplayLink={isNewCardEnabled}
+                        shouldDisplayLink={isTaskDetailsPageLinkEnabled}
                         taskId={cardDetails.id}
                     >
                         <span
@@ -493,7 +494,9 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <ConditionalLinkWrapper shouldDisplayLink={isNewCardEnabled}>
+                <ConditionalLinkWrapper
+                    shouldDisplayLink={isTaskDetailsPageLinkEnabled}
+                >
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
