@@ -44,6 +44,7 @@ const SuggestionBox: FC<Props> = ({
             setSuggestions(suggestedUsers);
             setLoading(false);
         } catch (error: any) {
+            setLoading(false);
             if ('response' in error) {
                 toast(ERROR, error.response.data.message);
                 return;
@@ -151,7 +152,7 @@ const SuggestionBox: FC<Props> = ({
                 <UserNotFound />
             </div>
         );
-    if (suggestions.length)
+    if (suggestions.length && assigneeName)
         return (
             <div style={{ position: 'relative' }}>
                 <SuggestionList />
