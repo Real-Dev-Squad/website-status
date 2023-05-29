@@ -16,10 +16,12 @@ describe('Progress page test', function () {
         );
         const textBoxes = screen.getAllByRole('textbox');
         expect(textBoxes).toHaveLength(3);
-        const buttons = screen.getAllByRole('button') as Array<HTMLButtonElement>;
+        const buttons = screen.getAllByRole(
+            'button'
+        ) as Array<HTMLButtonElement>;
         buttons.map((button) => {
-          expect(button).toBeInTheDocument();
-          expect(button.type).toBe('submit');
+            expect(button).toBeInTheDocument();
+            expect(button.type).toBe('submit');
         });
     });
 
