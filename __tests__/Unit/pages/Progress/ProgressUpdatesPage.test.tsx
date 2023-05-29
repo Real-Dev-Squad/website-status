@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, getByRole } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 import { store } from '@/app/store';
@@ -16,13 +16,12 @@ describe('Progress page test', function () {
         );
         const textBoxes = screen.getAllByRole('textbox');
         expect(textBoxes).toHaveLength(3);
-        const buttons = screen.getAllByRole(
+        const button = getByRole(
+            screen.getByRole('form') as HTMLFormElement,
             'button'
-        ) as Array<HTMLButtonElement>;
-        buttons.map((button) => {
-            expect(button).toBeInTheDocument();
-            expect(button.type).toBe('submit');
-        });
+        ) as HTMLButtonElement;
+        expect(button).toBeInTheDocument();
+        expect(button.type).toBe('submit');
     });
 
     it('should return 404 if no id is passed', function () {

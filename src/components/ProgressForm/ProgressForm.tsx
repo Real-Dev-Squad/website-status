@@ -62,7 +62,7 @@ const ProgressForm = ({ questions }: formProps) => {
         };
         saveProgress(data)
             .unwrap()
-            .then((res) => {
+            .then(() => {
                 toast(SUCCESS, 'Task Progress saved successfully');
                 setIsLoading(false);
             })
@@ -73,7 +73,7 @@ const ProgressForm = ({ questions }: formProps) => {
     };
 
     return (
-        <form className={styles.form}>
+        <form className={styles.form} role="form">
             {questions.map((question, index) => (
                 <InputWithQuestions
                     key={question.id}
