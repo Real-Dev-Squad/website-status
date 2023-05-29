@@ -3,65 +3,83 @@ import Card from '@/components/issues/Card';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 import { IssueItem } from '@/interfaces/issueItem.type';
 
-const DEFAULT_PROPS: IssueItem = {
-    html_url: 'https://github.com/Real-Dev-Squad/todo-action-items/issues/11',
+const issue_one: IssueItem = {
+    html_url: 'https://github.com/dummy-owner/dummy-repo/issues/11',
     id: 732825067,
-    title: 'Status view to all features being built for our app',
+    title: 'Dummy issue',
     user: {
-        login: 'ankushdharkar',
+        login: 'dummyuser',
         html_url: 'https://github.com/ankushdharkar',
     },
     labels: [],
     state: 'open',
     assignee: {
-        login: 'whyDontI',
-        html_url: 'https://github.com/whyDontI',
+        login: 'dummyassignee',
+        html_url: 'https://github.com/dummyassignee',
     },
     created_at: '2020-10-30T02:08:48Z',
+    body: null,
+};
+const issue_two: IssueItem = {
+    html_url: 'https://github.com/dummy-owner/dummy-repo/issues/11',
+    id: 732825067,
+    title: 'Dummy issue',
+    user: {
+        login: 'dummyuser',
+        html_url: 'https://github.com/ankushdharkar',
+    },
+    labels: [],
+    state: 'open',
+    assignee: {
+        login: 'dummyassignee',
+        html_url: 'https://github.com/dummyassignee',
+    },
+    created_at: '2020-10-30T02:08:48Z',
+    body: 'Dummy issue description',
 };
 
 describe('Issue card', () => {
     test('Should render issue information correctly', () => {
-        const screen = render(<Card issue={DEFAULT_PROPS} />);
+        const screen = render(<Card issue={issue_one} />);
 
-        expect(screen.getByText(DEFAULT_PROPS.title)).toBeInTheDocument();
-        expect(screen.getByText(DEFAULT_PROPS.html_url)).toBeInTheDocument();
+        expect(screen.getByText(issue_one.title)).toBeInTheDocument();
+        expect(screen.getByText(issue_one.html_url)).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('Convert to task');
     });
 
     test('Should render issue created by information correctly', () => {
-        const screen = render(<Card issue={DEFAULT_PROPS} />);
-        const date = new Date(DEFAULT_PROPS.created_at).toDateString();
-        const issueUser = screen.getByText(DEFAULT_PROPS.user.login);
-
+        const screen = render(<Card issue={issue_one} />);
+        const date = new Date(issue_one.created_at).toDateString();
+        const issueUser = screen.getByText(issue_one.user.login);
         expect(screen.getByText(`Opened on ${date} by`)).toBeInTheDocument();
         expect(issueUser).toBeInTheDocument();
-        expect(issueUser).toHaveAttribute('href', DEFAULT_PROPS.user.html_url);
+        expect(issueUser).toHaveAttribute('href', issue_one.user.html_url);
     });
 
     test('Should render the assignee information correctly', () => {
-        const screen = render(<Card issue={DEFAULT_PROPS} />);
-
-        const assignee = screen.getByText(DEFAULT_PROPS.assignee?.login);
-
+        const screen = render(<Card issue={issue_one} />);
+        const assignee = screen.getByText(issue_one.assignee?.login);
         expect(assignee).toBeInTheDocument();
-        expect(assignee).toHaveAttribute(
-            'href',
-            DEFAULT_PROPS.assignee?.html_url
-        );
+        expect(assignee).toHaveAttribute('href', issue_one.assignee?.html_url);
     });
 
     test('Should render the MarkdownRenderer component with the correct content', () => {
         const screen = render(
             <MarkdownRenderer
-                content={DEFAULT_PROPS.body ?? 'No description provided.'}
+                content={issue_one.body ?? 'No description provided.'}
             />
         );
-
         const contentElement = screen.getByText(
-            DEFAULT_PROPS.body ?? 'No description provided.'
+            issue_one.body ?? 'No description provided.'
         );
+        expect(contentElement).toBeInTheDocument();
+    });
 
+    test('Should render the MarkdownRenderer component with the correct content', () => {
+        const screen = render(<Card issue={issue_two} />);
+        const contentElement = screen.getByText(
+            issue_two.body ?? 'No description provided.'
+        );
         expect(contentElement).toBeInTheDocument();
     });
 });
