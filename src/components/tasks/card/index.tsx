@@ -76,7 +76,6 @@ const Card: FC<Props> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
-    const isNewCardEnabled = !!query.dev;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
