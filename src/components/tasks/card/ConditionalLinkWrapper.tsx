@@ -21,7 +21,11 @@ export const ConditionalLinkWrapper: FC<ConditionalLinkWrapperProps> = ({
                     pathname: redirectingPath,
                 }}
                 as={`/tasks/${taskId}`}
-                style={{ textDecoration: 'none' }}
+                style={{
+                    textDecoration: 'none',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                }}
             >
                 {children}
             </Link>
