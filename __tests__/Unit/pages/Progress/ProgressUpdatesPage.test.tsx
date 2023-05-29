@@ -16,9 +16,11 @@ describe('Progress page test', function () {
         );
         const textBoxes = screen.getAllByRole('textbox');
         expect(textBoxes).toHaveLength(3);
-        const button = screen.getByRole('button') as HTMLButtonElement;
-        expect(button).toBeInTheDocument();
-        expect(button.type).toBe('submit');
+        const buttons = screen.getAllByRole('button') as Array<HTMLButtonElement>;
+        buttons.map((button) => {
+          expect(button).toBeInTheDocument();
+          expect(button.type).toBe('submit');
+        });
     });
 
     it('should return 404 if no id is passed', function () {
