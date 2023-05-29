@@ -377,12 +377,13 @@ const Card: FC<Props> = ({
 
     const handleAssigneeName = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
-        setShowSuggestion(true);
+        if (e.target.value) setShowSuggestion(true);
+        else setShowSuggestion(false);
     };
 
     const handleClick = (userName: string) => {
         setAssigneeName(userName);
-        setShowSuggestion((prev) => !prev);
+        setShowSuggestion(false);
     };
 
     // show redesign only on dev
@@ -473,7 +474,6 @@ const Card: FC<Props> = ({
                         {showSuggestion && (
                             <SuggestionBox
                                 assigneeName={assigneeName}
-                                showSuggestion={showSuggestion}
                                 onClickName={handleClick}
                             />
                         )}

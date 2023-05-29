@@ -68,47 +68,6 @@ const SuggestionBox: FC<Props> = ({
         };
     }, [assigneeName]);
 
-    // let suggestionList;
-
-    // if (assigneeName) {
-    //     if (suggestions.length) {
-    //         suggestionList = (
-    //             <ul className={classNames['suggestions']}>
-    //                 {suggestions.map((suggestion: GithubInfo) => {
-    //                     return (
-    //                         <li
-    //                             key={suggestion.github_id}
-    //                             onClick={clickHandler}
-    //                         >
-    //                             <span>{suggestion.github_id}</span>
-    //                             <img
-    //                                 src={suggestion.profileImageUrl}
-    //                                 width={20}
-    //                                 height={20}
-    //                             />
-    //                         </li>
-    //                     );
-    //                 })}
-    //             </ul>
-    //         );
-    //     } else {
-    //         suggestionList = (
-    //             <span className={classNames['no-suggestions']}>
-    //                 User not found!
-    //             </span>
-    //         );
-    //     }
-    // }
-
-    // return (
-    //     <div style={{ position: 'relative' }}>
-    //         {loading && (
-    //             <span className={classNames['loading']}>Loading..</span>
-    //         )}
-    //         {!loading && suggestionList}
-    //     </div>
-    // );
-
     const SuggestionList = () => {
         return (
             <ul className={classNames['suggestions']}>
@@ -152,13 +111,11 @@ const SuggestionBox: FC<Props> = ({
                 <UserNotFound />
             </div>
         );
-    if (suggestions.length && assigneeName)
-        return (
-            <div style={{ position: 'relative' }}>
-                <SuggestionList />
-            </div>
-        );
-    return <></>;
+    return (
+        <div style={{ position: 'relative' }}>
+            <SuggestionList />
+        </div>
+    );
 };
 
 export default SuggestionBox;
