@@ -1,17 +1,22 @@
 import { FC, memo } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
+import { useRouter } from 'next/router';
 
 import { LOGIN_URL } from '@/constants/url';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import StandUpContainer from '@/components/standup';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
+import PageNotFound from '../404';
 
 const StandUp: FC = memo(function StandUp() {
     const { isLoggedIn, isLoading } = useAuthenticated();
 
     const { isLoading: isAuthenticating } = useGetUserQuery(skipToken);
+    const router = useRouter();
+
+    const { dev } = router.query;
 
     const handleConditionalRendering = () => {
         if (!isAuthenticating && isLoggedIn) {
@@ -31,10 +36,16 @@ const StandUp: FC = memo(function StandUp() {
     };
 
     return (
-        <Layout>
-            <Head title="Standup" />
-            {handleConditionalRendering()}
-        </Layout>
+        <>
+            {dev === 'true' ? (
+                <Layout>
+                    <Head title="Standup" />
+                    {handleConditionalRendering()}
+                </Layout>
+            ) : (
+                <PageNotFound />
+            )}
+        </>
     );
 });
 

@@ -1,4 +1,4 @@
-import { standupUpdateType, userDetails } from '@/interfaces/standup.type';
+import { standupUpdateType, userDetails } from '@/types/standup.type';
 import { api } from './api';
 
 export const standupApi = api.injectEndpoints({
@@ -13,7 +13,7 @@ export const standupApi = api.injectEndpoints({
         }),
         userStandupDetails: build.query<userDetails, string | undefined>({
             query: (id): string => `/progresses?userId=${id}`,
-            providesTags: ['MissedUpdate'],
+            providesTags: ['User_Standup'],
         }),
     }),
 });

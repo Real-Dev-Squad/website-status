@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-
+import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
@@ -9,9 +9,9 @@ import {
 import { useGetUserQuery } from '@/app/services/userApi';
 
 import FormInputComponent from './FormInputComponent';
-import { standupUpdateType } from '@/interfaces/standup.type';
-import { getYesterdayDate } from '@/utils/getYesterdayDate';
+import { standupUpdateType } from '@/types/standup.type';
 import { getTotalMissedUpdate } from '@/utils/getTotalMissedUpdate';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 const StandUpContainer: FC = () => {
     const [standupUpdate, setStandupUpdate] = useState<standupUpdateType>({
@@ -25,10 +25,11 @@ const StandUpContainer: FC = () => {
     const [addStandup] = useAddStandupMutation();
     const { data: user } = useGetUserQuery();
     const { data: userStandupdata } = useUserStandupDetailsQuery(user?.id);
+
+    const { SUCCESS, ERROR } = ToastTypes;
     const standupDates = userStandupdata?.data?.map((element) => element.date);
     const totalMissedUpdate = getTotalMissedUpdate(standupDates || []);
-
-    const yesterdayDate = getYesterdayDate();
+    const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
 
     const buttonStyleClass = buttonDisable
         ? `${styles.nonActiveButton}`
@@ -56,13 +57,18 @@ const StandUpContainer: FC = () => {
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
-        setStandupUpdate({
-            type: 'user',
-            completed: '',
-            planned: '',
-            blockers: '',
-        });
-        await addStandup(standupUpdate);
+        try {
+            await addStandup(standupUpdate);
+            toast(SUCCESS, 'Standup submitted successfully');
+            setStandupUpdate({
+                type: 'user',
+                completed: '',
+                planned: '',
+                blockers: '',
+            });
+        } catch (error) {
+            toast(ERROR, 'Something went wrong!');
+        }
     };
 
     return (
@@ -86,38 +92,34 @@ const StandUpContainer: FC = () => {
                             onSubmit={handleFormSubmission}
                         >
                             <fieldset className={styles.formFields}>
-                                <label
-                                    className={styles.updateHeading}
-                                    htmlFor="completed"
-                                >
-                                    On {yesterdayDate}
-                                </label>
                                 <FormInputComponent
+                                    htmlFor="completed"
+                                    labelValue={yesterdayDate}
                                     dataTestId="yesterday-input-update"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
                                     value={standupUpdate.completed}
+                                    inputId="completed"
                                     handleChange={handleChange}
                                 />
-                                <label className={styles.updateHeading}>
-                                    Today
-                                </label>
                                 <FormInputComponent
+                                    htmlFor="planned"
+                                    labelValue="Today"
                                     dataTestId="today-input-update"
                                     placeholder="e.g Refactor signup to support Google login"
                                     name="planned"
                                     value={standupUpdate.planned}
+                                    inputId="planned"
                                     handleChange={handleChange}
                                 />
-
-                                <label className={styles.updateHeading}>
-                                    Blockers
-                                </label>
                                 <FormInputComponent
+                                    htmlFor="blockers"
+                                    labelValue="Blockers"
                                     dataTestId="blocker-input-update"
                                     placeholder="e.g Waiting on identity team to deploy FF"
                                     name="blockers"
                                     value={standupUpdate.blockers}
+                                    inputId="blockers"
                                     handleChange={handleChange}
                                 />
                             </fieldset>
