@@ -9,7 +9,7 @@ const issue_one: IssueItem = {
     title: 'Dummy issue',
     user: {
         login: 'dummyuser',
-        html_url: 'https://github.com/ankushdharkar',
+        html_url: 'https://github.com/dummyuser',
     },
     labels: [],
     state: 'open',
@@ -26,7 +26,7 @@ const issue_two: IssueItem = {
     title: 'Dummy issue',
     user: {
         login: 'dummyuser',
-        html_url: 'https://github.com/ankushdharkar',
+        html_url: 'https://github.com/dummyuser',
     },
     labels: [],
     state: 'open',
