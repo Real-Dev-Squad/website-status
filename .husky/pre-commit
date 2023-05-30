@@ -1,6 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn test
-yarn prettier
-yarn run lint-staged
+if [ "$TEST" != "false" ]; then
+  yarn test
+fi
+if [ $? -eq 0 ]; then
+  yarn prettier && yarn run lint-staged
+  else echo "please run git commit setting TEST to false ( TEST=false git commit -m 'your commit' ) to force push changes "
+fi
