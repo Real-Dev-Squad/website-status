@@ -15,6 +15,16 @@ function changeName(name: string) {
 
 describe('Tabs Component', () => {
     const onSelectMock = jest.fn();
+    const mockTasksCount = {
+        ASSIGNED: 2,
+        COMPLETED: 4,
+        AVAILABLE: 10,
+        IN_PROGRESS: 0,
+        NEEDS_REVIEW: 0,
+        IN_REVIEW: 0,
+        VERIFIED: 0,
+        MERGED: 0,
+    };
 
     it('should render all the buttons', () => {
         render(
@@ -22,6 +32,7 @@ describe('Tabs Component', () => {
                 tabs={TABS}
                 activeTab={Tab.ASSIGNED}
                 onSelect={onSelectMock}
+                tasksCount={mockTasksCount}
             />
         );
         const presentTabs = screen.queryAllByRole('button');
@@ -34,6 +45,7 @@ describe('Tabs Component', () => {
                 tabs={TABS}
                 activeTab={Tab.ASSIGNED}
                 onSelect={onSelectMock}
+                tasksCount={mockTasksCount}
             />
         );
         const assignedBtn = screen.getByRole('button', { name: /ASSIGNED/i });
@@ -47,18 +59,21 @@ describe('Tabs Component', () => {
                 tabs={TABS}
                 activeTab={Tab.COMPLETED}
                 onSelect={onSelectMock}
+                tasksCount={mockTasksCount}
             />
         );
-        const completedBtn = screen.getByRole('button', { name: /DONE/i });
+
+        const completedBtn = screen.getByRole('button', { name: /COMPLETED/i });
         expect(completedBtn).toHaveClass('active');
     });
 
-    it('should render all tabs passed with correct text', () => {
+    it('should render all tabs passed with correct text and count values', () => {
         render(
             <Tabs
                 tabs={TABS}
                 activeTab={Tab.ASSIGNED}
                 onSelect={onSelectMock}
+                tasksCount={mockTasksCount}
             />
         );
         const presentTabs = screen.getAllByRole('button');
