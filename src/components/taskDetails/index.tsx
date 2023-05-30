@@ -20,6 +20,9 @@ import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
+import { TASKS_URL } from '@/constants/url';
+import fetch from '@/helperFunctions/fetch';
+import Link from 'next/link';
 
 type ButtonProps = {
     buttonName: string;
@@ -72,6 +75,9 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const isAuthorized = useContext(isUserAuthorizedContext);
     const [state, dispatch] = useReducer(taskDetailsReducer, initialState);
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [taskTitle, setTaskTitle] = useState<string[]>([]);
+    const [id, setId] = useState<string[]>([]);
+    const [isFetched, setIsFetched] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | task>({});
     const { response, error, isLoading } = useFetch(url);
     const { SUCCESS, ERROR } = ToastTypes;
@@ -132,7 +138,41 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
 
     const shouldRenderParentContainer = () =>
         !isLoading && !error && taskDetails;
+    console.log(typeof taskDetails?.dependsOn);
+    const fetchDependentTasks = async (taskDetails: any) => {
+        try {
+            if (taskDetails?.dependsOn) {
+                const dependsOnTitles = await Promise.all(
+                    taskDetails.dependsOn.map(async (taskId: string) => {
+                        const { requestPromise } = fetch({
+                            url: `${TASKS_URL}/${taskId}/details`,
+                        });
+                        const data = await requestPromise;
+                        return [data?.data?.taskData?.title, taskId];
+                    })
+                );
+                console.log(dependsOnTitles);
+                const titles = dependsOnTitles.map(
+                    (innerArray) => innerArray[0]
+                );
+                const ids = dependsOnTitles.map(
+                    (innerArrays) => innerArrays[1]
+                );
+                setTaskTitle(titles);
+                setId(ids);
+                setIsFetched(true);
+            }
+        } catch (error) {
+            console.error('Error while fetching taskdependency', error);
+        }
+    };
 
+    if (taskDetails && !isFetched) {
+        fetchDependentTasks(taskDetails);
+    }
+    const navigateToTask = (taskId: string) => {
+        router.push(`/tasks/${taskId}`);
+    };
     return (
         <>
             <NavBar />
@@ -215,6 +255,38 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                         detailType={'Link'}
                                         value={taskDetails?.featureUrl}
                                     />
+                                </div>
+                            </TaskContainer>
+                            <TaskContainer
+                                title="Task DependsOn"
+                                hasImg={false}
+                            >
+                                <div
+                                    className={
+                                        classNames['sub_details_grid_container']
+                                    }
+                                >
+                                    <Details
+                                        detailType="task titles"
+                                        value={' '}
+                                    />
+                                    {taskTitle.map((title, index) => (
+                                        <Link
+                                            href={`/tasks/${id[index]}`}
+                                            key={index}
+                                        >
+                                            <div
+                                                onClick={() =>
+                                                    navigateToTask(id[index])
+                                                }
+                                            >
+                                                {title}
+                                            </div>
+                                        </Link>
+                                    ))}
+                                    {taskTitle.length === 0 && (
+                                        <div>No Dependency</div>
+                                    )}
                                 </div>
                             </TaskContainer>
                         </section>
