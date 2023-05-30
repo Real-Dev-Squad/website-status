@@ -76,17 +76,22 @@ const StandUpContainer: FC = () => {
             <section className="container">
                 <div className={styles.standupContainer}>
                     <div className={styles.standupBanner}>
-                        <p>
+                        <p className={styles.bannerPara}>
                             You have
-                            <span data-testid="missed-updates">
+                            <span
+                                className={styles.totalMissedUpdate}
+                                data-testid="missed-updates"
+                            >
                                 {totalMissedUpdate} missed
                             </span>
                             Standup updates this week
                         </p>
-                        <p>Let&apos;s try to avoid having zero days </p>
+                        <p className={styles.bannerPara}>
+                            Let&apos;s try to avoid having zero days{' '}
+                        </p>
                     </div>
                     <div className={styles.standupUpdateContainer}>
-                        <h1>Standup Update</h1>
+                        <h1 className={styles.standupTitle}>Standup Update</h1>
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}

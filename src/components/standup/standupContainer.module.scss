@@ -27,13 +27,13 @@ $radius: 0.5rem;
     border-radius: $radius;
 }
 
-.standupBanner p {
+.standupBanner .bannerPara {
     font-family: 'Poppins', sans-serif;
     font-size: 1.24rem;
     font-weight: 600;
 }
 
-.standupBanner p span {
+.standupBanner .bannerPara .totalMissedUpdate {
     color: $theme-bannerFontColor;
     text-decoration: underline;
     margin: 0 0.24rem;
@@ -48,7 +48,7 @@ $radius: 0.5rem;
     margin-top: 2.2rem;
 }
 
-.standupUpdateContainer h1 {
+.standupUpdateContainer .standupTitle {
     color: $theme-secondaryBackground;
     font-family: 'Inter', sans-serif;
     font-size: 2.2rem;
@@ -127,7 +127,7 @@ $radius: 0.5rem;
         text-align: center;
     }
 
-    .standupBanner p {
+    .standupBanner .bannerPara {
         font-size: 1rem;
         word-wrap: break-word;
     }
