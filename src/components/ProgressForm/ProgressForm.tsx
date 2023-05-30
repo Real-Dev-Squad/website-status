@@ -73,7 +73,7 @@ const ProgressForm = ({ questions }: formProps) => {
     };
 
     return (
-        <form className={styles.form} role="form">
+        <form className={styles.form} aria-label="form">
             {questions.map((question, index) => (
                 <InputWithQuestions
                     key={question.id}
