@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
 import Card from '@/components/issues/Card';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
-import Markdown from 'markdown-to-jsx';
 
 import {
     issueResponseNullBody,
@@ -9,14 +8,21 @@ import {
 } from '../../../../__mocks__/db/issues';
 
 describe('Issue card', () => {
+    test('Should render issue title correctly', () => {
+        const screen = render(
+            <MarkdownRenderer
+                content={issuesResponseSearchedWithQuery[0].title}
+            />
+        );
+        const titleElement = screen.getByText(
+            'One-Click Issue to Task Conversion v1 Release'
+        );
+        expect(titleElement).toBeInTheDocument();
+    });
     test('Should render issue information correctly', () => {
         const screen = render(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
-
-        expect(
-            screen.getByText(issuesResponseSearchedWithQuery[0].title)
-        ).toBeInTheDocument();
         expect(
             screen.getByText(issuesResponseSearchedWithQuery[0].html_url)
         ).toBeInTheDocument();

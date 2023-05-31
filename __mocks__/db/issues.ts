@@ -22,11 +22,11 @@ export const issuesResponseSearchedWithoutQuery = [
         state: 'open',
         locked: false,
         assignee: {
-            login: 'whyDontI',
+            login: 'dummyuser',
         },
         assignees: [
             {
-                login: 'whyDontI',
+                login: 'dummyuser',
             },
         ],
         created_at: '2020-10-30T02:08:48Z',
@@ -94,12 +94,14 @@ export const issuesResponseSearchedWithQuery = [
         number: 148,
         title: 'One-Click Issue to Task Conversion v1 Release',
         user: {
-            login: 'bharati-21',
+            login: 'dunnyuser',
+            html_url: 'https://github.com/dummyuser',
         },
         labels: [],
         state: 'open',
         assignee: {
             login: 'dummyuser',
+            html_url: 'https://github.com/dummyuser',
         },
         assignees: [
             {
