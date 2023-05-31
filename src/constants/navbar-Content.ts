@@ -18,12 +18,6 @@ const navBarContentMock = [
         pipeSymbol: '|',
     },
     {
-        title: 'Standup',
-        refURL: '/standup',
-        pathName: '/standup',
-        pipeSymbol: '|',
-    },
-    {
         title: 'Open PRs',
         refURL: '/openPRs',
         pathName: '/openPRs',

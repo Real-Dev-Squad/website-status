@@ -48,6 +48,16 @@ const Layout: FC<Props> = ({ children }) => {
                         <>
                             |
                             {navBarContent(
+                                'Standup',
+                                '/standup/?dev=true',
+                                router.pathname === '/standup'
+                            )}
+                        </>
+                    )}
+                    {dev && (
+                        <>
+                            |
+                            {navBarContent(
                                 'Availability Panel',
                                 '/availability-panel'
                             )}
