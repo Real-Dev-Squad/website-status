@@ -75,6 +75,21 @@ $off-white: #f0f0f0;
     gap: 2rem;
     margin-bottom: 1rem;
 }
+.task_dependency_list_container {
+    width: 100%;
+    padding: 0 1.2rem;
+    max-height: 5rem;
+    overflow-y: auto;
+    a {
+        text-decoration: none;
+        color: $theme-blue;
+        padding: 0.5rem 0;
+    }
+    li {
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+}
 
 .sub_details_flex_container {
     padding: 2rem 0;

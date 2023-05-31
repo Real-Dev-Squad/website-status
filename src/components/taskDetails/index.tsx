@@ -138,7 +138,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
 
     const shouldRenderParentContainer = () =>
         !isLoading && !error && taskDetails;
-    console.log(typeof taskDetails?.dependsOn);
     const fetchDependentTasks = async (taskDetails: any) => {
         try {
             if (taskDetails?.dependsOn) {
@@ -151,7 +150,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                         return [data?.data?.taskData?.title, taskId];
                     })
                 );
-                console.log(dependsOnTitles);
                 const titles = dependsOnTitles.map(
                     (innerArray) => innerArray[0]
                 );
@@ -166,7 +164,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
             console.error('Error while fetching taskdependency', error);
         }
     };
-
     if (taskDetails && !isFetched) {
         fetchDependentTasks(taskDetails);
     }
@@ -261,33 +258,31 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                 title="Task DependsOn"
                                 hasImg={false}
                             >
-                                <div
+                                <ol
                                     className={
-                                        classNames['sub_details_grid_container']
+                                        classNames[
+                                            'task_dependency_list_container'
+                                        ]
                                     }
                                 >
-                                    <Details
-                                        detailType="task titles"
-                                        value={' '}
-                                    />
                                     {taskTitle.map((title, index) => (
                                         <Link
                                             href={`/tasks/${id[index]}`}
                                             key={index}
                                         >
-                                            <div
+                                            <li
                                                 onClick={() =>
                                                     navigateToTask(id[index])
                                                 }
                                             >
                                                 {title}
-                                            </div>
+                                            </li>
                                         </Link>
                                     ))}
                                     {taskTitle.length === 0 && (
-                                        <div>No Dependency</div>
+                                        <span>No Dependency</span>
                                     )}
-                                </div>
+                                </ol>
                             </TaskContainer>
                         </section>
 
