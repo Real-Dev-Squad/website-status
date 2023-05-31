@@ -1,85 +1,87 @@
 import { render } from '@testing-library/react';
 import Card from '@/components/issues/Card';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
-import { IssueItem } from '@/interfaces/issueItem.type';
+import Markdown from 'markdown-to-jsx';
 
-const issue_one: IssueItem = {
-    html_url: 'https://github.com/dummy-owner/dummy-repo/issues/11',
-    id: 732825067,
-    title: 'Dummy issue',
-    user: {
-        login: 'dummyuser',
-        html_url: 'https://github.com/dummyuser',
-    },
-    labels: [],
-    state: 'open',
-    assignee: {
-        login: 'dummyassignee',
-        html_url: 'https://github.com/dummyassignee',
-    },
-    created_at: '2020-10-30T02:08:48Z',
-    body: null,
-};
-const issue_two: IssueItem = {
-    html_url: 'https://github.com/dummy-owner/dummy-repo/issues/11',
-    id: 732825067,
-    title: 'Dummy issue',
-    user: {
-        login: 'dummyuser',
-        html_url: 'https://github.com/dummyuser',
-    },
-    labels: [],
-    state: 'open',
-    assignee: {
-        login: 'dummyassignee',
-        html_url: 'https://github.com/dummyassignee',
-    },
-    created_at: '2020-10-30T02:08:48Z',
-    body: 'Dummy issue description',
-};
+import {
+    issueResponseNullBody,
+    issuesResponseSearchedWithQuery,
+} from '../../../../__mocks__/db/issues';
 
 describe('Issue card', () => {
     test('Should render issue information correctly', () => {
-        const screen = render(<Card issue={issue_one} />);
+        const screen = render(
+            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        );
 
-        expect(screen.getByText(issue_one.title)).toBeInTheDocument();
-        expect(screen.getByText(issue_one.html_url)).toBeInTheDocument();
+        expect(
+            screen.getByText(issuesResponseSearchedWithQuery[0].title)
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(issuesResponseSearchedWithQuery[0].html_url)
+        ).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('Convert to task');
     });
 
     test('Should render issue created by information correctly', () => {
-        const screen = render(<Card issue={issue_one} />);
-        const date = new Date(issue_one.created_at).toDateString();
-        const issueUser = screen.getByText(issue_one.user.login);
+        const screen = render(
+            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        );
+        const date = new Date(
+            issuesResponseSearchedWithQuery[0].created_at
+        ).toDateString();
+        const issueUser = screen.getByText(
+            issuesResponseSearchedWithQuery[0].user.login
+        );
         expect(screen.getByText(`Opened on ${date} by`)).toBeInTheDocument();
         expect(issueUser).toBeInTheDocument();
-        expect(issueUser).toHaveAttribute('href', issue_one.user.html_url);
+        expect(issueUser).toHaveAttribute(
+            'href',
+            issuesResponseSearchedWithQuery[0].user.html_url
+        );
     });
 
     test('Should render the assignee information correctly', () => {
-        const screen = render(<Card issue={issue_one} />);
-        const assignee = screen.getByText(issue_one.assignee?.login);
+        const screen = render(
+            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        );
+        const assignee = screen.getByText(
+            issuesResponseSearchedWithQuery[0].assignee?.login
+        );
         expect(assignee).toBeInTheDocument();
-        expect(assignee).toHaveAttribute('href', issue_one.assignee?.html_url);
+        expect(assignee).toHaveAttribute(
+            'href',
+            issuesResponseSearchedWithQuery[0].assignee?.html_url
+        );
     });
 
-    test('Should render the MarkdownRenderer component with the correct content', () => {
+    test('Should render "No description provided." if the issue body is null', () => {
         const screen = render(
             <MarkdownRenderer
-                content={issue_one.body ?? 'No description provided.'}
+                content={
+                    issueResponseNullBody.body ?? 'No description provided.'
+                }
             />
         );
         const contentElement = screen.getByText(
-            issue_one.body ?? 'No description provided.'
+            issueResponseNullBody.body ?? 'No description provided.'
         );
         expect(contentElement).toBeInTheDocument();
     });
 
     test('Should render the MarkdownRenderer component with the correct content', () => {
-        const screen = render(<Card issue={issue_two} />);
-        const contentElement = screen.getByText(
-            issue_two.body ?? 'No description provided.'
+        const body = issuesResponseSearchedWithQuery[0].body;
+        const screen = render(<MarkdownRenderer content={body} />);
+        const bodyElement = screen.getByText(
+            'One-Click Issue To Task Conversion- v1 Release'
         );
-        expect(contentElement).toBeInTheDocument();
+        const markdownElement = screen.getByText('Closes #92');
+        const markdownElement2 = screen.getByText(
+            'The following sub-tasks are to be completed to release one-click issue to task conversion feature to main branch'
+        );
+
+        expect(bodyElement).toBeInTheDocument();
+        expect(markdownElement).toBeInTheDocument();
+        expect(markdownElement2).toBeInTheDocument();
     });
 });
