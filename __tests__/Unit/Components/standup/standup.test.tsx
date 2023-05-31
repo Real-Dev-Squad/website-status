@@ -120,12 +120,12 @@ describe('Standup', () => {
         expect(inputValue).toBe('Waiting for database access credentials');
     });
 
-    test('render if button is enabled', () => {
+    test('render if button is disabled', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
             </Provider>
         );
-        expect(screen.getByText(/Submit/i).closest('button')).toBeEnabled();
+        expect(screen.getByText(/Submit/i).closest('button')).toBeDisabled();
     });
 });
