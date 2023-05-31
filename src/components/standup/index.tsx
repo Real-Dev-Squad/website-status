@@ -50,8 +50,13 @@ const StandUpContainer: FC = () => {
     };
     useEffect(() => {
         const isValid = isValidate();
+        console.log(isValid);
         setButtonDisable(!isValid);
-    }, [standupUpdate.completed, standupUpdate.planned]);
+    }, [
+        standupUpdate.completed,
+        standupUpdate.planned,
+        standupUpdate.blockers,
+    ]);
 
     const handleFormSubmission = async (
         event: React.FormEvent<HTMLFormElement>
@@ -130,7 +135,7 @@ const StandUpContainer: FC = () => {
                             </fieldset>
                             <button
                                 className={`${styles.submitButton} ${buttonStyleClass}`}
-                                disabled={!buttonDisable}
+                                disabled={buttonDisable}
                                 type="submit"
                             >
                                 Submit

@@ -10,10 +10,8 @@ export function getTotalMissedUpdate(date: Array<number>): number {
             lastStanupDate = date[i];
         }
     }
-    console.log(currentStandupDate);
     totalMissedUpdate =
         (currentStandupDate - lastStanupDate) / (24 * 60 * 60 * 1000);
-    console.log(totalMissedUpdate);
     return totalMissedUpdate;
 }
 //86,400,000
