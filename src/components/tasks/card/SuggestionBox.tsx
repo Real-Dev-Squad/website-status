@@ -99,23 +99,14 @@ const SuggestionBox: FC<Props> = ({
         );
     };
 
-    if (loading)
-        return (
-            <div style={{ position: 'relative' }}>
-                <Loading />
-            </div>
-        );
-    if (suggestions.length === 0 && assigneeName.trim() !== '')
-        return (
-            <div style={{ position: 'relative' }}>
-                <UserNotFound />
-            </div>
-        );
-    return (
-        <div style={{ position: 'relative' }}>
-            <SuggestionList />
-        </div>
-    );
+    let renderComponent = <SuggestionList />;
+
+    if (loading) renderComponent = <Loading />;
+    else if (suggestions.length === 0 && assigneeName.trim() !== '') {
+        renderComponent = <UserNotFound />;
+    }
+
+    return <div style={{ position: 'relative' }}>{renderComponent}</div>;
 };
 
 export default SuggestionBox;
