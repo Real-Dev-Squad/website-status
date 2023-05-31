@@ -6,6 +6,7 @@ export function getTotalMissedUpdate(date: Array<number>): number {
             lastStanupDate = date[i];
         }
     }
-    const totalMissedUpdate = currentStandupDate - lastStanupDate;
+    const totalMissedUpdate =
+        (currentStandupDate - lastStanupDate) / (24 * 60 * 60 * 1000);
     return totalMissedUpdate;
 }
