@@ -17,7 +17,8 @@ export const progressesApi = api.injectEndpoints({
         getLatestProgress: builder.query({
             query: (payload) => `/progresses/?${payload}`,
             transformResponse: (response: taskProgressResponse) => {
-                return response.data[0];
+                if (response.data.length > 0) return response.data[0];
+                else return { id: '', date: Date.now() };
             },
         }),
     }),
