@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
+import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 import fetch from '@/helperFunctions/fetch';
@@ -8,7 +9,7 @@ import { TASKS_URL } from '../../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
-    const created = new Date(issue.created_at).toDateString();
+    const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -61,44 +62,10 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
 
     return (
         <div className={styles.card}>
-            <div className={styles.card__top}>
-                <div className={styles.card__top__details}>
-                    <div className={styles.card__top__details__meta_data}>
-                        <h2 className={styles.card__title}>{issue.title}</h2>
-                        <p>
-                            Opened on {created} by {issue.user.login}
-                            <br></br>
-                        </p>
-                        <p className="card__body">{issue.body}</p>
-                        {issue.assignee
-                            ? 'Assigned to ' + issue.assignee.login
-                            : ''}
-                        <p className={styles.card__link}>
-                            Issue Link :{' '}
-                            <a
-                                href={issue.html_url}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {issue.html_url}
-                            </a>{' '}
-                        </p>
-                    </div>
-
-                    <div className={styles.label__block}>
-                        {issue.labels.map(
-                            (label: {
-                                id: number | null | undefined;
-                                name: string | null | undefined;
-                            }) => (
-                                <button className={styles.label} key={label.id}>
-                                    {label.name}
-                                </button>
-                            )
-                        )}
-                    </div>
-                </div>
-
+            <div className={styles.card__top__details__button}>
+                <h2 className={styles.card__title}>
+                    <MarkdownRenderer content={issue.title} />
+                </h2>
                 <button
                     className={styles.card__top__button}
                     disabled={taskExists || isLoading}
@@ -106,6 +73,53 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 >
                     Convert to task
                 </button>
+            </div>
+            <p className={styles.card__issue_created__by}>
+                Opened on {date} by
+                <a
+                    href={issue.user.html_url ?? '#'}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    {issue.user.login}
+                </a>
+            </p>
+            <div className="card__body">
+                <MarkdownRenderer
+                    className={styles.card__body}
+                    content={issue.body ?? 'No description provided.'}
+                />
+            </div>
+            {issue.assignee && (
+                <p className={styles.card__assignee}>
+                    Assigned to:
+                    <a
+                        href={issue.assignee?.html_url ?? '#'}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {issue.assignee?.login}
+                    </a>
+                </p>
+            )}
+            <p className={styles.card__link}>
+                Issue Link :{' '}
+                <a href={issue.html_url} target="_blank" rel="noreferrer">
+                    {issue.html_url}
+                </a>{' '}
+            </p>
+
+            <div className={styles.label__block}>
+                {issue.labels.map(
+                    (label: {
+                        id: number | null | undefined;
+                        name: string | null | undefined;
+                    }) => (
+                        <button className={styles.label} key={label.id}>
+                            {label.name}
+                        </button>
+                    )
+                )}
             </div>
         </div>
     );
