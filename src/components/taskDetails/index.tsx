@@ -128,7 +128,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    console.log(taskDetails);
     const fetchDependentTasks = async (
         taskDetails: taskDetailsDataType['taskData']
     ) => {
