@@ -60,6 +60,7 @@ function Textarea(props: TextAreaProps) {
 }
 
 type Props = {
+    url?: string;
     taskID: string;
 };
 
