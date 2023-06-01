@@ -23,7 +23,6 @@ import {
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 
-
 type ButtonProps = {
     buttonName: string;
     clickHandler: (value: any) => void;
@@ -273,7 +272,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                         </Link>
                                     ))}
                                     {taskTitle.length === 0 && (
-                                        <span>No Dependency</span>
+                                        <p>No Dependency</p>
                                     )}
                                 </ol>
                             </TaskContainer>
