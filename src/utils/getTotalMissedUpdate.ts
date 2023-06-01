@@ -11,7 +11,6 @@ export function getTotalMissedUpdate(date: Array<number>): number {
         }
     }
     totalMissedUpdate =
-        (currentStandupDate - lastStanupDate) / (24 * 60 * 60 * 1000);
+        Math.floor(currentStandupDate - lastStanupDate) / (24 * 60 * 60 * 1000);
     return totalMissedUpdate;
 }
-//86,400,000
