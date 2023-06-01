@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
-import challenge from '@/interfaces/challenge.type';
+import { challengeDataType, ChallengeMap } from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
 import { LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
@@ -13,7 +13,7 @@ import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetChallengesQuery } from '@/app/services/challengesApi';
 
 const renderCardList = (
-    challengeSection: challenge['content'],
+    challengeSection: challengeDataType['content'],
     key: string,
     userId: string
 ) => {
@@ -28,16 +28,17 @@ const renderCardList = (
 };
 
 const Challenges: FC = () => {
-    const [filteredChallenge, setFilteredChallenge] = useState<any>([]);
+    const [filteredChallenge, setFilteredChallenge] = useState<ChallengeMap[]>(
+        []
+    );
     const { data: user, isLoading: isAuthenticating } =
         useGetUserQuery(skipToken);
     const { isLoggedIn } = useAuthenticated();
     const { data, isLoading, isError } = useGetChallengesQuery();
-
     useEffect(() => {
         if (isLoggedIn && data !== undefined) {
             if (data) {
-                setFilteredChallenge(data);
+                setFilteredChallenge([data]);
             }
         }
     }, [isLoggedIn, data]);

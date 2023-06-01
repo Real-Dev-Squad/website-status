@@ -1,4 +1,4 @@
-type challengeDataType = {
+export type challengeDataType = {
     is_active: boolean;
     content: {
         id: number;
@@ -27,4 +27,11 @@ type challengeDataType = {
     screen: string;
 };
 
-export default challengeDataType;
+export type ChallengeMap = {
+    Active: challengeDataType[];
+    Completed: challengeDataType[];
+};
+export type ChallengesQueryResponse = {
+    message: string;
+    challenges: challengeDataType[];
+};

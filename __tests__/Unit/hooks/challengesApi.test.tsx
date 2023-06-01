@@ -1,12 +1,21 @@
 import { setupServer } from 'msw/node';
 import { useGetChallengesQuery } from '@/app/services/challengesApi';
-import handlers from '../../../__mocks__/handlers';
 import React, { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
+import { rest } from 'msw';
 
-const server = setupServer(...handlers);
+const server = setupServer(
+    rest.get('/challenges', (req, res, ctx) => {
+        return res(
+            ctx.json({
+                Active: [],
+                Completed: [],
+            })
+        );
+    })
+);
 
 beforeAll(() => {
     server.listen();
@@ -32,11 +41,14 @@ describe('useGetChallengesQuery', () => {
         expect(initialResponse.data).toBeUndefined();
         expect(initialResponse.isLoading).toBe(true);
 
-        await act(() => waitForNextUpdate());
+        await act(async () => {
+            await waitForNextUpdate();
+        });
         const nextResponse = result.current;
 
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
+        expect(nextResponse.data).toEqual({ Active: [], Completed: [] });
         expect(nextResponse.data).toBeDefined();
     });
 });

@@ -1,15 +1,8 @@
 import { api } from './api';
-import challengeDataType from '@/interfaces/challenge.type';
-
-type ChallengesQueryResponse = {
-    message: string;
-    challenges: challengeDataType[];
-};
-
-type ChallengeMap = {
-    Active: challengeDataType[];
-    Completed: challengeDataType[];
-};
+import {
+    ChallengeMap,
+    ChallengesQueryResponse,
+} from '@/interfaces/challenge.type';
 
 export const challengesApi = api.injectEndpoints({
     endpoints: (builder) => ({
