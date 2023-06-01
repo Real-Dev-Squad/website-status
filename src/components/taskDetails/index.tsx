@@ -71,8 +71,6 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const [taskTitle, setTaskTitle] = useState<string[]>([]);
     const [id, setId] = useState<string[]>([]);
     const [isFetched, setIsFetched] = useState<boolean>(false);
-    const initialDataRef = useRef<Record<string, any> | task>({});
-    const { response, error, isLoading } = useFetch(url);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
     const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
     const { SUCCESS, ERROR } = ToastTypes;
