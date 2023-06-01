@@ -22,6 +22,7 @@ import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
+import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 
 type ButtonProps = {
     buttonName: string;
@@ -59,11 +60,10 @@ function Textarea(props: TextAreaProps) {
 }
 
 type Props = {
-    url: string;
     taskID: string;
 };
 
-const TaskDetails: FC<Props> = ({ url, taskID }) => {
+const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
     const isAuthorized = useContext(isUserAuthorizedContext);
 
@@ -127,7 +127,10 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
             );
         }
     }
-    const fetchDependentTasks = async (taskDetails: any) => {
+    console.log(taskDetails);
+    const fetchDependentTasks = async (
+        taskDetails: taskDetailsDataType['taskData']
+    ) => {
         try {
             if (taskDetails?.dependsOn) {
                 const dependsOnTitles = await Promise.all(
@@ -153,8 +156,8 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
             console.error('Error while fetching taskdependency', error);
         }
     };
-    if (taskDetails && !isFetched) {
-        fetchDependentTasks(taskDetails);
+    if (taskDetailsData && !isFetched) {
+        fetchDependentTasks(taskDetailsData);
     }
     const navigateToTask = (taskId: string) => {
         router.push(`/tasks/${taskId}`);

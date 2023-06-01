@@ -6,6 +6,7 @@ export type taskDetailsDataType = {
         createdBy: string;
         endsOn: number;
         isNoteworthy: boolean;
+        dependsOn: string[];
         lossRate: { dinero: number; neelam: number };
         percentCompleted: number;
         priority: string;
