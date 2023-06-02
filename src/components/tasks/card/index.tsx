@@ -31,7 +31,6 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
-
 type Props = {
     content: task;
     shouldEdit: boolean;

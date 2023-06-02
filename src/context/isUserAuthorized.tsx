@@ -1,6 +1,5 @@
 import { useEffect, useState, createContext, FC, ReactNode } from 'react';
-import fetch from '@/helperFunctions/fetch';
-import { USER_SELF } from '@/constants/url';
+import { useGetUserQuery } from '@/app/services/userApi';
 export const isUserAuthorizedContext = createContext<boolean>(false);
 
 interface Props {
@@ -9,14 +8,13 @@ interface Props {
 
 const IsUserAuthorizedContext: FC<Props> = ({ children }) => {
     const [isUserAuthorized, setIsUserAuthorized] = useState<boolean>(false);
+    const { data: userData } = useGetUserQuery();
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const { requestPromise } = fetch({ url: USER_SELF });
-                const { data } = await requestPromise;
                 const userRoles = {
-                    adminUser: data.roles?.admin,
-                    superUser: data.roles?.super_user,
+                    adminUser: userData?.roles?.admin,
+                    superUser: userData?.roles?.super_user,
                 };
                 const { adminUser, superUser } = userRoles;
                 setIsUserAuthorized(!!adminUser || !!superUser);

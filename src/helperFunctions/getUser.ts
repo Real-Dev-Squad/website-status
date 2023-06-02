@@ -1,13 +1,9 @@
-import { USER_SELF } from '@/constants/url';
-import fetch from '@/helperFunctions/fetch';
+import { useGetUserQuery } from '@/app/services/userApi';
 
 const userData = async () => {
+    const { data } = useGetUserQuery();
     try {
-        const { requestPromise } = fetch({
-            url: USER_SELF,
-        });
-        const response = await requestPromise;
-        return response.data;
+        return data;
     } catch (error) {
         console.error(error);
         return error;

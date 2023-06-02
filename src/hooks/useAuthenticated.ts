@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { USER_SELF, DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
-import fetch from '@/helperFunctions/fetch';
+import { DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
+import { useGetUserQuery } from '@/app/services/userApi';
 
 type Userdata = {
-    userName: string;
-    firstName: string;
-    profilePicture: string;
+    userName: string | undefined;
+    firstName: string | undefined;
+    profilePicture: string | undefined;
 };
 
 type HooksReturnType = {
@@ -21,21 +21,19 @@ const useAuthenticated = (): HooksReturnType => {
         firstName: '',
         profilePicture: DEFAULT_AVATAR,
     });
+    const { data } = useGetUserQuery();
 
     const [isLoading, setIsLoading] = useState(false);
-
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const { requestPromise } = fetch({ url: USER_SELF });
-                const { data } = await requestPromise;
-                if (data.incompleteUserDetails) {
+                if (data?.incompleteUserDetails) {
                     window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
                 }
                 setUserData({
-                    userName: data.username,
-                    firstName: data.first_name,
+                    userName: data?.username,
+                    firstName: data?.first_name,
                     profilePicture: data?.picture?.url,
                 });
                 setIsLoggedIn(true);
