@@ -259,21 +259,24 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         ]
                                     }
                                 >
-                                    {taskTitle.map((title, index) => (
-                                        <Link
-                                            href={`/tasks/${id[index]}`}
-                                            key={index}
-                                        >
-                                            <li
-                                                onClick={() =>
-                                                    navigateToTask(id[index])
-                                                }
+                                    {taskTitle.length ? (
+                                        taskTitle.map((title, index) => (
+                                            <Link
+                                                href={`/tasks/${id[index]}`}
+                                                key={index}
                                             >
-                                                {title}
-                                            </li>
-                                        </Link>
-                                    ))}
-                                    {taskTitle.length === 0 && (
+                                                <li
+                                                    onClick={() =>
+                                                        navigateToTask(
+                                                            id[index]
+                                                        )
+                                                    }
+                                                >
+                                                    {title}
+                                                </li>
+                                            </Link>
+                                        ))
+                                    ) : (
                                         <p>No Dependency</p>
                                     )}
                                 </ol>
