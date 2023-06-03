@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode, Fragment } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
@@ -39,14 +39,14 @@ const Layout: FC<Props> = ({ children }) => {
             <div className={styles.wrapper}>
                 <div className={styles.header}>
                     {navBarContentMock.map((element, index) => (
-                        <React.Fragment key={index}>
+                        <Fragment key={index}>
                             {navBarContent(
                                 element.title,
                                 element.refURL,
                                 router.pathname === element.pathName
                             )}
                             {element.pipeSymbol}
-                        </React.Fragment>
+                        </Fragment>
                     ))}
                     {dev && (
                         <>
@@ -54,14 +54,14 @@ const Layout: FC<Props> = ({ children }) => {
                                 return (
                                     <>
                                         {element.pipeSymbol}
-                                        <React.Fragment key={index}>
+                                        <Fragment key={index}>
                                             {navBarContent(
                                                 element.title,
                                                 element.refURL,
                                                 router.pathname ===
                                                     element.pathName
                                             )}
-                                        </React.Fragment>
+                                        </Fragment>
                                     </>
                                 );
                             })}

@@ -14,7 +14,7 @@ import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     ERROR_MESSAGE,
-    STANDUP_SUBMISSIOn_SUCCESS,
+    STANDUP_SUBMISSION_SUCCESS,
 } from '@/constants/constants';
 import ProgressHeader from '../ProgressForm/ProgressHeader';
 
@@ -67,7 +67,7 @@ const StandUpContainer: FC = () => {
         event.preventDefault();
         try {
             await addStandup(standupUpdate);
-            toast(SUCCESS, STANDUP_SUBMISSIOn_SUCCESS);
+            toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
             setStandupUpdate(defaultState);
         } catch (error) {
             console.error(error);
