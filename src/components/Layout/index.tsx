@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
-import navBarContentMock from '@/constants/navbar-Content';
+import { navBarContentMock, featureFlag } from '@/constants/navbar-Content';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
 
@@ -50,21 +50,21 @@ const Layout: FC<Props> = ({ children }) => {
                     ))}
                     {dev && (
                         <>
-                            |
-                            {navBarContent(
-                                'Standup',
-                                '/standup/?dev=true',
-                                router.pathname === '/standup'
-                            )}
-                        </>
-                    )}
-                    {dev && (
-                        <>
-                            |
-                            {navBarContent(
-                                'Availability Panel',
-                                '/availability-panel'
-                            )}
+                            {featureFlag.map((element, index) => {
+                                return (
+                                    <>
+                                        {element.pipeSymbol}
+                                        <React.Fragment key={index}>
+                                            {navBarContent(
+                                                element.title,
+                                                element.refURL,
+                                                router.pathname ===
+                                                    element.pathName
+                                            )}
+                                        </React.Fragment>
+                                    </>
+                                );
+                            })}
                         </>
                     )}
                 </div>

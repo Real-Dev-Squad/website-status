@@ -12,7 +12,7 @@ $radius: 0.5rem;
 .standupContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 1.88rem;
+    margin-top: 1.8rem;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -27,20 +27,20 @@ $radius: 0.5rem;
     border-radius: $radius;
 }
 
-.standupBanner .bannerPara {
+.bannerPara {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.24rem;
+    font-size: 1.2rem;
     font-weight: 600;
 }
 
-.totalMissedUpdate {
+.totalMissedUpdates {
     color: $theme-bannerFontColor;
     text-decoration: underline;
     margin: 0 0.4rem;
 }
 
 .standupUpdateContainer {
-    width: 50.8%;
+    width: 50%;
     margin-top: 4rem;
 }
 
@@ -74,11 +74,10 @@ $radius: 0.5rem;
     background: $theme-whiteColor;
     padding: 1rem;
     font-weight: 400;
-    font-size: 0.88rem;
+    font-size: 0.8rem;
     line-height: 150%;
     font-family: 'Inter', sans-serif;
-    margin-top: 0.8rem;
-    margin-bottom: 2.4rem;
+    margin: 0.8rem 0 2.4rem 0;
 }
 
 .inputField:focus {
@@ -91,7 +90,7 @@ $radius: 0.5rem;
     height: 4rem;
     border-radius: $radius;
     font-weight: 400;
-    font-size: 0.88rem;
+    font-size: 0.8rem;
     line-height: 150%;
     font-family: 'Inter', sans-serif;
     border: none;

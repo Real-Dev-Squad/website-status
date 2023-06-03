@@ -1,4 +1,4 @@
-const navBarContentMock = [
+export const navBarContentMock = [
     {
         title: 'Tasks',
         refURL: '/',
@@ -37,4 +37,17 @@ const navBarContentMock = [
     },
 ];
 
-export default navBarContentMock;
+export const featureFlag = [
+    {
+        title: 'Standup',
+        refURL: '/standup/?dev=true',
+        pathName: '/standup',
+        pipeSymbol: '|',
+    },
+    {
+        title: 'Availability Panel',
+        refURL: '/availability-panel',
+        pathName: '',
+        pipeSymbol: '|',
+    },
+];

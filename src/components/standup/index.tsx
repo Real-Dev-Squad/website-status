@@ -3,32 +3,40 @@ import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
-    useAddStandupMutation,
-    useUserStandupDetailsQuery,
-} from '@/app/services/standup';
+    useSaveProgressMutation,
+    useUserProgressDetailsQuery,
+} from '@/app/services/progressesApi';
 import { useGetUserQuery } from '@/app/services/userApi';
 
 import FormInputComponent from './FormInputComponent';
 import { standupUpdateType } from '@/types/standup.type';
-import { getTotalMissedUpdate } from '@/utils/getTotalMissedUpdate';
+import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
+import {
+    ERROR_MESSAGE,
+    STANDUP_SUBMISSIOn_SUCCESS,
+} from '@/constants/constants';
+import ProgressHeader from '../ProgressForm/ProgressHeader';
+
+const defaultState = {
+    type: 'user',
+    completed: '',
+    planned: '',
+    blockers: '',
+};
 
 const StandUpContainer: FC = () => {
-    const [standupUpdate, setStandupUpdate] = useState<standupUpdateType>({
-        type: 'user',
-        completed: '',
-        planned: '',
-        blockers: '',
-    });
+    const [standupUpdate, setStandupUpdate] =
+        useState<standupUpdateType>(defaultState);
 
     const [buttonDisable, setButtonDisable] = useState<boolean>(true);
-    const [addStandup] = useAddStandupMutation();
+    const [addStandup] = useSaveProgressMutation();
     const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useUserStandupDetailsQuery(user?.id);
+    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
 
     const { SUCCESS, ERROR } = ToastTypes;
     const standupDates = userStandupdata?.data?.map((element) => element.date);
-    const totalMissedUpdate = getTotalMissedUpdate(standupDates || []);
+    const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
     const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
 
     const buttonStyleClass = buttonDisable
@@ -50,13 +58,8 @@ const StandUpContainer: FC = () => {
     };
     useEffect(() => {
         const isValid = isValidate();
-        console.log(isValid);
         setButtonDisable(!isValid);
-    }, [
-        standupUpdate.completed,
-        standupUpdate.planned,
-        standupUpdate.blockers,
-    ]);
+    }, [standupUpdate]);
 
     const handleFormSubmission = async (
         event: React.FormEvent<HTMLFormElement>
@@ -64,15 +67,11 @@ const StandUpContainer: FC = () => {
         event.preventDefault();
         try {
             await addStandup(standupUpdate);
-            toast(SUCCESS, 'Standup submitted successfully');
-            setStandupUpdate({
-                type: 'user',
-                completed: '',
-                planned: '',
-                blockers: '',
-            });
+            toast(SUCCESS, STANDUP_SUBMISSIOn_SUCCESS);
+            setStandupUpdate(defaultState);
         } catch (error) {
-            toast(ERROR, 'Something went wrong!');
+            console.error(error);
+            toast(ERROR, ERROR_MESSAGE);
         }
     };
 
@@ -81,19 +80,10 @@ const StandUpContainer: FC = () => {
             <section className="container">
                 <div className={styles.standupContainer}>
                     <div className={styles.standupBanner}>
-                        <p className={styles.bannerPara}>
-                            You have
-                            <span
-                                className={styles.totalMissedUpdate}
-                                data-testid="missed-updates"
-                            >
-                                {totalMissedUpdate} missed
-                            </span>
-                            Standup updates this week
-                        </p>
-                        <p className={styles.bannerPara}>
-                            Let&apos;s try to avoid having zero days{' '}
-                        </p>
+                        <ProgressHeader
+                            totalMissedUpdates={totalMissedUpdates}
+                            updateType="Standup"
+                        />
                     </div>
                     <div className={styles.standupUpdateContainer}>
                         <h1 className={styles.standupTitle}>Standup Update</h1>
@@ -105,7 +95,7 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="completed"
                                     labelValue={yesterdayDate}
-                                    dataTestId="yesterday-input-update"
+                                    dataTestId="completedInputField"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
                                     value={standupUpdate.completed}
@@ -115,7 +105,7 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="planned"
                                     labelValue="Today"
-                                    dataTestId="today-input-update"
+                                    dataTestId="todayInputField"
                                     placeholder="e.g Refactor signup to support Google login"
                                     name="planned"
                                     value={standupUpdate.planned}
@@ -125,7 +115,7 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="blockers"
                                     labelValue="Blockers"
-                                    dataTestId="blocker-input-update"
+                                    dataTestId="blockerInputField"
                                     placeholder="e.g Waiting on identity team to deploy FF"
                                     name="blockers"
                                     value={standupUpdate.blockers}
