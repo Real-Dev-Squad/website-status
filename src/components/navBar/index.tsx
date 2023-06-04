@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useDispatch } from 'react-redux';
+import { updateUser } from '@/app/userSlice';
+import { useSelector } from 'react-redux';
+
 import {
     LOGIN_URL,
     DEFAULT_AVATAR,
@@ -19,9 +23,11 @@ import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
 
 const NavBar = () => {
+    const dispatch = useDispatch();
     const isLoggedIn = true;
     const { data: userData } = useGetUserQuery();
-    // const { userData, isLoggedIn } = useAuthenticated();
+    dispatch(updateUser(userData));
+    const savedData = useSelector((state: any) => state.user);
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 

@@ -1,8 +1,6 @@
 import { FC, useState, useEffect, useContext } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
@@ -31,6 +29,7 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import { useSelector } from 'react-redux';
 type Props = {
     content: task;
     shouldEdit: boolean;
@@ -58,7 +57,11 @@ const Card: FC<Props> = ({
     const assigneeProfileImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
+    // const isUserAuthorized = useContext(isUserAuthorizedContext);
+    const userData = useSelector((state: any) => state.user);
+    const adminData = userData.adminUser;
+    const superUserData = userData.superUser;
+    const isUserAuthorized = !!adminData || !!superUserData;
 
     const [showEditButton, setShowEditButton] = useState(false);
     const [keyLongPressed] = useKeyLongPressed();

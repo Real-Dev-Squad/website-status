@@ -10,7 +10,6 @@ import React, {
 import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import classNames from './task-details.module.scss';
@@ -19,6 +18,7 @@ import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
+import { useSelector } from 'react-redux';
 
 type ButtonProps = {
     buttonName: string;
@@ -62,7 +62,12 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const router = useRouter();
-    const isAuthorized = useContext(isUserAuthorizedContext);
+    // const [isUserAuthorized, setIsUserAuthorized] = useState<boolean>(false);
+    // const isAuthorized = useContext(isUserAuthorizedContext);
+    const userData = useSelector((state: any) => state.user);
+    const adminData = userData.adminUser;
+    const superUserData = userData.superUser;
+    const isAuthorized = !!adminData || !!superUserData;
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});

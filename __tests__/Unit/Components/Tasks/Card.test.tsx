@@ -3,7 +3,6 @@ import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import {
     createMockRouter,
@@ -114,9 +113,7 @@ describe('Task card', () => {
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
-                <isUserAuthorizedContext.Provider value={true}>
-                    <Card {...DEFAULT_PROPS} />
-                </isUserAuthorizedContext.Provider>
+                <Card {...DEFAULT_PROPS} />
             </Provider>,
             {}
         );

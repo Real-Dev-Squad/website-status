@@ -1,7 +1,7 @@
 import classNames from '@/components/tasks/card/card.module.scss';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
 import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 type Props = {
     taskTagLevel?: taskItem[];
     itemId: string;
@@ -14,7 +14,11 @@ export const TaskLevelMap = ({
     itemId,
     deleteTaskTagLevel,
 }: Props) => {
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
+    // const isUserAuthorized = useContext(isUserAuthorizedContext);
+    const userData = useSelector((state: any) => state.user);
+    const adminData = userData.adminUser;
+    const superUserData = userData.superUser;
+    const isUserAuthorized = !!adminData || !!superUserData;
 
     return (
         <div className={classNames.taskTagLevelContainer}>
