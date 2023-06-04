@@ -6,6 +6,7 @@ import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
+import { useSelector } from 'react-redux';
 
 interface Props {
     children?: ReactNode;
@@ -25,7 +26,8 @@ const navBarContent = (title: string, refUrl: string, isActive = false) => {
 
 const Layout: FC<Props> = ({ children }) => {
     const router = useRouter();
-    const { data, isLoading } = useGetUserQuery();
+    const { isLoading } = useGetUserQuery();
+    const data = useSelector((state: any) => state.user);
 
     // Dev feature toggle
     const { query } = router;

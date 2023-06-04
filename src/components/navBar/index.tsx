@@ -27,7 +27,6 @@ const NavBar = () => {
     const isLoggedIn = true;
     const { data: userData } = useGetUserQuery();
     dispatch(updateUser(userData));
-    const savedData = useSelector((state: any) => state.user);
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 

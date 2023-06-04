@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
+import { useSelector } from 'react-redux';
 
 type Userdata = {
     userName: string | undefined;
@@ -21,7 +22,8 @@ const useAuthenticated = (): HooksReturnType => {
         firstName: '',
         profilePicture: DEFAULT_AVATAR,
     });
-    const { data } = useGetUserQuery();
+    const user = useSelector((state: any) => state.user);
+    const data = user.userData;
 
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
