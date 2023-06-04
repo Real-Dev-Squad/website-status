@@ -37,7 +37,7 @@ export const navBarContentMock = [
     },
 ];
 
-export const featureFlag = [
+export const featureFlags = [
     {
         title: 'Standup',
         refURL: '/standup/?dev=true',

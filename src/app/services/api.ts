@@ -20,7 +20,6 @@ export const api = createApi({
         'User',
         'Tags',
         'Levels',
-        'Standup',
         'Mine_Tasks',
         'User_Standup',
     ],

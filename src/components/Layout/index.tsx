@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
-import { navBarContentMock, featureFlag } from '@/constants/navbar-Content';
+import { navBarContentMock, featureFlags } from '@/constants/navbar-Content';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
 
@@ -50,7 +50,7 @@ const Layout: FC<Props> = ({ children }) => {
                     ))}
                     {dev && (
                         <>
-                            {featureFlag.map((element, index) => {
+                            {featureFlags.map((element, index) => {
                                 return (
                                     <>
                                         {element.pipeSymbol}
