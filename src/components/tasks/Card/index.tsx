@@ -37,6 +37,7 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import userData from '@/helperFunctions/getUser';
+import { ProgressIndicator } from './ProgressIndicator/ProgressIndicator';
 
 type Props = {
     content: task;
@@ -334,24 +335,6 @@ const Card: FC<Props> = ({
         </div>
     );
 
-    const ProgressIndicator = () => (
-        <div className={classNames.progressIndicator}>
-            <div
-                className={`
-                ${handleProgressColor(
-                    content.percentCompleted,
-                    content.startedOn,
-                    content.endsOn
-                )}
-                ${classNames.progressStyle}
-                `}
-                style={{
-                    width: `${content.percentCompleted}%`,
-                }}
-            ></div>
-        </div>
-    );
-
     const AssigneeButton = () => {
         return (
             <button
@@ -471,7 +454,7 @@ const Card: FC<Props> = ({
 
                     {/* progress bar */}
                     <div className={classNames.progressContainerUpdated}>
-                        <ProgressIndicator />
+                        <ProgressIndicator content={content} />
                         <span>{content.percentCompleted}% </span>
                     </div>
                 </div>
@@ -643,7 +626,7 @@ const Card: FC<Props> = ({
             </div>
             <div className={classNames.cardItems}>
                 <span className={classNames.progressContainer}>
-                    <ProgressIndicator />
+                    <ProgressIndicator content={content} />
 
                     <span>{content.percentCompleted}% completed</span>
                 </span>

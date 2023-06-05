@@ -1,7 +1,3 @@
-$green: #008000;
-$orange: #ffa500;
-$red: #ff0000;
-$yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
 $grey: #adadad;
@@ -130,34 +126,6 @@ $seeMoreTasksShadow: #595959cc;
     align-items: center;
 }
 
-.progressIndicator {
-    width: 100%;
-    height: 0.6rem;
-    background-color: $white;
-    border: 2px solid $black;
-    border-radius: 1rem;
-}
-
-.progressStyle {
-    height: 0.4rem;
-    border-radius: 1rem;
-}
-
-.progressGreen {
-    background-color: $green;
-}
-
-.progressOrange {
-    background-color: $orange;
-}
-
-.progressRed {
-    background-color: $red;
-}
-
-.progressYellow {
-    background-color: $yellow;
-}
 .editButton {
     text-align: left;
     cursor: pointer;
