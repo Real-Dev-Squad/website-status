@@ -30,6 +30,7 @@ import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 import { useSelector } from 'react-redux';
+import useUserData from '@/hooks/useUserData';
 type Props = {
     content: task;
     shouldEdit: boolean;
@@ -57,11 +58,8 @@ const Card: FC<Props> = ({
     const assigneeProfileImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
-    // const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const userData = useSelector((state: any) => state.user);
-    const adminData = userData.adminUser;
-    const superUserData = userData.superUser;
-    const isUserAuthorized = !!adminData || !!superUserData;
+
+    const { data: userData, isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
     const [keyLongPressed] = useKeyLongPressed();

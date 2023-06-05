@@ -1,9 +1,7 @@
-import { useGetUserQuery } from '@/app/services/userApi';
-import { useSelector } from 'react-redux';
+import useUserData from '@/hooks/useUserData';
 
 const userData = async () => {
-    const user = useSelector((state: any) => state.user);
-    const data = user.userData;
+    const { data } = useUserData();
     try {
         return data;
     } catch (error) {

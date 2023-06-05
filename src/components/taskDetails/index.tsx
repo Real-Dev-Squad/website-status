@@ -18,7 +18,7 @@ import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-import { useSelector } from 'react-redux';
+import useUserData from '@/hooks/useUserData';
 
 type ButtonProps = {
     buttonName: string;
@@ -62,12 +62,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ url, taskID }) => {
     const router = useRouter();
-    // const [isUserAuthorized, setIsUserAuthorized] = useState<boolean>(false);
-    // const isAuthorized = useContext(isUserAuthorizedContext);
-    const userData = useSelector((state: any) => state.user);
-    const adminData = userData.adminUser;
-    const superUserData = userData.superUser;
-    const isAuthorized = !!adminData || !!superUserData;
+
+    const { data: userData, isUserAuthorized } = useUserData();
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
@@ -151,7 +147,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                             </span>
                         )}
                         {!isEditing ? (
-                            isAuthorized && (
+                            isUserAuthorized && (
                                 <Button
                                     buttonName="Edit"
                                     clickHandler={setIsEditing}

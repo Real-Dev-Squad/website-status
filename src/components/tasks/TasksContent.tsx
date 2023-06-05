@@ -18,17 +18,16 @@ import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
 import { useEditMode } from '@/hooks/useEditMode';
 import { useSelector } from 'react-redux';
+import useUserData from '@/hooks/useUserData';
 
 export const TasksContent = () => {
     // TODO: the below code should be used when mutation for updating tasks is implemented
     // const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
     const { isEditMode } = useEditMode();
-    // const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const userData = useSelector((state: any) => state.user);
-    const adminData = userData.adminUser;
-    const superUserData = userData.superUser;
-    const isAuthorized = !!adminData || !!superUserData;
-    const isEditable = isAuthorized && isEditMode;
+
+    const { data: userData, isUserAuthorized } = useUserData();
+
+    const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
     // TODO: the below code should removed when mutation for updating tasks is implemented
     const [filteredTask, setFilteredTask] = useState<any>([]);
