@@ -263,30 +263,3 @@ $seeMoreTasksShadow: #595959cc;
 .seeMoreTasks:hover {
     box-shadow: 0 1px 0.5rem $seeMoreTasksShadow;
 }
-
-/* loading spinner  */
-.loadingBg {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    pointer-events: none;
-    background-color: rgba(0, 0, 0, 0.2);
-    display: grid;
-    place-content: center;
-    .spinner {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        border-top-color: #fff;
-        animation: spin 1s ease-in-out infinite;
-    }
-}
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}

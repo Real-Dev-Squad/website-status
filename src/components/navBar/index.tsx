@@ -16,7 +16,6 @@ import {
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
 import { useGetUserQuery } from '@/app/services/userApi';
-import { Loader } from '../tasks/card/Loader';
 
 const NavBar = () => {
     const isLoggedIn = true;

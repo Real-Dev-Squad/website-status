@@ -1,14 +1,14 @@
 import { FC } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
+import Card from '@/components/tasks/Card';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import { LOGIN_URL } from '@/constants/url';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
-import { Loader } from '@/components/tasks/card/Loader';
+import { Loader } from '@/components/Loaders/Loader';
 
 function CardList({ tasks }: { tasks: task[] }) {
     return (

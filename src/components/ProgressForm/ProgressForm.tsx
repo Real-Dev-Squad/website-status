@@ -11,7 +11,7 @@ import {
 } from '@/types/ProgressUpdates';
 import { useSaveProgressMutation } from '@/app/services/progressesApi';
 import { useRouter } from 'next/router';
-import { Loader } from '../tasks/card/Loader';
+import { Loader } from '../Loaders/Loader';
 
 const initialState = {
     progress: '',

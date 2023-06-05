@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Loader } from '@/components/tasks/card/Loader';
+import { Loader } from '@/components/Loaders/Loader';
 
 describe('Loader', () => {
     it('renders the loading spinner', () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, screen } from '@testing-library/react';
-import { TaskLevelMap } from '@/components/tasks/card/TaskLevelMap';
+import { TaskLevelMap } from '@/components/tasks/Card/TaskLevelMap';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
 

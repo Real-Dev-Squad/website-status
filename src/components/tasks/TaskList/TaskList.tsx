@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Card from '../card';
+import Card from '../Card';
 import task from '@/interfaces/task.type';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
 import {
@@ -7,7 +7,7 @@ import {
     INITIAL_TASKS_LIMIT,
     ADD_MORE_TASKS_LIMIT,
 } from '../constants';
-import styles from '../card/card.module.scss';
+import styles from '../Card/card.module.scss';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 
 type TaksListProps = {
