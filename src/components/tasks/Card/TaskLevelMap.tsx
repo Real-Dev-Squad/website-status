@@ -1,4 +1,4 @@
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/tasks/Card/card.module.scss';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
 import { useContext } from 'react';

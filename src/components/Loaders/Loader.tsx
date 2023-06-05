@@ -1,4 +1,4 @@
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/Loaders/Loader.module.scss';
 
 export const Loader = () => (
     <div className={classNames.loadingBg}>

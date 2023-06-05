@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/tasks/Card/card.module.scss';
 import levelType from '@/interfaces/level.type';
 import tagType from '@/interfaces/tag.type';
 import taskItem from '@/interfaces/taskItem.type';

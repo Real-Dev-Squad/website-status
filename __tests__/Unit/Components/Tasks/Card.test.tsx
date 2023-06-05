@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
-import Card from '@/components/tasks/card/index';
+import Card from '@/components/tasks/Card/index';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';

@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
+import Card from '@/components/tasks/Card';
 import useFetch from '@/hooks/useFetch';
 import classNames from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';

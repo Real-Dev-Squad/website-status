@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { ConditionalLinkWrapper } from '@/components/tasks/card/ConditionalLinkWrapper';
+import { ConditionalLinkWrapper } from '@/components/tasks/Card/ConditionalLinkWrapper';
 
 const titleProps = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',

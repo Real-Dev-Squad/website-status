@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import Link from 'next/link';
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/tasks/Card/card.module.scss';
 
 interface ConditionalLinkWrapperProps {
     children?: ReactNode;

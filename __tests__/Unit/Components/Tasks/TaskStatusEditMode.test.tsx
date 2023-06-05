@@ -3,7 +3,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import {
     TaskStatusEditMode,
     beautifyStatus,
-} from '@/components/tasks/card/TaskStatusEditMode';
+} from '@/components/tasks/Card/TaskStatusEditMode';
 import { TASK } from '../../../../__mocks__/db/tasks';
 
 import { renderWithProviders } from '@/test-utils/renderWithProvider';

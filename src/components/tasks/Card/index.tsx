@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/tasks/Card/card.module.scss';
 
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
@@ -22,7 +22,7 @@ import {
 import { MAX_SEARCH_RESULTS } from '@/constants/constants';
 import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
-import { Loader } from './Loader';
+import { Loader } from '../../Loaders/Loader';
 import { TaskLevelMap } from './TaskLevelMap';
 import { TASK_STATUS } from '@/interfaces/task-status';
 import {
