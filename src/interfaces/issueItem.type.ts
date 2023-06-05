@@ -3,10 +3,12 @@ export type IssueItem = {
     title: string;
     user: {
         login: string | null | undefined;
+        html_url: string | null | undefined;
     };
     assignee:
         | {
               login?: string | null | undefined;
+              html_url?: string | null | undefined;
           }
         | null
         | undefined;
