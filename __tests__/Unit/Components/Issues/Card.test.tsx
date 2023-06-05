@@ -6,6 +6,7 @@ import {
     issueResponseNullBody,
     issuesResponseSearchedWithQuery,
 } from '../../../../__mocks__/db/issues';
+import { renderWithProviders } from '@/test-utils/renderWithProvider';
 
 describe('Issue card', () => {
     test('Should render issue title correctly', () => {
@@ -20,7 +21,7 @@ describe('Issue card', () => {
         expect(titleElement).toBeInTheDocument();
     });
     test('Should render issue information correctly', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
         expect(
@@ -30,7 +31,7 @@ describe('Issue card', () => {
     });
 
     test('Should render issue created by information correctly', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
         const date = new Date(
@@ -48,7 +49,7 @@ describe('Issue card', () => {
     });
 
     test('Should render the assignee information correctly', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
         const assignee = screen.getByText(
@@ -62,7 +63,7 @@ describe('Issue card', () => {
     });
 
     test('Should render "No description provided." if the issue body is null', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <MarkdownRenderer
                 content={
                     issueResponseNullBody.body ?? 'No description provided.'
@@ -77,7 +78,7 @@ describe('Issue card', () => {
 
     test('Should render the MarkdownRenderer component with the correct content', () => {
         const body = issuesResponseSearchedWithQuery[0].body;
-        const screen = render(<MarkdownRenderer content={body} />);
+        const screen = renderWithProviders(<MarkdownRenderer content={body} />);
         const bodyElement = screen.getByText(
             'One-Click Issue To Task Conversion- v1 Release'
         );
