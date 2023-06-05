@@ -16,6 +16,11 @@ $color-disabled: #e5e7eb;
     font-weight: 500;
     cursor: pointer;
 
+    &:hover {
+        background-color: darken($color-blue, 10%);
+        color: $color-white;
+    }
+
     &:disabled {
         background-color: #f5f5f4;
         color: #57534e;

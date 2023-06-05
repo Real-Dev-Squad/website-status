@@ -1,3 +1,4 @@
+@use '../../../styles/issues.module.scss' as styles;
 $green: #008000;
 $orange: #ffa500;
 $red: #ff0000;
@@ -289,4 +290,13 @@ $seeMoreTasksShadow: #595959cc;
     to {
         transform: rotate(360deg);
     }
+}
+
+.card__top__button {
+    @include styles.issues-button;
+    max-width: max-content;
+    margin: 1rem 0 0;
+}
+.close__task__button {
+    @include styles.issues-button;
 }
