@@ -3,23 +3,26 @@ import React, {
     FC,
     useEffect,
     useContext,
-    useReducer,
     useRef,
     useState,
     ChangeEventHandler,
 } from 'react';
-import useFetch from '@/hooks/useFetch';
 import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import taskDetailsReducer from './taskDetails.reducer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
+import { TASKS_URL } from '@/constants/url';
+import fetch from '@/helperFunctions/fetch';
+import Link from 'next/link';
+import {
+    useGetTaskDetailsQuery,
+    useUpdateTaskDetailsMutation,
+} from '@/app/services/taskDetailsApi';
+import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 
 type ButtonProps = {
     buttonName: string;
@@ -33,7 +36,6 @@ type TextAreaProps = {
 };
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
-
     return (
         <button
             type="button"
@@ -58,81 +60,110 @@ function Textarea(props: TextAreaProps) {
 }
 
 type Props = {
-    url: string;
+    url?: string;
     taskID: string;
 };
 
-const initialState = {
-    taskDetails: {} as task,
-    editedDetails: {} as task,
-};
-
-const TaskDetails: FC<Props> = ({ url, taskID }) => {
+const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
     const isAuthorized = useContext(isUserAuthorizedContext);
-    const [state, dispatch] = useReducer(taskDetailsReducer, initialState);
+
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const initialDataRef = useRef<Record<string, any> | task>({});
-    const { response, error, isLoading } = useFetch(url);
+    const [taskTitle, setTaskTitle] = useState<string[]>([]);
+    const [id, setId] = useState<string[]>([]);
+    const [isFetched, setIsFetched] = useState<boolean>(false);
+    const initialDataRef = useRef<Record<string, any> | undefined>({});
+    const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
     const { SUCCESS, ERROR } = ToastTypes;
-    const { taskDetails } = state;
+
+    const taskDetailsData = data?.taskData;
+    const [taskDetails, setTaskDetails] = useState<
+        Record<string, any> | undefined
+    >({});
+    const [editedDetails, setEditedDetails] = useState({});
+
+    const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+
     useEffect(() => {
-        const fetchedData: task = { ...response.taskData };
-        dispatch({ type: 'setTaskDetails', payload: fetchedData });
+        const fetchedData = data?.taskData;
+        setTaskDetails(taskDetailsData);
         initialDataRef.current = fetchedData;
-    }, [isLoading, response]);
+    }, [isLoading, data]);
 
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const formData = {
+            ...taskDetails,
             [event.target.name]: event.target.value,
         };
-        dispatch({ type: 'setEditedDetails', payload: formData });
-        dispatch({ type: 'setTaskDetails', payload: formData });
+        setEditedDetails(formData);
+        setTaskDetails(formData);
     }
 
     function onCancel() {
         setIsEditing(false);
-        dispatch({ type: 'reset' });
-        dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
+        setTaskDetails(initialDataRef.current);
     }
 
     async function onSave() {
         setIsEditing(false);
-        try {
-            const responseData = await updateTaskDetails(
-                state.editedDetails,
-                taskID
-            );
-            if (responseData.status === 204) {
-                initialDataRef.current = state.taskDetails;
-                toast(SUCCESS, 'Successfully saved');
-            }
-        } catch (err) {
-            toast(ERROR, 'Could not save changes');
-            dispatch({
-                type: 'setTaskDetails',
-                payload: initialDataRef.current,
-            });
-        }
-        dispatch({ type: 'reset', payload: initialDataRef.current });
+        updateTaskDetails({
+            editedDetails,
+            taskID,
+        })
+            .unwrap()
+            .then(() => toast(SUCCESS, 'Successfully saved'))
+            .catch((error) => toast(ERROR, error.data.message));
+        setTaskDetails(initialDataRef.current);
     }
 
     function renderLoadingComponent() {
         if (isLoading) {
             return <p className={classNames.textCenter}>Loading...</p>;
         }
-        if (error) {
+        if (isError) {
             return (
                 <p className={classNames.textCenter}>Something went wrong!</p>
             );
         }
     }
 
-    const shouldRenderParentContainer = () =>
-        !isLoading && !error && taskDetails;
-
+    const fetchDependentTasks = async (
+        taskDetails: taskDetailsDataType['taskData']
+    ) => {
+        try {
+            if (taskDetails?.dependsOn) {
+                const dependsOnTitles = await Promise.all(
+                    taskDetails.dependsOn.map(async (taskId: string) => {
+                        const { requestPromise } = fetch({
+                            url: `${TASKS_URL}/${taskId}/details`,
+                        });
+                        const data = await requestPromise;
+                        return [data?.data?.taskData?.title, taskId];
+                    })
+                );
+                const titles = dependsOnTitles.map(
+                    (innerArray) => innerArray[0]
+                );
+                const ids = dependsOnTitles.map(
+                    (innerArrays) => innerArrays[1]
+                );
+                setTaskTitle(titles);
+                setId(ids);
+                setIsFetched(true);
+            }
+        } catch (error) {
+            console.error('Error while fetching taskdependency', error);
+        }
+    };
+    if (taskDetailsData && !isFetched) {
+        fetchDependentTasks(taskDetailsData);
+    }
+    const navigateToTask = (taskId: string) => {
+        router.push(`/tasks/${taskId}`);
+    };
+    const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <>
             <NavBar />
@@ -216,6 +247,39 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                         value={taskDetails?.featureUrl}
                                     />
                                 </div>
+                            </TaskContainer>
+                            <TaskContainer
+                                title="Task DependsOn"
+                                hasImg={false}
+                            >
+                                <ol
+                                    className={
+                                        classNames[
+                                            'task_dependency_list_container'
+                                        ]
+                                    }
+                                >
+                                    {taskTitle.length ? (
+                                        taskTitle.map((title, index) => (
+                                            <Link
+                                                href={`/tasks/${id[index]}`}
+                                                key={index}
+                                            >
+                                                <li
+                                                    onClick={() =>
+                                                        navigateToTask(
+                                                            id[index]
+                                                        )
+                                                    }
+                                                >
+                                                    {title}
+                                                </li>
+                                            </Link>
+                                        ))
+                                    ) : (
+                                        <p>No Dependency</p>
+                                    )}
+                                </ol>
                             </TaskContainer>
                         </section>
 

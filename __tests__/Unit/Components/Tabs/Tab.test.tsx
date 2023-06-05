@@ -52,7 +52,9 @@ describe('Tabs Component', () => {
         );
         const presentTabs = screen.getAllByRole('button');
         for (let i = 0; i < presentTabs.length; i++) {
-            expect(presentTabs[i].textContent).toBe(TABS[i]);
+            expect(presentTabs[i].textContent).toBe(
+                TABS[i].split('_').join(' ')
+            );
         }
     });
 });
