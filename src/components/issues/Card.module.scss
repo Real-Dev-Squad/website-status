@@ -14,12 +14,6 @@ $card-text: #78716c;
     margin: 1rem auto;
     justify-content: space-between;
     position: relative;
-
-    &:hover {
-        border-color: #e5e5e5;
-        filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.02))
-            drop-shadow(0 8px 5px rgba(0, 0, 0, 0.06));
-    }
 }
 
 .card__top__details__button {
