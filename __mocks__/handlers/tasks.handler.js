@@ -200,7 +200,7 @@ const taskHandlers = [
 						},
 						links: ['testLink delete latedr'],
 						featureUrl:
-              'https://github.com/Real-Dev-Squad/website-status/issues/98',
+							'https://github.com/Real-Dev-Squad/website-status/issues/98',
 						assignee: 'aman-saxena',
 						status: 'pending',
 						participants: [],
@@ -350,7 +350,7 @@ const taskHandlers = [
 						participants: [],
 						status: 'pending',
 						featureUrl:
-              'https://github.com/Real-Dev-Squad/website-status/issues/94',
+							'https://github.com/Real-Dev-Squad/website-status/issues/94',
 					},
 					{
 						id: 'b2D07SwQaRICrRfhI0EA',
@@ -530,7 +530,7 @@ const taskHandlers = [
 						},
 						type: 'feature',
 						featureUrl:
-              'https://github.com/Real-Dev-Squad/website-status/issues/59',
+							'https://github.com/Real-Dev-Squad/website-status/issues/59',
 						lossRate: {
 							dinero: '0',
 							neelam: '0',
@@ -626,6 +626,48 @@ const taskHandlers = [
 	rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
 		return res(ctx.delay(5000), ctx.status(204));
 	}),
+	rest.post(`${URL}/tasks`, async (req, res, ctx) => {
+		const body = await req.json();
+		return res(
+			ctx.status(200),
+			ctx.json({
+				message: 'Task created successfully!',
+				task: body
+			})
+		);
+	})
 ];
+
+export const failedGetTasks = rest.get(
+	`${URL}/tasks`,
+	(_, res, ctx) => {
+		return res(ctx.status(500, new Error('Internal server occurred!'))
+		);
+	}
+);
+
+export const failedAddNewTaskHandler = rest.post(
+	`${URL}/tasks`,
+	(_, res, ctx) => {
+		return res(ctx.status(404), ctx.json({
+			'statusCode': 400,
+			'error': 'Bad Request',
+			'message': '"title" is required'
+		})
+		);
+	}
+);
+
+export const failedUpdateTaskHandler = rest.patch(
+	`${URL}/tasks/:taskId`,
+	(_, res, ctx) => {
+		return res(ctx.status(404), ctx.json({
+			statusCode: 404,
+			error: 'Not Found',
+			message: 'Task not found'
+		})
+		);
+	}
+);
 
 export default taskHandlers;
