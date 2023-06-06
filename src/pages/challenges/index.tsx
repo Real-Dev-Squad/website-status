@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
-import { challengeDataType, ChallengeMap } from '@/interfaces/challenge.type';
+import { challenge, ChallengeMap } from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
 import { LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
@@ -13,7 +13,7 @@ import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetChallengesQuery } from '@/app/services/challengesApi';
 
 const renderCardList = (
-    challengeSection: challengeDataType['content'],
+    challengeSection: challenge[],
     key: string,
     userId: string
 ) => {
@@ -35,6 +35,7 @@ const Challenges: FC = () => {
         useGetUserQuery(skipToken);
     const { isLoggedIn } = useAuthenticated();
     const { data, isLoading, isError } = useGetChallengesQuery();
+
     useEffect(() => {
         if (isLoggedIn && data !== undefined) {
             if (data) {
@@ -59,24 +60,36 @@ const Challenges: FC = () => {
                             </p>
                         ) : (
                             <>
-                                {Object.keys(filteredChallenge).length > 0 ? (
-                                    Object.keys(filteredChallenge).map(
-                                        (key) =>
-                                            filteredChallenge[key].length >
-                                                0 && (
+                                {filteredChallenge.length > 0 ? (
+                                    filteredChallenge.map((item) => {
+                                        const { Active, Completed } = item;
+                                        if (
+                                            Active.length > 0 ||
+                                            Completed.length > 0
+                                        ) {
+                                            return (
                                                 <Accordion
                                                     open
-                                                    title={key}
-                                                    key={key}
+                                                    title="Challenges"
+                                                    key="challenges"
                                                 >
-                                                    {renderCardList(
-                                                        filteredChallenge[key],
-                                                        key,
-                                                        user?.id ?? ''
-                                                    )}
+                                                    {Active.length > 0 &&
+                                                        renderCardList(
+                                                            Active,
+                                                            'Active',
+                                                            user?.id ?? ''
+                                                        )}
+                                                    {Completed.length > 0 &&
+                                                        renderCardList(
+                                                            Completed,
+                                                            'Completed',
+                                                            user?.id ?? ''
+                                                        )}
                                                 </Accordion>
-                                            )
-                                    )
+                                            );
+                                        }
+                                        return null;
+                                    })
                                 ) : (
                                     <p>No Challenges Found</p>
                                 )}
