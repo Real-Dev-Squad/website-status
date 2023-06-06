@@ -79,12 +79,11 @@ const StandUpContainer: FC = () => {
         <>
             <section className="container">
                 <div className={styles.standupContainer}>
-                    <div className={styles.standupBanner}>
-                        <ProgressHeader
-                            totalMissedUpdates={totalMissedUpdates}
-                            updateType="Standup"
-                        />
-                    </div>
+                    <ProgressHeader
+                        totalMissedUpdates={totalMissedUpdates}
+                        updateType="Standup"
+                    />
+
                     <div className={styles.standupUpdateContainer}>
                         <h1 className={styles.standupTitle}>Standup Update</h1>
                         <form

@@ -8,16 +8,18 @@ const ProgressHeader: FC<progressHeaderProps> = ({
 }) => {
     return (
         <>
-            <p className={styles.bannerPara}>
-                You have
-                <span className={styles.totalMissedUpdates}>
-                    {totalMissedUpdates} missed
-                </span>
-                {updateType} updates
-            </p>
-            <p className={styles.bannerPara}>
-                Let&apos;s try to avoid having zero days
-            </p>
+            <div className={styles.standupBanner}>
+                <p className={styles.bannerPara}>
+                    You have
+                    <span className={styles.totalMissedUpdates}>
+                        {totalMissedUpdates} missed
+                    </span>
+                    {updateType} updates
+                </p>
+                <p className={styles.bannerPara}>
+                    Let&apos;s try to avoid having zero days
+                </p>
+            </div>
         </>
     );
 };
