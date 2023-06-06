@@ -38,6 +38,7 @@ import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import userData from '@/helperFunctions/getUser';
 import ProgressIndicator from './ProgressIndicator/ProgressIndicator';
+import EditButton from './EditButton/EditButton';
 
 type Props = {
     content: task;
@@ -322,19 +323,6 @@ const Card: FC<Props> = ({
         }
     };
 
-    const EditButton = () => (
-        <div className={classNames.editButton} data-testid="edit-button">
-            <Image
-                src="/pencil.webp"
-                alt="pencil icon to represent edit button"
-                width={iconWidth}
-                height={iconHeight}
-                onClick={onEditRoute}
-                tabIndex={0}
-            />
-        </div>
-    );
-
     const AssigneeButton = () => {
         return (
             <button
@@ -571,7 +559,9 @@ const Card: FC<Props> = ({
                 {cardDetails.status !== 'Completed' && isIssueClosed() && (
                     <CloseTaskButton />
                 )}
-                {isUserAuthorized && showEditButton && <EditButton />}
+                {isUserAuthorized && showEditButton && (
+                    <EditButton handleClick={onEditRoute} size={25} />
+                )}
             </div>
         );
 
@@ -728,7 +718,9 @@ const Card: FC<Props> = ({
                     <CloseTaskButton />
                 )
             }
-            {isUserAuthorized && showEditButton && <EditButton />}
+            {isUserAuthorized && showEditButton && (
+                <EditButton handleClick={onEditRoute} size={25} />
+            )}
         </div>
     );
 };
