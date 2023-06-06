@@ -66,6 +66,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { query } = router;
+    const isUpdateProgressButtonEnabled = !!query.dev;
     const isAuthorized = useContext(isUserAuthorizedContext);
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -284,13 +286,17 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {isUpdateProgressButtonEnabled && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
