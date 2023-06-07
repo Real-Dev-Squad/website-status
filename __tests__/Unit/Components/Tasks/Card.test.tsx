@@ -10,6 +10,7 @@ import {
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import useUserData from '@/hooks/useUserData';
 
 const DEFAULT_PROPS = {
     content: {
@@ -39,6 +40,19 @@ const DEFAULT_PROPS = {
     shouldEdit: false,
     onContentChange: jest.fn(),
 };
+
+jest.mock('@/hooks/useUserData', () => {
+    return () => ({
+        data: {
+            roles: {
+                admin: true,
+                super_user: false,
+            },
+        },
+        isUserAuthorized: true,
+        isSuccess: true,
+    });
+});
 
 const getFirestoreDateNDaysBefore = (n = 1) => {
     const d = new Date();

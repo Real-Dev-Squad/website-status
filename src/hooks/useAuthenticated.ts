@@ -22,26 +22,32 @@ const useAuthenticated = (): HooksReturnType => {
         profilePicture: DEFAULT_AVATAR,
     });
 
-    const { data, isUserAuthorized } = useUserData();
+    const { data, isUserAuthorized, isSuccess } = useUserData();
+
+    const finalUserName = data?.username !== undefined ? data?.username : '';
+    const finalFirstName =
+        data?.first_name !== undefined ? data?.first_name : '';
+    const finalProfile =
+        data?.picture?.url !== undefined ? data?.picture?.url : '';
+
     const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            try {
-                if (data?.incompleteUserDetails) {
-                    window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
-                }
-                setUserData({
-                    userName: data?.username,
-                    firstName: data?.first_name,
-                    profilePicture: data?.picture?.url,
-                });
-                setIsLoggedIn(true);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setIsLoading(false);
+
+            if (data?.incompleteUserDetails) {
+                window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
             }
+            setUserData({
+                userName: finalUserName,
+                firstName: finalFirstName,
+                profilePicture: finalProfile,
+            });
+
+            if (isSuccess) setIsLoggedIn(true);
+
+            setIsLoading(false);
         };
         fetchData();
     }, []);

@@ -1,9 +1,23 @@
-import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import React, { useRef } from 'react';
+import { fireEvent, screen, render } from '@testing-library/react';
 import { TaskLevelMap } from '@/components/tasks/card/TaskLevelMap';
 import taskItem from '@/interfaces/taskItem.type';
 
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
+import useUserData from '@/hooks/useUserData';
+
+jest.mock('@/hooks/useUserData', () => {
+    return () => ({
+        data: {
+            roles: {
+                admin: true,
+                super_user: false,
+            },
+        },
+        isUserAuthorized: true,
+        isSuccess: true,
+    });
+});
 
 describe('TaskLevelMap', () => {
     const taskTagLevel: taskItem[] = [
@@ -48,15 +62,14 @@ describe('TaskLevelMap', () => {
 
     it('renders a list of task tags with remove button when shouldEdit and isUserAuthorized are true', () => {
         const deleteTaskTagLevel = jest.fn();
-        renderWithProviders(
-            // <isUserAuthorizedContext.Provider value={true}>
+
+        render(
             <TaskLevelMap
                 taskTagLevel={taskTagLevel}
                 shouldEdit={true}
                 itemId={'1'}
                 deleteTaskTagLevel={deleteTaskTagLevel}
             />
-            // </isUserAuthorizedContext.Provider>
         );
 
         const tagElements = screen.getAllByTestId('tag-name');

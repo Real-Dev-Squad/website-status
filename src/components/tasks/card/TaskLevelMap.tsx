@@ -14,7 +14,7 @@ export const TaskLevelMap = ({
     itemId,
     deleteTaskTagLevel,
 }: Props) => {
-    const { data: userData, isUserAuthorized } = useUserData();
+    const { isUserAuthorized } = useUserData();
     return (
         <div className={classNames.taskTagLevelContainer}>
             {taskTagLevel?.map((item) => (
