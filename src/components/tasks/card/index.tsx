@@ -31,7 +31,7 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
-import SuggestionBox from './SuggestionBox';
+import SuggestionBox from '../SuggestionBox/SuggestionBox';
 
 type Props = {
     content: task;
