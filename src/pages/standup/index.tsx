@@ -22,10 +22,10 @@ const StandUp: FC = memo(function StandUp() {
         if (!isAuthenticating && isLoggedIn) {
             if (isLoading) {
                 return <p>Loading...</p>;
+            } else if (isLoggedIn) {
+                return <StandUpContainer />;
             } else {
-                return isLoggedIn ? (
-                    <StandUpContainer />
-                ) : (
+                return (
                     <div>
                         <p>You are not Authorized</p>
                         <a href={LOGIN_URL} target="_blank" rel="noreferrer">
