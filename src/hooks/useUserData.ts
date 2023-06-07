@@ -5,7 +5,6 @@ const useUserData = () => {
     const adminData = data?.roles.admin;
     const superUserData = data?.roles.super_user;
     const isUserAuthorized = !!adminData || !!superUserData;
-    console.log('the data is ', data);
     return { data, isUserAuthorized, isSuccess };
 };
 
