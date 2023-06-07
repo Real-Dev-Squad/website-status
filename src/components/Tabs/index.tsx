@@ -7,20 +7,32 @@ type TabsProps = {
     activeTab: Tab;
 };
 
-const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
-    <>
-        {tabs.map((tab: Tab) => (
-            <button
-                key={tab}
-                onClick={() => onSelect(tab)}
-                className={`${styles.tabButton} ${
-                    activeTab === tab ? styles.active : ''
-                }`}
-            >
-                {tab.split('_').join(' ')}
-            </button>
-        ))}
-    </>
-);
+function changeName(name: string) {
+    if (name === 'COMPLETED') {
+        return 'DONE';
+    } else if (name === 'AVAILABLE') {
+        return 'UNASSINGED';
+    } else {
+        return name.split('_').join(' ');
+    }
+}
+
+const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => {
+    return (
+        <>
+            {tabs.map((tab: Tab) => (
+                <button
+                    key={tab}
+                    onClick={() => onSelect(tab)}
+                    className={`${styles.tabButton} ${
+                        activeTab === tab ? styles.active : ''
+                    }`}
+                >
+                    {changeName(tab)}
+                </button>
+            ))}
+        </>
+    );
+};
 
 export default Tabs;
