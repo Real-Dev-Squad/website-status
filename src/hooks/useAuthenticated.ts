@@ -22,13 +22,7 @@ const useAuthenticated = (): HooksReturnType => {
         profilePicture: DEFAULT_AVATAR,
     });
 
-    const { data, isUserAuthorized, isSuccess } = useUserData();
-
-    const finalUserName = data?.username !== undefined ? data?.username : '';
-    const finalFirstName =
-        data?.first_name !== undefined ? data?.first_name : '';
-    const finalProfile =
-        data?.picture?.url !== undefined ? data?.picture?.url : '';
+    const { data, isSuccess } = useUserData();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -40,9 +34,9 @@ const useAuthenticated = (): HooksReturnType => {
                 window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
             }
             setUserData({
-                userName: finalUserName,
-                firstName: finalFirstName,
-                profilePicture: finalProfile,
+                userName: data?.username ?? '',
+                firstName: data?.first_name ?? '',
+                profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
             });
 
             if (isSuccess) setIsLoggedIn(true);
