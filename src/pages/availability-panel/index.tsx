@@ -17,7 +17,7 @@ const AvailabilityPanel: FC = () => {
     const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
     const [refreshData, setRefreshData] = useState<boolean>(false);
     const {
-        data: idleMembersList,
+        data: idleMembersList = [],
         isError: membersError,
         isLoading: isMemberLoading,
         refetch: refreshMemberList,
