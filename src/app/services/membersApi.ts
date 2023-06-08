@@ -4,7 +4,7 @@ import { api } from './api';
 type IdleMembersResponse = { idleMemberUserNames: string[] };
 export const membersApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getIdleMembers: build.query<IdleMembersResponse, void>({
+        getIdleMembers: build.query<string[], void>({
             query: () => MEMBERS_IDLE,
             providesTags: ['Idle_Members'],
             transformResponse: (response: IdleMembersResponse) => {
