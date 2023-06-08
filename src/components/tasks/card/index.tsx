@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 
@@ -32,6 +32,8 @@ import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
+import { userDataType } from '@/interfaces/user.type';
+import { GithubInfo } from '@/interfaces/suggestionBox.type';
 
 type Props = {
     content: task;
@@ -39,6 +41,8 @@ type Props = {
     onContentChange?: (changeId: string, changeObject: object) => void;
     updateTask?: (taskId: string, details: updateTaskDetails) => void;
 };
+
+let timer: NodeJS.Timeout;
 
 const Card: FC<Props> = ({
     content,
@@ -66,7 +70,7 @@ const Card: FC<Props> = ({
 
     const [keyLongPressed] = useKeyLongPressed();
 
-    const [assigneeName, setAssigneeName] = useState('');
+    // const [assigneeName, setAssigneeName] = useState('');
 
     // TODO: the below state should be removed when mutation for updating tasks is implemented
     const [loading, setLoading] = useState<boolean>(false);
@@ -75,6 +79,11 @@ const Card: FC<Props> = ({
         itemId: cardDetails.id,
     });
     const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
+
+    const [isLoadingSuggestions, setIsLoadingSuggestions] =
+        useState<boolean>(false);
+    const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
+    const [assigneeName, setAssigneeName] = useState<string>('');
 
     const { onEditRoute } = useEditMode();
     const router = useRouter();
@@ -375,7 +384,7 @@ const Card: FC<Props> = ({
         );
     };
 
-    const handleAssigneeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         if (e.target.value) setShowSuggestion(true);
         else setShowSuggestion(false);
@@ -384,6 +393,43 @@ const Card: FC<Props> = ({
     const handleClick = (userName: string) => {
         setAssigneeName(userName);
         setShowSuggestion(false);
+    };
+
+    const fetchUsers = async (e: string) => {
+        if (!e) return;
+        setIsLoadingSuggestions(true);
+
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
+        try {
+            const { requestPromise } = fetch({ url });
+            const users = await requestPromise;
+            const usersData = users.data.users;
+            const suggestedUsers: GithubInfo[] = [];
+            usersData.map((data: userDataType) => {
+                suggestedUsers.push({
+                    github_id: data.github_id,
+                    profileImageUrl: data?.picture?.url
+                        ? data.picture.url
+                        : placeholderImageURL,
+                });
+            });
+
+            setSuggestions(suggestedUsers);
+            setIsLoadingSuggestions(false);
+        } catch (error: any) {
+            setIsLoadingSuggestions(false);
+            toast(ERROR, error.message);
+        }
+    };
+
+    const debounce = (fn: (e: string) => void, delay: number) => {
+        return function (e: string) {
+            clearTimeout(timer);
+            setSuggestions([]);
+            timer = setTimeout(() => {
+                fn(e);
+            }, delay);
+        };
     };
 
     // show redesign only on dev
@@ -460,21 +506,25 @@ const Card: FC<Props> = ({
                             />
                         </span>
                         <input
+                            value={assigneeName}
                             className={classNames.cardStrongFont}
                             contentEditable={shouldEdit}
                             onKeyDown={(e) => {
                                 handleChange(e, 'assignee');
                             }}
-                            onChange={handleAssigneeName}
-                            value={assigneeName}
+                            onChange={(e) => {
+                                handleAssignment(e);
+                                debounce(fetchUsers, 400)(e.target.value);
+                            }}
                             role="button"
                             tabIndex={0}
                         />
 
                         {showSuggestion && (
                             <SuggestionBox
-                                assigneeName={assigneeName}
+                                suggestions={suggestions}
                                 onClickName={handleClick}
+                                loading={isLoadingSuggestions}
                             />
                         )}
                     </div>
