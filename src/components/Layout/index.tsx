@@ -29,7 +29,7 @@ const Layout: FC<Props> = ({ children }) => {
 
     // Dev feature toggle
     const { query } = router;
-    const dev = !!query.dev;
+    const dev = true;
 
     return (
         <div className={styles.layout}>
