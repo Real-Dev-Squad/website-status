@@ -25,24 +25,24 @@ const useAuthenticated = (): HooksReturnType => {
     const { data, isSuccess } = useUserData();
 
     const [isLoading, setIsLoading] = useState(false);
+    const fetchData = async () => {
+        setIsLoading(true);
+
+        if (data?.incompleteUserDetails) {
+            window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
+        }
+        setUserData({
+            userName: data?.username ?? '',
+            firstName: data?.first_name ?? '',
+            profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
+        });
+
+        if (isSuccess) setIsLoggedIn(true);
+
+        setIsLoading(false);
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            setIsLoading(true);
-
-            if (data?.incompleteUserDetails) {
-                window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
-            }
-            setUserData({
-                userName: data?.username ?? '',
-                firstName: data?.first_name ?? '',
-                profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
-            });
-
-            if (isSuccess) setIsLoggedIn(true);
-
-            setIsLoading(false);
-        };
         fetchData();
     }, []);
     return { userData, isLoggedIn, isLoading };

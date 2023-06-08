@@ -1,10 +1,9 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import { TaskLevelMap } from '@/components/tasks/card/TaskLevelMap';
 import taskItem from '@/interfaces/taskItem.type';
 
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
-import useUserData from '@/hooks/useUserData';
 
 jest.mock('@/hooks/useUserData', () => {
     return () => ({
