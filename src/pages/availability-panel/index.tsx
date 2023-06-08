@@ -23,9 +23,7 @@ const AvailabilityPanel: FC = () => {
         refetch: refreshMemberList,
     } = useGetIdleMembersQuery();
 
-
     useEffect(() => {
-
         const fetchTasks = async () => {
             try {
                 const url = `${BASE_URL}/tasks`;
@@ -46,7 +44,6 @@ const AvailabilityPanel: FC = () => {
         fetchTasks();
     }, [refreshData]);
 
-
     let isErrorOrIsLoading;
     if (error || membersError) {
         isErrorOrIsLoading = (
@@ -55,7 +52,6 @@ const AvailabilityPanel: FC = () => {
             </span>
         );
     } else if (isTaskLoading || isMemberLoading) {
-
         isErrorOrIsLoading = (
             <span className={classNames.statusMessage}>Loading...</span>
         );
