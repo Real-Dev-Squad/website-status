@@ -6,6 +6,15 @@ type TabsProps = {
     onSelect: (tab: Tab) => void;
     activeTab: Tab;
 };
+function changeName(name: string) {
+    if (name === 'COMPLETED') {
+        return 'DONE';
+    } else if (name === 'AVAILABLE') {
+        return 'UNASSINGED';
+    } else {
+        return name.split('_').join(' ');
+    }
+}
 
 const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
     <>
@@ -17,7 +26,7 @@ const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
                     activeTab === tab ? styles.active : ''
                 }`}
             >
-                {tab.split('_').join(' ')}
+                {changeName(tab)}
             </button>
         ))}
     </>
