@@ -1,18 +1,8 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
 import useUserData from './useUserData';
-
-type Userdata = {
-    userName: string | undefined;
-    firstName: string | undefined;
-    profilePicture: string | undefined;
-};
-
-type HooksReturnType = {
-    userData: Userdata;
-    isLoggedIn: boolean;
-    isLoading: boolean;
-};
+import { Userdata } from '@/interfaces/userDataType';
+import { HooksReturnType } from '@/interfaces/HooksReturnsType';
 
 const useAuthenticated = (): HooksReturnType => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

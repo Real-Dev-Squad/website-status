@@ -17,7 +17,6 @@ import useFetch from '@/hooks/useFetch';
 import useUpdateTask from '@/hooks/useUpdateTask';
 import groupTasksByStatus from '@/utils/groupTasksByStatus';
 import { useEditMode } from '@/hooks/useEditMode';
-import { useSelector } from 'react-redux';
 import useUserData from '@/hooks/useUserData';
 
 export const TasksContent = () => {
