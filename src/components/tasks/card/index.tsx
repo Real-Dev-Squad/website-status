@@ -98,7 +98,7 @@ const Card: FC<Props> = ({
         }
     }, [keyLongPressed]);
 
-    const [showSuggestion, setShowSuggestion] = useState(false);
+    const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
@@ -505,28 +505,30 @@ const Card: FC<Props> = ({
                                 height={30}
                             />
                         </span>
-                        <input
-                            value={assigneeName}
-                            className={classNames.cardStrongFont}
-                            contentEditable={shouldEdit}
-                            onKeyDown={(e) => {
-                                handleChange(e, 'assignee');
-                            }}
-                            onChange={(e) => {
-                                handleAssignment(e);
-                                debounce(fetchUsers, 400)(e.target.value);
-                            }}
-                            role="button"
-                            tabIndex={0}
-                        />
-
-                        {showSuggestion && (
-                            <SuggestionBox
-                                suggestions={suggestions}
-                                onClickName={handleClick}
-                                loading={isLoadingSuggestions}
+                        <div style={{ position: 'relative' }}>
+                            <input
+                                value={assigneeName}
+                                className={classNames.cardStrongFont}
+                                contentEditable={shouldEdit}
+                                onKeyDown={(e) => {
+                                    handleChange(e, 'assignee');
+                                }}
+                                onChange={(e) => {
+                                    handleAssignment(e);
+                                    debounce(fetchUsers, 400)(e.target.value);
+                                }}
+                                role="button"
+                                tabIndex={0}
                             />
-                        )}
+
+                            {showSuggestion && (
+                                <SuggestionBox
+                                    suggestions={suggestions}
+                                    onClickName={handleClick}
+                                    loading={isLoadingSuggestions}
+                                />
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -650,15 +652,38 @@ const Card: FC<Props> = ({
                             <span className={classNames.cardSpecialFont}>
                                 Assignee:
                             </span>
-                            <span
-                                className={classNames.cardStrongFont}
-                                contentEditable={shouldEdit}
-                                onKeyDown={(e) => handleChange(e, 'assignee')}
-                                role="button"
-                                tabIndex={0}
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    display: 'inline-block',
+                                }}
                             >
-                                {cardDetails.assignee}
-                            </span>
+                                <input
+                                    value={assigneeName}
+                                    className={classNames.cardStrongFont}
+                                    contentEditable={shouldEdit}
+                                    onKeyDown={(e) => {
+                                        handleChange(e, 'assignee');
+                                    }}
+                                    onChange={(e) => {
+                                        handleAssignment(e);
+                                        debounce(
+                                            fetchUsers,
+                                            400
+                                        )(e.target.value);
+                                    }}
+                                    role="button"
+                                    tabIndex={0}
+                                />
+
+                                {showSuggestion && (
+                                    <SuggestionBox
+                                        suggestions={suggestions}
+                                        onClickName={handleClick}
+                                        loading={isLoadingSuggestions}
+                                    />
+                                )}
+                            </div>
                             <span className={classNames.contributorImage}>
                                 <Image
                                     src={assigneeProfileImageURL}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import SuggestionList from './SuggestionList';
 import Loading from './Loading';
@@ -15,12 +15,13 @@ const SuggestionBox: FC<Props> = ({ onClickName, suggestions, loading }) => {
         <SuggestionList suggestions={suggestions} onClickName={onClickName} />
     );
 
-    if (loading) renderComponent = <Loading />;
-    else if (suggestions.length === 0) {
+    if (loading) {
+        renderComponent = <Loading />;
+    } else if (suggestions.length === 0) {
         renderComponent = <UserNotFound />;
     }
 
-    return <div style={{ position: 'relative' }}>{renderComponent}</div>;
+    return <>{renderComponent}</>;
 };
 
 export default SuggestionBox;
