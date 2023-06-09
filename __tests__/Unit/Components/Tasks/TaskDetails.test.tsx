@@ -1,5 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 import TaskDetails from '@/components/taskDetails';
+import { store } from '@/app/store';
+import { Provider } from 'react-redux';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
@@ -36,6 +39,23 @@ describe.skip('TaskDetails Page', () => {
             /No description available/i
         );
         expect(descriptionElement).not.toBeInTheDocument();
+    });
+});
+describe('Update Progress button', () => {
+    test('Should render update Progress button in dev mode', () => {
+        const { getByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails url={details.url} taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(
+            getByRole('button', {
+                name: /update progress/i,
+            })
+        ).toBeInTheDocument();
     });
 });
 
