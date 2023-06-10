@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node';
 import handlers from '../../../__mocks__/handlers/members.handler.js';
-import React, { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
