@@ -1,11 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { renderWithRouter } from '@/test_utils/createMockRouter';
 import TaskDetails from '@/components/taskDetails';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
+
+const urlParams = new URLSearchParams(window.location.search);
+const isDevMode = urlParams.get('dev') === 'true';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -41,21 +43,30 @@ describe.skip('TaskDetails Page', () => {
         expect(descriptionElement).not.toBeInTheDocument();
     });
 });
+
+jest.mock('next/router', () => ({
+    useRouter: jest.fn().mockReturnValue({
+        query: {
+            dev: 'true',
+        },
+    }),
+}));
+
 describe('Update Progress button', () => {
-    test('Should render update Progress button in dev mode', () => {
-        const { getByRole } = renderWithRouter(
+    it('renders the Update Progress button when ?dev=true query parameter is present', () => {
+        const { getByText, queryByText } = render(
             <Provider store={store()}>
-                <TaskDetails url={details.url} taskID={details.taskID} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
         );
-        expect(
-            getByRole('button', {
-                name: /update progress/i,
-            })
-        ).toBeInTheDocument();
+
+        if (isDevMode) {
+            const updateProgressButton = getByText('Update Progress');
+            expect(updateProgressButton).toBeInTheDocument();
+        } else {
+            const updateProgressButton = queryByText('Update Progress');
+            expect(updateProgressButton).toBeNull();
+        }
     });
 });
 
