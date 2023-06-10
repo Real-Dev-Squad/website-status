@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useContext } from 'react';
+import { FC, useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 
@@ -85,6 +85,7 @@ const Card: FC<Props> = ({
         useState<boolean>(false);
     const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
     const [assigneeName, setAssigneeName] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const { onEditRoute } = useEditMode();
     const router = useRouter();
@@ -393,6 +394,7 @@ const Card: FC<Props> = ({
     };
 
     const handleClick = (userName: string) => {
+        inputRef.current?.focus();
         setAssigneeName(userName);
         setShowSuggestion(false);
     };
@@ -516,9 +518,9 @@ const Card: FC<Props> = ({
                                     }}
                                 >
                                     <input
+                                        ref={inputRef}
                                         value={assigneeName}
                                         className={classNames.cardStrongFont}
-                                        contentEditable={shouldEdit}
                                         onKeyDown={(e) => {
                                             handleChange(e, 'assignee');
                                         }}
@@ -679,11 +681,11 @@ const Card: FC<Props> = ({
                                         }}
                                     >
                                         <input
+                                            ref={inputRef}
                                             value={assigneeName}
                                             className={
                                                 classNames.cardStrongFont
                                             }
-                                            contentEditable={shouldEdit}
                                             onKeyDown={(e) => {
                                                 handleChange(e, 'assignee');
                                             }}
