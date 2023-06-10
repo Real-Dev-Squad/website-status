@@ -1,5 +1,5 @@
 export type GithubInfo = {
-    github_id: string;
+    github_id: string | undefined;
     profileImageUrl: string;
 };
 
