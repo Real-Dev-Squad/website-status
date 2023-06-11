@@ -1,12 +1,12 @@
-import { FC } from 'react';
+import { FC, HTMLProps } from 'react';
 import classNames from '@/components/tasks/Card/ProgressIndicator/ProgressIndicator.module.scss';
 
 import task from '@/interfaces/task.type';
 import moment from 'moment';
 
-type Props = {
-    content: task;
-};
+interface Props extends HTMLProps<HTMLDivElement> {
+    taskDetails: task;
+}
 
 function inputParser(input: string) {
     const parsedDate = moment(new Date(parseInt(input, 10) * 1000));
@@ -51,17 +51,19 @@ function handleProgressColor(
     return classNames.progressYellow;
 }
 
-export const ProgressIndicator: FC<Props> = ({ content }) => (
+const ProgressIndicator: FC<Props> = ({ taskDetails }) => (
     <div className={classNames.progressIndicator}>
         <div
             className={`${handleProgressColor(
-                content.percentCompleted,
-                content.startedOn,
-                content.endsOn
+                taskDetails.percentCompleted,
+                taskDetails.startedOn,
+                taskDetails.endsOn
             )} ${classNames.progressStyle}`}
             style={{
-                width: `${content.percentCompleted}%`,
+                width: `${taskDetails.percentCompleted}%`,
             }}
         ></div>
     </div>
 );
+
+export default ProgressIndicator;
