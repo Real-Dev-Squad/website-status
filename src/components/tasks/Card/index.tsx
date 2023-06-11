@@ -559,8 +559,12 @@ const Card: FC<Props> = ({
                 {cardDetails.status !== 'Completed' && isIssueClosed() && (
                     <CloseTaskButton />
                 )}
-                {isUserAuthorized && showEditButton && (
-                    <EditButton handleClick={onEditRoute} size={25} />
+                {!isUserAuthorized && !showEditButton && (
+                    <EditButton
+                        handleClick={onEditRoute}
+                        size={25}
+                        tabIndex={0}
+                    />
                 )}
             </div>
         );
@@ -719,7 +723,7 @@ const Card: FC<Props> = ({
                 )
             }
             {isUserAuthorized && showEditButton && (
-                <EditButton handleClick={onEditRoute} size={25} />
+                <EditButton handleClick={onEditRoute} size={25} tabIndex={0} />
             )}
         </div>
     );
