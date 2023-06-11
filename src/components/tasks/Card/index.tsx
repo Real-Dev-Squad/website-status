@@ -559,7 +559,7 @@ const Card: FC<Props> = ({
                 {cardDetails.status !== 'Completed' && isIssueClosed() && (
                     <CloseTaskButton />
                 )}
-                {!isUserAuthorized && !showEditButton && (
+                {isUserAuthorized && showEditButton && (
                     <EditButton
                         handleClick={onEditRoute}
                         size={25}
