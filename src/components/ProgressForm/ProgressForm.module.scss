@@ -12,15 +12,15 @@ $section-padding-top-bottom: $base-unit * 30;
 $section-padding-left-right: $base-unit * 25;
 
 .header {
+    width: 60%;
     margin: $diff-margin auto;
     background-color: $color-blue;
     color: $color-white;
-    padding-top: $section-padding-top-bottom;
-    padding-bottom: $section-padding-top-bottom;
-    padding-left: $section-padding-left-right;
-    width: 95%;
     border: 1px solid $color-red;
     font-size: $base-unit * 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mark {
@@ -30,13 +30,13 @@ $section-padding-left-right: $base-unit * 25;
 
 .container {
     margin: $diff-margin auto;
-    padding: 0 $section-padding-left-right;
+    width: 60%;
 }
 
 .formHeading {
     color: $color-blue;
     margin: $diff-margin auto;
-    padding: 0 $section-padding-left-right;
+    font-size: $base-unit * 10;
 }
 
 .date {
@@ -55,11 +55,11 @@ $section-padding-left-right: $base-unit * 25;
 }
 
 .input {
-    width: 90%;
     display: block;
     resize: none;
     padding: $base-unit * 2;
     border-radius: $base-unit * 2;
+    width: 100%;
 }
 
 .buttonEnabled {
@@ -79,4 +79,13 @@ $section-padding-left-right: $base-unit * 25;
     border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
     font-size: $base-font-size * 4;
+}
+
+@media (max-width: 770px) {
+    .container {
+        width: 90%;
+    }
+    .header {
+        width: 90%;
+    }
 }
