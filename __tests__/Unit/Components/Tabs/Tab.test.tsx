@@ -1,12 +1,13 @@
 import Tabs from '@/components/Tabs';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Tab, TABS } from '@/interfaces/task.type';
+import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
 
 function changeName(name: string) {
-    if (name === 'COMPLETED') {
-        return 'DONE';
-    } else if (name === 'AVAILABLE') {
-        return 'UNASSINGED';
+    if (name === COMPLETED) {
+        return DONE;
+    } else if (name === AVAILABLE) {
+        return UNASSINGED;
     } else {
         return name.split('_').join(' ');
     }
