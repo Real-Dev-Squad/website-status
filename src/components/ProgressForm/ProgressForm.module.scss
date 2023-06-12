@@ -11,7 +11,7 @@ $similar-margin: $base-unit * 8;
 $section-padding-top-bottom: $base-unit * 30;
 $section-padding-left-right: $base-unit * 25;
 
-.header {
+.banner {
     width: 60%;
     margin: $diff-margin auto;
     background-color: $color-blue;
@@ -85,7 +85,7 @@ $section-padding-left-right: $base-unit * 25;
     .container {
         width: 90%;
     }
-    .header {
+    .banner {
         width: 90%;
     }
 }
