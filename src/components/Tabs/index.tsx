@@ -1,5 +1,6 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
 import { Tab } from '@/interfaces/task.type';
+import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
 
 type TabsProps = {
     tabs: Tab[];
@@ -7,10 +8,10 @@ type TabsProps = {
     activeTab: Tab;
 };
 function changeName(name: string) {
-    if (name === 'COMPLETED') {
-        return 'DONE';
-    } else if (name === 'AVAILABLE') {
-        return 'UNASSINGED';
+    if (name === COMPLETED) {
+        return DONE;
+    } else if (name === AVAILABLE) {
+        return UNASSINGED;
     } else {
         return name.split('_').join(' ');
     }
