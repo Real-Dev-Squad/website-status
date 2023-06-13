@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import Footer from '@/components/footer';
 import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
+import { useGetUserQuery } from '@/app/services/userApi';
+import { Loader } from '../tasks/card/Loader';
 
 interface Props {
     children?: ReactNode;
@@ -23,6 +25,7 @@ const navBarContent = (title: string, refUrl: string, isActive = false) => {
 
 const Layout: FC<Props> = ({ children }) => {
     const router = useRouter();
+    const { isLoading } = useGetUserQuery();
 
     // Dev feature toggle
     const { query } = router;
@@ -31,20 +34,28 @@ const Layout: FC<Props> = ({ children }) => {
     return (
         <div className={styles.layout}>
             <NavBar />
+            {isLoading && <Loader />}
             <div className={styles.wrapper}>
                 <div className={styles.header}>
                     {navBarContent('Tasks', '/', router.pathname === '/')}|
+                    {navBarContent(
+                        'Issues',
+                        '/issues',
+                        router.pathname === '/issues'
+                    )}
+                    |
                     {navBarContent(
                         'Mine',
                         '/mine',
                         router.pathname === '/mine'
                     )}
-                    |
+                    {/* TODO: Uncomment when DS(Chanllenges) is ready */}
+                    {/* |
                     {navBarContent(
                         'DS',
                         '/challenges',
                         router.pathname === '/challenges'
-                    )}
+                    )} */}
                     |
                     {navBarContent(
                         'Open PRs',

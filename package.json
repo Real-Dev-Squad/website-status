@@ -7,9 +7,10 @@
     "run-command:dev-server": "next dev -p 3000",
     "run-command:reverse-ssl": "local-ssl-proxy --source 443 --target 3000",
     "dev": "run-p run-command:*",
+    "build:staging":"cp .env.development .env.local && next build",
     "build": "next build",
     "start": "next start -p $PORT",
-    "test": "jest --watch",
+    "test": "jest --coverage",
     "lint": "next lint",
     "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx",
     "postinstall": "husky install",
@@ -27,11 +28,8 @@
   "license": "ISC",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^13.3.0",
-    "@types/jest": "^29.2.5",
+    "markdown-to-jsx": "^7.2.0",
     "axios": "^1.2.2",
-    "husky": "8.0.3",
     "moment": "^2.29.4",
     "next": "^13.1.1",
     "next-redux-wrapper": "^8.1.0",
@@ -41,10 +39,7 @@
     "react-redux": "^8.0.5",
     "react-toastify": "^9.0.8",
     "sass": "^1.45.2",
-    "sass-loader": "^13.0.2",
-    "ts-node": "^10.4.0",
-    "tslib": "^2.3.1",
-    "typescript": "^4.5.4"
+    "sass-loader": "^13.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
@@ -55,11 +50,19 @@
     "@storybook/manager-webpack5": "^6.4.9",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.4.9",
+    "@testing-library/dom": "^9.0.1",
+    "@testing-library/react-hooks": "^8.0.1",
     "@types/next": "^9.0.0",
     "@types/node": "^18.7.8",
     "@types/react": "^18.0.17",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^18.0.6",
+    "ts-node": "^10.4.0",
+    "tslib": "^2.3.1",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^13.3.0",
+    "@types/jest": "^29.2.5",
+    "typescript": "^4.5.4",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
     "babel-jest": "^29.3.1",
@@ -82,7 +85,8 @@
     "style-loader": "^3.3.1",
     "ts-jest": "^29.0.3",
     "webpack": "^5.76.0",
-    "whatwg-fetch": "^3.6.2"
+    "whatwg-fetch": "^3.6.2",
+    "husky": "8.0.3"
   },
   "engines": {
     "node": "18.x"

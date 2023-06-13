@@ -31,3 +31,10 @@
 .active {
     color: #e30464;
 }
+
+@media (max-width: 970px) {
+    .navbar {
+        display: flex;
+        flex-direction: row;
+    }
+}

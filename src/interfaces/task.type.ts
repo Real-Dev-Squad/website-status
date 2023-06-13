@@ -18,17 +18,30 @@ type task = {
     lossRate: award;
     isNoteworthy: boolean;
     createdBy: string;
+    github?: {
+        issue: {
+            assignee?: string;
+            status: string;
+            id: number;
+            closedAt?: string;
+            assigneeRdsInfo?: {
+                firstName: string | null | undefined;
+                lastName: string | null | undefined;
+                username: string;
+            };
+        };
+    };
 };
 
 enum Tab {
-    ASSIGNED = 'ASSIGNED',
-    COMPLETED = 'COMPLETED',
-    AVAILABLE = 'AVAILABLE',
     IN_PROGRESS = 'IN_PROGRESS',
+    ASSIGNED = 'ASSIGNED',
+    AVAILABLE = 'AVAILABLE',
     NEEDS_REVIEW = 'NEEDS_REVIEW',
     IN_REVIEW = 'IN_REVIEW',
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
+    COMPLETED = 'COMPLETED',
 }
 
 const TABS = Object.values(Tab);

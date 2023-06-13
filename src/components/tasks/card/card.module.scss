@@ -34,28 +34,45 @@ $seeMoreTasksShadow: #595959cc;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-}
+    max-width: 720px;
 
+    @media (max-width: 48rem) {
+        width: 100%;
+    }
+}
+.card_updated {
+    border-radius: 10px;
+}
 .cardItems {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 48rem) {
+        flex-wrap: wrap;
+    }
+}
+.card_updated .cardItems:not(:nth-child(1)) {
+    margin-top: 0.8rem;
 }
 
-.cardItems {
-    span {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 2px;
-        align-items: center;
-        margin-top: 10px;
-    }
+.dateInfo {
+    margin-top: 0.8rem;
 }
 
 .cardTitle {
+    text-decoration: none;
     font-size: 1.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-weight: 500;
     color: #041187;
+
+    @media (max-width: 48rem) {
+        width: 100%;
+        white-space: normal;
+    }
 }
 
 .cardSpecialFont {
@@ -68,10 +85,19 @@ $seeMoreTasksShadow: #595959cc;
     font-size: 1.3rem;
     font-weight: 500;
 }
+.contributor {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.8rem;
+}
+.completionDate {
+    padding-left: 0.5rem;
+}
 
 .contributorImage {
     img {
-        border-radius: 40%;
+        border-radius: 50%;
     }
 }
 
@@ -87,7 +113,16 @@ $seeMoreTasksShadow: #595959cc;
 
 .progressContainer {
     width: 12rem;
+    display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.progressContainerUpdated {
+    width: 12rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 }
 
 .progressIndicator {

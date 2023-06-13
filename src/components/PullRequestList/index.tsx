@@ -5,7 +5,7 @@ import PullRequest from '@/components/pullRequests';
 import CardShimmer from '@/components/Loaders/cardShimmer';
 import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
-import { BASE_URL } from '../constants/url';
+import { BASE_URL } from '../../constants/url';
 
 type pullRequestType = {
     title: string;

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import useAuthenticated from '@/hooks/useAuthenticated';
 import Image from 'next/image';
 import {
     LOGIN_URL,
@@ -13,38 +12,74 @@ import {
     STATUS_URL,
     GITHUB_LOGO,
     RDS_LOGO,
-} from '@/components/constants/url';
+} from '@/constants/url';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
+import { useGetUserQuery } from '@/app/services/userApi';
+import { Loader } from '../tasks/card/Loader';
 
 const NavBar = () => {
-    const { userData, isLoggedIn } = useAuthenticated();
+    const isLoggedIn = true;
+    const { data: userData } = useGetUserQuery();
+    // const { userData, isLoggedIn } = useAuthenticated();
     const [toggleDropdown, setToggleDropdown] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
 
     return (
-        <nav className={styles.navBar}>
-            <div className={styles.navLinks}>
-                <a className={styles.logo} href={HOME_URL}>
-                    <Image
-                        width="45"
-                        height="45"
-                        src={RDS_LOGO}
-                        alt="real-dev squad"
-                    />
-                </a>
-                <a href={WELCOME_URL}>Welcome</a>
-                <a href={EVENTS_URL}>Events</a>
-                <a href={MEMBERS_URL}>Members</a>
-                <a href={CRYPTO_URL}>Crypto</a>
-                <a className={styles.active} href={STATUS_URL}>
-                    Status
-                </a>
+        <nav data-testid="navbar" className={styles.navBar}>
+            <div
+                data-testid="hamburgerIcon"
+                className={styles.hamburgerIcon}
+                onClick={() => setShowMenu(!showMenu)}
+            >
+                <img
+                    src="/ham.png"
+                    alt="hamburger_logo"
+                    className={styles.icon}
+                />
             </div>
-            <div>
+            <div
+                className={`${
+                    showMenu ? `${styles.navBarMenu}` : `${styles.navLinks}`
+                }`}
+            >
+                <ul className={styles.mobile_menu}>
+                    <li>
+                        <a className={styles.logo} href={HOME_URL}>
+                            <Image
+                                data-testid="logo"
+                                width="45"
+                                height="45"
+                                src={RDS_LOGO}
+                                alt="real-dev squad"
+                            />
+                        </a>
+                    </li>
+                    <li>
+                        <a href={WELCOME_URL}>Welcome</a>
+                    </li>
+                    <li>
+                        <a href={EVENTS_URL}>Events</a>
+                    </li>
+                    <li>
+                        <a href={MEMBERS_URL}>Members</a>
+                    </li>
+                    {/* TODO: Uncomment when crypto page is ready */}
+                    {/* <li>
+                        <a href={CRYPTO_URL}>Crypto</a>
+                    </li> */}
+                    <li>
+                        <a href={STATUS_URL} className={styles.active}>
+                            Status
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div className={styles.userProfile}>
                 {!isLoggedIn ? (
                     <Link href={LOGIN_URL}>
-                        <p className={styles.signInLink}>
-                            Sign In With GitHub
+                        <button className={styles.signInLink}>
+                            Sign In With Github
                             <Image
                                 className={styles.githubLogo}
                                 src={GITHUB_LOGO}
@@ -52,7 +87,7 @@ const NavBar = () => {
                                 width="20"
                                 alt="GitHub Icon"
                             />
-                        </p>
+                        </button>
                     </Link>
                 ) : (
                     <div
@@ -60,13 +95,13 @@ const NavBar = () => {
                         onClick={() => setToggleDropdown(!toggleDropdown)}
                     >
                         <div className={styles.userGreetMsg}>
-                            Hello, {userData.firstName}
+                            Hello, {userData?.first_name}
                         </div>
                         <Image
                             className={styles.userProfilePic}
                             src={
-                                userData.profilePicture
-                                    ? `${userData.profilePicture}`
+                                userData?.picture?.url
+                                    ? `${userData?.picture?.url}`
                                     : `${DEFAULT_AVATAR}`
                             }
                             alt="Profile Pic"
