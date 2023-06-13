@@ -23,6 +23,7 @@ import {
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
+import Layout from '@/components/Layout';
 
 type ButtonProps = {
     buttonName: string;
@@ -165,8 +166,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     };
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
-        <>
-            <NavBar />
+        <Layout hideHeader={true}>
             {renderLoadingComponent()}
             {shouldRenderParentContainer() && (
                 <div className={classNames.parentContainer}>
@@ -333,7 +333,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                     </section>
                 </div>
             )}
-        </>
+        </Layout>
     );
 };
 

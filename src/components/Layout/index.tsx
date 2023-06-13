@@ -10,6 +10,7 @@ import { Loader } from '../tasks/card/Loader';
 
 interface Props {
     children?: ReactNode;
+    hideHeader?: boolean; // Hides header when set to true
 }
 
 const navBarContent = (title: string, refUrl: string, isActive = false) => {
@@ -24,7 +25,7 @@ const navBarContent = (title: string, refUrl: string, isActive = false) => {
     );
 };
 
-const Layout: FC<Props> = ({ children }) => {
+const Layout: FC<Props> = ({ hideHeader, children }) => {
     const router = useRouter();
     const { isLoading } = useGetUserQuery();
 
