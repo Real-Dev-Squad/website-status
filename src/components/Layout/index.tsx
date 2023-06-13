@@ -9,6 +9,7 @@ import { Loader } from '../tasks/card/Loader';
 
 interface Props {
     children?: ReactNode;
+    hideHeader?: boolean; // Hides header when set to true
 }
 
 const navBarContent = (title: string, refUrl: string, isActive = false) => {
@@ -23,7 +24,7 @@ const navBarContent = (title: string, refUrl: string, isActive = false) => {
     );
 };
 
-const Layout: FC<Props> = ({ children }) => {
+const Layout: FC<Props> = ({ hideHeader, children }) => {
     const router = useRouter();
     const { isLoading } = useGetUserQuery();
 
@@ -36,54 +37,56 @@ const Layout: FC<Props> = ({ children }) => {
             <NavBar />
             {isLoading && <Loader />}
             <div className={styles.wrapper}>
-                <div className={styles.header}>
-                    {navBarContent('Tasks', '/', router.pathname === '/')}|
-                    {navBarContent(
-                        'Issues',
-                        '/issues',
-                        router.pathname === '/issues'
-                    )}
-                    |
-                    {navBarContent(
-                        'Mine',
-                        '/mine',
-                        router.pathname === '/mine'
-                    )}
-                    {/* TODO: Uncomment when DS(Chanllenges) is ready */}
-                    {/* |
+                {!hideHeader ? (
+                    <div className={styles.header}>
+                        {navBarContent('Tasks', '/', router.pathname === '/')}|
+                        {navBarContent(
+                            'Issues',
+                            '/issues',
+                            router.pathname === '/issues'
+                        )}
+                        |
+                        {navBarContent(
+                            'Mine',
+                            '/mine',
+                            router.pathname === '/mine'
+                        )}
+                        {/* TODO: Uncomment when DS(Chanllenges) is ready */}
+                        {/* |
                     {navBarContent(
                         'DS',
                         '/challenges',
                         router.pathname === '/challenges'
                     )} */}
-                    |
-                    {navBarContent(
-                        'Open PRs',
-                        '/openPRs',
-                        router.pathname === '/openPRs'
-                    )}
-                    |
-                    {navBarContent(
-                        'Stale PRs',
-                        '/stale-pr',
-                        router.pathname === '/stale-pr'
-                    )}
-                    |
-                    {navBarContent(
-                        'Idle Users',
-                        '/idle-users',
-                        router.pathname === '/idle-users'
-                    )}
-                    {dev && (
-                        <>
-                            |
-                            {navBarContent(
-                                'Availability Panel',
-                                '/availability-panel'
-                            )}
-                        </>
-                    )}
-                </div>
+                        |
+                        {navBarContent(
+                            'Open PRs',
+                            '/openPRs',
+                            router.pathname === '/openPRs'
+                        )}
+                        |
+                        {navBarContent(
+                            'Stale PRs',
+                            '/stale-pr',
+                            router.pathname === '/stale-pr'
+                        )}
+                        |
+                        {navBarContent(
+                            'Idle Users',
+                            '/idle-users',
+                            router.pathname === '/idle-users'
+                        )}
+                        {dev && (
+                            <>
+                                |
+                                {navBarContent(
+                                    'Availability Panel',
+                                    '/availability-panel'
+                                )}
+                            </>
+                        )}
+                    </div>
+                ) : null}
                 {children}
             </div>
             <Footer />
