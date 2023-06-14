@@ -38,14 +38,14 @@ export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
 };
 
 enum Tab {
-    ASSIGNED = 'ASSIGNED',
-    COMPLETED = 'COMPLETED',
-    AVAILABLE = 'AVAILABLE',
     IN_PROGRESS = 'IN_PROGRESS',
+    ASSIGNED = 'ASSIGNED',
+    AVAILABLE = 'AVAILABLE',
     NEEDS_REVIEW = 'NEEDS_REVIEW',
     IN_REVIEW = 'IN_REVIEW',
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
+    COMPLETED = 'COMPLETED',
 }
 
 const TABS = Object.values(Tab);

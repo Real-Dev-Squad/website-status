@@ -18,7 +18,7 @@ export const TasksContent = () => {
     const { isEditMode } = useEditMode();
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
-    const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
+    const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
 
     const onSelect = (tab: Tab) => {
         setActiveTab(tab);
