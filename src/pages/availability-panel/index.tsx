@@ -18,8 +18,8 @@ const AvailabilityPanel: FC = () => {
     const [refreshData, setRefreshData] = useState<boolean>(false);
     const {
         data: idleMembersList = [],
-        isError: membersError,
-        isLoading: isMemberLoading,
+        isError: isIdleMembersError,
+        isLoading: isIdleMemberLoading,
         refetch: refreshMemberList,
     } = useGetIdleMembersQuery();
 
@@ -45,13 +45,13 @@ const AvailabilityPanel: FC = () => {
     }, [refreshData]);
 
     let isErrorOrIsLoading;
-    if (error || membersError) {
+    if (error || isIdleMembersError) {
         isErrorOrIsLoading = (
             <span className={classNames.statusMessage}>
                 Something went wrong, please contact admin!
             </span>
         );
-    } else if (isTaskLoading || isMemberLoading) {
+    } else if (isTaskLoading || isIdleMemberLoading) {
         isErrorOrIsLoading = (
             <span className={classNames.statusMessage}>Loading...</span>
         );
