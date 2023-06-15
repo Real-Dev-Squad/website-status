@@ -1,33 +1,93 @@
 import { render } from '@testing-library/react';
 import Card from '@/components/issues/Card';
-import { IssueItem } from '@/interfaces/issueItem.type';
+import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 
-const DEFAULT_PROPS: IssueItem = {
-    html_url: 'https://github.com/Real-Dev-Squad/todo-action-items/issues/11',
-    id: 732825067,
-    title: 'Status view to all features being built for our app',
-    user: {
-        login: 'ankushdharkar',
-    },
-    labels: [],
-    state: 'open',
-    assignee: {
-        login: 'whyDontI',
-    },
-    created_at: '2020-10-30T02:08:48Z',
-    body: 'We want to have a status page where we can view (and in future sort, filter) all the major tasks happening under development.\r\n\r\nThis will give us some visibility into what everyone is currently building and make it easier to collaborate.\r\n\r\nFirst view would look like this:\r\n![Roadmap](https://user-images.githubusercontent.com/1935403/97651644-ebf2e200-1a19-11eb-8a92-026d10ed8eee.png)\r\n',
-};
+import {
+    issueResponseNullBody,
+    issuesResponseSearchedWithQuery,
+} from '../../../../__mocks__/db/issues';
 
 describe('Issue card', () => {
+    test('Should render issue title correctly', () => {
+        const screen = render(
+            <MarkdownRenderer
+                content={issuesResponseSearchedWithQuery[0].title}
+            />
+        );
+        const titleElement = screen.getByText(
+            'One-Click Issue to Task Conversion v1 Release'
+        );
+        expect(titleElement).toBeInTheDocument();
+    });
     test('Should render issue information correctly', () => {
-        const screen = render(<Card issue={DEFAULT_PROPS} />);
-        const date = new Date(DEFAULT_PROPS.created_at).toDateString();
-
-        expect(screen.getByText(DEFAULT_PROPS.title)).toBeInTheDocument();
-        expect(screen.getByText(DEFAULT_PROPS.html_url)).toBeInTheDocument();
+        const screen = render(
+            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        );
         expect(
-            screen.getByText(`Opened on ${date} by ${DEFAULT_PROPS.user.login}`)
+            screen.getByText(issuesResponseSearchedWithQuery[0].html_url)
         ).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('Convert to task');
+    });
+
+    test('Should render issue created by information correctly', () => {
+        const screen = render(
+            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        );
+        const date = new Date(
+            issuesResponseSearchedWithQuery[0].created_at
+        ).toDateString();
+        const issueUser = screen.getByText(
+            issuesResponseSearchedWithQuery[0].user.login
+        );
+        expect(screen.getByText(`Opened on ${date} by`)).toBeInTheDocument();
+        expect(issueUser).toBeInTheDocument();
+        expect(issueUser).toHaveAttribute(
+            'href',
+            issuesResponseSearchedWithQuery[0].user.html_url
+        );
+    });
+
+    test('Should render the assignee information correctly', () => {
+        const screen = render(
+            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        );
+        const assignee = screen.getByText(
+            issuesResponseSearchedWithQuery[0].assignee?.login
+        );
+        expect(assignee).toBeInTheDocument();
+        expect(assignee).toHaveAttribute(
+            'href',
+            issuesResponseSearchedWithQuery[0].assignee?.html_url
+        );
+    });
+
+    test('Should render "No description provided." if the issue body is null', () => {
+        const screen = render(
+            <MarkdownRenderer
+                content={
+                    issueResponseNullBody.body ?? 'No description provided.'
+                }
+            />
+        );
+        const contentElement = screen.getByText(
+            issueResponseNullBody.body ?? 'No description provided.'
+        );
+        expect(contentElement).toBeInTheDocument();
+    });
+
+    test('Should render the MarkdownRenderer component with the correct content', () => {
+        const body = issuesResponseSearchedWithQuery[0].body;
+        const screen = render(<MarkdownRenderer content={body} />);
+        const bodyElement = screen.getByText(
+            'One-Click Issue To Task Conversion- v1 Release'
+        );
+        const markdownElement = screen.getByText('Closes #92');
+        const markdownElement2 = screen.getByText(
+            'The following sub-tasks are to be completed to release one-click issue to task conversion feature to main branch'
+        );
+
+        expect(bodyElement).toBeInTheDocument();
+        expect(markdownElement).toBeInTheDocument();
+        expect(markdownElement2).toBeInTheDocument();
     });
 });

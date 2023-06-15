@@ -1,11 +1,21 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
 import { Tab } from '@/interfaces/task.type';
+import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
 
 type TabsProps = {
     tabs: Tab[];
     onSelect: (tab: Tab) => void;
     activeTab: Tab;
 };
+function changeName(name: string) {
+    if (name === COMPLETED) {
+        return DONE;
+    } else if (name === AVAILABLE) {
+        return UNASSINGED;
+    } else {
+        return name.split('_').join(' ');
+    }
+}
 
 const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
     <>
@@ -17,7 +27,7 @@ const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
                     activeTab === tab ? styles.active : ''
                 }`}
             >
-                {tab}
+                {changeName(tab)}
             </button>
         ))}
     </>

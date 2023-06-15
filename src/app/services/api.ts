@@ -16,11 +16,12 @@ export const api = createApi({
         'Users',
         'Status',
         'Tasks',
+        'Task_Details',
+        'Mine_Tasks',
         'TaskTag',
         'User',
         'Tags',
         'Levels',
-        'Mine_Tasks',
         'User_Standup',
     ],
     /**

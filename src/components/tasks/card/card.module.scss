@@ -4,6 +4,7 @@ $red: #ff0000;
 $yellow: #ecef08;
 $white: #e5e5e5;
 $black: #252525;
+$grey: #adadad;
 $taskTagLevelBorder: #4169e1;
 $taskTagLevelBg: hsla(225, 73%, 57%, 0.5);
 $seeMoreTasksBg: #041187;
@@ -34,7 +35,7 @@ $seeMoreTasksShadow: #595959cc;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-    width: 50rem;
+    max-width: 720px;
 
     @media (max-width: 48rem) {
         width: 100%;
@@ -61,6 +62,7 @@ $seeMoreTasksShadow: #595959cc;
 }
 
 .cardTitle {
+    text-decoration: none;
     font-size: 1.6rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -103,6 +105,9 @@ $seeMoreTasksShadow: #595959cc;
 .cardStrongFont {
     font-size: 1.3rem;
     font-weight: 500;
+    border-radius: 5px;
+    width: 7rem;
+    height: 1.5rem;
 }
 
 .overdueTask {
