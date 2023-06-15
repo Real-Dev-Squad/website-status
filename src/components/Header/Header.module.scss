@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 10px;
+}
+
+.link {
+    padding: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #041484;
+    cursor: pointer;
+    background: none;
+    border: none;
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        height: 1rem;
+        width: 2px;
+        right: 0;
+        background-color: #00000077;
+    }
+}
+
+// Hide | for the last elements
+.header a:last-child {
+    .link::after {
+        display: none;
+    }
+}
+
+.active {
+    color: #e30464;
+}
