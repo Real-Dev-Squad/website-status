@@ -34,7 +34,6 @@ import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
-import userData from '@/helperFunctions/getUser';
 
 type Props = {
     content: task;
@@ -70,8 +69,6 @@ const Card: FC<Props> = ({
     const [showEditButton, setShowEditButton] = useState(false);
 
     const [keyLongPressed] = useKeyLongPressed();
-
-    // const [assigneeName, setAssigneeName] = useState('');
 
     // TODO: the below state should be removed when mutation for updating tasks is implemented
     const [loading, setLoading] = useState<boolean>(false);
@@ -148,7 +145,6 @@ const Card: FC<Props> = ({
                     new Date(`${event.target.value}`).getTime() / 1000;
                 toChange[changedProperty] = toTimeStamp;
             }
-            console.log(toChange);
 
             onContentChange(toChange.id, {
                 [changedProperty]: toChange[changedProperty],
@@ -389,8 +385,7 @@ const Card: FC<Props> = ({
 
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
-        if (e.target.value) setShowSuggestion(true);
-        else setShowSuggestion(false);
+        e.target.value ? setShowSuggestion(true) : setShowSuggestion(false);
     };
 
     const handleClick = (userName: string) => {
@@ -511,12 +506,7 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <div
-                                    style={{
-                                        position: 'relative',
-                                        display: 'inline-block',
-                                    }}
-                                >
+                                <div className={classNames.suggestionDiv}>
                                     <input
                                         ref={inputRef}
                                         value={assigneeName}
@@ -535,12 +525,15 @@ const Card: FC<Props> = ({
                                         tabIndex={0}
                                     />
 
-                                    {showSuggestion && (
-                                        <SuggestionBox
-                                            suggestions={suggestions}
-                                            onClickName={handleClick}
-                                            loading={isLoadingSuggestions}
-                                        />
+                                    {isLoadingSuggestions ? (
+                                        <Loader showText={true} />
+                                    ) : (
+                                        showSuggestion && (
+                                            <SuggestionBox
+                                                suggestions={suggestions}
+                                                onClickName={handleClick}
+                                            />
+                                        )
                                     )}
                                 </div>
                             )
@@ -674,12 +667,7 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <div
-                                        style={{
-                                            position: 'relative',
-                                            display: 'inline-block',
-                                        }}
-                                    >
+                                    <div className={classNames.suggestionDiv}>
                                         <input
                                             ref={inputRef}
                                             value={assigneeName}
@@ -700,12 +688,15 @@ const Card: FC<Props> = ({
                                             tabIndex={0}
                                         />
 
-                                        {showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onClickName={handleClick}
-                                                loading={isLoadingSuggestions}
-                                            />
+                                        {isLoadingSuggestions ? (
+                                            <Loader showText={true} />
+                                        ) : (
+                                            showSuggestion && (
+                                                <SuggestionBox
+                                                    suggestions={suggestions}
+                                                    onClickName={handleClick}
+                                                />
+                                            )
                                         )}
                                     </div>
                                 )

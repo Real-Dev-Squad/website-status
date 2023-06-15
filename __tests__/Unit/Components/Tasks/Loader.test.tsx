@@ -8,4 +8,10 @@ describe('Loader', () => {
         const loadingSpinner = screen.getByTestId('loader');
         expect(loadingSpinner).toBeInTheDocument();
     });
+
+    it('render Loading.. text on screen', () => {
+        render(<Loader showText={true} />);
+        const loadingText = screen.getByTestId('loading');
+        expect(loadingText).toBeInTheDocument();
+    });
 });
