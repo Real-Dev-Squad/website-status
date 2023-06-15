@@ -45,3 +45,25 @@ describe('useGetTaskDetailsQuery', () => {
         expect(nextResponse.data).toBeDefined();
     });
 });
+
+describe('useGetTasksDependencyDetailsQuery', () => {
+    test('returns DependencyDetails', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetTaskDetailsQuery(details.taskID),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+        const nextResponse = result.current;
+
+        expect(nextResponse.data).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+        expect(nextResponse.data).toBeDefined();
+    });
+});

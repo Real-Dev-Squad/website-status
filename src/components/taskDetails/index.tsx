@@ -15,14 +15,12 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
-import { TASKS_URL } from '@/constants/url';
-import fetch from '@/helperFunctions/fetch';
 import Link from 'next/link';
 import {
     useGetTaskDetailsQuery,
+    useGetTasksDependencyDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 
 type ButtonProps = {
     buttonName: string;
@@ -69,11 +67,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const isAuthorized = useContext(isUserAuthorizedContext);
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [taskTitle, setTaskTitle] = useState<string[]>([]);
-    const [id, setId] = useState<string[]>([]);
-    const [isFetched, setIsFetched] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
     const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
+    const taskDependencyIds: string[] = data?.taskData?.dependsOn || [];
+    const {
+        data: dependencyData,
+        isLoading: Loading,
+        isError: error,
+    } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
     const { SUCCESS, ERROR } = ToastTypes;
 
     const taskDetailsData = data?.taskData;
@@ -127,38 +128,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                 <p className={classNames.textCenter}>Something went wrong!</p>
             );
         }
-    }
-
-    const fetchDependentTasks = async (
-        taskDetails: taskDetailsDataType['taskData']
-    ) => {
-        try {
-            if (taskDetails?.dependsOn) {
-                const dependsOnTitles = await Promise.all(
-                    taskDetails.dependsOn.map(async (taskId: string) => {
-                        const { requestPromise } = fetch({
-                            url: `${TASKS_URL}/${taskId}/details`,
-                        });
-                        const data = await requestPromise;
-                        return [data?.data?.taskData?.title, taskId];
-                    })
-                );
-                const titles = dependsOnTitles.map(
-                    (innerArray) => innerArray[0]
-                );
-                const ids = dependsOnTitles.map(
-                    (innerArrays) => innerArrays[1]
-                );
-                setTaskTitle(titles);
-                setId(ids);
-                setIsFetched(true);
-            }
-        } catch (error) {
-            console.error('Error while fetching taskdependency', error);
-        }
-    };
-    if (taskDetailsData && !isFetched) {
-        fetchDependentTasks(taskDetailsData);
     }
     const navigateToTask = (taskId: string) => {
         router.push(`/tasks/${taskId}`);
@@ -259,23 +228,27 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         ]
                                     }
                                 >
-                                    {taskTitle.length ? (
-                                        taskTitle.map((title, index) => (
-                                            <Link
-                                                href={`/tasks/${id[index]}`}
-                                                key={index}
-                                            >
-                                                <li
-                                                    onClick={() =>
-                                                        navigateToTask(
-                                                            id[index]
-                                                        )
-                                                    }
+                                    {Loading ? (
+                                        <div>Loading...</div>
+                                    ) : (dependencyData ?? []).length ? (
+                                        (dependencyData ?? []).map(
+                                            (task, index) => (
+                                                <Link
+                                                    href={`/tasks/${task.id}`}
+                                                    key={index}
                                                 >
-                                                    {title}
-                                                </li>
-                                            </Link>
-                                        ))
+                                                    <li
+                                                        onClick={() =>
+                                                            navigateToTask(
+                                                                task.id
+                                                            )
+                                                        }
+                                                    >
+                                                        {task.title}
+                                                    </li>
+                                                </Link>
+                                            )
+                                        )
                                     ) : (
                                         <p>No Dependency</p>
                                     )}
