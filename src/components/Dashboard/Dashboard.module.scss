@@ -29,6 +29,7 @@ $color-black: #000;
     background-color: $color-blue;
     border: none;
     padding: 12px 60px;
+    cursor: pointer;
 }
 
 .btnDisabled {
@@ -38,6 +39,7 @@ $color-black: #000;
     background-color: $color-disabled;
     border: none;
     padding: 12px 60px;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 520px) {
