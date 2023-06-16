@@ -526,7 +526,7 @@ const Card: FC<Props> = ({
                                     />
 
                                     {isLoadingSuggestions ? (
-                                        <Loader showText={true} />
+                                        <Loader />
                                     ) : (
                                         showSuggestion && (
                                             <SuggestionBox
@@ -689,7 +689,7 @@ const Card: FC<Props> = ({
                                         />
 
                                         {isLoadingSuggestions ? (
-                                            <Loader showText={true} />
+                                            <Loader />
                                         ) : (
                                             showSuggestion && (
                                                 <SuggestionBox

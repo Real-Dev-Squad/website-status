@@ -1,15 +1,6 @@
 import classNames from '@/components/tasks/card/card.module.scss';
-import { FC } from 'react';
-import { LoaderProps } from '@/interfaces/suggestionBox.type';
 
-export const Loader: FC<LoaderProps> = ({ showText }) => {
-    if (showText)
-        return (
-            <div className={classNames.loading} data-testid="loading">
-                Loading...
-            </div>
-        );
-
+export const Loader = () => {
     return (
         <div className={classNames.loadingBg}>
             <div className={classNames.spinner}>

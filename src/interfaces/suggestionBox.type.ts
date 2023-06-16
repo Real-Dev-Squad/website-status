@@ -12,7 +12,3 @@ export type ListProps = {
     suggestions: GithubInfo[];
     onClickName: (userName: string) => void;
 };
-
-export type LoaderProps = {
-    showText?: boolean;
-};
