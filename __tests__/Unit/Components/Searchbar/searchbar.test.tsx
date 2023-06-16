@@ -35,7 +35,7 @@ describe('test searchbar component', function () {
 
         const searchBtn = screen.getByTestId('search_btn') as HTMLButtonElement;
 
-        fireEvent.change(input, { tatget: { value: '123' } });
+        fireEvent.change(input, { target: { value: '123' } });
         fireEvent.click(searchBtn);
 
         expect(splitNSearch).toBeCalledTimes(1);
@@ -46,6 +46,7 @@ describe('test searchbar component', function () {
 
         const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
 
+        fireEvent.change(input, { target: { value: '123' } });
         fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', charCode: 13 });
 
         expect(splitNSearch).toBeCalledTimes(2);
