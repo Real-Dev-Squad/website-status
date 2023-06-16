@@ -1,42 +1,54 @@
-$base-unit: 4px;
-$base-font-size: 0.3rem;
 $color-blue: #041187;
 $color-red: #e30062;
 $color-green: #85da6b;
-$color-disabled: #e5e7eb;
+$color-disabled: #7c7e82;
 $color-white: #fff;
 $color-black: #000;
-$diff-margin: $base-unit * 15;
-$similar-margin: $base-unit * 8;
-$section-padding-top-bottom: $base-unit * 30;
-$section-padding-left-right: $base-unit * 25;
 
 .container {
-    margin: $diff-margin auto;
-    width: 85%;
-}
-
-.searchLabel {
-    font-size: $base-font-size * 5;
-    padding-right: $base-unit * 8;
-    color: $color-blue;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    line-height: 2rem;
+    align-items: center;
 }
 
 .searchBar {
-    background-color: $color-disabled;
-    border-radius: $base-unit * 2;
-    border: none;
-    width: 80%;
-    height: $base-unit * 15;
-    font-size: $base-font-size * 5;
+    width: 600px;
+    font-family: sans-serif;
+    margin-right: 8px;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    padding: 0.5rem;
 }
 
-.searchBtn {
-    margin-left: $base-unit * 8;
+.btnActive {
     background-color: $color-blue;
-    color: $color-white;
-    height: $base-unit * 15;
-    border-radius: $base-unit * 2;
+    border-radius: 4px;
+    color: white;
+    background-color: $color-blue;
     border: none;
-    width: $base-unit * 40;
+    padding: 12px 60px;
+}
+
+.btnDisabled {
+    background-color: $color-blue;
+    border-radius: 4px;
+    color: white;
+    background-color: $color-disabled;
+    border: none;
+    padding: 12px 60px;
+}
+
+@media only screen and (max-width: 520px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+    }
+    .searchBar {
+        width: 100%;
+        margin: 4px;
+    }
 }

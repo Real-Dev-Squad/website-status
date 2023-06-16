@@ -4,6 +4,7 @@ import { splitNSearch } from '@/utils/splitNSearch';
 
 function Searchbar({ label }: searchProps) {
     const [query, setQuery] = useState('');
+    let btnStyle = styles.btnActive;
 
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
@@ -11,25 +12,29 @@ function Searchbar({ label }: searchProps) {
         }
     };
 
+    if (query === '') {
+        btnStyle = styles.btnDisabled;
+    }
+
     return (
         <section className={styles.container}>
-            <label htmlFor="search" className={styles.searchLabel}>
-                {label}
-            </label>
             <input
+                data-testid="searchbar_input"
                 type="text"
                 id="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => handleKeyPress(e)}
                 className={styles.searchBar}
+                placeholder={label + ':'}
             />
             <button
+                data-testid="search_btn"
                 type="submit"
                 onClick={() => {
                     splitNSearch(query);
                 }}
-                className={styles.searchBtn}
+                className={btnStyle}
             >
                 Search
             </button>
