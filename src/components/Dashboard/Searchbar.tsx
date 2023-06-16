@@ -5,6 +5,7 @@ import { splitNSearch } from '@/utils/splitNSearch';
 function Searchbar({ label }: searchProps) {
     const [query, setQuery] = useState('');
     let btnStyle = styles.btnActive;
+    let btnDisabled = false;
 
     const handleKeyPress = (event: KeyboardEvent) => {
         if (event.key === 'Enter') {
@@ -14,6 +15,7 @@ function Searchbar({ label }: searchProps) {
 
     if (query === '') {
         btnStyle = styles.btnDisabled;
+        btnDisabled = true;
     }
 
     return (
@@ -35,6 +37,7 @@ function Searchbar({ label }: searchProps) {
                     splitNSearch(query);
                 }}
                 className={btnStyle}
+                disabled={btnDisabled}
             >
                 Search
             </button>
