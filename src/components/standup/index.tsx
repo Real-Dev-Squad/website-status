@@ -29,7 +29,6 @@ const StandUpContainer: FC = () => {
     const [standupUpdate, setStandupUpdate] =
         useState<standupUpdateType>(defaultState);
 
-    const [buttonDisable, setButtonDisable] = useState<boolean>(true);
     const [addStandup] = useSaveProgressMutation();
     const { data: user } = useGetUserQuery();
     const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
@@ -38,10 +37,6 @@ const StandUpContainer: FC = () => {
     const standupDates = userStandupdata?.data?.map((element) => element.date);
     const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
     const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
-
-    const buttonStyleClass = buttonDisable
-        ? `${styles.nonActiveButton}`
-        : `${styles.activeButton}`;
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setStandupUpdate((prevStandupUpdate) => ({
@@ -56,10 +51,10 @@ const StandUpContainer: FC = () => {
             standupUpdate.blockers !== ''
         );
     };
-    useEffect(() => {
-        const isValid = isValidate();
-        setButtonDisable(!isValid);
-    }, [standupUpdate]);
+
+    const buttonStyleClass = !isValidate()
+        ? `${styles.nonActiveButton}`
+        : `${styles.activeButton}`;
 
     const handleFormSubmission = async (
         event: React.FormEvent<HTMLFormElement>
@@ -124,7 +119,7 @@ const StandUpContainer: FC = () => {
                             </fieldset>
                             <button
                                 className={`${styles.submitButton} ${buttonStyleClass}`}
-                                disabled={buttonDisable}
+                                disabled={!isValidate()}
                                 type="submit"
                             >
                                 Submit

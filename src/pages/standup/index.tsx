@@ -44,18 +44,20 @@ const StandUp: FC = memo(function StandUp() {
         }
     };
 
-    return (
-        <>
-            {dev === 'true' ? (
+    const handleShowStandupComponent = () => {
+        if (dev === 'true') {
+            return (
                 <Layout>
                     <Head title="Standup" />
                     {handleConditionalRendering()}
                 </Layout>
-            ) : (
-                <PageNotFound />
-            )}
-        </>
-    );
+            );
+        } else {
+            return <PageNotFound />;
+        }
+    };
+
+    return <>{handleShowStandupComponent()}</>;
 });
 
 export default StandUp;
