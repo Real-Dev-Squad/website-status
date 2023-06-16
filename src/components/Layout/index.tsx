@@ -27,7 +27,6 @@ const navBarContent = (title: string, refUrl: string, isActive = false) => {
 const Layout: FC<Props> = ({ children }) => {
     const router = useRouter();
     const { isLoading } = useGetUserQuery();
-    const { data } = useUserData();
 
     // Dev feature toggle
     const { query } = router;
