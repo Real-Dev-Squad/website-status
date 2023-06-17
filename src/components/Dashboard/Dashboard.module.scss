@@ -23,7 +23,7 @@ $color-black: #000;
     padding: 0.5rem;
 }
 
-.btnActive {
+.btn {
     background-color: $color-blue;
     border-radius: 4px;
     color: white;
@@ -33,14 +33,10 @@ $color-black: #000;
     cursor: pointer;
 }
 
-.btnDisabled {
-    background-color: $color-blue;
-    border-radius: 4px;
+.btn:disabled {
     color: white;
     background-color: $color-disabled;
-    border: none;
-    padding: 12px 60px;
-    cursor: pointer;
+    cursor: not-allowed;
 }
 
 @media only screen and (max-width: 520px) {
