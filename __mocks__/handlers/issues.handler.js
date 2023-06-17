@@ -39,16 +39,4 @@ export const issuesNoDataFoundHandler = rest.get(
     }
 );
 
-export const failedGetIssuesHandler = rest.get(
-    `${URL}/issues`,
-    (_, res, ctx) => {
-        return res(
-            ctx.status(500), ctx.json({
-                message: 'Internal server occurred!',
-                statusCode: 500
-            })
-        );
-    }
-);
-
 export default issuesHandler;

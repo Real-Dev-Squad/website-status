@@ -7,7 +7,9 @@ import {
     ISSUES_FETCH_ERROR_MESSAGE,
     NO_ISSUES_FOUND_MESSAGE,
 } from '@/constants/messages';
-import { useLazyGetOrgIssuesQuery } from '@/app/services/issuesApi';
+import { ISSUES_URL } from '@/constants/url';
+import { IssueItem } from '@/interfaces/issueItem.type';
+import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 
 type SearchFieldProps = {
     searchText: string;
@@ -37,6 +39,7 @@ const SearchField = ({
                 className={classNames.issueSearchInput}
             />
             <button
+                onClick={onSearchTextSubmitted}
                 className={classNames.issuesSearchSubmitButton}
                 disabled={loading || !searchText.trim()}
             >
@@ -47,9 +50,44 @@ const SearchField = ({
 };
 
 const Issues: FC = () => {
+    const [issueList, setIssueList] = useState<IssueItem[]>([]);
     const [searchText, setSearchText] = useState<string>('');
-    const [getIssues, { data: issueList = [], isLoading, error, isFetching }] =
-        useLazyGetOrgIssuesQuery();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<null | any>(null);
+
+    const fetchIssues = async () => {
+        try {
+            setIsLoading(true);
+            const res = await fetch(`${ISSUES_URL}?q=${searchText}`);
+            const data = await res.json();
+            if ('issues' in data) {
+                // GitHub treats issues and PRs as issues
+                // Filtering issues out from the response
+                const issuesAndPullRequests: PullRequestAndIssueItem[] =
+                    data.issues;
+                // The issue is a PR if the object has a key "pull_request"
+                const onlyIssues: IssueItem[] = issuesAndPullRequests.filter(
+                    (item: PullRequestAndIssueItem) =>
+                        !Object.prototype.hasOwnProperty.call(
+                            item,
+                            'pull_request'
+                        )
+                );
+                setIssueList(onlyIssues);
+            }
+            setIsLoading(false);
+            setError(null);
+        } catch (error) {
+            console.error(error);
+            setIssueList([]);
+            setError(error);
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchIssues();
+    }, []);
 
     const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) =>
         setSearchText(e.target.value);
@@ -66,10 +104,6 @@ const Issues: FC = () => {
         }
     }
 
-    useEffect(() => {
-        getIssues('');
-    }, []);
-
     return (
         <Layout>
             <Head title="Issues" />
@@ -77,8 +111,8 @@ const Issues: FC = () => {
                 <SearchField
                     searchText={searchText}
                     onSearchTextChanged={onSearchTextChanged}
-                    onSearchTextSubmitted={() => getIssues(searchText, true)}
-                    loading={isLoading || isFetching}
+                    onSearchTextSubmitted={fetchIssues}
+                    loading={isLoading}
                 />
                 {renderElement}
             </div>

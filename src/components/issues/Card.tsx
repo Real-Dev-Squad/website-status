@@ -3,14 +3,16 @@ import styles from '@/components/issues/Card.module.scss';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 
+import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
-import { useAddTaskMutation } from '@/app/services/tasksApi';
+import { TASKS_URL } from '../../constants/url';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
     const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
-    const [addTask, { isLoading }] = useAddTaskMutation();
+    const [isLoading, setIsLoading] = useState(false);
+
     const getIssueInfo = () => {
         const issueInfo: any = {
             status: issue.state,
@@ -25,31 +27,37 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     };
 
     const handleClick = async () => {
-        const data = {
-            title: issue.title,
-            type: 'feature',
-            status: 'AVAILABLE',
-            percentCompleted: 0,
-            priority: 'TBD',
-            github: {
-                issue: getIssueInfo(),
-            },
-        };
+        try {
+            setIsLoading(true);
+            const url = TASKS_URL;
+            const data = {
+                title: issue.title,
+                type: 'feature',
+                status: 'AVAILABLE',
+                percentCompleted: 0,
+                priority: 'TBD',
+                github: {
+                    issue: getIssueInfo(),
+                },
+            };
 
-        const response = addTask(data);
-        response
-            .unwrap()
-            .then((_) => {
-                toast(SUCCESS, 'Added the task');
-                setTaskExists(true);
-            })
-            .catch((error) => {
-                if ('response' in error) {
-                    toast(ERROR, error.response.data.message);
-                    return;
-                }
-                toast(ERROR, error.message);
+            const { requestPromise } = fetch({
+                url,
+                method: 'post',
+                data,
             });
+            await requestPromise;
+            toast(SUCCESS, 'Added the task');
+            setTaskExists(true);
+            setIsLoading(false);
+        } catch (error: any) {
+            setIsLoading(false);
+            if ('response' in error) {
+                toast(ERROR, error.response.data.message);
+                return;
+            }
+            toast(ERROR, error.message);
+        }
     };
 
     return (

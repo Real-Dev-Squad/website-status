@@ -38,15 +38,6 @@ export const tasksApi = api.injectEndpoints({
                 method: 'POST',
                 body: task,
             }),
-            invalidatesTags: (_res, _err, arg) =>
-                arg?.github?.issue.id
-                    ? [
-                          {
-                              type: 'Issues',
-                              id: arg.github?.issue.id,
-                          },
-                      ]
-                    : ['Issues'],
         }),
         updateTask: builder.mutation<void, TaskRequestPayload>({
             query: (task: TaskRequestPayload) => ({
