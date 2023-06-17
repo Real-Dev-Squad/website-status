@@ -3,16 +3,18 @@ import { api } from './api';
 import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
 
+type dependency = PromiseSettledResult<{
+    title: string | undefined;
+    id: string;
+}>[];
+
 export const taskDetailsApi = api.injectEndpoints({
     endpoints: (build) => ({
         getTaskDetails: build.query<taskDetailsDataType, string>({
             query: (taskId): string => `${TASKS_URL}/${taskId}/details`,
             providesTags: ['Task_Details'],
         }),
-        getTasksDependencyDetails: build.query<
-            { title: string | undefined; id: string }[],
-            string[]
-        >({
+        getTasksDependencyDetails: build.query<dependency, string[]>({
             queryFn: async (taskIds, _queryApi, _extraOptions, baseQuery) => {
                 try {
                     const taskDetailsPromise = taskIds.map(async (taskId) => {
@@ -21,7 +23,7 @@ export const taskDetailsApi = api.injectEndpoints({
                         );
 
                         if (result.error) {
-                            throw result.error;
+                            throw { error: result.error, id: taskId };
                         }
 
                         const task = result?.data as taskDetailsDataType;
@@ -30,7 +32,9 @@ export const taskDetailsApi = api.injectEndpoints({
                             id: taskId,
                         };
                     });
-                    const taskDetails = await Promise.all(taskDetailsPromise);
+                    const taskDetails = await Promise.allSettled(
+                        taskDetailsPromise
+                    );
                     return { data: taskDetails };
                 } catch (error) {
                     return {
@@ -39,7 +43,6 @@ export const taskDetailsApi = api.injectEndpoints({
                 }
             },
         }),
-
         updateTaskDetails: build.mutation({
             query: ({ editedDetails, taskID }) => {
                 return {
