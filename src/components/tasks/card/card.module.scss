@@ -163,6 +163,15 @@ $seeMoreTasksShadow: #595959cc;
     cursor: pointer;
 }
 
+.taskStatusAndDateContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.taskStatusEditMode {
+    margin-top: 0.8rem;
+}
+
 .taskTagLevelWrapper {
     display: flex;
     padding-top: 0.5rem;
