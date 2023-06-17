@@ -7,7 +7,7 @@ const ProgressHeader: FC<progressHeaderProps> = ({
     updateType,
 }) => {
     return (
-        <div className={styles.standupBanner}>
+        <div className={styles.progressBanner}>
             <p className={styles.bannerPara}>
                 You have
                 <span className={styles.totalMissedUpdates}>
