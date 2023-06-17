@@ -13,6 +13,8 @@ import TaskLevelEdit from './TaskTagEdit';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { TASKS_URL } from '@/constants/url';
+import { BACKEND_TASK_STATUS } from '@/constants/task-status';
+
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
@@ -191,6 +193,43 @@ const Card: FC<Props> = ({
         const percentageOfDaysLeft = (daysLeft / totalDays) * 100;
         return percentageOfDaysLeft;
     }
+
+    const TaskStatusEditMode: FC = () => {
+        const updateTaskStatus = ({
+            target: { value },
+        }: React.ChangeEvent<HTMLSelectElement>) => {
+            onContentChange(cardDetails.id, {
+                status: value,
+            });
+        };
+
+        // TODO: remove this after fixing the card beautify status
+        const defaultStatus = cardDetails.status
+            .toUpperCase()
+            .split(' ')
+            .join('_');
+
+        const beautifyStatus = (status: string) => status.split('_').join(' ');
+
+        return (
+            <label>
+                Status:
+                <select
+                    name="status"
+                    onChange={updateTaskStatus}
+                    defaultValue={defaultStatus}
+                >
+                    {Object.keys(BACKEND_TASK_STATUS).map((status: string) => (
+                        <>
+                            <option value={status}>
+                                {beautifyStatus(status)}
+                            </option>
+                        </>
+                    ))}
+                </select>
+            </label>
+        );
+    };
 
     function handleProgressColor(
         percentCompleted: number,
@@ -473,26 +512,32 @@ const Card: FC<Props> = ({
                         <span>{content.percentCompleted}% </span>
                     </div>
                 </div>
-                <div className={classNames.dateInfo}>
-                    <div>
-                        <span className={classNames.cardSpecialFont}>
-                            Estimated completion
-                        </span>
-                        <span className={classNames.completionDate}>
-                            {renderDate(fromNowEndsOn, shouldEdit)}
+                <div className={classNames.taskStatusAndDateContainer}>
+                    <div className={classNames.dateInfo}>
+                        <div>
+                            <span className={classNames.cardSpecialFont}>
+                                Estimated completion
+                            </span>
+                            <span className={classNames.completionDate}>
+                                {renderDate(fromNowEndsOn, shouldEdit)}
+                            </span>
+                        </div>
+                        <span
+                            className={classNames.cardSpecialFont}
+                            contentEditable={shouldEdit}
+                            onKeyDown={(e) => handleChange(e, 'startedOn')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {cardDetails.status === TASK_STATUS.AVAILABLE
+                                ? 'Not started'
+                                : `Started on ${fromNowStartedOn}`}
                         </span>
                     </div>
-                    <span
-                        className={classNames.cardSpecialFont}
-                        contentEditable={shouldEdit}
-                        onKeyDown={(e) => handleChange(e, 'startedOn')}
-                        role="button"
-                        tabIndex={0}
-                    >
-                        {cardDetails.status === TASK_STATUS.AVAILABLE
-                            ? 'Not started'
-                            : `Started on ${fromNowStartedOn}`}
-                    </span>
+                    {/* EDIT task status */}
+                    <div className={classNames.taskStatusEditMode}>
+                        {shouldEdit ? <TaskStatusEditMode /> : ''}
+                    </div>
                 </div>
                 {showAssignButton() ? (
                     <AssigneeButton />

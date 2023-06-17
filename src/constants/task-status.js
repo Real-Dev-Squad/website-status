@@ -12,6 +12,9 @@ export const SANITY_CHECK = 'SANITY_CHECK';
 export const REGRESSION_CHECK = 'REGRESSION_CHECK';
 export const RELEASED = 'RELEASED';
 export const VERIFIED = 'VERIFIED';
+const DONE = 'DONE';
+// TODO: to change the value to UN_ASSIGNED after migration is done from backend
+const UN_ASSIGNED = 'AVAILABLE';
 
 export const STATUS_ORDER = [
     ASSIGNED,
@@ -29,3 +32,22 @@ export const STATUS_ORDER = [
     RELEASED,
     VERIFIED,
 ];
+
+// TODO: Have only one single source of truth for task status and its derived values
+export const BACKEND_TASK_STATUS = {
+    UN_ASSIGNED,
+    ASSIGNED,
+    IN_PROGRESS,
+    BLOCKED,
+    COMPLETED,
+    NEEDS_REVIEW,
+    IN_REVIEW,
+    APPROVED,
+    SMOKE_TESTING,
+    SANITY_CHECK,
+    REGRESSION_CHECK,
+    MERGED,
+    RELEASED,
+    VERIFIED,
+    DONE,
+};
