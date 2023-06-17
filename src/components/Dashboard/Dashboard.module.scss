@@ -6,7 +6,8 @@ $color-white: #fff;
 $color-black: #000;
 
 .container {
-    margin-top: 40px;
+    margin: 40px auto;
+    width: 95%;
     display: flex;
     justify-content: center;
     line-height: 2rem;
@@ -46,11 +47,10 @@ $color-black: #000;
     .container {
         display: flex;
         flex-direction: column;
-        width: 100%;
         align-items: center;
     }
     .searchBar {
-        width: 100%;
+        width: 95%;
         margin: 4px;
     }
 }
