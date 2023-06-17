@@ -6,7 +6,7 @@ function Searchbar({ label }: searchProps) {
     const [query, setQuery] = useState('');
 
     const handleKeyPress = (event: KeyboardEvent) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && query !== '') {
             splitNSearch(query);
         }
     };
