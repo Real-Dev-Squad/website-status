@@ -22,6 +22,7 @@ export const api = createApi({
         'User',
         'Tags',
         'Levels',
+        'User_Standup',
     ],
     /**
      * This api has endpoints injected in adjacent files,

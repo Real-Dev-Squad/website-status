@@ -1,4 +1,5 @@
 import { api } from './api';
+import { userDetails } from '@/types/standup.type';
 
 export const progressesApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -13,7 +14,12 @@ export const progressesApi = api.injectEndpoints({
                 },
             }),
         }),
+        userProgressDetails: builder.query<userDetails, string | undefined>({
+            query: (id): string => `/progresses?userId=${id}`,
+            providesTags: ['User_Standup'],
+        }),
     }),
 });
 
-export const { useSaveProgressMutation } = progressesApi;
+export const { useSaveProgressMutation, useUserProgressDetailsQuery } =
+    progressesApi;
