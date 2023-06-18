@@ -3,12 +3,12 @@ export type GithubInfo = {
     profileImageUrl: string;
 };
 
-export type BoxProps = {
-    onClickName: (userName: string) => void;
+export type SuggestionBoxProps = {
+    onSelectAssignee: (userName: string) => void;
     suggestions: GithubInfo[];
 };
 
-export type ListProps = {
+export type SuggestionListProps = {
     suggestions: GithubInfo[];
-    onClickName: (userName: string) => void;
+    onSelectAssignee: (userName: string) => void;
 };

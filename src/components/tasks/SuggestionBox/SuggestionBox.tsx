@@ -1,11 +1,17 @@
 import { FC } from 'react';
-import { BoxProps } from '@/interfaces/suggestionBox.type';
+import { SuggestionBoxProps } from '@/interfaces/suggestionBox.type';
 import SuggestionList from './SuggestionList';
 import UserNotFound from './UserNotFound';
 
-const SuggestionBox: FC<BoxProps> = ({ onClickName, suggestions }) => {
+const SuggestionBox: FC<SuggestionBoxProps> = ({
+    onSelectAssignee,
+    suggestions,
+}) => {
     let renderComponent = (
-        <SuggestionList suggestions={suggestions} onClickName={onClickName} />
+        <SuggestionList
+            suggestions={suggestions}
+            onSelectAssignee={onSelectAssignee}
+        />
     );
 
     if (suggestions.length === 0) {

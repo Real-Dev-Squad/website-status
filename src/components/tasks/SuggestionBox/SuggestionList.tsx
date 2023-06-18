@@ -1,10 +1,16 @@
 import { FC } from 'react';
-import { GithubInfo, ListProps } from '@/interfaces/suggestionBox.type';
+import {
+    GithubInfo,
+    SuggestionListProps,
+} from '@/interfaces/suggestionBox.type';
 import classNames from '@/components/tasks/SuggestionBox/suggestion.module.scss';
 
-const SuggestionList: FC<ListProps> = ({ suggestions, onClickName }) => {
+const SuggestionList: FC<SuggestionListProps> = ({
+    suggestions,
+    onSelectAssignee,
+}) => {
     const clickHandler = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-        onClickName(e.currentTarget.innerText);
+        onSelectAssignee(e.currentTarget.innerText);
     };
 
     return (

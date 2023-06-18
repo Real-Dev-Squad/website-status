@@ -531,7 +531,7 @@ const Card: FC<Props> = ({
                                         showSuggestion && (
                                             <SuggestionBox
                                                 suggestions={suggestions}
-                                                onClickName={handleClick}
+                                                onSelectAssignee={handleClick}
                                             />
                                         )
                                     )}
@@ -694,7 +694,9 @@ const Card: FC<Props> = ({
                                             showSuggestion && (
                                                 <SuggestionBox
                                                     suggestions={suggestions}
-                                                    onClickName={handleClick}
+                                                    onSelectAssignee={
+                                                        handleClick
+                                                    }
                                                 />
                                             )
                                         )}
