@@ -14,7 +14,6 @@ function Searchbar({ label }: searchProps) {
     return (
         <section className={styles.container}>
             <input
-                data-testid="searchbar_input"
                 type="text"
                 id="search"
                 value={query}
@@ -24,7 +23,6 @@ function Searchbar({ label }: searchProps) {
                 placeholder={label + ':'}
             />
             <button
-                data-testid="search_btn"
                 type="submit"
                 onClick={() => {
                     splitNSearch(query);

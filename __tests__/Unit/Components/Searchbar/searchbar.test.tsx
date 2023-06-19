@@ -10,8 +10,10 @@ describe('test searchbar component', function () {
     it('renders searchbar input and a search button', function () {
         render(<Searchbar label="test-label" />);
 
-        const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
-        const searchBtn = screen.getByTestId('search_btn') as HTMLButtonElement;
+        const input = screen.getByRole('textbox') as HTMLInputElement;
+        const searchBtn = screen.getByRole('button', {
+            name: 'Search',
+        }) as HTMLButtonElement;
 
         expect(input).toBeInTheDocument();
         expect(input).toHaveAttribute('placeholder', 'test-label:');
@@ -22,7 +24,9 @@ describe('test searchbar component', function () {
     it('checks if we can type into the searchbar', function () {
         render(<Searchbar label="test-label" />);
 
-        const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
+        const input = screen.getByPlaceholderText(
+            'test-label:'
+        ) as HTMLInputElement;
 
         fireEvent.change(input, { target: { value: '123,456' } });
         expect(input.value).toBe('123,456');
@@ -31,9 +35,13 @@ describe('test searchbar component', function () {
     it('tests if the click handler is called', function () {
         render(<Searchbar label="test-label" />);
 
-        const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
+        const input = screen.getByPlaceholderText(
+            'test-label:'
+        ) as HTMLInputElement;
 
-        const searchBtn = screen.getByTestId('search_btn') as HTMLButtonElement;
+        const searchBtn = screen.getByRole('button', {
+            name: 'Search',
+        }) as HTMLButtonElement;
 
         fireEvent.change(input, { target: { value: '123' } });
         fireEvent.click(searchBtn);
@@ -44,7 +52,9 @@ describe('test searchbar component', function () {
     it('tests if enter key calls search', function () {
         render(<Searchbar label="test-label" />);
 
-        const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
+        const input = screen.getByPlaceholderText(
+            'test-label:'
+        ) as HTMLInputElement;
 
         fireEvent.change(input, { target: { value: '123' } });
         fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', charCode: 13 });
@@ -55,7 +65,9 @@ describe('test searchbar component', function () {
     it('tests other key down events do not call search', function () {
         render(<Searchbar label="test-label" />);
 
-        const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
+        const input = screen.getByPlaceholderText(
+            'test-label:'
+        ) as HTMLInputElement;
 
         fireEvent.keyDown(input, { key: 'A', code: 'KeyA' });
 

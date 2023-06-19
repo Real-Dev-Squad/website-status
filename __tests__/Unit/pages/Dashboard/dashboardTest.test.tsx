@@ -13,11 +13,13 @@ describe('dashboard page test', function () {
             { query: { dev: 'true' } }
         );
 
-        const searchBar = screen.getByTestId('searchbar_input');
+        const searchBar = screen.getByRole('textbox');
         expect(searchBar).toBeInTheDocument();
 
-        const searchButton = screen.getByTestId('search_btn');
-        expect(searchButton.innerHTML).toBe('Search');
+        const searchBtn = screen.getByRole('button', {
+            name: 'Search',
+        }) as HTMLButtonElement;
+        expect(searchBtn).toBeInTheDocument();
     });
 
     it('renders 404 without passing the feature flag', function () {
@@ -42,13 +44,13 @@ describe('dashboard page test', function () {
             { query: { dev: 'true' } }
         );
 
-        const input = screen.getByTestId('searchbar_input') as HTMLInputElement;
+        const input = screen.getByRole('textbox') as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'jhon, doe' } });
 
-        const searchButton = screen.getByTestId(
-            'search_btn'
-        ) as HTMLButtonElement;
-        fireEvent.click(searchButton);
+        const searchBtn = screen.getByRole('button', {
+            name: 'Search',
+        }) as HTMLButtonElement;
+        fireEvent.click(searchBtn);
 
         const value = input.value.split(',');
         expect(console.log).toBeCalledWith('Searching', value);
