@@ -1,15 +1,25 @@
-import styles from '@/components/ProgressForm/ProgressForm.module.scss';
+import { FC } from 'react';
+import styles from '@/components/standup/standupContainer.module.scss';
+import { progressHeaderProps } from '@/types/ProgressUpdates';
 
-function ProgressHeader() {
+const ProgressHeader: FC<progressHeaderProps> = ({
+    totalMissedUpdates,
+    updateType,
+}) => {
     return (
-        <header className={styles.header}>
-            <p>
-                You have <span className={styles.mark}> 2 missed</span> Progress
-                Updates
+        <div className={styles.progressBanner}>
+            <p className={styles.bannerPara}>
+                You have
+                <span className={styles.totalMissedUpdates}>
+                    {totalMissedUpdates} missed
+                </span>
+                {updateType} updates
             </p>
-            <p>Lets try to avoid missing updates</p>
-        </header>
+            <p className={styles.bannerPara}>
+                Let&apos;s try to avoid having zero days
+            </p>
+        </div>
     );
-}
+};
 
 export default ProgressHeader;
