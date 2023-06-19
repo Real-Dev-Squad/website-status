@@ -1,17 +1,12 @@
 import { FC } from 'react';
 import styles from './Header.module.scss';
 import Link from 'next/link';
+import { HeaderItem, HeaderLinkProps } from '@/interfaces/HeaderItem.type';
 import { useRouter } from 'next/router';
 import {
     devHeaderCategories,
     headerCategories,
 } from '@/constants/header-categories';
-
-interface HeaderLinkProps {
-    title: string;
-    link: string;
-    isActive: boolean;
-}
 
 export const HeaderLink: FC<HeaderLinkProps> = ({ title, link, isActive }) => {
     const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;

@@ -5,9 +5,7 @@ import React, {
     useContext,
     useRef,
     useState,
-    ChangeEventHandler,
 } from 'react';
-import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
@@ -22,19 +20,13 @@ import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
+import {
+    ButtonProps,
+    TextAreaProps,
+    taskDetailsDataType,
+} from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 
-type ButtonProps = {
-    buttonName: string;
-    clickHandler: (value: any) => void;
-    value?: boolean;
-};
-type TextAreaProps = {
-    name: string;
-    value: string;
-    onChange: ChangeEventHandler;
-};
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
     return (
