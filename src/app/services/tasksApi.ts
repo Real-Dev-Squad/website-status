@@ -19,7 +19,18 @@ export const tasksApi = api.injectEndpoints({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
+        updateTasks: builder.mutation({
+            query: ({ id, ...patch }) => ({
+                url: `/tasks/${id}`,
+                method: 'PATCH',
+                body: patch,
+            }),
+        }),
     }),
 });
 
-export const { useGetAllTasksQuery, useGetMineTasksQuery } = tasksApi;
+export const {
+    useGetAllTasksQuery,
+    useGetMineTasksQuery,
+    useUpdateTasksMutation,
+} = tasksApi;

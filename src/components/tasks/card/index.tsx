@@ -36,7 +36,9 @@ import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
-import userData from '@/helperFunctions/getUser';
+import { useGetUserQuery } from '@/app/services/userApi';
+import ProgressSlider from './ProgressSlider';
+import { useUpdateTasksMutation } from '@/app/services/tasksApi';
 
 type Props = {
     content: task;
@@ -59,7 +61,16 @@ const Card: FC<Props> = ({
         TASK_STATUS.VERIFIED,
         TASK_STATUS.AVAILABLE,
     ];
+
     const cardDetails = content;
+    console.log(cardDetails);
+    const { data } = useGetUserQuery();
+    const [progress, setProgress] = useState<boolean>(false);
+    const [progressValue, setProgressValue] = useState<number>(0);
+    const [updateTasks] = useUpdateTasksMutation();
+    const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
+    let progressCompletedPercent = 0;
+
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
         size: MAX_SEARCH_RESULTS,
@@ -389,6 +400,48 @@ const Card: FC<Props> = ({
         </div>
     );
 
+    const handleProgressUpdate = () => {
+        if (
+            content.assignee === data?.username ||
+            data?.roles.super_user === true
+        ) {
+            console.log('found');
+            setProgress(true);
+        } else {
+            toast(ERROR, 'You cannot update progress');
+        }
+    };
+
+    const debounceSlider = (
+        event: React.ChangeEvent<HTMLInputElement>,
+        debounceTimeOut: number
+    ) => {
+        progressCompletedPercent = Number(event.target.value);
+        setProgressValue(progressCompletedPercent);
+        if (debounceTimeOut) {
+            clearTimeout(debounceTimeOut);
+        }
+        const timer = setTimeout(() => {
+            handleProgressChange(cardDetails.id, progressCompletedPercent);
+        }, 1000);
+        setDebounceTimeOut(Number(timer));
+    };
+
+    const handleProgressChange = async (
+        id: string,
+        percentCompleted: number
+    ) => {
+        await updateTasks({
+            id: id,
+            percentCompleted: percentCompleted,
+        });
+        toast(SUCCESS, 'Progress Updasted Successfully');
+    };
+
+    const handleSaveProgressUpdate = () => {
+        setProgress(false);
+    };
+
     const AssigneeButton = () => {
         return (
             <button
@@ -507,9 +560,42 @@ const Card: FC<Props> = ({
                     </ConditionalLinkWrapper>
 
                     {/* progress bar */}
-                    <div className={classNames.progressContainerUpdated}>
-                        <ProgressIndicator />
-                        <span>{content.percentCompleted}% </span>
+                    <div>
+                        <div className={classNames.progressContainerUpdated}>
+                            {progress ? (
+                                <>
+                                    <ProgressSlider
+                                        value={progressValue}
+                                        debounceSlider={debounceSlider}
+                                    />
+                                    <span>{progressValue}%</span>
+                                </>
+                            ) : (
+                                <>
+                                    <ProgressIndicator />
+                                    <span>{content.percentCompleted}% </span>
+                                </>
+                            )}
+                        </div>
+                        {progress ? (
+                            <>
+                                <div
+                                    className={classNames.changeProgressText}
+                                    onClick={() => handleSaveProgressUpdate()}
+                                >
+                                    save Progress
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div
+                                    className={classNames.changeProgressText}
+                                    onClick={() => handleProgressUpdate()}
+                                >
+                                    Progress update
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
                 <div className={classNames.taskStatusAndDateContainer}>
@@ -680,6 +766,7 @@ const Card: FC<Props> = ({
                     <span>{content.percentCompleted}% completed</span>
                 </span>
             </div>
+
             <div
                 className={`${classNames.taskTagLevelWrapper} ${
                     shouldEdit && classNames.editMode

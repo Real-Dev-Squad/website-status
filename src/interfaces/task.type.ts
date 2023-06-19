@@ -33,6 +33,14 @@ type task = {
     };
 };
 
+export type ProgressSliderProps = {
+    value: number;
+    debounceSlider: (
+        e: React.ChangeEvent<HTMLInputElement>,
+        debounceTimeOut: number
+    ) => void;
+};
+
 enum Tab {
     IN_PROGRESS = 'IN_PROGRESS',
     ASSIGNED = 'ASSIGNED',
