@@ -40,6 +40,6 @@ export const devHeaderCategories = [
     {
         title: 'Availability Panel',
         refURL: '/availability-panel',
-        pathName: '',
+        pathName: '/availability-panel',
     },
 ];

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import styles from './Header.module.scss';
 import Link from 'next/link';
-import { HeaderItem, HeaderLinkProps } from '@/interfaces/HeaderItem.type';
+import { HeaderLinkProps } from '@/interfaces/HeaderItem.type';
 import { useRouter } from 'next/router';
 import {
     devHeaderCategories,
