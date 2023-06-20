@@ -52,7 +52,7 @@ const Issues: FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);
 
-    const fetchIssues = async (searchText: string) => {
+    const fetchIssues = async (searchText = '') => {
         try {
             setIsLoading(true);
             const res = await fetch(`${ISSUES_URL}?q=${searchText}`);
@@ -83,7 +83,7 @@ const Issues: FC = () => {
     };
 
     useEffect(() => {
-        fetchIssues('');
+        fetchIssues();
     }, []);
 
     let renderElement = <p>Loading...</p>;
