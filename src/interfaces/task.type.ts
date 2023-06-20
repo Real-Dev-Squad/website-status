@@ -35,10 +35,8 @@ type task = {
 
 export type ProgressSliderProps = {
     value: number;
-    debounceSlider: (
-        e: React.ChangeEvent<HTMLInputElement>,
-        debounceTimeOut: number
-    ) => void;
+    debounceSlider: (debounceTimeOut: number) => void;
+    handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 enum Tab {

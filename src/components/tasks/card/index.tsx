@@ -412,22 +412,17 @@ const Card: FC<Props> = ({
         }
     };
 
-    const debounceSlider = (
-        event: React.ChangeEvent<HTMLInputElement>,
-        debounceTimeOut: number
-    ) => {
-        progressCompletedPercent = Number(event.target.value);
-        setProgressValue(progressCompletedPercent);
+    const debounceSlider = (debounceTimeOut: number) => {
         if (debounceTimeOut) {
             clearTimeout(debounceTimeOut);
         }
         const timer = setTimeout(() => {
-            handleProgressChange(cardDetails.id, progressCompletedPercent);
+            handleSliderChangeComplete(cardDetails.id, progressValue);
         }, 1000);
         setDebounceTimeOut(Number(timer));
     };
 
-    const handleProgressChange = async (
+    const handleSliderChangeComplete = async (
         id: string,
         percentCompleted: number
     ) => {
@@ -436,6 +431,13 @@ const Card: FC<Props> = ({
             percentCompleted: percentCompleted,
         });
         toast(SUCCESS, 'Progress Updasted Successfully');
+    };
+
+    const handleProgressChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        progressCompletedPercent = Number(event.target.value);
+        setProgressValue(progressCompletedPercent);
     };
 
     const handleSaveProgressUpdate = () => {
@@ -567,6 +569,9 @@ const Card: FC<Props> = ({
                                     <ProgressSlider
                                         value={progressValue}
                                         debounceSlider={debounceSlider}
+                                        handleProgressChange={
+                                            handleProgressChange
+                                        }
                                     />
                                     <span>{progressValue}%</span>
                                 </>
