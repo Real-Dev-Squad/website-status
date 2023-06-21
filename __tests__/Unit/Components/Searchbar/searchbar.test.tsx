@@ -1,12 +1,14 @@
 import Searchbar from '@/components/Dashboard/Searchbar';
-import { splitNSearch } from '@/utils/splitNSearch';
+import * as util from '@/utils/splitNSearch';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-jest.mock('../../../../src/utils/splitNSearch', () => ({
-    splitNSearch: jest.fn(),
-}));
-
 describe('test searchbar component', function () {
+    beforeEach(() => {
+        jest.spyOn(util, 'splitNSearch');
+    });
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
     it('renders searchbar input and a search button', function () {
         render(<Searchbar label="test-label" />);
 
@@ -46,7 +48,7 @@ describe('test searchbar component', function () {
         fireEvent.change(input, { target: { value: '123' } });
         fireEvent.click(searchBtn);
 
-        expect(splitNSearch).toBeCalledTimes(1);
+        expect(util.splitNSearch).toBeCalledTimes(1);
     });
 
     it('tests if enter key calls search', function () {
@@ -59,7 +61,7 @@ describe('test searchbar component', function () {
         fireEvent.change(input, { target: { value: '123' } });
         fireEvent.keyDown(input, { key: 'Enter', code: 'Enter', charCode: 13 });
 
-        expect(splitNSearch).toBeCalledTimes(2);
+        expect(util.splitNSearch).toBeCalledTimes(1);
     });
 
     it('tests other key down events do not call search', function () {
@@ -71,6 +73,6 @@ describe('test searchbar component', function () {
 
         fireEvent.keyDown(input, { key: 'A', code: 'KeyA' });
 
-        expect(splitNSearch).toBeCalledTimes(2);
+        expect(util.splitNSearch).toBeCalledTimes(0);
     });
 });
