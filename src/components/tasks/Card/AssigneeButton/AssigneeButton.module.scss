@@ -1,0 +1,7 @@
+@use '../../../../styles/issues.module.scss' as styles;
+
+.card__top__button {
+    @include styles.issues-button;
+    min-width: 9rem;
+    margin-left: 0.5rem;
+}
