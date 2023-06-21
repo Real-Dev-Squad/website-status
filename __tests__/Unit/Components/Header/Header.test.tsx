@@ -13,9 +13,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Tasks');
-        expect(element).toBeInTheDocument();
-        expect(element?.classList.contains('active')).toBeTruthy();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeTruthy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Issues category', () => {
@@ -26,9 +40,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Issues');
-        expect(element).toBeInTheDocument();
-        expect(element?.classList.contains('active')).toBeTruthy();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeTruthy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Mine category', () => {
@@ -39,10 +67,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Mine');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeTruthy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Open PRs category', () => {
@@ -53,10 +94,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Open PRs');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeTruthy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Stale PRs category', () => {
@@ -67,10 +121,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Stale PRs');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeTruthy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Idle Users category', () => {
@@ -81,10 +148,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Idle Users');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeTruthy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Standup category', () => {
@@ -95,8 +175,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Standup');
-        expect(element).not.toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 
     it('should have Availability Panel category', () => {
@@ -107,8 +202,23 @@ describe('Header without dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Availability Panel');
-        expect(element).not.toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.queryByText('Standup');
+        const availabilityElement = screen.queryByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement).not.toBeInTheDocument();
+        expect(availabilityElement).not.toBeInTheDocument();
     });
 });
 
@@ -121,9 +231,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Tasks');
-        expect(element).toBeInTheDocument();
-        expect(element?.classList.contains('active')).toBeTruthy();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeTruthy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Issues category', () => {
@@ -134,9 +258,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Issues');
-        expect(element).toBeInTheDocument();
-        expect(element?.classList.contains('active')).toBeTruthy();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeTruthy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Mine category', () => {
@@ -147,10 +285,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Mine');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeTruthy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Open PRs category', () => {
@@ -161,10 +312,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Open PRs');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeTruthy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Stale PRs category', () => {
@@ -175,10 +339,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Stale PRs');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeTruthy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Idle Users category', () => {
@@ -189,10 +366,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Idle Users');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeTruthy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Standup category', () => {
@@ -203,10 +393,23 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Standup');
-        expect(element).toBeInTheDocument();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
 
-        expect(element?.classList.contains('active')).toBeTruthy();
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeTruthy();
+        expect(availabilityElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Availability Panel category', () => {
@@ -217,8 +420,22 @@ describe('Header with dev mode', () => {
             };
         });
         render(<Header />);
-        const element = screen.queryByText('Availability Panel');
-        expect(element).toBeInTheDocument();
-        expect(element?.classList.contains('active')).toBeTruthy();
+        const taskElement = screen.getByText('Tasks');
+        const issueElement = screen.getByText('Issues');
+        const mineElement = screen.getByText('Mine');
+        const openPRElement = screen.getByText('Open PRs');
+        const stalePRElement = screen.getByText('Stale PRs');
+        const idleUsersElement = screen.getByText('Idle Users');
+        const standupElement = screen.getByText('Standup');
+        const availabilityElement = screen.getByText('Availability Panel');
+
+        expect(taskElement.classList.contains('active')).toBeFalsy();
+        expect(issueElement.classList.contains('active')).toBeFalsy();
+        expect(mineElement.classList.contains('active')).toBeFalsy();
+        expect(openPRElement.classList.contains('active')).toBeFalsy();
+        expect(stalePRElement.classList.contains('active')).toBeFalsy();
+        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
+        expect(standupElement.classList.contains('active')).toBeFalsy();
+        expect(availabilityElement.classList.contains('active')).toBeTruthy();
     });
 });
