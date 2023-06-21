@@ -35,12 +35,14 @@ const StandUp: FC = memo(function StandUp() {
                 );
             }
         } else {
-            <div>
-                <p>You are not Authorized</p>
-                <a href={LOGIN_URL} target="_blank" rel="noreferrer">
-                    Click here to Login
-                </a>
-            </div>;
+            return (
+                <div>
+                    <p>You are not Authorized</p>
+                    <a href={LOGIN_URL} target="_blank" rel="noreferrer">
+                        Click here to Login
+                    </a>
+                </div>
+            );
         }
     };
 
