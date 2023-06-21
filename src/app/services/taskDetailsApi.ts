@@ -1,12 +1,56 @@
 import { TASKS_URL } from '@/constants/url';
 import { api } from './api';
 import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
+import {
+    BaseQueryApi,
+    FetchArgs,
+    FetchBaseQueryError,
+    FetchBaseQueryMeta,
+} from '@reduxjs/toolkit/dist/query';
+import {
+    BaseQueryExtraOptions,
+    BaseQueryFn,
+    QueryReturnValue,
+} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { MaybePromise } from '@reduxjs/toolkit/dist/query/tsHelpers';
 
 type dependency = PromiseSettledResult<{
     title: string | undefined;
     id: string;
 }>[];
+const getTasksDependencyDetailsQueryFn = async (
+    taskIds: string[],
+    _queryApi: BaseQueryApi,
+    _extraOptions: BaseQueryExtraOptions<BaseQueryFn>,
+    baseQuery: (
+        arg: string | FetchArgs
+    ) => MaybePromise<
+        QueryReturnValue<unknown, FetchBaseQueryError, FetchBaseQueryMeta>
+    >
+) => {
+    try {
+        const taskDetailsPromise = taskIds.map(async (taskId) => {
+            const result = await baseQuery(`${TASKS_URL}/${taskId}/details`);
+            if (result.error) {
+                throw { error: result.error, id: taskId };
+            }
+
+            const task = result?.data as taskDetailsDataType;
+            return {
+                title: task?.taskData?.title,
+                id: taskId,
+            };
+        });
+
+        const taskDetails = await Promise.allSettled(taskDetailsPromise);
+        return { data: taskDetails };
+    } catch (error) {
+        console.error(error);
+        return {
+            error: error as FetchBaseQueryError,
+        };
+    }
+};
 
 export const taskDetailsApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -15,33 +59,7 @@ export const taskDetailsApi = api.injectEndpoints({
             providesTags: ['Task_Details'],
         }),
         getTasksDependencyDetails: build.query<dependency, string[]>({
-            queryFn: async (taskIds, _queryApi, _extraOptions, baseQuery) => {
-                try {
-                    const taskDetailsPromise = taskIds.map(async (taskId) => {
-                        const result = await baseQuery(
-                            `${TASKS_URL}/${taskId}/details`
-                        );
-
-                        if (result.error) {
-                            throw { error: result.error, id: taskId };
-                        }
-
-                        const task = result?.data as taskDetailsDataType;
-                        return {
-                            title: task?.taskData?.title,
-                            id: taskId,
-                        };
-                    });
-                    const taskDetails = await Promise.allSettled(
-                        taskDetailsPromise
-                    );
-                    return { data: taskDetails };
-                } catch (error) {
-                    return {
-                        error: error as FetchBaseQueryError,
-                    };
-                }
-            },
+            queryFn: getTasksDependencyDetailsQueryFn,
         }),
         updateTaskDetails: build.mutation({
             query: ({ editedDetails, taskID }) => {

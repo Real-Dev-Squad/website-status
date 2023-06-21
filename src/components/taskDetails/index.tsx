@@ -133,6 +133,43 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const navigateToTask = (taskId: string) => {
         router.push(`/tasks/${taskId}`);
     };
+    const renderTaskDependencyList = () => {
+        if (loading || fetching) {
+            return <p>Loading...</p>;
+        } else if (error) {
+            return <p>Unable to fetch dependency task</p>;
+        } else if (dependencyData && dependencyData.length) {
+            return dependencyData.map((task, index) => {
+                if (task.status === 'fulfilled') {
+                    return (
+                        <li key={index}>
+                            <Link href={`/tasks/${task.value.id}`} key={index}>
+                                <span
+                                    onClick={() =>
+                                        navigateToTask(task.value.id)
+                                    }
+                                >
+                                    {task.value.title}
+                                </span>
+                            </Link>
+                        </li>
+                    );
+                } else {
+                    const errorMessage = task.reason.id
+                        ? `Unable to fetch this task with ID ${task.reason.id}`
+                        : 'Unable to fetch this task';
+                    return (
+                        <li key={index}>
+                            <span>{errorMessage}</span>
+                        </li>
+                    );
+                }
+            });
+        } else {
+            return <p>No Dependency</p>;
+        }
+    };
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <>
@@ -229,42 +266,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         ]
                                     }
                                 >
-                                    {loading || fetching ? (
-                                        <div>Loading...</div>
-                                    ) : error ? (
-                                        'unable to fetch dependency task'
-                                    ) : dependencyData &&
-                                      dependencyData.length ? (
-                                        dependencyData.map((task, index) => (
-                                            <li key={index}>
-                                                {task.status === 'fulfilled' ? (
-                                                    <Link
-                                                        href={`/tasks/${task.value.id}`}
-                                                        key={index}
-                                                    >
-                                                        <span
-                                                            onClick={() =>
-                                                                navigateToTask(
-                                                                    task.value
-                                                                        .id
-                                                                )
-                                                            }
-                                                        >
-                                                            {task.value.title}
-                                                        </span>
-                                                    </Link>
-                                                ) : (
-                                                    <span>
-                                                        {task.reason.id
-                                                            ? `Unable to fetch this task with ID ${task.reason.id}`
-                                                            : 'Unable to fetch this task'}
-                                                    </span>
-                                                )}
-                                            </li>
-                                        ))
-                                    ) : (
-                                        <p>No Dependency</p>
-                                    )}
+                                    {renderTaskDependencyList()}
                                 </ol>
                             </TaskContainer>
                         </section>
