@@ -1,7 +1,6 @@
 import task, { updateTaskDetails } from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
-TASKS_URL;
 
 type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
