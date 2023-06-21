@@ -23,6 +23,7 @@ export const api = createApi({
         'Tags',
         'Levels',
         'Challenges',
+        'Idle_Members',
         'User_Standup',
     ],
     /**

@@ -9,14 +9,19 @@ import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/constants/task-status';
 import { FEATURE } from '@/constants/task-type';
 import { BASE_URL } from '@/constants/url';
+import { useGetIdleMembersQuery } from '@/app/services/membersApi';
 
 const AvailabilityPanel: FC = () => {
-    const [idleMembersList, setIdleMembersList] = useState<string[]>([]);
     const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
     const [error, setError] = useState<boolean>(false);
     const [isTaskLoading, setIsTaskLoading] = useState<boolean>(true);
-    const [isMemberLoading, setIsMemberLoading] = useState<boolean>(true);
     const [refreshData, setRefreshData] = useState<boolean>(false);
+    const {
+        data: idleMembersList = [],
+        isError: isIdleMembersError,
+        isLoading: isIdleMemberLoading,
+        refetch: refreshMemberList,
+    } = useGetIdleMembersQuery();
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -36,42 +41,24 @@ const AvailabilityPanel: FC = () => {
                 setIsTaskLoading(false);
             }
         };
-        const fetchIdleUsers = async () => {
-            try {
-                const url = `${process.env.NEXT_PUBLIC_BASE_URL}/members/idle`;
-                const { requestPromise } = fetch({ url });
-                const fetchPromise = await requestPromise;
-                const { idleMemberUserNames } = fetchPromise.data;
-                const filterMembers = idleMemberUserNames.filter(
-                    (username: string) => username
-                );
-                const sortedIdleMembers = filterMembers.sort();
-                setIdleMembersList(sortedIdleMembers);
-                setError(false);
-            } catch (Error) {
-                setError(true);
-            } finally {
-                setIsMemberLoading(false);
-            }
-        };
         fetchTasks();
-        fetchIdleUsers();
     }, [refreshData]);
 
     let isErrorOrIsLoading;
-    if (error) {
+    if (error || isIdleMembersError) {
         isErrorOrIsLoading = (
             <span className={classNames.statusMessage}>
                 Something went wrong, please contact admin!
             </span>
         );
-    } else if (isTaskLoading || isMemberLoading) {
+    } else if (isTaskLoading || isIdleMemberLoading) {
         isErrorOrIsLoading = (
             <span className={classNames.statusMessage}>Loading...</span>
         );
     }
 
     const getData = () => {
+        refreshMemberList();
         setRefreshData(!refreshData);
     };
 
