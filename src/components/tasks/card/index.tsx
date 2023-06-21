@@ -63,7 +63,6 @@ const Card: FC<Props> = ({
     ];
 
     const cardDetails = content;
-    console.log(cardDetails);
     const { data } = useGetUserQuery();
     const [progress, setProgress] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
@@ -405,7 +404,6 @@ const Card: FC<Props> = ({
             content.assignee === data?.username ||
             data?.roles.super_user === true
         ) {
-            console.log('found');
             setProgress(true);
         } else {
             toast(ERROR, 'You cannot update progress');
