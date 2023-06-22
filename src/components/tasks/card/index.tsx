@@ -10,10 +10,10 @@ import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
+import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { TASKS_URL } from '@/constants/url';
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 
 import {
     DUMMY_NAME,
@@ -193,43 +193,6 @@ const Card: FC<Props> = ({
         const percentageOfDaysLeft = (daysLeft / totalDays) * 100;
         return percentageOfDaysLeft;
     }
-
-    const TaskStatusEditMode: FC = () => {
-        const updateTaskStatus = ({
-            target: { value },
-        }: React.ChangeEvent<HTMLSelectElement>) => {
-            onContentChange(cardDetails.id, {
-                status: value,
-            });
-        };
-
-        // TODO: remove this after fixing the card beautify status
-        const defaultStatus = cardDetails.status
-            .toUpperCase()
-            .split(' ')
-            .join('_');
-
-        const beautifyStatus = (status: string) => status.split('_').join(' ');
-
-        return (
-            <label>
-                Status:
-                <select
-                    name="status"
-                    onChange={updateTaskStatus}
-                    defaultValue={defaultStatus}
-                >
-                    {Object.keys(BACKEND_TASK_STATUS).map((status: string) => (
-                        <>
-                            <option value={status}>
-                                {beautifyStatus(status)}
-                            </option>
-                        </>
-                    ))}
-                </select>
-            </label>
-        );
-    };
 
     function handleProgressColor(
         percentCompleted: number,
@@ -536,7 +499,12 @@ const Card: FC<Props> = ({
                     </div>
                     {/* EDIT task status */}
                     <div className={classNames.taskStatusEditMode}>
-                        {shouldEdit ? <TaskStatusEditMode /> : ''}
+                        {shouldEdit && (
+                            <TaskStatusEditMode
+                                task={cardDetails}
+                                updateTask={onContentChange}
+                            />
+                        )}
                     </div>
                 </div>
                 {showAssignButton() ? (
