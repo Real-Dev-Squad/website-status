@@ -419,7 +419,6 @@ const Card: FC<Props> = ({
         }, 1000);
         setDebounceTimeOut(Number(timer));
     };
-
     const handleSliderChangeComplete = async (
         id: string,
         percentCompleted: number
@@ -429,6 +428,54 @@ const Card: FC<Props> = ({
             percentCompleted: percentCompleted,
         });
         toast(SUCCESS, 'Progress Updasted Successfully');
+    };
+
+    const handleProgressbar = () => {
+        if (progress) {
+            return (
+                <>
+                    <ProgressSlider
+                        value={progressValue}
+                        debounceSlider={debounceSlider}
+                        handleProgressChange={handleProgressChange}
+                    />
+                    <span>{progressValue}%</span>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <ProgressIndicator />
+                    <span>{content.percentCompleted}% </span>
+                </>
+            );
+        }
+    };
+
+    const handleProgressText = () => {
+        if (progress) {
+            return (
+                <>
+                    <div
+                        className={classNames.changeProgressText}
+                        onClick={() => handleSaveProgressUpdate()}
+                    >
+                        save Progress
+                    </div>
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <div
+                        className={classNames.changeProgressText}
+                        onClick={() => handleProgressUpdate()}
+                    >
+                        Progress update
+                    </div>
+                </>
+            );
+        }
     };
 
     const handleProgressChange = (
@@ -562,43 +609,9 @@ const Card: FC<Props> = ({
                     {/* progress bar */}
                     <div>
                         <div className={classNames.progressContainerUpdated}>
-                            {progress ? (
-                                <>
-                                    <ProgressSlider
-                                        value={progressValue}
-                                        debounceSlider={debounceSlider}
-                                        handleProgressChange={
-                                            handleProgressChange
-                                        }
-                                    />
-                                    <span>{progressValue}%</span>
-                                </>
-                            ) : (
-                                <>
-                                    <ProgressIndicator />
-                                    <span>{content.percentCompleted}% </span>
-                                </>
-                            )}
+                            {handleProgressbar()}
                         </div>
-                        {progress ? (
-                            <>
-                                <div
-                                    className={classNames.changeProgressText}
-                                    onClick={() => handleSaveProgressUpdate()}
-                                >
-                                    save Progress
-                                </div>
-                            </>
-                        ) : (
-                            <>
-                                <div
-                                    className={classNames.changeProgressText}
-                                    onClick={() => handleProgressUpdate()}
-                                >
-                                    Progress update
-                                </div>
-                            </>
-                        )}
+                        {handleProgressText()}
                     </div>
                 </div>
                 <div className={classNames.taskStatusAndDateContainer}>

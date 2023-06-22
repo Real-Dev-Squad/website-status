@@ -3,6 +3,7 @@ import { api } from './api';
 import { MINE_TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
+type TaskRequestPayload = { id: string; percentCompleted: number };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -19,12 +20,18 @@ export const tasksApi = api.injectEndpoints({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
-        updateTasks: builder.mutation({
+        updateTasks: builder.mutation<void, TaskRequestPayload>({
             query: ({ id, ...patch }) => ({
-                url: `/tasks/${id}`,
+                url: `tasks/${id}`,
                 method: 'PATCH',
                 body: patch,
             }),
+            invalidatesTags: (_result, _err, { id }) => [
+                {
+                    type: 'Tasks',
+                    id,
+                },
+            ],
         }),
     }),
 });
