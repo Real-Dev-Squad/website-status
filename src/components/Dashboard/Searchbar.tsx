@@ -6,16 +6,13 @@ function Searchbar({ label }: searchProps) {
     const [query, setQuery] = useState('');
 
     const handleKeyPress = (event: KeyboardEvent) => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && query !== '') {
             splitNSearch(query);
         }
     };
 
     return (
         <section className={styles.container}>
-            <label htmlFor="search" className={styles.searchLabel}>
-                {label}
-            </label>
             <input
                 type="text"
                 id="search"
@@ -23,13 +20,15 @@ function Searchbar({ label }: searchProps) {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => handleKeyPress(e)}
                 className={styles.searchBar}
+                placeholder={label + ':'}
             />
             <button
                 type="submit"
                 onClick={() => {
                     splitNSearch(query);
                 }}
-                className={styles.searchBtn}
+                className={styles.btn}
+                disabled={query === ''}
             >
                 Search
             </button>
