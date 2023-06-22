@@ -3,7 +3,7 @@ import task from '@/interfaces/task.type';
 
 type Props = {
     task: task;
-    updateTask: (changeId: string, changeObject: object) => void;
+    updateTask: (changeId: string, changeObject: { status: string }) => void;
 };
 
 // TODO: remove this after fixing the card beautify status
