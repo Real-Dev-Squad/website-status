@@ -8,6 +8,7 @@ type Props = {
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => status.split('_').join(' ');
+const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
 const TaskStatusEditMode = ({ task, updateTask = () => undefined }: Props) => {
     const onChangeUpdateTaskStatus = ({
@@ -17,8 +18,6 @@ const TaskStatusEditMode = ({ task, updateTask = () => undefined }: Props) => {
             status: value,
         });
     };
-
-    const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
     // TODO: remove this after fixing the card beautify status
     const defaultStatus = task.status.toUpperCase().split(' ').join('_');
