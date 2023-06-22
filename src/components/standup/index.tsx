@@ -83,7 +83,6 @@ const StandUpContainer: FC = () => {
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}
-                            data-testid="form"
                         >
                             <fieldset className={styles.formFields}>
                                 <FormInputComponent
@@ -121,7 +120,6 @@ const StandUpContainer: FC = () => {
                                 className={`${styles.submitButton} ${buttonStyleClass}`}
                                 disabled={!isValidate()}
                                 type="submit"
-                                data-testId="button"
                             >
                                 Submit
                             </button>
