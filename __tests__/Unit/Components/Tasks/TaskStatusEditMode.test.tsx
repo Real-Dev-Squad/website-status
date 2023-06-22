@@ -15,7 +15,7 @@ const BLOCKED_TASK = {
     status: 'BLOCKED',
 };
 
-describe.only('TaskStatusEditMode', () => {
+describe('TaskStatusEditMode', () => {
     it('should correctly set default option', () => {
         const mockUpdateTask = jest.fn();
         renderWithProviders(
