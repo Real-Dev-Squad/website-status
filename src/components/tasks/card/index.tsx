@@ -499,13 +499,11 @@ const Card: FC<Props> = ({
                     </div>
                     {/* EDIT task status */}
                     <div className={classNames.taskStatusEditMode}>
-                        {shouldEdit ? (
+                        {shouldEdit && (
                             <TaskStatusEditMode
                                 task={cardDetails}
                                 updateTask={onContentChange}
                             />
-                        ) : (
-                            ''
                         )}
                     </div>
                 </div>
