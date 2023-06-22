@@ -12,24 +12,22 @@ import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 
 type SearchFieldProps = {
-    searchText: string;
-    onSearchTextChanged: (event: ChangeEvent<HTMLInputElement>) => void;
-    onSearchTextSubmitted: () => void;
+    onSearchTextSubmitted: (searchString: string) => void;
     loading: boolean;
 };
 
-const SearchField = ({
-    searchText,
-    onSearchTextChanged,
-    onSearchTextSubmitted,
-    loading,
-}: SearchFieldProps) => {
+const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
+    const [searchText, setSearchText] = useState<string>('');
+    const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchText(e.target.value);
+    };
+
     return (
         <form
             className={classNames.searchFieldContainer}
             onSubmit={(e) => {
                 e.preventDefault();
-                onSearchTextSubmitted();
+                onSearchTextSubmitted(searchText);
             }}
         >
             <input
@@ -39,7 +37,6 @@ const SearchField = ({
                 className={classNames.issueSearchInput}
             />
             <button
-                onClick={onSearchTextSubmitted}
                 className={classNames.issuesSearchSubmitButton}
                 disabled={loading || !searchText.trim()}
             >
@@ -51,11 +48,11 @@ const SearchField = ({
 
 const Issues: FC = () => {
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
-    const [searchText, setSearchText] = useState<string>('');
+
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);
 
-    const fetchIssues = async () => {
+    const fetchIssues = async (searchText = '') => {
         try {
             setIsLoading(true);
             const res = await fetch(`${ISSUES_URL}?q=${searchText}`);
@@ -89,9 +86,6 @@ const Issues: FC = () => {
         fetchIssues();
     }, []);
 
-    const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) =>
-        setSearchText(e.target.value);
-
     let renderElement = <p>Loading...</p>;
 
     if (!isLoading) {
@@ -109,8 +103,6 @@ const Issues: FC = () => {
             <Head title="Issues" />
             <div className={classNames.container}>
                 <SearchField
-                    searchText={searchText}
-                    onSearchTextChanged={onSearchTextChanged}
                     onSearchTextSubmitted={fetchIssues}
                     loading={isLoading}
                 />
