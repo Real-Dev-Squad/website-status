@@ -3,14 +3,14 @@ import task from '@/interfaces/task.type';
 
 type Props = {
     task: task;
-    updateTask?: (changeId: string, changeObject: object) => void;
+    updateTask: (changeId: string, changeObject: object) => void;
 };
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => status.split('_').join(' ');
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
-const TaskStatusEditMode = ({ task, updateTask = () => undefined }: Props) => {
+const TaskStatusEditMode = ({ task, updateTask }: Props) => {
     const onChangeUpdateTaskStatus = ({
         target: { value },
     }: React.ChangeEvent<HTMLSelectElement>) => {
