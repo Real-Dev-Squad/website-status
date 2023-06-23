@@ -1,7 +1,10 @@
 import Tabs from '@/components/Tabs';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { Tab, TABS } from '@/interfaces/task.type';
 import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { store } from '@/app/store';
+import { Provider } from 'react-redux';
 
 function changeName(name: string) {
     if (name === COMPLETED) {
@@ -26,59 +29,102 @@ describe('Tabs Component', () => {
         MERGED: 0,
     };
 
-    it('should render all the buttons', () => {
-        render(
-            <Tabs
-                tabs={TABS}
-                activeTab={Tab.ASSIGNED}
-                onSelect={onSelectMock}
-                tasksCount={mockTasksCount}
-            />
+    test('should render all the buttons', () => {
+        const { queryAllByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <Tabs
+                    tabs={TABS}
+                    activeTab={Tab.ASSIGNED}
+                    onSelect={onSelectMock}
+                    tasksCount={mockTasksCount}
+                />
+            </Provider>
         );
-        const presentTabs = screen.queryAllByRole('button');
+        const presentTabs = queryAllByRole('button');
         expect(presentTabs.length).toBe(TABS.length);
     });
 
-    it('check if selectTab() is called with right key', () => {
-        render(
-            <Tabs
-                tabs={TABS}
-                activeTab={Tab.ASSIGNED}
-                onSelect={onSelectMock}
-                tasksCount={mockTasksCount}
-            />
+    test('check if selectTab() is called with right key', () => {
+        const { getByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <Tabs
+                    tabs={TABS}
+                    activeTab={Tab.ASSIGNED}
+                    onSelect={onSelectMock}
+                    tasksCount={mockTasksCount}
+                />
+            </Provider>
         );
-        const assignedBtn = screen.getByRole('button', { name: /ASSIGNED/i });
+        const assignedBtn = getByRole('button', { name: /ASSIGNED/i });
         fireEvent.click(assignedBtn);
         expect(onSelectMock).toHaveBeenCalledWith(Tab.ASSIGNED);
     });
 
-    it('Check if correct button is selected', () => {
-        render(
-            <Tabs
-                tabs={TABS}
-                activeTab={Tab.COMPLETED}
-                onSelect={onSelectMock}
-                tasksCount={mockTasksCount}
-            />
+    test('Check if correct button is selected', () => {
+        const { getByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <Tabs
+                    tabs={TABS}
+                    activeTab={Tab.COMPLETED}
+                    onSelect={onSelectMock}
+                    tasksCount={mockTasksCount}
+                />
+            </Provider>
         );
-
-        const completedBtn = screen.getByRole('button', { name: /COMPLETED/i });
+        const completedBtn = getByRole('button', { name: /DONE/i });
         expect(completedBtn).toHaveClass('active');
     });
 
-    it('should render all tabs passed with correct text and count values', () => {
-        render(
-            <Tabs
-                tabs={TABS}
-                activeTab={Tab.ASSIGNED}
-                onSelect={onSelectMock}
-                tasksCount={mockTasksCount}
-            />
+    test('should render all tabs passed with correct text', () => {
+        const { getAllByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <Tabs
+                    tabs={TABS}
+                    activeTab={Tab.ASSIGNED}
+                    onSelect={onSelectMock}
+                    tasksCount={mockTasksCount}
+                />
+            </Provider>
         );
-        const presentTabs = screen.getAllByRole('button');
+        const presentTabs = getAllByRole('button');
         for (let i = 0; i < presentTabs.length; i++) {
             expect(presentTabs[i].textContent).toBe(changeName(TABS[i]));
         }
+    });
+
+    test('should change Tabs design and show tasks count if feature flag is on', () => {
+        const { getByRole, getAllByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <Tabs
+                    tabs={TABS}
+                    activeTab={Tab.ASSIGNED}
+                    onSelect={onSelectMock}
+                    tasksCount={mockTasksCount}
+                />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        const presentTabs = getAllByRole('button');
+
+        // tasks count is rendered correctly on screen
+        for (let i = 0; i < presentTabs.length; i++) {
+            expect(presentTabs[i].textContent).toBe(
+                `${TABS[i]} (${mockTasksCount[TABS[i]]})`
+            );
+        }
+
+        // feature flag's css is applied correctly
+        for (let i = 0; i < presentTabs.length; i++) {
+            expect(presentTabs[i]).toHaveClass('featureFlagTabButton');
+        }
+
+        // active tab's feature flag css is applied correctly
+        const assignedBtn = getByRole('button', {
+            name: /assigned/i,
+        });
+        expect(assignedBtn).toHaveClass('featureFlagActiveTab');
     });
 });

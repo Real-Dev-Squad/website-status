@@ -44,8 +44,21 @@ enum Tab {
     COMPLETED = 'COMPLETED',
 }
 
+type tasksCountObject = {
+    ASSIGNED: number;
+    COMPLETED: number;
+    AVAILABLE: number;
+    IN_PROGRESS: number;
+    NEEDS_REVIEW: number;
+    IN_REVIEW: number;
+    VERIFIED: number;
+    MERGED: number;
+};
+
 const TABS = Object.values(Tab);
 
 export { TABS, Tab };
+
+export type { tasksCountObject };
 
 export default task;

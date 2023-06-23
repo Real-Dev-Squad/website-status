@@ -3,7 +3,7 @@ import classNames from '@/styles/tasks.module.scss';
 
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
-import task, { Tab } from '@/interfaces/task.type';
+import task, { Tab, tasksCountObject } from '@/interfaces/task.type';
 import { useContext, useState, useEffect } from 'react';
 import { STATUS_ORDER } from '@/constants/task-status';
 import {
@@ -25,7 +25,21 @@ export const TasksContent = () => {
     const { isEditMode } = useEditMode();
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
-    const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
+    const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
+
+    const startingTasksCount: tasksCountObject = {
+        ASSIGNED: 0,
+        COMPLETED: 0,
+        AVAILABLE: 0,
+        IN_PROGRESS: 0,
+        NEEDS_REVIEW: 0,
+        IN_REVIEW: 0,
+        VERIFIED: 0,
+        MERGED: 0,
+    };
+    const [tasksCount, setTasksCount] =
+        useState<tasksCountObject>(startingTasksCount);
+
     // TODO: the below code should removed when mutation for updating tasks is implemented
     const [filteredTask, setFilteredTask] = useState<any>([]);
     // TODO: the below code should removed when mutation for updating tasks is implemented
@@ -37,9 +51,29 @@ export const TasksContent = () => {
         setActiveTab(tab);
     };
 
+    function getTasksCount(passedTasksArray: task[]) {
+        const tasksCount: tasksCountObject = {
+            ASSIGNED: 0,
+            COMPLETED: 0,
+            AVAILABLE: 0,
+            IN_PROGRESS: 0,
+            NEEDS_REVIEW: 0,
+            IN_REVIEW: 0,
+            VERIFIED: 0,
+            MERGED: 0,
+        };
+        passedTasksArray.forEach((task: task) => {
+            tasksCount[task.status as Tab] += 1;
+        });
+
+        return tasksCount;
+    }
+
     // TODO: the useEffect should be removed when mutation for updating tasks is implemented
     useEffect(() => {
         if ('tasks' in response) {
+            const tasksCount = getTasksCount(response.tasks);
+            setTasksCount(tasksCount);
             const tasks = updateTasksStatus(response.tasks);
             tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
             tasks.sort(
@@ -76,7 +110,11 @@ export const TasksContent = () => {
 
     return (
         <div className={classNames.tasksContainer}>
-            <TabSection onSelect={onSelect} activeTab={activeTab} />
+            <TabSection
+                onSelect={onSelect}
+                activeTab={activeTab}
+                tasksCount={tasksCount}
+            />
             <div>
                 {filteredTask[activeTab] ? (
                     <TaskList
