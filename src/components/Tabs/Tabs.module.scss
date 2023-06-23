@@ -2,6 +2,7 @@ $theme-grey: #d4d4d5;
 $theme-grey-light: #f1f1f5;
 $gray-shade-color: #808080;
 $gray-shade-color2: #5c5b5b;
+$theme-pink: #e30062;
 
 .tabButton {
     border: none;
@@ -28,4 +29,22 @@ $gray-shade-color2: #5c5b5b;
     border: 1.8px solid $theme-grey;
     border-bottom: none;
     background: var(--toastify-color-light);
+}
+
+.featureFlagTabButton {
+    background: white;
+    border: none;
+    padding: 12px 8px 8px;
+    font-size: 0.8em;
+    border: none;
+    cursor: pointer;
+    color: #a1a5b7;
+}
+
+.featureFlagActiveTab {
+    font-weight: bold;
+    background: white;
+    border: none;
+    border-bottom: 3px solid $theme-pink;
+    color: black;
 }
