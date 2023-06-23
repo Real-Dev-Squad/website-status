@@ -1,6 +1,17 @@
 import Tabs from '@/components/Tabs';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Tab, TABS } from '@/interfaces/task.type';
+import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
+
+function changeName(name: string) {
+    if (name === COMPLETED) {
+        return DONE;
+    } else if (name === AVAILABLE) {
+        return UNASSINGED;
+    } else {
+        return name.split('_').join(' ');
+    }
+}
 
 describe('Tabs Component', () => {
     const onSelectMock = jest.fn();
@@ -38,7 +49,7 @@ describe('Tabs Component', () => {
                 onSelect={onSelectMock}
             />
         );
-        const completedBtn = screen.getByRole('button', { name: /COMPLETED/i });
+        const completedBtn = screen.getByRole('button', { name: /DONE/i });
         expect(completedBtn).toHaveClass('active');
     });
 
@@ -52,9 +63,7 @@ describe('Tabs Component', () => {
         );
         const presentTabs = screen.getAllByRole('button');
         for (let i = 0; i < presentTabs.length; i++) {
-            expect(presentTabs[i].textContent).toBe(
-                TABS[i].split('_').join(' ')
-            );
+            expect(presentTabs[i].textContent).toBe(changeName(TABS[i]));
         }
     });
 });
