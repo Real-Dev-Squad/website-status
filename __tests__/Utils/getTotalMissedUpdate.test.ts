@@ -1,5 +1,9 @@
 import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
 
+function getMockedDates(date: string): number {
+    return new Date(date).getTime();
+}
+
 describe('Get Total Missed Updates', () => {
     test('should return 0 if date array is empty', () => {
         const result = getTotalMissedUpdates([]);
@@ -7,20 +11,20 @@ describe('Get Total Missed Updates', () => {
     });
 
     test('should return 0 if date array has last standup date', () => {
-        const result = getTotalMissedUpdates([
-            1687305600000, 1685145600000, 1686873600000, 1685836800000,
-            1687392000000,
-        ]);
+        const dateArrayValue = getMockedDates('24 june 2023');
+        const result = getTotalMissedUpdates([dateArrayValue]);
         expect(result).toBe(0);
     });
 
     test('should return number of days between last standup date and current standup date', () => {
+        const firstDate = getMockedDates('20 june 2023');
+        const SecondDate = getMockedDates('21 june 2023');
+        const ThirdDate = getMockedDates('22 june 2023');
         const result = getTotalMissedUpdates([
-            1685232000000, 1685404800000, 1685491200000, 1687132800000,
-            1685059200000, 1685750400000, 1687219200000, 1685318400000,
-            1685577600000, 1686787200000, 1685836800000, 1686873600000,
-            1685145600000, 1687305600000,
+            firstDate,
+            SecondDate,
+            ThirdDate,
         ]);
-        expect(result).toBe(1);
+        expect(result).toBe(2);
     });
 });
