@@ -91,6 +91,23 @@ describe('StandupContainer', () => {
     });
 
     // test('should Submit form data', async () => {
+    //     jest.spyOn(
+    //         SaveProgressHook,
+    //         'useSaveProgressMutation'
+    //     ).mockImplementation((): ReturnType<
+    //         typeof SaveProgressHook.useSaveProgressMutation
+    //     > => {
+    //         return {
+    //             requestId: undefined,
+    //             status: '',
+    //             data: '',
+    //             error: '',
+    //             endpointName: '',
+    //             startedTimeStamp: '',
+    //             fulfilledTimeStamp: '',
+    //         };
+    //     });
+
     //     const { getByTestId } = renderWithRouter(
     //         <Provider store={store()}>
     //             <StandUpContainer />
@@ -117,11 +134,8 @@ describe('StandupContainer', () => {
     //     });
     //     fireEvent.submit(getByTestId('form'));
 
-    //     jest.spyOn(
-    //         SaveProgressHook,
-    //         'useSaveProgressMutation'
-    //     ).mockImplementation();
-
-    //     expect(await screen.findByText('Standup ')).toBeInTheDocument();
+    //     expect(
+    //         await screen.findByText('Standup submitted successfully ')
+    //     ).toBeInTheDocument();
     // });
 });
