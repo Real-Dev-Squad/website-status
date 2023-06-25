@@ -427,7 +427,7 @@ const Card: FC<Props> = ({
             id: id,
             percentCompleted: percentCompleted,
         });
-        toast(SUCCESS, 'Progress Updasted Successfully');
+        toast(SUCCESS, 'Progress Updated Successfully');
     };
 
     const handleProgressbar = () => {
