@@ -41,6 +41,9 @@ $seeMoreTasksShadow: #595959cc;
     @media (max-width: 48rem) {
         width: 100%;
     }
+    @media (max-width: 64rem) {
+        width: 100%;
+    }
 }
 .card_updated {
     border-radius: 10px;
