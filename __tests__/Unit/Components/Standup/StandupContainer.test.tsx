@@ -2,8 +2,9 @@ import StandUpContainer from '@/components/standup';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import * as SaveProgressHook from '@/app/services/progressesApi';
+import { STANDUP_SUBMISSION_SUCCESS } from '@/constants/constants';
 
 describe('StandupContainer', () => {
     test('should render completed inputField ', function () {
@@ -90,52 +91,46 @@ describe('StandupContainer', () => {
         expect(screen.getByTestId('button')).not.toBeDisabled();
     });
 
-    // test('should Submit form data', async () => {
-    //     jest.spyOn(
-    //         SaveProgressHook,
-    //         'useSaveProgressMutation'
-    //     ).mockImplementation((): ReturnType<
-    //         typeof SaveProgressHook.useSaveProgressMutation
-    //     > => {
-    //         return {
-    //             requestId: undefined,
-    //             status: '',
-    //             data: '',
-    //             error: '',
-    //             endpointName: '',
-    //             startedTimeStamp: '',
-    //             fulfilledTimeStamp: '',
-    //         };
-    //     });
+    test('should Submit form data', async () => {
+        jest.spyOn(
+            SaveProgressHook,
+            'useSaveProgressMutation'
+        ).mockImplementation((): ReturnType<
+            typeof SaveProgressHook.useSaveProgressMutation
+        > => {
+            return [jest.fn()] as unknown as ReturnType<
+                typeof SaveProgressHook.useSaveProgressMutation
+            >;
+        });
 
-    //     const { getByTestId } = renderWithRouter(
-    //         <Provider store={store()}>
-    //             <StandUpContainer />
-    //         </Provider>
-    //     );
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <StandUpContainer />
+            </Provider>
+        );
 
-    //     const completeInput = screen.getByTestId(
-    //         'completedInputField'
-    //     ) as HTMLInputElement;
-    //     fireEvent.change(completeInput, {
-    //         target: { value: 'Working on a backend Go project' },
-    //     });
-    //     const todaysInput = screen.getByTestId(
-    //         'todayInputField'
-    //     ) as HTMLInputElement;
-    //     fireEvent.change(todaysInput, {
-    //         target: { value: 'Implement error handling for API endpoints' },
-    //     });
-    //     const blockerInput = screen.getByTestId(
-    //         'blockerInputField'
-    //     ) as HTMLInputElement;
-    //     fireEvent.change(blockerInput, {
-    //         target: { value: 'Waiting for database access credentials' },
-    //     });
-    //     fireEvent.submit(getByTestId('form'));
+        const completeInput = screen.getByTestId(
+            'completedInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(completeInput, {
+            target: { value: 'Working on a backend Go project' },
+        });
+        const todaysInput = screen.getByTestId(
+            'todayInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(todaysInput, {
+            target: { value: 'Implement error handling for API endpoints' },
+        });
+        const blockerInput = screen.getByTestId(
+            'blockerInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(blockerInput, {
+            target: { value: 'Waiting for database access credentials' },
+        });
+        fireEvent.submit(getByTestId('form'));
 
-    //     expect(
-    //         await screen.findByText('Standup submitted successfully ')
-    //     ).toBeInTheDocument();
-    // });
+        await waitFor(() =>
+            expect(screen.findByText(STANDUP_SUBMISSION_SUCCESS))
+        );
+    });
 });
