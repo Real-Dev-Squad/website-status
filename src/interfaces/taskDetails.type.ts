@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 export type taskDetailsDataType = {
     message?: string;
     taskData?: {
@@ -15,4 +16,15 @@ export type taskDetailsDataType = {
         title: string;
         type: string;
     };
+};
+
+export type ButtonProps = {
+    buttonName: string;
+    clickHandler: (value: any) => void;
+    value?: boolean;
+};
+export type TextAreaProps = {
+    name: string;
+    value: string;
+    onChange: ChangeEventHandler;
 };
