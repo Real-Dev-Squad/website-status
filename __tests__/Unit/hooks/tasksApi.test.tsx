@@ -13,15 +13,15 @@ import {
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 import {
     failedAddNewTaskHandler,
+    failedAddNewTaskResponse,
     failedGetTasks,
+    failedGetTasksResponse,
     failedUpdateTaskHandler,
 } from '../../../__mocks__/handlers/tasks.handler';
 
 const server = setupServer(...handlers);
 
-beforeAll(() => {
-    server.listen();
-});
+beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
@@ -69,6 +69,10 @@ describe('useGetAllTasksQuery()', () => {
         const nextResponse = result.current;
         expect(nextResponse.isError).toBe(true);
         expect(nextResponse.error).toHaveProperty('status', 500);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedGetTasksResponse
+        );
     });
 });
 
@@ -126,11 +130,12 @@ describe('useAddTaskMutation()', () => {
         expect(initialResponse.data).toBeUndefined();
 
         act(() => {
-            addTask({
+            const task = {
                 type: 'feature',
                 status: 'AVAILABLE',
                 percentCompleted: 0,
-            });
+            };
+            addTask(task);
         });
 
         await act(() => waitForNextUpdate());
@@ -138,11 +143,10 @@ describe('useAddTaskMutation()', () => {
         const nextResponse = result.current[1];
         expect(nextResponse.isError).toBe(true);
         expect(nextResponse.error).toHaveProperty('status', 404);
-        expect(nextResponse.error).toHaveProperty('data', {
-            statusCode: 400,
-            error: 'Bad Request',
-            message: '"title" is required',
-        });
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedAddNewTaskResponse
+        );
     });
 });
 
@@ -164,10 +168,11 @@ describe('useUpdateTaskMutation()', () => {
         expect(initialResponse.data).toBeUndefined();
 
         act(() => {
-            updateTask({
+            const task = {
                 task: updatedTaskData,
                 id: taskId,
-            });
+            };
+            updateTask(task);
         });
 
         const loadingResponse = result.current[1];

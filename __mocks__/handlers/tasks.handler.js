@@ -638,34 +638,41 @@ const taskHandlers = [
 	})
 ];
 
+export const failedGetTasksResponse = {
+	error: 'Internal Server Error',
+	message: 'An internal server error occurred',
+	statusCode: 500
+};
+
 export const failedGetTasks = rest.get(
 	`${URL}/tasks`,
 	(_, res, ctx) => {
-		return res(ctx.status(500, new Error('Internal server occurred!'))
-		);
+		return res(ctx.status(500), ctx.json(failedGetTasksResponse));
 	}
 );
 
+export const failedAddNewTaskResponse = {
+	'statusCode': 400,
+	'error': 'Bad Request',
+	'message': '"title" is required'
+};
 export const failedAddNewTaskHandler = rest.post(
 	`${URL}/tasks`,
 	(_, res, ctx) => {
-		return res(ctx.status(404), ctx.json({
-			'statusCode': 400,
-			'error': 'Bad Request',
-			'message': '"title" is required'
-		})
+		return res(ctx.status(404), ctx.json(failedAddNewTaskResponse)
 		);
 	}
 );
 
+export const failedUpdateTaskResponse = {
+	statusCode: 404,
+	error: 'Not Found',
+	message: 'Task not found'
+};
 export const failedUpdateTaskHandler = rest.patch(
 	`${URL}/tasks/:taskId`,
 	(_, res, ctx) => {
-		return res(ctx.status(404), ctx.json({
-			statusCode: 404,
-			error: 'Not Found',
-			message: 'Task not found'
-		})
+		return res(ctx.status(404), ctx.json(failedUpdateTaskResponse)
 		);
 	}
 );
