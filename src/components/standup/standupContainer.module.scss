@@ -12,7 +12,6 @@ $radius: 0.5rem;
 .standupContainer {
     display: flex;
     flex-direction: column;
-    margin-top: 1.8rem;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -25,6 +24,16 @@ $radius: 0.5rem;
     color: $theme-whiteColor;
     padding: 2rem;
     border-radius: $radius;
+}
+
+.bannerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    margin-top: 2rem;
+    margin-left: 8.2rem;
 }
 
 .bannerPara {
@@ -41,7 +50,7 @@ $radius: 0.5rem;
 
 .standupUpdateContainer {
     width: 50%;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 .standupForm {
