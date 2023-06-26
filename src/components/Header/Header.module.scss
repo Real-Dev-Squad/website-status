@@ -1,18 +1,16 @@
 .header {
-    margin-top: 0.5rem;
+    padding-top: 0.6rem;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 1rem;
     align-items: center;
-    gap: 1rem;
     border-bottom: 1px solid var(--toastify-text-color-light);
 }
 
 .link {
-    padding: 0.5rem;
+    padding: 0.6rem;
     text-decoration: none;
-    font-size: 14px;
+    font-weight: 700;
     color: #041484;
     cursor: pointer;
     background: none;
