@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 const urlParams = new URLSearchParams(window.location.search);
 const isDevMode = urlParams.get('dev') === 'true';
@@ -44,27 +45,20 @@ describe.skip('TaskDetails Page', () => {
     });
 });
 
-jest.mock('next/router', () => ({
-    useRouter: jest.fn().mockReturnValue({
-        query: {
-            dev: 'true',
-        },
-    }),
-}));
-
 describe('Update Progress button', () => {
     it('renders the Update Progress button when ?dev=true query parameter is present', () => {
-        const { getByText, queryByText } = render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>
+            </Provider>,
+            { query: { dev: 'true' } }
         );
 
         if (isDevMode) {
-            const updateProgressButton = getByText('Update Progress');
+            const updateProgressButton = screen.getByText('Update Progress');
             expect(updateProgressButton).toBeInTheDocument();
         } else {
-            const updateProgressButton = queryByText('Update Progress');
+            const updateProgressButton = screen.queryByText('Update Progress');
             expect(updateProgressButton).toBeNull();
         }
     });
