@@ -112,7 +112,7 @@ describe('Tabs Component', () => {
         // tasks count is rendered correctly on screen
         for (let i = 0; i < presentTabs.length; i++) {
             expect(presentTabs[i].textContent).toBe(
-                `${TABS[i]} (${mockTasksCount[TABS[i]]})`
+                `${changeName(TABS[i])} (${mockTasksCount[TABS[i]]})`
             );
         }
 
