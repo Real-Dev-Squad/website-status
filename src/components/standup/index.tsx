@@ -73,12 +73,11 @@ const StandUpContainer: FC = () => {
     return (
         <>
             <section className="container">
+                <ProgressHeader
+                    totalMissedUpdates={totalMissedUpdates}
+                    updateType="Standup"
+                />
                 <div className={styles.standupContainer}>
-                    <ProgressHeader
-                        totalMissedUpdates={totalMissedUpdates}
-                        updateType="Standup"
-                    />
-
                     <div className={styles.standupUpdateContainer}>
                         <h1 className={styles.standupTitle}>Standup Update</h1>
                         <form
