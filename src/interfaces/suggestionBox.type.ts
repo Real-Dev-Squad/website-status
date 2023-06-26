@@ -12,11 +12,3 @@ export type SuggestionListProps = {
     suggestions: GithubInfo[];
     onSelectAssignee: (userName: string) => void;
 };
-
-export type SuggestionsProps = {
-    assigneeName: string;
-    showSuggestion: boolean;
-    handleAssignment: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    handleChange: (e: any, changedProperty: any) => void;
-    handleClick: (userName: string) => void;
-};

@@ -31,7 +31,11 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
-import Suggestions from './Suggestions';
+import { GithubInfo } from '@/interfaces/suggestionBox.type';
+import { userDataType } from '@/interfaces/user.type';
+import SuggestionBox from '../SuggestionBox/SuggestionBox';
+
+let timer: NodeJS.Timeout;
 
 type Props = {
     content: task;
@@ -63,6 +67,10 @@ const Card: FC<Props> = ({
     const isUserAuthorized = useContext(isUserAuthorizedContext);
 
     const [showEditButton, setShowEditButton] = useState(false);
+
+    const [isLoadingSuggestions, setIsLoadingSuggestions] =
+        useState<boolean>(false);
+    const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
 
     const [keyLongPressed] = useKeyLongPressed();
 
@@ -386,6 +394,43 @@ const Card: FC<Props> = ({
         setShowSuggestion(false);
     };
 
+    const fetchUsers = async (e: string) => {
+        if (!e) return;
+        setIsLoadingSuggestions(true);
+
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
+        try {
+            const { requestPromise } = fetch({ url });
+            const users = await requestPromise;
+            const usersData = users.data.users;
+            const suggestedUsers: GithubInfo[] = [];
+            usersData.map((data: userDataType) => {
+                suggestedUsers.push({
+                    github_id: data.username,
+                    profileImageUrl: data?.picture?.url
+                        ? data.picture.url
+                        : placeholderImageURL,
+                });
+            });
+
+            setSuggestions(suggestedUsers);
+            setIsLoadingSuggestions(false);
+        } catch (error: any) {
+            setIsLoadingSuggestions(false);
+            toast(ERROR, error.message);
+        }
+    };
+
+    const debounce = (fn: (e: string) => void, delay: number) => {
+        return function (e: string) {
+            clearTimeout(timer);
+            setSuggestions([]);
+            timer = setTimeout(() => {
+                fn(e);
+            }, delay);
+        };
+    };
+
     // show redesign only on dev
     if (isNewCardDesignEnabled)
         return (
@@ -461,14 +506,36 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <Suggestions
-                                    assigneeName={assigneeName}
-                                    showSuggestion={showSuggestion}
-                                    handleAssignment={handleAssignment}
-                                    handleClick={handleClick}
-                                    handleChange={handleChange}
-                                    ref={inputRef}
-                                />
+                                <div className={classNames.suggestionDiv}>
+                                    <input
+                                        ref={inputRef}
+                                        value={assigneeName}
+                                        className={classNames.cardStrongFont}
+                                        onKeyDown={(e) => {
+                                            handleChange(e, 'assignee');
+                                        }}
+                                        onChange={(e) => {
+                                            handleAssignment(e);
+                                            debounce(
+                                                fetchUsers,
+                                                400
+                                            )(e.target.value);
+                                        }}
+                                        role="button"
+                                        tabIndex={0}
+                                    />
+
+                                    {isLoadingSuggestions ? (
+                                        <Loader />
+                                    ) : (
+                                        showSuggestion && (
+                                            <SuggestionBox
+                                                suggestions={suggestions}
+                                                onSelectAssignee={handleClick}
+                                            />
+                                        )
+                                    )}
+                                </div>
                             )
                         ) : (
                             <span className={classNames.cardStrongFont}>
@@ -600,14 +667,40 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <Suggestions
-                                        assigneeName={assigneeName}
-                                        showSuggestion={showSuggestion}
-                                        handleAssignment={handleAssignment}
-                                        handleClick={handleClick}
-                                        handleChange={handleChange}
-                                        ref={inputRef}
-                                    />
+                                    <div className={classNames.suggestionDiv}>
+                                        <input
+                                            ref={inputRef}
+                                            value={assigneeName}
+                                            className={
+                                                classNames.cardStrongFont
+                                            }
+                                            onKeyDown={(e) => {
+                                                handleChange(e, 'assignee');
+                                            }}
+                                            onChange={(e) => {
+                                                handleAssignment(e);
+                                                debounce(
+                                                    fetchUsers,
+                                                    400
+                                                )(e.target.value);
+                                            }}
+                                            role="button"
+                                            tabIndex={0}
+                                        />
+
+                                        {isLoadingSuggestions ? (
+                                            <Loader />
+                                        ) : (
+                                            showSuggestion && (
+                                                <SuggestionBox
+                                                    suggestions={suggestions}
+                                                    onSelectAssignee={
+                                                        handleClick
+                                                    }
+                                                />
+                                            )
+                                        )}
+                                    </div>
                                 )
                             ) : (
                                 <span className={classNames.cardStrongFont}>
