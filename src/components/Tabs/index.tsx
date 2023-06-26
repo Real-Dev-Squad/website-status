@@ -45,7 +45,7 @@ const Tabs = ({ tabs, onSelect, activeTab, tasksCount }: TabsProps) => {
                     `}
                 >
                     {isFeatureFlagOn
-                        ? `${tab} (${tasksCount[tab]})`
+                        ? `${changeName(tab)} (${tasksCount[tab]})`
                         : changeName(tab)}
                 </button>
             ))}
