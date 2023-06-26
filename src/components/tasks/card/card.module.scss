@@ -36,12 +36,9 @@ $seeMoreTasksShadow: #595959cc;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-    width: 1050px;
+    width: 45rem;
 
     @media (max-width: 48rem) {
-        width: 100%;
-    }
-    @media (max-width: 64rem) {
         width: 100%;
     }
 }
