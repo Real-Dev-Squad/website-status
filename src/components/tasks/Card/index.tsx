@@ -39,6 +39,7 @@ import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import userData from '@/helperFunctions/getUser';
 import ProgressIndicator from './ProgressIndicator/ProgressIndicator';
 import EditButton from './EditButton/EditButton';
+import AssigneeButton from './AssigneeButton/AssigneeButton';
 
 type Props = {
     content: task;
@@ -323,19 +324,6 @@ const Card: FC<Props> = ({
         }
     };
 
-    const AssigneeButton = () => {
-        return (
-            <button
-                className={styles.card__top__button}
-                type="button"
-                disabled={loading}
-                onClick={handleAssignToIssueAssignee}
-            >
-                {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
-            </button>
-        );
-    };
-
     const CloseTaskButton = () => {
         return (
             <div className={classNames.cardItems}>
@@ -479,7 +467,13 @@ const Card: FC<Props> = ({
                     </div>
                 </div>
                 {showAssignButton() ? (
-                    <AssigneeButton />
+                    <AssigneeButton
+                        handleClick={handleAssignToIssueAssignee}
+                        isDisabled={loading}
+                        assignee={
+                            cardDetails.github?.issue.assigneeRdsInfo?.username
+                        }
+                    />
                 ) : (
                     <div className={classNames.contributor}>
                         <span className={classNames.cardSpecialFont}>
@@ -656,7 +650,14 @@ const Card: FC<Props> = ({
                 {
                     // Assigne to button if task was created from an issue
                     showAssignButton() ? (
-                        <AssigneeButton />
+                        <AssigneeButton
+                            handleClick={handleAssignToIssueAssignee}
+                            isDisabled={loading}
+                            assignee={
+                                cardDetails.github?.issue.assigneeRdsInfo
+                                    ?.username
+                            }
+                        />
                     ) : (
                         <span>
                             <span className={classNames.cardSpecialFont}>
