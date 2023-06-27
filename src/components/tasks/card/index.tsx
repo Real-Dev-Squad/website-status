@@ -10,9 +10,11 @@ import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
+import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/taskItem.type';
 import fetch from '@/helperFunctions/fetch';
 import { TASKS_URL } from '@/constants/url';
+
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
@@ -473,26 +475,37 @@ const Card: FC<Props> = ({
                         <span>{content.percentCompleted}% </span>
                     </div>
                 </div>
-                <div className={classNames.dateInfo}>
-                    <div>
-                        <span className={classNames.cardSpecialFont}>
-                            Estimated completion
-                        </span>
-                        <span className={classNames.completionDate}>
-                            {renderDate(fromNowEndsOn, shouldEdit)}
+                <div className={classNames.taskStatusAndDateContainer}>
+                    <div className={classNames.dateInfo}>
+                        <div>
+                            <span className={classNames.cardSpecialFont}>
+                                Estimated completion
+                            </span>
+                            <span className={classNames.completionDate}>
+                                {renderDate(fromNowEndsOn, shouldEdit)}
+                            </span>
+                        </div>
+                        <span
+                            className={classNames.cardSpecialFont}
+                            contentEditable={shouldEdit}
+                            onKeyDown={(e) => handleChange(e, 'startedOn')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {cardDetails.status === TASK_STATUS.AVAILABLE
+                                ? 'Not started'
+                                : `Started on ${fromNowStartedOn}`}
                         </span>
                     </div>
-                    <span
-                        className={classNames.cardSpecialFont}
-                        contentEditable={shouldEdit}
-                        onKeyDown={(e) => handleChange(e, 'startedOn')}
-                        role="button"
-                        tabIndex={0}
-                    >
-                        {cardDetails.status === TASK_STATUS.AVAILABLE
-                            ? 'Not started'
-                            : `Started on ${fromNowStartedOn}`}
-                    </span>
+                    {/* EDIT task status */}
+                    <div className={classNames.taskStatusEditMode}>
+                        {shouldEdit && (
+                            <TaskStatusEditMode
+                                task={cardDetails}
+                                updateTask={onContentChange}
+                            />
+                        )}
+                    </div>
                 </div>
                 {showAssignButton() ? (
                     <AssigneeButton />
