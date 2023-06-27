@@ -50,7 +50,7 @@ export default function TaskList({
     }
 
     return (
-        <>
+        <div className={styles.taskCardsContainer}>
             {filteredTasks.map((item: task) => (
                 <Card
                     content={item}
@@ -68,6 +68,6 @@ export default function TaskList({
                     {SEE_MORE}
                 </button>
             )}
-        </>
+        </div>
     );
 }

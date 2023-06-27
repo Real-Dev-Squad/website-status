@@ -28,6 +28,7 @@ $seeMoreTasksShadow: #595959cc;
 }
 
 .card {
+    text-align: left;
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -36,7 +37,7 @@ $seeMoreTasksShadow: #595959cc;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-    max-width: 720px;
+    width: 50rem;
 
     @media (max-width: 48rem) {
         width: 100%;
@@ -310,6 +311,14 @@ $seeMoreTasksShadow: #595959cc;
     max-width: max-content;
     margin: 1rem 0 0;
 }
+
 .close__task__button {
     @include styles.issues-button;
+}
+
+.taskCardsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
