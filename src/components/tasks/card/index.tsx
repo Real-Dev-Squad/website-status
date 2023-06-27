@@ -1,6 +1,7 @@
 import { FC, useState, useEffect, useContext, useRef } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
+
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
@@ -9,10 +10,9 @@ import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
+import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
-import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { TASKS_URL } from '@/constants/url';
 
 import {
