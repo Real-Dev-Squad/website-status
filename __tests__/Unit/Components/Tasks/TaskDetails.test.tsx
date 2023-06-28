@@ -1,41 +1,80 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import {
+    fireEvent,
+    getByText,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import TaskDetails from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { setupServer } from 'msw/node';
+import handlers from '../../../../__mocks__/handlers';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
 };
 
-describe.skip('TaskDetails Page', () => {
-    test('Loading text rendered when loading', () => {
-        render(<TaskDetails url={details.url} taskID={details.taskID} />);
-        const loadingElement = screen.getByText(/Loading.../i);
-        expect(loadingElement).toBeInTheDocument();
-    });
-    test('Task title is Editable in Editing mode ', () => {
-        render(<TaskDetails url={details.url} taskID={details.taskID} />);
+const server = setupServer(...handlers);
 
-        const titleElement = screen.queryByTestId('task-title');
-        expect(titleElement).not.toBeInTheDocument();
-    });
-    test('Edit button is not rendered when Editing', () => {
-        render(<TaskDetails url={details.url} taskID={details.taskID} />);
+beforeAll(() => {
+    server.listen();
+});
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
-        const editButtonElement = screen.queryByRole('button', {
-            name: 'Edit',
-        });
-        expect(editButtonElement).not.toBeInTheDocument();
-    });
-    test('Task Description is Editable in Editing mode', () => {
-        render(<TaskDetails url={details.url} taskID={details.taskID} />);
-
-        const descriptionElement = screen.queryByText(
-            /No description available/i
+describe('TaskDetails Page', () => {
+    it('Should render title', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails url={details.url} taskID={details.taskID} />
+            </Provider>
         );
-        expect(descriptionElement).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
+        });
+    });
+
+    it('should render update progress button ', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails url={details.url} taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            const buttonElement = getByText(/Update Progress/i);
+            expect(buttonElement).toBeInTheDocument();
+        });
+    });
+
+    it('should show edit button when superuser is viewing', async () => {
+        const { getByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <isUserAuthorizedContext.Provider value={true}>
+                    <TaskDetails url={details.url} taskID={details.taskID} />
+                </isUserAuthorizedContext.Provider>
+            </Provider>,
+            {}
+        );
+        await waitFor(() => {
+            expect(getByRole('button', { name: 'Edit' })).toBeInTheDocument();
+        });
+    });
+    it('Should render No Description available for a task without description', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails url={details.url} taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('No description available')).toBeInTheDocument();
+        });
     });
 });
 
