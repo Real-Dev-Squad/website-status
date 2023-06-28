@@ -2,11 +2,42 @@ import StandUpContainer from '@/components/standup';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+    fireEvent,
+    renderHook,
+    screen,
+    act,
+    waitFor,
+    getByText,
+} from '@testing-library/react';
+import { useSaveProgressMutation } from '@/app/services/progressesApi';
+import { setupServer } from 'msw/node';
+import handlers from '../../../../__mocks__/handlers';
+import { PropsWithChildren } from 'react';
 import * as SaveProgressHook from '@/app/services/progressesApi';
-import { STANDUP_SUBMISSION_SUCCESS } from '@/constants/constants';
+import {
+    ERROR_MESSAGE,
+    STANDUP_SUBMISSION_SUCCESS,
+} from '@/constants/constants';
+import {
+    failedPostStandup,
+    standupsHandler,
+} from '../../../../__mocks__/handlers/standup.handler';
+import { ToastContainer } from 'react-toastify';
+import { ToastTypes, toast } from '@/helperFunctions/toast';
+
+const server = setupServer(...handlers);
 
 describe('StandupContainer', () => {
+    beforeAll(() => {
+        server.listen();
+    });
+    afterEach(() => {
+        server.resetHandlers();
+    });
+    afterAll(() => {
+        server.close();
+    });
     test('should render completed inputField ', function () {
         renderWithRouter(
             <Provider store={store()}>
@@ -91,24 +122,23 @@ describe('StandupContainer', () => {
         expect(screen.getByTestId('button')).not.toBeDisabled();
     });
 
-    test('should Submit form data', async () => {
-        jest.spyOn(
-            SaveProgressHook,
-            'useSaveProgressMutation'
-        ).mockImplementation((): ReturnType<
-            typeof SaveProgressHook.useSaveProgressMutation
-        > => {
-            return [jest.fn()] as unknown as ReturnType<
-                typeof SaveProgressHook.useSaveProgressMutation
-            >;
-        });
-
+    test('should Submit form data successfully', async () => {
+        // jest.spyOn(
+        //     SaveProgressHook,
+        //     'useSaveProgressMutation'
+        // ).mockImplementation((): ReturnType<
+        //     typeof SaveProgressHook.useSaveProgressMutation
+        // > => {
+        //     return [jest.fn()] as unknown as ReturnType<
+        //         typeof SaveProgressHook.useSaveProgressMutation
+        //     >;
+        // });
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
+                <ToastContainer />
             </Provider>
         );
-
         const completeInput = screen.getByTestId(
             'completedInputField'
         ) as HTMLInputElement;
@@ -128,9 +158,52 @@ describe('StandupContainer', () => {
             target: { value: 'Waiting for database access credentials' },
         });
         fireEvent.submit(getByTestId('form'));
-
         await waitFor(() =>
-            expect(screen.findByText(STANDUP_SUBMISSION_SUCCESS))
+            expect(
+                screen.getByText(STANDUP_SUBMISSION_SUCCESS)
+            ).toBeInTheDocument()
         );
+    });
+
+    test('should throw error on submitting form data', async () => {
+        server.use(failedPostStandup);
+
+        // console.error = jest.fn();
+        // const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        // const test = jest.spyOn(global.console, 'error');
+
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <StandUpContainer />
+                <ToastContainer />
+            </Provider>
+        );
+        const completeInput = screen.getByTestId(
+            'completedInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(completeInput, {
+            target: { value: 'Working on a backend Go project' },
+        });
+        const todaysInput = screen.getByTestId(
+            'todayInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(todaysInput, {
+            target: { value: 'Implement error handling for API endpoints' },
+        });
+        const blockerInput = screen.getByTestId(
+            'blockerInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(blockerInput, {
+            target: { value: 'Waiting for database access credentials' },
+        });
+
+        fireEvent.submit(getByTestId('form'));
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Something went wrong!')
+            ).toBeInTheDocument();
+        });
     });
 });
