@@ -659,7 +659,7 @@ export const failedAddNewTaskResponse = {
 export const failedAddNewTaskHandler = rest.post(
 	`${URL}/tasks`,
 	(_, res, ctx) => {
-		return res(ctx.status(404), ctx.json(failedAddNewTaskResponse)
+		return res(ctx.status(400), ctx.json(failedAddNewTaskResponse)
 		);
 	}
 );

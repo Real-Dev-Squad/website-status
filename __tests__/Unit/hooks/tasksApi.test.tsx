@@ -142,7 +142,7 @@ describe('useAddTaskMutation()', () => {
 
         const nextResponse = result.current[1];
         expect(nextResponse.isError).toBe(true);
-        expect(nextResponse.error).toHaveProperty('status', 404);
+        expect(nextResponse.error).toHaveProperty('status', 400);
         expect(nextResponse.error).toHaveProperty(
             'data',
             failedAddNewTaskResponse
