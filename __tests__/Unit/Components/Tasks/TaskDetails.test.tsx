@@ -33,7 +33,7 @@ describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails url={details.url} taskID={details.taskID} />
+                <TaskDetails taskID={details.taskID} />
             </Provider>
         );
         await waitFor(() => {
@@ -44,7 +44,7 @@ describe('TaskDetails Page', () => {
     it('should render update progress button ', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails url={details.url} taskID={details.taskID} />
+                <TaskDetails taskID={details.taskID} />
             </Provider>
         );
         await waitFor(() => {
@@ -57,7 +57,7 @@ describe('TaskDetails Page', () => {
         const { getByRole } = renderWithRouter(
             <Provider store={store()}>
                 <isUserAuthorizedContext.Provider value={true}>
-                    <TaskDetails url={details.url} taskID={details.taskID} />
+                    <TaskDetails taskID={details.taskID} />
                 </isUserAuthorizedContext.Provider>
             </Provider>,
             {}
@@ -69,11 +69,93 @@ describe('TaskDetails Page', () => {
     it('Should render No Description available for a task without description', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails url={details.url} taskID={details.taskID} />
+                <TaskDetails taskID={details.taskID} />
             </Provider>
         );
         await waitFor(() => {
             expect(getByText('No description available')).toBeInTheDocument();
+        });
+    });
+    // --------------------------------------------------
+    it('Renders Task Type', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('feature')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task Priority', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('high')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task Status', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('assigned')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task Link', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('https://www.sampleUrl.com')).toBeInTheDocument();
+        });
+    });
+    // -----------------------------------------------------------------
+    it('Renders Task Assignee', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('ankur')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task Reporter', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('Ankush')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task Started-on Date', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('3/30/2021, 5:30:00 AM')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task Ends-on Date', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('4/19/2021, 5:30:10 AM')).toBeInTheDocument();
         });
     });
 });
