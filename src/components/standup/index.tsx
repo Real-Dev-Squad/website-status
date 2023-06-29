@@ -62,7 +62,6 @@ const StandUpContainer: FC = () => {
         event.preventDefault();
         try {
             const response = await addStandup(standupUpdate);
-            console.log(response);
             if ('error' in response) {
                 toast(ERROR, ERROR_MESSAGE);
             } else {
