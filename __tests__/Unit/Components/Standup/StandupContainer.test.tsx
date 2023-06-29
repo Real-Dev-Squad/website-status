@@ -11,6 +11,8 @@ import {
 } from '@/constants/constants';
 import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
 import { ToastContainer } from 'react-toastify';
+import * as SaveProgressHook from '@/app/services/progressesApi';
+import { throws } from 'assert';
 
 const server = setupServer(...handlers);
 
@@ -143,6 +145,54 @@ describe('StandupContainer', () => {
 
     test('should throw error on submitting form data', async () => {
         server.use(failedPostStandup);
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <StandUpContainer />
+                <ToastContainer />
+            </Provider>
+        );
+        const completeInput = screen.getByTestId(
+            'completedInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(completeInput, {
+            target: { value: 'Working on a backend Go project' },
+        });
+        const todaysInput = screen.getByTestId(
+            'todayInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(todaysInput, {
+            target: { value: 'Implement error handling for API endpoints' },
+        });
+        const blockerInput = screen.getByTestId(
+            'blockerInputField'
+        ) as HTMLInputElement;
+        fireEvent.change(blockerInput, {
+            target: { value: 'Waiting for database access credentials' },
+        });
+
+        fireEvent.submit(getByTestId('form'));
+
+        await waitFor(() => {
+            expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();
+        });
+    });
+
+    test('should throw error on standup submission fail', async () => {
+        jest.spyOn(
+            SaveProgressHook,
+            'useSaveProgressMutation'
+        ).mockImplementation((): ReturnType<
+            typeof SaveProgressHook.useSaveProgressMutation
+        > => {
+            return [
+                jest.fn().mockImplementation(() => {
+                    throw new Error(ERROR_MESSAGE);
+                }),
+            ] as unknown as ReturnType<
+                typeof SaveProgressHook.useSaveProgressMutation
+            >;
+        });
+
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />

@@ -123,26 +123,6 @@ describe('Standup', () => {
         expect(getByText('You are not Authorized')).toBeInTheDocument();
     });
 
-    // test('should not be able to render standup component if user is not authenticated', () => {
-    //     jest.spyOn(useGetUserQueryHook, 'useGetUserQuery').mockImplementation(
-    //         (): ReturnType<typeof useGetUserQueryHook.useGetUserQuery> =>
-    //             ({
-    //                 isLoading: true,
-    //             } as unknown as ReturnType<
-    //                 typeof useGetUserQueryHook.useGetUserQuery
-    //             >)
-    //     );
-    //     const { getByText } = renderWithRouter(
-    //         <Provider store={store()}>
-    //             <StandUp />
-    //         </Provider>,
-    //         {
-    //             query: { dev: 'true' },
-    //         }
-    //     );
-    //     expect(getByText('You are not Authorized')).toBeInTheDocument();
-    // });
-
     test('should render stanup component if feature flag is true', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
