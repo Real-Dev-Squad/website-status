@@ -13,18 +13,14 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import {
     useGetTaskDetailsQuery,
     useGetTasksDependencyDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-import {
-    ButtonProps,
-    TextAreaProps,
-    taskDetailsDataType,
-} from '@/interfaces/taskDetails.type';
+import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
+import TaskDependencyList from './TaskDependencyList';
 
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -127,42 +123,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const navigateToTask = (taskId: string) => {
         router.push(`/tasks/${taskId}`);
     };
-    const renderTaskDependencyList = () => {
-        if (loading || fetching) {
-            return <p>Loading...</p>;
-        } else if (error) {
-            return <p>Unable to fetch dependency task</p>;
-        } else if (dependencyData && dependencyData.length) {
-            return dependencyData.map((task, index) => {
-                if (task.status === 'fulfilled') {
-                    return (
-                        <li key={index}>
-                            <Link href={`/tasks/${task.value.id}`} key={index}>
-                                <span
-                                    onClick={() =>
-                                        navigateToTask(task.value.id)
-                                    }
-                                >
-                                    {task.value.title}
-                                </span>
-                            </Link>
-                        </li>
-                    );
-                } else {
-                    const errorMessage = task.reason.id
-                        ? `Unable to fetch this task with ID ${task.reason.id}`
-                        : 'Unable to fetch this task';
-                    return (
-                        <li key={index}>
-                            <span>{errorMessage}</span>
-                        </li>
-                    );
-                }
-            });
-        } else {
-            return <p>No Dependency</p>;
-        }
-    };
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
@@ -259,7 +219,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         ]
                                     }
                                 >
-                                    {renderTaskDependencyList()}
+                                    <TaskDependencyList
+                                        loading={loading}
+                                        fetching={fetching}
+                                        error={error}
+                                        dependencyData={dependencyData}
+                                        navigateToTask={navigateToTask}
+                                    />
                                 </ol>
                             </TaskContainer>
                         </section>

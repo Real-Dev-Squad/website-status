@@ -14,10 +14,11 @@ import {
 } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 import { MaybePromise } from '@reduxjs/toolkit/dist/query/tsHelpers';
 
-type dependency = PromiseSettledResult<{
+export type dependency = PromiseSettledResult<{
     title: string | undefined;
     id: string;
 }>[];
+
 const getTasksDependencyDetailsQueryFn = async (
     taskIds: string[],
     _queryApi: BaseQueryApi,
@@ -36,6 +37,7 @@ const getTasksDependencyDetailsQueryFn = async (
             }
 
             const task = result?.data as taskDetailsDataType;
+
             return {
                 title: task?.taskData?.title,
                 id: taskId,
