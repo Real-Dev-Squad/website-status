@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 
@@ -62,7 +62,6 @@ const StandUpContainer: FC = () => {
         event.preventDefault();
         try {
             const response = await addStandup(standupUpdate);
-            console.log(response);
             if ('error' in response) {
                 toast(ERROR, ERROR_MESSAGE);
             } else {

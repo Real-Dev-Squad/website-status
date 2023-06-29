@@ -2,14 +2,18 @@ import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const standupHandler = [
-    rest.post(`${URL}/progresses`, async (req, _, ctx) => {
+    rest.post(`${URL}/progresses`, async (req, res, ctx) => {
         const body = await req.json();
-        console.log(body);
-        ctx.status(200);
-        ctx.json({
-            message: 'User Progress document created successfully.',
-            data: body,
-        });
+        return res(
+            ctx.status(200),
+            ctx.json({
+                message: 'User Progress document created successfully.',
+                data: body,
+            })
+        );
+    }),
+    rest.get(`${URL}/progresses`, async (req, res, ctx) => {
+        return res(ctx.status(201), ctx.json({ data: [] }));
     }),
 ];
 

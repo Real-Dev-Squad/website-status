@@ -2,29 +2,15 @@ import StandUpContainer from '@/components/standup';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import {
-    fireEvent,
-    renderHook,
-    screen,
-    act,
-    waitFor,
-    getByText,
-} from '@testing-library/react';
-import { useSaveProgressMutation } from '@/app/services/progressesApi';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import { PropsWithChildren } from 'react';
-import * as SaveProgressHook from '@/app/services/progressesApi';
 import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
 } from '@/constants/constants';
-import {
-    failedPostStandup,
-    standupsHandler,
-} from '../../../../__mocks__/handlers/standup.handler';
+import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
 import { ToastContainer } from 'react-toastify';
-import { ToastTypes, toast } from '@/helperFunctions/toast';
 
 const server = setupServer(...handlers);
 
@@ -123,16 +109,6 @@ describe('StandupContainer', () => {
     });
 
     test('should Submit form data successfully', async () => {
-        // jest.spyOn(
-        //     SaveProgressHook,
-        //     'useSaveProgressMutation'
-        // ).mockImplementation((): ReturnType<
-        //     typeof SaveProgressHook.useSaveProgressMutation
-        // > => {
-        //     return [jest.fn()] as unknown as ReturnType<
-        //         typeof SaveProgressHook.useSaveProgressMutation
-        //     >;
-        // });
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
@@ -167,12 +143,6 @@ describe('StandupContainer', () => {
 
     test('should throw error on submitting form data', async () => {
         server.use(failedPostStandup);
-
-        // console.error = jest.fn();
-        // const error = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-        // const test = jest.spyOn(global.console, 'error');
-
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
@@ -201,9 +171,7 @@ describe('StandupContainer', () => {
         fireEvent.submit(getByTestId('form'));
 
         await waitFor(() => {
-            expect(
-                screen.getByText('Something went wrong!')
-            ).toBeInTheDocument();
+            expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();
         });
     });
 });

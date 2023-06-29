@@ -19,7 +19,7 @@ const StandUp: FC = memo(function StandUp() {
     const { dev } = router.query;
 
     const handleConditionalRendering = () => {
-        if (!isAuthenticating && isLoggedIn) {
+        if (!isAuthenticating) {
             if (isLoading) {
                 return <p>Loading...</p>;
             } else if (isLoggedIn) {
