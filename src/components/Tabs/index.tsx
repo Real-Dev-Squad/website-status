@@ -1,11 +1,13 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
-import { Tab } from '@/interfaces/task.type';
 import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
+import { Tab, tasksCountObject } from '@/interfaces/task.type';
+import { useRouter } from 'next/router';
 
 type TabsProps = {
     tabs: Tab[];
     onSelect: (tab: Tab) => void;
     activeTab: Tab;
+    tasksCount: tasksCountObject;
 };
 function changeName(name: string) {
     if (name === COMPLETED) {
@@ -17,20 +19,38 @@ function changeName(name: string) {
     }
 }
 
-const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
-    <>
-        {tabs.map((tab: Tab) => (
-            <button
-                key={tab}
-                onClick={() => onSelect(tab)}
-                className={`${styles.tabButton} ${
-                    activeTab === tab ? styles.active : ''
-                }`}
-            >
-                {changeName(tab)}
-            </button>
-        ))}
-    </>
-);
+const Tabs = ({ tabs, onSelect, activeTab, tasksCount }: TabsProps) => {
+    const router = useRouter();
+    const { query } = router;
+    const isFeatureFlagOn = query.dev === 'true';
+    return (
+        <>
+            {tabs.map((tab: Tab) => (
+                <button
+                    key={tab}
+                    onClick={() => onSelect(tab)}
+                    className={`
+                    ${
+                        isFeatureFlagOn
+                            ? styles.featureFlagTabButton
+                            : styles.tabButton
+                    }
+                    ${
+                        activeTab === tab
+                            ? isFeatureFlagOn
+                                ? styles.featureFlagActiveTab
+                                : styles.active
+                            : ''
+                    }
+                    `}
+                >
+                    {isFeatureFlagOn
+                        ? `${changeName(tab)} (${tasksCount[tab]})`
+                        : changeName(tab)}
+                </button>
+            ))}
+        </>
+    );
+};
 
 export default Tabs;
