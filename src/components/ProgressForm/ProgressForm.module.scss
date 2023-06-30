@@ -11,18 +11,6 @@ $similar-margin: $base-unit * 8;
 $section-padding-top-bottom: $base-unit * 30;
 $section-padding-left-right: $base-unit * 25;
 
-.banner {
-    width: 60%;
-    margin: $diff-margin auto;
-    background-color: $color-blue;
-    color: $color-white;
-    border: 1px solid $color-red;
-    font-size: $base-unit * 4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .mark {
     color: $color-red;
     text-decoration: underline;
