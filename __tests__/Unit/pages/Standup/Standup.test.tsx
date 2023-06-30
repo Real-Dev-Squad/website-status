@@ -65,7 +65,7 @@ describe('Standup', () => {
         expect(getByText('You are not Authorized')).toBeInTheDocument();
     });
 
-    test('should not be able to render standup component if user is not logged-in and not loading', () => {
+    test('should not be able to render standup component if user is logged-in and component is not loading', () => {
         jest.spyOn(useGetUserQueryHook, 'useGetUserQuery').mockImplementation(
             (): ReturnType<typeof useGetUserQueryHook.useGetUserQuery> =>
                 ({
@@ -94,7 +94,7 @@ describe('Standup', () => {
         expect(getByText('Standup')).toBeInTheDocument();
     });
 
-    test('should not be able to render standup component if user is authernticated and not loggedin', () => {
+    test('should not be able to render standup component if user is authenticated and not loggedin', () => {
         jest.spyOn(useGetUserQueryHook, 'useGetUserQuery').mockImplementation(
             (): ReturnType<typeof useGetUserQueryHook.useGetUserQuery> =>
                 ({
