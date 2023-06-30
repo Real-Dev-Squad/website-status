@@ -8,29 +8,25 @@
 }
 
 .link {
-    padding: 0.6rem;
+    margin: 0.2rem;
+    border: none;
+    border-right: 1.6px solid var(--toastify-text-color-light);
+    padding: 0 0.8rem;
+    min-width: 4rem;
+    height: 1.5rem;
+    font-size: 1rem;
     text-decoration: none;
     font-weight: 700;
     color: #041484;
     cursor: pointer;
     background: none;
-    border: none;
     position: relative;
-
-    &::after {
-        content: '';
-        position: absolute;
-        height: 1rem;
-        width: 2px;
-        right: 0;
-        background-color: #00000077;
-    }
 }
 
 // Hide | for the last elements
 .header a:last-child {
-    .link::after {
-        display: none;
+    .link {
+        border-right: none;
     }
 }
 
