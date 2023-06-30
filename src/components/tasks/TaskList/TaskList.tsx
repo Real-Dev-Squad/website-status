@@ -8,14 +8,12 @@ import {
     ADD_MORE_TASKS_LIMIT,
 } from '../constants';
 import styles from '../card/card.module.scss';
-import { updateTaskDetails } from '@/interfaces/taskItem.type';
 
 type TaksListProps = {
     tasks: task[];
     isEditable?: boolean;
     hasLimit?: boolean;
     updateCardContent?: (id: string, cardDetails: task) => void;
-    updateTask: (taskId: string, details: updateTaskDetails) => void;
 };
 
 type FilterTasksProps = {
@@ -34,7 +32,6 @@ export default function TaskList({
     updateCardContent,
     isEditable = false,
     hasLimit = false,
-    updateTask,
 }: TaksListProps) {
     const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
     const beautifiedTasks = beautifyTaskStatus(tasks);
@@ -60,7 +57,6 @@ export default function TaskList({
                     key={item.id}
                     shouldEdit={isEditable}
                     onContentChange={onContentChangeHandler}
-                    updateTask={updateTask}
                 />
             ))}
             {hasLimit && filteredTasks.length != beautifiedTasks.length && (
