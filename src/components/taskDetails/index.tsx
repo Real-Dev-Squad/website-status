@@ -58,8 +58,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
-    const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
-    const taskDependencyIds: string[] = data?.taskData?.dependsOn || [];
+    const { data, isError, isLoading, isFetching } =
+        useGetTaskDetailsQuery(taskID);
+
+    let taskDependencyIds: string[] = [];
+    if (!isFetching) {
+        taskDependencyIds = data?.taskData?.dependsOn || [];
+    }
+
     const {
         data: dependencyData,
         isLoading: loading,

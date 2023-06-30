@@ -77,6 +77,7 @@ export const taskDetailsApi = api.injectEndpoints({
             invalidatesTags: ['Task_Details'],
         }),
     }),
+    overrideExisting: true,
 });
 
 export const {
