@@ -16,7 +16,7 @@ import { useRouter } from 'next/dist/client/router';
 
 export const TasksContent = () => {
     const router = useRouter();
-    const { dev } = router.query;
+    const { dev = false } = router.query;
     const { isEditMode } = useEditMode();
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
@@ -27,16 +27,7 @@ export const TasksContent = () => {
         isError,
         isLoading,
     } = useGetAllTasksQuery({
-        dev: dev as unknown as boolean,
-        status: activeTab,
-    });
-
-    const {
-        data: filteredTaskResponse,
-        isLoading: isTaskLoading,
-        isError: isTaskError,
-    } = useGetAllTasksQuery({
-        dev: dev as unknown as boolean,
+        dev: dev as boolean,
         status: activeTab,
     });
 
@@ -56,18 +47,19 @@ export const TasksContent = () => {
         {}
     );
 
-    if (isError || isTaskError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
-    if (isLoading || isTaskLoading) return <p>Loading...</p>;
+    if (isLoading) return <p>Loading...</p>;
 
+    console.log(typeof dev);
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
             <div>
-                {dev ? (
-                    filteredTaskResponse && filteredTaskResponse.length ? (
+                {dev === 'true' ? (
+                    tasks && tasks.length ? (
                         <TaskList
-                            tasks={filteredTaskResponse}
+                            tasks={tasks}
                             isEditable={isEditable}
                             updateCardContent={updateCardContent}
                         />
