@@ -36,7 +36,7 @@ describe('useGetAllTasksQuery()', () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as unknown as boolean,
+                    dev: dev as boolean,
                     status: 'active',
                 }),
             {
@@ -61,7 +61,7 @@ describe('useGetAllTasksQuery()', () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as unknown as boolean,
+                    dev: dev as boolean,
                     status: 'active',
                 }),
             {
