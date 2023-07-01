@@ -61,10 +61,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
 
-    let taskDependencyIds: string[] = [];
-    if (!isFetching) {
-        taskDependencyIds = data?.taskData?.dependsOn || [];
-    }
+    const taskDependencyIds: string[] = !isFetching
+        ? data?.taskData?.dependsOn || []
+        : [];
 
     const {
         data: dependencyData,
