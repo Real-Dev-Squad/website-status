@@ -33,6 +33,10 @@ type task = {
     };
 };
 
+export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
+    startedOn?: number;
+};
+
 enum Tab {
     IN_PROGRESS = 'IN_PROGRESS',
     ASSIGNED = 'ASSIGNED',

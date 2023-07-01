@@ -8,15 +8,16 @@ import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
-import { updateTaskDetails } from '@/interfaces/taskItem.type';
+import { TaskStatusEditMode } from './TaskStatusEditMode';
+import { updateTaskDetails } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { TASKS_URL } from '@/constants/url';
+
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
 import { MAX_SEARCH_RESULTS } from '@/constants/constants';
-import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -32,6 +33,7 @@ import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 
 import useUserData from '@/hooks/useUserData';
 
+import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
@@ -41,7 +43,6 @@ type Props = {
     content: task;
     shouldEdit: boolean;
     onContentChange?: (changeId: string, changeObject: object) => void;
-    updateTask?: (taskId: string, details: updateTaskDetails) => void;
 };
 
 let timer: NodeJS.Timeout;
@@ -50,7 +51,6 @@ const Card: FC<Props> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
-    updateTask = () => undefined,
 }) => {
     const statusRedList = [TASK_STATUS.BLOCKED];
     const statusNotOverDueList = [
@@ -75,13 +75,12 @@ const Card: FC<Props> = ({
 
     // const [assigneeName, setAssigneeName] = useState('');
 
-    // TODO: the below state should be removed when mutation for updating tasks is implemented
-    const [loading, setLoading] = useState<boolean>(false);
-
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
     const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
+    const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
+        useUpdateTaskMutation();
 
     const [isLoadingSuggestions, setIsLoadingSuggestions] =
         useState<boolean>(false);
@@ -257,38 +256,33 @@ const Card: FC<Props> = ({
         !isIssueClosed() &&
         !isTaskComplete();
 
-    // assign the task to the issue assignee
     const handleAssignToIssueAssignee = async () => {
-        setLoading(true);
-        try {
-            const data: updateTaskDetails = {
-                assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
-                status: 'ASSIGNED',
-            };
+        const data: updateTaskDetails = {
+            assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
+            status: 'ASSIGNED',
+        };
 
-            // Update start date when assigning the task to the issue assignee
-            if (!cardDetails.startedOn) {
-                data.startedOn = new Date().getTime() / 1000;
-            }
-
-            const { requestPromise } = fetch({
-                url: `${TASKS_URL}/${cardDetails.id}`,
-                method: 'patch',
-                data,
-            });
-            await requestPromise;
-
-            updateTask(cardDetails.id, data);
-            toast(SUCCESS, 'Task assigned successfully!');
-            setLoading(false);
-        } catch (err: any) {
-            setLoading(false);
-            if ('response' in err) {
-                toast(ERROR, err.response.data.message);
-                return;
-            }
-            toast(ERROR, err.message);
+        // Update start date when assigning the task to the issue assignee
+        if (!cardDetails.startedOn) {
+            data.startedOn = new Date().getTime() / 1000;
         }
+
+        const response = updateTask({
+            task: data,
+            id: cardDetails.id,
+        });
+        response
+            .unwrap()
+            .then(() => {
+                toast(SUCCESS, 'Task assigned successfully!');
+            })
+            .catch((err) => {
+                if ('response' in err) {
+                    toast(ERROR, err.response.data.message);
+                    return;
+                }
+                toast(ERROR, err.message);
+            });
     };
 
     const getFormattedClosedAtDate = () => {
@@ -297,28 +291,26 @@ const Card: FC<Props> = ({
     };
 
     const handleCloseTask = async () => {
-        setLoading(true);
-        try {
-            const data = {
-                status: 'COMPLETED',
-            };
-            const { requestPromise } = fetch({
-                url: `${TASKS_URL}/${cardDetails.id}`,
-                method: 'patch',
-                data,
+        const data = {
+            status: 'COMPLETED',
+        };
+        const response = updateTask({
+            task: data,
+            id: cardDetails.id,
+        });
+
+        response
+            .unwrap()
+            .then((result) =>
+                toast(SUCCESS, 'Task status changed successfully!')
+            )
+            .catch((err) => {
+                if ('response' in err) {
+                    toast(ERROR, err.response.data.message);
+                    return;
+                }
+                toast(ERROR, err.message);
             });
-            await requestPromise;
-            updateTask(cardDetails.id, data);
-            toast(SUCCESS, 'Task status changed successfully!');
-            setLoading(false);
-        } catch (err: any) {
-            setLoading(false);
-            if ('response' in err) {
-                toast(ERROR, err.response.data.message);
-                return;
-            }
-            toast(ERROR, err.message);
-        }
     };
 
     const EditButton = () => (
@@ -355,9 +347,9 @@ const Card: FC<Props> = ({
     const AssigneeButton = () => {
         return (
             <button
-                className={styles.card__top__button}
+                className={classNames.card__top__button}
                 type="button"
-                disabled={loading}
+                disabled={isLoadingUpdateTaskDetails}
                 onClick={handleAssignToIssueAssignee}
             >
                 {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
@@ -378,9 +370,9 @@ const Card: FC<Props> = ({
                     The issue was closed on {getFormattedClosedAtDate()}
                 </span>
                 <button
-                    className={styles.card__top__button}
+                    className={classNames.close__task__button}
                     type="button"
-                    disabled={loading}
+                    disabled={isLoadingUpdateTaskDetails}
                     onClick={handleCloseTask}
                 >
                     Close the task
@@ -475,26 +467,37 @@ const Card: FC<Props> = ({
                         <span>{content.percentCompleted}% </span>
                     </div>
                 </div>
-                <div className={classNames.dateInfo}>
-                    <div>
-                        <span className={classNames.cardSpecialFont}>
-                            Estimated completion
-                        </span>
-                        <span className={classNames.completionDate}>
-                            {renderDate(fromNowEndsOn, shouldEdit)}
+                <div className={classNames.taskStatusAndDateContainer}>
+                    <div className={classNames.dateInfo}>
+                        <div>
+                            <span className={classNames.cardSpecialFont}>
+                                Estimated completion
+                            </span>
+                            <span className={classNames.completionDate}>
+                                {renderDate(fromNowEndsOn, shouldEdit)}
+                            </span>
+                        </div>
+                        <span
+                            className={classNames.cardSpecialFont}
+                            contentEditable={shouldEdit}
+                            onKeyDown={(e) => handleChange(e, 'startedOn')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {cardDetails.status === TASK_STATUS.AVAILABLE
+                                ? 'Not started'
+                                : `Started on ${fromNowStartedOn}`}
                         </span>
                     </div>
-                    <span
-                        className={classNames.cardSpecialFont}
-                        contentEditable={shouldEdit}
-                        onKeyDown={(e) => handleChange(e, 'startedOn')}
-                        role="button"
-                        tabIndex={0}
-                    >
-                        {cardDetails.status === TASK_STATUS.AVAILABLE
-                            ? 'Not started'
-                            : `Started on ${fromNowStartedOn}`}
-                    </span>
+                    {/* EDIT task status */}
+                    <div className={classNames.taskStatusEditMode}>
+                        {shouldEdit && (
+                            <TaskStatusEditMode
+                                task={cardDetails}
+                                updateTask={onContentChange}
+                            />
+                        )}
+                    </div>
                 </div>
                 {showAssignButton() ? (
                     <AssigneeButton />
@@ -574,6 +577,7 @@ const Card: FC<Props> = ({
                         )}
                     </div>
                 </div>
+
                 {cardDetails.status !== 'Completed' && isIssueClosed() && (
                     <CloseTaskButton />
                 )}
