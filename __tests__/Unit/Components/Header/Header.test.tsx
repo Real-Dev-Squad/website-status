@@ -8,7 +8,7 @@ describe('Header without dev mode', () => {
     it('should have Tasks category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/',
+                pathname: '/tasks',
                 query: {},
             };
         });
@@ -226,7 +226,7 @@ describe('Header with dev mode', () => {
     it('should have Tasks category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/',
+                pathname: '/tasks',
                 query: { dev: true },
             };
         });
