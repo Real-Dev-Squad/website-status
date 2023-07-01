@@ -4,7 +4,7 @@ export type Userdata = {
     profilePicture: string | undefined;
 };
 
-export type HooksReturnType = {
+export type userDetails = {
     userData: Userdata;
     isLoggedIn: boolean;
     isLoading: boolean;

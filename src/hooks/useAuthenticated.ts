@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
 import useUserData from './useUserData';
-import { Userdata, HooksReturnType } from '@/interfaces/useAuthenticatedTypes';
+import { Userdata, userDetails } from '@/interfaces/useAuthenticatedTypes';
 
-const useAuthenticated = (): HooksReturnType => {
+const useAuthenticated = (): userDetails => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<Userdata>({
         userName: '',
@@ -14,7 +14,7 @@ const useAuthenticated = (): HooksReturnType => {
     const { data, isSuccess } = useUserData();
 
     const [isLoading, setIsLoading] = useState(false);
-    const fetchData = async () => {
+    const setUserDetails = () => {
         setIsLoading(true);
 
         if (data?.incompleteUserDetails) {
@@ -32,7 +32,7 @@ const useAuthenticated = (): HooksReturnType => {
     };
 
     useEffect(() => {
-        fetchData();
+        setUserDetails();
     }, []);
     return { userData, isLoggedIn, isLoading };
 };
