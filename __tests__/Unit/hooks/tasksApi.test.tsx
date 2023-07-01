@@ -30,11 +30,15 @@ function Wrapper({
 }: PropsWithChildren<Record<string, never>>): JSX.Element {
     return <Provider store={store()}>{children}</Provider>;
 }
-
+const dev = true;
 describe('useGetAllTasksQuery()', () => {
     test('returns all tasks', async () => {
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetAllTasksQuery(),
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as unknown as boolean,
+                    status: 'active',
+                }),
             {
                 wrapper: Wrapper,
             }
@@ -55,7 +59,11 @@ describe('useGetAllTasksQuery()', () => {
     test('should fail to return all tasks with error', async () => {
         server.use(failedGetTasks);
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetAllTasksQuery(),
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as unknown as boolean,
+                    status: 'active',
+                }),
             {
                 wrapper: Wrapper,
             }

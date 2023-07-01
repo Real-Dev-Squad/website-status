@@ -12,13 +12,33 @@ import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import updateCardContent from '@/helperFunctions/updateCardContent';
 import { useEditMode } from '@/hooks/useEditMode';
+import { useRouter } from 'next/dist/client/router';
 
 export const TasksContent = () => {
-    const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
+    const router = useRouter();
+    const { dev } = router.query;
     const { isEditMode } = useEditMode();
     const isUserAuthorized = useContext(isUserAuthorizedContext);
     const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
+
+    const {
+        data: tasks = [],
+        isError,
+        isLoading,
+    } = useGetAllTasksQuery({
+        dev: dev as unknown as boolean,
+        status: activeTab,
+    });
+
+    const {
+        data: filteredTaskResponse,
+        isLoading: isTaskLoading,
+        isError: isTaskError,
+    } = useGetAllTasksQuery({
+        dev: dev as unknown as boolean,
+        status: activeTab,
+    });
 
     const onSelect = (tab: Tab) => {
         setActiveTab(tab);
@@ -36,15 +56,25 @@ export const TasksContent = () => {
         {}
     );
 
-    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    if (isError || isTaskError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading || isTaskLoading) return <p>Loading...</p>;
 
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
             <div>
-                {tasksGroupedByStatus[activeTab] ? (
+                {dev ? (
+                    filteredTaskResponse && filteredTaskResponse.length ? (
+                        <TaskList
+                            tasks={filteredTaskResponse}
+                            isEditable={isEditable}
+                            updateCardContent={updateCardContent}
+                        />
+                    ) : (
+                        <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                    )
+                ) : tasksGroupedByStatus[activeTab] ? (
                     <TaskList
                         tasks={tasksGroupedByStatus[activeTab]}
                         isEditable={isEditable}
