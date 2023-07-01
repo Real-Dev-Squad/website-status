@@ -2,7 +2,7 @@ import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 function ProgressHeader() {
     return (
-        <header className={styles.header}>
+        <header className={styles.banner}>
             <p>
                 You have <span className={styles.mark}> 2 missed</span> Progress
                 Updates
