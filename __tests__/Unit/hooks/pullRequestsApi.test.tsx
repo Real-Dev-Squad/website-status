@@ -4,8 +4,8 @@ import React, { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { useGetOpenPrsQuery } from '@/app/services/pullRequestsApi';
-import { mockGetOpenPrs } from '../../../__mocks__/db/prs';
+import { useGetPrsQuery } from '@/app/services/pullRequestsApi';
+import { mockGetOpenPrs, mockGetStalePrs } from '../../../__mocks__/db/prs';
 
 const server = setupServer(...handlers);
 
@@ -22,10 +22,10 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe.only('useGetOpenPrsQuery', () => {
-    test('Returns Prs', async () => {
+    test('Returns open Prs', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
-                useGetOpenPrsQuery({
+                useGetPrsQuery({
                     prType: 'open',
                     page: 1,
                     numberOfCards: 3,
@@ -45,5 +45,30 @@ describe.only('useGetOpenPrsQuery', () => {
 
         expect(openPrResponse).not.toBeUndefined();
         expect(openPrResponse).toEqual(mockGetOpenPrs);
+    });
+
+    test('returns stale PRs', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetPrsQuery({
+                    prType: 'stale',
+                    page: 1,
+                    numberOfCards: 3,
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const stalePrResponse = nextResponse.data;
+
+        expect(stalePrResponse).not.toBeUndefined();
+        expect(stalePrResponse).toEqual(mockGetStalePrs);
     });
 });

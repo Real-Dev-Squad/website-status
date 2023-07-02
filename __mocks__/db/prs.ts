@@ -36,3 +36,42 @@ export const mockGetOpenPrs = {
         },
     ],
 };
+
+export const mockGetStalePrs = {
+    message: 'Stale PRs',
+    pullRequests: [
+        {
+            title: 'Setup/storybook',
+            username: 'shihabus',
+            state: 'open',
+            createdAt: '2020-07-26T12:44:28Z',
+            updatedAt: '2022-04-22T22:03:44Z',
+            repository: 'website-members',
+            url: 'https://github.com/Real-Dev-Squad/website-members/pull/18',
+            labels: ['documentation', 'enhancement'],
+            assignees: [],
+        },
+        {
+            title: 'Initial boilerpalte for the project',
+            username: 'ankurnarkhede',
+            state: 'open',
+            createdAt: '2020-08-09T11:52:39Z',
+            updatedAt: '2020-08-28T15:31:26Z',
+            repository: 'user-login',
+            url: 'https://github.com/Real-Dev-Squad/user-login/pull/1',
+            labels: [],
+            assignees: [],
+        },
+        {
+            title: 'Added boilerplate code for RDS Backend',
+            username: 'Raunak-Agrawal',
+            state: 'open',
+            createdAt: '2020-08-09T16:46:48Z',
+            updatedAt: '2020-08-09T16:46:48Z',
+            repository: 'user-login',
+            url: 'https://github.com/Real-Dev-Squad/user-login/pull/3',
+            labels: [],
+            assignees: [],
+        },
+    ],
+};

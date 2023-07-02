@@ -16,17 +16,15 @@ type queryParamsType = {
 
 const prsApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getOpenPrs: builder.query<pullRequestType, queryParamsType | undefined>(
-            {
-                query: ({ prType, page, numberOfCards }: queryParamsType) => {
-                    return {
-                        url: `/pullrequests/${prType}`,
-                        params: { page, size: numberOfCards },
-                    };
-                },
-            }
-        ),
+        getPrs: builder.query<pullRequestType, queryParamsType | undefined>({
+            query: ({ prType, page, numberOfCards }: queryParamsType) => {
+                return {
+                    url: `/pullrequests/${prType}`,
+                    params: { page, size: numberOfCards },
+                };
+            },
+        }),
     }),
 });
 
-export const { useGetOpenPrsQuery } = prsApi;
+export const { useGetPrsQuery } = prsApi;
