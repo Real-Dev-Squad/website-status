@@ -1,11 +1,9 @@
 import classNames from '@/styles/tasks.module.scss';
-// import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
