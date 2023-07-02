@@ -55,33 +55,6 @@ describe('Standup', () => {
         );
         expect(getByText('Standup')).toBeInTheDocument();
     });
-    //     jest.spyOn(useGetUserQueryHook, 'useGetUserQuery').mockImplementation(
-    //         (): ReturnType<typeof useGetUserQueryHook.useGetUserQuery> =>
-    //             ({
-    //                 isLoading: false,
-    //             } as unknown as ReturnType<
-    //                 typeof useGetUserQueryHook.useGetUserQuery
-    //             >)
-    //     );
-    //     jest.spyOn(AuthenticatedHooks, 'default').mockImplementation(() => ({
-    //         isLoggedIn: false,
-    //         isLoading: false,
-    //         userData: {
-    //             userName: 'Pratiyush',
-    //             firstName: 'Pratiyush',
-    //             profilePicture: '',
-    //         },
-    //     }));
-    //     const { getByText } = renderWithRouter(
-    //         <Provider store={store()}>
-    //             <StandUp />
-    //         </Provider>,
-    //         {
-    //             query: { dev: 'true' },
-    //         }
-    //     );
-    //     expect(getByText('You are not Authorized')).toBeInTheDocument();
-    // });
 
     test('should render stanup component if feature flag is true', () => {
         const { getByText } = renderWithRouter(
