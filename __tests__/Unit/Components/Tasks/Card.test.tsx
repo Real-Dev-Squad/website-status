@@ -195,13 +195,13 @@ describe('Task card', () => {
                 assignee: undefined,
                 github: {
                     issue: {
-                        assignee: 'ankushdharkar',
+                        assignee: 'johndoe',
                         status: 'open',
                         id: 12278,
                         assigneeRdsInfo: {
-                            username: 'ankush',
-                            firstName: 'Ankush',
-                            lastName: 'Dharkar',
+                            username: 'john',
+                            firstName: 'John',
+                            lastName: 'Doe',
                         },
                     },
                 },
@@ -215,7 +215,7 @@ describe('Task card', () => {
         );
 
         const closeTaskBtn = screen.queryByRole('button', {
-            name: /Assign to ankush/i,
+            name: /Assign to john/i,
         });
         expect(closeTaskBtn).toBeInTheDocument();
     });
@@ -228,13 +228,13 @@ describe('Task card', () => {
                 assignee: undefined,
                 github: {
                     issue: {
-                        assignee: 'ankushdharkar',
+                        assignee: 'johndoe',
                         status: 'open',
                         id: 12278,
                         assigneeRdsInfo: {
-                            username: 'ankush',
-                            firstName: 'Ankush',
-                            lastName: 'Dharkar',
+                            username: 'john',
+                            firstName: 'John',
+                            lastName: 'Doe',
                         },
                     },
                 },
@@ -248,7 +248,7 @@ describe('Task card', () => {
         );
 
         const closeTaskBtn = screen.queryByRole('button', {
-            name: /Assign to ankush/i,
+            name: /Assign to john/i,
         });
         expect(closeTaskBtn).not.toBeInTheDocument();
     });

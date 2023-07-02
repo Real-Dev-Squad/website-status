@@ -38,6 +38,9 @@ export type ProgressSliderProps = {
     debounceSlider: (debounceTimeOut: number) => void;
     handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
+    startedOn?: number;
+};
 
 enum Tab {
     IN_PROGRESS = 'IN_PROGRESS',

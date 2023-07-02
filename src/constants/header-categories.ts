@@ -1,53 +1,45 @@
-export const navBarContentMock = [
+export const headerCategories = [
     {
         title: 'Tasks',
-        refURL: '/',
-        pathName: '/',
-        pipeSymbol: '|',
+        refURL: '/tasks',
+        pathName: '/tasks',
     },
     {
         title: 'Issues',
         refURL: '/issues',
         pathName: '/issues',
-        pipeSymbol: '|',
     },
     {
         title: 'Mine',
         refURL: '/mine',
         pathName: '/mine',
-        pipeSymbol: '|',
     },
     {
         title: 'Open PRs',
         refURL: '/openPRs',
         pathName: '/openPRs',
-        pipeSymbol: '|',
     },
     {
         title: 'Stale PRs',
         refURL: '/stale-pr',
         pathName: '/stale-pr',
-        pipeSymbol: '|',
     },
     {
         title: 'Idle Users',
         refURL: '/idle-users',
         pathName: '/idle-users',
-        pipeSymbol: '',
     },
 ];
 
-export const featureFlags = [
+export const devHeaderCategories = [
     {
         title: 'Standup',
         refURL: '/standup/?dev=true',
         pathName: '/standup',
-        pipeSymbol: '|',
     },
     {
         title: 'Availability Panel',
         refURL: '/availability-panel',
-        pathName: '',
-        pipeSymbol: '|',
+        pathName: '/availability-panel',
     },
 ];

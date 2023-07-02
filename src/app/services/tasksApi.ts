@@ -1,15 +1,26 @@
-import task from '@/interfaces/task.type';
+import task, { updateTaskDetails } from '@/interfaces/task.type';
 import { api } from './api';
-import { MINE_TASKS_URL } from '@/constants/url';
+import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
-type TaskRequestPayload = { id: string; percentCompleted: number };
+type TasksCreateMutationResponse = { message: string; task: task };
+type TaskRequestPayload = { task: updateTaskDetails; id: string };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => '/tasks',
-            providesTags: ['Tasks'],
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ id }) => ({
+                              type: 'Tasks' as const,
+                              id,
+                          })),
+                          { type: 'Tasks' },
+                      ]
+                    : ['Tasks'],
+
             transformResponse: (response: TasksQueryResponse) => {
                 return response?.tasks?.sort(
                     (a: task, b: task) => +a.endsOn - +b.endsOn
@@ -20,11 +31,18 @@ export const tasksApi = api.injectEndpoints({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
-        updateTasks: builder.mutation<void, TaskRequestPayload>({
-            query: ({ id, ...patch }) => ({
-                url: `tasks/${id}`,
+        addTask: builder.mutation<TasksCreateMutationResponse, Partial<task>>({
+            query: (task: task) => ({
+                url: TASKS_URL,
+                method: 'POST',
+                body: task,
+            }),
+        }),
+        updateTask: builder.mutation<void, TaskRequestPayload>({
+            query: (task: TaskRequestPayload) => ({
+                url: `tasks/${task.id}`,
                 method: 'PATCH',
-                body: patch,
+                body: task.task,
             }),
             invalidatesTags: (_result, _err, { id }) => [
                 {
@@ -34,10 +52,12 @@ export const tasksApi = api.injectEndpoints({
             ],
         }),
     }),
+    overrideExisting: true,
 });
 
 export const {
     useGetAllTasksQuery,
     useGetMineTasksQuery,
-    useUpdateTasksMutation,
+    useAddTaskMutation,
+    useUpdateTaskMutation,
 } = tasksApi;
