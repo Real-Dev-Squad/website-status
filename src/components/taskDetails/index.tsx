@@ -18,9 +18,7 @@ import {
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 
-
 import useUserData from '@/hooks/useUserData';
-import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 import {
     ButtonProps,
     TextAreaProps,

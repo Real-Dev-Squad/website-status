@@ -7,7 +7,6 @@ import { Loader } from '../tasks/card/Loader';
 import useUserData from '@/hooks/useUserData';
 import { Header } from '@/components/Header';
 
-
 interface Props {
     children?: ReactNode;
     hideHeader?: boolean;

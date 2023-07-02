@@ -1,7 +1,6 @@
 import classNames from '@/styles/tasks.module.scss';
 // import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 
-
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
