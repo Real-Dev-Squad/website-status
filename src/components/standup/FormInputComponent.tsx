@@ -7,7 +7,6 @@ const FormInputComponent: FC<InputProps> = ({
     placeholder,
     name,
     value,
-    dataTestId,
     labelValue,
     htmlFor,
     inputId,
@@ -20,7 +19,7 @@ const FormInputComponent: FC<InputProps> = ({
             </label>
             <input
                 id={inputId}
-                data-testid={dataTestId}
+                role="textbox"
                 type="text"
                 className={styles.inputField}
                 placeholder={placeholder}

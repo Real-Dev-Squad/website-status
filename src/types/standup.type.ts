@@ -9,7 +9,6 @@ export type InputProps = {
     placeholder: string;
     name: string;
     value: string;
-    dataTestId: string;
     labelValue: string;
     htmlFor: string;
     inputId: string;

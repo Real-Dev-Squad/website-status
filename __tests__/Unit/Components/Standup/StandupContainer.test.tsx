@@ -12,7 +12,7 @@ import {
 import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
 import { ToastContainer } from 'react-toastify';
 import * as SaveProgressHook from '@/app/services/progressesApi';
-import { throws } from 'assert';
+import moment from 'moment';
 
 const server = setupServer(...handlers);
 
@@ -26,55 +26,54 @@ describe('StandupContainer', () => {
     afterAll(() => {
         server.close();
     });
-    test('should render completed inputField ', function () {
+    const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
+
+    test('should render  inputField ', function () {
         renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
             </Provider>
         );
-        const input = screen.getByTestId(
-            'completedInputField'
-        ) as HTMLInputElement;
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveValue('');
-        fireEvent.change(input, {
+
+        const completedInputField = screen.getByRole('textbox', {
+            name: yesterdayDate,
+        }) as HTMLInputElement;
+        const todayInputField = screen.getByRole('textbox', {
+            name: 'Today',
+        }) as HTMLInputElement;
+        const blockerInputField = screen.getByRole('textbox', {
+            name: 'Blockers',
+        }) as HTMLInputElement;
+
+        expect(completedInputField).toBeInTheDocument();
+        expect(completedInputField).toHaveValue('');
+        expect(todayInputField).toBeInTheDocument();
+        expect(todayInputField).toHaveValue('');
+        // expect(screen.queryByTestId('blockerInputField')).toBeInTheDocument();
+        expect(blockerInputField).toHaveValue('');
+
+        fireEvent.change(completedInputField, {
             target: { value: 'Working on a backend Go project' },
         });
-        const inputValue = input.value;
-        expect(inputValue).toBe('Working on a backend Go project');
-    });
-    test('should render today input field', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-            </Provider>
-        );
-        const input = screen.getByTestId('todayInputField') as HTMLInputElement;
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveValue('');
-        fireEvent.change(input, {
+        const completedInputValue = completedInputField.value;
+        expect(completedInputValue).toBe('Working on a backend Go project');
+
+        fireEvent.change(todayInputField, {
             target: { value: 'Implement error handling for API endpoints' },
         });
-        const inputValue = input.value;
-        expect(inputValue).toBe('Implement error handling for API endpoints');
-    });
-    test('on render Blocker inputField ', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-            </Provider>
+        const todayInputValue = todayInputField.value;
+        expect(todayInputValue).toBe(
+            'Implement error handling for API endpoints'
         );
-        const input = screen.getByTestId(
-            'blockerInputField'
-        ) as HTMLInputElement;
-        expect(screen.queryByTestId('blockerInputField')).toBeInTheDocument();
-        expect(input).toHaveValue('');
-        fireEvent.change(input, {
+        fireEvent.change(blockerInputField, {
             target: { value: 'Waiting for database access credentials' },
         });
-        const inputValue = input.value;
-        expect(inputValue).toBe('Waiting for database access credentials');
+        const blockerInputValue = blockerInputField.value;
+        expect(blockerInputValue).toBe(
+            'Waiting for database access credentials'
+        );
     });
+
     test('render if button is disabled', () => {
         renderWithRouter(
             <Provider store={store()}>
@@ -89,53 +88,58 @@ describe('StandupContainer', () => {
                 <StandUpContainer />
             </Provider>
         );
-        const completeInput = screen.getByTestId(
-            'completedInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(completeInput, {
+        const completedInputField = screen.getByRole('textbox', {
+            name: yesterdayDate,
+        }) as HTMLInputElement;
+        const todayInputField = screen.getByRole('textbox', {
+            name: 'Today',
+        }) as HTMLInputElement;
+        const blockerInputField = screen.getByRole('textbox', {
+            name: 'Blockers',
+        }) as HTMLInputElement;
+        fireEvent.change(completedInputField, {
             target: { value: 'Working on a backend Go project' },
         });
-        const todaysInput = screen.getByTestId(
-            'todayInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(todaysInput, {
+
+        fireEvent.change(todayInputField, {
             target: { value: 'Implement error handling for API endpoints' },
         });
-        const blockerInput = screen.getByTestId(
-            'blockerInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(blockerInput, {
+
+        fireEvent.change(blockerInputField, {
             target: { value: 'Waiting for database access credentials' },
         });
-        expect(screen.getByTestId('button')).not.toBeDisabled();
+        expect(screen.getByRole('button')).not.toBeDisabled();
     });
 
     test('should Submit form data successfully', async () => {
-        const { getByTestId } = renderWithRouter(
+        const { getByRole } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
             </Provider>
         );
-        const completeInput = screen.getByTestId(
-            'completedInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(completeInput, {
+        const completedInputField = screen.getByRole('textbox', {
+            name: yesterdayDate,
+        }) as HTMLInputElement;
+        const todayInputField = screen.getByRole('textbox', {
+            name: 'Today',
+        }) as HTMLInputElement;
+        const blockerInputField = screen.getByRole('textbox', {
+            name: 'Blockers',
+        }) as HTMLInputElement;
+
+        fireEvent.change(completedInputField, {
             target: { value: 'Working on a backend Go project' },
         });
-        const todaysInput = screen.getByTestId(
-            'todayInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(todaysInput, {
+
+        fireEvent.change(todayInputField, {
             target: { value: 'Implement error handling for API endpoints' },
         });
-        const blockerInput = screen.getByTestId(
-            'blockerInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(blockerInput, {
+
+        fireEvent.change(blockerInputField, {
             target: { value: 'Waiting for database access credentials' },
         });
-        fireEvent.submit(getByTestId('form'));
+        fireEvent.submit(getByRole('form'));
         await waitFor(() =>
             expect(
                 screen.getByText(STANDUP_SUBMISSION_SUCCESS)
@@ -145,32 +149,35 @@ describe('StandupContainer', () => {
 
     test('should throw error on submitting form data', async () => {
         server.use(failedPostStandup);
-        const { getByTestId } = renderWithRouter(
+        const { getByRole } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
             </Provider>
         );
-        const completeInput = screen.getByTestId(
-            'completedInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(completeInput, {
+        const completedInputField = screen.getByRole('textbox', {
+            name: yesterdayDate,
+        }) as HTMLInputElement;
+        const todayInputField = screen.getByRole('textbox', {
+            name: 'Today',
+        }) as HTMLInputElement;
+        const blockerInputField = screen.getByRole('textbox', {
+            name: 'Blockers',
+        }) as HTMLInputElement;
+
+        fireEvent.change(completedInputField, {
             target: { value: 'Working on a backend Go project' },
         });
-        const todaysInput = screen.getByTestId(
-            'todayInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(todaysInput, {
+
+        fireEvent.change(todayInputField, {
             target: { value: 'Implement error handling for API endpoints' },
         });
-        const blockerInput = screen.getByTestId(
-            'blockerInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(blockerInput, {
+
+        fireEvent.change(blockerInputField, {
             target: { value: 'Waiting for database access credentials' },
         });
 
-        fireEvent.submit(getByTestId('form'));
+        fireEvent.submit(getByRole('form'));
 
         await waitFor(() => {
             expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();
@@ -193,32 +200,35 @@ describe('StandupContainer', () => {
             >;
         });
 
-        const { getByTestId } = renderWithRouter(
+        const { getByRole } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
             </Provider>
         );
-        const completeInput = screen.getByTestId(
-            'completedInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(completeInput, {
+        const completedInputField = screen.getByRole('textbox', {
+            name: yesterdayDate,
+        }) as HTMLInputElement;
+        const todayInputField = screen.getByRole('textbox', {
+            name: 'Today',
+        }) as HTMLInputElement;
+        const blockerInputField = screen.getByRole('textbox', {
+            name: 'Blockers',
+        }) as HTMLInputElement;
+
+        fireEvent.change(completedInputField, {
             target: { value: 'Working on a backend Go project' },
         });
-        const todaysInput = screen.getByTestId(
-            'todayInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(todaysInput, {
+
+        fireEvent.change(todayInputField, {
             target: { value: 'Implement error handling for API endpoints' },
         });
-        const blockerInput = screen.getByTestId(
-            'blockerInputField'
-        ) as HTMLInputElement;
-        fireEvent.change(blockerInput, {
+
+        fireEvent.change(blockerInputField, {
             target: { value: 'Waiting for database access credentials' },
         });
 
-        fireEvent.submit(getByTestId('form'));
+        fireEvent.submit(getByRole('form'));
 
         await waitFor(() => {
             expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();

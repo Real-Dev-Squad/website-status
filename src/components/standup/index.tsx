@@ -87,13 +87,12 @@ const StandUpContainer: FC = () => {
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}
-                            data-testid="form"
+                            role="form"
                         >
                             <fieldset className={styles.formFields}>
                                 <FormInputComponent
                                     htmlFor="completed"
                                     labelValue={yesterdayDate}
-                                    dataTestId="completedInputField"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
                                     value={standupUpdate.completed}
@@ -103,7 +102,6 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="planned"
                                     labelValue="Today"
-                                    dataTestId="todayInputField"
                                     placeholder="e.g Refactor signup to support Google login"
                                     name="planned"
                                     value={standupUpdate.planned}
@@ -113,7 +111,6 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="blockers"
                                     labelValue="Blockers"
-                                    dataTestId="blockerInputField"
                                     placeholder="e.g Waiting on identity team to deploy FF"
                                     name="blockers"
                                     value={standupUpdate.blockers}
@@ -126,6 +123,7 @@ const StandUpContainer: FC = () => {
                                 disabled={!isValidate()}
                                 type="submit"
                                 data-testid="button"
+                                role="button"
                             >
                                 Submit
                             </button>

@@ -1,7 +1,11 @@
 import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
 
-function getMockedDates(date: string): number {
-    return new Date(date).getTime();
+function getMockedDates(date: string[]): number[] {
+    const dates = [];
+    for (let i = 0; i < date.length; i++) {
+        dates.push(new Date(date[i]).getTime());
+    }
+    return dates;
 }
 
 describe('Get Total Missed Updates', () => {
@@ -12,23 +16,21 @@ describe('Get Total Missed Updates', () => {
 
     test('should return 1 if date array has last standup date', () => {
         jest.useFakeTimers().setSystemTime(new Date('26 june 2023'));
-        const dateArrayValue = getMockedDates('25 june 2023');
-        const result = getTotalMissedUpdates([dateArrayValue]);
+        const pastStandupDates = getMockedDates(['25 june 2023']);
+        const result = getTotalMissedUpdates(pastStandupDates);
         expect(result).toBe(1);
     });
 
     test('should return number of days between last standup date and current standup date', () => {
         jest.useFakeTimers().setSystemTime(new Date('26 june 2023'));
-        const firstDate = getMockedDates('21 june 2023');
-        const SecondDate = getMockedDates('22 june 2023');
-        const ThirdDate = getMockedDates('23 june 2023');
-        const FourthDate = getMockedDates('24 june 2023');
-        const result = getTotalMissedUpdates([
-            firstDate,
-            ThirdDate,
-            SecondDate,
-            FourthDate,
+        const pastStandupDates = getMockedDates([
+            '21 june 2023',
+            '20 june 2023',
+            '22 june 2023',
+            '23 june 2023',
+            '24 june 2023',
         ]);
+        const result = getTotalMissedUpdates(pastStandupDates);
         expect(result).toBe(2);
     });
 });
