@@ -13,19 +13,14 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
-import { TASKS_URL } from '@/constants/url';
-import fetch from '@/helperFunctions/fetch';
-import Link from 'next/link';
 import {
     useGetTaskDetailsQuery,
+    useGetTasksDependencyDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-import {
-    ButtonProps,
-    TextAreaProps,
-    taskDetailsDataType,
-} from '@/interfaces/taskDetails.type';
+import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
+import TaskDependencyList from './TaskDependencyList';
 
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -62,11 +57,20 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const isAuthorized = useContext(isUserAuthorizedContext);
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const [taskTitle, setTaskTitle] = useState<string[]>([]);
-    const [id, setId] = useState<string[]>([]);
-    const [isFetched, setIsFetched] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
-    const { data, isError, isLoading } = useGetTaskDetailsQuery(taskID);
+    const { data, isError, isLoading, isFetching } =
+        useGetTaskDetailsQuery(taskID);
+
+    const taskDependencyIds: string[] = !isFetching
+        ? data?.taskData?.dependsOn || []
+        : [];
+
+    const {
+        data: dependencyData,
+        isLoading: loading,
+        isFetching: fetching,
+        isError: error,
+    } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
     const { SUCCESS, ERROR } = ToastTypes;
 
     const taskDetailsData = data?.taskData;
@@ -121,41 +125,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-
-    const fetchDependentTasks = async (
-        taskDetails: taskDetailsDataType['taskData']
-    ) => {
-        try {
-            if (taskDetails?.dependsOn) {
-                const dependsOnTitles = await Promise.all(
-                    taskDetails.dependsOn.map(async (taskId: string) => {
-                        const { requestPromise } = fetch({
-                            url: `${TASKS_URL}/${taskId}/details`,
-                        });
-                        const data = await requestPromise;
-                        return [data?.data?.taskData?.title, taskId];
-                    })
-                );
-                const titles = dependsOnTitles.map(
-                    (innerArray) => innerArray[0]
-                );
-                const ids = dependsOnTitles.map(
-                    (innerArrays) => innerArrays[1]
-                );
-                setTaskTitle(titles);
-                setId(ids);
-                setIsFetched(true);
-            }
-        } catch (error) {
-            console.error('Error while fetching taskdependency', error);
-        }
-    };
-    if (taskDetailsData && !isFetched) {
-        fetchDependentTasks(taskDetailsData);
-    }
     const navigateToTask = (taskId: string) => {
         router.push(`/tasks/${taskId}`);
     };
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <Layout hideHeader={true}>
@@ -251,26 +224,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         ]
                                     }
                                 >
-                                    {taskTitle.length ? (
-                                        taskTitle.map((title, index) => (
-                                            <Link
-                                                href={`/tasks/${id[index]}`}
-                                                key={index}
-                                            >
-                                                <li
-                                                    onClick={() =>
-                                                        navigateToTask(
-                                                            id[index]
-                                                        )
-                                                    }
-                                                >
-                                                    {title}
-                                                </li>
-                                            </Link>
-                                        ))
-                                    ) : (
-                                        <p>No Dependency</p>
-                                    )}
+                                    <TaskDependencyList
+                                        loading={loading}
+                                        fetching={fetching}
+                                        error={error}
+                                        dependencyData={dependencyData}
+                                        navigateToTask={navigateToTask}
+                                    />
                                 </ol>
                             </TaskContainer>
                         </section>
