@@ -4,7 +4,7 @@ import Layout from '@/components/Layout';
 import classNames from '@/styles/tasks.module.scss';
 import { TasksContent } from '@/components/tasks/TasksContent';
 
-const Task: FC = () => {
+const Tasks: FC = () => {
     return (
         <Layout>
             <Head title="Tasks" />
@@ -16,4 +16,4 @@ const Task: FC = () => {
     );
 };
 
-export default Task;
+export default Tasks;
