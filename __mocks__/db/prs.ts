@@ -1,0 +1,38 @@
+export const mockGetOpenPrs = {
+    message: 'Open PRs',
+    pullRequests: [
+        {
+            title: 'feat: includes archived users',
+            username: 'krishanu2911',
+            state: 'open',
+            createdAt: '2023-07-02T05:19:52Z',
+            updatedAt: '2023-07-02T05:23:12Z',
+            repository: 'website-backend',
+            url: 'https://github.com/Real-Dev-Squad/website-backend/pull/1221',
+            labels: [],
+            assignees: [],
+        },
+        {
+            title: 'Update display name',
+            username: 'biswanathTewari',
+            state: 'open',
+            createdAt: '2023-07-02T03:45:03Z',
+            updatedAt: '2023-07-02T03:45:23Z',
+            repository: 'CalendarMobile',
+            url: 'https://github.com/Real-Dev-Squad/CalendarMobile/pull/24',
+            labels: ['RFC', 'mobile'],
+            assignees: ['biswanathTewari'],
+        },
+        {
+            title: 'add /tasks route for tasks page',
+            username: 'prakashchoudhary07',
+            state: 'open',
+            createdAt: '2023-07-01T17:00:38Z',
+            updatedAt: '2023-07-02T04:12:06Z',
+            repository: 'website-status',
+            url: 'https://github.com/Real-Dev-Squad/website-status/pull/674',
+            labels: [],
+            assignees: [],
+        },
+    ],
+};
