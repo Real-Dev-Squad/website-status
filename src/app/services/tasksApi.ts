@@ -75,7 +75,7 @@ export const tasksApi = api.injectEndpoints({
                 },
             ],
         }),
-        assignTask: builder.mutation<void, AssignTaskPayload>({
+        assignTask: builder.mutation<AssignTaskPayload, AssignTaskPayload>({
             query: (payload: AssignTaskPayload) => ({
                 url: `tasks/${payload.taskId}`,
                 method: 'PATCH',

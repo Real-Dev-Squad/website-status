@@ -108,13 +108,16 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
                 result.combine.droppableId === 'tasks'
                     ? result.draggableId
                     : result.combine.draggableId;
-            const res: Array<string> = assignTask({ taskId, assignee }).unwrap().then(res => {
-                toast(SUCCESS, 'Successfully Assigned Task');
-                return [taskId, assignee];
-            }).catch(err => {
-                toast(ERROR,  err.response.data.message);
-                return [taskId, assignee];
-            });
+            const res: Array<string> = await assignTask({ taskId, assignee })
+                .unwrap()
+                .then(() => {
+                    toast(SUCCESS, 'Successfully Assigned Task');
+                    return [taskId, assignee];
+                })
+                .catch((err) => {
+                    toast(ERROR, err.response.data.message);
+                    return [taskId, assignee];
+                });
             if (res) {
                 const newIds = ref.current.filter((id) => !res.includes(id));
                 ref.current = newIds;
