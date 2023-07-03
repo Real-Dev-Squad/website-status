@@ -3,9 +3,8 @@ import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import PullRequest from '@/components/pullRequests';
 import CardShimmer from '@/components/Loaders/cardShimmer';
-import useFetch from '@/hooks/useFetch';
 import styles from './PullRequestList.module.scss';
-import { BASE_URL } from '../../constants/url';
+import { useGetPrsQuery } from '@/app/services/pullRequestsApi';
 
 type pullRequestType = {
     title: string;
@@ -63,21 +62,26 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     const [page, setPage] = useState(1);
     const [isBottom, setIsBottom] = useState(false);
     const numberOfCards = getNumberOfCards();
-    const prUrl = `${BASE_URL}/pullrequests/${prType}?page=${page}&size=${numberOfCards}`;
-    const { response, error, isLoading } = useFetch(prUrl);
+    const {
+        data: prs,
+        error,
+        isLoading,
+    } = useGetPrsQuery({ prType, page, numberOfCards });
 
     useEffect(() => {
-        if (!response?.pullRequests?.length && page > 1) {
+        if (!prs?.pullRequests?.length && page > 1) {
             setNoData(true);
         }
-        if (response?.pullRequests?.length > 0) {
-            setPullRequests((pullRequest) => [
-                ...pullRequest,
-                ...response.pullRequests,
-            ]);
-            setIsBottom(false);
+        if (prs?.pullRequests) {
+            if (prs.pullRequests.length > 0) {
+                setPullRequests((pullRequest) => [
+                    ...pullRequest,
+                    ...prs.pullRequests,
+                ]);
+                setIsBottom(false);
+            }
         }
-    }, [response]);
+    }, [prs]);
 
     useEffect(() => {
         if (isBottom && !noData) {

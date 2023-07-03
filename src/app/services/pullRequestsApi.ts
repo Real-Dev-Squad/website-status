@@ -8,6 +8,11 @@ type pullRequestType = {
     url: string;
 };
 
+type pullRequestResponseType = {
+    message: string;
+    pullRequests: Array<pullRequestType>;
+};
+
 type queryParamsType = {
     prType: string;
     page?: number;
@@ -16,7 +21,10 @@ type queryParamsType = {
 
 const prsApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getPrs: builder.query<pullRequestType, queryParamsType | undefined>({
+        getPrs: builder.query<
+            pullRequestResponseType,
+            queryParamsType | undefined
+        >({
             query: ({ prType, page, numberOfCards }: queryParamsType) => {
                 return {
                     url: `/pullrequests/${prType}`,
