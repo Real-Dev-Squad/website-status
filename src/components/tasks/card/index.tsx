@@ -282,27 +282,11 @@ const Card: FC<Props> = ({
             />
         </div>
     );
-    //     <div className={classNames.progressIndicator}>
-    //         <div
-    //             className={`
-    //             ${handleProgressColor(
-    //                 content.percentCompleted,
-    //                 content.startedOn,
-    //                 content.endsOn
-    //             )}
-    //             ${classNames.progressStyle}
-    //             `}
-    //             style={{
-    //                 width: `${content.percentCompleted}%`,
-    //             }}
-    //         ></div>
-    //     </div>
-    // );
 
     const handleProgressUpdate = () => {
         if (
             content.assignee === data?.username ||
-            data?.roles.super_user === false
+            data?.roles.super_user === true
         ) {
             setProgress(true);
         } else {
@@ -333,52 +317,6 @@ const Card: FC<Props> = ({
         });
         toast(SUCCESS, 'Progress Updated Successfully');
     };
-    //     if (progress) {
-    //         return (
-    //             <>
-    //                 <ProgressSlider
-    //                     value={progressValue}
-    //                     debounceSlider={debounceSlider}
-    //                     handleProgressChange={handleProgressChange}
-    //                 />
-    //                 <span>{progressValue}%</span>
-    //             </>
-    //         );
-    //     } else {
-    //         return (
-    //             <>
-    //                 <ProgressIndicator />
-    //                 <span>{content.percentCompleted}% </span>
-    //             </>
-    //         );
-    //     }
-    // };
-
-    // const handleProgressText = () => {
-    //     if (progress) {
-    //         return (
-    //             <>
-    //                 <div
-    //                     className={classNames.changeProgressText}
-    //                     onClick={() => handleSaveProgressUpdate()}
-    //                 >
-    //                     save Progress
-    //                 </div>
-    //             </>
-    //         );
-    //     } else {
-    //         return (
-    //             <>
-    //                 <div
-    //                     className={classNames.changeProgressText}
-    //                     onClick={() => handleProgressUpdate()}
-    //                 >
-    //                     Progress update
-    //                 </div>
-    //             </>
-    //         );
-    //     }
-    // };
 
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
