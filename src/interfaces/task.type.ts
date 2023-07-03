@@ -40,6 +40,29 @@ export type ProgressSliderProps = {
 };
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
     startedOn?: number;
+    percentCompleted?: number;
+};
+
+export type ProgressBarProps = {
+    progress: boolean;
+    progressValue: number;
+    percentCompleted: number;
+    startedOn: string;
+    endsOn: string;
+    handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    debounceSlider: (debounceTimeOut: number) => void;
+};
+
+export type ProgressIndicatorProps = {
+    percentCompleted: number;
+    startedOn: string;
+    endsOn: string;
+};
+
+export type handleProgressTextProps = {
+    progress: boolean;
+    handleSaveProgressUpdate: () => void;
+    handleProgressUpdate: () => void;
 };
 
 enum Tab {
