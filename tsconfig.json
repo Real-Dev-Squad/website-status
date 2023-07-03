@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "es2017"],
+    "lib": [
+      "dom",
+      "es2017"
+    ],
     "jsx": "preserve",
     "strict": true,
     "target": "es5",
@@ -17,9 +20,16 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "include": [
     "next-env.d.ts",
@@ -27,8 +37,17 @@
     "**/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "__tests__/**/*.tsx"
-, "__mocks__/styleMock.ts", "server.ts"  ],
-  "exclude": ["node_modules"],
-  "types": ["node", "jest", "@testing-library/jest-dom"]
+    "__tests__/**/*.tsx",
+    "__mocks__/styleMock.ts",
+    "server.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "types": [
+    "node",
+    "jest",
+    "@testing-library/jest-dom"
+  ]
 }

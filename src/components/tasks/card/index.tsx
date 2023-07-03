@@ -137,7 +137,7 @@ const Card: FC<Props> = ({
     ) {
         if (event.key === 'Enter') {
             const toChange: any = cardDetails;
-            toChange[changedProperty] = stripHtml(assigneeName);
+            toChange[changedProperty] = stripHtml(event.target.innerHTML);
 
             if (
                 changedProperty === 'endsOn' ||
@@ -147,10 +147,10 @@ const Card: FC<Props> = ({
                     new Date(`${event.target.value}`).getTime() / 1000;
                 toChange[changedProperty] = toTimeStamp;
             }
-            console.log(toChange);
 
             onContentChange(toChange.id, {
                 [changedProperty]: toChange[changedProperty],
+                status: 'ASSIGNED',
             });
         }
     }
