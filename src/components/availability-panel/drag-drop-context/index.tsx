@@ -13,6 +13,7 @@ import {
     FOURTEEN_DAYS,
     SECONDS_IN_A_DAY,
 } from '@/constants/date';
+import { useAssignTaskMutation } from '@/app/services/tasksApi';
 
 type NotFoundErrorProps = {
     message: string;
@@ -58,38 +59,7 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
         return result;
     };
 
-    const assignTask = async (taskId: string, assignee: string) => {
-        try {
-            const url = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${taskId}`;
-            const dateObject: Date = new Date();
-            const startedOnEpoch: number =
-                dateObject.getTime() / THOUSAND_MILLI_SECONDS;
-            const endsOnEpoch: number =
-                startedOnEpoch + FOURTEEN_DAYS * SECONDS_IN_A_DAY;
-            const data = {
-                status: ASSIGNED,
-                startedOn: startedOnEpoch,
-                endsOn: endsOnEpoch,
-                assignee,
-            };
-
-            const { requestPromise } = fetch({
-                url,
-                method: 'patch',
-                data,
-            });
-            await requestPromise;
-            toast(SUCCESS, 'Successfully Assigned Task');
-            return [taskId, assignee];
-        } catch (error: any) {
-            if ('response' in error) {
-                toast(ERROR, error.response.data.message);
-                return [taskId, assignee];
-            }
-            toast(ERROR, error.message);
-            return [taskId, assignee];
-        }
-    };
+    const [assignTask] = useAssignTaskMutation();
 
     const onDragStart = (result: DragEvent | any) => {
         const isTask = result.source.droppableId === 'tasks';
@@ -138,7 +108,13 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
                 result.combine.droppableId === 'tasks'
                     ? result.draggableId
                     : result.combine.draggableId;
-            const res: Array<string> = await assignTask(taskId, assignee);
+            const res: Array<string> = assignTask({ taskId, assignee }).unwrap().then(res => {
+                toast(SUCCESS, 'Successfully Assigned Task');
+                return [taskId, assignee];
+            }).catch(err => {
+                toast(ERROR,  err.response.data.message);
+                return [taskId, assignee];
+            });
             if (res) {
                 const newIds = ref.current.filter((id) => !res.includes(id));
                 ref.current = newIds;
