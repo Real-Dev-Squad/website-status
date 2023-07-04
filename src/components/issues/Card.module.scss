@@ -102,7 +102,7 @@ $card-text: #78716c;
 .card__body {
     width: 100%;
     color: black;
-
+    overflow: auto;
     h1 {
         font-size: 1.2rem;
     }
