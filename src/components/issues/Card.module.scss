@@ -114,9 +114,6 @@ $card-text: #78716c;
         margin: 0;
     }
 
-    h1 {
-        font-size: 1.2rem;
-    }
     img {
         max-width: 100%;
         border: 1px solid $card-text;
@@ -139,6 +136,5 @@ $card-text: #78716c;
     code,
     pre {
         font-family: consolas, monospace;
-        font-size: 0.875rem;
     }
 }
