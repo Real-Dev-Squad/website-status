@@ -13,7 +13,7 @@ const standupHandler = [
         );
     }),
     rest.get(`${URL}/progresses`, async (req, res, ctx) => {
-        return res(ctx.status(201), ctx.json({ data: [] }));
+        return res(ctx.status(200), ctx.json({ data: [] }));
     }),
 ];
 
