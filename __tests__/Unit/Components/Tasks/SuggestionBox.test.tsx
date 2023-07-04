@@ -5,11 +5,11 @@ import { GithubInfo } from '@/interfaces/suggestionBox.type';
 
 const gitInfo: GithubInfo[] = [
     {
-        github_id: 'fakhruddinkw',
+        github_id: 'Jan',
         profileImageUrl: placeholderImageURL,
     },
     {
-        github_id: 'iamitprakash',
+        github_id: 'John',
         profileImageUrl: placeholderImageURL,
     },
 ];
@@ -39,8 +39,8 @@ describe('Suggestion Box', () => {
         const list = screen.getByTestId('suggestions');
         const listImages = screen.getAllByTestId('image');
 
-        const assigneeOne = screen.getByText('fakhruddinkw');
-        const assigneeTwo = screen.getByText('iamitprakash');
+        const assigneeOne = screen.getByText('Jan');
+        const assigneeTwo = screen.getByText('John');
 
         expect(list).toBeInTheDocument();
 

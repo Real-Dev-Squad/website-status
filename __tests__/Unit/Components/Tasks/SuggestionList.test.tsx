@@ -6,11 +6,11 @@ import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sectio
 
 const gitInfo: GithubInfo[] = [
     {
-        github_id: 'fakhruddinkw',
+        github_id: 'Jan',
         profileImageUrl: placeholderImageURL,
     },
     {
-        github_id: 'iamitprakash',
+        github_id: 'John',
         profileImageUrl: placeholderImageURL,
     },
 ];
@@ -29,8 +29,8 @@ describe('SuggestionList', () => {
 
         const listImages = screen.getAllByTestId('image');
 
-        const assigneeOne = screen.getByText('fakhruddinkw');
-        const assigneeTwo = screen.getByText('iamitprakash');
+        const assigneeOne = screen.getByText('Jan');
+        const assigneeTwo = screen.getByText('John');
 
         expect(list).toBeInTheDocument();
         expect(assigneeOne).toBeInTheDocument();
