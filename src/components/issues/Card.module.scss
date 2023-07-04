@@ -107,11 +107,9 @@ $card-text: #78716c;
 .card__body {
     width: 100%;
     color: black;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    * {
-        margin: 0;
+    overflow: auto;
+    h1 {
+        font-size: 1.2rem;
     }
 
     img {

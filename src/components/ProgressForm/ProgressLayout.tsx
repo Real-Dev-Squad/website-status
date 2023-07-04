@@ -1,4 +1,4 @@
-import React from 'react';
+import { FC } from 'react';
 
 import getCurrentDate from '@/utils/getLatestDate';
 
@@ -8,19 +8,29 @@ import ProgressForm from './ProgressForm';
 import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 import { questions } from '@/constants/ProgressUpdates';
+import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
+import { useUserProgressDetailsQuery } from '@/app/services/progressesApi';
+import { useGetUserQuery } from '@/app/services/userApi';
 
-function ProgressLayout() {
+const ProgressLayout: FC = () => {
+    const { data: user } = useGetUserQuery();
+    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
+    const standupDates = userStandupdata?.data?.map((element) => element.date);
+    const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
     return (
         <>
             <NavBar />
-            <ProgressHeader />
-            <h1 className={styles.formHeading}>Task Updates</h1>
+            <ProgressHeader
+                totalMissedUpdates={totalMissedUpdates}
+                updateType="Progress"
+            />
             <section className={styles.container}>
+                <h1 className={styles.formHeading}>Task Updates</h1>
                 <h2 className={styles.date}>On {getCurrentDate()}</h2>
                 <ProgressForm questions={questions} />
             </section>
         </>
     );
-}
+};
 
 export default ProgressLayout;
