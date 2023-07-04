@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, getByText, render, screen } from '@testing-library/react';
 import SuggestionList from '@/components/tasks/SuggestionBox/SuggestionList';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sections';
@@ -26,14 +26,18 @@ describe('SuggestionList', () => {
         );
 
         const list = screen.getByTestId('suggestions');
-        const listItems = screen.getAllByTestId('suggestion');
+
         const listImages = screen.getAllByTestId('image');
 
+        const assigneeOne = screen.getByText('fakhruddinkw');
+        const assigneeTwo = screen.getByText('iamitprakash');
+
         expect(list).toBeInTheDocument();
-        expect(listItems).toHaveLength(2);
+        expect(assigneeOne).toBeInTheDocument();
+        expect(assigneeTwo).toBeInTheDocument();
         expect(listImages).toHaveLength(2);
 
-        fireEvent.click(listItems[0]);
+        fireEvent.click(assigneeOne);
         expect(onSelectAssignee).toHaveBeenCalled();
     });
 });

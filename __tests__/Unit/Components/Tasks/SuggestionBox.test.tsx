@@ -37,14 +37,19 @@ describe('Suggestion Box', () => {
         );
 
         const list = screen.getByTestId('suggestions');
-        const listItems = screen.getAllByTestId('suggestion');
         const listImages = screen.getAllByTestId('image');
 
+        const assigneeOne = screen.getByText('fakhruddinkw');
+        const assigneeTwo = screen.getByText('iamitprakash');
+
         expect(list).toBeInTheDocument();
-        expect(listItems).toHaveLength(2);
+
+        expect(assigneeOne).toBeInTheDocument();
+        expect(assigneeTwo).toBeInTheDocument();
+
         expect(listImages).toHaveLength(2);
 
-        fireEvent.click(listItems[0]);
+        fireEvent.click(assigneeOne);
         expect(onSelectAssignee).toHaveBeenCalled();
     });
 });

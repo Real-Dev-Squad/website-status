@@ -5,7 +5,7 @@ import UserNotFound from '@/components/tasks/SuggestionBox/UserNotFound';
 describe('Loader', () => {
     it('renders the loading spinner', () => {
         render(<UserNotFound />);
-        const userNotFound = screen.getByTestId('user_not_found');
+        const userNotFound = screen.getByText('User not found!');
         expect(userNotFound).toBeInTheDocument();
     });
 });
