@@ -6,11 +6,11 @@ describe('Progress Slider', () => {
         debounceSlider: jest.fn(),
         handleProgressChange: jest.fn(),
     };
-    test('should render range input field', () => {
+    test('should render range input field', async () => {
         render(<ProgressSlider {...DEFAULT_PROPS} value={40} />);
         const sliderInput = screen.getByRole('slider');
-        fireEvent.change(sliderInput, { target: { value: 40 } });
-        // expect(DEFAULT_PROPS.handleProgressChange).toHaveBeenCalled();
+        await fireEvent.change(sliderInput, { target: { value: 50 } });
+        expect(DEFAULT_PROPS.handleProgressChange).toHaveBeenCalled();
         fireEvent.mouseUp(sliderInput);
         expect(DEFAULT_PROPS.debounceSlider).toHaveBeenCalled();
         expect(sliderInput).toBeInTheDocument();

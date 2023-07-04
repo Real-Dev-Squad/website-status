@@ -15,7 +15,7 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
                 min="0"
                 max="100"
                 step="10"
-                onChange={(e) => handleProgressChange(e)}
+                onChange={handleProgressChange}
                 onMouseUp={() => debounceSlider(1000)}
                 role="slider"
             />
