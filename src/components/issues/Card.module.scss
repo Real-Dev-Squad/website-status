@@ -109,7 +109,10 @@ $card-text: #78716c;
     color: black;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
+    * {
+        margin: 0;
+    }
 
     h1 {
         font-size: 1.2rem;
