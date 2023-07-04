@@ -1,8 +1,8 @@
 export const headerCategories = [
     {
         title: 'Tasks',
-        refURL: '/',
-        pathName: '/',
+        refURL: '/tasks',
+        pathName: '/tasks',
     },
     {
         title: 'Issues',
