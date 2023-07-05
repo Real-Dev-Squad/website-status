@@ -122,8 +122,6 @@ const StandUpContainer: FC = () => {
                                 className={`${styles.submitButton} ${buttonStyleClass}`}
                                 disabled={!isValidate()}
                                 type="submit"
-                                data-testid="button"
-                                role="button"
                             >
                                 Submit
                             </button>

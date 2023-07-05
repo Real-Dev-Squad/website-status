@@ -32,6 +32,7 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
@@ -89,7 +90,6 @@ const Card: FC<Props> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
-    const isNewCardEnabled = !!query.dev;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -445,7 +445,7 @@ const Card: FC<Props> = ({
                 <div className={classNames.cardItems}>
                     <ConditionalLinkWrapper
                         redirectingPath="/tasks/[id]"
-                        shouldDisplayLink={isNewCardEnabled}
+                        shouldDisplayLink={isTaskDetailsPageLinkEnabled}
                         taskId={cardDetails.id}
                     >
                         <span
@@ -595,7 +595,9 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <ConditionalLinkWrapper shouldDisplayLink={isNewCardEnabled}>
+                <ConditionalLinkWrapper
+                    shouldDisplayLink={isTaskDetailsPageLinkEnabled}
+                >
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}

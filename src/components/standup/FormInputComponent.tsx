@@ -19,7 +19,6 @@ const FormInputComponent: FC<InputProps> = ({
             </label>
             <input
                 id={inputId}
-                role="textbox"
                 type="text"
                 className={styles.inputField}
                 placeholder={placeholder}

@@ -27,3 +27,9 @@ export const notLoading = {
         profilePicture: '',
     },
 };
+
+export const failedToSendStandup = {
+    statusCode: 500,
+    error: 'Internal Server Error',
+    message: 'success',
+};

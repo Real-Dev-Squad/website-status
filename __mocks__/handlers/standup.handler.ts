@@ -1,4 +1,6 @@
 import { rest } from 'msw';
+import { failedToSendStandup } from '../../__mocks__/db/standup';
+
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const standupHandler = [
@@ -16,12 +18,6 @@ const standupHandler = [
         return res(ctx.status(200), ctx.json({ data: [] }));
     }),
 ];
-
-export const failedToSendStandup = {
-    statusCode: 500,
-    error: 'Internal Server Error',
-    message: 'success',
-};
 
 export const failedPostStandup = rest.post(
     `${URL}/progresses`,

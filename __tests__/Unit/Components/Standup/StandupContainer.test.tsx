@@ -49,7 +49,7 @@ describe('StandupContainer', () => {
         expect(completedInputField).toHaveValue('');
         expect(todayInputField).toBeInTheDocument();
         expect(todayInputField).toHaveValue('');
-        // expect(screen.queryByTestId('blockerInputField')).toBeInTheDocument();
+
         expect(blockerInputField).toHaveValue('');
 
         fireEvent.change(completedInputField, {
@@ -109,6 +109,21 @@ describe('StandupContainer', () => {
             target: { value: 'Waiting for database access credentials' },
         });
         expect(screen.getByRole('button')).not.toBeDisabled();
+    });
+
+    test('should keep button disabled if only one field is filled and rest are empty', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <StandUpContainer />
+            </Provider>
+        );
+        const completedInputField = screen.getByRole('textbox', {
+            name: yesterdayDate,
+        }) as HTMLInputElement;
+        fireEvent.change(completedInputField, {
+            target: { value: 'Working on a backend Go project' },
+        });
+        expect(screen.getByText(/Submit/i).closest('button')).toBeDisabled();
     });
 
     test('should Submit form data successfully', async () => {

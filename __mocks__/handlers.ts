@@ -9,6 +9,7 @@ import { taskDetailsHandler } from './handlers/task-details.handler';
 import userHandler from './handlers/user.handler';
 import issuesHandler from './handlers/issues.handler';
 import standupHandler from './handlers/standup.handler';
+import { prsHandler } from './handlers/pull-requests.handler';
 
 const handlers = [
     ...taskHandlers,
@@ -22,6 +23,7 @@ const handlers = [
     ...userHandler,
     ...issuesHandler,
     ...standupHandler,
+    ...prsHandler,
 ];
 
 export default handlers;
