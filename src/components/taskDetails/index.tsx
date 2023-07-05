@@ -95,21 +95,20 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     ) {
         const { name, value } = event.target;
 
-        if (name === 'taskDependsOn') {
+        if (name === 'dependsOn') {
             const updatedDependencies = value
                 .split(',')
                 .map((taskId) => taskId.trim());
-            // console.log(updatedDependencies);
+            console.log(updatedDependencies);
             setUpdatedDependencies(updatedDependencies);
         }
         const formData = {
             ...taskDetails,
             [event.target.name]: event.target.value,
-            dependsOn: updatedDependencies,
+            dependsOn: [...updatedDependencies],
         };
         setEditedDetails(formData);
         setTaskDetails(formData);
-        // console.log(taskDetails);
     }
 
     function onCancel() {
@@ -119,7 +118,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     async function onSave() {
         setIsEditing(false);
-        // console.log(editedDetails);
         updateTaskDetails({
             editedDetails,
             taskID,
@@ -235,7 +233,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 {isEditing ? (
                                     <>
                                         <Textarea
-                                            name="taskDependsOn"
+                                            name="dependsOn"
                                             value={updatedDependencies.join(
                                                 ','
                                             )}
