@@ -35,5 +35,18 @@ const taskDetailsHandler = [
         );
     }),
 ];
+const failedTaskDependencyDetails = rest.get(
+    `${URL}/tasks/:taskId`,
+    (_, res, ctx) => {
+        return res(ctx.status(404), ctx.json(
+            {
+                'statusCode': 404,
+                'error': 'Not Found',
+                'message': 'Task not found'
+            }
+        )
+        );
+    }
+);
 
-export default taskDetailsHandler;
+export { taskDetailsHandler, failedTaskDependencyDetails };
