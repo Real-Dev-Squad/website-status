@@ -96,19 +96,20 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         const { name, value } = event.target;
 
         if (name === 'taskDependsOn') {
-            setUpdatedDependencies(
-                value.split(',').map((taskId) => taskId.trim())
-            );
+            const updatedDependencies = value
+                .split(',')
+                .map((taskId) => taskId.trim());
+            // console.log(updatedDependencies);
+            setUpdatedDependencies(updatedDependencies);
         }
         const formData = {
             ...taskDetails,
-            [name]: value,
+            [event.target.name]: event.target.value,
+            dependsOn: updatedDependencies,
         };
-        setEditedDetails({
-            ...taskDetails,
-            [name]: value,
-        });
+        setEditedDetails(formData);
         setTaskDetails(formData);
+        // console.log(taskDetails);
     }
 
     function onCancel() {
@@ -118,8 +119,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     async function onSave() {
         setIsEditing(false);
+        // console.log(editedDetails);
         updateTaskDetails({
-            editedDetails: { dependsOn: updatedDependencies },
+            editedDetails,
             taskID,
         })
             .unwrap()
