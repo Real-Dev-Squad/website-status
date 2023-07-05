@@ -9,31 +9,20 @@ $theme-inputFieldBorder: #d1d5db;
 $theme-nonActiveButtonBackground: #e5e7eb;
 $radius: 0.5rem;
 
-.standupContainer {
+.bannerContainer {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .progressBanner {
     background-color: $theme-primaryBackground;
-    width: 84%;
-    height: 12%;
     color: $theme-whiteColor;
     padding: 2rem;
     border-radius: $radius;
-}
-
-.bannerContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    width: 100%;
     margin-top: 2rem;
-    margin-left: 8.2rem;
+    width: 100%;
 }
 
 .bannerPara {
@@ -49,22 +38,25 @@ $radius: 0.5rem;
 }
 
 .standupUpdateContainer {
-    width: 50%;
-    margin-top: 2rem;
-}
-
-.standupForm {
-    margin-top: 2.2rem;
+    border: 1px solid var(--toastify-spinner-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    border-radius: 1rem;
+    margin-top: 4rem;
 }
 
 .standupTitle {
     color: $theme-secondaryBackground;
     font-family: 'Inter', sans-serif;
     font-size: 2.2rem;
-    padding-left: 0.8rem;
 }
 
 .formFields {
+    text-align: left;
     margin-bottom: 1.25rem;
     border: none;
 }
@@ -82,9 +74,7 @@ $radius: 0.5rem;
     border: 1px solid $theme-inputFieldBorder;
     background: $theme-whiteColor;
     padding: 1rem;
-    font-weight: 400;
-    font-size: 0.8rem;
-    line-height: 150%;
+    font-size: 1rem;
     font-family: 'Inter', sans-serif;
     margin: 0.8rem 0 2.4rem 0;
 }
@@ -95,17 +85,15 @@ $radius: 0.5rem;
 }
 
 .submitButton {
+    margin: 1rem;
     width: 14rem;
     height: 4rem;
     border-radius: $radius;
-    font-weight: 400;
-    font-size: 0.8rem;
-    line-height: 150%;
+    font-size: 1.2rem;
     font-family: 'Inter', sans-serif;
     border: none;
     cursor: pointer;
-    letter-spacing: 0.8px;
-    margin-left: 1rem;
+    color: var(--toastify-spinner-color);
 }
 
 .submitButton:active {
@@ -122,39 +110,8 @@ $radius: 0.5rem;
     background: $theme-nonActiveButtonBackground;
 }
 
-@media (max-width: 946px) {
-    .standupUpdateContainer {
-        width: 76%;
-    }
-}
-
-@media (max-width: 600px) {
-    .standupBanner {
-        width: 100%;
-        padding: 2rem;
-        text-align: center;
-    }
-
-    .bannerPara {
-        font-size: 1rem;
-        word-wrap: break-word;
-    }
-
+@media (max-width: 980px) {
     .standupUpdateContainer {
         width: 100%;
-        margin-top: 0.24rem;
-    }
-
-    .standupTitle {
-        font-size: 1.6rem;
-    }
-
-    .updateHeading {
-        font-size: 1rem;
-    }
-
-    .submitButton {
-        width: 10rem;
-        height: 2.6rem;
     }
 }
