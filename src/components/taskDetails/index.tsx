@@ -230,26 +230,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 title="Task DependsOn"
                                 hasImg={false}
                             >
-                                <ol
-                                    className={
-                                        classNames[
-                                            'task_dependency_list_container'
-                                        ]
-                                    }
-                                >
-                                    <TaskDependencyList
-                                        loading={loading}
-                                        fetching={fetching}
-                                        error={error}
-                                        dependencyData={dependencyData}
-                                        navigateToTask={navigateToTask}
-                                    />
-                                </ol>
-                            </TaskContainer>
-                            <TaskContainer
-                                title="Task DependsOn"
-                                hasImg={false}
-                            >
                                 {isEditing ? (
                                     <>
                                         <Textarea
