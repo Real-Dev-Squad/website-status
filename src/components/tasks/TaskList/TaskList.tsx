@@ -39,7 +39,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
     });
 
     const { isEditMode } = useEditMode();
-    const {  isUserAuthorized } = useUserData();
+    const { isUserAuthorized } = useUserData();
     const isEditable = isUserAuthorized && isEditMode;
 
     const [updateCardContent] = useUpdateTaskMutation();
