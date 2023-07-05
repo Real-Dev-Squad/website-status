@@ -80,6 +80,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [editedDetails, setEditedDetails] = useState({});
 
     const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+    const [updatedDependencies, setUpdatedDependencies] = useState<string[]>(
+        taskDetails?.dependsOn || []
+    );
 
     useEffect(() => {
         const fetchedData = data?.taskData;
@@ -90,11 +93,21 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
+        const { name, value } = event.target;
+
+        if (name === 'taskDependsOn') {
+            setUpdatedDependencies(
+                value.split(',').map((taskId) => taskId.trim())
+            );
+        }
         const formData = {
             ...taskDetails,
-            [event.target.name]: event.target.value,
+            [name]: value,
         };
-        setEditedDetails(formData);
+        setEditedDetails({
+            ...taskDetails,
+            [name]: value,
+        });
         setTaskDetails(formData);
     }
 
@@ -106,7 +119,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     async function onSave() {
         setIsEditing(false);
         updateTaskDetails({
-            editedDetails,
+            editedDetails: { dependsOn: updatedDependencies },
             taskID,
         })
             .unwrap()
@@ -232,6 +245,53 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         navigateToTask={navigateToTask}
                                     />
                                 </ol>
+                            </TaskContainer>
+                            <TaskContainer
+                                title="Task DependsOn"
+                                hasImg={false}
+                            >
+                                {isEditing ? (
+                                    <>
+                                        <Textarea
+                                            name="taskDependsOn"
+                                            value={updatedDependencies.join(
+                                                ','
+                                            )}
+                                            onChange={handleChange}
+                                        />
+                                        <ol
+                                            className={
+                                                classNames[
+                                                    'task_dependency_list_container'
+                                                ]
+                                            }
+                                        >
+                                            <TaskDependencyList
+                                                loading={loading}
+                                                fetching={fetching}
+                                                error={error}
+                                                dependencyData={dependencyData}
+                                                navigateToTask={navigateToTask}
+                                            />
+                                        </ol>
+                                    </>
+                                ) : (
+                                    <ol
+                                        className={
+                                            classNames[
+                                                'task_dependency_list_container'
+                                            ]
+                                        }
+                                    >
+                                        <TaskDependencyList
+                                            loading={loading}
+                                            fetching={fetching}
+                                            error={error}
+                                            dependencyData={dependencyData}
+                                            navigateToTask={navigateToTask}
+                                        />
+                                    </ol>
+                                )}
                             </TaskContainer>
                         </section>
 
