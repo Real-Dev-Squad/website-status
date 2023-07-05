@@ -9,8 +9,8 @@ import {
 } from '../constants';
 import styles from '../card/card.module.scss';
 import { useEditMode } from '@/hooks/useEditMode';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import useUserData from '@/hooks/useUserData';
 
 type TaksListProps = {
     tasks: task[];
@@ -39,7 +39,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
     });
 
     const { isEditMode } = useEditMode();
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
+    const {  isUserAuthorized } = useUserData();
     const isEditable = isUserAuthorized && isEditMode;
 
     const [updateCardContent] = useUpdateTaskMutation();

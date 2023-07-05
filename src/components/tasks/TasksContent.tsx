@@ -1,4 +1,5 @@
 import classNames from '@/styles/tasks.module.scss';
+
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
@@ -12,6 +13,7 @@ import TaskList from './TaskList/TaskList';
 
 export const TasksContent = () => {
     const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
+
     const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
 
     const onSelect = (tab: Tab) => {
