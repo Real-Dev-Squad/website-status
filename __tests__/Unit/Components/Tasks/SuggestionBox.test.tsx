@@ -1,18 +1,6 @@
 import SuggestionBox from '@/components/tasks/SuggestionBox/SuggestionBox';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sections';
-import { GithubInfo } from '@/interfaces/suggestionBox.type';
-
-const gitInfo: GithubInfo[] = [
-    {
-        github_id: 'Jan',
-        profileImageUrl: placeholderImageURL,
-    },
-    {
-        github_id: 'John',
-        profileImageUrl: placeholderImageURL,
-    },
-];
+import gitInfo from '../../../../__mocks__/db/githubUser';
 
 describe('Suggestion Box', () => {
     const onSelectAssignee = jest.fn();
