@@ -107,6 +107,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             [event.target.name]: event.target.value,
             dependsOn: [...updatedDependencies],
         };
+        // console.log('formdata', formData);
         setEditedDetails(formData);
         setTaskDetails(formData);
     }
@@ -118,6 +119,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     async function onSave() {
         setIsEditing(false);
+        // console.log(editedDetails);
         updateTaskDetails({
             editedDetails,
             taskID,
