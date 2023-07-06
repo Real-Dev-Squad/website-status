@@ -14,7 +14,6 @@ import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -24,10 +23,23 @@ const details = {
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    server.listen();
+    server.listen({ onUnhandledRequest: 'bypass' });
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+jest.mock('@/hooks/useUserData', () => {
+    return () => ({
+        data: {
+            roles: {
+                admin: true,
+                super_user: false,
+            },
+        },
+        isUserAuthorized: true,
+        isSuccess: true,
+    });
+});
 
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
@@ -56,9 +68,7 @@ describe('TaskDetails Page', () => {
     it('should show edit button when superuser is viewing', async () => {
         const { getByRole } = renderWithRouter(
             <Provider store={store()}>
-                <isUserAuthorizedContext.Provider value={true}>
-                    <TaskDetails taskID={details.taskID} />
-                </isUserAuthorizedContext.Provider>
+                <TaskDetails taskID={details.taskID} />
             </Provider>,
             {}
         );
