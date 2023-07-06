@@ -104,7 +104,10 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
     return (
         <Layout>
             <Head title="PRs" />
-            <div className={styles.scroll}>
+            <div
+                className={styles.scroll}
+                data-testid="scrollableCardContainer"
+            >
                 {error && (
                     <p className={styles.center_text}>
                         Something went wrong! Please contact admin
