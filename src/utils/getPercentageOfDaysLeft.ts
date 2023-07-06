@@ -1,15 +1,11 @@
 import moment from 'moment';
 
-function inputParser(input: string) {
-    const parsedDate = moment(new Date(parseInt(input, 10) * 1000));
-    return parsedDate;
-}
-
 const getPercentageOfDaysLeft = (startedOn: string, endsOn: string): number => {
-    const startDate = inputParser(startedOn);
-    const endDate = inputParser(endsOn);
+    const startDate = moment(new Date(parseInt(startedOn, 10) * 1000));
+    const endDate = moment(new Date(parseInt(endsOn, 10) * 1000));
 
-    // It provides us with total days that are there for the the project and number of days left
+    // It provides us with total days that are there for the the project and
+    //number of days left
     const totalDays = endDate.diff(startDate, 'days');
     const daysLeft = endDate.diff(new Date(), 'days');
 
