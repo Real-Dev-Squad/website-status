@@ -4,7 +4,7 @@ import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
-type TaskRequestPayload = { task: updateTaskDetails; id?: string };
+type TaskRequestPayload = { task: updateTaskDetails; id: string };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({

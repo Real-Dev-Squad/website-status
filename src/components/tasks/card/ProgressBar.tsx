@@ -23,18 +23,17 @@ const HandleProgressbar: FC<ProgressBarProps> = ({
                 <span>{progressValue}%</span>
             </>
         );
-    } else {
-        return (
-            <>
-                <ProgressIndicator
-                    percentCompleted={percentCompleted}
-                    startedOn={startedOn}
-                    endsOn={endsOn}
-                />
-                <span>{percentCompleted}% </span>
-            </>
-        );
     }
+    return (
+        <>
+            <ProgressIndicator
+                percentCompleted={percentCompleted}
+                startedOn={startedOn}
+                endsOn={endsOn}
+            />
+            <span>{percentCompleted}% </span>
+        </>
+    );
 };
 
 export default HandleProgressbar;

@@ -66,7 +66,6 @@ const Card: FC<Props> = ({
     const [progressValue, setProgressValue] = useState<number>(0);
     const [updateTasks] = useUpdateTaskMutation();
     const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
-    let progressCompletedPercent = 0;
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
@@ -321,8 +320,7 @@ const Card: FC<Props> = ({
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        progressCompletedPercent = Number(event.target.value);
-        setProgressValue(progressCompletedPercent);
+        setProgressValue(Number(event.target.value));
     };
 
     const handleSaveProgressUpdate = () => {
