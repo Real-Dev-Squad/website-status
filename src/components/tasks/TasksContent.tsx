@@ -54,7 +54,6 @@ export const TasksContent = () => {
 
     if (isLoading) return <p>Loading...</p>;
 
-    console.log(typeof dev);
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
