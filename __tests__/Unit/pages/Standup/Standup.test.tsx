@@ -89,4 +89,13 @@ describe('Standup', () => {
         );
         expect(getByText('404 - Page Not Found')).toBeInTheDocument();
     });
+
+    test(' should not render component when dev true is not passed.', () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <StandUp />
+            </Provider>
+        );
+        expect(getByText('404 - Page Not Found')).toBeInTheDocument();
+    });
 });

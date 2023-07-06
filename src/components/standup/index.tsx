@@ -87,7 +87,7 @@ const StandUpContainer: FC = () => {
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}
-                            role="form"
+                            aria-label="form"
                         >
                             <fieldset className={styles.formFields}>
                                 <FormInputComponent
