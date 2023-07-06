@@ -20,6 +20,7 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
                 role="slider"
             />
         </>
+
     );
 };
 
