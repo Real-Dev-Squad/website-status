@@ -3,7 +3,6 @@ import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import {
     createMockRouter,
@@ -11,6 +10,7 @@ import {
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import useUserData from '@/hooks/useUserData';
 
 const DEFAULT_PROPS = {
     content: {
@@ -40,6 +40,19 @@ const DEFAULT_PROPS = {
     shouldEdit: false,
     onContentChange: jest.fn(),
 };
+
+jest.mock('@/hooks/useUserData', () => {
+    return () => ({
+        data: {
+            roles: {
+                admin: true,
+                super_user: false,
+            },
+        },
+        isUserAuthorized: true,
+        isSuccess: true,
+    });
+});
 
 const getFirestoreDateNDaysBefore = (n = 1) => {
     const d = new Date();
@@ -114,9 +127,7 @@ describe('Task card', () => {
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
-                <isUserAuthorizedContext.Provider value={true}>
-                    <Card {...DEFAULT_PROPS} />
-                </isUserAuthorizedContext.Provider>
+                <Card {...DEFAULT_PROPS} />
             </Provider>,
             {}
         );
