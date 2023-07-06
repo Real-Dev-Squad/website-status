@@ -677,4 +677,18 @@ export const failedUpdateTaskHandler = rest.patch(
 	}
 );
 
+// no tasks found
+export const noTasksFoundResponse = {
+	message: 'No tasks found',
+	tasks: []
+};
+export const noTasksFoundHandler = rest.get(
+	`${URL}/tasks`,
+	(_, res, ctx) => {
+		return res(ctx.status(200), ctx.json(noTasksFoundResponse)
+		);
+	}
+);
+
+
 export default taskHandlers;
