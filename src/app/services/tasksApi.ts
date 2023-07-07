@@ -14,7 +14,16 @@ export const tasksApi = api.injectEndpoints({
         >({
             query: ({ dev, status }) =>
                 dev ? `/tasks?status=${status}&dev=true` : '/tasks',
-            providesTags: ['Tasks'],
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result.map(({ id }) => ({
+                              type: 'Tasks' as const,
+                              id,
+                          })),
+                          { type: 'Tasks' },
+                      ]
+                    : ['Tasks'],
             transformResponse: (response: TasksQueryResponse) => {
                 return response?.tasks?.sort(
                     (a: task, b: task) => +a.endsOn - +b.endsOn

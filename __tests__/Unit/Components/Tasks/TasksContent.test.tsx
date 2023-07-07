@@ -35,6 +35,12 @@ describe('TasksContent', () => {
                 <TasksContent />
             </Provider>
         );
+        const tabNameElement = await findByText('MERGED');
+        expect(tabNameElement).toBeInTheDocument();
+        const taskTitleElement = await findByText('test for dashboard');
+        expect(taskTitleElement).toBeInTheDocument();
+        const taskStatusElement = await findByText('ASSIGNED');
+        expect(taskStatusElement).toBeInTheDocument();
     });
 
     it('should render "No tasks found" when no tasks are returned', async () => {
