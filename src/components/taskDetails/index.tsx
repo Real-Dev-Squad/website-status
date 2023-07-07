@@ -20,7 +20,7 @@ import {
 } from '@/app/services/taskDetailsApi';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import TaskDependencyList from './TaskDependencyList';
+import TaskDependency from './TaskDependency';
 
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -34,7 +34,7 @@ function Button(props: ButtonProps) {
         </button>
     );
 }
-function Textarea(props: TextAreaProps) {
+export function Textarea(props: TextAreaProps) {
     const { name, value, onChange } = props;
     return (
         <textarea
@@ -99,6 +99,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             const updatedDependencies = value
                 .split(',')
                 .map((taskId) => taskId.trim());
+            // .filter((taskId) => taskId !== '');
             console.log(updatedDependencies);
             setUpdatedDependencies(updatedDependencies);
         }
@@ -232,48 +233,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 title="Task DependsOn"
                                 hasImg={false}
                             >
-                                {isEditing ? (
-                                    <>
-                                        <Textarea
-                                            name="dependsOn"
-                                            value={updatedDependencies.join(
-                                                ','
-                                            )}
-                                            onChange={handleChange}
-                                        />
-                                        <ol
-                                            className={
-                                                classNames[
-                                                    'task_dependency_list_container'
-                                                ]
-                                            }
-                                        >
-                                            <TaskDependencyList
-                                                loading={loading}
-                                                fetching={fetching}
-                                                error={error}
-                                                dependencyData={dependencyData}
-                                                navigateToTask={navigateToTask}
-                                            />
-                                        </ol>
-                                    </>
-                                ) : (
-                                    <ol
-                                        className={
-                                            classNames[
-                                                'task_dependency_list_container'
-                                            ]
-                                        }
-                                    >
-                                        <TaskDependencyList
-                                            loading={loading}
-                                            fetching={fetching}
-                                            error={error}
-                                            dependencyData={dependencyData}
-                                            navigateToTask={navigateToTask}
-                                        />
-                                    </ol>
-                                )}
+                                <TaskDependency
+                                    loading={loading}
+                                    fetching={fetching}
+                                    error={error}
+                                    dependencyData={dependencyData}
+                                    navigateToTask={navigateToTask}
+                                    isEditing={isEditing}
+                                    updatedDependencies={updatedDependencies}
+                                    handleChange={handleChange}
+                                />
                             </TaskContainer>
                         </section>
 
