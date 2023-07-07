@@ -10,9 +10,6 @@ $theme-nonActiveButtonBackground: #e5e7eb;
 $radius: 0.5rem;
 
 .bannerContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
 }
 
@@ -38,18 +35,17 @@ $radius: 0.5rem;
 }
 
 .standupUpdateContainer {
-    border: 1px solid var(--toastify-spinner-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-    text-align: center;
     border-radius: 1rem;
     margin-top: 4rem;
 }
 
 .standupTitle {
+    margin-left: 1rem;
     color: $theme-secondaryBackground;
     font-family: 'Inter', sans-serif;
     font-size: 2.2rem;
@@ -57,7 +53,6 @@ $radius: 0.5rem;
 
 .formFields {
     text-align: left;
-    margin-bottom: 1.25rem;
     border: none;
 }
 
@@ -71,7 +66,7 @@ $radius: 0.5rem;
     height: 4rem;
     width: 100%;
     border-radius: $radius;
-    border: 1px solid $theme-inputFieldBorder;
+    border: 2px solid $theme-inputFieldBorder;
     background: $theme-whiteColor;
     padding: 1rem;
     font-size: 1rem;
@@ -85,7 +80,7 @@ $radius: 0.5rem;
 }
 
 .submitButton {
-    margin: 1rem;
+    margin-left: 1rem;
     width: 14rem;
     height: 4rem;
     border-radius: $radius;
