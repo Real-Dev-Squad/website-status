@@ -39,10 +39,6 @@ export const TasksContent = () => {
         prevPage: prevPage,
     });
 
-    const onSelect = (tab: Tab) => {
-        setActiveTab(tab);
-    };
-
     const fetchNextTasks = () => {
         if (tasks.next) {
             setNextPage(tasks.next);
@@ -56,6 +52,11 @@ export const TasksContent = () => {
             refetch();
         }
     };
+
+    const onSelect = (tab: Tab) => {
+        setActiveTab(tab);
+    };
+
     const tasksGroupedByStatus = updateTasksStatus(tasks.tasks).reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
