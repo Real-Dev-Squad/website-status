@@ -21,7 +21,7 @@ const DependencyList: React.FC<Props1> = ({
         return <p>Loading...</p>;
     }
     if (error) {
-        return <>Unable to fetch this task</>;
+        return <>Unable to fetch dependency tasks</>;
     } else if (dependencyData && dependencyData.length) {
         return (
             <ol className={classNames['task_dependency_list_container']}>
@@ -57,7 +57,7 @@ const DependencyList: React.FC<Props1> = ({
             </ol>
         );
     } else {
-        return <p>No Dependency</p>;
+        return <p>No Dependencies</p>;
     }
 };
 

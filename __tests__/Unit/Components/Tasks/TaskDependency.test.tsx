@@ -47,9 +47,6 @@ describe('TaskDependency', () => {
                 error={true}
                 dependencyData={[]}
                 navigateToTask={() => Object}
-                isEditing={true}
-                updatedDependencies={[]}
-                handleChange={() => Object}
             />
         );
 
@@ -66,13 +63,10 @@ describe('TaskDependency', () => {
                 error={false}
                 dependencyData={[]}
                 navigateToTask={() => Object}
-                isEditing={false}
-                updatedDependencies={[]}
-                handleChange={() => Object}
             />
         );
 
-        expect(screen.getByText(/No dependencies/i)).toBeInTheDocument();
+        expect(screen.getByText(/No Dependencies/i)).toBeInTheDocument();
     });
 
     test('renders dependency list', () => {
@@ -83,9 +77,6 @@ describe('TaskDependency', () => {
                 error={false}
                 dependencyData={dependencyDataMock}
                 navigateToTask={() => Object}
-                isEditing={true}
-                updatedDependencies={[]}
-                handleChange={() => Object}
             />
         );
 
@@ -98,6 +89,25 @@ describe('TaskDependency', () => {
             expect(dependencyTitle).toBeInTheDocument();
         });
     });
+    it('should call navigateToTask with the correct task ID when a dependency is clicked', () => {
+        const mockNavigateToTask = jest.fn();
+
+        render(
+            <DependencyList
+                loading={false}
+                fetching={false}
+                error={false}
+                dependencyData={dependencyDataMock}
+                navigateToTask={mockNavigateToTask}
+            />
+        );
+
+        const dependencyLink = screen.getByText('Dependency 1');
+        fireEvent.click(dependencyLink);
+
+        expect(mockNavigateToTask).toHaveBeenCalledWith('dependency-1');
+    });
+
     it('should update editedDependencies state and call handleChange when dependencies change', () => {
         const handleChange = jest.fn();
 
