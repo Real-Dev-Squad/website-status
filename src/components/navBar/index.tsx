@@ -20,12 +20,11 @@ import { Loader } from '../tasks/card/Loader';
 import useUserData from '@/hooks/useUserData';
 
 const NavBar = () => {
-    const isLoggedIn = true;
-
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
     const { data: userData, isUserAuthorized } = useUserData();
+    const isLoggedIn = isUserAuthorized;
 
     return (
         <nav data-testid="navbar" className={styles.navBar}>
