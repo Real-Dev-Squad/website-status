@@ -19,15 +19,11 @@ import {
 } from '@/app/services/taskDetailsApi';
 
 import useUserData from '@/hooks/useUserData';
-import {
-    ButtonProps,
-    TextAreaProps,
-    taskDetailsDataType,
-} from '@/interfaces/taskDetails.type';
+import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 import TaskDependencyList from './TaskDependencyList';
 
-function Button(props: ButtonProps) {
+export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
     return (
         <button
@@ -39,14 +35,13 @@ function Button(props: ButtonProps) {
         </button>
     );
 }
-function Textarea(props: TextAreaProps) {
+export function Textarea(props: TextAreaProps) {
     const { name, value, onChange } = props;
     return (
         <textarea
             className={classNames['textarea']}
             name={name}
             value={value}
-            data-testid="edit button"
             onChange={onChange}
         />
     );

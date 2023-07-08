@@ -5,7 +5,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import TaskDetails from '@/components/taskDetails';
+import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
@@ -14,7 +14,7 @@ import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-
+import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -76,6 +76,7 @@ describe('TaskDetails Page', () => {
             expect(getByRole('button', { name: 'Edit' })).toBeInTheDocument();
         });
     });
+
     it('Should render No Description available for a task without description', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -167,6 +168,31 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('4/19/2021, 5:30:10 AM')).toBeInTheDocument();
         });
+    });
+});
+
+describe('Buttons with functionalities', () => {
+    const mockClickHandler = jest.fn();
+    const buttonProps: ButtonProps = {
+        buttonName: 'Click Me',
+        clickHandler: mockClickHandler,
+        value: true,
+    };
+
+    beforeEach(() => {
+        render(<Button {...buttonProps} />);
+    });
+
+    test('renders button with correct text', () => {
+        const buttonElement = screen.getByRole('button', { name: 'Click Me' });
+        expect(buttonElement).toBeInTheDocument();
+    });
+
+    test('calls click handler when button is clicked', () => {
+        const buttonElement = screen.getByRole('button', { name: 'Click Me' });
+        fireEvent.click(buttonElement);
+        expect(mockClickHandler).toHaveBeenCalledTimes(1);
+        expect(mockClickHandler).toHaveBeenCalledWith(true);
     });
 });
 
