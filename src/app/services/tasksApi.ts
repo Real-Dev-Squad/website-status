@@ -4,7 +4,11 @@ import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 
 type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
-type TaskRequestPayload = { task: updateTaskDetails; id: string };
+type TaskRequestPayload = {
+    task: updateTaskDetails;
+    id: string;
+    userStatusFlag?: boolean;
+};
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -39,11 +43,13 @@ export const tasksApi = api.injectEndpoints({
             }),
         }),
         updateTask: builder.mutation<void, TaskRequestPayload>({
-            query: (task: TaskRequestPayload) => ({
-                // userStatusFlag is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
-                url: `tasks/${task.id}?userStatusFlag=true`,
+            // userStatusFlag is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
+            query: ({ task, id, userStatusFlag }: TaskRequestPayload) => ({
+                url: userStatusFlag
+                    ? `tasks/${id}?userStatusFlag=true`
+                    : `tasks/${id}`,
                 method: 'PATCH',
-                body: task.task,
+                body: task,
             }),
             invalidatesTags: (_result, _err, { id }) => [
                 {

@@ -38,7 +38,11 @@ import { GithubInfo } from '@/interfaces/suggestionBox.type';
 type Props = {
     content: task;
     shouldEdit: boolean;
-    onContentChange?: (changeId: string, changeObject: object) => void;
+    onContentChange?: (
+        changeId: string,
+        changeObject: object,
+        userStatusFlag?: boolean
+    ) => void;
 };
 
 let timer: NodeJS.Timeout;
@@ -87,6 +91,10 @@ const Card: FC<Props> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
+    let isUserStatusEnabled = false;
+    if (query.userStatusFlag) {
+        isUserStatusEnabled = query.userStatusFlag === 'true';
+    }
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -145,10 +153,13 @@ const Card: FC<Props> = ({
                 toChange[changedProperty] = toTimeStamp;
             }
             console.log(toChange);
-
-            onContentChange(toChange.id, {
-                [changedProperty]: toChange[changedProperty],
-            });
+            onContentChange(
+                toChange.id,
+                {
+                    [changedProperty]: toChange[changedProperty],
+                },
+                isUserStatusEnabled
+            );
         }
     }
 
@@ -265,6 +276,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
+            ...(isUserStatusEnabled && { userStatusFlag: true }),
         });
         response
             .unwrap()
@@ -292,6 +304,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
+            ...(isUserStatusEnabled && { userStatusFlag: true }),
         });
 
         response

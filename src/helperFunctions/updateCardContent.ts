@@ -5,10 +5,16 @@ import { TASKS_URL } from '@/constants/url';
 
 const { SUCCESS, ERROR } = ToastTypes;
 
-async function updateCardContent(id: string, cardDetails: task) {
+async function updateCardContent(
+    id: string,
+    cardDetails: task,
+    userStatusFlag?: boolean
+) {
     try {
         const { requestPromise } = fetch({
-            url: `${TASKS_URL}/${id}`,
+            url: userStatusFlag
+                ? `${TASKS_URL}/${id}?userStatusFlag=true`
+                : `${TASKS_URL}/${id}`,
             method: 'patch',
             data: cardDetails,
         });

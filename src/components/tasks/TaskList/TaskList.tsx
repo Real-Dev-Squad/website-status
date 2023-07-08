@@ -13,7 +13,11 @@ type TaksListProps = {
     tasks: task[];
     isEditable?: boolean;
     hasLimit?: boolean;
-    updateCardContent?: (id: string, cardDetails: task) => void;
+    updateCardContent?: (
+        id: string,
+        cardDetails: task,
+        userStatusFlag?: boolean
+    ) => void;
 };
 
 type FilterTasksProps = {
@@ -44,9 +48,13 @@ export default function TaskList({
     function onSeeMoreTasksHandler() {
         setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
     }
-    async function onContentChangeHandler(id: string, cardDetails: any) {
+    async function onContentChangeHandler(
+        id: string,
+        cardDetails: any,
+        userStatusFlag?: boolean
+    ) {
         if (!isEditable || !updateCardContent) return;
-        updateCardContent(id, cardDetails);
+        updateCardContent(id, cardDetails, userStatusFlag);
     }
 
     return (
