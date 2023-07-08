@@ -14,15 +14,13 @@ describe('updateTasksStatus', () => {
 
         const updatedTasks = updateTasksStatus(tasks);
 
-        expect(updatedTasks).toEqual({
-            IN_PROGRESS: [
-                { id: '1', status: 'IN_PROGRESS' },
-                { id: '2', status: 'IN_PROGRESS' },
-            ],
-            ASSIGNED: [{ id: '3', status: 'ASSIGNED' }],
-            AVAILABLE: [{ id: '4', status: 'AVAILABLE' }],
-            COMPLETED: [{ id: '5', status: 'COMPLETED' }],
-            BLOCKED: [{ id: '6', status: 'BLOCKED' }],
-        });
+        expect(updatedTasks).toEqual([
+            { id: '1', status: 'IN_PROGRESS' },
+            { id: '2', status: 'IN_PROGRESS' },
+            { id: '3', status: 'ASSIGNED' },
+            { id: '4', status: 'AVAILABLE' },
+            { id: '5', status: 'COMPLETED' },
+            { id: '6', status: 'BLOCKED' },
+        ]);
     });
 });

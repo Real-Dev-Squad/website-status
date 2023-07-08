@@ -1,7 +1,7 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
-import { Tab } from '@/interfaces/task.type';
+import task, { Tab } from '@/interfaces/task.type';
 import { useState } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
@@ -19,7 +19,17 @@ export const TasksContent = () => {
         setActiveTab(tab);
     };
 
-    const tasksGroupedByStatus = updateTasksStatus(tasks);
+    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+        (acc: Record<string, task[]>, curr: task) => {
+            return acc[curr.status as keyof task]
+                ? {
+                      ...acc,
+                      [curr.status]: [...acc[curr.status as keyof task], curr],
+                  }
+                : { ...acc, [curr.status]: [curr] };
+        },
+        {}
+    );
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
