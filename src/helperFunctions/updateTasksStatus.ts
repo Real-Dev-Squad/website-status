@@ -1,22 +1,32 @@
 import task from '../interfaces/task.type';
 
-const updateTasksStatus = (tasks: task[]): task[] => {
+const updateTasksStatus = (tasks: task[] = []): task[] => {
     return tasks.map((task) => {
-        switch (task.status) {
+        const { status, ...rest } = task;
+        let updatedStatus;
+
+        switch (status) {
             case 'active':
             case 'pending':
-                return { ...task, status: 'IN_PROGRESS' };
+                updatedStatus = 'IN_PROGRESS';
+                break;
             case 'assigned':
-                return { ...task, status: 'ASSIGNED' };
+                updatedStatus = 'ASSIGNED';
+                break;
             case 'unassigned':
-                return { ...task, status: 'AVAILABLE' };
+                updatedStatus = 'AVAILABLE';
+                break;
             case 'completed':
-                return { ...task, status: 'COMPLETED' };
+                updatedStatus = 'COMPLETED';
+                break;
             case 'blocked':
-                return { ...task, status: 'BLOCKED' };
+                updatedStatus = 'BLOCKED';
+                break;
             default:
-                return task;
+                updatedStatus = status;
         }
+
+        return { ...rest, status: updatedStatus };
     });
 };
 

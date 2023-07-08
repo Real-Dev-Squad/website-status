@@ -33,6 +33,13 @@ type task = {
     };
 };
 
+export type tasksResponse = {
+    message: string;
+    tasks: task[];
+    next?: string;
+    prev?: string;
+};
+
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
     startedOn?: number;
 };
