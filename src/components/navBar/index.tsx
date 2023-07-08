@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
+
 import {
     LOGIN_URL,
     DEFAULT_AVATAR,
@@ -16,15 +16,16 @@ import {
 } from '@/constants/url';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
-import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
+import useUserData from '@/hooks/useUserData';
 
 const NavBar = () => {
-    const isLoggedIn = useContext(isUserAuthorizedContext);
-    const { data: userData } = useGetUserQuery();
-    // const { userData, isLoggedIn } = useAuthenticated();
+    const isLoggedIn = true;
+
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
+
+    const { data: userData, isUserAuthorized } = useUserData();
 
     return (
         <nav data-testid="navbar" className={styles.navBar}>

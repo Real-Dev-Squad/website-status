@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 export type taskDetailsDataType = {
     message?: string;
     taskData?: {
@@ -6,6 +7,7 @@ export type taskDetailsDataType = {
         createdBy: string;
         endsOn: number;
         isNoteworthy: boolean;
+        dependsOn: string[];
         lossRate: { dinero: number; neelam: number };
         percentCompleted: number;
         priority: string;
@@ -14,4 +16,15 @@ export type taskDetailsDataType = {
         title: string;
         type: string;
     };
+};
+
+export type ButtonProps = {
+    buttonName: string;
+    clickHandler: (value: any) => void;
+    value?: boolean;
+};
+export type TextAreaProps = {
+    name: string;
+    value: string;
+    onChange: ChangeEventHandler;
 };

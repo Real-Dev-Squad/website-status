@@ -1,13 +1,10 @@
 .container {
+    text-align: center;
     display: flex;
     flex-direction: column;
-    max-width: 60%;
     margin: 0 auto;
     flex-wrap: nowrap;
     align-items: center;
-    @media (max-width: 767px) {
-        max-width: 100%;
-    }
 }
 
 .title {
@@ -29,5 +26,10 @@
 }
 
 .tabsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
