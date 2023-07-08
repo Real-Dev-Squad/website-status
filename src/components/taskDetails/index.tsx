@@ -20,7 +20,7 @@ import {
 } from '@/app/services/taskDetailsApi';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import TaskDependency from './TaskDependency';
+import TaskDependency from './taskDependency/TaskDependency';
 
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;

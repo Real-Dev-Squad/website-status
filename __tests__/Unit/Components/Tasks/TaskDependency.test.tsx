@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import TaskDependency from '../../../../src/components/taskDetails/TaskDependency';
+import TaskDependency from '../../../../src/components/taskDetails/taskDependency/TaskDependency';
+import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
+import { dependency } from '@/app/services/taskDetailsApi';
+import { dependsOn } from '__mocks__/db/tasks';
 
 describe('TaskDependency', () => {
-    const dependencyDataMock: (
-        | PromiseFulfilledResult<{ title: string | undefined; id: string }>
-        | PromiseRejectedResult
-    )[] = [
+    const dependencyDataMock: dependency = [
         {
             status: 'fulfilled',
             value: {
@@ -41,7 +41,7 @@ describe('TaskDependency', () => {
 
     test('renders error state', () => {
         render(
-            <TaskDependency
+            <DependencyList
                 loading={false}
                 fetching={false}
                 error={true}
@@ -60,13 +60,13 @@ describe('TaskDependency', () => {
 
     test('renders no dependencies message', () => {
         render(
-            <TaskDependency
+            <DependencyList
                 loading={false}
                 fetching={false}
                 error={false}
                 dependencyData={[]}
                 navigateToTask={() => Object}
-                isEditing={true}
+                isEditing={false}
                 updatedDependencies={[]}
                 handleChange={() => Object}
             />
@@ -77,7 +77,7 @@ describe('TaskDependency', () => {
 
     test('renders dependency list', () => {
         render(
-            <TaskDependency
+            <DependencyList
                 loading={false}
                 fetching={false}
                 error={false}
@@ -93,7 +93,8 @@ describe('TaskDependency', () => {
         expect(dependencyItems).toHaveLength(dependencyDataMock.length);
 
         dependencyDataMock.forEach((dependency) => {
-            const dependencyTitle = screen.getByText(dependency.value.title);
+            const dependencyTitle = screen.getByText(dependency?.value.title);
+            console.log('----------d-----', dependencyTitle);
             expect(dependencyTitle).toBeInTheDocument();
         });
     });
