@@ -1,8 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-// import TaskDetails from '@/components/taskDetails';
-import TaskContainer from '@/components/taskDetails/TaskContainer';
-import task from '@/interfaces/task.type';
-import { tasks } from '../../../../__mocks__/db/tasks';
 import TaskDependency from '../../../../src/components/taskDetails/TaskDependency';
 
 describe('TaskDependency', () => {
@@ -96,79 +92,39 @@ describe('TaskDependency', () => {
         const dependencyItems = screen.getAllByRole('listitem');
         expect(dependencyItems).toHaveLength(dependencyDataMock.length);
 
-        dependencyDataMock.forEach((dependency, index) => {
+        dependencyDataMock.forEach((dependency) => {
             const dependencyTitle = screen.getByText(dependency.value.title);
             expect(dependencyTitle).toBeInTheDocument();
-            // Add additional assertions or navigation logic here
         });
     });
+    it('should update editedDependencies state and call handleChange when dependencies change', () => {
+        const handleChange = jest.fn();
+
+        const { getByRole } = render(
+            <TaskDependency
+                loading={false}
+                fetching={false}
+                error={false}
+                dependencyData={[]}
+                navigateToTask={() => Object}
+                isEditing={true}
+                updatedDependencies={[]}
+                handleChange={handleChange}
+            />
+        );
+
+        const textarea = getByRole('textbox');
+        const event = { target: { value: 'task1, task2, task3' } };
+        fireEvent.change(
+            textarea,
+            event as React.ChangeEvent<HTMLInputElement>
+        );
+
+        expect(textarea.value).toBe('task1,task2,task3');
+
+        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange.mock.calls[0][0].target.value).toBe(
+            'task1,task2,task3'
+        );
+    });
 });
-
-// describe.skip('TaskDependency', () => {
-//     it('should renders task titles', () => {
-//         render(
-//             <TaskContainer title="Task DependsOn" hasImg={false}>
-//                 <ol className="task_dependency_list_container">
-//                     {tasks.map((task) => (
-//                         <li key={task.id}>{task.title}</li>
-//                     ))}
-//                     {tasks.length === 0 && <p>No Dependency</p>}
-//                 </ol>
-//             </TaskContainer>
-//         );
-
-//         tasks.forEach((task) => {
-//             const taskElements = screen.queryAllByText(task.title);
-//             expect(taskElements).toHaveLength(10);
-//             taskElements.forEach((element) => {
-//                 expect(element).toHaveTextContent(task.title);
-//             });
-//         });
-//     });
-
-//     it('should displays "No Dependency" message when task list is empty', () => {
-//         const emptyTasks: task[] = [];
-
-//         render(
-//             <TaskContainer title="Task DependsOn" hasImg={false}>
-//                 <ol className="task_dependency_list_container">
-//                     {emptyTasks.map((task) => (
-//                         <li key={task.id}>{task.title}</li>
-//                     ))}
-//                     {emptyTasks.length === 0 && <p>No Dependency</p>}
-//                 </ol>
-//             </TaskContainer>
-//         );
-
-//         expect(screen.getByText('No Dependency')).toBeInTheDocument();
-//     });
-
-//     it('should navigates to the correct task when clicked', () => {
-//         const navigateToTask = jest.fn();
-
-//         render(
-//             <TaskContainer title="Task DependsOn" hasImg={false}>
-//                 <ol className="task_dependency_list_container">
-//                     {tasks.map((task) => (
-//                         <li
-//                             key={task.id}
-//                             onClick={() => navigateToTask(task.id)}
-//                             data-testid={`task-item-${task.id}`}
-//                         >
-//                             {task.title}
-//                         </li>
-//                     ))}
-//                     {tasks.length === 0 && <p>No Dependency</p>}
-//                 </ol>
-//             </TaskContainer>
-//         );
-
-//         expect(screen.getByText('Task DependsOn')).toBeInTheDocument();
-//         expect(screen.queryByText('No Dependency')).toBeNull();
-//         tasks.forEach((task) => {
-//             const taskElement = screen.getByTestId(`task-item-${task.id}`);
-//             fireEvent.click(taskElement);
-//             expect(navigateToTask).toHaveBeenCalledWith(task.id);
-//         });
-//     });
-// });
