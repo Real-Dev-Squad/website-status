@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import UserNotFound from '@/components/tasks/SuggestionBox/UserNotFound';
 
 describe('UserNotFound', () => {
-    it('renders user not found', () => {
+    it('should render user not found', () => {
         render(<UserNotFound />);
         const userNotFound = screen.getByText('User not found!');
         expect(userNotFound).toBeInTheDocument();
