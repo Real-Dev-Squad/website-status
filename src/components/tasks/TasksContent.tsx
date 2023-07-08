@@ -31,7 +31,6 @@ export const TasksContent = () => {
         data: tasks = { tasks: [], next: '', prev: '' },
         isError,
         isLoading,
-        refetch,
     } = useGetAllTasksQuery({
         dev: dev as boolean,
         status: activeTab,
@@ -42,14 +41,12 @@ export const TasksContent = () => {
     const fetchNextTasks = () => {
         if (tasks.next) {
             setNextPage(tasks.next);
-            refetch();
         }
     };
 
     const fetchPrevTasks = () => {
         if (tasks.prev) {
             setPrevPage(tasks.prev);
-            refetch();
         }
     };
 

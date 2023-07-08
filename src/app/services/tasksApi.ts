@@ -1,4 +1,7 @@
-import task, { updateTaskDetails, tasksResponse } from '@/interfaces/task.type';
+import task, {
+    updateTaskDetails,
+    TasksResponseType,
+} from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 
@@ -8,12 +11,12 @@ type TaskRequestPayload = { task: updateTaskDetails; id: string };
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<
-            tasksResponse,
+            TasksResponseType,
             {
-                dev: boolean;
-                status: string;
-                nextPage?: string | undefined;
-                prevPage?: string | undefined;
+                dev?: boolean;
+                status?: string;
+                nextPage?: string;
+                prevPage?: string;
             }
         >({
             query: ({ dev, status, nextPage, prevPage }) => {
@@ -31,7 +34,7 @@ export const tasksApi = api.injectEndpoints({
             },
             providesTags: ['Tasks'],
 
-            transformResponse: (response: tasksResponse) => {
+            transformResponse: (response: TasksResponseType) => {
                 return {
                     message: response.message,
                     tasks: response.tasks?.sort(
@@ -43,7 +46,7 @@ export const tasksApi = api.injectEndpoints({
             },
         }),
 
-        getMineTasks: builder.query<tasksResponse, void>({
+        getMineTasks: builder.query<TasksResponseType, void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),

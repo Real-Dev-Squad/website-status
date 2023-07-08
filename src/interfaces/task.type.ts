@@ -33,7 +33,7 @@ type task = {
     };
 };
 
-export type tasksResponse = {
+export type TasksResponseType = {
     message: string;
     tasks: task[];
     next?: string;

@@ -3,14 +3,14 @@ import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import classNames from '@/styles/tasks.module.scss';
-import { tasksResponse } from '@/interfaces/task.type';
+import { TasksResponseType } from '@/interfaces/task.type';
 import { LOGIN_URL } from '@/constants/url';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
 import { Loader } from '@/components/tasks/card/Loader';
 
-function CardList({ tasks }: { tasks: tasksResponse }) {
+function CardList({ tasks }: { tasks: TasksResponseType }) {
     return (
         <>
             {tasks.tasks.map((item) => (
