@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Card from '../card';
 import task from '@/interfaces/task.type';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
@@ -8,16 +8,13 @@ import {
     ADD_MORE_TASKS_LIMIT,
 } from '../constants';
 import styles from '../card/card.module.scss';
+import { useEditMode } from '@/hooks/useEditMode';
+import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import useUserData from '@/hooks/useUserData';
 
 type TaksListProps = {
     tasks: task[];
-    isEditable?: boolean;
     hasLimit?: boolean;
-    updateCardContent?: (
-        id: string,
-        cardDetails: task,
-        userStatusFlag?: boolean
-    ) => void;
 };
 
 type FilterTasksProps = {
@@ -31,12 +28,7 @@ function getFilteredTasks({ hasLimit, tasksLimit, tasks }: FilterTasksProps) {
     return tasks.slice(0, tasksLimit);
 }
 
-export default function TaskList({
-    tasks,
-    updateCardContent,
-    isEditable = false,
-    hasLimit = false,
-}: TaksListProps) {
+export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
     const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
     const beautifiedTasks = beautifyTaskStatus(tasks);
     const [tasksLimit, setTasksLimit] = useState<number>(initialTasksLimit);
@@ -45,6 +37,13 @@ export default function TaskList({
         hasLimit,
         tasksLimit,
     });
+
+    const { isEditMode } = useEditMode();
+    const { isUserAuthorized } = useUserData();
+    const isEditable = isUserAuthorized && isEditMode;
+
+    const [updateCardContent] = useUpdateTaskMutation();
+
     function onSeeMoreTasksHandler() {
         setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
     }
@@ -54,7 +53,7 @@ export default function TaskList({
         userStatusFlag?: boolean
     ) {
         if (!isEditable || !updateCardContent) return;
-        updateCardContent(id, cardDetails, userStatusFlag);
+        updateCardContent({ id, task: cardDetails, userStatusFlag });
     }
 
     return (
