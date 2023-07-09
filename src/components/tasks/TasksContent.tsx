@@ -19,7 +19,7 @@ export const TasksContent = () => {
         setActiveTab(tab);
     };
 
-    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+    const tasksGroupedByStatus = tasks.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
