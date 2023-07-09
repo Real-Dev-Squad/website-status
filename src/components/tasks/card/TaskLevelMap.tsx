@@ -1,7 +1,7 @@
 import classNames from '@/components/tasks/card/card.module.scss';
-import useUserData from '@/hooks/useUserData';
+import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import taskItem from '@/interfaces/taskItem.type';
-
+import { useContext } from 'react';
 type Props = {
     taskTagLevel?: taskItem[];
     itemId: string;
@@ -14,7 +14,8 @@ export const TaskLevelMap = ({
     itemId,
     deleteTaskTagLevel,
 }: Props) => {
-    const { isUserAuthorized } = useUserData();
+    const isUserAuthorized = useContext(isUserAuthorizedContext);
+
     return (
         <div className={classNames.taskTagLevelContainer}>
             {taskTagLevel?.map((item) => (

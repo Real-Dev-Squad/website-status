@@ -20,17 +20,15 @@ const ProgressLayout: FC = () => {
     return (
         <>
             <NavBar />
-            <div className={styles.progressUpdateContainer}>
-                <ProgressHeader
-                    totalMissedUpdates={totalMissedUpdates}
-                    updateType="Progress"
-                />
-                <section className={styles.container}>
-                    <h1 className={styles.formHeading}>Task Updates</h1>
-                    <h2 className={styles.date}>On {getCurrentDate()}</h2>
-                    <ProgressForm questions={questions} />
-                </section>
-            </div>
+            <ProgressHeader
+                totalMissedUpdates={totalMissedUpdates}
+                updateType="Progress"
+            />
+            <section className={styles.container}>
+                <h1 className={styles.formHeading}>Task Updates</h1>
+                <h2 className={styles.date}>On {getCurrentDate()}</h2>
+                <ProgressForm questions={questions} />
+            </section>
         </>
     );
 };

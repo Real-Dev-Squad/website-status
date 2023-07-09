@@ -10,12 +10,7 @@ $diff-margin: $base-unit * 15;
 $similar-margin: $base-unit * 8;
 $section-padding-top-bottom: $base-unit * 30;
 $section-padding-left-right: $base-unit * 25;
-$theme-inputFieldBorder: #d1d5db;
-$theme-focusHighlight: #1c64f2;
 
-.progressUpdateContainer {
-    padding: 2rem;
-}
 .mark {
     color: $color-red;
     text-decoration: underline;
@@ -28,11 +23,13 @@ $theme-focusHighlight: #1c64f2;
 
 .formHeading {
     color: $color-blue;
-    font-size: $base-unit * 8;
+    margin: $diff-margin auto;
+    font-size: $base-unit * 10;
 }
 
 .date {
     opacity: 50%;
+    margin: $diff-margin auto;
 }
 
 .inputComponent {
@@ -40,26 +37,17 @@ $theme-focusHighlight: #1c64f2;
 }
 
 .label {
-    font-size: $base-font-size * 4.2;
+    font-size: $base-font-size * 5;
     display: block;
-    margin-bottom: $similar-margin * 1/2;
-    color: var(--toastify-spinner-color);
+    margin-bottom: $similar-margin;
 }
 
 .input {
-    border: 2px solid $theme-inputFieldBorder;
     display: block;
     resize: none;
     padding: $base-unit * 2;
     border-radius: $base-unit * 2;
     width: 100%;
-    font-size: 1rem;
-    color: var(--toastify-spinner-color);
-}
-
-.input:focus {
-    border: 1px solid $theme-focusHighlight;
-    outline: none;
 }
 
 .buttonEnabled {
@@ -71,16 +59,10 @@ $theme-focusHighlight: #1c64f2;
     font-size: $base-font-size * 4;
 }
 
-.buttonDisabled,
-.buttonEnabled {
-    border: none;
-    width: 14rem;
-    color: var(--toastify-spinner-color);
-}
-
 .buttonDisabled {
     cursor: not-allowed;
     background-color: $color-disabled;
+    color: $color-black;
     padding: $base-unit * 4 $base-unit * 8;
     border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;

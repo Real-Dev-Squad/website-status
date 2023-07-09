@@ -1,9 +1,20 @@
 import { useEffect, useState } from 'react';
-import { DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
-import useUserData from './useUserData';
-import { Userdata, userDetails } from '@/interfaces/useAuthenticatedTypes';
+import { USER_SELF, DEFAULT_AVATAR, SIGNUP_LINK } from '@/constants/url';
+import fetch from '@/helperFunctions/fetch';
 
-const useAuthenticated = (): userDetails => {
+type Userdata = {
+    userName: string;
+    firstName: string;
+    profilePicture: string;
+};
+
+type HooksReturnType = {
+    userData: Userdata;
+    isLoggedIn: boolean;
+    isLoading: boolean;
+};
+
+const useAuthenticated = (): HooksReturnType => {
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<Userdata>({
         userName: '',
@@ -11,28 +22,30 @@ const useAuthenticated = (): userDetails => {
         profilePicture: DEFAULT_AVATAR,
     });
 
-    const { data, isSuccess } = useUserData();
-
     const [isLoading, setIsLoading] = useState(false);
-    const setUserDetails = () => {
-        setIsLoading(true);
-
-        if (data?.incompleteUserDetails) {
-            window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
-        }
-        setUserData({
-            userName: data?.username ?? '',
-            firstName: data?.first_name ?? '',
-            profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
-        });
-
-        if (isSuccess) setIsLoggedIn(true);
-
-        setIsLoading(false);
-    };
 
     useEffect(() => {
-        setUserDetails();
+        const fetchData = async () => {
+            setIsLoading(true);
+            try {
+                const { requestPromise } = fetch({ url: USER_SELF });
+                const { data } = await requestPromise;
+                if (data.incompleteUserDetails) {
+                    window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
+                }
+                setUserData({
+                    userName: data.username,
+                    firstName: data.first_name,
+                    profilePicture: data?.picture?.url,
+                });
+                setIsLoggedIn(true);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        fetchData();
     }, []);
     return { userData, isLoggedIn, isLoading };
 };
