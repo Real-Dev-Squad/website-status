@@ -214,4 +214,37 @@ describe('useUpdateTaskMutation()', () => {
             message: 'Task not found',
         });
     });
+
+    test('updates a task with the userStatusFlag set to true', async () => {
+        const taskId = '1eJhUW19D556AhPEpdPr';
+        const { result, waitForNextUpdate } = renderHook(
+            () => useUpdateTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [updateTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            const task = {
+                task: updatedTaskData,
+                id: taskId,
+                userStatusFlag: true,
+            };
+            updateTask(task);
+        });
+
+        const loadingResponse = result.current[1];
+        expect(loadingResponse.isLoading).toBe(true);
+
+        await waitForNextUpdate({ timeout: 7000 });
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.data).toBeNull();
+        expect(nextResponse.isSuccess).toBe(true);
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.status).toBe(QueryStatus.fulfilled);
+    }, 7000);
 });
