@@ -215,7 +215,7 @@ describe('useUpdateTaskMutation()', () => {
         });
     });
 
-    test('updates a task with the userStatusFlag set to true', async () => {
+    test('updates a task with the isDevEnabled set to true', async () => {
         const taskId = '1eJhUW19D556AhPEpdPr';
         const { result, waitForNextUpdate } = renderHook(
             () => useUpdateTaskMutation(),
@@ -231,7 +231,7 @@ describe('useUpdateTaskMutation()', () => {
             const task = {
                 task: updatedTaskData,
                 id: taskId,
-                userStatusFlag: true,
+                isDevEnabled: true,
             };
             updateTask(task);
         });

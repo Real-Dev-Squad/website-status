@@ -16,7 +16,7 @@ type TaksListProps = {
     updateCardContent?: (
         id: string,
         cardDetails: task,
-        userStatusFlag?: boolean
+        isDevEnabled?: boolean
     ) => void;
 };
 
@@ -51,10 +51,10 @@ export default function TaskList({
     async function onContentChangeHandler(
         id: string,
         cardDetails: any,
-        userStatusFlag?: boolean
+        isDevEnabled?: boolean
     ) {
         if (!isEditable || !updateCardContent) return;
-        updateCardContent(id, cardDetails, userStatusFlag);
+        updateCardContent(id, cardDetails, isDevEnabled);
     }
 
     return (

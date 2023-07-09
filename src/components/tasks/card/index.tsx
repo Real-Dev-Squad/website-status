@@ -41,7 +41,7 @@ type Props = {
     onContentChange?: (
         changeId: string,
         changeObject: object,
-        userStatusFlag?: boolean
+        isDevEnabled?: boolean
     ) => void;
 };
 
@@ -91,9 +91,9 @@ const Card: FC<Props> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
-    let isUserStatusEnabled = false;
-    if (query.userStatusFlag) {
-        isUserStatusEnabled = query.userStatusFlag === 'true';
+    let isDevEnabled = false;
+    if (query.dev) {
+        isDevEnabled = query.dev === 'true';
     }
 
     useEffect(() => {
@@ -158,7 +158,7 @@ const Card: FC<Props> = ({
                 {
                     [changedProperty]: toChange[changedProperty],
                 },
-                isUserStatusEnabled
+                isDevEnabled
             );
         }
     }
@@ -276,7 +276,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isUserStatusEnabled && { userStatusFlag: true }),
+            ...(isDevEnabled && { isDevEnabled: true }),
         });
         response
             .unwrap()
@@ -304,7 +304,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isUserStatusEnabled && { userStatusFlag: true }),
+            ...(isDevEnabled && { isDevEnabled: true }),
         });
 
         response

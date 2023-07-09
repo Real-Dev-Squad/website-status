@@ -7,7 +7,7 @@ type TasksCreateMutationResponse = { message: string; task: task };
 type TaskRequestPayload = {
     task: updateTaskDetails;
     id: string;
-    userStatusFlag?: boolean;
+    isDevEnabled?: boolean;
 };
 
 export const tasksApi = api.injectEndpoints({
@@ -43,9 +43,9 @@ export const tasksApi = api.injectEndpoints({
             }),
         }),
         updateTask: builder.mutation<void, TaskRequestPayload>({
-            // userStatusFlag is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
-            query: ({ task, id, userStatusFlag }: TaskRequestPayload) => ({
-                url: userStatusFlag
+            // isDevEnabled is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
+            query: ({ task, id, isDevEnabled }: TaskRequestPayload) => ({
+                url: isDevEnabled
                     ? `tasks/${id}?userStatusFlag=true`
                     : `tasks/${id}`,
                 method: 'PATCH',

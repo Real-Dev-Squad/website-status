@@ -8,11 +8,11 @@ const { SUCCESS, ERROR } = ToastTypes;
 async function updateCardContent(
     id: string,
     cardDetails: task,
-    userStatusFlag?: boolean
+    isDevEnabled?: boolean
 ) {
     try {
         const { requestPromise } = fetch({
-            url: userStatusFlag
+            url: isDevEnabled
                 ? `${TASKS_URL}/${id}?userStatusFlag=true`
                 : `${TASKS_URL}/${id}`,
             method: 'patch',
