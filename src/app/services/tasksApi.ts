@@ -23,11 +23,11 @@ export const tasksApi = api.injectEndpoints({
                 let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
 
                 if (nextPage) {
-                    url = `${nextPage}`;
+                    url = nextPage;
                 }
 
                 if (prevPage) {
-                    url = `${prevPage}`;
+                    url = prevPage;
                 }
 
                 return url;

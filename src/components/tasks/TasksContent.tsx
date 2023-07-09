@@ -41,11 +41,13 @@ export const TasksContent = () => {
     const fetchNextTasks = () => {
         if (tasks.next) {
             setNextPage(tasks.next);
+            setPrevPage('');
         }
     };
 
     const fetchPrevTasks = () => {
         if (tasks.prev) {
+            setNextPage('');
             setPrevPage(tasks.prev);
         }
     };
