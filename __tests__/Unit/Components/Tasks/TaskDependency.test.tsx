@@ -70,13 +70,14 @@ describe('TaskDependency', () => {
     });
 
     test('renders dependency list', () => {
+        const mockNavigateToTask = jest.fn();
         render(
             <DependencyList
                 loading={false}
                 fetching={false}
                 error={false}
                 dependencyData={dependencyDataMock}
-                navigateToTask={() => Object}
+                navigateToTask={mockNavigateToTask}
             />
         );
 
@@ -85,7 +86,6 @@ describe('TaskDependency', () => {
 
         dependencyDataMock.forEach((dependency) => {
             const dependencyTitle = screen.getByText(dependency?.value.title);
-            console.log('----------d-----', dependencyTitle);
             expect(dependencyTitle).toBeInTheDocument();
         });
     });
@@ -137,5 +137,39 @@ describe('TaskDependency', () => {
         expect(handleChange.mock.calls[0][0].target.value).toBe(
             'task1,task2,task3'
         );
+    });
+    it('should calculate isFulfilled, isRejected, and errorMessage correctly', () => {
+        const mockNavigateToTask = jest.fn();
+        const dependencyDataMock: dependency = [
+            {
+                status: 'fulfilled',
+                value: {
+                    title: 'Dependency 1',
+                    id: 'dependency-1',
+                },
+            },
+            {
+                status: 'rejected',
+                reason: { id: 'dependency-2-error' },
+            },
+        ];
+
+        render(
+            <DependencyList
+                loading={false}
+                fetching={false}
+                error={false}
+                dependencyData={dependencyDataMock}
+                navigateToTask={mockNavigateToTask}
+            />
+        );
+
+        const fulfilledDependency = screen.getByText('Dependency 1');
+        expect(fulfilledDependency).toBeInTheDocument();
+
+        const rejectedDependency = screen.getByText(
+            /Unable to fetch this task with ID dependency-2-error/
+        );
+        expect(rejectedDependency).toBeInTheDocument();
     });
 });
