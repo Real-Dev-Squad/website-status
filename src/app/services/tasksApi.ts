@@ -10,7 +10,7 @@ export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<
             TasksQueryResponse['tasks'],
-            { dev: boolean; status: string }
+            { dev: boolean; status?: string }
         >({
             query: ({ dev, status }) =>
                 dev ? `/tasks?status=${status}&dev=true` : '/tasks',

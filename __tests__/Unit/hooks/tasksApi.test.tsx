@@ -37,7 +37,6 @@ describe('useGetAllTasksQuery()', () => {
             () =>
                 useGetAllTasksQuery({
                     dev: dev as boolean,
-                    status: 'all',
                 }),
             {
                 wrapper: Wrapper,
@@ -63,7 +62,6 @@ describe('useGetAllTasksQuery()', () => {
             () =>
                 useGetAllTasksQuery({
                     dev: dev as boolean,
-                    status: 'active',
                 }),
             {
                 wrapper: Wrapper,
