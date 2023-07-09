@@ -53,7 +53,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
         userStatusFlag?: boolean
     ) {
         if (!isEditable || !updateCardContent) return;
-        updateCardContent({ id, task: cardDetails });
+        updateCardContent({ id, task: cardDetails, userStatusFlag });
     }
 
     return (
