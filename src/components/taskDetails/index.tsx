@@ -15,7 +15,6 @@ import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import {
     useGetTaskDetailsQuery,
-    useGetTasksDependencyDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
@@ -65,12 +64,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         ? data?.taskData?.dependsOn || []
         : [];
 
-    const {
-        data: dependencyData,
-        isLoading: loading,
-        isFetching: fetching,
-        isError: error,
-    } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
     const { SUCCESS, ERROR } = ToastTypes;
 
     const taskDetailsData = data?.taskData;
@@ -141,9 +134,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const navigateToTask = (taskId: string) => {
-        router.push(`/tasks/${taskId}`);
-    };
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
@@ -234,11 +224,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 hasImg={false}
                             >
                                 <TaskDependency
-                                    loading={loading}
-                                    fetching={fetching}
-                                    error={error}
-                                    dependencyData={dependencyData}
-                                    navigateToTask={navigateToTask}
+                                    taskDependencyIds={taskDependencyIds}
                                     isEditing={isEditing}
                                     updatedDependencies={updatedDependencies}
                                     handleChange={handleChange}

@@ -1,4 +1,3 @@
-import { dependency } from '@/app/services/taskDetailsApi';
 import { ChangeEvent, ChangeEventHandler } from 'react';
 export type taskDetailsDataType = {
     message?: string;
@@ -31,11 +30,7 @@ export type TextAreaProps = {
 };
 
 export type Props = {
-    loading: boolean;
-    fetching: boolean;
-    error: boolean;
-    dependencyData: dependency | undefined;
-    navigateToTask: (taskId: string) => void;
+    taskDependencyIds: string[];
     isEditing?: boolean;
     updatedDependencies: string[];
     handleChange: (
@@ -43,9 +38,5 @@ export type Props = {
     ) => void;
 };
 export type Props1 = {
-    loading: boolean;
-    fetching: boolean;
-    error: boolean;
-    dependencyData: dependency | undefined;
-    navigateToTask: (taskId: string) => void;
+    taskDependencyIds: string[];
 };

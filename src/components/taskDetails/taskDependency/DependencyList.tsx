@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { Props1 } from '@/interfaces/taskDetails.type';
 import classNames from '../task-details.module.scss';
+import { useRouter } from 'next/router';
+import { useGetTasksDependencyDetailsQuery } from '@/app/services/taskDetailsApi';
+// import { dependency } from '@/app/services/taskDetailsApi';
 
 type DependencyItem =
     | PromiseFulfilledResult<{
@@ -10,13 +13,18 @@ type DependencyItem =
       }>
     | PromiseRejectedResult;
 
-const DependencyList: React.FC<Props1> = ({
-    dependencyData,
-    navigateToTask,
-    loading,
-    fetching,
-    error,
-}) => {
+const DependencyList: React.FC<Props1> = ({ taskDependencyIds }) => {
+    const router = useRouter();
+    const navigateToTask = (taskId: string) => {
+        router.push(`/tasks/${taskId}`);
+    };
+    const {
+        data: dependencyData,
+        isLoading: loading,
+        isFetching: fetching,
+        isError: error,
+    } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
+
     if (loading || fetching) {
         return <p>Loading...</p>;
     }

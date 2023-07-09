@@ -1,16 +1,11 @@
 import React, { ChangeEvent, FC, useState } from 'react';
-// import classNames from './task-details.module.scss';
 // import { dependency } from '@/app/services/taskDetailsApi';
 import { Textarea } from '..';
 import { Props } from '@/interfaces/taskDetails.type';
 import DependencyList from './DependencyList';
 
 const TaskDependency: FC<Props> = ({
-    loading,
-    fetching,
-    dependencyData,
-    error,
-    navigateToTask,
+    taskDependencyIds,
     isEditing,
     updatedDependencies,
     handleChange,
@@ -25,6 +20,7 @@ const TaskDependency: FC<Props> = ({
         const updatedDependencies = value
             .split(',')
             .map((taskId) => taskId.trim());
+        // .filter((taskId) => taskId !== '');
         setEditedDependencies(updatedDependencies);
         handleChange(event);
     };
@@ -38,13 +34,7 @@ const TaskDependency: FC<Props> = ({
                     onChange={handleDependenciesChange}
                 />
             )}
-            <DependencyList
-                dependencyData={dependencyData}
-                navigateToTask={navigateToTask}
-                loading={loading}
-                error={error}
-                fetching={fetching}
-            />
+            <DependencyList taskDependencyIds={taskDependencyIds} />
         </>
     );
 };
