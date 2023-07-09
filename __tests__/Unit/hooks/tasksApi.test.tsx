@@ -9,6 +9,7 @@ import {
     useAddTaskMutation,
     useGetAllTasksQuery,
     useUpdateTaskMutation,
+    useAssignTaskMutation,
 } from '@/app/services/tasksApi';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 import {
@@ -17,6 +18,8 @@ import {
     failedGetTasks,
     failedGetTasksResponse,
     failedUpdateTaskHandler,
+    failedToAssignTaskResponse,
+    failedToAssignTaskHandler,
 } from '../../../__mocks__/handlers/tasks.handler';
 
 const server = setupServer(...handlers);
@@ -213,5 +216,126 @@ describe('useUpdateTaskMutation()', () => {
             error: 'Not Found',
             message: 'Task not found',
         });
+    });
+});
+
+describe('useAssignTaskMutation()', () => {
+    const payload = { taskId: 'uAROzkH0JJ9ptFoZROi8', assignee: 'mahima' };
+
+    test('initial Task', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useAssignTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [assignTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            assignTask(payload);
+        });
+
+        const loadingResponse = result.current[1];
+        expect(loadingResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate({ timeout: 7000 }));
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.data).toBeNull();
+        expect(nextResponse.isSuccess).toBe(true);
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.status).toBe(QueryStatus.fulfilled);
+    }, 7000);
+
+    test('should fail to assign task with error when invalid taskId is passed', async () => {
+        server.use(failedToAssignTaskHandler.InvalidTaskId);
+        const { result, waitForNextUpdate } = renderHook(
+            () => useAssignTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [assignTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            assignTask({ ...payload, taskId: 'incorrectId' });
+        });
+
+        const loadingResponse = result.current[1];
+        expect(loadingResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 404);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedToAssignTaskResponse.InvalidTaskId
+        );
+    });
+
+    test('should fail to assign task with error when invalid assignee is passed', async () => {
+        server.use(failedToAssignTaskHandler.InvalidUser);
+        const { result, waitForNextUpdate } = renderHook(
+            () => useAssignTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [assignTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            assignTask({ ...payload, assignee: 'incorrectAssignee' });
+        });
+
+        const loadingResponse = result.current[1];
+        expect(loadingResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 404);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedToAssignTaskResponse.InvalidUser
+        );
+    });
+
+    test('should fail to assign task with error when OOO assignee is passed', async () => {
+        server.use(failedToAssignTaskHandler.UserNotIdle);
+        const { result, waitForNextUpdate } = renderHook(
+            () => useAssignTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [assignTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            assignTask({ ...payload, assignee: 'mahima' });
+        });
+
+        const loadingResponse = result.current[1];
+        expect(loadingResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 404);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedToAssignTaskResponse.UserNotIdle
+        );
     });
 });

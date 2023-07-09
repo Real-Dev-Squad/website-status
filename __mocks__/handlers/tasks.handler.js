@@ -677,4 +677,39 @@ export const failedUpdateTaskHandler = rest.patch(
 	}
 );
 
+export const failedToAssignTaskResponse = {
+	UserNotIdle: {
+		message: 'Task cannot be assigned to users with active or OOO status'
+	},
+	InvalidTaskId: {
+		message: 'Task not found'
+	},
+	InvalidUser: {
+		statusCode: 404,
+		error: 'Not Found',
+		message: 'User doesn\'t exist'
+	},
+};
+
+export const failedToAssignTaskHandler = {
+	InvalidTaskId: rest.patch(
+		`${URL}/tasks/:taskId`,
+		(_, res, ctx) => {
+			return res(ctx.status(404), ctx.json(failedToAssignTaskResponse.InvalidTaskId));
+		}
+	),
+	InvalidUser: rest.patch(
+		`${URL}/tasks/:taskId`,
+		(_, res, ctx) => {
+			return res(ctx.status(404), ctx.json(failedToAssignTaskResponse.InvalidUser));
+		}
+	),
+	UserNotIdle: rest.patch(
+		`${URL}/tasks/:taskId`,
+		(_, res, ctx) => {
+			return res(ctx.status(404), ctx.json(failedToAssignTaskResponse.UserNotIdle));
+		}
+	),
+};
+
 export default taskHandlers;
