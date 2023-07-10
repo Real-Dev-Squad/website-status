@@ -34,6 +34,7 @@ import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
+import Suggestions from '../SuggestionBox/Suggestions';
 
 type Props = {
     content: task;
@@ -386,42 +387,42 @@ const Card: FC<Props> = ({
         setShowSuggestion(false);
     };
 
-    const fetchUsers = async (e: string) => {
-        if (!e) return;
-        setIsLoadingSuggestions(true);
+    // const fetchUsers = async (e: string) => {
+    //     if (!e) return;
+    //     setIsLoadingSuggestions(true);
 
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
-        try {
-            const { requestPromise } = fetch({ url });
-            const users = await requestPromise;
-            const usersData = users.data.users;
-            const suggestedUsers: GithubInfo[] = [];
-            usersData.map((data: userDataType) => {
-                suggestedUsers.push({
-                    github_id: data.username,
-                    profileImageUrl: data?.picture?.url
-                        ? data.picture.url
-                        : placeholderImageURL,
-                });
-            });
+    //     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
+    //     try {
+    //         const { requestPromise } = fetch({ url });
+    //         const users = await requestPromise;
+    //         const usersData = users.data.users;
+    //         const suggestedUsers: GithubInfo[] = [];
+    //         usersData.map((data: userDataType) => {
+    //             suggestedUsers.push({
+    //                 github_id: data.username,
+    //                 profileImageUrl: data?.picture?.url
+    //                     ? data.picture.url
+    //                     : placeholderImageURL,
+    //             });
+    //         });
 
-            setSuggestions(suggestedUsers);
-            setIsLoadingSuggestions(false);
-        } catch (error: any) {
-            setIsLoadingSuggestions(false);
-            toast(ERROR, error.message);
-        }
-    };
+    //         setSuggestions(suggestedUsers);
+    //         setIsLoadingSuggestions(false);
+    //     } catch (error: any) {
+    //         setIsLoadingSuggestions(false);
+    //         toast(ERROR, error.message);
+    //     }
+    // };
 
-    const debounce = (fn: (e: string) => void, delay: number) => {
-        return function (e: string) {
-            clearTimeout(timer);
-            setSuggestions([]);
-            timer = setTimeout(() => {
-                fn(e);
-            }, delay);
-        };
-    };
+    // const debounce = (fn: (e: string) => void, delay: number) => {
+    //     return function (e: string) {
+    //         clearTimeout(timer);
+    //         setSuggestions([]);
+    //         timer = setTimeout(() => {
+    //             fn(e);
+    //         }, delay);
+    //     };
+    // };
 
     // show redesign only on dev
     if (isNewCardDesignEnabled)
@@ -509,36 +510,14 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <div className={classNames.suggestionDiv}>
-                                    <input
-                                        ref={inputRef}
-                                        value={assigneeName}
-                                        className={classNames.cardStrongFont}
-                                        onKeyDown={(e) => {
-                                            handleChange(e, 'assignee');
-                                        }}
-                                        onChange={(e) => {
-                                            handleAssignment(e);
-                                            debounce(
-                                                fetchUsers,
-                                                400
-                                            )(e.target.value);
-                                        }}
-                                        role="button"
-                                        tabIndex={0}
-                                    />
-
-                                    {isLoadingSuggestions ? (
-                                        <Loader />
-                                    ) : (
-                                        showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onSelectAssignee={handleClick}
-                                            />
-                                        )
-                                    )}
-                                </div>
+                                <Suggestions
+                                    assigneeName={assigneeName}
+                                    showSuggestion={showSuggestion}
+                                    handleAssignment={handleAssignment}
+                                    handleClick={handleClick}
+                                    handleChange={handleChange}
+                                    ref={inputRef}
+                                />
                             )
                         ) : (
                             <span className={classNames.cardStrongFont}>
@@ -673,40 +652,14 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <div className={classNames.suggestionDiv}>
-                                        <input
-                                            ref={inputRef}
-                                            value={assigneeName}
-                                            className={
-                                                classNames.cardStrongFont
-                                            }
-                                            onKeyDown={(e) => {
-                                                handleChange(e, 'assignee');
-                                            }}
-                                            onChange={(e) => {
-                                                handleAssignment(e);
-                                                debounce(
-                                                    fetchUsers,
-                                                    400
-                                                )(e.target.value);
-                                            }}
-                                            role="button"
-                                            tabIndex={0}
-                                        />
-
-                                        {isLoadingSuggestions ? (
-                                            <Loader />
-                                        ) : (
-                                            showSuggestion && (
-                                                <SuggestionBox
-                                                    suggestions={suggestions}
-                                                    onSelectAssignee={
-                                                        handleClick
-                                                    }
-                                                />
-                                            )
-                                        )}
-                                    </div>
+                                    <Suggestions
+                                        assigneeName={assigneeName}
+                                        showSuggestion={showSuggestion}
+                                        handleAssignment={handleAssignment}
+                                        handleClick={handleClick}
+                                        handleChange={handleChange}
+                                        ref={inputRef}
+                                    />
                                 )
                             ) : (
                                 <span className={classNames.cardStrongFont}>
