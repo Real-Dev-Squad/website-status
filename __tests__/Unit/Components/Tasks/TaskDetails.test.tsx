@@ -24,7 +24,9 @@ const details = {
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    server.listen();
+    server.listen({
+        onUnhandledRequest: 'error', // Set onUnhandledRequest to 'error'
+    });
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
