@@ -9,25 +9,21 @@ const HandleProgressText: FC<handleProgressTextProps> = ({
 }) => {
     if (progress) {
         return (
-            <>
-                <div
-                    className={classNames.changeProgressText}
-                    onClick={() => handleSaveProgressUpdate()}
-                >
-                    save Progress
-                </div>
-            </>
+            <div
+                className={classNames.changeProgressText}
+                onClick={() => handleSaveProgressUpdate()}
+            >
+                save Progress
+            </div>
         );
     } else {
         return (
-            <>
-                <div
-                    className={classNames.changeProgressText}
-                    onClick={() => handleProgressUpdate()}
-                >
-                    Progress update
-                </div>
-            </>
+            <div
+                className={classNames.changeProgressText}
+                onClick={() => handleProgressUpdate()}
+            >
+                Progress update
+            </div>
         );
     }
 };
