@@ -30,13 +30,12 @@ export const tasksApi = api.injectEndpoints({
                     url = prevPage;
                 }
 
-                return url;
+                return { url };
             },
             providesTags: ['Tasks'],
 
             transformResponse: (response: TasksResponseType) => {
                 return {
-                    message: response.message,
                     tasks: response.tasks?.sort(
                         (a: task, b: task) => +a.endsOn - +b.endsOn
                     ),

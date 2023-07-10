@@ -34,7 +34,7 @@ type task = {
 };
 
 export type TasksResponseType = {
-    message: string;
+    message?: string;
     tasks: task[];
     next?: string;
     prev?: string;

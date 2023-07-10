@@ -31,17 +31,18 @@ export const TasksContent = () => {
         data: tasks = { tasks: [], next: '', prev: '' },
         isError,
         isLoading,
+        isFetching,
     } = useGetAllTasksQuery({
         dev: dev as boolean,
         status: activeTab,
-        nextPage: nextPage,
-        prevPage: prevPage,
+        nextPage,
+        prevPage,
     });
 
     const fetchNextTasks = () => {
         if (tasks.next) {
-            setNextPage(tasks.next);
             setPrevPage('');
+            setNextPage(tasks.next);
         }
     };
 
@@ -72,31 +73,53 @@ export const TasksContent = () => {
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    const renderTaskList = () => {
+        if (isFetching) {
+            return (
+                <div className={classNames.loader}>
+                    <div className={classNames.wrapper}>
+                        <div className={classNames.line}></div>
+                        <div className={classNames.line}></div>
+                        <div className={classNames.line}></div>
+                        <div className={classNames.line}></div>
+                        <div className={classNames.line}></div>
+                        <div className={classNames.line}></div>
+                    </div>
+                </div>
+            );
+        }
+
+        if (dev === 'true') {
+            if (tasks.tasks && tasks.tasks.length) {
+                return (
+                    <TaskList
+                        tasks={tasks.tasks}
+                        isEditable={isEditable}
+                        updateCardContent={updateCardContent}
+                    />
+                );
+            } else {
+                return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+            }
+        }
+
+        if (tasksGroupedByStatus[activeTab]) {
+            return (
+                <TaskList
+                    tasks={tasksGroupedByStatus[activeTab]}
+                    isEditable={isEditable}
+                    updateCardContent={updateCardContent}
+                />
+            );
+        }
+
+        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    };
 
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
-            <div>
-                {dev === 'true' ? (
-                    tasks.tasks && tasks.tasks.length ? (
-                        <TaskList
-                            tasks={tasks.tasks}
-                            isEditable={isEditable}
-                            updateCardContent={updateCardContent}
-                        />
-                    ) : (
-                        <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                    )
-                ) : tasksGroupedByStatus[activeTab] ? (
-                    <TaskList
-                        tasks={tasksGroupedByStatus[activeTab]}
-                        isEditable={isEditable}
-                        updateCardContent={updateCardContent}
-                    />
-                ) : (
-                    <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                )}
-            </div>
+            <div>{renderTaskList()}</div>
             {dev === 'true' ? (
                 <div className={classNames.paginationButtonContainer}>
                     <button
