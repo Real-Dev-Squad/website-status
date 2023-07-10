@@ -36,13 +36,14 @@ export function Button(props: ButtonProps) {
     );
 }
 export function Textarea(props: TextAreaProps) {
-    const { name, value, onChange } = props;
+    const { name, value, onChange, testId } = props;
     return (
         <textarea
             className={classNames['textarea']}
             name={name}
             value={value}
             onChange={onChange}
+            data-testid={testId}
         />
     );
 }
@@ -142,6 +143,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 name="title"
                                 value={taskDetails?.title}
                                 onChange={handleChange}
+                                testId="title-textarea"
                             />
                         ) : (
                             <span
@@ -181,6 +183,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         name="purpose"
                                         value={taskDetails?.purpose}
                                         onChange={handleChange}
+                                        testId="purpose-textarea"
                                     />
                                 ) : (
                                     <p>

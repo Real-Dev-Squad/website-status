@@ -5,6 +5,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -23,7 +24,7 @@ const details = {
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'bypass' });
+    server.listen();
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
@@ -87,7 +88,6 @@ describe('TaskDetails Page', () => {
             expect(getByText('No description available')).toBeInTheDocument();
         });
     });
-    // --------------------------------------------------
     it('Renders Task Type', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -128,7 +128,6 @@ describe('TaskDetails Page', () => {
             expect(getByText('https://www.sampleUrl.com')).toBeInTheDocument();
         });
     });
-    // -----------------------------------------------------------------
     it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -193,6 +192,32 @@ describe('Buttons with functionalities', () => {
         fireEvent.click(buttonElement);
         expect(mockClickHandler).toHaveBeenCalledTimes(1);
         expect(mockClickHandler).toHaveBeenCalledWith(true);
+    });
+});
+
+describe('Textarea with functionalities', () => {
+    const mockChangeHandler = jest.fn();
+    const textareaProps: TextAreaProps = {
+        name: 'testTextarea',
+        value: 'Initial value',
+        onChange: mockChangeHandler,
+        testId: 'title-textarea',
+    };
+
+    beforeEach(() => {
+        render(<Textarea {...textareaProps} />);
+    });
+
+    test('renders textarea with correct initial value', () => {
+        const textareaElement = screen.getByTestId('title-textarea');
+        expect(textareaElement).toBeInTheDocument();
+        expect(textareaElement).toHaveValue('Initial value');
+    });
+
+    test('calls onChange handler when textarea value is changed', () => {
+        const textareaElement = screen.getByTestId('title-textarea');
+        fireEvent.change(textareaElement, { target: { value: 'New value' } });
+        expect(mockChangeHandler).toHaveBeenCalledTimes(1);
     });
 });
 
