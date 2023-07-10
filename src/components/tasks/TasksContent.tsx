@@ -1,5 +1,4 @@
 import classNames from '@/styles/tasks.module.scss';
-
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
@@ -10,24 +9,17 @@ import {
 } from '../../constants/messages';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import updateCardContent from '@/helperFunctions/updateCardContent';
-import { useEditMode } from '@/hooks/useEditMode';
-import useUserData from '@/hooks/useUserData';
 
 export const TasksContent = () => {
     const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
-    const { isEditMode } = useEditMode();
 
-    const { data: userData, isUserAuthorized } = useUserData();
-
-    const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
 
     const onSelect = (tab: Tab) => {
         setActiveTab(tab);
     };
 
-    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+    const tasksGroupedByStatus = tasks.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
@@ -48,11 +40,7 @@ export const TasksContent = () => {
             <TabSection onSelect={onSelect} activeTab={activeTab} />
             <div>
                 {tasksGroupedByStatus[activeTab] ? (
-                    <TaskList
-                        tasks={tasksGroupedByStatus[activeTab]}
-                        isEditable={isEditable}
-                        updateCardContent={updateCardContent}
-                    />
+                    <TaskList tasks={tasksGroupedByStatus[activeTab]} />
                 ) : (
                     <p>{NO_TASKS_FOUND_MESSAGE}</p>
                 )}
