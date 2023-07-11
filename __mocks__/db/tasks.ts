@@ -29,5 +29,4 @@ const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
     id: TASK.id + index,
 }));
 
-
 export { tasks, TASK};

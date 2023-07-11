@@ -1,5 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
+import { fireEvent, render } from '@testing-library/react';
 import TaskDependency from '../../../../src/components/taskDetails/taskDependency/TaskDependency';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
