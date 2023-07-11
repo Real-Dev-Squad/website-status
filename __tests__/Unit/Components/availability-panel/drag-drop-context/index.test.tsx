@@ -29,7 +29,7 @@ describe('DrogDropContextWrapper Component', () => {
         );
     });
 
-    test('task should not render after it is assigned but assignee should still render', () => {
+    test('component should render all the tasks & rembers as expected', () => {
         const { queryAllByText, getByText } = render(
             <Provider store={store()}>
                 <DragDropContextWrapper
