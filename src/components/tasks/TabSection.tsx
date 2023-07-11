@@ -9,7 +9,7 @@ export const TabSection = ({
     activeTab: Tab;
 }) => {
     return (
-        <div className={classNames.tabsContainer}>
+        <div className={classNames.tabsContainer} data-testid="tabs">
             <Tabs
                 tabs={TABS as Tab[]}
                 onSelect={onSelect}
