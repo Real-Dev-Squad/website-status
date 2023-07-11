@@ -5,7 +5,7 @@ import tagsHandler from './handlers/tags.handler';
 import levelsHandler from './handlers/levels.handler';
 import usersHandler from './handlers/users.handler';
 import taskTagsHandler from './handlers/taskTags.handler';
-import { taskDetailsHandler } from './handlers/task-details.handler';
+import { taskDetailsHandler, taskDetailsUpdateHandler } from './handlers/task-details.handler';
 import userHandler from './handlers/user.handler';
 import issuesHandler from './handlers/issues.handler';
 import { prsHandler } from './handlers/pull-requests.handler';
@@ -19,6 +19,7 @@ const handlers = [
     ...usersHandler,
     ...taskTagsHandler,
     ...taskDetailsHandler,
+    ...taskDetailsUpdateHandler,
     ...userHandler,
     ...issuesHandler,
     ...prsHandler,

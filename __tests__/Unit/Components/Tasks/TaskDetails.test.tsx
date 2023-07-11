@@ -1,10 +1,4 @@
-import {
-    fireEvent,
-    getByText,
-    render,
-    screen,
-    waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
@@ -16,7 +10,8 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
-import { act } from 'react-dom/test-utils';
+import { ToastContainer } from 'react-toastify';
+
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -26,7 +21,7 @@ const server = setupServer(...handlers);
 
 beforeAll(() => {
     server.listen({
-        onUnhandledRequest: 'error', // Set onUnhandledRequest to 'error'
+        onUnhandledRequest: 'error',
     });
 });
 afterEach(() => server.resetHandlers());
@@ -171,6 +166,89 @@ describe('TaskDetails Page', () => {
             expect(getByText('4/19/2021, 5:30:10 AM')).toBeInTheDocument();
         });
     });
+
+    test('should update taskDetails and editedDetails correctly on input change', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {}
+        );
+
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+        const textareaElement = screen.getByTestId('title-textarea');
+
+        fireEvent.change(textareaElement, {
+            target: { name: 'title', value: 'New Title' },
+        });
+
+        expect(textareaElement).toHaveValue('New Title');
+    });
+    test('should call onCancel and reset state when clicked', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {}
+        );
+
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+
+        await waitFor(() => {
+            const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+            fireEvent.click(cancelButton);
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            expect(editButton).toBeInTheDocument();
+        });
+    });
+
+    test('should call onSave and reset state when clicked', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {}
+        );
+
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+
+        await waitFor(() => {
+            const saveButton = screen.getByRole('button', { name: 'Save' });
+            fireEvent.click(saveButton);
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            expect(editButton).toBeInTheDocument();
+        });
+    });
+
+    test('should update the title and description with the new values', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            {}
+        );
+
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+
+        await waitFor(() => {
+            const saveButton = screen.getByRole('button', { name: 'Save' });
+            fireEvent.click(saveButton);
+            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+        });
+    });
 });
 
 describe('Buttons with functionalities', () => {
@@ -204,49 +282,23 @@ describe('Textarea with functionalities', () => {
         name: 'testTextarea',
         value: 'Initial value',
         onChange: mockChangeHandler,
-        testId: 'title-textarea',
+        testId: 'textarea',
     };
 
-    beforeEach(() => {
+    beforeEach(async () => {
         render(<Textarea {...textareaProps} />);
     });
 
     test('renders textarea with correct initial value', () => {
-        const textareaElement = screen.getByTestId('title-textarea');
+        const textareaElement = screen.getByTestId('textarea');
         expect(textareaElement).toBeInTheDocument();
         expect(textareaElement).toHaveValue('Initial value');
     });
 
     test('calls onChange handler when textarea value is changed', () => {
-        const textareaElement = screen.getByTestId('title-textarea');
+        const textareaElement = screen.getByTestId('textarea');
         fireEvent.change(textareaElement, { target: { value: 'New value' } });
         expect(mockChangeHandler).toHaveBeenCalledTimes(1);
-    });
-
-    test('should update taskDetails and editedDetails correctly on input change', () => {
-        const { container } = renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-
-        // Find the input element
-
-        const textareaElement = screen.getByTestId('title-textarea');
-
-        // Simulate the change event
-
-        act(() => {
-            fireEvent.change(textareaElement, {
-                target: { name: 'title', value: 'New Title' },
-            });
-        });
-
-        // Check if taskDetails and editedDetails are updated correctly
-        expect(textareaElement).toHaveValue('New Title');
-        // Assuming you have access to taskDetails and editedDetails
-        // expect(taskDetails).toEqual({ title: 'New Title' });
-        // expect(editedDetails).toEqual({ title: 'New Title' });
     });
 });
 
