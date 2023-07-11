@@ -30,7 +30,7 @@ const Content = () => {
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! Please contact admin</p>;
-    if (tasks)
+    if (tasks && tasks.tasks?.length)
         return (
             <div>
                 <CardList tasks={tasks} />

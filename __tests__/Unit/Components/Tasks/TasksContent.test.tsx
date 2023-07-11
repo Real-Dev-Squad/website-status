@@ -39,6 +39,7 @@ describe('tasks content', () => {
         });
         fireEvent.click(assignedButton);
         expect(assignedButton).toHaveClass('active');
+        await screen.findByText(NO_TASKS_FOUND_MESSAGE);
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
     });
 });

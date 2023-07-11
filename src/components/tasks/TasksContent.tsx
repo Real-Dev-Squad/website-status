@@ -1,6 +1,5 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
 import { useState } from 'react';
 import {
@@ -45,7 +44,7 @@ export const TasksContent = () => {
         }
     };
 
-    const tasksGroupedByStatus = tasksData.tasks.reduce(
+    const tasksGroupedByStatus = tasksData.tasks?.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
@@ -69,8 +68,6 @@ export const TasksContent = () => {
         if (isFetching) {
             return (
                 <>
-                    <TasksLoader />;
-                    <TasksLoader />;
                     <TasksLoader />;
                 </>
             );
