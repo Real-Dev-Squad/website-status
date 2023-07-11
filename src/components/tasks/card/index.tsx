@@ -152,7 +152,7 @@ const Card: FC<Props> = ({
                     new Date(`${event.target.value}`).getTime() / 1000;
                 toChange[changedProperty] = toTimeStamp;
             }
-            console.log(toChange);
+
             onContentChange(
                 toChange.id,
                 {
@@ -391,8 +391,7 @@ const Card: FC<Props> = ({
 
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
-        if (e.target.value) setShowSuggestion(true);
-        else setShowSuggestion(false);
+        e.target.value ? setShowSuggestion(true) : setShowSuggestion(false);
     };
 
     const handleClick = (userName: string) => {
@@ -524,12 +523,7 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <div
-                                    style={{
-                                        position: 'relative',
-                                        display: 'inline-block',
-                                    }}
-                                >
+                                <div className={classNames.suggestionDiv}>
                                     <input
                                         ref={inputRef}
                                         value={assigneeName}
@@ -548,12 +542,15 @@ const Card: FC<Props> = ({
                                         tabIndex={0}
                                     />
 
-                                    {showSuggestion && (
-                                        <SuggestionBox
-                                            suggestions={suggestions}
-                                            onClickName={handleClick}
-                                            loading={isLoadingSuggestions}
-                                        />
+                                    {isLoadingSuggestions ? (
+                                        <Loader />
+                                    ) : (
+                                        showSuggestion && (
+                                            <SuggestionBox
+                                                suggestions={suggestions}
+                                                onSelectAssignee={handleClick}
+                                            />
+                                        )
                                     )}
                                 </div>
                             )
@@ -690,12 +687,7 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <div
-                                        style={{
-                                            position: 'relative',
-                                            display: 'inline-block',
-                                        }}
-                                    >
+                                    <div className={classNames.suggestionDiv}>
                                         <input
                                             ref={inputRef}
                                             value={assigneeName}
@@ -716,12 +708,17 @@ const Card: FC<Props> = ({
                                             tabIndex={0}
                                         />
 
-                                        {showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onClickName={handleClick}
-                                                loading={isLoadingSuggestions}
-                                            />
+                                        {isLoadingSuggestions ? (
+                                            <Loader />
+                                        ) : (
+                                            showSuggestion && (
+                                                <SuggestionBox
+                                                    suggestions={suggestions}
+                                                    onSelectAssignee={
+                                                        handleClick
+                                                    }
+                                                />
+                                            )
                                         )}
                                     </div>
                                 )
