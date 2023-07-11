@@ -1,38 +1,35 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import TaskDependency from '../../../../src/components/taskDetails/taskDependency/TaskDependency';
+import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
+import { setupServer } from 'msw/node';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 
+const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
+const mockNavigateToTask = jest.fn();
 jest.mock('next/router', () => ({
-    useRouter: jest.fn(),
+    useRouter: () => ({
+        push: mockNavigateToTask,
+    }),
 }));
-jest.mock('@/app/services/taskDetailsApi', () => ({
-    useGetTasksDependencyDetailsQuery: jest.fn(() => ({
-        data: [
-            {
-                status: 'fulfilled',
-                value: { id: '1', title: 'Task 1' },
-            },
-            {
-                status: 'rejected',
-                reason: { id: '2' },
-            },
-        ],
-        isLoading: false,
-        isFetching: false,
-        isError: false,
-    })),
-}));
-describe('TaskDependency', () => {
+describe('DependencyList', () => {
+    const server = setupServer(...taskDetailsHandler);
+    beforeAll(() => server.listen());
+    afterEach(() => server.resetHandlers());
+    afterAll(() => server.close());
     it('should update editedDependencies state and call handleChange when dependencies change', () => {
         const handleChange = jest.fn();
-        const TaskDependencyIds = ['taskId1'];
 
         const { getByRole } = render(
-            <TaskDependency
-                isEditing={true}
-                updatedDependencies={[]}
-                handleChange={handleChange}
-                taskDependencyIds={TaskDependencyIds}
-            />
+            <Provider store={store()}>
+                <TaskDependency
+                    isEditing={true}
+                    updatedDependencies={[]}
+                    handleChange={handleChange}
+                    taskDependencyIds={TaskDependencyIds}
+                />
+            </Provider>
         );
 
         const textarea = getByRole('textbox');
