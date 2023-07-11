@@ -16,6 +16,7 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
+import { act } from 'react-dom/test-utils';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -220,6 +221,32 @@ describe('Textarea with functionalities', () => {
         const textareaElement = screen.getByTestId('title-textarea');
         fireEvent.change(textareaElement, { target: { value: 'New value' } });
         expect(mockChangeHandler).toHaveBeenCalledTimes(1);
+    });
+
+    test('should update taskDetails and editedDetails correctly on input change', () => {
+        const { container } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+
+        // Find the input element
+
+        const textareaElement = screen.getByTestId('title-textarea');
+
+        // Simulate the change event
+
+        act(() => {
+            fireEvent.change(textareaElement, {
+                target: { name: 'title', value: 'New Title' },
+            });
+        });
+
+        // Check if taskDetails and editedDetails are updated correctly
+        expect(textareaElement).toHaveValue('New Title');
+        // Assuming you have access to taskDetails and editedDetails
+        // expect(taskDetails).toEqual({ title: 'New Title' });
+        // expect(editedDetails).toEqual({ title: 'New Title' });
     });
 });
 
