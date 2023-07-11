@@ -28,21 +28,6 @@ const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
     ...TASK,
     id: TASK.id + index,
 }));
-const dependsOn =  [
-    {
-        status: 'fulfilled',
-        value: {
-            title: 'Dependency 1',
-            id: 'dependency-1',
-        },
-    },
-    {
-        status: 'fulfilled',
-        value: {
-            title: 'Dependency 2',
-            id: 'dependency-2',
-        },
-    },
-];
 
-export { tasks, TASK, dependsOn };
+
+export { tasks, TASK};
