@@ -6,6 +6,6 @@ describe('test getLatest Date', function () {
         jest.setSystemTime(1683863962266);
         const currentDate = getCurrentDate();
 
-        expect(currentDate).toBe('Thursday, 11 May 2023');
+        expect(currentDate).toBe('Friday, 12 May 2023');
     });
 });
