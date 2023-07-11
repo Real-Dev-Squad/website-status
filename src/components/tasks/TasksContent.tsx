@@ -1,5 +1,4 @@
 import classNames from '@/styles/tasks.module.scss';
-
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
@@ -10,25 +9,17 @@ import {
 } from '../../constants/messages';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import updateCardContent from '@/helperFunctions/updateCardContent';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useRouter } from 'next/dist/client/router';
-import useUserData from '@/hooks/useUserData';
 
 export const TasksContent = () => {
     const router = useRouter();
     const { dev = false } = router.query;
-    const { isEditMode } = useEditMode();
-
-    const { data: userData, isUserAuthorized } = useUserData();
-
-    const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
     const [nextPage, setNextPage] = useState<string>('');
     const [prevPage, setPrevPage] = useState<string>('');
 
     const {
-        data: tasks = { tasks: [], next: '', prev: '' },
+        data: tasksData = { tasks: [], next: '', prev: '' },
         isError,
         isLoading,
         isFetching,
@@ -40,20 +31,20 @@ export const TasksContent = () => {
     });
 
     const fetchNextTasks = () => {
-        if (tasks.next) {
+        if (tasksData.next) {
             setPrevPage('');
-            setNextPage(tasks.next);
+            setNextPage(tasksData.next);
         }
     };
 
     const fetchPrevTasks = () => {
-        if (tasks.prev) {
+        if (tasksData.prev) {
             setNextPage('');
-            setPrevPage(tasks.prev);
+            setPrevPage(tasksData.prev);
         }
     };
 
-    const tasksGroupedByStatus = updateTasksStatus(tasks.tasks).reduce(
+    const tasksGroupedByStatus = tasksData.tasks.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
@@ -90,27 +81,15 @@ export const TasksContent = () => {
         }
 
         if (dev === 'true') {
-            if (tasks.tasks && tasks.tasks.length) {
-                return (
-                    <TaskList
-                        tasks={tasks.tasks}
-                        isEditable={isEditable}
-                        updateCardContent={updateCardContent}
-                    />
-                );
+            if (tasksData.tasks && tasksData.tasks.length) {
+                return <TaskList tasks={tasksData.tasks} />;
             } else {
                 return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
             }
         }
 
         if (tasksGroupedByStatus[activeTab]) {
-            return (
-                <TaskList
-                    tasks={tasksGroupedByStatus[activeTab]}
-                    isEditable={isEditable}
-                    updateCardContent={updateCardContent}
-                />
-            );
+            return <TaskList tasks={tasksGroupedByStatus[activeTab]} />;
         }
 
         return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
@@ -125,14 +104,14 @@ export const TasksContent = () => {
                     <button
                         className={classNames.paginationButton}
                         onClick={fetchPrevTasks}
-                        disabled={!tasks.prev}
+                        disabled={!tasksData.prev}
                     >
                         Prev
                     </button>
                     <button
                         className={classNames.paginationButton}
                         onClick={fetchNextTasks}
-                        disabled={!tasks.next}
+                        disabled={!tasksData.next}
                     >
                         Next
                     </button>

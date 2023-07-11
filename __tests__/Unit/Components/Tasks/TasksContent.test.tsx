@@ -1,58 +1,44 @@
-import { Provider } from 'react-redux';
-import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { TasksContent } from '@/components/tasks/TasksContent';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import { noTasksFoundHandler } from '../../../../__mocks__/handlers/tasks.handler';
+import { fireEvent, screen } from '@testing-library/react';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { TasksContent } from '@/components/tasks/TasksContent';
+import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' });
+    server.listen();
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe('TasksContent', () => {
-    const loadingText = 'Loading...';
-    const NO_TASKS_FOUND_MESSAGE = 'No Tasks Found';
-
-    it('should render loading state', async () => {
-        const { getByText } = renderWithRouter(
+describe('tasks content', () => {
+    test('renders tabs component', async () => {
+        renderWithRouter(
             <Provider store={store()}>
                 <TasksContent />
             </Provider>
         );
 
-        const loadingElement = getByText(loadingText);
-        expect(loadingElement).toBeInTheDocument();
+        expect(screen.getByText(/loading/i)).toBeInTheDocument();
+        await screen.findByTestId('tabs');
     });
 
-    it('should render tasks list', async () => {
-        const { findByText } = renderWithRouter(
+    test('select tab and set active', async () => {
+        renderWithRouter(
             <Provider store={store()}>
                 <TasksContent />
             </Provider>
         );
-        const tabNameElement = await findByText('MERGED');
-        expect(tabNameElement).toBeInTheDocument();
-        const taskTitleElement = await findByText('test for dashboard');
-        expect(taskTitleElement).toBeInTheDocument();
-        const taskStatusElement = await findByText('ASSIGNED');
-        expect(taskStatusElement).toBeInTheDocument();
-    });
-
-    it('should render "No tasks found" when no tasks are returned', async () => {
-        server.use(noTasksFoundHandler);
-
-        const { findByText } = renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>
-        );
-
-        const noTasksFoundElement = await findByText(NO_TASKS_FOUND_MESSAGE);
-        expect(noTasksFoundElement).toBeInTheDocument();
+        await screen.findByTestId('tabs');
+        const assignedButton = screen.getByRole('button', {
+            name: /assigned/i,
+        });
+        fireEvent.click(assignedButton);
+        expect(assignedButton).toHaveClass('active');
+        expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
     });
 });
