@@ -9,6 +9,7 @@ import {
 } from '../../constants/messages';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
+import { TasksLoader } from './TasksLoader';
 import { useRouter } from 'next/dist/client/router';
 
 export const TasksContent = () => {
@@ -67,16 +68,11 @@ export const TasksContent = () => {
     const renderTaskList = () => {
         if (isFetching) {
             return (
-                <div className={classNames.loader}>
-                    <div className={classNames.wrapper}>
-                        <div className={classNames.line}></div>
-                        <div className={classNames.line}></div>
-                        <div className={classNames.line}></div>
-                        <div className={classNames.line}></div>
-                        <div className={classNames.line}></div>
-                        <div className={classNames.line}></div>
-                    </div>
-                </div>
+                <>
+                    <TasksLoader />;
+                    <TasksLoader />;
+                    <TasksLoader />;
+                </>
             );
         }
 
