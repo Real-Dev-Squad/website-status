@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import classNames from './task-details.module.scss';
@@ -17,7 +16,13 @@ import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
+
+import useUserData from '@/hooks/useUserData';
+import {
+    ButtonProps,
+    TextAreaProps,
+    taskDetailsDataType,
+} from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 import TaskDependency from './taskDependency/TaskDependency';
 
@@ -53,7 +58,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-    const isAuthorized = useContext(isUserAuthorizedContext);
+
+    const { data: userData, isUserAuthorized } = useUserData();
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
@@ -154,7 +160,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             </span>
                         )}
                         {!isEditing ? (
-                            isAuthorized && (
+                            isUserAuthorized && (
                                 <Button
                                     buttonName="Edit"
                                     clickHandler={setIsEditing}
