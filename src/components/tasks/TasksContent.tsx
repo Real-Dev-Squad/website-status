@@ -1,5 +1,4 @@
 import classNames from '@/styles/tasks.module.scss';
-
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
@@ -10,19 +9,11 @@ import {
 } from '../../constants/messages';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import updateCardContent from '@/helperFunctions/updateCardContent';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useRouter } from 'next/dist/client/router';
-import useUserData from '@/hooks/useUserData';
 
 export const TasksContent = () => {
     const router = useRouter();
     const { dev = false } = router.query;
-    const { isEditMode } = useEditMode();
-
-    const { data: userData, isUserAuthorized } = useUserData();
-
-    const isEditable = isUserAuthorized && isEditMode;
     const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
 
     const {
@@ -38,7 +29,7 @@ export const TasksContent = () => {
         setActiveTab(tab);
     };
 
-    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+    const tasksGroupedByStatus = tasks.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
@@ -60,20 +51,12 @@ export const TasksContent = () => {
             <div>
                 {dev === 'true' ? (
                     tasks && tasks.length ? (
-                        <TaskList
-                            tasks={tasks}
-                            isEditable={isEditable}
-                            updateCardContent={updateCardContent}
-                        />
+                        <TaskList tasks={tasks} />
                     ) : (
                         <p>{NO_TASKS_FOUND_MESSAGE}</p>
                     )
                 ) : tasksGroupedByStatus[activeTab] ? (
-                    <TaskList
-                        tasks={tasksGroupedByStatus[activeTab]}
-                        isEditable={isEditable}
-                        updateCardContent={updateCardContent}
-                    />
+                    <TaskList tasks={tasksGroupedByStatus[activeTab]} />
                 ) : (
                     <p>{NO_TASKS_FOUND_MESSAGE}</p>
                 )}
