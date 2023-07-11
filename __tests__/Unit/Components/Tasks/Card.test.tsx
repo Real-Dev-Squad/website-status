@@ -1,5 +1,6 @@
-import { render, fireEvent } from '@testing-library/react';
-import { act } from '@testing-library/react-hooks';
+import { fireEvent } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react-hooks';
+import { PropsWithChildren } from 'react';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
@@ -11,6 +12,7 @@ import {
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
 import useUserData from '@/hooks/useUserData';
+import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 
 const DEFAULT_PROPS = {
     content: {
@@ -229,6 +231,60 @@ describe('Task card', () => {
             name: /Assign to john/i,
         });
         expect(closeTaskBtn).toBeInTheDocument();
+    });
+
+    it('Should make PATCH call with feature flag', function () {
+        // const mockFetch = jest.mock('fetch');
+        function Wrapper({
+            children,
+        }: PropsWithChildren<Record<string, never>>): JSX.Element {
+            return <Provider store={store()}>{children}</Provider>;
+        }
+        const { result } = renderHook(() => useUpdateTaskMutation(), {
+            wrapper: Wrapper,
+        });
+        const [updateTask] = result.current;
+
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                status: 'Available',
+                assignee: undefined,
+                github: {
+                    issue: {
+                        assignee: 'johndoe',
+                        status: 'open',
+                        id: 12278,
+                        assigneeRdsInfo: {
+                            username: 'john',
+                            firstName: 'John',
+                            lastName: 'Doe',
+                        },
+                    },
+                },
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        const closeTaskBtn = screen.queryByRole('button', {
+            name: /Assign to john/i,
+        });
+        expect(closeTaskBtn).toBeInTheDocument();
+        if (closeTaskBtn) {
+            fireEvent.click(closeTaskBtn);
+            expect(updateTask).toHaveBeenCalledWith({
+                isDevEnabled: true,
+            });
+        }
     });
 
     it('Should not render "Assign to username" button when parent issue has an assignee and is open, the task status is "Completed" and has not been assigned', function () {
