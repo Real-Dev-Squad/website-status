@@ -4,7 +4,6 @@ import { Props1 } from '@/interfaces/taskDetails.type';
 import classNames from '../task-details.module.scss';
 import { useRouter } from 'next/router';
 import { useGetTasksDependencyDetailsQuery } from '@/app/services/taskDetailsApi';
-// import { dependency } from '@/app/services/taskDetailsApi';
 
 type DependencyItem =
     | PromiseFulfilledResult<{

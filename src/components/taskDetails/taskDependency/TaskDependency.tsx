@@ -1,5 +1,4 @@
 import React, { ChangeEvent, FC, useState } from 'react';
-// import { dependency } from '@/app/services/taskDetailsApi';
 import { Textarea } from '..';
 import { Props } from '@/interfaces/taskDetails.type';
 import DependencyList from './DependencyList';
@@ -20,7 +19,6 @@ const TaskDependency: FC<Props> = ({
         const updatedDependencies = value
             .split(',')
             .map((taskId) => taskId.trim());
-        // .filter((taskId) => taskId !== '');
         setEditedDependencies(updatedDependencies);
         handleChange(event);
     };
