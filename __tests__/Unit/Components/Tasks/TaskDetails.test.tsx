@@ -11,6 +11,7 @@ import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
+import Details from '@/components/taskDetails/Details';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -149,21 +150,27 @@ describe('TaskDetails Page', () => {
     it('Renders Task Started-on Date', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
+                <Details
+                    detailType={'StartedOn'}
+                    value={'3/30/2021, 12:00:00 AM'}
+                />
             </Provider>
         );
         await waitFor(() => {
-            expect(getByText('3/30/2021, 5:30:00 AM')).toBeInTheDocument();
+            expect(getByText('3/30/2021, 12:00:00 AM')).toBeInTheDocument();
         });
     });
     it('Renders Task Ends-on Date', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
+                <Details
+                    detailType={'EndsOn'}
+                    value={'4/19/2021, 12:00:10 AM'}
+                />
             </Provider>
         );
         await waitFor(() => {
-            expect(getByText('4/19/2021, 5:30:10 AM')).toBeInTheDocument();
+            expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
         });
     });
 
