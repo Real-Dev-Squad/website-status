@@ -1,6 +1,7 @@
 import task, {
     updateTaskDetails,
     TasksResponseType,
+    GetAllTaskParamType,
 } from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
@@ -10,15 +11,7 @@ type TaskRequestPayload = { task: updateTaskDetails; id: string };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAllTasks: builder.query<
-            TasksResponseType,
-            {
-                dev?: boolean;
-                status?: string;
-                nextPage?: string;
-                prevPage?: string;
-            }
-        >({
+        getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
             query: ({ dev, status, nextPage, prevPage }) => {
                 let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
 

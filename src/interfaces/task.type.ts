@@ -90,9 +90,9 @@ export { TABS, Tab };
 
 export default task;
 
-export type RenderTasksListProps = {
-    isFetching: boolean;
-    dev: string;
-    tasksData: TasksResponseType;
-    activeTab: Tab;
+export type GetAllTaskParamType = {
+    dev?: boolean;
+    status?: string;
+    nextPage?: string;
+    prevPage?: string;
 };
