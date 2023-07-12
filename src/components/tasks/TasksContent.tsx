@@ -1,11 +1,15 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { Tab } from '@/interfaces/task.type';
+import task, { Tab } from '@/interfaces/task.type';
 import { useState } from 'react';
-import { TASKS_FETCH_ERROR_MESSAGE } from '../../constants/messages';
+import {
+    NO_TASKS_FOUND_MESSAGE,
+    TASKS_FETCH_ERROR_MESSAGE,
+} from '../../constants/messages';
 import { TabSection } from './TabSection';
+import TaskList from './TaskList/TaskList';
+import { TasksLoader } from './TasksLoader';
 import { useRouter } from 'next/dist/client/router';
-import RenderTasksList from './RenderTasksList';
 
 export const TasksContent = () => {
     const router = useRouter();
@@ -40,6 +44,34 @@ export const TasksContent = () => {
         }
     };
 
+    const tasksGroupedByStatus = tasksData.tasks?.reduce(
+        (acc: Record<string, task[]>, curr: task) => {
+            return acc[curr.status as keyof task]
+                ? {
+                      ...acc,
+                      [curr.status]: [...acc[curr.status as keyof task], curr],
+                  }
+                : { ...acc, [curr.status]: [curr] };
+        },
+        {}
+    );
+
+    const renderTaskList = () => {
+        if (isFetching) {
+            return <TasksLoader />;
+        }
+
+        if (dev === 'true' && tasksData.tasks?.length) {
+            return <TaskList tasks={tasksData.tasks} />;
+        }
+
+        if (tasksGroupedByStatus && tasksGroupedByStatus[activeTab]?.length) {
+            return <TaskList tasks={tasksGroupedByStatus[activeTab]} />;
+        }
+
+        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    };
+
     const onSelect = (tab: Tab) => {
         setActiveTab(tab);
         setNextPage('');
@@ -53,14 +85,8 @@ export const TasksContent = () => {
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
-            <div>
-                <RenderTasksList
-                    isFetching={isFetching}
-                    dev={dev as string}
-                    tasksData={tasksData}
-                    activeTab={activeTab}
-                />
-            </div>
+            <div>{renderTaskList()}</div>
+
             {dev === 'true' ? (
                 <div className={classNames.paginationButtonContainer}>
                     <button
