@@ -1,8 +1,6 @@
-import { FC, useState, useEffect, useContext, useRef } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
@@ -13,8 +11,6 @@ import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
-import { TASKS_URL } from '@/constants/url';
-
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
@@ -32,12 +28,12 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
-import userData from '@/helperFunctions/getUser';
 
 type Props = {
     content: task;
@@ -66,7 +62,8 @@ const Card: FC<Props> = ({
     const assigneeProfileImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
+
+    const { data: userData, isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
 
@@ -147,7 +144,6 @@ const Card: FC<Props> = ({
                     new Date(`${event.target.value}`).getTime() / 1000;
                 toChange[changedProperty] = toTimeStamp;
             }
-            console.log(toChange);
 
             onContentChange(toChange.id, {
                 [changedProperty]: toChange[changedProperty],
@@ -381,8 +377,7 @@ const Card: FC<Props> = ({
 
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
-        if (e.target.value) setShowSuggestion(true);
-        else setShowSuggestion(false);
+        e.target.value ? setShowSuggestion(true) : setShowSuggestion(false);
     };
 
     const handleClick = (userName: string) => {
@@ -514,12 +509,7 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <div
-                                    style={{
-                                        position: 'relative',
-                                        display: 'inline-block',
-                                    }}
-                                >
+                                <div className={classNames.suggestionDiv}>
                                     <input
                                         ref={inputRef}
                                         value={assigneeName}
@@ -538,12 +528,15 @@ const Card: FC<Props> = ({
                                         tabIndex={0}
                                     />
 
-                                    {showSuggestion && (
-                                        <SuggestionBox
-                                            suggestions={suggestions}
-                                            onClickName={handleClick}
-                                            loading={isLoadingSuggestions}
-                                        />
+                                    {isLoadingSuggestions ? (
+                                        <Loader />
+                                    ) : (
+                                        showSuggestion && (
+                                            <SuggestionBox
+                                                suggestions={suggestions}
+                                                onSelectAssignee={handleClick}
+                                            />
+                                        )
                                     )}
                                 </div>
                             )
@@ -680,12 +673,7 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <div
-                                        style={{
-                                            position: 'relative',
-                                            display: 'inline-block',
-                                        }}
-                                    >
+                                    <div className={classNames.suggestionDiv}>
                                         <input
                                             ref={inputRef}
                                             value={assigneeName}
@@ -706,12 +694,17 @@ const Card: FC<Props> = ({
                                             tabIndex={0}
                                         />
 
-                                        {showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onClickName={handleClick}
-                                                loading={isLoadingSuggestions}
-                                            />
+                                        {isLoadingSuggestions ? (
+                                            <Loader />
+                                        ) : (
+                                            showSuggestion && (
+                                                <SuggestionBox
+                                                    suggestions={suggestions}
+                                                    onSelectAssignee={
+                                                        handleClick
+                                                    }
+                                                />
+                                            )
                                         )}
                                     </div>
                                 )
