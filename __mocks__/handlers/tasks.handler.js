@@ -61,9 +61,8 @@ export const failedUpdateTaskHandler = rest.patch(
     }
 );
 
-// no tasks found
 export const noTasksFoundResponse = {
-	message: 'No tasks found',
+	message: 'No Tasks Found',
 	tasks: []
 };
 export const noTasksFoundHandler = rest.get(

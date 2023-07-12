@@ -66,22 +66,14 @@ export const TasksContent = () => {
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
     const renderTaskList = () => {
         if (isFetching) {
-            return (
-                <>
-                    <TasksLoader />;
-                </>
-            );
+            return <TasksLoader />;
         }
 
-        if (dev === 'true') {
-            if (tasksData.tasks && tasksData.tasks.length) {
-                return <TaskList tasks={tasksData.tasks} />;
-            } else {
-                return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
-            }
+        if (dev === 'true' && tasksData.tasks?.length) {
+            return <TaskList tasks={tasksData.tasks} />;
         }
 
-        if (tasksGroupedByStatus[activeTab]) {
+        if (tasksGroupedByStatus && tasksGroupedByStatus[activeTab]?.length) {
             return <TaskList tasks={tasksGroupedByStatus[activeTab]} />;
         }
 
