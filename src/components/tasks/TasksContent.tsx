@@ -1,6 +1,5 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import task, { Tab } from '@/interfaces/task.type';
 import { useState } from 'react';
 import {
@@ -33,9 +32,9 @@ export const TasksContent = () => {
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
-                      ...acc,
-                      [curr.status]: [...acc[curr.status as keyof task], curr],
-                  }
+                    ...acc,
+                    [curr.status]: [...acc[curr.status as keyof task], curr],
+                }
                 : { ...acc, [curr.status]: [curr] };
         },
         {}
@@ -45,22 +44,22 @@ export const TasksContent = () => {
 
     if (isLoading) return <p>Loading...</p>;
 
+    const renderTaskList = () => {
+        if (dev === 'true' && tasks.length > 0) {
+            return <TaskList tasks={tasks} />;
+        }
+
+        if (tasksGroupedByStatus[activeTab]) {
+            return <TaskList tasks={tasksGroupedByStatus[activeTab]} />;
+        }
+
+        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    };
+
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
-            <div>
-                {dev === 'true' ? (
-                    tasks && tasks.length ? (
-                        <TaskList tasks={tasks} />
-                    ) : (
-                        <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                    )
-                ) : tasksGroupedByStatus[activeTab] ? (
-                    <TaskList tasks={tasksGroupedByStatus[activeTab]} />
-                ) : (
-                    <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                )}
-            </div>
+            <div>{renderTaskList()}</div>
         </div>
     );
 };
