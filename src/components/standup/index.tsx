@@ -15,6 +15,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
+    STANDUP_ALREADY_SUBMITTED,
 } from '@/constants/constants';
 import ProgressHeader from '../ProgressForm/ProgressHeader';
 
@@ -63,7 +64,7 @@ const StandUpContainer: FC = () => {
         try {
             const response = await addStandup(standupUpdate);
             if ('error' in response) {
-                toast(ERROR, ERROR_MESSAGE);
+                toast(ERROR, STANDUP_ALREADY_SUBMITTED);
             } else {
                 toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
             }
@@ -72,6 +73,7 @@ const StandUpContainer: FC = () => {
             console.error(error);
             toast(ERROR, ERROR_MESSAGE);
         }
+        window.location.reload();
     };
 
     return (

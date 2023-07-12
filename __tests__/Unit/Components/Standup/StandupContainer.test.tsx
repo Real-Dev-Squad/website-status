@@ -8,6 +8,7 @@ import handlers from '../../../../__mocks__/handlers';
 import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
+    STANDUP_ALREADY_SUBMITTED,
 } from '@/constants/constants';
 import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
 import { ToastContainer } from 'react-toastify';
@@ -195,7 +196,9 @@ describe('StandupContainer', () => {
         fireEvent.submit(getByRole('form'));
 
         await waitFor(() => {
-            expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();
+            expect(
+                screen.getByText(STANDUP_ALREADY_SUBMITTED)
+            ).toBeInTheDocument();
         });
     });
 

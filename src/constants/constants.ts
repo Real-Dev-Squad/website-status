@@ -5,3 +5,5 @@ export const COMPLETED = 'COMPLETED';
 export const DONE = 'DONE';
 export const AVAILABLE = 'AVAILABLE';
 export const UNASSINGED = 'UNASSINGED';
+export const STANDUP_ALREADY_SUBMITTED =
+    'Standup already submitted for the day';

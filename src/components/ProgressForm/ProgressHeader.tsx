@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 import { progressHeaderProps } from '@/types/ProgressUpdates';
 
@@ -6,6 +7,8 @@ const ProgressHeader: FC<progressHeaderProps> = ({
     totalMissedUpdates,
     updateType,
 }) => {
+    const currentDate = moment().format('MMMM DD, YYYY ');
+    const futureDate = moment().add(1, 'day').format('MMMM DD, YYYY ');
     return (
         <div className={styles.bannerContainer}>
             <div className={styles.progressBanner}>
@@ -19,6 +22,17 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                 <p className={styles.bannerPara}>
                     Let&apos;s try to avoid having zero days
                 </p>
+                {updateType === 'Standup' ? (
+                    <div className={styles.timeContainer}>
+                        <p className={styles.bannerPara}>
+                            {` Standup time - ${currentDate} 6:00 am to 
+                            ${futureDate} 5:59 am`}
+                        </p>
+                        <p className={styles.bannerPara}>
+                            Current Standup Date - {currentDate}
+                        </p>
+                    </div>
+                ) : null}
             </div>
         </div>
     );
