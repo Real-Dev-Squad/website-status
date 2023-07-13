@@ -1,7 +1,10 @@
+import { store } from '@/app/store';
 import HandleProgressbar from '@/components/tasks/card/ProgressBar';
 import ProgressIndicator from '@/components/tasks/card/ProgressIndicator';
 import ProgressSlider from '@/components/tasks/card/ProgressSlider';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
 const DEFAULT_PROPS = {
     progressValue: 40,
@@ -26,12 +29,22 @@ const ProgressIndicatorProps = {
 
 describe('Progress Bar', () => {
     test('Should render Progress slider component if progress is true', () => {
-        render(<HandleProgressbar {...DEFAULT_PROPS} progress={true} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <HandleProgressbar {...DEFAULT_PROPS} progress={true} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
         render(<ProgressSlider {...ProgressSliderProps} />);
         expect(screen.getByText('40%')).toBeInTheDocument();
     });
     test('Should render Progress Indicator component if progress is false', () => {
-        render(<HandleProgressbar {...DEFAULT_PROPS} progress={false} />);
+        renderWithRouter(
+            <Provider store={store()}>
+                <HandleProgressbar {...DEFAULT_PROPS} progress={false} />
+            </Provider>
+        ),
+            { query: { dev: 'false' } };
         render(<ProgressIndicator {...ProgressIndicatorProps} />);
         expect(screen.getByText('50%')).toBeInTheDocument();
     });
