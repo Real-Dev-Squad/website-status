@@ -12,7 +12,7 @@ jest.mock('next/router', () => ({
         push: mockNavigateToTask,
     }),
 }));
-describe('DependencyList', () => {
+describe('TaskDependency', () => {
     const server = setupServer(...taskDetailsHandler);
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());

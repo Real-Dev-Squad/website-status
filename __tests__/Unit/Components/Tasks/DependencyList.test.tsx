@@ -39,6 +39,8 @@ describe('DependencyList', () => {
         const errorMessage = await screen.findByText(
             'Unable to fetch this task with ID taskid-2'
         );
+        const dependencyItems = await screen.findAllByRole('listitem');
+        expect(dependencyItems).toHaveLength(2);
 
         expect(task1Link).toBeInTheDocument();
         expect(errorMessage).toBeInTheDocument();
@@ -53,17 +55,6 @@ describe('DependencyList', () => {
         const noDependenciesMessage = screen.getByText(/Loading.../i);
         expect(noDependenciesMessage).toBeInTheDocument();
     });
-
-    it('should render dependency list', async () => {
-        render(
-            <Provider store={store()}>
-                <DependencyList taskDependencyIds={TaskDependencyIds} />
-            </Provider>
-        );
-        const dependencyItems = await screen.findAllByRole('listitem');
-        expect(dependencyItems).toHaveLength(2);
-    });
-
     it('should render Link and span elements correctly', async () => {
         render(
             <Provider store={store()}>
