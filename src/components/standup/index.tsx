@@ -73,6 +73,7 @@ const StandUpContainer: FC = () => {
             console.error(error);
             toast(ERROR, ERROR_MESSAGE);
         }
+
         window.location.reload();
     };
 
