@@ -16,16 +16,15 @@ const HandleProgressText: FC<handleProgressTextProps> = ({
                 save Progress
             </div>
         );
-    } else {
-        return (
-            <div
-                className={classNames.changeProgressText}
-                onClick={() => handleProgressUpdate()}
-            >
-                Progress update
-            </div>
-        );
     }
+    return (
+        <div
+            className={classNames.changeProgressText}
+            onClick={() => handleProgressUpdate()}
+        >
+            Progress update
+        </div>
+    );
 };
 
 export default HandleProgressText;

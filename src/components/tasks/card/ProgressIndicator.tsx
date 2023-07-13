@@ -8,7 +8,6 @@ const ProgressIndicator: FC<ProgressIndicatorProps> = ({
     percentCompleted,
     startedOn,
     endsOn,
-    // handleProgressColor,
 }) => {
     const progressColor = handleProgressColor(
         percentCompleted,

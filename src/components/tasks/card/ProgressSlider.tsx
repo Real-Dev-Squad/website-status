@@ -8,19 +8,15 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
     handleProgressChange,
 }) => {
     return (
-        <>
-            <input
-                type="range"
-                value={value}
-                min="0"
-                max="100"
-                step="10"
-                onChange={handleProgressChange}
-                onMouseUp={() => debounceSlider(1000)}
-                role="slider"
-            />
-        </>
-
+        <input
+            type="range"
+            value={value}
+            min="0"
+            max="100"
+            step="10"
+            onChange={(e) => handleProgressChange(e)}
+            onMouseUp={() => debounceSlider(1000)}
+        />
     );
 };
 
