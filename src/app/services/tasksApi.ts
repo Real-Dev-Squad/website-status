@@ -8,8 +8,12 @@ type TaskRequestPayload = { task: updateTaskDetails; id: string };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAllTasks: builder.query<TasksQueryResponse['tasks'], void>({
-            query: () => '/tasks',
+        getAllTasks: builder.query<
+            TasksQueryResponse['tasks'],
+            { dev: boolean; status?: string }
+        >({
+            query: ({ dev, status }) =>
+                dev ? `/tasks?status=${status}&dev=true` : '/tasks',
             providesTags: (result) =>
                 result
                     ? [
@@ -20,13 +24,13 @@ export const tasksApi = api.injectEndpoints({
                           { type: 'Tasks' },
                       ]
                     : ['Tasks'],
-
             transformResponse: (response: TasksQueryResponse) => {
                 return response?.tasks?.sort(
                     (a: task, b: task) => +a.endsOn - +b.endsOn
                 );
             },
         }),
+
         getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
