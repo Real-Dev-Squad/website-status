@@ -143,7 +143,7 @@ const Card: FC<Props> = ({
     ) {
         if (event.key === 'Enter') {
             const toChange: any = cardDetails;
-            toChange[changedProperty] = stripHtml(event.target.innerHTML);
+            toChange[changedProperty] = stripHtml(assigneeName);
 
             if (
                 changedProperty === 'endsOn' ||
