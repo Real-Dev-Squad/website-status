@@ -1,8 +1,6 @@
-import { FC, useState, useEffect, useContext, useRef } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import task from '@/interfaces/task.type';
@@ -11,16 +9,13 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
-import { updateTaskDetails } from '@/interfaces/taskItem.type';
+import { updateTaskDetails } from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
-import { TASKS_URL } from '@/constants/url';
-
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
 import { MAX_SEARCH_RESULTS } from '@/constants/constants';
-import styles from '@/components/issues/Card.module.scss';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -33,16 +28,21 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import { useGetUserQuery } from '@/app/services/userApi';
+import HandleProgressText from './ProgressText';
+import HandleProgressbar from './ProgressBar';
+import ProgressIndicator from './ProgressIndicator';
+import useUserData from '@/hooks/useUserData';
+import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
+import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
-import userData from '@/helperFunctions/getUser';
 
 type Props = {
     content: task;
     shouldEdit: boolean;
     onContentChange?: (changeId: string, changeObject: object) => void;
-    updateTask?: (taskId: string, details: updateTaskDetails) => void;
 };
 
 let timer: NodeJS.Timeout;
@@ -51,7 +51,6 @@ const Card: FC<Props> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
-    updateTask = () => undefined,
 }) => {
     const statusRedList = [TASK_STATUS.BLOCKED];
     const statusNotOverDueList = [
@@ -59,7 +58,14 @@ const Card: FC<Props> = ({
         TASK_STATUS.VERIFIED,
         TASK_STATUS.AVAILABLE,
     ];
+
     const cardDetails = content;
+    const { data } = useGetUserQuery();
+    const [progress, setProgress] = useState<boolean>(false);
+    const [progressValue, setProgressValue] = useState<number>(0);
+    const [updateTasks] = useUpdateTaskMutation();
+    const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
+
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
         size: MAX_SEARCH_RESULTS,
@@ -67,21 +73,19 @@ const Card: FC<Props> = ({
     const assigneeProfileImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
+
+    const { data: userData, isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
 
     const [keyLongPressed] = useKeyLongPressed();
 
-    // const [assigneeName, setAssigneeName] = useState('');
-
-    // TODO: the below state should be removed when mutation for updating tasks is implemented
-    const [loading, setLoading] = useState<boolean>(false);
-
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
     const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
+    const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
+        useUpdateTaskMutation();
 
     const [isLoadingSuggestions, setIsLoadingSuggestions] =
         useState<boolean>(false);
@@ -92,7 +96,6 @@ const Card: FC<Props> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { query } = router;
-    const isNewCardEnabled = !!query.dev;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -150,7 +153,6 @@ const Card: FC<Props> = ({
                     new Date(`${event.target.value}`).getTime() / 1000;
                 toChange[changedProperty] = toTimeStamp;
             }
-            console.log(toChange);
 
             onContentChange(toChange.id, {
                 [changedProperty]: toChange[changedProperty],
@@ -171,55 +173,6 @@ const Card: FC<Props> = ({
                 [changedProperty]: toChange[changedProperty],
             });
         }
-    }
-
-    function inputParser(input: string) {
-        const parsedDate = moment(new Date(parseInt(input, 10) * 1000));
-        return parsedDate;
-    }
-
-    function getPercentageOfDaysLeft(
-        startedOn: string,
-        endsOn: string
-    ): number {
-        const startDate = inputParser(startedOn);
-        const endDate = inputParser(endsOn);
-
-        // It provides us with total days that are there for the the project and number of days left
-        const totalDays = endDate.diff(startDate, 'days');
-        const daysLeft = endDate.diff(new Date(), 'days');
-
-        // It provides the percentage of days left
-        const percentageOfDaysLeft = (daysLeft / totalDays) * 100;
-        return percentageOfDaysLeft;
-    }
-
-    function handleProgressColor(
-        percentCompleted: number,
-        startedOn: string,
-        endsOn: string
-    ): string {
-        const percentageOfDaysLeft = getPercentageOfDaysLeft(startedOn, endsOn);
-        const percentIncomplete = 100 - percentCompleted;
-        if (
-            percentCompleted === 100 ||
-            percentageOfDaysLeft >= percentIncomplete
-        ) {
-            return classNames.progressGreen;
-        }
-
-        if (
-            (percentageOfDaysLeft < 25 && percentIncomplete > 35) ||
-            (percentageOfDaysLeft <= 0 && percentIncomplete > 0)
-        ) {
-            return classNames.progressRed;
-        }
-
-        if (percentageOfDaysLeft < 50 && percentIncomplete > 75) {
-            return classNames.progressOrange;
-        }
-
-        return classNames.progressYellow;
     }
 
     function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
@@ -257,38 +210,33 @@ const Card: FC<Props> = ({
         !isIssueClosed() &&
         !isTaskComplete();
 
-    // assign the task to the issue assignee
     const handleAssignToIssueAssignee = async () => {
-        setLoading(true);
-        try {
-            const data: updateTaskDetails = {
-                assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
-                status: 'ASSIGNED',
-            };
+        const data: updateTaskDetails = {
+            assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
+            status: 'ASSIGNED',
+        };
 
-            // Update start date when assigning the task to the issue assignee
-            if (!cardDetails.startedOn) {
-                data.startedOn = new Date().getTime() / 1000;
-            }
-
-            const { requestPromise } = fetch({
-                url: `${TASKS_URL}/${cardDetails.id}`,
-                method: 'patch',
-                data,
-            });
-            await requestPromise;
-
-            updateTask(cardDetails.id, data);
-            toast(SUCCESS, 'Task assigned successfully!');
-            setLoading(false);
-        } catch (err: any) {
-            setLoading(false);
-            if ('response' in err) {
-                toast(ERROR, err.response.data.message);
-                return;
-            }
-            toast(ERROR, err.message);
+        // Update start date when assigning the task to the issue assignee
+        if (!cardDetails.startedOn) {
+            data.startedOn = new Date().getTime() / 1000;
         }
+
+        const response = updateTask({
+            task: data,
+            id: cardDetails.id,
+        });
+        response
+            .unwrap()
+            .then(() => {
+                toast(SUCCESS, 'Task assigned successfully!');
+            })
+            .catch((err) => {
+                if ('response' in err) {
+                    toast(ERROR, err.response.data.message);
+                    return;
+                }
+                toast(ERROR, err.message);
+            });
     };
 
     const getFormattedClosedAtDate = () => {
@@ -297,28 +245,26 @@ const Card: FC<Props> = ({
     };
 
     const handleCloseTask = async () => {
-        setLoading(true);
-        try {
-            const data = {
-                status: 'COMPLETED',
-            };
-            const { requestPromise } = fetch({
-                url: `${TASKS_URL}/${cardDetails.id}`,
-                method: 'patch',
-                data,
+        const data = {
+            status: 'COMPLETED',
+        };
+        const response = updateTask({
+            task: data,
+            id: cardDetails.id,
+        });
+
+        response
+            .unwrap()
+            .then((result) =>
+                toast(SUCCESS, 'Task status changed successfully!')
+            )
+            .catch((err) => {
+                if ('response' in err) {
+                    toast(ERROR, err.response.data.message);
+                    return;
+                }
+                toast(ERROR, err.message);
             });
-            await requestPromise;
-            updateTask(cardDetails.id, data);
-            toast(SUCCESS, 'Task status changed successfully!');
-            setLoading(false);
-        } catch (err: any) {
-            setLoading(false);
-            if ('response' in err) {
-                toast(ERROR, err.response.data.message);
-                return;
-            }
-            toast(ERROR, err.message);
-        }
     };
 
     const EditButton = () => (
@@ -334,30 +280,57 @@ const Card: FC<Props> = ({
         </div>
     );
 
-    const ProgressIndicator = () => (
-        <div className={classNames.progressIndicator}>
-            <div
-                className={`
-                ${handleProgressColor(
-                    content.percentCompleted,
-                    content.startedOn,
-                    content.endsOn
-                )}
-                ${classNames.progressStyle}
-                `}
-                style={{
-                    width: `${content.percentCompleted}%`,
-                }}
-            ></div>
-        </div>
-    );
+    const handleProgressUpdate = () => {
+        if (
+            content.assignee === data?.username ||
+            data?.roles.super_user === true
+        ) {
+            setProgress(true);
+        } else {
+            toast(ERROR, 'You cannot update progress');
+        }
+    };
+
+    const debounceSlider = (debounceTimeOut: number) => {
+        if (debounceTimeOut) {
+            clearTimeout(debounceTimeOut);
+        }
+        const timer = setTimeout(() => {
+            handleSliderChangeComplete(cardDetails.id, progressValue);
+        }, 1000);
+        setDebounceTimeOut(Number(timer));
+    };
+
+    const handleSliderChangeComplete = async (
+        id: string,
+        percentCompleted: number
+    ) => {
+        const data = {
+            percentCompleted: percentCompleted,
+        };
+        await updateTasks({
+            task: data,
+            id: id,
+        });
+        toast(SUCCESS, 'Progress Updated Successfully');
+    };
+
+    const handleProgressChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setProgressValue(Number(event.target.value));
+    };
+
+    const handleSaveProgressUpdate = () => {
+        setProgress(false);
+    };
 
     const AssigneeButton = () => {
         return (
             <button
-                className={styles.card__top__button}
+                className={classNames.card__top__button}
                 type="button"
-                disabled={loading}
+                disabled={isLoadingUpdateTaskDetails}
                 onClick={handleAssignToIssueAssignee}
             >
                 {`Assign to ${cardDetails.github?.issue.assigneeRdsInfo?.username}`}
@@ -378,9 +351,9 @@ const Card: FC<Props> = ({
                     The issue was closed on {getFormattedClosedAtDate()}
                 </span>
                 <button
-                    className={styles.card__top__button}
+                    className={classNames.close__task__button}
                     type="button"
-                    disabled={loading}
+                    disabled={isLoadingUpdateTaskDetails}
                     onClick={handleCloseTask}
                 >
                     Close the task
@@ -391,8 +364,7 @@ const Card: FC<Props> = ({
 
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
-        if (e.target.value) setShowSuggestion(true);
-        else setShowSuggestion(false);
+        e.target.value ? setShowSuggestion(true) : setShowSuggestion(false);
     };
 
     const handleClick = (userName: string) => {
@@ -455,7 +427,7 @@ const Card: FC<Props> = ({
                 <div className={classNames.cardItems}>
                     <ConditionalLinkWrapper
                         redirectingPath="/tasks/[id]"
-                        shouldDisplayLink={isNewCardEnabled}
+                        shouldDisplayLink={isTaskDetailsPageLinkEnabled}
                         taskId={cardDetails.id}
                     >
                         <span
@@ -470,9 +442,23 @@ const Card: FC<Props> = ({
                     </ConditionalLinkWrapper>
 
                     {/* progress bar */}
-                    <div className={classNames.progressContainerUpdated}>
-                        <ProgressIndicator />
-                        <span>{content.percentCompleted}% </span>
+                    <div>
+                        <div className={classNames.progressContainerUpdated}>
+                            <HandleProgressbar
+                                progress={progress}
+                                progressValue={progressValue}
+                                percentCompleted={content.percentCompleted}
+                                handleProgressChange={handleProgressChange}
+                                debounceSlider={debounceSlider}
+                                startedOn={content.startedOn}
+                                endsOn={content.endsOn}
+                            />
+                        </div>
+                        <HandleProgressText
+                            progress={progress}
+                            handleSaveProgressUpdate={handleSaveProgressUpdate}
+                            handleProgressUpdate={handleProgressUpdate}
+                        />
                     </div>
                 </div>
                 <div className={classNames.taskStatusAndDateContainer}>
@@ -524,12 +510,7 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <div
-                                    style={{
-                                        position: 'relative',
-                                        display: 'inline-block',
-                                    }}
-                                >
+                                <div className={classNames.suggestionDiv}>
                                     <input
                                         ref={inputRef}
                                         value={assigneeName}
@@ -548,12 +529,15 @@ const Card: FC<Props> = ({
                                         tabIndex={0}
                                     />
 
-                                    {showSuggestion && (
-                                        <SuggestionBox
-                                            suggestions={suggestions}
-                                            onClickName={handleClick}
-                                            loading={isLoadingSuggestions}
-                                        />
+                                    {isLoadingSuggestions ? (
+                                        <Loader />
+                                    ) : (
+                                        showSuggestion && (
+                                            <SuggestionBox
+                                                suggestions={suggestions}
+                                                onSelectAssignee={handleClick}
+                                            />
+                                        )
                                     )}
                                 </div>
                             )
@@ -585,6 +569,7 @@ const Card: FC<Props> = ({
                         )}
                     </div>
                 </div>
+
                 {cardDetails.status !== 'Completed' && isIssueClosed() && (
                     <CloseTaskButton />
                 )}
@@ -604,7 +589,9 @@ const Card: FC<Props> = ({
             {isLoading && <Loader />}
 
             <div className={classNames.cardItems}>
-                <ConditionalLinkWrapper shouldDisplayLink={isNewCardEnabled}>
+                <ConditionalLinkWrapper
+                    shouldDisplayLink={isTaskDetailsPageLinkEnabled}
+                >
                     <span
                         className={classNames.cardTitle}
                         contentEditable={shouldEdit}
@@ -643,11 +630,16 @@ const Card: FC<Props> = ({
             </div>
             <div className={classNames.cardItems}>
                 <span className={classNames.progressContainer}>
-                    <ProgressIndicator />
+                    <ProgressIndicator
+                        percentCompleted={content.percentCompleted}
+                        startedOn={content.startedOn}
+                        endsOn={content.endsOn}
+                    />
 
                     <span>{content.percentCompleted}% completed</span>
                 </span>
             </div>
+
             <div
                 className={`${classNames.taskTagLevelWrapper} ${
                     shouldEdit && classNames.editMode
@@ -687,12 +679,7 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <div
-                                        style={{
-                                            position: 'relative',
-                                            display: 'inline-block',
-                                        }}
-                                    >
+                                    <div className={classNames.suggestionDiv}>
                                         <input
                                             ref={inputRef}
                                             value={assigneeName}
@@ -713,12 +700,17 @@ const Card: FC<Props> = ({
                                             tabIndex={0}
                                         />
 
-                                        {showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onClickName={handleClick}
-                                                loading={isLoadingSuggestions}
-                                            />
+                                        {isLoadingSuggestions ? (
+                                            <Loader />
+                                        ) : (
+                                            showSuggestion && (
+                                                <SuggestionBox
+                                                    suggestions={suggestions}
+                                                    onSelectAssignee={
+                                                        handleClick
+                                                    }
+                                                />
+                                            )
                                         )}
                                     </div>
                                 )

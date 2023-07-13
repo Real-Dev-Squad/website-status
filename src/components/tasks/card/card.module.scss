@@ -1,3 +1,4 @@
+@use '../../../styles/issues.module.scss' as styles;
 $green: #008000;
 $orange: #ffa500;
 $red: #ff0000;
@@ -141,6 +142,18 @@ $seeMoreTasksShadow: #595959cc;
 .progressStyle {
     height: 0.4rem;
     border-radius: 1rem;
+}
+
+.progressBarContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.changeProgressText {
+    cursor: pointer;
+    color: $taskTagLevelBorder;
+    font-weight: 700;
+    padding-bottom: 0.5rem;
 }
 
 .progressGreen {
@@ -305,9 +318,24 @@ $seeMoreTasksShadow: #595959cc;
     }
 }
 
+.card__top__button {
+    @include styles.issues-button;
+    max-width: max-content;
+    margin: 1rem 0 0;
+}
+
+.close__task__button {
+    @include styles.issues-button;
+}
+
 .taskCardsContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.suggestionDiv {
+    position: relative;
+    display: inline-block;
 }
