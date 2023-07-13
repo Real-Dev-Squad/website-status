@@ -5,7 +5,11 @@ import { fireEvent, screen } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
+import {
+    NO_TASKS_FOUND_MESSAGE,
+    TASKS_FETCH_ERROR_MESSAGE,
+} from '@/constants/messages';
+import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handler';
 
 const server = setupServer(...handlers);
 
@@ -40,5 +44,16 @@ describe('tasks content', () => {
         fireEvent.click(assignedButton);
         expect(assignedButton).toHaveClass('active');
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
+    });
+
+    test('displays "No tasks found" message when there are no tasks', async () => {
+        server.use(noTasksFoundHandler);
+        const { findByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent />
+            </Provider>
+        );
+        const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
+        expect(errorMessage).toBeInTheDocument();
     });
 });
