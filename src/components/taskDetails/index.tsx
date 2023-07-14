@@ -98,7 +98,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             const updatedDependencies = value
                 .split(',')
                 .map((taskId) => taskId.trim());
-            console.log(updatedDependencies);
             setUpdatedDependencies(updatedDependencies);
         }
         const formData = {
