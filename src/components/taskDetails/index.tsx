@@ -24,7 +24,7 @@ import {
     taskDetailsDataType,
 } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import TaskDependency from './TaskDependency';
+import TaskDependency from './TaskDependency/index';
 
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
