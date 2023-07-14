@@ -3,7 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import task, { CardProps } from '@/interfaces/task.type';
+import { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
@@ -39,19 +39,9 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 
-type Props = {
-    content: task;
-    shouldEdit: boolean;
-    onContentChange?: (
-        changeId: string,
-        changeObject: object,
-        isDevEnabled?: boolean
-    ) => void;
-};
-
 let timer: NodeJS.Timeout;
 
-const Card: FC<Props> = ({
+const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
