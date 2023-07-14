@@ -34,9 +34,6 @@ const taskDetailsHandler = [
             })
         );
     }),
-];
-
-const taskDetailsUpdateHandler = [
     rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
         return res(ctx.status(204));
     }),
@@ -56,8 +53,4 @@ const failedTaskDependencyDetails = rest.get(
     }
 );
 
-export {
-    taskDetailsHandler,
-    failedTaskDependencyDetails,
-    taskDetailsUpdateHandler,
-};
+export { taskDetailsHandler, failedTaskDependencyDetails };
