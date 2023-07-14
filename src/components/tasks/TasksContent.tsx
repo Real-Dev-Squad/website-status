@@ -88,14 +88,14 @@ export const TasksContent = () => {
             <TabSection onSelect={onSelect} activeTab={activeTab} />
             <div>{renderTaskList()}</div>
 
-            {dev === 'true' ? (
+            {dev === 'true' && (
                 <PaginationButton
                     fetchPrev={fetchPrevTasks}
                     fetchNext={fetchNextTasks}
                     hasPrev={!!tasksData.prev}
                     hasNext={!!tasksData.next}
                 />
-            ) : null}
+            )}
         </div>
     );
 };
