@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, useState } from 'react';
 import { Textarea } from '..';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
-import DependencyList from './DependencyList';
+import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 
 const TaskDependency: FC<TaskDependencyProps> = ({
     taskDependencyIds,

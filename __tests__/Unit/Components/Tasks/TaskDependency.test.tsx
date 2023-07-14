@@ -1,5 +1,5 @@
 import { fireEvent, render } from '@testing-library/react';
-import TaskDependency from '@/components/taskDetails/TaskDependency';
+import TaskDependency from '@/components/taskDetails/taskDependency';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
