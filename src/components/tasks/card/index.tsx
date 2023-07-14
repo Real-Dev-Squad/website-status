@@ -95,7 +95,7 @@ const Card: FC<Props> = ({
 
     const { onEditRoute } = useEditMode();
     const router = useRouter();
-    const { query } = router;
+    const { dev } = router.query;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -454,11 +454,15 @@ const Card: FC<Props> = ({
                                 endsOn={content.endsOn}
                             />
                         </div>
-                        <HandleProgressText
-                            progress={progress}
-                            handleSaveProgressUpdate={handleSaveProgressUpdate}
-                            handleProgressUpdate={handleProgressUpdate}
-                        />
+                        {dev === 'true' && (
+                            <HandleProgressText
+                                progress={progress}
+                                handleSaveProgressUpdate={
+                                    handleSaveProgressUpdate
+                                }
+                                handleProgressUpdate={handleProgressUpdate}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className={classNames.taskStatusAndDateContainer}>
