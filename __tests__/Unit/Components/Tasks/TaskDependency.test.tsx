@@ -1,11 +1,11 @@
 import { fireEvent, render } from '@testing-library/react';
-import TaskDependency from '../../../../src/components/taskDetails/taskDependency/TaskDependency';
+import TaskDependency from '../../../../src/components/taskDetails/TaskDependency';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
+import { TaskDependencyIds } from '../../../../__mocks__/db/tasks';
 
-const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 const mockNavigateToTask = jest.fn();
 jest.mock('next/router', () => ({
     useRouter: () => ({

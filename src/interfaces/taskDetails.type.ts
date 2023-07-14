@@ -29,7 +29,7 @@ export type TextAreaProps = {
     onChange: ChangeEventHandler;
 };
 
-export type Props = {
+export type TaskDependencyProps = {
     taskDependencyIds: string[];
     isEditing?: boolean;
     updatedDependencies: string[];
@@ -37,6 +37,12 @@ export type Props = {
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
 };
-export type Props1 = {
+export type DependencyListProps = {
     taskDependencyIds: string[];
 };
+export type DependencyItem =
+    | PromiseFulfilledResult<{
+          title: string | undefined;
+          id: string;
+      }>
+    | PromiseRejectedResult;

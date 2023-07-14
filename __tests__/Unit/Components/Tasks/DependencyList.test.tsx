@@ -1,11 +1,11 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
+import DependencyList from '@/components/taskDetails/TaskDependency/DependencyList';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 
-const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
+const taskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 const mockNavigateToTask = jest.fn();
 jest.mock('next/router', () => ({
     useRouter: () => ({
@@ -21,7 +21,7 @@ describe('DependencyList', () => {
     it('should render loading state', () => {
         render(
             <Provider store={store()}>
-                <DependencyList taskDependencyIds={TaskDependencyIds} />
+                <DependencyList taskDependencyIds={taskDependencyIds} />
             </Provider>
         );
 
@@ -31,7 +31,7 @@ describe('DependencyList', () => {
     it('should render dependency list', async () => {
         render(
             <Provider store={store()}>
-                <DependencyList taskDependencyIds={TaskDependencyIds} />
+                <DependencyList taskDependencyIds={taskDependencyIds} />
             </Provider>
         );
 
@@ -52,13 +52,13 @@ describe('DependencyList', () => {
                 <DependencyList taskDependencyIds={[]} />
             </Provider>
         );
-        const noDependenciesMessage = screen.getByText(/Loading.../i);
-        expect(noDependenciesMessage).toBeInTheDocument();
+        const loading = screen.getByText(/Loading.../i);
+        expect(loading).toBeInTheDocument();
     });
     it('should render Link and span elements correctly', async () => {
         render(
             <Provider store={store()}>
-                <DependencyList taskDependencyIds={TaskDependencyIds} />
+                <DependencyList taskDependencyIds={taskDependencyIds} />
             </Provider>
         );
         const task1Link = await screen.findByRole('link', {

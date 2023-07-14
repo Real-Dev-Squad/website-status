@@ -1,34 +1,32 @@
 import React from 'react';
 import Link from 'next/link';
-import { Props1 } from '@/interfaces/taskDetails.type';
+import {
+    DependencyListProps,
+    DependencyItem,
+} from '@/interfaces/taskDetails.type';
 import classNames from '../task-details.module.scss';
 import { useRouter } from 'next/router';
 import { useGetTasksDependencyDetailsQuery } from '@/app/services/taskDetailsApi';
 
-type DependencyItem =
-    | PromiseFulfilledResult<{
-          title: string | undefined;
-          id: string;
-      }>
-    | PromiseRejectedResult;
-
-const DependencyList: React.FC<Props1> = ({ taskDependencyIds }) => {
+const DependencyList: React.FC<DependencyListProps> = ({
+    taskDependencyIds,
+}) => {
     const router = useRouter();
     const navigateToTask = (taskId: string) => {
         router.push(`/tasks/${taskId}`);
     };
     const {
         data: dependencyData,
-        isLoading: loading,
-        isFetching: fetching,
-        isError: error,
+        isLoading,
+        isFetching,
+        isError,
     } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
 
-    if (loading || fetching) {
+    if (isLoading || isFetching) {
         return <p>Loading...</p>;
     }
-    if (error) {
-        return <>Unable to fetch dependency tasks</>;
+    if (isError) {
+        return <p>Unable to fetch dependency tasks</p>;
     } else if (dependencyData && dependencyData.length) {
         return (
             <ol className={classNames['task_dependency_list_container']}>
@@ -63,9 +61,8 @@ const DependencyList: React.FC<Props1> = ({ taskDependencyIds }) => {
                 })}
             </ol>
         );
-    } else {
-        return <p>No Dependencies</p>;
     }
+    return <p>No Dependencies</p>;
 };
 
 export default DependencyList;
