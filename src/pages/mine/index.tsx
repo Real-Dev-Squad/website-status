@@ -10,10 +10,10 @@ import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
 import { Loader } from '@/components/tasks/card/Loader';
 
-function CardList({ tasks }: { tasks: TasksResponseType }) {
+function CardList({ tasks: { tasks = [] } }: { tasks: TasksResponseType }) {
     return (
         <>
-            {tasks.tasks.map((item) => (
+            {tasks.map((item) => (
                 <Card
                     content={item}
                     key={item.id}

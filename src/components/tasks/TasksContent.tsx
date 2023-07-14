@@ -9,6 +9,7 @@ import {
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { TasksLoader } from './TasksLoader';
+import PaginationButton from '../PaginationButton';
 import { useRouter } from 'next/dist/client/router';
 
 export const TasksContent = () => {
@@ -88,22 +89,12 @@ export const TasksContent = () => {
             <div>{renderTaskList()}</div>
 
             {dev === 'true' ? (
-                <div className={classNames.paginationButtonContainer}>
-                    <button
-                        className={classNames.paginationButton}
-                        onClick={fetchPrevTasks}
-                        disabled={!tasksData.prev}
-                    >
-                        Prev
-                    </button>
-                    <button
-                        className={classNames.paginationButton}
-                        onClick={fetchNextTasks}
-                        disabled={!tasksData.next}
-                    >
-                        Next
-                    </button>
-                </div>
+                <PaginationButton
+                    fetchPrev={fetchPrevTasks}
+                    fetchNext={fetchNextTasks}
+                    hasPrev={!!tasksData.prev}
+                    hasNext={!!tasksData.next}
+                />
             ) : null}
         </div>
     );
