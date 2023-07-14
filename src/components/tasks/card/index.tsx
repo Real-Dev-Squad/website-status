@@ -3,7 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import task from '@/interfaces/task.type';
+import task, { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';

@@ -52,4 +52,20 @@ const TABS = Object.values(Tab);
 
 export { TABS, Tab };
 
+export type TaskRequestPayload = {
+    task: updateTaskDetails;
+    id: string;
+    isDevEnabled?: boolean;
+};
+
+export type CardProps = {
+    content: task;
+    shouldEdit: boolean;
+    onContentChange?: (
+        changeId: string,
+        changeObject: object,
+        isDevEnabled?: boolean
+    ) => void;
+};
+
 export default task;

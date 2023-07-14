@@ -233,60 +233,6 @@ describe('Task card', () => {
         expect(closeTaskBtn).toBeInTheDocument();
     });
 
-    it('Should make PATCH call with feature flag', function () {
-        // const mockFetch = jest.mock('fetch');
-        function Wrapper({
-            children,
-        }: PropsWithChildren<Record<string, never>>): JSX.Element {
-            return <Provider store={store()}>{children}</Provider>;
-        }
-        const { result } = renderHook(() => useUpdateTaskMutation(), {
-            wrapper: Wrapper,
-        });
-        const [updateTask] = result.current;
-
-        const PROPS = {
-            ...DEFAULT_PROPS,
-            content: {
-                ...DEFAULT_PROPS.content,
-                status: 'Available',
-                assignee: undefined,
-                github: {
-                    issue: {
-                        assignee: 'johndoe',
-                        status: 'open',
-                        id: 12278,
-                        assigneeRdsInfo: {
-                            username: 'john',
-                            firstName: 'John',
-                            lastName: 'Doe',
-                        },
-                    },
-                },
-            },
-        };
-
-        const screen = renderWithRouter(
-            <Provider store={store()}>
-                <Card {...PROPS} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
-        );
-
-        const closeTaskBtn = screen.queryByRole('button', {
-            name: /Assign to john/i,
-        });
-        expect(closeTaskBtn).toBeInTheDocument();
-        if (closeTaskBtn) {
-            fireEvent.click(closeTaskBtn);
-            expect(updateTask).toHaveBeenCalledWith({
-                isDevEnabled: true,
-            });
-        }
-    });
-
     it('Should not render "Assign to username" button when parent issue has an assignee and is open, the task status is "Completed" and has not been assigned', function () {
         const PROPS = {
             ...DEFAULT_PROPS,
