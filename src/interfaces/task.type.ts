@@ -33,11 +33,19 @@ type task = {
     };
 };
 
+export type TasksResponseType = {
+    message?: string;
+    tasks: task[];
+    next?: string;
+    prev?: string;
+};
+
 export type ProgressSliderProps = {
     value: number;
     debounceSlider: (debounceTimeOut: number) => void;
     handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
     startedOn?: number;
     percentCompleted?: number;
@@ -81,3 +89,10 @@ const TABS = Object.values(Tab);
 export { TABS, Tab };
 
 export default task;
+
+export type GetAllTaskParamType = {
+    dev?: boolean;
+    status?: string;
+    nextPage?: string;
+    prevPage?: string;
+};
