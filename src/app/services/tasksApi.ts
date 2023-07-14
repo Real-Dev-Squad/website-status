@@ -1,32 +1,43 @@
-import task, { TaskRequestPayload } from '@/interfaces/task.type';
+import task, {
+    TaskRequestPayload,
+    TasksResponseType,
+    GetAllTaskParamType,
+} from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 
-type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        getAllTasks: builder.query<TasksQueryResponse['tasks'], void>({
-            query: () => '/tasks',
-            providesTags: (result) =>
-                result
-                    ? [
-                          ...result.map(({ id }) => ({
-                              type: 'Tasks' as const,
-                              id,
-                          })),
-                          { type: 'Tasks' },
-                      ]
-                    : ['Tasks'],
+        getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
+            query: ({ dev, status, nextPage, prevPage }) => {
+                let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
 
-            transformResponse: (response: TasksQueryResponse) => {
-                return response?.tasks?.sort(
-                    (a: task, b: task) => +a.endsOn - +b.endsOn
-                );
+                if (nextPage) {
+                    url = nextPage;
+                }
+
+                if (prevPage) {
+                    url = prevPage;
+                }
+
+                return { url };
+            },
+            providesTags: ['Tasks'],
+
+            transformResponse: (response: TasksResponseType) => {
+                return {
+                    tasks: response.tasks?.sort(
+                        (a: task, b: task) => +a.endsOn - +b.endsOn
+                    ),
+                    next: response.next,
+                    prev: response.prev,
+                };
             },
         }),
-        getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
+
+        getMineTasks: builder.query<TasksResponseType, void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
