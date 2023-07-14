@@ -13,7 +13,7 @@ const HandleProgressText: FC<handleProgressTextProps> = ({
                 className={classNames.changeProgressText}
                 onClick={() => handleSaveProgressUpdate()}
             >
-                save Progress
+                SAVE
             </div>
         );
     }
@@ -22,7 +22,7 @@ const HandleProgressText: FC<handleProgressTextProps> = ({
             className={classNames.changeProgressText}
             onClick={() => handleProgressUpdate()}
         >
-            Progress update
+            UPDATE
         </div>
     );
 };

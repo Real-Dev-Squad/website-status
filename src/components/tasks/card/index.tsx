@@ -63,7 +63,10 @@ const Card: FC<Props> = ({
     const { data } = useGetUserQuery();
     const [progress, setProgress] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
-    const [updateTasks] = useUpdateTaskMutation();
+    const [updateTasks, { isLoading: isProgressLoading }] =
+        useUpdateTaskMutation();
+    // console.log(isProgressLoading);
+    // console.log(useUpdateTaskMutation());
     const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
@@ -308,6 +311,9 @@ const Card: FC<Props> = ({
         const data = {
             percentCompleted: percentCompleted,
         };
+        if (isProgressLoading) {
+            return <Loader />;
+        }
         await updateTasks({
             task: data,
             id: id,
@@ -442,7 +448,7 @@ const Card: FC<Props> = ({
                     </ConditionalLinkWrapper>
 
                     {/* progress bar */}
-                    <div>
+                    <div className={classNames.progressContainer}>
                         <div className={classNames.progressContainerUpdated}>
                             <HandleProgressbar
                                 progress={progress}
