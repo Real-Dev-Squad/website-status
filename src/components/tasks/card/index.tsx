@@ -34,7 +34,10 @@ import HandleProgressbar from './ProgressBar';
 import ProgressIndicator from './ProgressIndicator';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
-import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import {
+    useUpdateSelfTaskMutation,
+    useUpdateTaskMutation,
+} from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
@@ -63,10 +66,9 @@ const Card: FC<Props> = ({
     const { data } = useGetUserQuery();
     const [progress, setProgress] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
-    const [updateTasks, { isLoading: isProgressLoading }] =
-        useUpdateTaskMutation();
-    // console.log(isProgressLoading);
-    // console.log(useUpdateTaskMutation());
+    // const [updateTasks, { isLoading: isProgressLoading }] =
+    //     useUpdateTaskMutation();
+
     const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
@@ -89,6 +91,8 @@ const Card: FC<Props> = ({
     const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
+    const [updateSelfTask, { isLoading: isLoadingSelfTaskUpdate }] =
+        useUpdateSelfTaskMutation();
 
     const [isLoadingSuggestions, setIsLoadingSuggestions] =
         useState<boolean>(false);
@@ -311,14 +315,20 @@ const Card: FC<Props> = ({
         const data = {
             percentCompleted: percentCompleted,
         };
-        if (isProgressLoading) {
-            return <Loader />;
+        if (isUserAuthorized) {
+            await updateTask({
+                task: data,
+                id: id,
+            })
+                .unwrap()
+                .then(() => toast(SUCCESS, 'Progress Updated Successfully'))
+                .catch(() => toast(ERROR, 'Something Went wrong!'));
+        } else {
+            await updateSelfTask({ task: data, id: id })
+                .unwrap()
+                .then(() => toast(SUCCESS, 'Progress Updated Successfully'))
+                .catch(() => toast(ERROR, 'Something Went wrong!'));
         }
-        await updateTasks({
-            task: data,
-            id: id,
-        });
-        toast(SUCCESS, 'Progress Updated Successfully');
     };
 
     const handleProgressChange = (
@@ -467,6 +477,10 @@ const Card: FC<Props> = ({
                                     handleSaveProgressUpdate
                                 }
                                 handleProgressUpdate={handleProgressUpdate}
+                                loading={
+                                    isLoadingUpdateTaskDetails ||
+                                    isLoadingSelfTaskUpdate
+                                }
                             />
                         )}
                     </div>

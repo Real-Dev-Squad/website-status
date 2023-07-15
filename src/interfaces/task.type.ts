@@ -63,6 +63,7 @@ export type handleProgressTextProps = {
     progress: boolean;
     handleSaveProgressUpdate: () => void;
     handleProgressUpdate: () => void;
+    loading: boolean;
 };
 
 enum Tab {
