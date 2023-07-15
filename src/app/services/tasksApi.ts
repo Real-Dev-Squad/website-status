@@ -76,11 +76,11 @@ export const tasksApi = api.injectEndpoints({
             ],
         }),
         assignTask: builder.mutation<AssignTaskPayload, AssignTaskPayload>({
-            query: (payload: AssignTaskPayload) => ({
-                url: `tasks/${payload.taskId}`,
+            query: ({ taskId, assignee }: AssignTaskPayload) => ({
+                url: `tasks/${taskId}`,
                 method: 'PATCH',
                 body: assignTaskReducerStateBuilder()({
-                    assignee: payload.assignee,
+                    assignee,
                 }),
             }),
             invalidatesTags: (_result, _err, { taskId }) => [

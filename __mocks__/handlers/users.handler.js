@@ -51,6 +51,24 @@ const usersHandler = [
             }
             })
         );
+    }),
+    rest.get(`${URL}/users/:userId`, (req, res, ctx) => {
+        const { userId } = req.params;
+        const user = usersData.find(user => user.username === userId);
+        if(!user)
+            return res(
+                ctx.delay(150),
+                ctx.status(404),
+                ctx.json({
+                    message: 'User doesn\'t exist',
+                    error: 'Not Found'
+                })
+            );
+        return res(
+            ctx.delay(150),
+            ctx.status(200),
+            ctx.json(user)
+        );
     })
 ];
 

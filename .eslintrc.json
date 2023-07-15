@@ -18,7 +18,7 @@
     "plugins": ["react", "@typescript-eslint"],
     "rules": {
         "linebreak-style": ["error", "unix"],
-        "quotes": ["error", "single"],
+        "quotes": ["error", "single", { "avoidEscape": true }],
         "semi": ["error", "always"],
         "react/react-in-jsx-scope": "off",
         "no-mixed-spaces-and-tabs": "off"

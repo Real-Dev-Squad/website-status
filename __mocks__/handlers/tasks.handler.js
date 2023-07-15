@@ -1,4 +1,5 @@
 import { tasks } from '../db/tasks';
+import usersData from '../../__mocks__/db/users';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -12,8 +13,62 @@ const taskHandlers = [
             })
         );
     }),
-    rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
-        return res(ctx.delay(5000), ctx.status(204));
+    rest.patch(`${URL}/tasks/:taskId`, async (req, res, ctx) => {
+        const { taskId } = req.params;
+        const { assignee } = await req.json();
+        const task = tasks.find(t => t.id === taskId);
+        const user = usersData.find(u => u.username === assignee);
+        if(!assignee) return res(
+            ctx.status(204),
+            ctx.delay(5000),
+        );
+        const currentUserResponse = await fetch(`${URL}/users/self`);
+        if(!currentUserResponse.ok) return res(
+            ctx.status(403),
+            ctx.delay(100),
+            ctx.json({
+                error: 'Forbidden',
+                message: 'You are restricted from performing this action'
+            }),
+        );
+        const currentUser = await currentUserResponse.json();
+        if(!(currentUser.roles.super_user || currentUser.roles.app_owner)) return res(
+            ctx.status(401),
+            ctx.delay(100),
+            ctx.json({
+                error: 'Unauthorized',
+                message: 'You are not authorized for this action.'
+            }),
+        );
+        if(!task) return res(
+            ctx.status(404),
+            ctx.delay(100),
+            ctx.json({
+                message: 'Task not found',
+                error: 'Not Found',
+            })
+        );
+        if(!user) return res(
+            ctx.status(404),
+            ctx.delay(100),
+            ctx.json({
+                message: 'User doesn\'t exist',
+                error: 'Not Found',
+            })  
+        );
+        if(user.status !== 'idle') return res(
+            ctx.delay(100),
+            ctx.status(404),
+            ctx.json({
+                message: 'Task cannot be assigned to users with active or OOO status',
+            })
+        );
+        return res(
+            ctx.json({
+                message: 'Task assigned',
+                Id: taskId,
+            }),
+        );
     }),
     rest.post(`${URL}/tasks`, async (req, res, ctx) => {
         const body = await req.json();
@@ -60,40 +115,5 @@ export const failedUpdateTaskHandler = rest.patch(
         return res(ctx.status(404), ctx.json(failedUpdateTaskResponse));
     }
 );
-
-export const failedToAssignTaskResponse = {
-	UserNotIdle: {
-		message: 'Task cannot be assigned to users with active or OOO status'
-	},
-	InvalidTaskId: {
-		message: 'Task not found'
-	},
-	InvalidUser: {
-		statusCode: 404,
-		error: 'Not Found',
-		message: 'User doesn\'t exist'
-	},
-};
-
-export const failedToAssignTaskHandler = {
-	InvalidTaskId: rest.patch(
-		`${URL}/tasks/:taskId`,
-		(_, res, ctx) => {
-			return res(ctx.status(404), ctx.json(failedToAssignTaskResponse.InvalidTaskId));
-		}
-	),
-	InvalidUser: rest.patch(
-		`${URL}/tasks/:taskId`,
-		(_, res, ctx) => {
-			return res(ctx.status(404), ctx.json(failedToAssignTaskResponse.InvalidUser));
-		}
-	),
-	UserNotIdle: rest.patch(
-		`${URL}/tasks/:taskId`,
-		(_, res, ctx) => {
-			return res(ctx.status(404), ctx.json(failedToAssignTaskResponse.UserNotIdle));
-		}
-	),
-};
 
 export default taskHandlers;

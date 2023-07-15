@@ -1,4 +1,6 @@
+import { userSelfData } from '../../__mocks__/handlers/self.handler';
 const usersData = [
+    userSelfData,
     {
         'id': 'iMxYUdnETvu8JOmDq03c',
         'incompleteUserDetails': false,
