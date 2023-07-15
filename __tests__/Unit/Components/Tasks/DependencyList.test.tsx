@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
@@ -17,17 +17,6 @@ describe('DependencyList', () => {
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-
-    it('should render loading state', () => {
-        render(
-            <Provider store={store()}>
-                <DependencyList taskDependencyIds={taskDependencyIds} />
-            </Provider>
-        );
-
-        expect(screen.getByText(/Loading/i)).toBeInTheDocument();
-    });
-
     it('should render dependency list', async () => {
         render(
             <Provider store={store()}>
@@ -41,7 +30,6 @@ describe('DependencyList', () => {
         );
         const dependencyItems = await screen.findAllByRole('listitem');
         expect(dependencyItems).toHaveLength(2);
-
         expect(task1Link).toBeInTheDocument();
         expect(errorMessage).toBeInTheDocument();
     });
@@ -54,6 +42,11 @@ describe('DependencyList', () => {
         );
         const loading = screen.getByText(/Loading.../i);
         expect(loading).toBeInTheDocument();
+        expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+
+        const noDependency = screen.queryByText('No Dependencies');
+
+        expect(noDependency).toBeNull();
     });
     it('should render Link and span elements correctly', async () => {
         render(
@@ -65,7 +58,6 @@ describe('DependencyList', () => {
             name: /test 1 for drag and drop/i,
         });
         const spanElement = await screen.findByText('test 1 for drag and drop');
-
         expect(task1Link).toBeInTheDocument();
         expect(spanElement).toBeInTheDocument();
 
@@ -74,5 +66,19 @@ describe('DependencyList', () => {
         expect(mockNavigateToTask).toHaveBeenCalledWith(
             '/tasks/6KhcLU3yr45dzjQIVm0J'
         );
+    });
+
+    it('should render error state', async () => {
+        render(
+            <Provider store={store()}>
+                <DependencyList taskDependencyIds={taskDependencyIds} />
+            </Provider>
+        );
+
+        const errorContainer = await screen.findByRole('list');
+        const errorMessage = within(errorContainer).getByText(
+            'Unable to fetch this task with ID taskid-2'
+        );
+        expect(errorMessage).toBeInTheDocument();
     });
 });
