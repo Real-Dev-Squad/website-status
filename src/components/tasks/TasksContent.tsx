@@ -8,13 +8,11 @@ import {
 } from '../../constants/messages';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import { TasksLoader } from './TasksLoader';
 
 type RenderTaskListProps = {
     tab: string;
     dev: boolean;
     tasks: task[];
-    // tasksGroupedByStatus: task[]
 };
 
 const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
@@ -30,7 +28,10 @@ const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
         {}
     );
 
-    if (tasks && tasks.length === 0) {
+    const tasksNotAvailable =
+        tasks === undefined || tasksGroupedByStatus[tab] === undefined;
+
+    if (tasksNotAvailable || tasks.length === 0) {
         return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
     }
 
@@ -108,14 +109,16 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 />
             </div>
 
-            <button
-                className={classNames.paginationButton}
-                onClick={() => {
-                    fetchMoreTasks();
-                }}
-            >
-                {isFetching ? 'Loading...' : 'Load More'}
-            </button>
+            {dev && (
+                <button
+                    className={classNames.loadMoreBUtton}
+                    onClick={() => {
+                        fetchMoreTasks();
+                    }}
+                >
+                    {isFetching ? 'Loading...' : 'Load More'}
+                </button>
+            )}
         </div>
     );
 };
