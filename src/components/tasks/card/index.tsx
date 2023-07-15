@@ -90,10 +90,7 @@ const Card: FC<CardProps> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { dev } = router.query;
-    let isDevEnabled = false;
-    if (dev) {
-        isDevEnabled = dev === 'true';
-    }
+    const isDevEnabled = (dev && dev === 'true') || false;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
