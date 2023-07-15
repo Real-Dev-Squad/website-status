@@ -5,6 +5,7 @@ import task, {
 } from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
+import { TASK_RESULT_SIZE } from '@/constants/constants';
 
 type TasksCreateMutationResponse = { message: string; task: task };
 type TaskRequestPayload = { task: updateTaskDetails; id: string };
@@ -12,17 +13,24 @@ type TaskRequestPayload = { task: updateTaskDetails; id: string };
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
-            query: ({ dev, status, nextPage, prevPage }) => {
-                let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
+            query: ({
+                dev,
+                status,
+                size = TASK_RESULT_SIZE,
+                nextTasks,
+                prevPage,
+            }) => {
+                let url = dev
+                    ? `/tasks?status=${status}&dev=true&size=${size}`
+                    : '/tasks';
 
-                if (nextPage) {
-                    url = nextPage;
+                if (nextTasks) {
+                    url = nextTasks;
                 }
 
                 if (prevPage) {
                     url = prevPage;
                 }
-
                 return { url };
             },
             providesTags: ['Tasks'],
