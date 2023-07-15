@@ -23,6 +23,7 @@ export const ConditionalLinkWrapper: FC<ConditionalLinkWrapperProps> = ({
                 }}
                 as={`/tasks/${taskId}`}
                 className={classNames.cardTitle}
+                data-testid="link"
             >
                 {children}
             </Link>

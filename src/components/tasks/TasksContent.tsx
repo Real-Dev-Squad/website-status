@@ -1,63 +1,51 @@
 import classNames from '@/styles/tasks.module.scss';
-// import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
+import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import task, { Tab } from '@/interfaces/task.type';
-import { useContext, useState, useEffect } from 'react';
-import { STATUS_ORDER } from '@/constants/task-status';
+import { useState } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
-import { TASKS_URL } from '@/constants/url';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import updateCardContent from '@/helperFunctions/updateCardContent';
-import useFetch from '@/hooks/useFetch';
-import useUpdateTask from '@/hooks/useUpdateTask';
-import groupTasksByStatus from '@/utils/groupTasksByStatus';
-import { useEditMode } from '@/hooks/useEditMode';
+import { TasksLoader } from './TasksLoader';
+import PaginationButton from '../PaginationButton';
+import { useRouter } from 'next/dist/client/router';
 
 export const TasksContent = () => {
-    // TODO: the below code should be used when mutation for updating tasks is implemented
-    // const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
-    const { isEditMode } = useEditMode();
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const isEditable = isUserAuthorized && isEditMode;
+    const router = useRouter();
+    const { dev = false } = router.query;
     const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
-    // TODO: the below code should removed when mutation for updating tasks is implemented
-    const [filteredTask, setFilteredTask] = useState<any>([]);
-    // TODO: the below code should removed when mutation for updating tasks is implemented
-    const { response, isLoading, error } = useFetch(TASKS_URL);
-    // TODO: the below code should removed when mutation for updating tasks is implemented
-    const updateTask = useUpdateTask(filteredTask, setFilteredTask);
+    const [nextPage, setNextPage] = useState<string>('');
+    const [prevPage, setPrevPage] = useState<string>('');
 
-    const onSelect = (tab: Tab) => {
-        setActiveTab(tab);
+    const {
+        data: tasksData = { tasks: [], next: '', prev: '' },
+        isError,
+        isLoading,
+        isFetching,
+    } = useGetAllTasksQuery({
+        dev: dev as boolean,
+        status: activeTab,
+        nextPage,
+        prevPage,
+    });
+
+    const fetchNextTasks = () => {
+        if (tasksData.next) {
+            setPrevPage('');
+            setNextPage(tasksData.next);
+        }
     };
 
-    // TODO: the useEffect should be removed when mutation for updating tasks is implemented
-    useEffect(() => {
-        if ('tasks' in response) {
-            const tasks = updateTasksStatus(response.tasks);
-            tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-            tasks.sort(
-                (a: task, b: task) =>
-                    STATUS_ORDER.indexOf(a.status) -
-                    STATUS_ORDER.indexOf(b.status)
-            );
-            const taskMap: any = groupTasksByStatus(tasks);
-            setFilteredTask(taskMap);
+    const fetchPrevTasks = () => {
+        if (tasksData.prev) {
+            setNextPage('');
+            setPrevPage(tasksData.prev);
         }
-        return () => {
-            setFilteredTask([]);
-        };
-    }, [isLoading, response]);
+    };
 
-    // TODO: the below code should be used when mutation for updating tasks is implemented
-    /*
-    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+    const tasksGroupedByStatus = tasksData.tasks?.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
@@ -68,27 +56,46 @@ export const TasksContent = () => {
         },
         {}
     );
-    */
 
-    if (error) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    const renderTaskList = () => {
+        if (isFetching) {
+            return <TasksLoader />;
+        }
+
+        if (dev === 'true' && tasksData.tasks?.length) {
+            return <TaskList tasks={tasksData.tasks} />;
+        }
+
+        if (tasksGroupedByStatus && tasksGroupedByStatus[activeTab]?.length) {
+            return <TaskList tasks={tasksGroupedByStatus[activeTab]} />;
+        }
+
+        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    };
+
+    const onSelect = (tab: Tab) => {
+        setActiveTab(tab);
+        setNextPage('');
+        setPrevPage('');
+    };
 
     if (isLoading) return <p>Loading...</p>;
+
+    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
     return (
         <div className={classNames.tasksContainer}>
             <TabSection onSelect={onSelect} activeTab={activeTab} />
-            <div>
-                {filteredTask[activeTab] ? (
-                    <TaskList
-                        tasks={filteredTask[activeTab]}
-                        isEditable={isEditable}
-                        updateCardContent={updateCardContent}
-                        updateTask={updateTask}
-                    />
-                ) : (
-                    <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                )}
-            </div>
+            <div>{renderTaskList()}</div>
+
+            {dev === 'true' && (
+                <PaginationButton
+                    fetchPrev={fetchPrevTasks}
+                    fetchNext={fetchNextTasks}
+                    hasPrev={!!tasksData.prev}
+                    hasNext={!!tasksData.next}
+                />
+            )}
         </div>
     );
 };
