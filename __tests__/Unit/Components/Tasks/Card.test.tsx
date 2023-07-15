@@ -1,6 +1,5 @@
-import { fireEvent } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react-hooks';
-import { PropsWithChildren } from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
@@ -12,7 +11,6 @@ import {
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
 import useUserData from '@/hooks/useUserData';
-import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 
 const DEFAULT_PROPS = {
     content: {
