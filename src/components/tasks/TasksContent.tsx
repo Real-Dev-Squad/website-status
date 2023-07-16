@@ -43,7 +43,7 @@ const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
 };
 
 export const TasksContent = ({ dev }: { dev: boolean }) => {
-    const [activeTab, setActiveTab] = useState(Tab.AVAILABLE);
+    const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],
