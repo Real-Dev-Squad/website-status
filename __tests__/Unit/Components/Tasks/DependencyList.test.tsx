@@ -48,7 +48,7 @@ describe('DependencyList', () => {
 
         expect(noDependency).toBeNull();
     });
-    it('should render Link and span elements correctly', async () => {
+    it('should render elements correctly', async () => {
         render(
             <Provider store={store()}>
                 <DependencyList taskDependencyIds={TaskDependencyIds} />
