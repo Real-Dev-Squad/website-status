@@ -18,7 +18,7 @@ export const tasksApi = api.injectEndpoints({
                 status,
                 size = TASK_RESULT_SIZE,
                 nextTasks,
-                prevPage,
+                prevTasks,
             }) => {
                 let url = dev
                     ? `/tasks?status=${status}&dev=true&size=${size}`
@@ -28,8 +28,8 @@ export const tasksApi = api.injectEndpoints({
                     url = nextTasks;
                 }
 
-                if (prevPage) {
-                    url = prevPage;
+                if (prevTasks) {
+                    url = prevTasks;
                 }
                 return { url };
             },

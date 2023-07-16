@@ -111,10 +111,9 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
 
             {dev && (
                 <button
-                    className={classNames.loadMoreBUtton}
-                    onClick={() => {
-                        fetchMoreTasks();
-                    }}
+                    className={classNames.loadMoreButton}
+                    onClick={fetchMoreTasks}
+                    disabled={!tasksData.next}
                 >
                     {isFetching ? 'Loading...' : 'Load More'}
                 </button>

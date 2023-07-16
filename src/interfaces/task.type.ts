@@ -94,7 +94,7 @@ export type GetAllTaskParamType = {
     dev?: boolean;
     status?: string;
     nextTasks?: string;
-    prevPage?: string;
+    prevTasks?: string;
     size?: number;
 };
 

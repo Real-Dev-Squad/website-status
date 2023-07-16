@@ -33,3 +33,22 @@
     margin-bottom: 1rem;
     flex-wrap: wrap;
 }
+
+.loadMoreButton {
+    border: none;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: #fff;
+        color: #041484;
+    }
+
+    &:disabled {
+        color: gray;
+        cursor: default;
+    }
+}
