@@ -4,8 +4,8 @@ import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
+import { TaskDependencyIds } from '../../../../__mocks__/db/tasks';
 
-const taskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 const mockNavigateToTask = jest.fn();
 jest.mock('next/router', () => ({
     useRouter: () => ({
@@ -20,7 +20,7 @@ describe('DependencyList', () => {
     it('should render dependency list', async () => {
         render(
             <Provider store={store()}>
-                <DependencyList taskDependencyIds={taskDependencyIds} />
+                <DependencyList taskDependencyIds={TaskDependencyIds} />
             </Provider>
         );
 
@@ -51,7 +51,7 @@ describe('DependencyList', () => {
     it('should render Link and span elements correctly', async () => {
         render(
             <Provider store={store()}>
-                <DependencyList taskDependencyIds={taskDependencyIds} />
+                <DependencyList taskDependencyIds={TaskDependencyIds} />
             </Provider>
         );
         const task1Link = await screen.findByRole('link', {
@@ -71,7 +71,7 @@ describe('DependencyList', () => {
     it('should render error state', async () => {
         render(
             <Provider store={store()}>
-                <DependencyList taskDependencyIds={taskDependencyIds} />
+                <DependencyList taskDependencyIds={TaskDependencyIds} />
             </Provider>
         );
 
