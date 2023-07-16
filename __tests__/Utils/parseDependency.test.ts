@@ -1,4 +1,3 @@
-import { render } from '@testing-library/react';
 import { parseDependencyValue } from '@/utils/parseDependency';
 
 describe.only('parseDependencyValue', () => {
