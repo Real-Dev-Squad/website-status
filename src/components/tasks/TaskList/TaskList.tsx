@@ -38,10 +38,6 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
         tasksLimit,
     });
 
-    const { isEditMode } = useEditMode();
-    const { isUserAuthorized } = useUserData();
-    const isEditable = isUserAuthorized && isEditMode;
-
     const [updateCardContent] = useUpdateTaskMutation();
 
     function onSeeMoreTasksHandler() {
@@ -52,7 +48,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
         cardDetails: any,
         isDevEnabled?: boolean
     ) {
-        if (!isEditable || !updateCardContent) return;
+        if (!updateCardContent) return;
         updateCardContent({ id, task: cardDetails, isDevEnabled });
     }
 
@@ -62,7 +58,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
                 <Card
                     content={item}
                     key={item.id}
-                    shouldEdit={isEditable}
+                    shouldEdit
                     onContentChange={onContentChangeHandler}
                 />
             ))}

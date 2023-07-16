@@ -74,6 +74,11 @@ const Card: FC<CardProps> = ({
 
     const [keyLongPressed] = useKeyLongPressed();
 
+    const { onEditRoute, isEditMode } = useEditMode();
+    shouldEdit = shouldEdit && isUserAuthorized && isEditMode;
+
+    console.log({ isEditMode });
+
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
@@ -87,7 +92,6 @@ const Card: FC<CardProps> = ({
     const [assigneeName, setAssigneeName] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { dev } = router.query;
     const isDevEnabled = (dev && dev === 'true') || false;
@@ -95,7 +99,7 @@ const Card: FC<CardProps> = ({
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
 
-        if (isAltKeyLongPressed) {
+        if (isAltKeyLongPressed && isUserAuthorized) {
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
@@ -578,7 +582,7 @@ const Card: FC<CardProps> = ({
                 {cardDetails.status !== 'Completed' && isIssueClosed() && (
                     <CloseTaskButton />
                 )}
-                {isUserAuthorized && showEditButton && <EditButton />}
+                {!isEditMode && showEditButton && <EditButton />}
             </div>
         );
 
