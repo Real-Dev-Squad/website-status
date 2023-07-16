@@ -34,7 +34,7 @@ describe('DependencyList', () => {
         expect(errorMessage).toBeInTheDocument();
     });
 
-    it('should render no dependencies message', () => {
+    it('should render no dependencies message', async () => {
         render(
             <Provider store={store()}>
                 <DependencyList taskDependencyIds={[]} />
@@ -44,9 +44,9 @@ describe('DependencyList', () => {
         expect(loading).toBeInTheDocument();
         expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
-        const noDependency = screen.queryByText('No Dependencies');
+        const noDependency = await screen.findByText('No Dependencies');
 
-        expect(noDependency).toBeNull();
+        expect(noDependency).toBeInTheDocument();
     });
     it('should render elements correctly', async () => {
         render(
@@ -57,11 +57,13 @@ describe('DependencyList', () => {
         const task1Link = await screen.findByRole('link', {
             name: /test 1 for drag and drop/i,
         });
-        const spanElement = await screen.findByText('test 1 for drag and drop');
+        const taskLinkText = await screen.findByText(
+            'test 1 for drag and drop'
+        );
         expect(task1Link).toBeInTheDocument();
-        expect(spanElement).toBeInTheDocument();
+        expect(taskLinkText).toBeInTheDocument();
 
-        fireEvent.click(spanElement);
+        fireEvent.click(taskLinkText);
 
         expect(mockNavigateToTask).toHaveBeenCalledWith(
             '/tasks/6KhcLU3yr45dzjQIVm0J'
