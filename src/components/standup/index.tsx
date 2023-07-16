@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 
@@ -61,8 +61,12 @@ const StandUpContainer: FC = () => {
     ) => {
         event.preventDefault();
         try {
-            await addStandup(standupUpdate);
-            toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
+            const response = await addStandup(standupUpdate);
+            if ('error' in response) {
+                toast(ERROR, ERROR_MESSAGE);
+            } else {
+                toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
+            }
             setStandupUpdate(defaultState);
         } catch (error) {
             console.error(error);
@@ -83,12 +87,12 @@ const StandUpContainer: FC = () => {
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}
+                            aria-label="form"
                         >
                             <fieldset className={styles.formFields}>
                                 <FormInputComponent
                                     htmlFor="completed"
                                     labelValue={yesterdayDate}
-                                    dataTestId="completedInputField"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
                                     value={standupUpdate.completed}
@@ -98,7 +102,6 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="planned"
                                     labelValue="Today"
-                                    dataTestId="todayInputField"
                                     placeholder="e.g Refactor signup to support Google login"
                                     name="planned"
                                     value={standupUpdate.planned}
@@ -108,7 +111,6 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="blockers"
                                     labelValue="Blockers"
-                                    dataTestId="blockerInputField"
                                     placeholder="e.g Waiting on identity team to deploy FF"
                                     name="blockers"
                                     value={standupUpdate.blockers}
