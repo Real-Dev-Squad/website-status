@@ -20,7 +20,7 @@ describe('tasks content', () => {
     test('renders tabs component', async () => {
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
 
@@ -31,7 +31,7 @@ describe('tasks content', () => {
     test('select tab and set active', async () => {
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
         await screen.findByTestId('tabs');
@@ -48,7 +48,7 @@ describe('tasks content', () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
@@ -58,7 +58,7 @@ describe('tasks content', () => {
     test('display tasks when dev is true', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={true} />
             </Provider>,
             { query: { dev: 'true' } }
         );
@@ -70,7 +70,7 @@ describe('tasks content', () => {
     test('display tasks when dev is false', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { query: { dev: 'false' } }
         );
@@ -83,5 +83,49 @@ describe('tasks content', () => {
             'Design and develop an online booking system'
         );
         expect(task).toBeInTheDocument();
+    });
+
+    test('load more button is disabled when there are no more tasks to load', async () => {
+        server.use(noTasksFoundHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await screen.findByTestId('tabs');
+        const loadMoreButton = screen.getByRole('button', {
+            name: /load more/i,
+        });
+        expect(loadMoreButton).toBeDisabled();
+    });
+
+    test('load more button is enabled when there are more tasks to load', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await screen.findByTestId('tabs');
+        const loadMoreButton = screen.getByRole('button', {
+            name: /load more/i,
+        });
+        expect(loadMoreButton).toBeEnabled();
+    });
+
+    test('fetch more tasks when load more button is clicked', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await screen.findByTestId('tabs');
+        const loadMoreButton = screen.getByRole('button', {
+            name: /load more/i,
+        });
+        fireEvent.click(loadMoreButton);
+        await screen.findByText('Design and develop an online booking system');
     });
 });
