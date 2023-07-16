@@ -25,6 +25,7 @@ import {
 } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 import TaskDependency from '@/components/taskDetails/taskDependency';
+import { parseDependencyValue } from '@/utils/parseDependency';
 
 function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -95,9 +96,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         const { name, value } = event.target;
 
         if (name === 'dependsOn') {
-            const updatedDependencies = value
-                .split(',')
-                .map((taskId) => taskId.trim());
+            const updatedDependencies = parseDependencyValue(value);
             setUpdatedDependencies(updatedDependencies);
         }
         const formData = {

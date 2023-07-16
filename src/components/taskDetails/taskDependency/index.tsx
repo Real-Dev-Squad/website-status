@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { Textarea } from '..';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
+import { parseDependencyValue } from '@/utils/parseDependency';
 
 const TaskDependency: FC<TaskDependencyProps> = ({
     taskDependencyIds,
@@ -16,9 +17,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const { value } = event.target;
-        const updatedDependencies = value
-            .split(',')
-            .map((taskId) => taskId.trim());
+        const updatedDependencies = parseDependencyValue(value);
         setEditedDependencies(updatedDependencies);
         handleChange(event);
     };
