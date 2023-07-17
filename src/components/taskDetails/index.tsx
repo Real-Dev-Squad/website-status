@@ -19,11 +19,15 @@ import {
 } from '@/app/services/taskDetailsApi';
 
 import useUserData from '@/hooks/useUserData';
-import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
+import {
+    ButtonProps,
+    TextAreaProps,
+    taskDetailsDataType,
+} from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 import TaskDependencyList from './TaskDependencyList';
 
-export function Button(props: ButtonProps) {
+function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
     return (
         <button
@@ -35,15 +39,15 @@ export function Button(props: ButtonProps) {
         </button>
     );
 }
-export function Textarea(props: TextAreaProps) {
-    const { name, value, onChange, testId } = props;
+function Textarea(props: TextAreaProps) {
+    const { name, value, onChange } = props;
     return (
         <textarea
             className={classNames['textarea']}
             name={name}
             value={value}
+            data-testid="edit button"
             onChange={onChange}
-            data-testid={testId}
         />
     );
 }
@@ -143,7 +147,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 name="title"
                                 value={taskDetails?.title}
                                 onChange={handleChange}
-                                testId="title-textarea"
                             />
                         ) : (
                             <span
@@ -183,7 +186,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         name="purpose"
                                         value={taskDetails?.purpose}
                                         onChange={handleChange}
-                                        testId="purpose-textarea"
                                     />
                                 ) : (
                                     <p>

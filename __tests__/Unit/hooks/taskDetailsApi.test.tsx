@@ -17,7 +17,7 @@ beforeAll(() => {
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
-const taskIds = ['6KhcLU3yr45dzjQIVm0J'];
+const taskIds = ['6KhcLU3yr45dzjQIVm0J', '6KhcLU3yr45dzjQIVmod'];
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',

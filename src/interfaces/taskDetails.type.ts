@@ -27,5 +27,4 @@ export type TextAreaProps = {
     name: string;
     value: string;
     onChange: ChangeEventHandler;
-    testId: string;
 };
