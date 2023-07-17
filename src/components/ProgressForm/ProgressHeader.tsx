@@ -24,11 +24,17 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                 </p>
                 {updateType === 'Standup' ? (
                     <div className={styles.timeContainer}>
-                        <p className={styles.bannerPara}>
+                        <p
+                            className={styles.bannerPara}
+                            data-testid="standupTime"
+                        >
                             {` Standup time - ${currentDate} 6:00 am to 
                             ${futureDate} 5:59 am`}
                         </p>
-                        <p className={styles.bannerPara}>
+                        <p
+                            className={styles.bannerPara}
+                            data-testid="currentStandupTime"
+                        >
                             Current Standup Date - {currentDate}
                         </p>
                     </div>
