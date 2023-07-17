@@ -5,10 +5,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import {
-    NO_TASKS_FOUND_MESSAGE,
-    TASKS_FETCH_ERROR_MESSAGE,
-} from '@/constants/messages';
+import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handler';
 
 const server = setupServer(...handlers);
@@ -43,6 +40,7 @@ describe('tasks content', () => {
         });
         fireEvent.click(assignedButton);
         expect(assignedButton).toHaveClass('active');
+        await screen.findByText(NO_TASKS_FOUND_MESSAGE);
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
     });
 
@@ -55,5 +53,35 @@ describe('tasks content', () => {
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
         expect(errorMessage).toBeInTheDocument();
+    });
+
+    test('display tasks when dev is true', async () => {
+        const { findByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const task = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task).toBeInTheDocument();
+    });
+    test('display tasks when dev is false', async () => {
+        const { findByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent />
+            </Provider>,
+            { query: { dev: 'false' } }
+        );
+        await screen.findByTestId('tabs');
+        const availableButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
+        });
+        fireEvent.click(availableButton);
+        const task = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task).toBeInTheDocument();
     });
 });

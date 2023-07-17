@@ -1,4 +1,4 @@
-import { tasks } from '../db/tasks';
+import { tasks, PAGINATED_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -42,6 +42,7 @@ export const failedAddNewTaskResponse = {
     error: 'Bad Request',
     message: '"title" is required',
 };
+
 export const failedAddNewTaskHandler = rest.post(
     `${URL}/tasks`,
     (_, res, ctx) => {
@@ -54,6 +55,7 @@ export const failedUpdateTaskResponse = {
     error: 'Not Found',
     message: 'Task not found',
 };
+
 export const failedUpdateTaskHandler = rest.patch(
     `${URL}/tasks/:taskId`,
     (_, res, ctx) => {
@@ -62,16 +64,27 @@ export const failedUpdateTaskHandler = rest.patch(
 );
 
 export const noTasksFoundResponse = {
-	message: 'No Tasks Found',
-	tasks: []
+    message: 'No Tasks Found',
+    tasks: []
 };
+
 export const noTasksFoundHandler = rest.get(
-	`${URL}/tasks`,
-	(_, res, ctx) => {
-		return res(ctx.status(200), ctx.json(noTasksFoundResponse)
-		);
-	}
+    `${URL}/tasks`,
+    (_, res, ctx) => {
+        return res(ctx.status(200), ctx.json(noTasksFoundResponse)
+        );
+    }
 );
 
-
 export default taskHandlers;
+
+export const paginatedTasksHandler = [
+    rest.get(`${URL}/tasks`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(
+                PAGINATED_TASKS
+            )
+        );
+    }),
+];
