@@ -1,33 +1,26 @@
-import {
-    fireEvent,
-    render,
-    screen,
-    within,
-    waitFor,
-} from '@testing-library/react';
+import { fireEvent, screen, within, waitFor } from '@testing-library/react';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { TaskDependencyIds } from '../../../../__mocks__/db/tasks';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 const mockNavigateToTask = jest.fn();
-jest.mock('next/router', () => ({
-    useRouter: () => ({
-        push: mockNavigateToTask,
-    }),
-}));
 describe('DependencyList', () => {
     const server = setupServer(...taskDetailsHandler);
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
     it('should render dependency list', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <DependencyList taskDependencyIds={TaskDependencyIds} />
-            </Provider>
+            </Provider>,
+            {
+                push: mockNavigateToTask,
+            }
         );
 
         const task1Link = await screen.findByText('test 1 for drag and drop');
@@ -41,10 +34,13 @@ describe('DependencyList', () => {
     });
 
     it('should render no dependencies message', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <DependencyList taskDependencyIds={[]} />
-            </Provider>
+            </Provider>,
+            {
+                push: mockNavigateToTask,
+            }
         );
         const loading = screen.getByText(/Loading.../i);
         expect(loading).toBeInTheDocument();
@@ -55,10 +51,13 @@ describe('DependencyList', () => {
         expect(noDependency).toBeInTheDocument();
     });
     it('should render elements correctly', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <DependencyList taskDependencyIds={TaskDependencyIds} />
-            </Provider>
+            </Provider>,
+            {
+                push: mockNavigateToTask,
+            }
         );
         const task1Link = await screen.findByRole('link', {
             name: /test 1 for drag and drop/i,
@@ -77,10 +76,13 @@ describe('DependencyList', () => {
     });
 
     it('should render error state', async () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <DependencyList taskDependencyIds={TaskDependencyIds} />
-            </Provider>
+            </Provider>,
+            {
+                push: mockNavigateToTask,
+            }
         );
         await waitFor(async () => {
             const errorContainer = await screen.findByRole('list');

@@ -1,4 +1,5 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 import TaskDependency from '@/components/taskDetails/taskDependency';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
@@ -7,11 +8,6 @@ import { store } from '@/app/store';
 import { TaskDependencyIds } from '../../../../__mocks__/db/tasks';
 
 const mockNavigateToTask = jest.fn();
-jest.mock('next/router', () => ({
-    useRouter: () => ({
-        push: mockNavigateToTask,
-    }),
-}));
 describe('TaskDependency', () => {
     const server = setupServer(...taskDetailsHandler);
     beforeAll(() => server.listen());
@@ -20,7 +16,7 @@ describe('TaskDependency', () => {
     it('should update editedDependencies state and call handleChange when dependencies change', () => {
         const handleChange = jest.fn();
 
-        const { getByRole } = render(
+        const { getByRole } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
                     isEditing={true}
@@ -28,7 +24,10 @@ describe('TaskDependency', () => {
                     handleChange={handleChange}
                     taskDependencyIds={TaskDependencyIds}
                 />
-            </Provider>
+            </Provider>,
+            {
+                push: mockNavigateToTask,
+            }
         );
 
         const textarea = getByRole('textbox');
@@ -46,7 +45,7 @@ describe('TaskDependency', () => {
         );
     });
     it('should render DependencyList when isEditing is false', async () => {
-        const { queryByRole, getByTestId } = render(
+        const { queryByRole, getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
                     isEditing={false}
@@ -54,7 +53,10 @@ describe('TaskDependency', () => {
                     handleChange={jest.fn()}
                     taskDependencyIds={TaskDependencyIds}
                 />
-            </Provider>
+            </Provider>,
+            {
+                push: mockNavigateToTask,
+            }
         );
 
         const textarea = queryByRole('textbox');
