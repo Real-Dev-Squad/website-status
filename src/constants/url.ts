@@ -8,12 +8,7 @@ export const WELCOME_URL = 'https://welcome.realdevsquad.com';
 export const EVENTS_URL = 'https://www.realdevsquad.com/events.html';
 export const CRYPTO_URL = 'https://crypto.realdevsquad.com';
 export const STATUS_URL = 'https://status.realdevsquad.com';
-export const LOGIN_URL = () =>
-    `https://github.com/login/oauth/authorize?client_id=23c78f66ab7964e5ef97&state=${randomBytes(
-        Math.ceil(6)
-    )
-        .toString('hex')
-        .slice(0, 12)}`;
+export const LOGIN_URL = `https://github.com/login/oauth/authorize?client_id=23c78f66ab7964e5ef97&state=${STATUS_URL}`;
 export const MEMBERS_URL = 'https://members.realdevsquad.com';
 export const CHALLENGES_URL = `${BASE_URL}/challenges`;
 export const USER_SELF = `${BASE_URL}/users/self`;

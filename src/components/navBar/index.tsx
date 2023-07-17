@@ -77,7 +77,7 @@ const NavBar = () => {
             </div>
             <div className={styles.userProfile}>
                 {!isLoggedIn ? (
-                    <Link href={LOGIN_URL()}>
+                    <Link href={LOGIN_URL}>
                         <button className={styles.signInLink}>
                             Sign In With Github
                             <Image

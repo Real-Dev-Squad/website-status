@@ -13,7 +13,7 @@ import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetChallengesQuery } from '@/app/services/challengesApi';
 
 export const loginNode = (
-    <a href={LOGIN_URL()} target="_blank" rel="noreferrer">
+    <a href={LOGIN_URL} target="_blank" rel="noreferrer">
         Click here to Login
     </a>
 );

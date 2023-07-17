@@ -117,13 +117,6 @@ describe('Navbar', () => {
         expect(getLoginButton()).toBeVisible();
     });
 
-    test('state param on second time login', () => {
-        const { rerender } = renderWithProviders(<NavBar />);
-        const state = getStateParam();
-        rerender(<NavBar />);
-        expect(state).not.toBe(getStateParam());
-    });
-
     test('login button client id should be correct', () => {
         renderWithProviders(<NavBar />);
         expect(getLoginLinkNode().getAttribute('href')).toContain(
