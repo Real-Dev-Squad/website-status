@@ -33,7 +33,7 @@ const useAuthenticated = (): userDetails => {
 
     useEffect(() => {
         setUserDetails();
-    }, []);
+    }, [isSuccess]);
     return { userData, isLoggedIn, isLoading };
 };
 

@@ -33,8 +33,44 @@ type task = {
     };
 };
 
+export type TasksResponseType = {
+    message?: string;
+    tasks: task[];
+    next?: string;
+    prev?: string;
+};
+
+export type ProgressSliderProps = {
+    value: number;
+    debounceSlider: (debounceTimeOut: number) => void;
+    handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
     startedOn?: number;
+    percentCompleted?: number;
+};
+
+export type ProgressBarProps = {
+    progress: boolean;
+    progressValue: number;
+    percentCompleted: number;
+    startedOn: string;
+    endsOn: string;
+    handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    debounceSlider: (debounceTimeOut: number) => void;
+};
+
+export type ProgressIndicatorProps = {
+    percentCompleted: number;
+    startedOn: string;
+    endsOn: string;
+};
+
+export type handleProgressTextProps = {
+    progress: boolean;
+    handleSaveProgressUpdate: () => void;
+    handleProgressUpdate: () => void;
 };
 
 enum Tab {
@@ -52,4 +88,27 @@ const TABS = Object.values(Tab);
 
 export { TABS, Tab };
 
+export type TaskRequestPayload = {
+    task: updateTaskDetails;
+    id: string;
+    isDevEnabled?: boolean;
+};
+
+export type CardProps = {
+    content: task;
+    shouldEdit: boolean;
+    onContentChange?: (
+        changeId: string,
+        changeObject: object,
+        isDevEnabled?: boolean
+    ) => void;
+};
+
 export default task;
+
+export type GetAllTaskParamType = {
+    dev?: boolean;
+    status?: string;
+    nextPage?: string;
+    prevPage?: string;
+};

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import task from '@/interfaces/task.type';
+import { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
@@ -28,6 +28,10 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
+import { useGetUserQuery } from '@/app/services/userApi';
+import HandleProgressText from './ProgressText';
+import HandleProgressbar from './ProgressBar';
+import ProgressIndicator from './ProgressIndicator';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
@@ -35,15 +39,9 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 
-type Props = {
-    content: task;
-    shouldEdit: boolean;
-    onContentChange?: (changeId: string, changeObject: object) => void;
-};
-
 let timer: NodeJS.Timeout;
 
-const Card: FC<Props> = ({
+const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
@@ -54,7 +52,14 @@ const Card: FC<Props> = ({
         TASK_STATUS.VERIFIED,
         TASK_STATUS.AVAILABLE,
     ];
+
     const cardDetails = content;
+    const { data } = useGetUserQuery();
+    const [progress, setProgress] = useState<boolean>(false);
+    const [progressValue, setProgressValue] = useState<number>(0);
+    const [updateTasks] = useUpdateTaskMutation();
+    const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
+
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
         size: MAX_SEARCH_RESULTS,
@@ -68,8 +73,6 @@ const Card: FC<Props> = ({
     const [showEditButton, setShowEditButton] = useState(false);
 
     const [keyLongPressed] = useKeyLongPressed();
-
-    // const [assigneeName, setAssigneeName] = useState('');
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -86,7 +89,8 @@ const Card: FC<Props> = ({
 
     const { onEditRoute } = useEditMode();
     const router = useRouter();
-    const { query } = router;
+    const { dev } = router.query;
+    const isDevEnabled = (dev && dev === 'true') || false;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -144,11 +148,14 @@ const Card: FC<Props> = ({
                     new Date(`${event.target.value}`).getTime() / 1000;
                 toChange[changedProperty] = toTimeStamp;
             }
-            console.log(toChange);
 
-            onContentChange(toChange.id, {
-                [changedProperty]: toChange[changedProperty],
-            });
+            onContentChange(
+                toChange.id,
+                {
+                    [changedProperty]: toChange[changedProperty],
+                },
+                isDevEnabled
+            );
         }
     }
 
@@ -165,55 +172,6 @@ const Card: FC<Props> = ({
                 [changedProperty]: toChange[changedProperty],
             });
         }
-    }
-
-    function inputParser(input: string) {
-        const parsedDate = moment(new Date(parseInt(input, 10) * 1000));
-        return parsedDate;
-    }
-
-    function getPercentageOfDaysLeft(
-        startedOn: string,
-        endsOn: string
-    ): number {
-        const startDate = inputParser(startedOn);
-        const endDate = inputParser(endsOn);
-
-        // It provides us with total days that are there for the the project and number of days left
-        const totalDays = endDate.diff(startDate, 'days');
-        const daysLeft = endDate.diff(new Date(), 'days');
-
-        // It provides the percentage of days left
-        const percentageOfDaysLeft = (daysLeft / totalDays) * 100;
-        return percentageOfDaysLeft;
-    }
-
-    function handleProgressColor(
-        percentCompleted: number,
-        startedOn: string,
-        endsOn: string
-    ): string {
-        const percentageOfDaysLeft = getPercentageOfDaysLeft(startedOn, endsOn);
-        const percentIncomplete = 100 - percentCompleted;
-        if (
-            percentCompleted === 100 ||
-            percentageOfDaysLeft >= percentIncomplete
-        ) {
-            return classNames.progressGreen;
-        }
-
-        if (
-            (percentageOfDaysLeft < 25 && percentIncomplete > 35) ||
-            (percentageOfDaysLeft <= 0 && percentIncomplete > 0)
-        ) {
-            return classNames.progressRed;
-        }
-
-        if (percentageOfDaysLeft < 50 && percentIncomplete > 75) {
-            return classNames.progressOrange;
-        }
-
-        return classNames.progressYellow;
     }
 
     function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
@@ -265,6 +223,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
+            ...(isDevEnabled && { isDevEnabled: true }),
         });
         response
             .unwrap()
@@ -292,6 +251,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
+            ...(isDevEnabled && { isDevEnabled: true }),
         });
 
         response
@@ -321,23 +281,50 @@ const Card: FC<Props> = ({
         </div>
     );
 
-    const ProgressIndicator = () => (
-        <div className={classNames.progressIndicator}>
-            <div
-                className={`
-                ${handleProgressColor(
-                    content.percentCompleted,
-                    content.startedOn,
-                    content.endsOn
-                )}
-                ${classNames.progressStyle}
-                `}
-                style={{
-                    width: `${content.percentCompleted}%`,
-                }}
-            ></div>
-        </div>
-    );
+    const handleProgressUpdate = () => {
+        if (
+            content.assignee === data?.username ||
+            data?.roles.super_user === true
+        ) {
+            setProgress(true);
+        } else {
+            toast(ERROR, 'You cannot update progress');
+        }
+    };
+
+    const debounceSlider = (debounceTimeOut: number) => {
+        if (debounceTimeOut) {
+            clearTimeout(debounceTimeOut);
+        }
+        const timer = setTimeout(() => {
+            handleSliderChangeComplete(cardDetails.id, progressValue);
+        }, 1000);
+        setDebounceTimeOut(Number(timer));
+    };
+
+    const handleSliderChangeComplete = async (
+        id: string,
+        percentCompleted: number
+    ) => {
+        const data = {
+            percentCompleted: percentCompleted,
+        };
+        await updateTasks({
+            task: data,
+            id: id,
+        });
+        toast(SUCCESS, 'Progress Updated Successfully');
+    };
+
+    const handleProgressChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setProgressValue(Number(event.target.value));
+    };
+
+    const handleSaveProgressUpdate = () => {
+        setProgress(false);
+    };
 
     const AssigneeButton = () => {
         return (
@@ -378,8 +365,7 @@ const Card: FC<Props> = ({
 
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
-        if (e.target.value) setShowSuggestion(true);
-        else setShowSuggestion(false);
+        e.target.value ? setShowSuggestion(true) : setShowSuggestion(false);
     };
 
     const handleClick = (userName: string) => {
@@ -457,9 +443,27 @@ const Card: FC<Props> = ({
                     </ConditionalLinkWrapper>
 
                     {/* progress bar */}
-                    <div className={classNames.progressContainerUpdated}>
-                        <ProgressIndicator />
-                        <span>{content.percentCompleted}% </span>
+                    <div>
+                        <div className={classNames.progressContainerUpdated}>
+                            <HandleProgressbar
+                                progress={progress}
+                                progressValue={progressValue}
+                                percentCompleted={content.percentCompleted}
+                                handleProgressChange={handleProgressChange}
+                                debounceSlider={debounceSlider}
+                                startedOn={content.startedOn}
+                                endsOn={content.endsOn}
+                            />
+                        </div>
+                        {dev === 'true' && (
+                            <HandleProgressText
+                                progress={progress}
+                                handleSaveProgressUpdate={
+                                    handleSaveProgressUpdate
+                                }
+                                handleProgressUpdate={handleProgressUpdate}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className={classNames.taskStatusAndDateContainer}>
@@ -511,12 +515,7 @@ const Card: FC<Props> = ({
                         </span>
                         {shouldEdit ? (
                             isUserAuthorized && (
-                                <div
-                                    style={{
-                                        position: 'relative',
-                                        display: 'inline-block',
-                                    }}
-                                >
+                                <div className={classNames.suggestionDiv}>
                                     <input
                                         ref={inputRef}
                                         value={assigneeName}
@@ -535,12 +534,15 @@ const Card: FC<Props> = ({
                                         tabIndex={0}
                                     />
 
-                                    {showSuggestion && (
-                                        <SuggestionBox
-                                            suggestions={suggestions}
-                                            onClickName={handleClick}
-                                            loading={isLoadingSuggestions}
-                                        />
+                                    {isLoadingSuggestions ? (
+                                        <Loader />
+                                    ) : (
+                                        showSuggestion && (
+                                            <SuggestionBox
+                                                suggestions={suggestions}
+                                                onSelectAssignee={handleClick}
+                                            />
+                                        )
                                     )}
                                 </div>
                             )
@@ -633,11 +635,16 @@ const Card: FC<Props> = ({
             </div>
             <div className={classNames.cardItems}>
                 <span className={classNames.progressContainer}>
-                    <ProgressIndicator />
+                    <ProgressIndicator
+                        percentCompleted={content.percentCompleted}
+                        startedOn={content.startedOn}
+                        endsOn={content.endsOn}
+                    />
 
                     <span>{content.percentCompleted}% completed</span>
                 </span>
             </div>
+
             <div
                 className={`${classNames.taskTagLevelWrapper} ${
                     shouldEdit && classNames.editMode
@@ -677,12 +684,7 @@ const Card: FC<Props> = ({
                             </span>
                             {shouldEdit ? (
                                 isUserAuthorized && (
-                                    <div
-                                        style={{
-                                            position: 'relative',
-                                            display: 'inline-block',
-                                        }}
-                                    >
+                                    <div className={classNames.suggestionDiv}>
                                         <input
                                             ref={inputRef}
                                             value={assigneeName}
@@ -703,12 +705,17 @@ const Card: FC<Props> = ({
                                             tabIndex={0}
                                         />
 
-                                        {showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onClickName={handleClick}
-                                                loading={isLoadingSuggestions}
-                                            />
+                                        {isLoadingSuggestions ? (
+                                            <Loader />
+                                        ) : (
+                                            showSuggestion && (
+                                                <SuggestionBox
+                                                    suggestions={suggestions}
+                                                    onSelectAssignee={
+                                                        handleClick
+                                                    }
+                                                />
+                                            )
                                         )}
                                     </div>
                                 )
