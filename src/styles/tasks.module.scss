@@ -1,3 +1,6 @@
+$primaryColor: #041484;
+$disabledColor: gray;
+
 .container {
     text-align: center;
     display: flex;
@@ -44,11 +47,11 @@
 
     &:hover {
         background-color: #fff;
-        color: #041484;
+        color: $primaryColor;
     }
 
     &:disabled {
-        color: gray;
+        color: $disabledColor;
         cursor: default;
     }
 }
