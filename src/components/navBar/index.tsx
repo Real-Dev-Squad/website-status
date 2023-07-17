@@ -16,15 +16,14 @@ import {
 } from '@/constants/url';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
-import { Loader } from '../tasks/card/Loader';
 import useUserData from '@/hooks/useUserData';
 
 const NavBar = () => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
-    const { data: userData, isUserAuthorized } = useUserData();
-    const isLoggedIn = isUserAuthorized;
+    const { data: userData, isSuccess } = useUserData();
+    const isLoggedIn = isSuccess;
 
     return (
         <nav data-testid="navbar" className={styles.navBar}>
@@ -78,7 +77,7 @@ const NavBar = () => {
             </div>
             <div className={styles.userProfile}>
                 {!isLoggedIn ? (
-                    <Link href={LOGIN_URL}>
+                    <Link href={LOGIN_URL()}>
                         <button className={styles.signInLink}>
                             Sign In With Github
                             <Image

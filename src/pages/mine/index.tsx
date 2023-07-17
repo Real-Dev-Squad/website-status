@@ -9,6 +9,7 @@ import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
 import { Loader } from '@/components/tasks/card/Loader';
+import { loginNode } from '../challenges';
 
 function CardList({ tasks }: { tasks: task[] }) {
     return (
@@ -53,9 +54,7 @@ const Mine: FC = () => {
                 ) : (
                     <div>
                         <p>You are not Authorized</p>
-                        <a href={LOGIN_URL} target="_blank" rel="noreferrer">
-                            Click here to Login
-                        </a>
+                        {loginNode}
                     </div>
                 )}
             </div>

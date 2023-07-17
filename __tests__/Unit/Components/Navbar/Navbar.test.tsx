@@ -1,10 +1,15 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import NavBar from '../../../../src/components/navBar';
-import * as authHooks from '@/hooks/useAuthenticated';
+import isAuthenticated from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
+import {
+    selfHandlerFn,
+    userSelfData,
+} from '../../../../__mocks__/handlers/self.handler';
+import { BASE_URL } from '@/constants/url';
 
 const server = setupServer(...handlers);
 
@@ -14,7 +19,18 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const getLoginButton = () =>
+    screen.getByRole('button', { name: 'Sign In With Github GitHub Icon' });
+const getLoginLinkNode = () =>
+    screen.getByRole('link', { name: 'Sign In With Github GitHub Icon' });
+const getStateParam = () =>
+    new URL(
+        getLoginLinkNode().getAttribute('href')!,
+        BASE_URL
+    ).searchParams.get('state')!;
+
 describe('Navbar', () => {
+    beforeAll;
     test.skip('check for loading state', () => {
         const { getByTestId } = renderWithProviders(<NavBar />);
         const loader = getByTestId('loader');
@@ -23,8 +39,7 @@ describe('Navbar', () => {
 
     test.skip('user whether loggedIn or not', async () => {
         renderWithProviders(<NavBar />);
-        const navbar = await screen.findAllByTestId('navbar');
-        expect(screen.getByText('Hello, Mahima'));
+        expect(screen.getByText('Hello, Mahima')).toBeVisible();
     });
 
     test('renders the hamburger icon', async () => {
@@ -47,7 +62,6 @@ describe('Navbar', () => {
         expect(homeLink).toBeInTheDocument();
         expect(eventLink).toBeInTheDocument();
         expect(memberLink).toBeInTheDocument();
-        // TODO: Uncomment when crypto is added
         // expect(cryptoLink).toBeInTheDocument();
         expect(statusLink).toBeInTheDocument();
     });
@@ -90,5 +104,30 @@ describe('Navbar', () => {
         await screen.findAllByTestId('navbar');
         const logo = getByTestId('logo');
         expect(logo).toBeInTheDocument();
+    });
+
+    test('show login in button when the user is not logged in', () => {
+        server.use(
+            selfHandlerFn(404, {
+                message: 'User does not exist',
+                error: 'Not Found',
+            })
+        );
+        renderWithProviders(<NavBar />);
+        expect(getLoginButton()).toBeVisible();
+    });
+
+    test('state param on second time login', () => {
+        const { rerender } = renderWithProviders(<NavBar />);
+        const state = getStateParam();
+        rerender(<NavBar />);
+        expect(state).not.toBe(getStateParam());
+    });
+
+    test('login button client id should be correct', () => {
+        renderWithProviders(<NavBar />);
+        expect(getLoginLinkNode().getAttribute('href')).toContain(
+            '?client_id=23c78f66ab7964e5ef97'
+        );
     });
 });

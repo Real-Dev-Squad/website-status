@@ -9,6 +9,7 @@ import StandUpContainer from '@/components/standup';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import PageNotFound from '../404';
+import { loginNode } from '../challenges';
 
 const StandUp: FC = memo(function StandUp() {
     const { isLoggedIn, isLoading } = useAuthenticated();
@@ -28,18 +29,14 @@ const StandUp: FC = memo(function StandUp() {
                 return (
                     <div>
                         <p>You are not Authorized</p>
-                        <a href={LOGIN_URL} target="_blank" rel="noreferrer">
-                            Click here to Login
-                        </a>
+                        {loginNode}
                     </div>
                 );
             }
         } else {
             <div>
                 <p>You are not Authorized</p>
-                <a href={LOGIN_URL} target="_blank" rel="noreferrer">
-                    Click here to Login
-                </a>
+                {loginNode}
             </div>;
         }
     };

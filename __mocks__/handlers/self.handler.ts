@@ -1,0 +1,40 @@
+import { rest } from 'msw';
+const URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+export const userSelfData = {
+	id: 'aTOG168A86JXY5wVosJx',
+	github_display_name: 'Mahima Khandelwal',
+	github_id: 'Maheima',
+	roles: {
+		member: true,
+		archived: false,
+		super_user: false,
+	},
+	last_name: 'Khandelwal',
+	username: 'mahima',
+	incompleteUserDetails: false,
+	profileStatus: 'BLOCKED',
+	picture: {
+		publicId: 'profile/aTOG168A86JXY5wVosJx/fj2c46kpmpy3gi8tl63s',
+		url: 'https://res.cloudinary.com/realdevsquad/image/upload/v1674639637/profile/aTOG168A86JXY5wVosJx/fj2c46kpmpy3gi8tl63s.jpg'
+	},
+	status: 'active',
+	first_name: 'Mahima',
+	profileURL: 'https://mahima-profile-service.onrender.com'
+};
+
+export const selfHandlerFn = (status: number, response: object | null) => {
+	return rest.get(`${URL}/users/self`, (_, res, ctx) => {
+		return res(
+			ctx.delay(500),
+			ctx.status(status),
+			ctx.json(response)
+		);
+	});
+};
+
+const selfHandler = [
+	selfHandlerFn(200, userSelfData)
+];
+
+export default selfHandler;

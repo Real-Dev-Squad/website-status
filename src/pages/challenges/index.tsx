@@ -12,6 +12,12 @@ import { skipToken } from '@reduxjs/toolkit/dist/query';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetChallengesQuery } from '@/app/services/challengesApi';
 
+export const loginNode = (
+    <a href={LOGIN_URL()} target="_blank" rel="noreferrer">
+        Click here to Login
+    </a>
+);
+
 const renderCardList = (
     challengeSection: challenge[],
     key: string,
@@ -98,13 +104,7 @@ const Challenges: FC = () => {
                     ) : (
                         <div>
                             <p>You are not Authorized</p>
-                            <a
-                                href={LOGIN_URL}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Click here to Login
-                            </a>
+                            {loginNode}
                         </div>
                     ))}
             </div>

@@ -26,7 +26,7 @@ const useAuthenticated = (): userDetails => {
             profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
         });
 
-        if (isSuccess) setIsLoggedIn(true);
+        setIsLoggedIn(isSuccess);
 
         setIsLoading(false);
     };
