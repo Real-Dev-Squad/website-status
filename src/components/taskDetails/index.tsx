@@ -226,7 +226,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 <ol
                                     className={
                                         classNames[
-                                            'task_dependency_list_container'
+                                        'task_dependency_list_container'
                                         ]
                                     }
                                 >
@@ -260,8 +260,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetails?.type === 'feature'
                                             ? taskDetails?.assignee
                                             : taskDetails?.participants?.join(
-                                                  ' , '
-                                              )
+                                                ' , '
+                                            )
                                     }
                                 />
                                 <Details

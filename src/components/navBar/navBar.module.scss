@@ -39,6 +39,7 @@ $theme-active: #87d870;
             padding: 0;
         }
     }
+
     .signInLink {
         border-radius: 6px;
         padding: 5px;
@@ -82,15 +83,18 @@ $theme-active: #87d870;
     .hamburgerIcon {
         display: none;
     }
-    .mobile_menu > li {
+
+    .mobile_menu>li {
         list-style: none;
     }
+
     .navLinks .mobile_menu {
         display: flex;
         flex-direction: row;
         align-items: center;
         gap: 1rem;
     }
+
     .active {
         color: $theme-active;
         text-decoration: underline;
@@ -98,12 +102,14 @@ $theme-active: #87d870;
         text-underline-offset: $offset;
     }
 }
+
 @media (max-width: 970px) {
     .navBar {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         position: relative;
+
         .navLinks {
             a {
                 padding: 10px 40px;
@@ -112,6 +118,7 @@ $theme-active: #87d870;
                 display: none;
             }
         }
+
         .hamburgerIcon {
             display: inline-block;
             height: 73px;
@@ -122,6 +129,7 @@ $theme-active: #87d870;
             color: $white;
         }
     }
+
     .signInLink {
         position: absolute;
         top: 10px;
@@ -163,7 +171,7 @@ $theme-active: #87d870;
 
     .userProfile {
         position: absolute;
-        top: 10px;
+        top: 0;
         right: 20px;
     }
 
@@ -171,11 +179,11 @@ $theme-active: #87d870;
         width: 10rem;
     }
 
-    .navBarMenu .mobile_menu > li a:hover {
+    .navBarMenu .mobile_menu>li a:hover {
         color: $theme-active;
     }
 
-    .navBarMenu .mobile_menu > li a:active {
+    .navBarMenu .mobile_menu>li a:active {
         color: $theme-active;
     }
 }
