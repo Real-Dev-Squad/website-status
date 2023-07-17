@@ -1,5 +1,5 @@
 import task, {
-    updateTaskDetails,
+    TaskRequestPayload,
     TasksResponseType,
     GetAllTaskParamType,
 } from '@/interfaces/task.type';
@@ -13,7 +13,6 @@ import {
 } from '@/constants/date';
 
 type TasksCreateMutationResponse = { message: string; task: task };
-type TaskRequestPayload = { task: updateTaskDetails; id: string };
 type AssignTaskPayload = { taskId: string; assignee: string };
 
 export const assignTaskReducerStateBuilder = () => {
@@ -74,10 +73,13 @@ export const tasksApi = api.injectEndpoints({
             }),
         }),
         updateTask: builder.mutation<void, TaskRequestPayload>({
-            query: (task: TaskRequestPayload) => ({
-                url: `tasks/${task.id}`,
+            // isDevEnabled is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
+            query: ({ task, id, isDevEnabled }: TaskRequestPayload) => ({
+                url: isDevEnabled
+                    ? `tasks/${id}?userStatusFlag=true`
+                    : `tasks/${id}`,
                 method: 'PATCH',
-                body: task.task,
+                body: task,
             }),
             invalidatesTags: (_result, _err, { id }) => [
                 {

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import task from '@/interfaces/task.type';
+import { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { useRouter } from 'next/router';
@@ -39,15 +39,9 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 
-type Props = {
-    content: task;
-    shouldEdit: boolean;
-    onContentChange?: (changeId: string, changeObject: object) => void;
-};
-
 let timer: NodeJS.Timeout;
 
-const Card: FC<Props> = ({
+const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
@@ -96,6 +90,7 @@ const Card: FC<Props> = ({
     const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { dev } = router.query;
+    const isDevEnabled = (dev && dev === 'true') || false;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -154,9 +149,13 @@ const Card: FC<Props> = ({
                 toChange[changedProperty] = toTimeStamp;
             }
 
-            onContentChange(toChange.id, {
-                [changedProperty]: toChange[changedProperty],
-            });
+            onContentChange(
+                toChange.id,
+                {
+                    [changedProperty]: toChange[changedProperty],
+                },
+                isDevEnabled
+            );
         }
     }
 
@@ -224,6 +223,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
+            ...(isDevEnabled && { isDevEnabled: true }),
         });
         response
             .unwrap()
@@ -251,6 +251,7 @@ const Card: FC<Props> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
+            ...(isDevEnabled && { isDevEnabled: true }),
         });
 
         response
