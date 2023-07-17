@@ -15,7 +15,11 @@ import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/constants/constants';
+import {
+    ERROR_MESSAGE,
+    MAX_SEARCH_RESULTS,
+    PROGRESS_SUCCESSFUL,
+} from '@/constants/constants';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -66,8 +70,6 @@ const Card: FC<Props> = ({
     const { data } = useGetUserQuery();
     const [progress, setProgress] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
-    // const [updateTasks, { isLoading: isProgressLoading }] =
-    //     useUpdateTaskMutation();
 
     const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
 
@@ -321,13 +323,13 @@ const Card: FC<Props> = ({
                 id: id,
             })
                 .unwrap()
-                .then(() => toast(SUCCESS, 'Progress Updated Successfully'))
-                .catch(() => toast(ERROR, 'Something Went wrong!'));
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
         } else {
             await updateSelfTask({ task: data, id: id })
                 .unwrap()
-                .then(() => toast(SUCCESS, 'Progress Updated Successfully'))
-                .catch(() => toast(ERROR, 'Something Went wrong!'));
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
         }
     };
 

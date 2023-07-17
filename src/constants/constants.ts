@@ -5,3 +5,4 @@ export const COMPLETED = 'COMPLETED';
 export const DONE = 'DONE';
 export const AVAILABLE = 'AVAILABLE';
 export const UNASSINGED = 'UNASSINGED';
+export const PROGRESS_SUCCESSFUL = 'Progress Updated Successfully';
