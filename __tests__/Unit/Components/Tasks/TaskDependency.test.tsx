@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import TaskDependency from '@/components/taskDetails/taskDependency';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
@@ -44,5 +44,25 @@ describe('TaskDependency', () => {
         expect(handleChange.mock.calls[0][0].target.value).toBe(
             'task1,task2,task3'
         );
+    });
+    it('should render DependencyList when isEditing is false', async () => {
+        const { queryByRole, getByTestId } = render(
+            <Provider store={store()}>
+                <TaskDependency
+                    isEditing={false}
+                    updatedDependencies={[]}
+                    handleChange={jest.fn()}
+                    taskDependencyIds={TaskDependencyIds}
+                />
+            </Provider>
+        );
+
+        const textarea = queryByRole('textbox');
+        expect(textarea).toBeNull();
+
+        await waitFor(() => {
+            const dependencyList = getByTestId('dependency-list');
+            expect(dependencyList).toBeInTheDocument();
+        });
     });
 });

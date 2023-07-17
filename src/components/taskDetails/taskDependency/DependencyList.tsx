@@ -29,7 +29,10 @@ const DependencyList: React.FC<DependencyListProps> = ({
         return <p>Unable to fetch dependency tasks</p>;
     } else if (dependencyData && dependencyData.length) {
         return (
-            <ol className={classNames['task_dependency_list_container']}>
+            <ol
+                className={classNames['task_dependency_list_container']}
+                data-testid="dependency-list"
+            >
                 {dependencyData.map((task: DependencyItem, index: number) => {
                     const isFulfilled = task.status === 'fulfilled';
                     const isRejected = task.status === 'rejected';

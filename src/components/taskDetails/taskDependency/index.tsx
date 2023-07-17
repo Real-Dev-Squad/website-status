@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FC, useState } from 'react';
-import { Textarea } from '..';
+import { Textarea } from '@/components/taskDetails';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { parseDependencyValue } from '@/utils/parseDependency';
@@ -29,6 +29,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
                     name="dependsOn"
                     value={editedDependencies.join(',')}
                     onChange={handleDependenciesChange}
+                    testId="dependency-textarea"
                 />
             )}
             <DependencyList taskDependencyIds={taskDependencyIds} />

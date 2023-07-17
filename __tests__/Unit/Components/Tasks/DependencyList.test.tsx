@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+    fireEvent,
+    render,
+    screen,
+    within,
+    waitFor,
+} from '@testing-library/react';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { setupServer } from 'msw/node';
@@ -76,11 +82,12 @@ describe('DependencyList', () => {
                 <DependencyList taskDependencyIds={TaskDependencyIds} />
             </Provider>
         );
-
-        const errorContainer = await screen.findByRole('list');
-        const errorMessage = within(errorContainer).getByText(
-            'Unable to fetch this task with ID taskid-2'
-        );
-        expect(errorMessage).toBeInTheDocument();
+        await waitFor(async () => {
+            const errorContainer = await screen.findByRole('list');
+            const errorMessage = within(errorContainer).getByText(
+                'Unable to fetch this task with ID taskid-2'
+            );
+            expect(errorMessage).toBeInTheDocument();
+        });
     });
 });
