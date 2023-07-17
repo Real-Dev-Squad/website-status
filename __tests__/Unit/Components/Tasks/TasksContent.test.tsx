@@ -62,6 +62,11 @@ describe('tasks content', () => {
             </Provider>,
             { query: { dev: 'true' } }
         );
+        await screen.findByTestId('tabs');
+        const availableButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
+        });
+        fireEvent.click(availableButton);
         const task = await findByText(
             'Design and develop an online booking system'
         );
@@ -115,17 +120,29 @@ describe('tasks content', () => {
     });
 
     test('fetch more tasks when load more button is clicked', async () => {
-        renderWithRouter(
+        const { findByText } = renderWithRouter(
             <Provider store={store()}>
                 <TasksContent dev={true} />
             </Provider>,
             { query: { dev: 'true' } }
         );
         await screen.findByTestId('tabs');
-        const loadMoreButton = screen.getByRole('button', {
+        const availableButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
+        });
+        fireEvent.click(availableButton);
+        const task = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task).toBeInTheDocument();
+        const loadMoreButton = await screen.getByRole('button', {
             name: /load more/i,
         });
+        expect(loadMoreButton).toBeEnabled();
         fireEvent.click(loadMoreButton);
-        await screen.findByText('Design and develop an online booking system');
+        const task2 = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task2).toBeInTheDocument();
     });
 });

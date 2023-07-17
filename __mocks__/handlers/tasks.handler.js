@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -89,4 +89,13 @@ export const paginatedTasksHandler = [
             )
         );
     }),
+    rest.patch(`${URL}/${PAGINATED_TASKS.next}`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(
+                NEXT_PAGINATED_TASKS
+            )
+        );
+    }),
+
 ];
