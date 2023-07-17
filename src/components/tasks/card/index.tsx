@@ -24,7 +24,6 @@ import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
@@ -38,6 +37,7 @@ import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
+import { log } from 'console';
 
 let timer: NodeJS.Timeout;
 
@@ -74,7 +74,12 @@ const Card: FC<CardProps> = ({
 
     const [keyLongPressed] = useKeyLongPressed();
 
-    const { onEditRoute, isEditMode } = useEditMode();
+    const [isEditMode, setIsEditMode] = useState(false);
+    const onEditRoute = () => {
+        console.log('edit');
+
+        setIsEditMode(true);
+    };
     shouldEdit = shouldEdit && isUserAuthorized && isEditMode;
 
     console.log({ isEditMode });

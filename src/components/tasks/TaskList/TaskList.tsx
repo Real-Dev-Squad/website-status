@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Card from '../card';
 import task from '@/interfaces/task.type';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
@@ -8,9 +8,7 @@ import {
     ADD_MORE_TASKS_LIMIT,
 } from '../constants';
 import styles from '../card/card.module.scss';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import useUserData from '@/hooks/useUserData';
 
 type TaksListProps = {
     tasks: task[];
