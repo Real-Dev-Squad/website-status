@@ -132,7 +132,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-
+    const { dev } = router.query;
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <Layout hideHeader={true}>
@@ -219,17 +219,21 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                 </div>
                             </TaskContainer>
-                            <TaskContainer
-                                title="Task DependsOn"
-                                hasImg={false}
-                            >
-                                <TaskDependency
-                                    taskDependencyIds={taskDependencyIds}
-                                    isEditing={isEditing}
-                                    updatedDependencies={updatedDependencies}
-                                    handleChange={handleChange}
-                                />
-                            </TaskContainer>
+                            {dev && (
+                                <TaskContainer
+                                    title="Task DependsOn"
+                                    hasImg={false}
+                                >
+                                    <TaskDependency
+                                        taskDependencyIds={taskDependencyIds}
+                                        isEditing={isEditing}
+                                        updatedDependencies={
+                                            updatedDependencies
+                                        }
+                                        handleChange={handleChange}
+                                    />
+                                </TaskContainer>
+                            )}
                         </section>
 
                         <section className={classNames.rightContainer}>
