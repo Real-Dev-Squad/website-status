@@ -28,8 +28,9 @@ const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
     ...TASK,
     id: TASK.id + index,
 }));
+const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 
-export { tasks, TASK };
+export { tasks, TASK, TaskDependencyIds };
 
 const PAGINATED_TASKS = {
     tasks: [

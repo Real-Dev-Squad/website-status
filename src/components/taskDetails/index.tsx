@@ -14,14 +14,14 @@ import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import {
     useGetTaskDetailsQuery,
-    useGetTasksDependencyDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 
 import useUserData from '@/hooks/useUserData';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import TaskDependencyList from './TaskDependencyList';
+import TaskDependency from '@/components/taskDetails/taskDependency';
+import { parseDependencyValue } from '@/utils/parseDependency';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -37,6 +37,7 @@ export function Button(props: ButtonProps) {
 }
 export function Textarea(props: TextAreaProps) {
     const { name, value, onChange, testId } = props;
+
     return (
         <textarea
             className={classNames['textarea']}
@@ -67,12 +68,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         ? data?.taskData?.dependsOn || []
         : [];
 
-    const {
-        data: dependencyData,
-        isLoading: loading,
-        isFetching: fetching,
-        isError: error,
-    } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
     const { SUCCESS, ERROR } = ToastTypes;
 
     const taskDetailsData = data?.taskData;
@@ -82,6 +77,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [editedDetails, setEditedDetails] = useState({});
 
     const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+    const [updatedDependencies, setUpdatedDependencies] = useState<string[]>(
+        taskDetails?.dependsOn || []
+    );
 
     useEffect(() => {
         const fetchedData = data?.taskData;
@@ -92,9 +90,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
+        const { name, value } = event.target;
+
+        if (name === 'dependsOn') {
+            const updatedDependencies = parseDependencyValue(value);
+            setUpdatedDependencies(updatedDependencies);
+        }
         const formData = {
             ...taskDetails,
             [event.target.name]: event.target.value,
+            dependsOn: [...updatedDependencies],
         };
         setEditedDetails(formData);
         setTaskDetails(formData);
@@ -127,10 +132,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const navigateToTask = (taskId: string) => {
-        router.push(`/tasks/${taskId}`);
-    };
-
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <Layout hideHeader={true}>
@@ -217,26 +220,21 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                 </div>
                             </TaskContainer>
-                            <TaskContainer
-                                title="Task DependsOn"
-                                hasImg={false}
-                            >
-                                <ol
-                                    className={
-                                        classNames[
-                                            'task_dependency_list_container'
-                                        ]
-                                    }
+                            {isDevModeEnabled && (
+                                <TaskContainer
+                                    title="Task DependsOn"
+                                    hasImg={false}
                                 >
-                                    <TaskDependencyList
-                                        loading={loading}
-                                        fetching={fetching}
-                                        error={error}
-                                        dependencyData={dependencyData}
-                                        navigateToTask={navigateToTask}
+                                    <TaskDependency
+                                        taskDependencyIds={taskDependencyIds}
+                                        isEditing={isEditing}
+                                        updatedDependencies={
+                                            updatedDependencies
+                                        }
+                                        handleChange={handleChange}
                                     />
-                                </ol>
-                            </TaskContainer>
+                                </TaskContainer>
+                            )}
                         </section>
 
                         <section className={classNames.rightContainer}>
