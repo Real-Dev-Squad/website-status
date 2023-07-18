@@ -19,10 +19,8 @@ import {
     failedGetTasksResponse,
     failedUpdateTaskHandler,
 } from '../../../__mocks__/handlers/tasks.handler';
-import {
-    userSelfData,
-    selfHandlerFn,
-} from '../../../__mocks__/handlers/self.handler';
+import { selfHandlerFn } from '../../../__mocks__/handlers/self.handler';
+import usersData from '../../../__mocks__/db/users';
 import { RequestHandler } from 'msw';
 
 const server = setupServer(...handlers);
@@ -423,11 +421,11 @@ describe('useUpdateTaskMutation()', () => {
 });
 
 describe('useAssignTaskMutation', () => {
-    const payload = { taskId: 'firestoreDocumentId1230', assignee: 'mahima' };
+    const payload = { taskId: 'firestoreDocumentId1230', assignee: '19sriram' };
 
     test('should fail when the user is not Authorized', async () => {
         await useAssignTaskMutationTestWrapper({
-            handler: [selfHandlerFn(200, userSelfData)],
+            handler: [selfHandlerFn(200, usersData[0])],
             payload,
             targetRes: { target: 'isError', value: true },
             targetStatus: { target: 'error', value: 401 },
@@ -466,7 +464,7 @@ describe('useAssignTaskMutation', () => {
         await useAssignTaskMutationTestWrapper({
             handler: [
                 selfHandlerFn(200, {
-                    ...userSelfData,
+                    ...usersData[0],
                     roles: { super_user: true },
                     status: 'idle',
                 }),
@@ -488,7 +486,7 @@ describe('useAssignTaskMutation', () => {
         await useAssignTaskMutationTestWrapper({
             handler: [
                 selfHandlerFn(200, {
-                    ...userSelfData,
+                    ...usersData[0],
                     roles: { super_user: true },
                     status: 'idle',
                 }),
@@ -510,7 +508,7 @@ describe('useAssignTaskMutation', () => {
         await useAssignTaskMutationTestWrapper({
             handler: [
                 selfHandlerFn(200, {
-                    ...userSelfData,
+                    ...usersData[0],
                     roles: { super_user: true },
                     status: 'active',
                 }),
@@ -532,7 +530,7 @@ describe('useAssignTaskMutation', () => {
         await useAssignTaskMutationTestWrapper({
             handler: [
                 selfHandlerFn(200, {
-                    ...userSelfData,
+                    ...usersData[0],
                     roles: { super_user: true },
                 }),
             ],
