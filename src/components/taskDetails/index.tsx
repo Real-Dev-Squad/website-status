@@ -132,7 +132,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const { dev } = router.query;
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <Layout hideHeader={true}>
@@ -219,7 +220,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                 </div>
                             </TaskContainer>
-                            {dev && (
+                            {isDevModeEnabled && (
                                 <TaskContainer
                                     title="Task DependsOn"
                                     hasImg={false}
