@@ -12,10 +12,18 @@ import { TasksLoader } from './TasksLoader';
 import PaginationButton from '../PaginationButton';
 import { useRouter } from 'next/dist/client/router';
 
+type routerQueryParams = {
+    dev?: string | false;
+    selected?: Tab;
+};
+
 export const TasksContent = () => {
     const router = useRouter();
-    const { dev = false } = router.query;
-    const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
+    const { dev = false, selected = Tab.IN_PROGRESS }: routerQueryParams =
+        router.query;
+
+    const selectedTab = selected.toUpperCase();
+
     const [nextPage, setNextPage] = useState<string>('');
     const [prevPage, setPrevPage] = useState<string>('');
 
@@ -26,7 +34,7 @@ export const TasksContent = () => {
         isFetching,
     } = useGetAllTasksQuery({
         dev: dev as boolean,
-        status: activeTab,
+        status: selectedTab,
         nextPage,
         prevPage,
     });
@@ -66,15 +74,20 @@ export const TasksContent = () => {
             return <TaskList tasks={tasksData.tasks} />;
         }
 
-        if (tasksGroupedByStatus && tasksGroupedByStatus[activeTab]?.length) {
-            return <TaskList tasks={tasksGroupedByStatus[activeTab]} />;
+        if (tasksGroupedByStatus && tasksGroupedByStatus[selectedTab]?.length) {
+            return <TaskList tasks={tasksGroupedByStatus[selectedTab]} />;
         }
 
         return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
     };
 
     const onSelect = (tab: Tab) => {
-        setActiveTab(tab);
+        router.push({
+            query: {
+                ...router.query,
+                selected: tab.toLowerCase(),
+            },
+        });
         setNextPage('');
         setPrevPage('');
     };
@@ -85,7 +98,7 @@ export const TasksContent = () => {
 
     return (
         <div className={classNames.tasksContainer}>
-            <TabSection onSelect={onSelect} activeTab={activeTab} />
+            <TabSection onSelect={onSelect} activeTab={selectedTab as Tab} />
             <div>{renderTaskList()}</div>
 
             {dev === 'true' && (
