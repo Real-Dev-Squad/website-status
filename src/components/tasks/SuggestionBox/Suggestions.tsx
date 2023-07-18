@@ -12,6 +12,7 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
     (
         {
             assigneeName,
+            searchTerm,
             showSuggestion,
             handleAssignment,
             handleChange,
@@ -21,9 +22,9 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
     ) => {
         const { data, isLoading } = useGetAllUsersByUsernameQuery(
             {
-                searchString: assigneeName,
+                searchString: searchTerm,
             },
-            { skip: assigneeName ? false : true }
+            { skip: searchTerm ? false : true }
         );
 
         const usersData = data?.users;

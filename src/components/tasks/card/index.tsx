@@ -35,12 +35,8 @@ import ProgressIndicator from './ProgressIndicator';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import SuggestionBox from '../SuggestionBox/SuggestionBox';
-import { userDataType } from '@/interfaces/user.type';
-import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import Suggestions from '../SuggestionBox/Suggestions';
-
-let timer: NodeJS.Timeout;
+import useDebounce from '../../../hooks/useDebounce';
 
 const Card: FC<CardProps> = ({
     content,
@@ -82,10 +78,8 @@ const Card: FC<CardProps> = ({
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
 
-    const [isLoadingSuggestions, setIsLoadingSuggestions] =
-        useState<boolean>(false);
-    const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
     const [assigneeName, setAssigneeName] = useState<string>('');
+    const debounceSearchTerm = useDebounce(assigneeName, 500);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const { onEditRoute } = useEditMode();
@@ -375,43 +369,6 @@ const Card: FC<CardProps> = ({
         setShowSuggestion(false);
     };
 
-    // const fetchUsers = async (e: string) => {
-    //     if (!e) return;
-    //     setIsLoadingSuggestions(true);
-
-    //     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
-    //     try {
-    //         const { requestPromise } = fetch({ url });
-    //         const users = await requestPromise;
-    //         const usersData = users.data.users;
-    //         const suggestedUsers: GithubInfo[] = [];
-    //         usersData.map((data: userDataType) => {
-    //             suggestedUsers.push({
-    //                 github_id: data.username,
-    //                 profileImageUrl: data?.picture?.url
-    //                     ? data.picture.url
-    //                     : placeholderImageURL,
-    //             });
-    //         });
-
-    //         setSuggestions(suggestedUsers);
-    //         setIsLoadingSuggestions(false);
-    //     } catch (error: any) {
-    //         setIsLoadingSuggestions(false);
-    //         toast(ERROR, error.message);
-    //     }
-    // };
-
-    // const debounce = (fn: (e: string) => void, delay: number) => {
-    //     return function (e: string) {
-    //         clearTimeout(timer);
-    //         setSuggestions([]);
-    //         timer = setTimeout(() => {
-    //             fn(e);
-    //         }, delay);
-    //     };
-    // };
-
     // show redesign only on dev
     if (isNewCardDesignEnabled)
         return (
@@ -518,6 +475,7 @@ const Card: FC<CardProps> = ({
                             isUserAuthorized && (
                                 <Suggestions
                                     assigneeName={assigneeName}
+                                    searchTerm={debounceSearchTerm}
                                     showSuggestion={showSuggestion}
                                     handleAssignment={handleAssignment}
                                     handleClick={handleClick}
@@ -665,6 +623,7 @@ const Card: FC<CardProps> = ({
                                 isUserAuthorized && (
                                     <Suggestions
                                         assigneeName={assigneeName}
+                                        searchTerm={debounceSearchTerm}
                                         showSuggestion={showSuggestion}
                                         handleAssignment={handleAssignment}
                                         handleClick={handleClick}

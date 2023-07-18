@@ -15,6 +15,7 @@ export type SuggestionListProps = {
 
 export type SuggestionsProps = {
     assigneeName: string;
+    searchTerm: string;
     showSuggestion: boolean;
     handleAssignment: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleChange: (e: any, changedProperty: any) => void;
