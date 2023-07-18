@@ -28,21 +28,21 @@ describe('tasks content', () => {
         await screen.findByTestId('tabs');
     });
 
-    // test('select tab and set active', async () => {
-    //     renderWithRouter(
-    //         <Provider store={store()}>
-    //             <TasksContent />
-    //         </Provider>
-    //     );
-    //     await screen.findByTestId('tabs');
-    //     const assignedButton = screen.getByRole('button', {
-    //         name: /assigned/i,
-    //     });
-    //     fireEvent.click(assignedButton);
-    //     expect(assignedButton).toHaveClass('active');
-    //     await screen.findByText(NO_TASKS_FOUND_MESSAGE);
-    //     expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
-    // });
+    test('select tab and set active', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent />
+            </Provider>,
+            { query: { selected: 'assigned' } }
+        );
+        await screen.findByTestId('tabs');
+        const assignedButton = screen.getByRole('button', {
+            name: /assigned/i,
+        });
+        expect(assignedButton).toHaveClass('active');
+        await screen.findByText(NO_TASKS_FOUND_MESSAGE);
+        expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
+    });
 
     test('displays "No tasks found" message when there are no tasks', async () => {
         server.use(noTasksFoundHandler);
@@ -101,37 +101,31 @@ describe('tasks content', () => {
         expect(assignedButton).toHaveClass('active');
     });
 
-    // test('display tasks when dev is false', async () => {
-    //     const { findByText } = renderWithRouter(
-    //         <Provider store={store()}>
-    //             <TasksContent />
-    //         </Provider>,
-    //         { query: { dev: 'false' } }
-    //     );
-    //     await screen.findByTestId('tabs');
-    //     const unassignedButton = screen.getByRole('button', {
-    //         name: /UNASSINGED/i,
-    //     });
+    test('display tasks when dev is false', async () => {
+        const { findByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent />
+            </Provider>,
+            { query: { dev: 'false', selected: 'available' } }
+        );
+        await screen.findByTestId('tabs');
+        const unassignedButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
+        });
+        expect(unassignedButton).toHaveClass('active');
+        const task = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task).toBeInTheDocument();
+    });
 
-    //     fireEvent.click(unassignedButton);
-    //     expect(unassignedButton).toHaveClass('active');
-
-    //     await waitFor(()=> {
-    //         screen.findByText(
-    //             'Design and develop an online booking system'
-    //         );
-    //     });
-    //     const task = await findByText(
-    //         'Design and develop an online booking system'
-    //     );
-    //     expect(task).toBeInTheDocument();
-    // });
-
-    test('on click new tab gets selected', async () => {
+    test('on click calls router.push', async () => {
+        const mockPushFn = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
                 <TasksContent />
-            </Provider>
+            </Provider>,
+            { push: mockPushFn }
         );
 
         await waitFor(() => {
@@ -143,6 +137,11 @@ describe('tasks content', () => {
         });
 
         fireEvent.click(assignedButton);
-        // expect(routerSpy).toBeCalledTimes(1);
+        expect(mockPushFn).toBeCalledTimes(1);
+        expect(mockPushFn).toBeCalledWith({
+            query: {
+                selected: 'assigned',
+            },
+        });
     });
 });
