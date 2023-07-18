@@ -132,7 +132,11 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
         );
         const completedInputField = screen.getByRole('textbox', {
             name: yesterdayDate,
@@ -169,7 +173,11 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
         );
         const completedInputField = screen.getByRole('textbox', {
             name: yesterdayDate,
@@ -222,7 +230,11 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
         );
         const completedInputField = screen.getByRole('textbox', {
             name: yesterdayDate,

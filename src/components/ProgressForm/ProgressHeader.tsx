@@ -2,13 +2,14 @@ import { FC } from 'react';
 import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 import { progressHeaderProps } from '@/types/ProgressUpdates';
+import { dateFormat } from '@/constants/constants';
 
 const ProgressHeader: FC<progressHeaderProps> = ({
     totalMissedUpdates,
     updateType,
 }) => {
-    const currentDate = moment().format('MMMM DD, YYYY ');
-    const futureDate = moment().add(1, 'day').format('MMMM DD, YYYY ');
+    const currentDate = moment().format(dateFormat);
+    const futureDate = moment().add(1, 'day').format(dateFormat);
     return (
         <div className={styles.bannerContainer}>
             <div className={styles.progressBanner}>

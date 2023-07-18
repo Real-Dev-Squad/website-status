@@ -7,3 +7,4 @@ export const AVAILABLE = 'AVAILABLE';
 export const UNASSINGED = 'UNASSINGED';
 export const STANDUP_ALREADY_SUBMITTED =
     'Standup already submitted for the day';
+export const dateFormat = 'MMMM DD, YYYY ';

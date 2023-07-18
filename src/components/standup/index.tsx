@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
@@ -27,6 +28,7 @@ const defaultState = {
 };
 
 const StandUpContainer: FC = () => {
+    const router = useRouter();
     const [standupUpdate, setStandupUpdate] =
         useState<standupUpdateType>(defaultState);
 
@@ -74,7 +76,7 @@ const StandUpContainer: FC = () => {
             toast(ERROR, ERROR_MESSAGE);
         }
 
-        window.location.reload();
+        router.replace(router.asPath);
     };
 
     return (
