@@ -39,7 +39,7 @@ describe('DrogDropContextWrapper Component', () => {
                     refreshData={null}
                 />
             );
-            getByText(tasksFallbackText);
+            expect(getByText(tasksFallbackText)).toBeVisible();
             expect(getByAltText('ghost')).toHaveAttribute(
                 'src',
                 expect.stringMatching(urlPattern)
@@ -54,7 +54,7 @@ describe('DrogDropContextWrapper Component', () => {
                     refreshData={null}
                 />
             );
-            getByText(idleMemberFallbackText);
+            expect(getByText(idleMemberFallbackText)).toBeVisible();
             expect(getByAltText('ghost')).toHaveAttribute(
                 'src',
                 expect.stringMatching(urlPattern)
@@ -72,6 +72,8 @@ describe('DrogDropContextWrapper Component', () => {
         );
         const unAssignedTaskNodes = queryAllByText(TASK.title);
         expect(unAssignedTaskNodes).toHaveLength(10);
+        expect(unAssignedTaskNodes[0]).toBeVisible();
+        expect(unAssignedTaskNodes[6]).toBeVisible();
         getByText('Akash Shukla');
     });
 

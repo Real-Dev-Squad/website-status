@@ -21,7 +21,16 @@ export const usersApi = api.injectEndpoints({
         getUsersByUsername: build.query<UsersResponse, UsernameQueryArgs>({
             query: ({ searchString, size = 5 }) =>
                 `/users?search=${searchString}&size=${size}`,
-            providesTags: ['Users'],
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result['users'].map(({ username }) => ({
+                              type: 'Users' as const,
+                              id: username,
+                          })),
+                          'Users',
+                      ]
+                    : ['Users'],
         }),
         getUsersByLink: build.query<UsersResponse, { paginatedLink: string }>({
             query: ({ paginatedLink }) => paginatedLink,

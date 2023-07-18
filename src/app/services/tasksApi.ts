@@ -36,23 +36,27 @@ export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
             query: ({ dev, status, nextPage, prevPage }) => {
-                let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
-
-                if (nextPage) {
-                    url = nextPage;
-                }
-
-                if (prevPage) {
-                    url = prevPage;
-                }
+                const url =
+                    nextPage ?? prevPage ?? dev
+                        ? `/tasks?status=${status}&dev=true`
+                        : '/tasks';
 
                 return { url };
             },
-            providesTags: ['Tasks'],
+            providesTags: (result) =>
+                result
+                    ? [
+                          ...result['tasks'].map(({ id }) => ({
+                              type: 'Tasks' as const,
+                              id,
+                          })),
+                          'Tasks',
+                      ]
+                    : ['Tasks'],
 
             transformResponse: (response: TasksResponseType) => {
                 return {
-                    tasks: response.tasks?.sort(
+                    tasks: [...response.tasks].sort(
                         (a: task, b: task) => +a.endsOn - +b.endsOn
                     ),
                     next: response.next,
@@ -96,10 +100,14 @@ export const tasksApi = api.injectEndpoints({
                     assignee,
                 }),
             }),
-            invalidatesTags: (_result, _err, { taskId }) => [
+            invalidatesTags: (_result, _err, { taskId: id, assignee }) => [
                 {
                     type: 'Tasks',
-                    id: taskId,
+                    id,
+                },
+                {
+                    type: 'Users',
+                    id: assignee,
                 },
             ],
         }),
