@@ -1,14 +1,10 @@
 import React from 'react';
-import { screen, fireEvent } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import NavBar from '../../../../src/components/navBar';
-import isAuthenticated from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import {
-    selfHandlerFn,
-    userSelfData,
-} from '../../../../__mocks__/handlers/self.handler';
+import { selfHandlerFn } from '../../../../__mocks__/handlers/self.handler';
 import { BASE_URL } from '@/constants/url';
 
 const server = setupServer(...handlers);
@@ -30,7 +26,6 @@ const getStateParam = () =>
     ).searchParams.get('state')!;
 
 describe('Navbar', () => {
-    beforeAll;
     test.skip('check for loading state', () => {
         const { getByTestId } = renderWithProviders(<NavBar />);
         const loader = getByTestId('loader');

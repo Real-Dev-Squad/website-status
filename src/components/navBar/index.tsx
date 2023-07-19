@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -21,10 +21,7 @@ import useUserData from '@/hooks/useUserData';
 const NavBar = () => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
-
     const { data: userData, isSuccess } = useUserData();
-    const isLoggedIn = isSuccess;
-
     return (
         <nav data-testid="navbar" className={styles.navBar}>
             <div
@@ -76,7 +73,7 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className={styles.userProfile}>
-                {!isLoggedIn ? (
+                {!isSuccess ? (
                     <Link href={LOGIN_URL}>
                         <button className={styles.signInLink}>
                             Sign In With Github
