@@ -72,6 +72,7 @@ describe('tasks content', () => {
         );
         expect(task).toBeInTheDocument();
     });
+
     test('display tasks when dev is false', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>

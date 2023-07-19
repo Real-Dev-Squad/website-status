@@ -81,7 +81,7 @@ export const noTasksFoundHandler = rest.get(
 export default taskHandlers;
 
 export const paginatedTasksHandler = [
-    rest.get(`${URL}/tasks`, (_, res, ctx) => {
+    rest.get(`${URL}/tasks?status=AVAILABLE&dev=true`, (_, res, ctx) => {
         return res(
             ctx.status(200),
             ctx.json(
