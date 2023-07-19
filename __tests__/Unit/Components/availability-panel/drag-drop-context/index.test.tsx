@@ -2,8 +2,7 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import { tasks, TASK } from '../../../../../__mocks__/db/tasks';
 import { renderWithProviders } from '../../../../../src/test-utils/renderWithProvider';
 
-export const urlPattern =
-    /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;
+export const relativeURL = /\/([a-zA-Z0-9]+[_.$?%-:=]?)+/g;
 export const idleMemberFallbackText = 'No idle members found';
 export const tasksFallbackText = 'No task found';
 
@@ -23,11 +22,11 @@ describe('DrogDropContextWrapper Component', () => {
             expect(ghostNodes).toHaveLength(2);
             expect(ghostNodes[0]).toHaveAttribute(
                 'src',
-                expect.stringMatching(urlPattern)
+                expect.stringMatching(relativeURL)
             );
             expect(ghostNodes[1]).toHaveAttribute(
                 'src',
-                expect.stringMatching(urlPattern)
+                expect.stringMatching(relativeURL)
             );
         });
 

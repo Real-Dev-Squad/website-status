@@ -22,6 +22,14 @@ import {
 import { selfHandlerFn } from '../../../__mocks__/handlers/self.handler';
 import usersData from '../../../__mocks__/db/users';
 import { RequestHandler } from 'msw';
+import {
+    TASK_NOT_FOUND,
+    UNAUTHENTICATED,
+    UNAUTHORIZED,
+    USER_NOT_FOUND,
+    USER_NOT_IDLE,
+    taskAssigned,
+} from '@/constants/payload';
 
 const server = setupServer(...handlers);
 
@@ -431,31 +439,20 @@ describe('useAssignTaskMutation', () => {
             targetStatus: { target: 'error', value: 401 },
             targetData: {
                 target: 'error',
-                value: {
-                    message: 'You are not authorized for this action.',
-                    error: 'Unauthorized',
-                },
+                value: UNAUTHORIZED,
             },
         });
     }, 7000);
 
     test('should fail when the user is not Authenticated', async () => {
         await useAssignTaskMutationTestWrapper({
-            handler: [
-                selfHandlerFn(404, {
-                    message: "User doesn't exist",
-                    error: 'Not Found',
-                }),
-            ],
+            handler: [selfHandlerFn(404, USER_NOT_FOUND)],
             payload,
             targetRes: { target: 'isError', value: true },
             targetStatus: { target: 'error', value: 403 },
             targetData: {
                 target: 'error',
-                value: {
-                    message: 'You are restricted from performing this action',
-                    error: 'Forbidden',
-                },
+                value: UNAUTHENTICATED,
             },
         });
     });
@@ -474,10 +471,7 @@ describe('useAssignTaskMutation', () => {
             targetStatus: { target: 'error', value: 404 },
             targetData: {
                 target: 'error',
-                value: {
-                    message: 'Task not found',
-                    error: 'Not Found',
-                },
+                value: TASK_NOT_FOUND,
             },
         });
     });
@@ -496,10 +490,7 @@ describe('useAssignTaskMutation', () => {
             targetStatus: { target: 'error', value: 404 },
             targetData: {
                 target: 'error',
-                value: {
-                    message: "User doesn't exist",
-                    error: 'Not Found',
-                },
+                value: USER_NOT_FOUND,
             },
         });
     });
@@ -518,10 +509,7 @@ describe('useAssignTaskMutation', () => {
             targetStatus: { target: 'error', value: 404 },
             targetData: {
                 target: 'error',
-                value: {
-                    message:
-                        'Task cannot be assigned to users with active or OOO status',
-                },
+                value: USER_NOT_IDLE,
             },
         });
     });
@@ -539,10 +527,7 @@ describe('useAssignTaskMutation', () => {
             targetStatus: { target: 'data', value: 200 },
             targetData: {
                 target: 'data',
-                value: {
-                    message: 'Task assigned',
-                    Id: payload.taskId,
-                },
+                value: taskAssigned(payload.taskId),
             },
         });
     });

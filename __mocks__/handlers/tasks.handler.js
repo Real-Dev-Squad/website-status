@@ -1,6 +1,7 @@
 import { tasks, PAGINATED_TASKS } from '../db/tasks';
 import usersData from '../../__mocks__/db/users';
 import { rest } from 'msw';
+import { TASK_NOT_FOUND, UNAUTHENTICATED, UNAUTHORIZED, USER_NOT_FOUND, USER_NOT_IDLE, taskAssigned } from '@/constants/payload';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const taskHandlers = [
@@ -26,48 +27,31 @@ const taskHandlers = [
         if(!currentUserResponse.ok) return res(
             ctx.status(403),
             ctx.delay(100),
-            ctx.json({
-                error: 'Forbidden',
-                message: 'You are restricted from performing this action'
-            }),
+            ctx.json(UNAUTHENTICATED),
         );
         const currentUser = await currentUserResponse.json();
         if(!(currentUser.roles.super_user || currentUser.roles.app_owner)) return res(
             ctx.status(401),
             ctx.delay(100),
-            ctx.json({
-                error: 'Unauthorized',
-                message: 'You are not authorized for this action.'
-            }),
+            ctx.json(UNAUTHORIZED),
         );
         if(!task) return res(
             ctx.status(404),
             ctx.delay(100),
-            ctx.json({
-                message: 'Task not found',
-                error: 'Not Found',
-            })
+            ctx.json(TASK_NOT_FOUND)
         );
         if(!user) return res(
             ctx.status(404),
             ctx.delay(100),
-            ctx.json({
-                message: 'User doesn\'t exist',
-                error: 'Not Found',
-            })  
+            ctx.json(USER_NOT_FOUND)  
         );
         if(user.status !== 'idle') return res(
             ctx.delay(100),
             ctx.status(404),
-            ctx.json({
-                message: 'Task cannot be assigned to users with active or OOO status',
-            })
+            ctx.json(USER_NOT_IDLE)
         );
         return res(
-            ctx.json({
-                message: 'Task assigned',
-                Id: taskId,
-            }),
+            ctx.json(taskAssigned(taskId)),
         );
     }),
     rest.post(`${URL}/tasks`, async (req, res, ctx) => {
