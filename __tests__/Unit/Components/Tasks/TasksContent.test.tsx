@@ -20,7 +20,7 @@ describe('tasks content', () => {
     test('renders tabs component', async () => {
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
 
@@ -31,9 +31,8 @@ describe('tasks content', () => {
     test('select tab and set active', async () => {
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            { query: { selected: 'assigned' } }
+                <TasksContent dev={false} />
+            </Provider>
         );
         await screen.findByTestId('tabs');
         const assignedButton = screen.getByRole('button', {
@@ -48,7 +47,7 @@ describe('tasks content', () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
@@ -58,53 +57,25 @@ describe('tasks content', () => {
     test('display tasks when dev is true', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={true} />
             </Provider>,
             { query: { dev: 'true' } }
         );
+        await screen.findByTestId('tabs');
+        const availableButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
+        });
+        fireEvent.click(availableButton);
         const task = await findByText(
             'Design and develop an online booking system'
         );
         expect(task).toBeInTheDocument();
     });
 
-    test('select in_progress Tab by default', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>
-        );
-        await screen.findByTestId('tabs');
-        const inProgressButton = screen.getByRole('button', {
-            name: /IN PROGRESS/i,
-        });
-
-        expect(inProgressButton).toBeInTheDocument();
-        expect(inProgressButton).toHaveClass('active');
-    });
-
-    test('select Tab by query param', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            {
-                query: { dev: 'true', selected: 'ASSIGNED' },
-            }
-        );
-        await screen.findByTestId('tabs');
-        const assignedButton = screen.getByRole('button', {
-            name: /ASSIGNED/i,
-        });
-
-        expect(assignedButton).toBeInTheDocument();
-        expect(assignedButton).toHaveClass('active');
-    });
-
     test('display tasks when dev is false', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { query: { dev: 'false', selected: 'available' } }
         );
@@ -119,29 +90,59 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
-    test('on click calls router.push', async () => {
-        const mockPushFn = jest.fn();
+    test('load more button is disabled when there are no more tasks to load', async () => {
+        server.use(noTasksFoundHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={true} />
             </Provider>,
-            { push: mockPushFn }
+            { query: { dev: 'true' } }
         );
-
-        await waitFor(() => {
-            screen.getByTestId('tabs');
+        await screen.findByTestId('tabs');
+        const loadMoreButton = screen.getByRole('button', {
+            name: /load more/i,
         });
+        expect(loadMoreButton).toBeDisabled();
+    });
 
-        const assignedButton = screen.getByRole('button', {
-            name: /ASSIGNED/i,
+    test('load more button is enabled when there are more tasks to load', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await screen.findByTestId('tabs');
+        const loadMoreButton = screen.getByRole('button', {
+            name: /load more/i,
         });
+        expect(loadMoreButton).toBeEnabled();
+    });
 
-        fireEvent.click(assignedButton);
-        expect(mockPushFn).toBeCalledTimes(1);
-        expect(mockPushFn).toBeCalledWith({
-            query: {
-                selected: 'assigned',
-            },
+    test('fetch more tasks when load more button is clicked', async () => {
+        const { findByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await screen.findByTestId('tabs');
+        const availableButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
         });
+        fireEvent.click(availableButton);
+        const task = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task).toBeInTheDocument();
+        const loadMoreButton = await screen.getByRole('button', {
+            name: /load more/i,
+        });
+        expect(loadMoreButton).toBeEnabled();
+        fireEvent.click(loadMoreButton);
+        const task2 = await findByText(
+            'Design and develop an online booking system'
+        );
+        expect(task2).toBeInTheDocument();
     });
 });
