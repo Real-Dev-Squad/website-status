@@ -10,22 +10,26 @@ import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { TasksLoader } from './TasksLoader';
 import PaginationButton from '../PaginationButton';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 
 type routerQueryParams = {
-    dev?: string | false;
-    selected?: Tab;
+    dev?: string;
+    selected?: string;
 };
 
 export const TasksContent = () => {
     const router = useRouter();
-    const { dev = false, selected = Tab.IN_PROGRESS }: routerQueryParams =
-        router.query;
-
-    const selectedTab = selected.toUpperCase();
-
-    const [nextPage, setNextPage] = useState<string>('');
     const [prevPage, setPrevPage] = useState<string>('');
+    const [nextPage, setNextPage] = useState<string>('');
+
+    const { dev, selected }: routerQueryParams = router.query;
+    let selectedTab: string;
+    let featureFlag: boolean;
+
+    selected
+        ? (selectedTab = selected.toUpperCase())
+        : (selectedTab = Tab.IN_PROGRESS.toUpperCase());
+    dev === 'true' ? (featureFlag = true) : (featureFlag = false);
 
     const {
         data: tasksData = { tasks: [], next: '', prev: '' },
@@ -33,7 +37,7 @@ export const TasksContent = () => {
         isLoading,
         isFetching,
     } = useGetAllTasksQuery({
-        dev: dev as boolean,
+        dev: featureFlag,
         status: selectedTab,
         nextPage,
         prevPage,
@@ -70,7 +74,7 @@ export const TasksContent = () => {
             return <TasksLoader />;
         }
 
-        if (dev === 'true' && tasksData.tasks?.length) {
+        if (featureFlag && tasksData.tasks?.length) {
             return <TaskList tasks={tasksData.tasks} />;
         }
 
@@ -101,7 +105,7 @@ export const TasksContent = () => {
             <TabSection onSelect={onSelect} activeTab={selectedTab as Tab} />
             <div>{renderTaskList()}</div>
 
-            {dev === 'true' && (
+            {featureFlag && (
                 <PaginationButton
                     fetchPrev={fetchPrevTasks}
                     fetchNext={fetchNextTasks}
