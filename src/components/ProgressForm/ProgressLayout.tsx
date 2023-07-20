@@ -9,13 +9,18 @@ import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 import { questions } from '@/constants/ProgressUpdates';
 import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
-import { useUserProgressDetailsQuery } from '@/app/services/progressesApi';
-import { useGetUserQuery } from '@/app/services/userApi';
+import { useTaskProgressDetailsQuery } from '@/app/services/progressesApi';
+
+import { useRouter } from 'next/router';
 
 const ProgressLayout: FC = () => {
-    const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
-    const standupDates = userStandupdata?.data?.map((element) => element.date);
+    const router = useRouter();
+
+    const id =
+        typeof router.query.id === 'string' ? router.query.id : undefined;
+
+    const { data: userTaskdata } = useTaskProgressDetailsQuery(id);
+    const standupDates = userTaskdata?.data?.map((element) => element.date);
     const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
     return (
         <>

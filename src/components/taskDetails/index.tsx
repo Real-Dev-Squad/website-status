@@ -238,13 +238,18 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {query.dev && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
+
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"

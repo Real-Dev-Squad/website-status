@@ -15,7 +15,7 @@ export type InputProps = {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export type userDetails = {
+export type DetailsProps = {
     data: [
         {
             blockers: string;
@@ -25,7 +25,8 @@ export type userDetails = {
             id: string;
             planned: string;
             type: string;
-            userId: string;
+            userId?: string;
+            taskId?: string;
         }
     ];
     message: string;
