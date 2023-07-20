@@ -41,7 +41,7 @@ describe('DrogDropContextWrapper Component', () => {
             expect(getByText(tasksFallbackText)).toBeVisible();
             expect(getByAltText('ghost')).toHaveAttribute(
                 'src',
-                expect.stringMatching(urlPattern)
+                expect.stringMatching(relativeURL)
             );
         });
 
@@ -56,7 +56,7 @@ describe('DrogDropContextWrapper Component', () => {
             expect(getByText(idleMemberFallbackText)).toBeVisible();
             expect(getByAltText('ghost')).toHaveAttribute(
                 'src',
-                expect.stringMatching(urlPattern)
+                expect.stringMatching(relativeURL)
             );
         });
     });
@@ -73,7 +73,7 @@ describe('DrogDropContextWrapper Component', () => {
         expect(unAssignedTaskNodes).toHaveLength(10);
         expect(unAssignedTaskNodes[0]).toBeVisible();
         expect(unAssignedTaskNodes[6]).toBeVisible();
-        getByText('Akash Shukla');
+        expect(getByText('Akash Shukla')).toBeVisibleWith();
     });
 
     test('should have tasks & members items draggable', () => {

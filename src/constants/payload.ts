@@ -22,9 +22,6 @@ export const USER_NOT_IDLE = {
     message: 'Task cannot be assigned to users with active or OOO status',
 };
 
-export function taskAssigned(Id) {
-    return {
-        message: 'Task assigned',
-        Id,
-    };
-}
+export const TASK_ASSIGNED = {
+    message: 'Task assigned',
+};

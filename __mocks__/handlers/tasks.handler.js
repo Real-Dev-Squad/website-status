@@ -1,7 +1,7 @@
 import { tasks, PAGINATED_TASKS } from '../db/tasks';
 import usersData from '../../__mocks__/db/users';
 import { rest } from 'msw';
-import { TASK_NOT_FOUND, UNAUTHENTICATED, UNAUTHORIZED, USER_NOT_FOUND, USER_NOT_IDLE, taskAssigned } from '@/constants/payload';
+import { TASK_ASSIGNED, TASK_NOT_FOUND, UNAUTHENTICATED, UNAUTHORIZED, USER_NOT_FOUND, USER_NOT_IDLE } from '@/constants/payload';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const taskHandlers = [
@@ -51,7 +51,7 @@ const taskHandlers = [
             ctx.json(USER_NOT_IDLE)
         );
         return res(
-            ctx.json(taskAssigned(taskId)),
+            ctx.json({ ...TASK_ASSIGNED, Id: taskId }),
         );
     }),
     rest.post(`${URL}/tasks`, async (req, res, ctx) => {

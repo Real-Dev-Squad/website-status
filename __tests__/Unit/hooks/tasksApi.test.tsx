@@ -28,7 +28,7 @@ import {
     UNAUTHORIZED,
     USER_NOT_FOUND,
     USER_NOT_IDLE,
-    taskAssigned,
+    TASK_ASSIGNED,
 } from '@/constants/payload';
 
 const server = setupServer(...handlers);
@@ -527,7 +527,7 @@ describe('useAssignTaskMutation', () => {
             targetStatus: { target: 'data', value: 200 },
             targetData: {
                 target: 'data',
-                value: taskAssigned(payload.taskId),
+                value: { ...TASK_ASSIGNED, Id: payload.taskId },
             },
         });
     });
