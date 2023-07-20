@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react';
+import { ChangeEvent, ChangeEventHandler } from 'react';
 export type taskDetailsDataType = {
     message?: string;
     taskData?: {
@@ -29,3 +29,21 @@ export type TextAreaProps = {
     onChange: ChangeEventHandler;
     testId: string;
 };
+
+export type TaskDependencyProps = {
+    taskDependencyIds: string[];
+    isEditing?: boolean;
+    updatedDependencies: string[];
+    handleChange: (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+};
+export type DependencyListProps = {
+    taskDependencyIds: string[];
+};
+export type DependencyItem =
+    | PromiseFulfilledResult<{
+          title: string | undefined;
+          id: string;
+      }>
+    | PromiseRejectedResult;
