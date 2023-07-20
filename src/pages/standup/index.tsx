@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import StandUpContainer from '@/components/standup';
 import PageNotFound from '../404';
-import { loginNode } from '../challenges';
+import { loginNode } from '@/constants/nodes';
 
 const StandUp: FC = memo(function StandUp() {
     const { isLoggedIn, isLoading } = useAuthenticated();

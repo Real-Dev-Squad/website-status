@@ -15,15 +15,8 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-const getLoginButton = () =>
-    screen.getByRole('button', { name: 'Sign In With Github GitHub Icon' });
-const getLoginLinkNode = () =>
-    screen.getByRole('link', { name: 'Sign In With Github GitHub Icon' });
-const getStateParam = () =>
-    new URL(
-        getLoginLinkNode().getAttribute('href')!,
-        BASE_URL
-    ).searchParams.get('state')!;
+const getSignInNode = (type: string) =>
+    screen.getByRole(type, { name: 'Sign In With Github GitHub Icon' });
 
 describe('Navbar', () => {
     test.skip('check for loading state', () => {
@@ -109,12 +102,12 @@ describe('Navbar', () => {
             })
         );
         renderWithProviders(<NavBar />);
-        expect(getLoginButton()).toBeVisible();
+        expect(getSignInNode('button')).toBeVisible();
     });
 
     test('login button client id should be correct', () => {
         renderWithProviders(<NavBar />);
-        expect(getLoginLinkNode().getAttribute('href')).toContain(
+        expect(getSignInNode('link').getAttribute('href')).toContain(
             '?client_id=23c78f66ab7964e5ef97'
         );
     });

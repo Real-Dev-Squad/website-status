@@ -9,7 +9,7 @@ import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
 import { Loader } from '@/components/tasks/card/Loader';
-import { loginNode } from '../challenges';
+import { loginNode } from '@/constants/nodes';
 
 function CardList({ tasks: { tasks = [] } }: { tasks: TasksResponseType }) {
     return (

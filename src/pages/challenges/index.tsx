@@ -6,17 +6,11 @@ import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import { challenge, ChallengeMap } from '@/interfaces/challenge.type';
 import classNames from '@/styles/tasks.module.scss';
-import { LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetChallengesQuery } from '@/app/services/challengesApi';
-
-export const loginNode = (
-    <a href={LOGIN_URL} target="_blank" rel="noreferrer">
-        Click here to Login
-    </a>
-);
+import { loginNode } from '@/constants/nodes';
 
 const renderCardList = (
     challengeSection: challenge[],

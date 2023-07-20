@@ -1,4 +1,4 @@
-import { screen, getByRole } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 import { store } from '@/app/store';
@@ -16,10 +16,7 @@ describe('Progress page test', function () {
         );
         const textBoxes = screen.getAllByRole('textbox');
         expect(textBoxes).toHaveLength(3);
-        const button = getByRole(
-            screen.getByRole('form') as HTMLFormElement,
-            'button'
-        ) as HTMLButtonElement;
+        const button = screen.getByRole('button') as HTMLButtonElement;
         expect(button).toBeInTheDocument();
         expect(button.type).toBe('submit');
     });
