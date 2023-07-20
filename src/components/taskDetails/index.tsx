@@ -134,8 +134,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const { query } = router;
-    const isDevModeEnabled = query.dev === 'true' ? true : false;
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <Layout hideHeader={true}>
