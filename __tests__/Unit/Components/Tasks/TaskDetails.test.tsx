@@ -323,7 +323,7 @@ describe('Update Progress button', () => {
             </Provider>
         );
         const updateProgressButton = screen.queryByText('Update Progress');
-        expect(updateProgressButton).toBeNull();
+        expect(updateProgressButton).not.toBeInTheDocument();
     });
 });
 
