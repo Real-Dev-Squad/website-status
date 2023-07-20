@@ -11,6 +11,7 @@ import {
     FOURTEEN_DAYS,
     SECONDS_IN_A_DAY,
 } from '@/constants/date';
+import { TASK_RESULT_SIZE } from '@/constants/constants';
 
 type TasksCreateMutationResponse = { message: string; task: task };
 type AssignTaskPayload = { taskId: string; assignee: string };
@@ -35,10 +36,16 @@ export const assignTaskReducerStateBuilder = () => {
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
-            query: ({ dev, status, nextPage, prevPage }) => {
+            query: ({
+                dev,
+                status,
+                size = TASK_RESULT_SIZE,
+                nextPage,
+                prevPage,
+            }) => {
                 const url =
                     nextPage ?? prevPage ?? dev
-                        ? `/tasks?status=${status}&dev=true`
+                        ? `/tasks?status=${status}&dev=true&size=${size}`
                         : '/tasks';
 
                 return { url };

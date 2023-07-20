@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS } from '../db/tasks';
 import usersData from '../../__mocks__/db/users';
 import { rest } from 'msw';
 import { TASK_ASSIGNED, TASK_NOT_FOUND, UNAUTHENTICATED, UNAUTHORIZED, USER_NOT_FOUND, USER_NOT_IDLE } from '@/constants/payload';
@@ -123,6 +123,14 @@ export const paginatedTasksHandler = [
             ctx.status(200),
             ctx.json(
                 PAGINATED_TASKS
+            )
+        );
+    }),
+    rest.patch(`${URL}/${PAGINATED_TASKS.next}`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(
+                NEXT_PAGINATED_TASKS
             )
         );
     }),

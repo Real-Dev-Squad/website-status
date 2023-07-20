@@ -73,7 +73,7 @@ describe('DrogDropContextWrapper Component', () => {
         expect(unAssignedTaskNodes).toHaveLength(10);
         expect(unAssignedTaskNodes[0]).toBeVisible();
         expect(unAssignedTaskNodes[6]).toBeVisible();
-        expect(getByText('Akash Shukla')).toBeVisibleWith();
+        expect(getByText('Akash Shukla')).toBeVisible();
     });
 
     test('should have tasks & members items draggable', () => {
