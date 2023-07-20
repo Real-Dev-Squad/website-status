@@ -47,7 +47,6 @@ export const tasksApi = api.injectEndpoints({
                     nextPage ?? prevPage ?? dev
                         ? `/tasks?status=${status}&dev=true&size=${size}`
                         : '/tasks';
-
                 return { url };
             },
             providesTags: (result) =>
