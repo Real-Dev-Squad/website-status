@@ -2,7 +2,12 @@ import { FC } from 'react';
 import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 import { progressHeaderProps } from '@/types/ProgressUpdates';
-import { dateFormat } from '@/constants/constants';
+import {
+    MORNING559AM,
+    MORNING6AM,
+    STANDUP_TIME,
+    dateFormat,
+} from '@/constants/constants';
 
 const ProgressHeader: FC<progressHeaderProps> = ({
     totalMissedUpdates,
@@ -29,8 +34,8 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                             className={styles.bannerPara}
                             data-testid="standupTime"
                         >
-                            {` Standup time - ${currentDate} 6:00 am to 
-                            ${futureDate} 5:59 am`}
+                            {`${STANDUP_TIME} ${currentDate} ${MORNING6AM} 
+                            ${futureDate} ${MORNING559AM}`}
                         </p>
                         <p
                             className={styles.bannerPara}
@@ -39,7 +44,9 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                             Current Standup Date - {currentDate}
                         </p>
                     </div>
-                ) : null}
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
     );
