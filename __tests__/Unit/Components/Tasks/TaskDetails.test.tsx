@@ -13,9 +13,6 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
 import Details from '@/components/taskDetails/Details';
 
-const urlParams = new URLSearchParams(window.location.search);
-const isDevMode = urlParams.get('dev') === 'true';
-
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
