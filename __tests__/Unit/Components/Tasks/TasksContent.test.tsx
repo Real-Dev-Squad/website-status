@@ -1,7 +1,7 @@
 import { TasksContent } from '@/components/tasks/TasksContent';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -58,12 +58,11 @@ describe('tasks content', () => {
     });
 
     test('display tasks when dev is true', async () => {
-        const mockPushFn = jest.fn();
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
                 <TasksContent dev={true} />
             </Provider>,
-            { query: { dev: 'true', section: 'available' }, push: mockPushFn }
+            { query: { dev: 'true', section: 'available' } }
         );
         await screen.findByTestId('tabs');
         const task = await findByText(
