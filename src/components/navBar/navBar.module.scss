@@ -84,7 +84,7 @@ $theme-active: #87d870;
         display: none;
     }
 
-    .mobile_menu>li {
+    .mobile_menu > li {
         list-style: none;
     }
 
@@ -179,11 +179,11 @@ $theme-active: #87d870;
         width: 10rem;
     }
 
-    .navBarMenu .mobile_menu>li a:hover {
+    .navBarMenu .mobile_menu > li a:hover {
         color: $theme-active;
     }
 
-    .navBarMenu .mobile_menu>li a:active {
+    .navBarMenu .mobile_menu > li a:active {
         color: $theme-active;
     }
 }
