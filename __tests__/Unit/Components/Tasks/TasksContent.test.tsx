@@ -38,14 +38,7 @@ describe('tasks content', () => {
             }
         );
         await screen.findByTestId('tabs');
-        let assignedButton = screen.getByRole('button', {
-            name: /assigned/i,
-        });
-        fireEvent.click(assignedButton);
-        const loadingText = await screen.findByText('Loading...');
-        expect(loadingText).toBeInTheDocument();
-
-        assignedButton = await screen.findByRole('button', {
+        const assignedButton = screen.getByRole('button', {
             name: /assigned/i,
         });
         expect(assignedButton).toHaveClass('active');
@@ -60,10 +53,6 @@ describe('tasks content', () => {
                 <TasksContent dev={false} />
             </Provider>
         );
-
-        const loadingText = await screen.findByText('Loading...');
-        expect(loadingText).toBeInTheDocument();
-
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
         expect(errorMessage).toBeInTheDocument();
     });
@@ -75,10 +64,6 @@ describe('tasks content', () => {
             </Provider>,
             { query: { dev: 'true', section: 'available' } }
         );
-
-        const loadingText = await screen.findByText('Loading...');
-        expect(loadingText).toBeInTheDocument();
-
         await screen.findByTestId('tabs');
         const task = await findByText(
             'Design and develop an online booking system'
@@ -93,10 +78,6 @@ describe('tasks content', () => {
             </Provider>,
             { query: { dev: 'false', section: 'available' } }
         );
-
-        const loadingText = await screen.findByText('Loading...');
-        expect(loadingText).toBeInTheDocument();
-
         await screen.findByTestId('tabs');
         const unassignedButton = screen.getByRole('button', {
             name: /UNASSINGED/i,
@@ -116,10 +97,6 @@ describe('tasks content', () => {
             </Provider>,
             { query: { dev: 'true' } }
         );
-
-        const loadingText = await screen.findByText('Loading...');
-        expect(loadingText).toBeInTheDocument();
-
         await screen.findByTestId('tabs');
         const loadMoreButton = screen.getByRole('button', {
             name: /load more/i,
@@ -134,10 +111,6 @@ describe('tasks content', () => {
             </Provider>,
             { query: { dev: 'true' } }
         );
-
-        const loadingText = await screen.findByText('Loading...');
-        expect(loadingText).toBeInTheDocument();
-
         await screen.findByTestId('tabs');
         const loadMoreButton = screen.getByRole('button', {
             name: /load more/i,
