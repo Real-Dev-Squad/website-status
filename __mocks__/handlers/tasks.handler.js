@@ -113,4 +113,28 @@ export const failedGetMineTask= rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
     return res(ctx.status(500), ctx.json(failedGetTasksResponse));
 });
 
+export const mineTasksNoDataFoundHandler = rest.get(
+    `${URL}/tasks/self`,
+    (_, res, ctx) => {
+        return res(
+            ctx.json({
+                message: 'No Tasks Found',
+                issues: [],
+            })
+        );
+    }
+);
+
+export const mineTasksErrorHandler = rest.get(
+    `${URL}/tasks/self`,
+    (_, res, ctx) => {
+        return res(
+            ctx.status(500),
+            ctx.json({
+                message: 'Something went wrong! Please contact admin',
+            })
+        );
+    }
+);
+
 export default taskHandlers;
