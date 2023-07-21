@@ -25,7 +25,7 @@ import TaskDependency from '@/components/taskDetails/taskDependency';
 import { parseDependencyValue } from '@/utils/parseDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
-import { getTimeFromTimestamp } from '@/utils/getTimeFromTimestamp';
+import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -150,7 +150,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                 taskProgressArray.push(
                     <>
                         <li>
-                            {getTimeFromTimestamp(data.date)} : {data.completed}
+                            {getDateFromTimestamp(data.date)} : {data.completed}
                         </li>
                         <br />
                     </>
