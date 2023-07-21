@@ -15,19 +15,20 @@ export type InputProps = {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export type userDetails = {
-    data: [
-        {
-            blockers: string;
-            completed: string;
-            createdAt: number;
-            date: number;
-            id: string;
-            planned: string;
-            type: string;
-            userId: string;
-        }
-    ];
+type ProgressDetailsData = {
+    blockers: string;
+    completed: string;
+    createdAt: number;
+    date: number;
+    id: string;
+    planned: string;
+    type: string;
+    userId: string;
+    taskId?: string;
+};
+
+export type progressDetails = {
+    data: Array<ProgressDetailsData>;
     message: string;
     count: number;
 };

@@ -8,6 +8,8 @@ import {
 } from '../../constants/messages';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
+import { useRouter } from 'next/router';
+import { getActiveTab } from '@/utils/getActiveTab';
 
 type RenderTaskListProps = {
     tab: string;
@@ -42,8 +44,13 @@ const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
     return <TaskList tasks={tasksGroupedByStatus[tab]} />;
 };
 
+type routerQueryParams = {
+    section?: string;
+};
 export const TasksContent = ({ dev }: { dev: boolean }) => {
-    const [activeTab, setActiveTab] = useState(Tab.IN_PROGRESS);
+    const router = useRouter();
+    const { section }: routerQueryParams = router.query;
+    const selectedTab = getActiveTab(section);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],
@@ -63,7 +70,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         isFetching,
     } = useGetAllTasksQuery({
         dev: dev as boolean,
-        status: activeTab,
+        status: selectedTab,
         nextTasks,
     });
 
@@ -74,7 +81,12 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     };
 
     const onSelect = (tab: Tab) => {
-        setActiveTab(tab);
+        router.push({
+            query: {
+                ...router.query,
+                section: tab.toLowerCase(),
+            },
+        });
         setNextTasks('');
     };
 
@@ -83,16 +95,16 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             const newTasks: TabTasksData = JSON.parse(
                 JSON.stringify(loadedTasks)
             );
-            newTasks[activeTab] = newTasks[activeTab].filter(
+            newTasks[selectedTab] = newTasks[selectedTab].filter(
                 (task) =>
                     !tasksData.tasks.some((newTask) => newTask.id === task.id)
             );
 
-            newTasks[activeTab].push(...tasksData.tasks);
+            newTasks[selectedTab].push(...tasksData.tasks);
 
             setLoadedTasks(newTasks);
         }
-    }, [tasksData.tasks, activeTab]);
+    }, [tasksData.tasks]);
 
     if (isLoading || isFetching) return <p>Loading...</p>;
 
@@ -100,12 +112,12 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
 
     return (
         <div className={classNames.tasksContainer}>
-            <TabSection onSelect={onSelect} activeTab={activeTab} />
+            <TabSection onSelect={onSelect} activeTab={selectedTab} />
             <div>
                 <RenderTaskList
                     dev={dev}
-                    tab={activeTab}
-                    tasks={loadedTasks[activeTab]}
+                    tab={selectedTab}
+                    tasks={loadedTasks[selectedTab]}
                 />
             </div>
 
