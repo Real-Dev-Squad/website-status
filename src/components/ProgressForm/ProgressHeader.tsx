@@ -5,6 +5,7 @@ import { progressHeaderProps } from '@/types/ProgressUpdates';
 import {
     MORNING559AM,
     MORNING6AM,
+    STANDUP,
     STANDUP_TIME,
     dateFormat,
 } from '@/constants/constants';
@@ -28,7 +29,7 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                 <p className={styles.bannerPara}>
                     Let&apos;s try to avoid having zero days
                 </p>
-                {updateType === 'Standup' ? (
+                {updateType === STANDUP ? (
                     <div className={styles.timeContainer}>
                         <p
                             className={styles.bannerPara}
