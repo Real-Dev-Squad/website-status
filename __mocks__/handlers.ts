@@ -10,9 +10,11 @@ import userHandler from './handlers/user.handler';
 import issuesHandler from './handlers/issues.handler';
 import standupHandler from './handlers/standup.handler';
 import { prsHandler } from './handlers/pull-requests.handler';
+import { progressHandler } from './handlers/progresses.handler';
 
 const handlers = [
     ...mineTasksHandler,
+    ...progressHandler,
     ...paginatedTasksHandler,
     ...taskHandlers,
     ...selfHandler,
