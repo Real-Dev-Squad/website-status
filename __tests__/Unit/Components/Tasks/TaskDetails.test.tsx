@@ -1,5 +1,4 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -255,6 +254,24 @@ describe('TaskDetails Page', () => {
             fireEvent.click(saveButton);
             expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
         });
+    });
+
+    test('Should render task progress', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        const noProgressText = screen.getByText('No Progress found');
+        expect(noProgressText).toBeInTheDocument();
     });
 });
 
