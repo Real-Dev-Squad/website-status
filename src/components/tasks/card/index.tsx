@@ -498,61 +498,58 @@ const Card: FC<CardProps> = ({
                         )}
                     </div>
                 </div>
-                {showAssignButton() ? (
-                    <AssigneeButton />
-                ) : (
-                    <div className={classNames.contributor}>
-                        <span className={classNames.cardSpecialFont}>
-                            Assigned to
-                        </span>
-                        <span className={classNames.contributorImage}>
-                            <Image
-                                src={assigneeProfileImageURL}
-                                alt={cardDetails.assignee || DUMMY_NAME}
-                                width={30}
-                                height={30}
-                            />
-                        </span>
-                        {shouldEdit ? (
-                            isUserAuthorized && (
-                                <div className={classNames.suggestionDiv}>
-                                    <input
-                                        ref={inputRef}
-                                        value={assigneeName}
-                                        className={classNames.cardStrongFont}
-                                        onKeyDown={(e) => {
-                                            handleChange(e, 'assignee');
-                                        }}
-                                        onChange={(e) => {
-                                            handleAssignment(e);
-                                            debounce(
-                                                fetchUsers,
-                                                400
-                                            )(e.target.value);
-                                        }}
-                                        role="button"
-                                        tabIndex={0}
-                                    />
+                <div className={classNames.contributor}>
+                    <span className={classNames.cardSpecialFont}>
+                        {cardDetails.assignee ? 'Assigned to' : 'Assign to'}
+                    </span>
+                    <span className={classNames.contributorImage}>
+                        <Image
+                            src={assigneeProfileImageURL}
+                            alt={cardDetails.assignee || DUMMY_NAME}
+                            width={30}
+                            height={30}
+                        />
+                    </span>
+                    {shouldEdit
+                        ? isUserAuthorized && (
+                              <div className={classNames.suggestionDiv}>
+                                  <input
+                                      ref={inputRef}
+                                      value={assigneeName}
+                                      className={classNames.cardStrongFont}
+                                      onKeyDown={(e) => {
+                                          handleChange(e, 'assignee');
+                                      }}
+                                      onChange={(e) => {
+                                          handleAssignment(e);
+                                          debounce(
+                                              fetchUsers,
+                                              400
+                                          )(e.target.value);
+                                      }}
+                                      role="button"
+                                      tabIndex={0}
+                                  />
 
-                                    {isLoadingSuggestions ? (
-                                        <Loader />
-                                    ) : (
-                                        showSuggestion && (
-                                            <SuggestionBox
-                                                suggestions={suggestions}
-                                                onSelectAssignee={handleClick}
-                                            />
-                                        )
-                                    )}
-                                </div>
-                            )
-                        ) : (
-                            <span className={classNames.cardStrongFont}>
-                                {cardDetails.assignee}
-                            </span>
-                        )}
-                    </div>
-                )}
+                                  {isLoadingSuggestions ? (
+                                      <Loader />
+                                  ) : (
+                                      showSuggestion && (
+                                          <SuggestionBox
+                                              suggestions={suggestions}
+                                              onSelectAssignee={handleClick}
+                                          />
+                                      )
+                                  )}
+                              </div>
+                          )
+                        : cardDetails.assignee && (
+                              <span className={classNames.cardStrongFont}>
+                                  {cardDetails.assignee}
+                              </span>
+                          )}
+                    {showAssignButton() && <AssigneeButton />}
+                </div>
 
                 <div className={classNames.cardItems}>
                     <div
