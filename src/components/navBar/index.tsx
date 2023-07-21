@@ -78,40 +78,44 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className={styles.userProfile}>
-                {!isLoggedIn ? (
-                    <Link href={LOGIN_URL}>
-                        <button className={styles.signInLink}>
-                            Sign In With Github
+                {userData !== undefined ? (
+                    userData ? (
+                        <div
+                            className={styles.userGreet}
+                            onClick={() => setToggleDropdown(!toggleDropdown)}
+                        >
+                            <div className={styles.userGreetMsg}>
+                                Hello, {userData?.first_name}
+                            </div>
                             <Image
-                                className={styles.githubLogo}
-                                src={GITHUB_LOGO}
-                                height="20"
-                                width="20"
-                                alt="GitHub Icon"
+                                className={styles.userProfilePic}
+                                src={
+                                    userData?.picture?.url
+                                        ? `${userData?.picture?.url}`
+                                        : `${DEFAULT_AVATAR}`
+                                }
+                                alt="Profile Pic"
+                                width="32"
+                                height="32"
                             />
-                        </button>
-                    </Link>
-                ) : (
-                    <div
-                        className={styles.userGreet}
-                        onClick={() => setToggleDropdown(!toggleDropdown)}
-                    >
-                        <div className={styles.userGreetMsg}>
-                            Hello, {userData?.first_name}
+                            {toggleDropdown && <Dropdown />}
                         </div>
-                        <Image
-                            className={styles.userProfilePic}
-                            src={
-                                userData?.picture?.url
-                                    ? `${userData?.picture?.url}`
-                                    : `${DEFAULT_AVATAR}`
-                            }
-                            alt="Profile Pic"
-                            width="32"
-                            height="32"
-                        />
-                        {toggleDropdown && <Dropdown />}
-                    </div>
+                    ) : (
+                        <Link href={LOGIN_URL}>
+                            <button className={styles.signInLink}>
+                                Sign In With Github
+                                <Image
+                                    className={styles.githubLogo}
+                                    src={GITHUB_LOGO}
+                                    height="20"
+                                    width="20"
+                                    alt="GitHub Icon"
+                                />
+                            </button>
+                        </Link>
+                    )
+                ) : (
+                    ''
                 )}
             </div>
         </nav>

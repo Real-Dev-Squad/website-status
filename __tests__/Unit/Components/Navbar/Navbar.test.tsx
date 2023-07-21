@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import NavBar from '../../../../src/components/navBar';
 import * as authHooks from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
@@ -90,5 +90,13 @@ describe('Navbar', () => {
         await screen.findAllByTestId('navbar');
         const logo = getByTestId('logo');
         expect(logo).toBeInTheDocument();
+    });
+    test('Sign In With Github button should not render when user is already loggedin', async () => {
+        renderWithProviders(<NavBar />);
+        await waitFor(() => {
+            const loginTextElement = screen.queryByText('Sign In With Github');
+            expect(loginTextElement).not.toBeInTheDocument();
+            screen.debug();
+        });
     });
 });
