@@ -40,7 +40,7 @@ jest.mock('@/hooks/useUserData', () => {
         isSuccess: true,
     });
 });
-
+const mockNavigateToUpdateProgressPage = jest.fn();
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
@@ -50,18 +50,6 @@ describe('TaskDetails Page', () => {
         );
         await waitFor(() => {
             expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
-        });
-    });
-
-    it('should render update progress button ', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        await waitFor(() => {
-            const buttonElement = getByText(/Update Progress/i);
-            expect(buttonElement).toBeInTheDocument();
         });
     });
 
@@ -306,6 +294,36 @@ describe('Textarea with functionalities', () => {
         const textareaElement = screen.getByTestId('textarea');
         fireEvent.change(textareaElement, { target: { value: 'New value' } });
         expect(mockChangeHandler).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe('Update Progress button', () => {
+    it('renders the Update Progress button when ?dev=true query parameter is present', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' }, push: mockNavigateToUpdateProgressPage }
+        );
+
+        await waitFor(() => {
+            const updateProgressButton = screen.getByText('Update Progress');
+            expect(updateProgressButton).toBeInTheDocument();
+            fireEvent.click(updateProgressButton);
+            expect(mockNavigateToUpdateProgressPage).toHaveBeenLastCalledWith(
+                '/progress/6KhcLU3yr45dzjQIVm0J?dev=true'
+            );
+        });
+    });
+
+    it('Should not render the Update Progress button when ?dev=true query parameter is absent', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        const updateProgressButton = screen.queryByText('Update Progress');
+        expect(updateProgressButton).not.toBeInTheDocument();
     });
 });
 

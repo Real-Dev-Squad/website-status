@@ -56,6 +56,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
 
     const { data: userData, isUserAuthorized } = useUserData();
 
@@ -132,8 +134,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const { query } = router;
-    const isDevModeEnabled = query.dev === 'true' ? true : false;
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
     return (
         <Layout hideHeader={true}>
@@ -238,13 +239,17 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {isDevModeEnabled && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
