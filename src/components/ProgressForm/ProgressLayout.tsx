@@ -9,12 +9,14 @@ import styles from '@/components/ProgressForm/ProgressForm.module.scss';
 
 import { questions } from '@/constants/ProgressUpdates';
 import { getTotalMissedUpdates } from '@/utils/getTotalMissedUpdate';
-import { useUserProgressDetailsQuery } from '@/app/services/progressesApi';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { useGetUserQuery } from '@/app/services/userApi';
 
 const ProgressLayout: FC = () => {
     const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
+    const { data: userStandupdata } = useGetProgressDetailsQuery({
+        userId: user?.id,
+    });
     const standupDates = userStandupdata?.data?.map((element) => element.date);
     const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
     return (
