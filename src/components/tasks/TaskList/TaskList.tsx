@@ -10,7 +10,7 @@ import {
 import styles from '../card/card.module.scss';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 
-type TaksListProps = {
+type TaskListProps = {
     tasks: task[];
     hasLimit?: boolean;
 };
@@ -26,7 +26,7 @@ function getFilteredTasks({ hasLimit, tasksLimit, tasks }: FilterTasksProps) {
     return tasks.slice(0, tasksLimit);
 }
 
-export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
+export default function TaskList({ tasks, hasLimit = false }: TaskListProps) {
     const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
     const beautifiedTasks = beautifyTaskStatus(tasks);
     const [tasksLimit, setTasksLimit] = useState<number>(initialTasksLimit);
