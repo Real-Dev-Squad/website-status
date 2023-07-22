@@ -1,5 +1,4 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -11,7 +10,9 @@ import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
+import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
+import { mockGetTaskProgress } from '__mocks__/db/progresses';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -243,6 +244,42 @@ describe('TaskDetails Page', () => {
             fireEvent.click(saveButton);
             expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
         });
+    });
+
+    test('Should render No task progress', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        const noProgressText = screen.getByText('No Progress found');
+        expect(noProgressText).toBeInTheDocument();
+    });
+
+    test('should call progress details query', async () => {
+        const spyfn = jest.spyOn(progressQueries, 'useGetProgressDetailsQuery');
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        expect(spyfn).toBeCalled();
     });
 });
 
