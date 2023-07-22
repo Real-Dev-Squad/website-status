@@ -1,4 +1,3 @@
-import { Loader } from '@/components/tasks/card/Loader';
 import HandleProgressText from '@/components/tasks/card/ProgressText';
 import { fireEvent, render, screen } from '@testing-library/react';
 

@@ -110,6 +110,18 @@ export default task;
 export type GetAllTaskParamType = {
     dev?: boolean;
     status?: string;
-    nextPage?: string;
-    prevPage?: string;
+    nextTasks?: string;
+    prevTasks?: string;
+    size?: number;
+};
+
+export type TabTasksData = {
+    IN_PROGRESS: task[];
+    ASSIGNED: task[];
+    AVAILABLE: task[];
+    NEEDS_REVIEW: task[];
+    IN_REVIEW: task[];
+    VERIFIED: task[];
+    MERGED: task[];
+    COMPLETED: task[];
 };

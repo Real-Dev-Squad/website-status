@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -69,19 +69,17 @@ export const failedUpdateTaskHandler = rest.patch(
 );
 
 export const failedUpdateSelfTaskHandler = rest.patch(
-    `${URL}/tasks/self/:taskId`,
-    (_, res, ctx) => {
-        return res(ctx.status(404), ctx.json(failedUpdateTaskResponse));
-    }
+    `${URL}/tasks/self/:taskId`
 );
-
 export const noTasksFoundResponse = {
     message: 'No Tasks Found',
     tasks: [],
+    next: null,
+    prev: null,
 };
 
 export const noTasksFoundHandler = rest.get(`${URL}/tasks`, (_, res, ctx) => {
-    return res(ctx.status(200), ctx.json(noTasksFoundResponse));
+    return res(ctx.status(404), ctx.json(failedUpdateTaskResponse));
 });
 
 export default taskHandlers;
@@ -89,5 +87,11 @@ export default taskHandlers;
 export const paginatedTasksHandler = [
     rest.get(`${URL}/tasks`, (_, res, ctx) => {
         return res(ctx.status(200), ctx.json(PAGINATED_TASKS));
+    }),
+    rest.get(`${URL}/tasks?status=AVAILABLE&dev=true`, (_, res, ctx) => {
+        return res(ctx.status(200), ctx.json(PAGINATED_TASKS));
+    }),
+    rest.patch(`${URL}/${PAGINATED_TASKS.next}`, (_, res, ctx) => {
+        return res(ctx.status(200), ctx.json(NEXT_PAGINATED_TASKS));
     }),
 ];

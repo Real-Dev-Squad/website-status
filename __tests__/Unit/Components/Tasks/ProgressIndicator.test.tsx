@@ -10,7 +10,6 @@ const DEFAULT_PROPS = {
 describe('Progress Indicator', () => {
     test('should render the ProgressIndicator', () => {
         const { container } = render(<ProgressIndicator {...DEFAULT_PROPS} />);
-        console.log('container', container);
         const parentDiv = container.getElementsByClassName('progressIndicator');
         const childDiv = container.getElementsByClassName('progressStyle');
         expect(parentDiv.length).toBe(1);

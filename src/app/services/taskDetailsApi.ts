@@ -71,6 +71,7 @@ export const taskDetailsApi = api.injectEndpoints({
                     body: {
                         title: editedDetails.title,
                         purpose: editedDetails.purpose,
+                        dependsOn: editedDetails.dependsOn,
                     },
                 };
             },

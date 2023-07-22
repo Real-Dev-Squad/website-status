@@ -137,7 +137,7 @@ describe('useGetAllTasksQuery()', () => {
             () =>
                 useGetAllTasksQuery({
                     dev: dev as boolean,
-                    nextPage:
+                    nextTasks:
                         '/tasks?status=AVAILABLE&dev=true&size=5&next=yVC1KqYuUTZdkUFqF9NY',
                 }),
             {
@@ -163,7 +163,7 @@ describe('useGetAllTasksQuery()', () => {
             () =>
                 useGetAllTasksQuery({
                     dev: dev as boolean,
-                    prevPage:
+                    prevTasks:
                         '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
                 }),
             {
