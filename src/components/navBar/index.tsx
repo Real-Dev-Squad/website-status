@@ -78,7 +78,7 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className={styles.userProfile}>
-                {userData !== undefined &&
+                {!!userData &&
                     (userData ? (
                         <div
                             className={styles.userGreet}
