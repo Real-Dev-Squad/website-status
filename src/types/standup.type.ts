@@ -15,7 +15,7 @@ export type InputProps = {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-type ProgressDetailsData = {
+export type ProgressDetailsData = {
     blockers: string;
     completed: string;
     createdAt: number;
