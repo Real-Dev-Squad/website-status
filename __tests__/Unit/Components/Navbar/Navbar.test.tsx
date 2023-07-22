@@ -96,7 +96,6 @@ describe('Navbar', () => {
         await waitFor(() => {
             const loginTextElement = screen.queryByText('Sign In With Github');
             expect(loginTextElement).not.toBeInTheDocument();
-            screen.debug();
         });
     });
 });
