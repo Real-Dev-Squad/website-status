@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -141,7 +141,7 @@ describe('Task card', () => {
 
         expect(queryByTestId('edit-button')).toBeInTheDocument();
     });
-    test.skip('task should be editable if edit button clicked', async () => {
+    test('task should be editable if edit button clicked', async () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
@@ -155,10 +155,8 @@ describe('Task card', () => {
             jest.advanceTimersByTime(300);
         });
         const editButton = getByTestId('edit-button');
-        act(() => {
-            fireEvent.click(editButton);
-        });
-        await screen.findByRole('input');
+        fireEvent.click(editButton);
+        await screen.findByTestId('assignee-input');
     });
 
     it('Should render "Close task" button when parent issue is closed', function () {

@@ -74,13 +74,9 @@ const Card: FC<CardProps> = ({
 
     const [isEditMode, setIsEditMode] = useState(false);
     const onEditRoute = () => {
-        console.log('edit');
-
         setIsEditMode(true);
     };
     shouldEdit = shouldEdit && isUserAuthorized && isEditMode;
-
-    console.log({ isEditMode });
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -276,7 +272,7 @@ const Card: FC<CardProps> = ({
     };
 
     const EditButton = () => (
-        <div className={classNames.editButton} data-testid="edit-button">
+        <div className={classNames.editButton}>
             <Image
                 src="/pencil.webp"
                 alt="pencil icon to represent edit button"
@@ -284,6 +280,7 @@ const Card: FC<CardProps> = ({
                 height={iconHeight}
                 onClick={onEditRoute}
                 tabIndex={0}
+                data-testid="edit-button"
             />
         </div>
     );
@@ -520,6 +517,7 @@ const Card: FC<CardProps> = ({
                         isUserAuthorized && (
                             <div className={classNames.suggestionDiv}>
                                 <input
+                                    data-testid="assignee-input"
                                     ref={inputRef}
                                     value={assigneeName}
                                     className={classNames.cardStrongFont}
