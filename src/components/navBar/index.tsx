@@ -78,8 +78,8 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className={styles.userProfile}>
-                {userData !== undefined ? (
-                    userData ? (
+                {userData !== undefined &&
+                    (userData ? (
                         <div
                             className={styles.userGreet}
                             onClick={() => setToggleDropdown(!toggleDropdown)}
@@ -113,10 +113,7 @@ const NavBar = () => {
                                 />
                             </button>
                         </Link>
-                    )
-                ) : (
-                    ''
-                )}
+                    ))}
             </div>
         </nav>
     );
