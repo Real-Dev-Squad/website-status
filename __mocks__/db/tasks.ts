@@ -28,8 +28,7 @@ const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
     ...TASK,
     id: TASK.id + index,
 }));
-
-export { tasks, TASK };
+const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 
 const PAGINATED_TASKS = {
     tasks: [
@@ -135,7 +134,115 @@ const PAGINATED_TASKS = {
         }
     ],
     prev: '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
-    next: '/tasks?status=AVAILABLE&dev=true&size=5&next=aZAxHchprtpuMGsTOqqo'
+    next: '/tasks?status=AVAILABLE&dev=true&size=5&next=abc123'
 };
 
-export { PAGINATED_TASKS };
+const NEXT_PAGINATED_TASKS = {
+    tasks: [
+        {
+          id: 'abc123',
+          percentCompleted: 0,
+          isNoteworthy: false,
+          createdBy: 'John',
+          lossRate: {
+            dinero: 100,
+            neelam: 0
+          },
+          assignee: false,
+          type: 'feature',
+          priority: 'HIGH',
+          completionAward: {
+            dinero: 1000,
+            neelam: 0
+          },
+          status: 'AVAILABLE',
+          title: 'Design and develop a social media platform',
+          dependsOn: []
+        },
+        {
+          id: 'def456',
+          percentCompleted: 0,
+          isNoteworthy: false,
+          createdBy: 'Emily',
+          lossRate: {
+            dinero: 100,
+            neelam: 0
+          },
+          assignee: false,
+          type: 'feature',
+          priority: 'HIGH',
+          completionAward: {
+            dinero: 1000,
+            neelam: 0
+          },
+          status: 'AVAILABLE',
+          title: 'Build a website for an e-commerce store',
+          dependsOn: []
+        },
+        {
+          id: 'ghi789',
+          percentCompleted: 0,
+          isNoteworthy: false,
+          createdBy: 'David',
+          lossRate: {
+            dinero: 100,
+            neelam: 0
+          },
+          assignee: false,
+          type: 'feature',
+          priority: 'HIGH',
+          completionAward: {
+            dinero: 1000,
+            neelam: 0
+          },
+          status: 'AVAILABLE',
+          title: 'Develop a mobile app for fitness tracking',
+          dependsOn: []
+        },
+        {
+          id: 'jkl012',
+          percentCompleted: 0,
+          isNoteworthy: false,
+          createdBy: 'Sophia',
+          lossRate: {
+            dinero: 100,
+            neelam: 0
+          },
+          assignee: false,
+          type: 'feature',
+          priority: 'HIGH',
+          completionAward: {
+            dinero: 1000,
+            neelam: 0
+          },
+          status: 'AVAILABLE',
+          title: 'Create a web-based project management tool',
+          dependsOn: []
+        },
+        {
+          id: 'mno345',
+          percentCompleted: 0,
+          isNoteworthy: false,
+          createdBy: 'Daniel',
+          lossRate: {
+            dinero: 100,
+            neelam: 0
+          },
+          assignee: false,
+          type: 'feature',
+          priority: 'HIGH',
+          completionAward: {
+            dinero: 1000,
+            neelam: 0
+          },
+          status: 'AVAILABLE',
+          title: 'Design and implement a chat application',
+          dependsOn: []
+        }
+      ],
+      prev: '/tasks?status=AVAILABLE&dev=true&size=5&prev=P86Y1hVrS0zR5ZcVPwLZ',
+      next: '/tasks?status=AVAILABLE&dev=true&size=5&next=aZAxHchprtpuMGsTOqqo'
+
+};
+
+export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS };

@@ -2,7 +2,7 @@ import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const taskDetailsHandler = [
-    rest.get(`${URL}/tasks/:taskId/details`, (_, res, ctx) => {
+    rest.get(`${URL}/tasks/6KhcLU3yr45dzjQIVm0J/details`, (_, res, ctx) => {
         return res(
             ctx.status(200),
             ctx.json({

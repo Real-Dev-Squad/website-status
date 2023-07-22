@@ -24,7 +24,7 @@ export const api = createApi({
         'Levels',
         'Challenges',
         'Idle_Members',
-        'User_Standup',
+        'Progress_Details',
     ],
     /**
      * This api has endpoints injected in adjacent files,
