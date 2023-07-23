@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -10,6 +10,11 @@ import {
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import useUserData from '@/hooks/useUserData';
+import { setupServer } from 'msw/node';
+import { adminUserHandler } from '../../../../__mocks__/handlers/self.handler';
+
+const server = setupServer();
 
 const DEFAULT_PROPS = {
     content: {
@@ -40,19 +45,6 @@ const DEFAULT_PROPS = {
     onContentChange: jest.fn(),
 };
 
-jest.mock('@/hooks/useUserData', () => {
-    return () => ({
-        data: {
-            roles: {
-                admin: true,
-                super_user: true,
-            },
-        },
-        isUserAuthorized: true,
-        isSuccess: true,
-    });
-});
-
 const getFirestoreDateNDaysBefore = (n = 1) => {
     const d = new Date();
     d.setDate(d.getDate() - n);
@@ -61,6 +53,15 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 
 jest.useFakeTimers();
 describe('Task card', () => {
+    beforeAll(() => {
+        server.listen({
+            onUnhandledRequest: 'warn',
+        });
+    });
+
+    afterEach(() => server.resetHandlers());
+    afterAll(() => server.close());
+
     test('Should render card', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -123,7 +124,8 @@ describe('Task card', () => {
         expect(queryByTestId('task-card')).toBeInTheDocument();
     });
 
-    test('should show edit button when ALT key is long pressed', () => {
+    test('should show edit button when ALT key is long pressed', async () => {
+        server.use(...adminUserHandler);
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
