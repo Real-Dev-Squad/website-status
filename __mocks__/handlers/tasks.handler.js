@@ -17,7 +17,7 @@ const taskHandlers = [
     }),
 
     rest.patch(`${URL}/tasks/self/:taskId`, (_, res, ctx) => {
-        return res(ctx.delay(5000), ctx.status(204));
+        return res(ctx.status(204));
     }),
 
     rest.post(`${URL}/tasks`, async (req, res, ctx) => {
