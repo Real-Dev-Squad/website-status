@@ -5,6 +5,7 @@ import React, {
     useContext,
     useRef,
     useState,
+    ReactElement,
 } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
@@ -14,14 +15,17 @@ import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import {
     useGetTaskDetailsQuery,
-    useGetTasksDependencyDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 
 import useUserData from '@/hooks/useUserData';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import TaskDependencyList from './TaskDependencyList';
+import TaskDependency from '@/components/taskDetails/taskDependency';
+import { parseDependencyValue } from '@/utils/parseDependency';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import { ProgressDetailsData } from '@/types/standup.type';
+import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -37,6 +41,7 @@ export function Button(props: ButtonProps) {
 }
 export function Textarea(props: TextAreaProps) {
     const { name, value, onChange, testId } = props;
+
     return (
         <textarea
             className={classNames['textarea']}
@@ -55,6 +60,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
 
     const { data: userData, isUserAuthorized } = useUserData();
 
@@ -67,12 +74,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         ? data?.taskData?.dependsOn || []
         : [];
 
-    const {
-        data: dependencyData,
-        isLoading: loading,
-        isFetching: fetching,
-        isError: error,
-    } = useGetTasksDependencyDetailsQuery(taskDependencyIds);
     const { SUCCESS, ERROR } = ToastTypes;
 
     const taskDetailsData = data?.taskData;
@@ -82,6 +83,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [editedDetails, setEditedDetails] = useState({});
 
     const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+    const [updatedDependencies, setUpdatedDependencies] = useState<string[]>(
+        taskDetails?.dependsOn || []
+    );
 
     useEffect(() => {
         const fetchedData = data?.taskData;
@@ -92,9 +96,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
+        const { name, value } = event.target;
+
+        if (name === 'dependsOn') {
+            const updatedDependencies = parseDependencyValue(value);
+            setUpdatedDependencies(updatedDependencies);
+        }
         const formData = {
             ...taskDetails,
             [event.target.name]: event.target.value,
+            dependsOn: [...updatedDependencies],
         };
         setEditedDetails(formData);
         setTaskDetails(formData);
@@ -127,11 +138,28 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const navigateToTask = (taskId: string) => {
-        router.push(`/tasks/${taskId}`);
-    };
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
+
+    const { data: taskProgress } = useGetProgressDetailsQuery({
+        taskId: taskID,
+    });
+    const taskProgressArray: Array<ReactElement> = [];
+    if (taskProgress) {
+        if (taskProgress.data.length > 0) {
+            taskProgress.data.forEach((data: ProgressDetailsData) => {
+                taskProgressArray.push(
+                    <>
+                        <li>
+                            {getDateFromTimestamp(data.date)} : {data.completed}
+                        </li>
+                        <br />
+                    </>
+                );
+            });
+        }
+    }
+
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -217,36 +245,49 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                 </div>
                             </TaskContainer>
-                            <TaskContainer
-                                title="Task DependsOn"
-                                hasImg={false}
-                            >
-                                <ol
-                                    className={
-                                        classNames[
-                                            'task_dependency_list_container'
-                                        ]
-                                    }
-                                >
-                                    <TaskDependencyList
-                                        loading={loading}
-                                        fetching={fetching}
-                                        error={error}
-                                        dependencyData={dependencyData}
-                                        navigateToTask={navigateToTask}
-                                    />
-                                </ol>
-                            </TaskContainer>
+                            {isDevModeEnabled && (
+                                <>
+                                    <TaskContainer
+                                        title="Task DependsOn"
+                                        hasImg={false}
+                                    >
+                                        <TaskDependency
+                                            taskDependencyIds={
+                                                taskDependencyIds
+                                            }
+                                            isEditing={isEditing}
+                                            updatedDependencies={
+                                                updatedDependencies
+                                            }
+                                            handleChange={handleChange}
+                                        />
+                                    </TaskContainer>
+                                    <TaskContainer
+                                        title="Progress Updates"
+                                        hasImg={false}
+                                    >
+                                        {taskProgressArray.length > 0 ? (
+                                            <div> {taskProgressArray} </div>
+                                        ) : (
+                                            'No Progress found'
+                                        )}
+                                    </TaskContainer>
+                                </>
+                            )}
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {isDevModeEnabled && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"

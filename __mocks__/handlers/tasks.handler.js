@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -65,7 +65,9 @@ export const failedUpdateTaskHandler = rest.patch(
 
 export const noTasksFoundResponse = {
     message: 'No Tasks Found',
-    tasks: []
+    tasks: [],
+    next: null,
+    prev: null,
 };
 
 export const noTasksFoundHandler = rest.get(
@@ -76,10 +78,8 @@ export const noTasksFoundHandler = rest.get(
     }
 );
 
-export default taskHandlers;
-
 export const paginatedTasksHandler = [
-    rest.get(`${URL}/tasks`, (_, res, ctx) => {
+    rest.get(`${URL}/tasks?status=AVAILABLE&dev=true`, (_, res, ctx) => {
         return res(
             ctx.status(200),
             ctx.json(
@@ -87,4 +87,54 @@ export const paginatedTasksHandler = [
             )
         );
     }),
+    rest.patch(`${URL}/${PAGINATED_TASKS.next}`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(
+                NEXT_PAGINATED_TASKS
+            )
+        );
+    }),
+
 ];
+
+export const mineTasksHandler = [
+    rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(
+                MINE_TASKS
+            )
+        );
+    }),
+];
+
+export const failedGetMineTask= rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
+    return res(ctx.status(500), ctx.json(failedGetTasksResponse));
+});
+
+export const mineTasksNoDataFoundHandler = rest.get(
+    `${URL}/tasks/self`,
+    (_, res, ctx) => {
+        return res(
+            ctx.json({
+                message: 'No Tasks Found',
+                issues: [],
+            })
+        );
+    }
+);
+
+export const mineTasksErrorHandler = rest.get(
+    `${URL}/tasks/self`,
+    (_, res, ctx) => {
+        return res(
+            ctx.status(500),
+            ctx.json({
+                message: 'Something went wrong! Please contact admin',
+            })
+        );
+    }
+);
+
+export default taskHandlers;

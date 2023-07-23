@@ -5,23 +5,32 @@ import task, {
 } from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
+import { TASK_RESULT_SIZE } from '@/constants/constants';
 
+type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
-            query: ({ dev, status, nextPage, prevPage }) => {
-                let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
+            query: ({
+                dev,
+                status,
+                size = TASK_RESULT_SIZE,
+                nextTasks,
+                prevTasks,
+            }) => {
+                let url = dev
+                    ? `/tasks?status=${status}&dev=true&size=${size}`
+                    : '/tasks';
 
-                if (nextPage) {
-                    url = nextPage;
+                if (nextTasks) {
+                    url = nextTasks;
                 }
 
-                if (prevPage) {
-                    url = prevPage;
+                if (prevTasks) {
+                    url = prevTasks;
                 }
-
                 return { url };
             },
             providesTags: ['Tasks'],
@@ -37,7 +46,7 @@ export const tasksApi = api.injectEndpoints({
             },
         }),
 
-        getMineTasks: builder.query<TasksResponseType, void>({
+        getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),

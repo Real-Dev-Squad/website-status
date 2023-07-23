@@ -10,8 +10,10 @@ import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
+import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
 import { adminUserHandler } from '../../../../__mocks__/handlers/self.handler';
+import { mockGetTaskProgress } from '__mocks__/db/progresses';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -28,6 +30,7 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const mockNavigateToUpdateProgressPage = jest.fn();
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
@@ -37,18 +40,6 @@ describe('TaskDetails Page', () => {
         );
         await waitFor(() => {
             expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
-        });
-    });
-
-    it('should render update progress button ', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        await waitFor(() => {
-            const buttonElement = getByText(/Update Progress/i);
-            expect(buttonElement).toBeInTheDocument();
         });
     });
 
@@ -437,6 +428,42 @@ describe('TaskDetails Page', () => {
             expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
         });
     });
+
+    test('Should render No task progress', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        const noProgressText = screen.getByText('No Progress found');
+        expect(noProgressText).toBeInTheDocument();
+    });
+
+    test('should call progress details query', async () => {
+        const spyfn = jest.spyOn(progressQueries, 'useGetProgressDetailsQuery');
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        expect(spyfn).toBeCalled();
+    });
 });
 
 describe('Buttons with functionalities', () => {
@@ -487,6 +514,36 @@ describe('Textarea with functionalities', () => {
         const textareaElement = screen.getByTestId('textarea');
         fireEvent.change(textareaElement, { target: { value: 'New value' } });
         expect(mockChangeHandler).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe('Update Progress button', () => {
+    it('renders the Update Progress button when ?dev=true query parameter is present', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' }, push: mockNavigateToUpdateProgressPage }
+        );
+
+        await waitFor(() => {
+            const updateProgressButton = screen.getByText('Update Progress');
+            expect(updateProgressButton).toBeInTheDocument();
+            fireEvent.click(updateProgressButton);
+            expect(mockNavigateToUpdateProgressPage).toHaveBeenLastCalledWith(
+                '/progress/6KhcLU3yr45dzjQIVm0J?dev=true'
+            );
+        });
+    });
+
+    it('Should not render the Update Progress button when ?dev=true query parameter is absent', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        const updateProgressButton = screen.queryByText('Update Progress');
+        expect(updateProgressButton).not.toBeInTheDocument();
     });
 });
 

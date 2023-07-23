@@ -4,7 +4,7 @@ import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
     useSaveProgressMutation,
-    useUserProgressDetailsQuery,
+    useGetProgressDetailsQuery,
 } from '@/app/services/progressesApi';
 import { useGetUserQuery } from '@/app/services/userApi';
 
@@ -31,7 +31,9 @@ const StandUpContainer: FC = () => {
 
     const [addStandup] = useSaveProgressMutation();
     const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
+    const { data: userStandupdata } = useGetProgressDetailsQuery({
+        userId: user?.id,
+    });
 
     const { SUCCESS, ERROR } = ToastTypes;
     const standupDates = userStandupdata?.data?.map((element) => element.date);
