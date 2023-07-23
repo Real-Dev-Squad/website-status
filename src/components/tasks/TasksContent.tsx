@@ -50,7 +50,6 @@ type routerQueryParams = {
     section?: string;
 };
 export const TasksContent = ({ dev }: { dev: boolean }) => {
-    console.log('tabs', TABS);
     const router = useRouter();
     const { section }: routerQueryParams = router.query;
     const selectedTab = getActiveTab(section);

@@ -11,9 +11,9 @@ export function Select({ value, onChange, options }: SelectProps) {
         if (option !== value) onChange(option);
     }
 
-    function isOptionSelected(option: SelectOption) {
-        return option === value;
-    }
+    // function isOptionSelected(option: SelectOption) {
+    //     return option === value;
+    // }
 
     // Accessiblity
     useEffect(() => {
@@ -54,14 +54,21 @@ export function Select({ value, onChange, options }: SelectProps) {
     return (
         <div
             ref={containerRef}
-            onBlur={() => setIsOpen(false)}
+            // onBlur={() => setIsOpen(false)}
             onClick={() => setIsOpen((prev) => !prev)}
             tabIndex={0}
             className={styles.container}
         >
-            <span className={styles.value}>{value?.label}</span>
-            <div className={styles.caret}></div>
-            <ul className={`${styles.options} ${isOpen ? styles.show : ''}`}>
+            <button className={styles['selected-option-container']}>
+                <span className={styles.value} data-testid="selected-option">
+                    {value?.label}
+                </span>
+                <div className={styles.caret}></div>
+            </button>
+            <ul
+                className={`${styles.options} ${isOpen ? styles.show : ''}`}
+                data-testid="options"
+            >
                 {options.map((option, index) => (
                     <li
                         onClick={(e) => {
@@ -71,11 +78,9 @@ export function Select({ value, onChange, options }: SelectProps) {
                         }}
                         onMouseEnter={() => setHighlightedIndex(index)}
                         key={option.value}
-                        className={`${styles.option} ${
-                            isOptionSelected(option) ? styles.selected : ''
-                        } ${
+                        className={`${
                             index === highlightedIndex ? styles.highlighted : ''
-                        }`}
+                        } ${styles.option}`}
                     >
                         {option.label}
                     </li>
