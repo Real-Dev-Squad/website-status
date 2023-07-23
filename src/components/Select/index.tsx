@@ -14,13 +14,13 @@ export function Select({ value, onChange, options }: SelectProps) {
     // Accessiblity
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
-            if (e.target != containerRef.current) return;
+            if (
+                e.target != containerRef.current &&
+                !containerRef?.current?.contains(e.target as Node)
+            )
+                return;
+
             switch (e.code) {
-                case 'Enter':
-                case 'Space':
-                    setIsOpen((prev) => !prev);
-                    if (isOpen) selectOption(options[highlightedIndex]);
-                    break;
                 case 'ArrowUp':
                 case 'ArrowDown': {
                     if (!isOpen) {
@@ -51,7 +51,9 @@ export function Select({ value, onChange, options }: SelectProps) {
         <div
             ref={containerRef}
             onBlur={() => setIsOpen(false)}
-            onClick={() => setIsOpen((prev) => !prev)}
+            onClick={() => {
+                setIsOpen((prev) => !prev);
+            }}
             tabIndex={0}
             className={styles.container}
         >
