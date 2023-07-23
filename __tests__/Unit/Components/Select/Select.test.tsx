@@ -124,8 +124,9 @@ describe('Select', () => {
                 options={sampleOptions}
             />
         );
-        const selectContainer = screen.getByRole('button'); // Change this to use the new data-testid
+        const selectContainer = screen.getByRole('button');
         fireEvent.click(selectContainer);
+
         // The dropdown should be visible after the key press.
         expect(screen.getByTestId('options')).toBeVisible();
 
