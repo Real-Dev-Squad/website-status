@@ -5,7 +5,7 @@ import { UserStatus } from '@/interfaces/userStatus.type';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
 import styles from '@/components/idleUsers/card/card.module.scss';
 import { DUMMY_PROFILE } from '@/constants/display-sections.js';
-import { MEMBERS_URL } from '@/constants/url';
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 
 type Props = {
     user: UserStatus;
@@ -14,7 +14,7 @@ type Props = {
 const Card: FC<Props> = ({ user }) => {
     const userImg = user?.picture?.url;
     const idleSinceText = getIdleSinceText(user.currentStatus.from);
-    const profileUrl = `${MEMBERS_URL}/${user.username}`;
+    const profileUrl = `${USER_MANAGEMENT_URL}/?username=${user.username}`;
 
     return (
         <Link
