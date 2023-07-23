@@ -7,6 +7,7 @@ import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
 import { TASK_RESULT_SIZE } from '@/constants/constants';
 
+type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
 
 export const tasksApi = api.injectEndpoints({
@@ -45,7 +46,7 @@ export const tasksApi = api.injectEndpoints({
             },
         }),
 
-        getMineTasks: builder.query<TasksResponseType, void>({
+        getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
