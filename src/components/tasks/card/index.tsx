@@ -35,7 +35,6 @@ import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
-import { log } from 'console';
 
 let timer: NodeJS.Timeout;
 
@@ -73,10 +72,6 @@ const Card: FC<CardProps> = ({
     const [keyLongPressed] = useKeyLongPressed();
 
     const [isEditMode, setIsEditMode] = useState(false);
-    const onEditRoute = () => {
-        setIsEditMode(true);
-    };
-    shouldEdit = shouldEdit && isUserAuthorized && isEditMode;
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -241,6 +236,11 @@ const Card: FC<CardProps> = ({
                 toast(ERROR, err.message);
             });
     };
+
+    const onEditRoute = () => {
+        setIsEditMode(true);
+    };
+    shouldEdit = shouldEdit && isUserAuthorized && isEditMode;
 
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
