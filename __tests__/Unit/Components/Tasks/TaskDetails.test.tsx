@@ -217,6 +217,7 @@ describe('TaskDetails Page', () => {
     });
 
     test('should update the title and description with the new values', async () => {
+        server.use(...adminUserHandler);
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
