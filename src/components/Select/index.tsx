@@ -11,10 +11,6 @@ export function Select({ value, onChange, options }: SelectProps) {
         if (option !== value) onChange(option);
     }
 
-    // function isOptionSelected(option: SelectOption) {
-    //     return option === value;
-    // }
-
     // Accessiblity
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -54,7 +50,7 @@ export function Select({ value, onChange, options }: SelectProps) {
     return (
         <div
             ref={containerRef}
-            // onBlur={() => setIsOpen(false)}
+            onBlur={() => setIsOpen(false)}
             onClick={() => setIsOpen((prev) => !prev)}
             tabIndex={0}
             className={styles.container}

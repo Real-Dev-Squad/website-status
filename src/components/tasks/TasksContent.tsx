@@ -10,7 +10,7 @@ import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
 import { getActiveTab } from '@/utils/getActiveTab';
-import Tabs, { changeName } from '../Tabs';
+import { changeName } from '../Tabs';
 import { Select } from '../Select';
 
 type RenderTaskListProps = {
@@ -108,9 +108,9 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
-    // if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <p>Loading...</p>;
 
-    // if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
     const taskSelectOptions = TABS.map((item) => ({
         label: changeName(item),
         value: item,
