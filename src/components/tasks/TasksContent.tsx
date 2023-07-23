@@ -1,6 +1,6 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import task, { Tab, TabTasksData } from '@/interfaces/task.type';
+import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
@@ -10,6 +10,8 @@ import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
 import { getActiveTab } from '@/utils/getActiveTab';
+import Tabs, { changeName } from '../Tabs';
+import { Select } from '../Select';
 
 type RenderTaskListProps = {
     tab: string;
@@ -48,6 +50,7 @@ type routerQueryParams = {
     section?: string;
 };
 export const TasksContent = ({ dev }: { dev: boolean }) => {
+    console.log('tabs', TABS);
     const router = useRouter();
     const { section }: routerQueryParams = router.query;
     const selectedTab = getActiveTab(section);
@@ -106,13 +109,34 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
-    if (isLoading) return <p>Loading...</p>;
+    // if (isLoading) return <p>Loading...</p>;
 
-    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    // if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    const taskSelectOptions = TABS.map((item) => ({
+        label: changeName(item),
+        value: item,
+    }));
 
     return (
         <div className={classNames.tasksContainer}>
-            <TabSection onSelect={onSelect} activeTab={selectedTab} />
+            <div className={classNames['status-tabs-container']}>
+                <TabSection onSelect={onSelect} activeTab={selectedTab} />
+            </div>
+            <div className={classNames['status-select-container']}>
+                <Select
+                    value={{
+                        label: changeName(selectedTab),
+                        value: selectedTab,
+                    }}
+                    onChange={(o) => {
+                        if (o) {
+                            console.log(o);
+                            onSelect(o.value as Tab);
+                        }
+                    }}
+                    options={taskSelectOptions}
+                />
+            </div>
             <div>
                 <RenderTaskList
                     dev={dev}
@@ -120,7 +144,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                     tasks={loadedTasks[selectedTab]}
                 />
             </div>
-
             {dev && (
                 <button
                     className={classNames.loadMoreButton}

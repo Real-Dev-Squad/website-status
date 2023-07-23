@@ -7,7 +7,7 @@ type TabsProps = {
     onSelect: (tab: Tab) => void;
     activeTab: Tab;
 };
-function changeName(name: string) {
+export function changeName(name: string) {
     if (name === COMPLETED) {
         return DONE;
     } else if (name === AVAILABLE) {
