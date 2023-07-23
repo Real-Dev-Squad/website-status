@@ -32,13 +32,15 @@ describe('tasks content', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TasksContent dev={false} />
-            </Provider>
+            </Provider>,
+            {
+                query: { section: 'assigned' },
+            }
         );
         await screen.findByTestId('tabs');
         const assignedButton = screen.getByRole('button', {
             name: /assigned/i,
         });
-        fireEvent.click(assignedButton);
         expect(assignedButton).toHaveClass('active');
         await screen.findByText(NO_TASKS_FOUND_MESSAGE);
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
@@ -60,13 +62,9 @@ describe('tasks content', () => {
             <Provider store={store()}>
                 <TasksContent dev={true} />
             </Provider>,
-            { query: { dev: 'true' } }
+            { query: { dev: 'true', section: 'available' } }
         );
         await screen.findByTestId('tabs');
-        const availableButton = screen.getByRole('button', {
-            name: /UNASSINGED/i,
-        });
-        fireEvent.click(availableButton);
         const task = await findByText(
             'Design and develop an online booking system'
         );
@@ -78,13 +76,13 @@ describe('tasks content', () => {
             <Provider store={store()}>
                 <TasksContent dev={false} />
             </Provider>,
-            { query: { dev: 'false' } }
+            { query: { dev: 'false', section: 'available' } }
         );
         await screen.findByTestId('tabs');
-        const availableButton = screen.getByRole('button', {
+        const unassignedButton = screen.getByRole('button', {
             name: /UNASSINGED/i,
         });
-        fireEvent.click(availableButton);
+        expect(unassignedButton).toHaveClass('active');
         const task = await findByText(
             'Design and develop an online booking system'
         );
@@ -125,13 +123,9 @@ describe('tasks content', () => {
             <Provider store={store()}>
                 <TasksContent dev={true} />
             </Provider>,
-            { query: { dev: 'true' } }
+            { query: { dev: 'true', section: 'available' } }
         );
         await screen.findByTestId('tabs');
-        const availableButton = screen.getByRole('button', {
-            name: /UNASSINGED/i,
-        });
-        fireEvent.click(availableButton);
         const task = await findByText(
             'Design and develop an online booking system'
         );
@@ -145,5 +139,30 @@ describe('tasks content', () => {
             'Design and develop an online booking system'
         );
         expect(task2).toBeInTheDocument();
+    });
+
+    test('Selecting a tab pushes into query params', async () => {
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+        await screen.findByTestId('tabs');
+        const inProgressBtn = screen.getByRole('button', {
+            name: /IN PROGRESS/i,
+        });
+        expect(inProgressBtn).toHaveClass('active');
+        const unassignedButton = screen.getByRole('button', {
+            name: /UNASSINGED/i,
+        });
+        fireEvent.click(unassignedButton);
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                section: 'available',
+            },
+        });
     });
 });

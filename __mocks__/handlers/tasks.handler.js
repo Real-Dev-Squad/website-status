@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -78,8 +78,6 @@ export const noTasksFoundHandler = rest.get(
     }
 );
 
-export default taskHandlers;
-
 export const paginatedTasksHandler = [
     rest.get(`${URL}/tasks?status=AVAILABLE&dev=true`, (_, res, ctx) => {
         return res(
@@ -99,3 +97,44 @@ export const paginatedTasksHandler = [
     }),
 
 ];
+
+export const mineTasksHandler = [
+    rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json(
+                MINE_TASKS
+            )
+        );
+    }),
+];
+
+export const failedGetMineTask= rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
+    return res(ctx.status(500), ctx.json(failedGetTasksResponse));
+});
+
+export const mineTasksNoDataFoundHandler = rest.get(
+    `${URL}/tasks/self`,
+    (_, res, ctx) => {
+        return res(
+            ctx.json({
+                message: 'No Tasks Found',
+                issues: [],
+            })
+        );
+    }
+);
+
+export const mineTasksErrorHandler = rest.get(
+    `${URL}/tasks/self`,
+    (_, res, ctx) => {
+        return res(
+            ctx.status(500),
+            ctx.json({
+                message: 'Something went wrong! Please contact admin',
+            })
+        );
+    }
+);
+
+export default taskHandlers;
