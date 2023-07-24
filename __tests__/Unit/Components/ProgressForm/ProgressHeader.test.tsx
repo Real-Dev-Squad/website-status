@@ -6,8 +6,7 @@ describe('ProgressHeader', () => {
     test('Should render Text in Progress Header component', () => {
         render(<ProgressHeader totalMissedUpdates={10} updateType="Standup" />);
         const missedUpdatesElement = screen.getByText(
-            // eslint-disable-next-line quotes
-            "Let's try to avoid having zero days"
+            'Let us try to avoid having zero days'
         );
         expect(missedUpdatesElement).toBeInTheDocument();
     });

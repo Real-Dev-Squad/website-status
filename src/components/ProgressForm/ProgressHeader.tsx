@@ -27,7 +27,7 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                     {updateType} updates
                 </p>
                 <p className={styles.bannerPara}>
-                    Let&apos;s try to avoid having zero days
+                    Let us try to avoid having zero days
                 </p>
                 {updateType === STANDUP ? (
                     <div className={styles.timeContainer}>
