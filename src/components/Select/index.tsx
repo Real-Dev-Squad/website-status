@@ -14,6 +14,7 @@ export function Select({ value, onChange, options }: SelectProps) {
     // Accessiblity
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
+            e.preventDefault();
             if (
                 e.target != containerRef.current &&
                 !containerRef?.current?.contains(e.target as Node)
