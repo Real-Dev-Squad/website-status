@@ -556,9 +556,8 @@ const Card: FC<CardProps> = ({
 
                 <div className={classNames.cardItems}>
                     <div
-                        className={`${classNames.taskTagLevelWrapper} ${
-                            shouldEdit && classNames.editMode
-                        }`}
+                        className={`${classNames.taskTagLevelWrapper} ${shouldEdit && classNames.editMode
+                            }`}
                     >
                         <TaskLevelMap
                             taskTagLevel={taskTagLevel}
@@ -646,9 +645,8 @@ const Card: FC<CardProps> = ({
             </div>
 
             <div
-                className={`${classNames.taskTagLevelWrapper} ${
-                    shouldEdit && classNames.editMode
-                }`}
+                className={`${classNames.taskTagLevelWrapper} ${shouldEdit && classNames.editMode
+                    }`}
             >
                 <TaskLevelMap
                     taskTagLevel={taskTagLevel}
