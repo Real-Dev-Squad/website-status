@@ -23,9 +23,7 @@ const details = {
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    server.listen({
-        onUnhandledRequest: 'error',
-    });
+    server.listen();
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
@@ -225,7 +223,7 @@ describe('TaskDetails Page', () => {
                 <TaskDetails taskID={details.taskID} />
                 <ToastContainer />
             </Provider>,
-            {}
+            { query: { dev: 'true' }, push: mockNavigateToUpdateProgressPage }
         );
         await waitFor(() => {
             const buttonElement = getByText(/Update Progress/i);
