@@ -54,9 +54,7 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 jest.useFakeTimers();
 describe('Task card', () => {
     beforeAll(() => {
-        server.listen({
-            onUnhandledRequest: 'warn',
-        });
+        server.listen();
     });
 
     afterEach(() => server.resetHandlers());
