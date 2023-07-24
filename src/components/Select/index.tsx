@@ -23,7 +23,10 @@ export function Select({ value, onChange, options }: SelectProps) {
             switch (e.code) {
                 case 'Enter':
                 case 'Space':
-                    if (isOpen) selectOption(options[highlightedIndex]);
+                    if (isOpen) {
+                        selectOption(options[highlightedIndex]);
+                        setIsOpen(false);
+                    }
                     break;
                 case 'ArrowUp':
                 case 'ArrowDown': {
