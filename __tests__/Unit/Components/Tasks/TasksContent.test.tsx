@@ -1,7 +1,7 @@
 import { TasksContent } from '@/components/tasks/TasksContent';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -141,6 +141,16 @@ describe('tasks content', () => {
         expect(task2).toBeInTheDocument();
     });
 
+    const breakpointToShowSelect = 440;
+    const breakpointToShowTabs = breakpointToShowSelect + 450;
+
+    const setWindowInnerWidth = (width: number) => {
+        act(() => {
+            window.innerWidth = width;
+            window.dispatchEvent(new Event('resize'));
+        });
+    };
+
     test('Selecting a tab pushes into query params', async () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
@@ -149,6 +159,7 @@ describe('tasks content', () => {
             </Provider>,
             { push: mockPushFunction }
         );
+        setWindowInnerWidth(breakpointToShowTabs);
         await screen.findByTestId('tabs');
         const inProgressBtn = screen.getByRole('button', {
             name: /IN PROGRESS/i,
@@ -162,6 +173,67 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledWith({
             query: {
                 section: 'available',
+            },
+        });
+    });
+
+    test('should show status-tabs-container after 450px of screen width', () => {
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+        setWindowInnerWidth(breakpointToShowTabs);
+        const tabsContainer = screen.getByTestId('status-tabs-container');
+        const tabStyles = getComputedStyle(tabsContainer);
+        expect(tabStyles.display).toBe('block');
+    });
+
+    test('should show status-select-container 450px below status-tabs-container', () => {
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+        setWindowInnerWidth(breakpointToShowSelect);
+        const selectContainer = screen.getByTestId('status-select-container');
+        const selectStyles = getComputedStyle(selectContainer);
+
+        expect(selectStyles.display).toBe('block');
+    });
+
+    test('Selecting a value from dropdown pushes into query params', async () => {
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        const selectContainer = screen?.getByTestId(
+            'selected-option-container'
+        );
+
+        fireEvent.click(selectContainer);
+        fireEvent.keyDown(selectContainer, {
+            key: 'ArrowDown',
+            code: 'ArrowDown',
+        });
+
+        fireEvent.keyDown(selectContainer, {
+            key: 'Enter',
+            code: 'Enter',
+        });
+
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                section: 'assigned',
             },
         });
     });

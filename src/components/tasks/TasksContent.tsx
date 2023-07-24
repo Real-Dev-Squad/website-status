@@ -10,8 +10,9 @@ import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
 import { getActiveTab } from '@/utils/getActiveTab';
-import { changeName } from '../Tabs';
+
 import { Select } from '../Select';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
 type RenderTaskListProps = {
     tab: string;
@@ -108,29 +109,34 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
-    if (isLoading) return <p>Loading...</p>;
+    // if (isLoading) return <p>Loading...</p>;
 
-    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    // if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
     const taskSelectOptions = TABS.map((item) => ({
-        label: changeName(item),
+        label: getChangedStatusName(item),
         value: item,
     }));
 
     return (
         <div className={classNames.tasksContainer}>
-            <div className={classNames['status-tabs-container']}>
+            <div
+                className={classNames['status-tabs-container']}
+                data-testid="status-tabs-container"
+            >
                 <TabSection onSelect={onSelect} activeTab={selectedTab} />
             </div>
-            <div className={classNames['status-select-container']}>
+            <div
+                className={classNames['status-select-container']}
+                data-testid="status-select-container"
+            >
                 <Select
                     value={{
-                        label: changeName(selectedTab),
+                        label: getChangedStatusName(selectedTab),
                         value: selectedTab,
                     }}
-                    onChange={(o) => {
-                        if (o) {
-                            console.log(o);
-                            onSelect(o.value as Tab);
+                    onChange={(selectedTaskStatus) => {
+                        if (selectedTaskStatus) {
+                            onSelect(selectedTaskStatus.value as Tab);
                         }
                     }}
                     options={taskSelectOptions}

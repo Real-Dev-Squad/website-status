@@ -21,6 +21,10 @@ export function Select({ value, onChange, options }: SelectProps) {
                 return;
 
             switch (e.code) {
+                case 'Enter':
+                case 'Space':
+                    if (isOpen) selectOption(options[highlightedIndex]);
+                    break;
                 case 'ArrowUp':
                 case 'ArrowDown': {
                     if (!isOpen) {
@@ -57,7 +61,10 @@ export function Select({ value, onChange, options }: SelectProps) {
             tabIndex={0}
             className={styles.container}
         >
-            <button className={styles['selected-option-container']}>
+            <button
+                className={styles['selected-option-container']}
+                data-testid="selected-option-container"
+            >
                 <span className={styles.value} data-testid="selected-option">
                     {value?.label}
                 </span>
