@@ -109,9 +109,9 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
-    // if (isLoading) return <p>Loading...</p>;
+    if (isLoading) return <p>Loading...</p>;
 
-    // if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
     const taskSelectOptions = TABS.map((item) => ({
         label: getChangedStatusName(item),
         value: item,
