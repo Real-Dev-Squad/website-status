@@ -26,6 +26,7 @@ import { parseDependencyValue } from '@/utils/parseDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
+import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -87,6 +88,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         taskDetails?.dependsOn || []
     );
 
+    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
+        useAddOrUpdateMutation();
+
     useEffect(() => {
         const fetchedData = data?.taskData;
         setTaskDetails(taskDetailsData);
@@ -126,6 +130,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             .then(() => toast(SUCCESS, 'Successfully saved'))
             .catch((error) => toast(ERROR, error.data.message));
         setTaskDetails(initialDataRef.current);
+    }
+
+    function taskRequestHandle() {
+        if (!userData) {
+            return;
+        }
+        addOrUpdateTaskRequest({ taskId: taskID, userId: userData?.id })
+            .unwrap()
+            .then(() => toast(SUCCESS, 'Successfully requested for task'))
+            .catch((error) => toast(ERROR, error.data.message));
     }
 
     function renderLoadingComponent() {
@@ -325,6 +339,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetails?.endsOn
                                     )}
                                 />
+                            </TaskContainer>
+                            <TaskContainer
+                                hasImg={false}
+                                title="Request for task"
+                            >
+                                <button onClick={taskRequestHandle}>
+                                    Request for task
+                                </button>
                             </TaskContainer>
                         </section>
                     </section>
