@@ -172,8 +172,8 @@ const Card: FC<CardProps> = ({
         }
     }
 
-    function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
-        if (shouldEdit) {
+    function renderDate(fromNowEndsOn: string, isEditable: boolean) {
+        if (isEditable) {
             return (
                 <input
                     type="date"
@@ -240,7 +240,7 @@ const Card: FC<CardProps> = ({
     const onEditRoute = () => {
         setIsEditMode(true);
     };
-    shouldEdit = shouldEdit && isUserAuthorized && isEditMode;
+    const isEditable = shouldEdit && isUserAuthorized && isEditMode;
 
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
@@ -348,7 +348,7 @@ const Card: FC<CardProps> = ({
             <div className={classNames.cardItems}>
                 <span
                     className={classNames.cardSpecialFont}
-                    contentEditable={shouldEdit}
+                    contentEditable={isEditable}
                     onKeyDown={(e) => handleChange(e, 'startedOn')}
                     role="button"
                     tabIndex={0}
@@ -435,7 +435,7 @@ const Card: FC<CardProps> = ({
                 >
                     <span
                         className={classNames.cardTitle}
-                        contentEditable={shouldEdit}
+                        contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'title')}
                         role="button"
                         tabIndex={0}
@@ -473,12 +473,12 @@ const Card: FC<CardProps> = ({
                             Estimated completion
                         </span>
                         <span className={classNames.completionDate}>
-                            {renderDate(fromNowEndsOn, shouldEdit)}
+                            {renderDate(fromNowEndsOn, isEditable)}
                         </span>
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
-                        contentEditable={shouldEdit}
+                        contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
@@ -490,7 +490,7 @@ const Card: FC<CardProps> = ({
                 </div>
                 {/* EDIT task status */}
                 <div className={classNames.taskStatusEditMode}>
-                    {shouldEdit && (
+                    {isEditable && (
                         <TaskStatusEditMode
                             task={cardDetails}
                             updateTask={onContentChange}
@@ -513,7 +513,7 @@ const Card: FC<CardProps> = ({
                             height={30}
                         />
                     </span>
-                    {shouldEdit ? (
+                    {isEditable ? (
                         isUserAuthorized && (
                             <div className={classNames.suggestionDiv}>
                                 <input
@@ -558,16 +558,16 @@ const Card: FC<CardProps> = ({
             <div className={classNames.cardItems}>
                 <div
                     className={`${classNames.taskTagLevelWrapper} ${
-                        shouldEdit && classNames.editMode
+                        isEditable && classNames.editMode
                     }`}
                 >
                     <TaskLevelMap
                         taskTagLevel={taskTagLevel}
-                        shouldEdit={shouldEdit}
+                        shouldEdit={isEditable}
                         itemId={cardDetails.id}
                         deleteTaskTagLevel={deleteTaskTagLevel}
                     />
-                    {shouldEdit && isUserAuthorized && (
+                    {isEditable && isUserAuthorized && (
                         <TaskLevelEdit
                             taskTagLevel={taskTagLevel}
                             itemId={cardDetails.id}
