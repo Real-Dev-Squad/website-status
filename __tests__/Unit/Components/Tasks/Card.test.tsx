@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -262,5 +262,34 @@ describe('Task card', () => {
             name: /Assign to john/i,
         });
         expect(closeTaskBtn).not.toBeInTheDocument();
+    });
+
+    it('Should render task assignee name in user input search field in edit mode', async () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} shouldEdit={true} />
+            </Provider>,
+            {}
+        );
+
+        const taskCard = screen.getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(taskCard, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editIcon = screen.getByTestId('edit-button');
+        expect(editIcon).toBeInTheDocument();
+
+        act(() => {
+            fireEvent.click(editIcon);
+            jest.advanceTimersByTime(300);
+        });
+
+        const userSelect = await screen.findByDisplayValue(
+            DEFAULT_PROPS.content.assignee
+        );
+        expect(userSelect).toBeInTheDocument();
     });
 });
