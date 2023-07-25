@@ -140,15 +140,11 @@ $off-white: #f0f0f0;
     .sub_details_container {
         grid-template-columns: 1fr;
     }
-}
 
-@media only screen and (max-width: 500px) {
     .parentContainer {
         margin: 2rem 2rem 0;
     }
-}
 
-@media only screen and (max-width: 400px) {
     .titleContainer {
         gap: 1rem;
         flex-wrap: wrap;

@@ -11,15 +11,15 @@
 }
 
 
+@media (max-width: 450px) {
+    .wrapper {
+        margin: 0 10px;
+    }
+}
+
 @media (max-width: 970px) {
     .navbar {
         display: flex;
         flex-direction: row;
-    }
-}
-
-@media (max-width: 450px) {
-    .wrapper {
-        margin: 0 10px;
     }
 }

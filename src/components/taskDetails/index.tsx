@@ -58,7 +58,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     const { data: userData, isUserAuthorized } = useUserData();
 
-    const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isEditing, setIsEditing] = useState<boolean>(true);
     const initialDataRef = useRef<Record<string, any> | undefined>({});
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
