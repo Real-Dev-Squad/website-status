@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handler';
+import { TABS } from '@/interfaces/task.type';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
 const server = setupServer(...handlers);
 
@@ -256,7 +258,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                section: 'assigned',
+                section: TABS[1].toLowerCase(),
             },
         });
     });

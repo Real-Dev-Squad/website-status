@@ -19,7 +19,7 @@ describe('Select', () => {
             />
         );
 
-        expect(screen?.queryByTestId('selected-option')).toBeInTheDocument();
+        expect(screen.queryByTestId('selected-option')).toBeInTheDocument();
 
         expect(screen?.queryByTestId('options')).not.toHaveClass('show');
     });
