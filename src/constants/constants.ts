@@ -7,7 +7,7 @@ export const AVAILABLE = 'AVAILABLE';
 export const UNASSINGED = 'UNASSINGED';
 export const STANDUP_ALREADY_SUBMITTED =
     'Standup already submitted for the day';
-export const dateFormat = 'MMMM DD, YYYY ';
+export const DATEFORMAT = 'MMMM DD, YYYY ';
 
 export const STANDUP_TIME = 'Standup time -';
 export const MORNING6AM = '6:00 am to';

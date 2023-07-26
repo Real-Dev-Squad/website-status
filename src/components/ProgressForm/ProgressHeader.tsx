@@ -7,15 +7,15 @@ import {
     MORNING6AM,
     STANDUP,
     STANDUP_TIME,
-    dateFormat,
+    DATEFORMAT,
 } from '@/constants/constants';
 
 const ProgressHeader: FC<progressHeaderProps> = ({
     totalMissedUpdates,
     updateType,
 }) => {
-    const currentDate = moment().format(dateFormat);
-    const futureDate = moment().add(1, 'day').format(dateFormat);
+    const currentDate = moment().format(DATEFORMAT);
+    const futureDate = moment().add(1, 'day').format(DATEFORMAT);
     return (
         <div className={styles.bannerContainer}>
             <div className={styles.progressBanner}>
