@@ -4,7 +4,7 @@ import classNames from './task-details.module.scss';
 
 type Props = {
     detailType: string;
-    value: string;
+    value?: string;
 };
 
 const Details: FC<Props> = ({ detailType, value }) => {

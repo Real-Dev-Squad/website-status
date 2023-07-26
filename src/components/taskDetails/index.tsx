@@ -80,7 +80,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         taskDetailsDataType['taskData'] | undefined
     >(data?.taskData);
 
-    console.log('edittaskdetails', editedTaskDetails);
     useEffect(() => {
         if (data?.taskData) {
             setEditedTaskDetails(data.taskData);
@@ -228,10 +227,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Status'}
                                         value={taskDetailsData?.status}
                                     />
-                                    {/* <Details
+                                    <Details
                                         detailType={'Link'}
                                         value={taskDetailsData?.featureUrl}
-                                    /> */}
+                                    />
                                 </div>
                             </TaskContainer>
                             {isDevModeEnabled && (
