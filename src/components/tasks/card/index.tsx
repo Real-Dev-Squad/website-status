@@ -467,6 +467,10 @@ const Card: FC<CardProps> = ({
                             debounceSlider={debounceSlider}
                             startedOn={content.startedOn}
                             endsOn={content.endsOn}
+                            loading={
+                                isLoadingUpdateTaskDetails ||
+                                isLoadingSelfTaskUpdate
+                            }
                         />
                     </div>
                     {dev === 'true' && (

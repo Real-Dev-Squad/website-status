@@ -12,6 +12,7 @@ const HandleProgressbar: FC<ProgressBarProps> = ({
     debounceSlider,
     startedOn,
     endsOn,
+    loading,
 }) => {
     const router = useRouter();
     const { dev } = router.query;
@@ -22,6 +23,7 @@ const HandleProgressbar: FC<ProgressBarProps> = ({
                     value={progressValue}
                     debounceSlider={debounceSlider}
                     handleProgressChange={handleProgressChange}
+                    loading={loading}
                 />
                 <span>{progressValue}%</span>
             </>

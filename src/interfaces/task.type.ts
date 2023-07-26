@@ -44,6 +44,7 @@ export type ProgressSliderProps = {
     value: number;
     debounceSlider: (debounceTimeOut: number) => void;
     handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    loading: boolean;
 };
 
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
@@ -59,6 +60,7 @@ export type ProgressBarProps = {
     endsOn: string;
     handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     debounceSlider: (debounceTimeOut: number) => void;
+    loading: boolean;
 };
 
 export type ProgressIndicatorProps = {
