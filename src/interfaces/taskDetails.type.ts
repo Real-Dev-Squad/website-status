@@ -40,7 +40,6 @@ export type TaskDependencyProps = {
     handleChange: (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
-    setEditedTaskDetails: any;
 };
 export type DependencyListProps = {
     taskDependencyIds: string[];
