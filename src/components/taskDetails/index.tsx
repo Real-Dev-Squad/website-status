@@ -34,7 +34,7 @@ export function Button(props: ButtonProps) {
         <button
             type="button"
             className={classNames['button']}
-            onClick={() => clickHandler(value)}
+            onClick={() => clickHandler(value ?? true)}
         >
             {buttonName}
         </button>
@@ -110,9 +110,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
-            ...(prevState
-                ? { [name]: name === 'dependsOn' ? [value] : value }
-                : {}),
+            taskData: {
+                ...prevState,
+                [name]: name === 'dependsOn' ? [value] : value,
+            },
         }));
     }
 

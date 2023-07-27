@@ -23,7 +23,7 @@ export type taskDetailsDataType = {
 
 export type ButtonProps = {
     buttonName: string;
-    clickHandler: (value: any) => void;
+    clickHandler: (value: boolean) => void;
     value?: boolean;
 };
 export type TextAreaProps = {
@@ -40,6 +40,9 @@ export type TaskDependencyProps = {
     handleChange: (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
+    setEditedTaskDetails: React.Dispatch<
+        React.SetStateAction<taskDetailsDataType['taskData'] | undefined>
+    >;
 };
 export type DependencyListProps = {
     taskDependencyIds: string[];
