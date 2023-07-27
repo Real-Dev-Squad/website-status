@@ -110,10 +110,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
-            taskData: {
-                ...prevState,
-                [name]: name === 'dependsOn' ? [value] : value,
-            },
+            ...(prevState
+                ? { [name]: name === 'dependsOn' ? [value] : value }
+                : {}),
         }));
     }
 
