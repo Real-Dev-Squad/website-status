@@ -6,9 +6,9 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.ASSIGNED;
         case 'available':
             return Tab.AVAILABLE;
-        case 'needs_review':
+        case 'needs-review':
             return Tab.NEEDS_REVIEW;
-        case 'in_review':
+        case 'in-review':
             return Tab.IN_REVIEW;
         case 'verified':
             return Tab.VERIFIED;
@@ -18,5 +18,16 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.COMPLETED;
         default:
             return Tab.IN_PROGRESS;
+    }
+};
+
+export const tabToUrlParams = (section: Tab): string => {
+    switch (section) {
+        case Tab.NEEDS_REVIEW:
+            return 'needs-review';
+        case Tab.IN_REVIEW:
+            return 'in-review';
+        default:
+            return section.toLowerCase();
     }
 };
