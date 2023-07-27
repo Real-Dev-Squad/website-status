@@ -27,6 +27,8 @@ export const tabToUrlParams = (section: Tab): string => {
             return 'needs-review';
         case Tab.IN_REVIEW:
             return 'in-review';
+        case Tab.IN_PROGRESS:
+            return 'in-progress';
         default:
             return section.toLowerCase();
     }
