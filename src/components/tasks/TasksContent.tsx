@@ -1,7 +1,7 @@
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
@@ -13,6 +13,7 @@ import { getActiveTab } from '@/utils/getActiveTab';
 
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
+import useIntersection from '@/hooks/useIntersection';
 
 type RenderTaskListProps = {
     tab: string;
@@ -109,6 +110,11 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
+    const loadingRef = useRef<HTMLDivElement | null>(null);
+    const bottomBoundaryRef = useRef<HTMLDivElement | null>(null);
+
+    useIntersection(loadingRef, bottomBoundaryRef, fetchMoreTasks);
+
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
@@ -149,15 +155,10 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                     tasks={loadedTasks[selectedTab]}
                 />
             </div>
-            {dev && (
-                <button
-                    className={classNames.loadMoreButton}
-                    onClick={fetchMoreTasks}
-                    disabled={!tasksData.next}
-                >
-                    {isFetching ? 'Loading...' : 'Load More'}
-                </button>
-            )}
+
+            <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
+
+            <div ref={bottomBoundaryRef}></div>
         </div>
     );
 };
