@@ -11,6 +11,11 @@ export function Select({ value, onChange, options }: SelectProps) {
         if (option !== value) onChange(option);
     }
 
+    function onOptionClick(option: SelectOption) {
+        selectOption(option);
+        setIsOpen(false);
+    }
+
     // Accessiblity
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -80,16 +85,18 @@ export function Select({ value, onChange, options }: SelectProps) {
             >
                 {options.map((option, index) => (
                     <li
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            selectOption(option);
-                            setIsOpen(false);
+                        onClick={() => {
+                            onOptionClick(option);
+                        }}
+                        onPointerEnter={() => {
+                            onOptionClick(option);
                         }}
                         onMouseEnter={() => setHighlightedIndex(index)}
                         key={option.value}
                         className={`${
                             index === highlightedIndex ? styles.highlighted : ''
                         } ${styles.option}`}
+                        style={{ cursor: 'pointer' }}
                     >
                         {option.label}
                     </li>
