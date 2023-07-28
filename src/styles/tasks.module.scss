@@ -37,6 +37,21 @@ $disabledColor: gray;
     flex-wrap: wrap;
 }
 
+.status-tabs-container {
+    display: block;
+    @media (max-width: 450px) {
+        display: none;
+    }
+}
+
+.status-select-container {
+    display: none;
+    padding: 1rem;
+    @media (max-width: 450px) {
+        display: block;
+    }
+}
+
 .loadMoreButton {
     border: none;
     border-radius: 0.5rem;

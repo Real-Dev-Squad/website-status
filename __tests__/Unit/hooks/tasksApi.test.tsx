@@ -10,11 +10,13 @@ import {
     useGetAllTasksQuery,
     useUpdateTaskMutation,
     useAssignTaskMutation,
+    useGetMineTasksQuery,
 } from '@/app/services/tasksApi';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 import {
     failedAddNewTaskHandler,
     failedAddNewTaskResponse,
+    failedGetMineTask,
     failedGetTasks,
     failedGetTasksResponse,
     failedUpdateTaskHandler,
@@ -530,5 +532,47 @@ describe('useAssignTaskMutation', () => {
                 value: { ...TASK_ASSIGNED, Id: payload.taskId },
             },
         });
+describe('useGetMineTasksQuery()', () => {
+    test('returns all tasks', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetMineTasksQuery(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+
+    test('should fail to return all tasks with error', async () => {
+        server.use(failedGetMineTask);
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetMineTasksQuery(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.isLoading).toBe(true);
+        expect(initialResponse.data).toBeUndefined();
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 500);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedGetTasksResponse
+        );
     });
 });

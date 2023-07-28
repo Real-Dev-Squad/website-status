@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Card from '@/components/idleUsers/card';
 import getIdleSinceText from '@/helperFunctions/getIdleSinceText';
-import { MEMBERS_URL } from '@/constants/url';
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 const user = {
     id: 'H3vNvHtFfp1Y57tPNoQ1',
     currentStatus: {
@@ -19,7 +19,7 @@ const user = {
 };
 
 describe('Idle User Card', () => {
-    const profileUrl = `${MEMBERS_URL}/${user.username}`;
+    const profileUrl = `${USER_MANAGEMENT_URL}/?username=${user.username}`;
 
     it('should render card', () => {
         render(<Card user={user} />);

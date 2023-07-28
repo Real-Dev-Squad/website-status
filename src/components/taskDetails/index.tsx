@@ -5,6 +5,7 @@ import React, {
     useContext,
     useRef,
     useState,
+    ReactElement,
 } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
@@ -22,6 +23,9 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 import TaskDependency from '@/components/taskDetails/taskDependency';
 import { parseDependencyValue } from '@/utils/parseDependency';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import { ProgressDetailsData } from '@/types/standup.type';
+import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -56,6 +60,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
 
     const { data: userData, isUserAuthorized } = useUserData();
 
@@ -132,9 +138,28 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const { query } = router;
-    const isDevModeEnabled = query.dev === 'true' ? true : false;
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
+
+    const { data: taskProgress } = useGetProgressDetailsQuery({
+        taskId: taskID,
+    });
+    const taskProgressArray: Array<ReactElement> = [];
+    if (taskProgress) {
+        if (taskProgress.data.length > 0) {
+            taskProgress.data.forEach((data: ProgressDetailsData) => {
+                taskProgressArray.push(
+                    <>
+                        <li>
+                            {getDateFromTimestamp(data.date)} : {data.completed}
+                        </li>
+                        <br />
+                    </>
+                );
+            });
+        }
+    }
+
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -221,30 +246,48 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 </div>
                             </TaskContainer>
                             {isDevModeEnabled && (
-                                <TaskContainer
-                                    title="Task DependsOn"
-                                    hasImg={false}
-                                >
-                                    <TaskDependency
-                                        taskDependencyIds={taskDependencyIds}
-                                        isEditing={isEditing}
-                                        updatedDependencies={
-                                            updatedDependencies
-                                        }
-                                        handleChange={handleChange}
-                                    />
-                                </TaskContainer>
+                                <>
+                                    <TaskContainer
+                                        title="Task DependsOn"
+                                        hasImg={false}
+                                    >
+                                        <TaskDependency
+                                            taskDependencyIds={
+                                                taskDependencyIds
+                                            }
+                                            isEditing={isEditing}
+                                            updatedDependencies={
+                                                updatedDependencies
+                                            }
+                                            handleChange={handleChange}
+                                        />
+                                    </TaskContainer>
+                                    <TaskContainer
+                                        title="Progress Updates"
+                                        hasImg={false}
+                                    >
+                                        {taskProgressArray.length > 0 ? (
+                                            <div> {taskProgressArray} </div>
+                                        ) : (
+                                            'No Progress found'
+                                        )}
+                                    </TaskContainer>
+                                </>
                             )}
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {isDevModeEnabled && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"

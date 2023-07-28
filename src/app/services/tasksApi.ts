@@ -13,6 +13,7 @@ import {
 } from '@/constants/date';
 import { TASK_RESULT_SIZE } from '@/constants/constants';
 
+type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
 type AssignTaskPayload = { taskId: string; assignee: string };
 
@@ -71,7 +72,7 @@ export const tasksApi = api.injectEndpoints({
             },
         }),
 
-        getMineTasks: builder.query<TasksResponseType, void>({
+        getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
