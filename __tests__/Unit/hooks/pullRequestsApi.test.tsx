@@ -21,7 +21,7 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe.only('useGetOpenPrsQuery', () => {
+describe('useGetOpenPrsQuery', () => {
     test('Returns open Prs', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>

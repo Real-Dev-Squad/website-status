@@ -3,7 +3,7 @@ import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import classNames from '@/styles/tasks.module.scss';
-import { TasksResponseType } from '@/interfaces/task.type';
+import task from '@/interfaces/task.type';
 import { LOGIN_URL } from '@/constants/url';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import useAuthenticated from '@/hooks/useAuthenticated';
@@ -11,7 +11,7 @@ import { useGetMineTasksQuery } from '@/app/services/tasksApi';
 import { Loader } from '@/components/tasks/card/Loader';
 import { loginNode } from '@/constants/nodes';
 
-function CardList({ tasks: { tasks = [] } }: { tasks: TasksResponseType }) {
+function CardList({ tasks }: { tasks: task[] }) {
     return (
         <>
             {tasks.map((item) => (
@@ -31,7 +31,7 @@ const Content = () => {
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! Please contact admin</p>;
-    if (tasks && tasks.tasks?.length)
+    if (tasks?.length)
         return (
             <div>
                 <CardList tasks={tasks} />
