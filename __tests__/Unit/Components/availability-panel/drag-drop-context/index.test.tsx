@@ -2,7 +2,8 @@ import DragDropContextWrapper from '@/components/availability-panel/drag-drop-co
 import { tasks, TASK } from '../../../../../__mocks__/db/tasks';
 import { renderWithProviders } from '../../../../../src/test-utils/renderWithProvider';
 
-export const relativeURL = /\/([a-zA-Z0-9]+[_.$?%-:=]?)+/g;
+export const relativeURL =
+    /^\/([a-zA-Z0-9_-]+[_.$?%-:=]?)([a-zA-Z0-9_.$?%-:=]?)+/gi;
 export const idleMemberFallbackText = 'No idle members found';
 export const tasksFallbackText = 'No task found';
 
