@@ -1,4 +1,10 @@
 import { api } from './api';
+import { progressDetails } from '@/types/standup.type';
+
+type queryParamsType = {
+    userId?: string;
+    taskId?: string;
+};
 
 export const progressesApi = api.injectEndpoints({
     endpoints: (builder) => ({
@@ -13,7 +19,17 @@ export const progressesApi = api.injectEndpoints({
                 },
             }),
         }),
+        getProgressDetails: builder.query<progressDetails, queryParamsType>({
+            query: ({ userId, taskId }: queryParamsType) => {
+                return {
+                    url: '/progresses',
+                    params: { userId, taskId },
+                };
+            },
+            providesTags: ['Progress_Details'],
+        }),
     }),
 });
 
-export const { useSaveProgressMutation } = progressesApi;
+export const { useSaveProgressMutation, useGetProgressDetailsQuery } =
+    progressesApi;

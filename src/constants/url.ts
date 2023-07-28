@@ -11,6 +11,7 @@ export const LOGIN_URL = `https://github.com/login/oauth/authorize?client_id=23c
 export const MEMBERS_URL = 'https://members.realdevsquad.com';
 export const CHALLENGES_URL = `${BASE_URL}/challenges`;
 export const USER_SELF = `${BASE_URL}/users/self`;
+export const MEMBERS_IDLE = `${BASE_URL}/members/idle`;
 export const DEFAULT_AVATAR = '/Avatar.png';
 export const RDS_LOGO = '/RDSLogo.png';
 export const GITHUB_LOGO = '/github-white.png';
@@ -25,3 +26,5 @@ export const ITEM_TYPES = { task: 'TASK' };
 export const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
 export const ISSUES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/issues`;
 export const USERS_URL = `${BASE_URL}/users`;
+export const USER_MANAGEMENT_URL =
+    'https://dashboard.realdevsquad.com/users/details/';

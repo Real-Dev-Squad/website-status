@@ -13,7 +13,7 @@ import { Loader } from '@/components/tasks/card/Loader';
 function CardList({ tasks }: { tasks: task[] }) {
     return (
         <>
-            {tasks.map((item: task) => (
+            {tasks.map((item) => (
                 <Card
                     content={item}
                     key={item.id}
@@ -30,7 +30,7 @@ const Content = () => {
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! Please contact admin</p>;
-    if (tasks && tasks.length)
+    if (tasks?.length)
         return (
             <div>
                 <CardList tasks={tasks} />

@@ -30,3 +30,8 @@ interface question {
 export interface formProps {
     questions: Array<question>;
 }
+
+export type progressHeaderProps = {
+    totalMissedUpdates: number;
+    updateType: string;
+};

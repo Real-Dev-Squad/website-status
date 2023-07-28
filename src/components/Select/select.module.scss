@@ -1,0 +1,86 @@
+$theme-grey: #d4d4d5;
+$theme-grey-light: #f1f1f5;
+$gray-shade-color: #808080;
+$gray-shade-color2: #5c5b5b;
+$black: #000;
+$border-color: #d4d4d5;
+.container {
+    position: relative;
+    width: 20em;
+    min-height: 1.5em;
+    border: 2px solid $border-color;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em;
+    border-radius: 0.25em;
+    outline: none;
+    margin: auto;
+}
+
+.container:focus {
+    border-color: $gray-shade-color2;
+}
+
+.selected-option-container {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.value {
+    flex-grow: 1;
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
+    font-weight: bold;
+}
+
+.caret {
+    translate: 0 25%;
+    border: 0.25em solid transparent;
+    border-top-color: $gray-shade-color2;
+    width: 8px;
+    height: 8px;
+}
+
+.options {
+    position: absolute;
+    margin: 0;
+    padding: 0rem;
+    list-style: none;
+    display: none;
+    max-height: 15em;
+    overflow-y: auto;
+    border: 0.05em solid $gray-shade-color2;
+    border-radius: 0.25em;
+    width: 100%;
+    left: 0;
+    top: calc(100% + 0.25em);
+    background-color: white;
+    z-index: 100;
+}
+
+.options.show {
+    display: block;
+}
+
+.option {
+    padding: 0.5em 0.5em;
+    cursor: pointer;
+}
+
+.option.selected {
+    background-color: $gray-shade-color2;
+}
+
+.option.highlighted {
+    background-color: $theme-grey-light;
+}

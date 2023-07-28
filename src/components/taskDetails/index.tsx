@@ -3,37 +3,32 @@ import React, {
     FC,
     useEffect,
     useContext,
-    useReducer,
     useRef,
     useState,
-    ChangeEventHandler,
+    ReactElement,
 } from 'react';
-import useFetch from '@/hooks/useFetch';
-import NavBar from '@/components/navBar/index';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import taskDetailsReducer from './taskDetails.reducer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import updateTaskDetails from '@/helperFunctions/updateTaskDetails';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import task from '@/interfaces/task.type';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
+import {
+    useGetTaskDetailsQuery,
+    useUpdateTaskDetailsMutation,
+} from '@/app/services/taskDetailsApi';
 
-type ButtonProps = {
-    buttonName: string;
-    clickHandler: (value: any) => void;
-    value?: boolean;
-};
-type TextAreaProps = {
-    name: string;
-    value: string;
-    onChange: ChangeEventHandler;
-};
-function Button(props: ButtonProps) {
+import useUserData from '@/hooks/useUserData';
+import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
+import Layout from '@/components/Layout';
+import TaskDependency from '@/components/taskDetails/taskDependency';
+import { parseDependencyValue } from '@/utils/parseDependency';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import { ProgressDetailsData } from '@/types/standup.type';
+import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
+
+export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
-
     return (
         <button
             type="button"
@@ -44,98 +39,129 @@ function Button(props: ButtonProps) {
         </button>
     );
 }
-function Textarea(props: TextAreaProps) {
-    const { name, value, onChange } = props;
+export function Textarea(props: TextAreaProps) {
+    const { name, value, onChange, testId } = props;
+
     return (
         <textarea
             className={classNames['textarea']}
             name={name}
             value={value}
-            data-testid="edit button"
             onChange={onChange}
+            data-testid={testId}
         />
     );
 }
 
 type Props = {
-    url: string;
+    url?: string;
     taskID: string;
 };
 
-const initialState = {
-    taskDetails: {} as task,
-    editedDetails: {} as task,
-};
-
-const TaskDetails: FC<Props> = ({ url, taskID }) => {
+const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-    const isAuthorized = useContext(isUserAuthorizedContext);
-    const [state, dispatch] = useReducer(taskDetailsReducer, initialState);
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
+
+    const { data: userData, isUserAuthorized } = useUserData();
+
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const initialDataRef = useRef<Record<string, any> | task>({});
-    const { response, error, isLoading } = useFetch(url);
+    const initialDataRef = useRef<Record<string, any> | undefined>({});
+    const { data, isError, isLoading, isFetching } =
+        useGetTaskDetailsQuery(taskID);
+
+    const taskDependencyIds: string[] = !isFetching
+        ? data?.taskData?.dependsOn || []
+        : [];
+
     const { SUCCESS, ERROR } = ToastTypes;
-    const { taskDetails } = state;
+
+    const taskDetailsData = data?.taskData;
+    const [taskDetails, setTaskDetails] = useState<
+        Record<string, any> | undefined
+    >({});
+    const [editedDetails, setEditedDetails] = useState({});
+
+    const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+    const [updatedDependencies, setUpdatedDependencies] = useState<string[]>(
+        taskDetails?.dependsOn || []
+    );
+
     useEffect(() => {
-        const fetchedData: task = { ...response.taskData };
-        dispatch({ type: 'setTaskDetails', payload: fetchedData });
+        const fetchedData = data?.taskData;
+        setTaskDetails(taskDetailsData);
         initialDataRef.current = fetchedData;
-    }, [isLoading, response]);
+    }, [isLoading, data]);
 
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
+        const { name, value } = event.target;
+
+        if (name === 'dependsOn') {
+            const updatedDependencies = parseDependencyValue(value);
+            setUpdatedDependencies(updatedDependencies);
+        }
         const formData = {
+            ...taskDetails,
             [event.target.name]: event.target.value,
+            dependsOn: [...updatedDependencies],
         };
-        dispatch({ type: 'setEditedDetails', payload: formData });
-        dispatch({ type: 'setTaskDetails', payload: formData });
+        setEditedDetails(formData);
+        setTaskDetails(formData);
     }
 
     function onCancel() {
         setIsEditing(false);
-        dispatch({ type: 'reset' });
-        dispatch({ type: 'setTaskDetails', payload: initialDataRef.current });
+        setTaskDetails(initialDataRef.current);
     }
 
     async function onSave() {
         setIsEditing(false);
-        try {
-            const responseData = await updateTaskDetails(
-                state.editedDetails,
-                taskID
-            );
-            if (responseData.status === 204) {
-                initialDataRef.current = state.taskDetails;
-                toast(SUCCESS, 'Successfully saved');
-            }
-        } catch (err) {
-            toast(ERROR, 'Could not save changes');
-            dispatch({
-                type: 'setTaskDetails',
-                payload: initialDataRef.current,
-            });
-        }
-        dispatch({ type: 'reset', payload: initialDataRef.current });
+        updateTaskDetails({
+            editedDetails,
+            taskID,
+        })
+            .unwrap()
+            .then(() => toast(SUCCESS, 'Successfully saved'))
+            .catch((error) => toast(ERROR, error.data.message));
+        setTaskDetails(initialDataRef.current);
     }
 
     function renderLoadingComponent() {
         if (isLoading) {
             return <p className={classNames.textCenter}>Loading...</p>;
         }
-        if (error) {
+        if (isError) {
             return (
                 <p className={classNames.textCenter}>Something went wrong!</p>
             );
         }
     }
 
-    const shouldRenderParentContainer = () =>
-        !isLoading && !error && taskDetails;
+    const shouldRenderParentContainer = () => !isLoading && !isError && data;
+
+    const { data: taskProgress } = useGetProgressDetailsQuery({
+        taskId: taskID,
+    });
+    const taskProgressArray: Array<ReactElement> = [];
+    if (taskProgress) {
+        if (taskProgress.data.length > 0) {
+            taskProgress.data.forEach((data: ProgressDetailsData) => {
+                taskProgressArray.push(
+                    <>
+                        <li>
+                            {getDateFromTimestamp(data.date)} : {data.completed}
+                        </li>
+                        <br />
+                    </>
+                );
+            });
+        }
+    }
 
     return (
-        <>
-            <NavBar />
+        <Layout hideHeader={true}>
             {renderLoadingComponent()}
             {shouldRenderParentContainer() && (
                 <div className={classNames.parentContainer}>
@@ -145,6 +171,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                 name="title"
                                 value={taskDetails?.title}
                                 onChange={handleChange}
+                                testId="title-textarea"
                             />
                         ) : (
                             <span
@@ -155,7 +182,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                             </span>
                         )}
                         {!isEditing ? (
-                            isAuthorized && (
+                            isUserAuthorized && (
                                 <Button
                                     buttonName="Edit"
                                     clickHandler={setIsEditing}
@@ -184,6 +211,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                         name="purpose"
                                         value={taskDetails?.purpose}
                                         onChange={handleChange}
+                                        testId="purpose-textarea"
                                     />
                                 ) : (
                                     <p>
@@ -217,16 +245,49 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                                     />
                                 </div>
                             </TaskContainer>
+                            {isDevModeEnabled && (
+                                <>
+                                    <TaskContainer
+                                        title="Task DependsOn"
+                                        hasImg={false}
+                                    >
+                                        <TaskDependency
+                                            taskDependencyIds={
+                                                taskDependencyIds
+                                            }
+                                            isEditing={isEditing}
+                                            updatedDependencies={
+                                                updatedDependencies
+                                            }
+                                            handleChange={handleChange}
+                                        />
+                                    </TaskContainer>
+                                    <TaskContainer
+                                        title="Progress Updates"
+                                        hasImg={false}
+                                    >
+                                        {taskProgressArray.length > 0 ? (
+                                            <div> {taskProgressArray} </div>
+                                        ) : (
+                                            'No Progress found'
+                                        )}
+                                    </TaskContainer>
+                                </>
+                            )}
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {isDevModeEnabled && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
@@ -269,7 +330,7 @@ const TaskDetails: FC<Props> = ({ url, taskID }) => {
                     </section>
                 </div>
             )}
-        </>
+        </Layout>
     );
 };
 

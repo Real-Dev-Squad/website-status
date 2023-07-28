@@ -1,0 +1,33 @@
+$buttonBackgroundColor: #041484;
+$buttonTextColor: #fff;
+$buttonHoverBackgroundColor: #fff;
+$buttonHoverTextColor: #041484;
+$buttonDisabledBackgroundColor: #ccc;
+$buttonDisabledTextColor: #fff;
+
+.paginationButton {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: $buttonBackgroundColor;
+    color: $buttonTextColor;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: $buttonHoverBackgroundColor;
+        color: $buttonHoverTextColor;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &:disabled {
+        background-color: $buttonDisabledBackgroundColor;
+        color: $buttonDisabledTextColor;
+        cursor: default;
+    }
+}

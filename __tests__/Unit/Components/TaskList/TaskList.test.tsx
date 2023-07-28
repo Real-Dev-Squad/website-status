@@ -9,7 +9,7 @@ describe('TaskList', function () {
     it('Should render TaskList', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList tasks={tasks} updateTask={jest.fn()} />
+                <TaskList tasks={tasks} />
             </Provider>
         );
 
@@ -23,11 +23,7 @@ describe('TaskList', function () {
     it('Should render see more button', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList
-                    tasks={tasks}
-                    hasLimit={true}
-                    updateTask={jest.fn()}
-                />
+                <TaskList tasks={tasks} hasLimit={true} />
             </Provider>
         );
 
@@ -39,11 +35,7 @@ describe('TaskList', function () {
     it('Should render 3 tasks intially and then render more 5 tasks after click event', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList
-                    tasks={tasks}
-                    hasLimit={true}
-                    updateTask={jest.fn()}
-                />
+                <TaskList tasks={tasks} hasLimit={true} />
             </Provider>
         );
 
@@ -58,11 +50,7 @@ describe('TaskList', function () {
     it('Should not render see more button after all tasks are loaded and rendered', function () {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskList
-                    tasks={tasks}
-                    hasLimit={true}
-                    updateTask={jest.fn()}
-                />
+                <TaskList tasks={tasks} hasLimit={true} />
             </Provider>
         );
 

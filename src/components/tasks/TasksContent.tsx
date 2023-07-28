@@ -1,63 +1,27 @@
 import classNames from '@/styles/tasks.module.scss';
-// import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-
-import { isUserAuthorizedContext } from '@/context/isUserAuthorized';
-import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
-import task, { Tab } from '@/interfaces/task.type';
-import { useContext, useState, useEffect } from 'react';
-import { STATUS_ORDER } from '@/constants/task-status';
+import { useGetAllTasksQuery } from '@/app/services/tasksApi';
+import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { useState, useEffect } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
-import { TASKS_URL } from '@/constants/url';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
-import updateCardContent from '@/helperFunctions/updateCardContent';
-import useFetch from '@/hooks/useFetch';
-import useUpdateTask from '@/hooks/useUpdateTask';
-import groupTasksByStatus from '@/utils/groupTasksByStatus';
-import { useEditMode } from '@/hooks/useEditMode';
+import { useRouter } from 'next/router';
+import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
 
-export const TasksContent = () => {
-    // TODO: the below code should be used when mutation for updating tasks is implemented
-    // const { data: tasks = [], isError, isLoading } = useGetAllTasksQuery();
-    const { isEditMode } = useEditMode();
-    const isUserAuthorized = useContext(isUserAuthorizedContext);
-    const isEditable = isUserAuthorized && isEditMode;
-    const [activeTab, setActiveTab] = useState(Tab.ASSIGNED);
-    // TODO: the below code should removed when mutation for updating tasks is implemented
-    const [filteredTask, setFilteredTask] = useState<any>([]);
-    // TODO: the below code should removed when mutation for updating tasks is implemented
-    const { response, isLoading, error } = useFetch(TASKS_URL);
-    // TODO: the below code should removed when mutation for updating tasks is implemented
-    const updateTask = useUpdateTask(filteredTask, setFilteredTask);
+import { Select } from '../Select';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
-    const onSelect = (tab: Tab) => {
-        setActiveTab(tab);
-    };
+type RenderTaskListProps = {
+    tab: string;
+    dev: boolean;
+    tasks: task[];
+};
 
-    // TODO: the useEffect should be removed when mutation for updating tasks is implemented
-    useEffect(() => {
-        if ('tasks' in response) {
-            const tasks = updateTasksStatus(response.tasks);
-            tasks.sort((a: task, b: task) => +a.endsOn - +b.endsOn);
-            tasks.sort(
-                (a: task, b: task) =>
-                    STATUS_ORDER.indexOf(a.status) -
-                    STATUS_ORDER.indexOf(b.status)
-            );
-            const taskMap: any = groupTasksByStatus(tasks);
-            setFilteredTask(taskMap);
-        }
-        return () => {
-            setFilteredTask([]);
-        };
-    }, [isLoading, response]);
-
-    // TODO: the below code should be used when mutation for updating tasks is implemented
-    /*
-    const tasksGroupedByStatus = updateTasksStatus(tasks).reduce(
+const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
+    const tasksGroupedByStatus = tasks?.reduce(
         (acc: Record<string, task[]>, curr: task) => {
             return acc[curr.status as keyof task]
                 ? {
@@ -68,27 +32,132 @@ export const TasksContent = () => {
         },
         {}
     );
-    */
 
-    if (error) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    const tasksNotAvailable =
+        tasks === undefined || tasksGroupedByStatus[tab] === undefined;
+
+    if (tasksNotAvailable || tasks.length === 0) {
+        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    }
+
+    if (dev) {
+        return <TaskList tasks={tasks} />;
+    }
+
+    return <TaskList tasks={tasksGroupedByStatus[tab]} />;
+};
+
+type routerQueryParams = {
+    section?: string;
+};
+export const TasksContent = ({ dev }: { dev: boolean }) => {
+    const router = useRouter();
+    const { section }: routerQueryParams = router.query;
+    const selectedTab = getActiveTab(section);
+    const [nextTasks, setNextTasks] = useState<string>('');
+    const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
+        IN_PROGRESS: [],
+        ASSIGNED: [],
+        AVAILABLE: [],
+        NEEDS_REVIEW: [],
+        IN_REVIEW: [],
+        VERIFIED: [],
+        MERGED: [],
+        COMPLETED: [],
+    });
+
+    const {
+        data: tasksData = { tasks: [], next: '' },
+        isError,
+        isLoading,
+        isFetching,
+    } = useGetAllTasksQuery({
+        dev: dev as boolean,
+        status: selectedTab,
+        nextTasks,
+    });
+
+    const fetchMoreTasks = () => {
+        if (tasksData.next) {
+            setNextTasks(tasksData.next);
+        }
+    };
+
+    const onSelect = (tab: Tab) => {
+        router.push({
+            query: {
+                ...router.query,
+                section: tabToUrlParams(tab),
+            },
+        });
+        setNextTasks('');
+    };
+
+    useEffect(() => {
+        if (tasksData.tasks && tasksData.tasks.length && !isFetching) {
+            const newTasks: TabTasksData = JSON.parse(
+                JSON.stringify(loadedTasks)
+            );
+            newTasks[selectedTab] = newTasks[selectedTab].filter(
+                (task) =>
+                    !tasksData.tasks.some((newTask) => newTask.id === task.id)
+            );
+
+            newTasks[selectedTab].push(...tasksData.tasks);
+
+            setLoadedTasks(newTasks);
+        }
+    }, [tasksData.tasks]);
 
     if (isLoading) return <p>Loading...</p>;
 
+    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    const taskSelectOptions = TABS.map((item) => ({
+        label: getChangedStatusName(item),
+        value: item,
+    }));
+
     return (
         <div className={classNames.tasksContainer}>
-            <TabSection onSelect={onSelect} activeTab={activeTab} />
-            <div>
-                {filteredTask[activeTab] ? (
-                    <TaskList
-                        tasks={filteredTask[activeTab]}
-                        isEditable={isEditable}
-                        updateCardContent={updateCardContent}
-                        updateTask={updateTask}
-                    />
-                ) : (
-                    <p>{NO_TASKS_FOUND_MESSAGE}</p>
-                )}
+            <div
+                className={classNames['status-tabs-container']}
+                data-testid="status-tabs-container"
+            >
+                <TabSection onSelect={onSelect} activeTab={selectedTab} />
             </div>
+            <div
+                className={classNames['status-select-container']}
+                data-testid="status-select-container"
+            >
+                <Select
+                    value={{
+                        label: getChangedStatusName(selectedTab),
+                        value: selectedTab,
+                    }}
+                    onChange={(selectedTaskStatus) => {
+                        if (selectedTaskStatus) {
+                            onSelect(selectedTaskStatus.value as Tab);
+                        }
+                    }}
+                    options={taskSelectOptions}
+                />
+            </div>
+            <div>
+                <RenderTaskList
+                    dev={dev}
+                    tab={selectedTab}
+                    tasks={loadedTasks[selectedTab]}
+                />
+            </div>
+            {dev && (
+                <button
+                    className={classNames.loadMoreButton}
+                    onClick={fetchMoreTasks}
+                    disabled={!tasksData.next}
+                >
+                    {isFetching ? 'Loading...' : 'Load More'}
+                </button>
+            )}
         </div>
     );
 };

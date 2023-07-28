@@ -1,5 +1,6 @@
 import styles from '@/components/Tabs/Tabs.module.scss';
 import { Tab } from '@/interfaces/task.type';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
 type TabsProps = {
     tabs: Tab[];
@@ -17,7 +18,7 @@ const Tabs = ({ tabs, onSelect, activeTab }: TabsProps) => (
                     activeTab === tab ? styles.active : ''
                 }`}
             >
-                {tab.split('_').join(' ')}
+                {getChangedStatusName(tab)}
             </button>
         ))}
     </>

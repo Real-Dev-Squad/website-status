@@ -33,19 +33,94 @@ type task = {
     };
 };
 
+export type TasksResponseType = {
+    message?: string;
+    tasks: task[];
+    next?: string;
+    prev?: string;
+};
+
+export type ProgressSliderProps = {
+    value: number;
+    debounceSlider: (debounceTimeOut: number) => void;
+    handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
+
+export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
+    startedOn?: number;
+    percentCompleted?: number;
+};
+
+export type ProgressBarProps = {
+    progress: boolean;
+    progressValue: number;
+    percentCompleted: number;
+    startedOn: string;
+    endsOn: string;
+    handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    debounceSlider: (debounceTimeOut: number) => void;
+};
+
+export type ProgressIndicatorProps = {
+    percentCompleted: number;
+    startedOn: string;
+    endsOn: string;
+};
+
+export type handleProgressTextProps = {
+    progress: boolean;
+    handleSaveProgressUpdate: () => void;
+    handleProgressUpdate: () => void;
+};
+
 enum Tab {
-    ASSIGNED = 'ASSIGNED',
-    COMPLETED = 'COMPLETED',
-    AVAILABLE = 'AVAILABLE',
     IN_PROGRESS = 'IN_PROGRESS',
+    ASSIGNED = 'ASSIGNED',
+    AVAILABLE = 'AVAILABLE',
     NEEDS_REVIEW = 'NEEDS_REVIEW',
     IN_REVIEW = 'IN_REVIEW',
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
+    COMPLETED = 'COMPLETED',
 }
 
 const TABS = Object.values(Tab);
 
 export { TABS, Tab };
 
+export type TaskRequestPayload = {
+    task: updateTaskDetails;
+    id: string;
+    isDevEnabled?: boolean;
+};
+
+export type CardProps = {
+    content: task;
+    shouldEdit: boolean;
+    onContentChange?: (
+        changeId: string,
+        changeObject: object,
+        isDevEnabled?: boolean
+    ) => void;
+};
+
 export default task;
+
+export type GetAllTaskParamType = {
+    dev?: boolean;
+    status?: string;
+    nextTasks?: string;
+    prevTasks?: string;
+    size?: number;
+};
+
+export type TabTasksData = {
+    IN_PROGRESS: task[];
+    ASSIGNED: task[];
+    AVAILABLE: task[];
+    NEEDS_REVIEW: task[];
+    IN_REVIEW: task[];
+    VERIFIED: task[];
+    MERGED: task[];
+    COMPLETED: task[];
+};
