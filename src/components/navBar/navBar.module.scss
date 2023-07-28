@@ -3,6 +3,14 @@ $thickness: 3px;
 $white: #fff;
 $theme-blue: #1d1283;
 $theme-active: #87d870;
+$shimmer-background: #342a8f66;
+$simmer-bg-image: linear-gradient(
+    to right,
+    $shimmer-background 0%,
+    #1d1283 20%,
+    $shimmer-background 40%,
+    $shimmer-background 100%
+);
 
 .navBar {
     display: flex;
@@ -12,6 +20,43 @@ $theme-active: #87d870;
     flex-wrap: wrap;
     justify-content: space-between;
 
+    .shimmerContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: auto 0rem;
+        justify-content: center;
+        padding-right: 5px;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        gap: 0.5rem;
+        background: $theme-blue;
+        * {
+            background: $shimmer-background $simmer-bg-image;
+            animation: placeholderShimmer 1.5s linear infinite forwards;
+            @keyframes placeholderShimmer {
+                0% {
+                    background-position: -468px 0;
+                }
+
+                100% {
+                    background-position: 468px 0;
+                }
+            }
+        }
+    }
+
+    .shimmerName {
+        height: 1.5rem;
+        width: 7rem;
+    }
+
+    .shimmerProfile {
+        border-radius: 50%;
+        height: 2.5rem;
+        width: 2.5rem;
+    }
     .navLinks {
         display: flex;
 

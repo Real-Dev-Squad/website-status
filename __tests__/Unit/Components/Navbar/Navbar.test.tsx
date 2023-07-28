@@ -1,11 +1,10 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import NavBar from '../../../../src/components/navBar';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { selfHandlerFn } from '../../../../__mocks__/handlers/self.handler';
-import { BASE_URL } from '@/constants/url';
 
 const server = setupServer(...handlers);
 
@@ -94,7 +93,7 @@ describe('Navbar', () => {
         expect(logo).toBeInTheDocument();
     });
 
-    test('show login in button when the user is not logged in', () => {
+    test('show login in button when the user is not logged in', async () => {
         server.use(
             selfHandlerFn(404, {
                 message: 'User does not exist',
@@ -102,13 +101,27 @@ describe('Navbar', () => {
             })
         );
         renderWithProviders(<NavBar />);
+        await waitFor(() => !!getSignInNode('button'));
         expect(getSignInNode('button')).toBeVisible();
     });
 
-    test('login button client id should be correct', () => {
+    test('login button client id should be correct', async () => {
+        server.use(
+            selfHandlerFn(404, {
+                message: 'User does not exist',
+                error: 'Not Found',
+            })
+        );
         renderWithProviders(<NavBar />);
+        await waitFor(() => !!getSignInNode('link'));
         expect(getSignInNode('link').getAttribute('href')).toContain(
             '?client_id=23c78f66ab7964e5ef97'
         );
+    });
+
+    test('should show skelton when useUserData is called', () => {
+        const { container } = renderWithProviders(<NavBar />);
+        const shimmer = container.querySelectorAll('.shimmerContainer');
+        expect(shimmer[0]).toBeVisible();
     });
 });

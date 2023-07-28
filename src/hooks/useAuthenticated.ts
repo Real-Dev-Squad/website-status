@@ -4,19 +4,15 @@ import useUserData from './useUserData';
 import { Userdata, userDetails } from '@/interfaces/useAuthenticatedTypes';
 
 const useAuthenticated = (): userDetails => {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [userData, setUserData] = useState<Userdata>({
         userName: '',
         firstName: '',
         profilePicture: DEFAULT_AVATAR,
     });
 
-    const { data, isSuccess } = useUserData();
+    const { data, isSuccess, isLoading } = useUserData();
 
-    const [isLoading, setIsLoading] = useState(false);
     const setUserDetails = () => {
-        setIsLoading(true);
-
         if (data?.incompleteUserDetails) {
             window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
         }
@@ -25,16 +21,12 @@ const useAuthenticated = (): userDetails => {
             firstName: data?.first_name ?? '',
             profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
         });
-
-        setIsLoggedIn(isSuccess);
-
-        setIsLoading(false);
     };
 
     useEffect(() => {
         setUserDetails();
     }, [isSuccess]);
-    return { userData, isLoggedIn, isLoading };
+    return { userData, isLoggedIn: isSuccess, isLoading };
 };
 
 export default useAuthenticated;

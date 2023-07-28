@@ -23,7 +23,7 @@ export const userSelfData = {
 	profileURL: 'https://mahima-profile-service.onrender.com'
 };
 
-export const selfHandlerFn = (status: number, response: object | null) => {
+export const selfHandlerFn = (status = 200, response: object | null = userSelfData) => {
 	return rest.get(`${URL}/users/self`, (_, res, ctx) => {
 		return res(
 			ctx.delay(500),
@@ -34,7 +34,7 @@ export const selfHandlerFn = (status: number, response: object | null) => {
 };
 
 const selfHandler = [
-	selfHandlerFn(200, userSelfData)
+	selfHandlerFn()
 ];
 
 export default selfHandler;

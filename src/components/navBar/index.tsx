@@ -21,7 +21,7 @@ import useUserData from '@/hooks/useUserData';
 const NavBar = () => {
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
-    const { data: userData, isSuccess } = useUserData();
+    const { data: userData, isSuccess, isLoading } = useUserData();
     return (
         <nav data-testid="navbar" className={styles.navBar}>
             <div
@@ -73,7 +73,7 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className={styles.userProfile}>
-                {!isSuccess ? (
+                {!isSuccess && !isLoading ? (
                     <Link href={LOGIN_URL}>
                         <button className={styles.signInLink}>
                             Sign In With Github
@@ -86,6 +86,11 @@ const NavBar = () => {
                             />
                         </button>
                     </Link>
+                ) : isLoading ? (
+                    <div className={styles.shimmerContainer}>
+                        <span className={styles.shimmerName}></span>
+                        <span className={styles.shimmerProfile}></span>
+                    </div>
                 ) : (
                     <div
                         className={styles.userGreet}
