@@ -30,4 +30,3 @@ export const MAIN_SITE_URL = 'https://www.realdevsquad.com';
 export const MY_SITE_URL = 'https://my.realdevsquad.com';
 export const USER_MANAGEMENT_URL =
     'https://dashboard.realdevsquad.com/users/details/';
-
