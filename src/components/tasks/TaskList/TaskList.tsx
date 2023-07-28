@@ -12,7 +12,7 @@ import { useEditMode } from '@/hooks/useEditMode';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import useUserData from '@/hooks/useUserData';
 
-type TaksListProps = {
+type TaskListProps = {
     tasks: task[];
     hasLimit?: boolean;
 };
@@ -28,7 +28,7 @@ function getFilteredTasks({ hasLimit, tasksLimit, tasks }: FilterTasksProps) {
     return tasks.slice(0, tasksLimit);
 }
 
-export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
+export default function TaskList({ tasks, hasLimit = false }: TaskListProps) {
     const initialTasksLimit = hasLimit ? INITIAL_TASKS_LIMIT : tasks.length;
     const beautifiedTasks = beautifyTaskStatus(tasks);
     const [tasksLimit, setTasksLimit] = useState<number>(initialTasksLimit);
@@ -47,9 +47,13 @@ export default function TaskList({ tasks, hasLimit = false }: TaksListProps) {
     function onSeeMoreTasksHandler() {
         setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
     }
-    async function onContentChangeHandler(id: string, cardDetails: any) {
+    async function onContentChangeHandler(
+        id: string,
+        cardDetails: any,
+        isDevEnabled?: boolean
+    ) {
         if (!isEditable || !updateCardContent) return;
-        updateCardContent({ id, task: cardDetails });
+        updateCardContent({ id, task: cardDetails, isDevEnabled });
     }
 
     return (

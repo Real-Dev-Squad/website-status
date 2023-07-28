@@ -1,10 +1,10 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
     useSaveProgressMutation,
-    useUserProgressDetailsQuery,
+    useGetProgressDetailsQuery,
 } from '@/app/services/progressesApi';
 import { useGetUserQuery } from '@/app/services/userApi';
 
@@ -31,7 +31,9 @@ const StandUpContainer: FC = () => {
 
     const [addStandup] = useSaveProgressMutation();
     const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
+    const { data: userStandupdata } = useGetProgressDetailsQuery({
+        userId: user?.id,
+    });
 
     const { SUCCESS, ERROR } = ToastTypes;
     const standupDates = userStandupdata?.data?.map((element) => element.date);
@@ -61,8 +63,12 @@ const StandUpContainer: FC = () => {
     ) => {
         event.preventDefault();
         try {
-            await addStandup(standupUpdate);
-            toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
+            const response = await addStandup(standupUpdate);
+            if ('error' in response) {
+                toast(ERROR, ERROR_MESSAGE);
+            } else {
+                toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
+            }
             setStandupUpdate(defaultState);
         } catch (error) {
             console.error(error);
@@ -83,12 +89,12 @@ const StandUpContainer: FC = () => {
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}
+                            aria-label="form"
                         >
                             <fieldset className={styles.formFields}>
                                 <FormInputComponent
                                     htmlFor="completed"
                                     labelValue={yesterdayDate}
-                                    dataTestId="completedInputField"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
                                     value={standupUpdate.completed}
@@ -98,7 +104,6 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="planned"
                                     labelValue="Today"
-                                    dataTestId="todayInputField"
                                     placeholder="e.g Refactor signup to support Google login"
                                     name="planned"
                                     value={standupUpdate.planned}
@@ -108,7 +113,6 @@ const StandUpContainer: FC = () => {
                                 <FormInputComponent
                                     htmlFor="blockers"
                                     labelValue="Blockers"
-                                    dataTestId="blockerInputField"
                                     placeholder="e.g Waiting on identity team to deploy FF"
                                     name="blockers"
                                     value={standupUpdate.blockers}

@@ -9,11 +9,13 @@ import {
     useAddTaskMutation,
     useGetAllTasksQuery,
     useUpdateTaskMutation,
+    useGetMineTasksQuery,
 } from '@/app/services/tasksApi';
 import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 import {
     failedAddNewTaskHandler,
     failedAddNewTaskResponse,
+    failedGetMineTask,
     failedGetTasks,
     failedGetTasksResponse,
     failedUpdateTaskHandler,
@@ -30,11 +32,14 @@ function Wrapper({
 }: PropsWithChildren<Record<string, never>>): JSX.Element {
     return <Provider store={store()}>{children}</Provider>;
 }
-
 describe('useGetAllTasksQuery()', () => {
     test('returns all tasks', async () => {
+        const dev = false;
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetAllTasksQuery(),
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as boolean,
+                }),
             {
                 wrapper: Wrapper,
             }
@@ -54,8 +59,12 @@ describe('useGetAllTasksQuery()', () => {
 
     test('should fail to return all tasks with error', async () => {
         server.use(failedGetTasks);
+        const dev = false;
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetAllTasksQuery(),
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as boolean,
+                }),
             {
                 wrapper: Wrapper,
             }
@@ -73,6 +82,105 @@ describe('useGetAllTasksQuery()', () => {
             'data',
             failedGetTasksResponse
         );
+    });
+    test('returns all tasks if dev is true', async () => {
+        const dev = true;
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as boolean,
+                    status: 'all',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+    test('returns filtered tasks if dev is true', async () => {
+        const dev = true;
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as boolean,
+                    status: 'blocked',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+    test('returns next page of tasks', async () => {
+        const dev = true;
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as boolean,
+                    nextTasks:
+                        '/tasks?status=AVAILABLE&dev=true&size=5&next=yVC1KqYuUTZdkUFqF9NY',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+
+    test('returns prev page of tasks', async () => {
+        const dev = true;
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    dev: dev as boolean,
+                    prevTasks:
+                        '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
     });
 });
 
@@ -213,5 +321,83 @@ describe('useUpdateTaskMutation()', () => {
             error: 'Not Found',
             message: 'Task not found',
         });
+    });
+
+    test('updates a task with the isDevEnabled set to true', async () => {
+        const taskId = '1eJhUW19D556AhPEpdPr';
+        const { result, waitForNextUpdate } = renderHook(
+            () => useUpdateTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [updateTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            const task = {
+                task: updatedTaskData,
+                id: taskId,
+                isDevEnabled: true,
+            };
+            updateTask(task);
+        });
+
+        const loadingResponse = result.current[1];
+        expect(loadingResponse.isLoading).toBe(true);
+
+        await waitForNextUpdate({ timeout: 7000 });
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.data).toBeNull();
+        expect(nextResponse.isSuccess).toBe(true);
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.status).toBe(QueryStatus.fulfilled);
+    }, 7000);
+});
+
+describe('useGetMineTasksQuery()', () => {
+    test('returns all tasks', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetMineTasksQuery(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+
+    test('should fail to return all tasks with error', async () => {
+        server.use(failedGetMineTask);
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetMineTasksQuery(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.isLoading).toBe(true);
+        expect(initialResponse.data).toBeUndefined();
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 500);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedGetTasksResponse
+        );
     });
 });

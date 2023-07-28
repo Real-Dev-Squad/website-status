@@ -144,6 +144,18 @@ $seeMoreTasksShadow: #595959cc;
     border-radius: 1rem;
 }
 
+.progressBarContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.changeProgressText {
+    cursor: pointer;
+    color: $taskTagLevelBorder;
+    font-weight: 700;
+    padding-bottom: 0.5rem;
+}
+
 .progressGreen {
     background-color: $green;
 }
