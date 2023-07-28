@@ -1,4 +1,4 @@
-import taskHandlers, { paginatedTasksHandler } from './handlers/tasks.handler';
+import taskHandlers, { mineTasksHandler, paginatedTasksHandler } from './handlers/tasks.handler';
 import selfHandler from './handlers/self.handler';
 import userStatusHandler from './handlers/users-status.handler';
 import tagsHandler from './handlers/tags.handler';
@@ -10,8 +10,11 @@ import userHandler from './handlers/user.handler';
 import issuesHandler from './handlers/issues.handler';
 import standupHandler from './handlers/standup.handler';
 import { prsHandler } from './handlers/pull-requests.handler';
+import { progressHandler } from './handlers/progresses.handler';
 
 const handlers = [
+    ...mineTasksHandler,
+    ...progressHandler,
     ...paginatedTasksHandler,
     ...taskHandlers,
     ...selfHandler,

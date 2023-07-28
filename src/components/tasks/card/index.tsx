@@ -365,7 +365,6 @@ const Card: FC<CardProps> = ({
         setAssigneeName(userName);
         setShowSuggestion(false);
     };
-
     return (
         <div
             className={`
