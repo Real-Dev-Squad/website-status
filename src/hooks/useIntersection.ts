@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
+
 const useIntersection = (
     loadingRef: React.MutableRefObject<HTMLDivElement | null>,
     bottomBoundaryRef: React.MutableRefObject<HTMLDivElement | null>,
     onLoadMore: () => void
 ) => {
     const [isIntersecting, setIsIntersecting] = useState(false);
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0,
+    };
 
     useEffect(() => {
-        const options = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0,
-        };
-
         const observer = new IntersectionObserver(([entry]) => {
             setIsIntersecting(entry.isIntersecting);
         }, options);

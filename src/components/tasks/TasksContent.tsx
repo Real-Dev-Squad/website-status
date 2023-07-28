@@ -1,3 +1,4 @@
+import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
@@ -66,6 +67,8 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         MERGED: [],
         COMPLETED: [],
     });
+    const loadingRef = useRef<ElementRef<'div'>>(null);
+    const bottomBoundaryRef = useRef<ElementRef<'div'>>(null);
 
     const {
         data: tasksData = { tasks: [], next: '' },
@@ -109,9 +112,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             setLoadedTasks(newTasks);
         }
     }, [tasksData.tasks]);
-
-    const loadingRef = useRef<HTMLDivElement | null>(null);
-    const bottomBoundaryRef = useRef<HTMLDivElement | null>(null);
 
     useIntersection(loadingRef, bottomBoundaryRef, fetchMoreTasks);
 
