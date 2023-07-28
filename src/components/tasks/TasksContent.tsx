@@ -10,7 +10,7 @@ import {
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
-import { getActiveTab } from '@/utils/getActiveTab';
+import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
 
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
@@ -91,7 +91,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         router.push({
             query: {
                 ...router.query,
-                section: tab.toLowerCase(),
+                section: tabToUrlParams(tab),
             },
         });
         setNextTasks('');
