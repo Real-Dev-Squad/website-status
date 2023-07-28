@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
-import fetch from '@/helperFunctions/fetch';
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
@@ -27,11 +26,9 @@ import {
 import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
-import { isNewCardDesignEnabled } from '@/constants/FeatureFlags';
 import { useGetUserQuery } from '@/app/services/userApi';
 import HandleProgressText from './ProgressText';
 import HandleProgressbar from './ProgressBar';
-import ProgressIndicator from './ProgressIndicator';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
@@ -133,7 +130,7 @@ const Card: FC<CardProps> = ({
     ) {
         if (event.key === 'Enter') {
             const toChange: any = cardDetails;
-            toChange[changedProperty] = stripHtml(assigneeName);
+            toChange[changedProperty] = stripHtml(event.target.value);
 
             if (
                 changedProperty === 'endsOn' ||
@@ -369,170 +366,23 @@ const Card: FC<CardProps> = ({
         setShowSuggestion(false);
     };
 
-    // show redesign only on dev
-    if (isNewCardDesignEnabled)
-        return (
-            <div
-                className={`
+    return (
+        <div
+            className={`
                 ${classNames.card}
                 ${classNames.card_updated}
                 ${isLoading && classNames.pointerEventsNone}
                 ${isTaskOverdue() && classNames.overdueTask}
     `}
-                data-testid="task-card"
-            >
-                {/* loading spinner */}
-                {isLoading && <Loader />}
-                <div className={classNames.cardItems}>
-                    <ConditionalLinkWrapper
-                        redirectingPath="/tasks/[id]"
-                        shouldDisplayLink={isTaskDetailsPageLinkEnabled}
-                        taskId={cardDetails.id}
-                    >
-                        <span
-                            className={classNames.cardTitle}
-                            contentEditable={shouldEdit}
-                            onKeyDown={(e) => handleChange(e, 'title')}
-                            role="button"
-                            tabIndex={0}
-                        >
-                            {cardDetails.title}
-                        </span>
-                    </ConditionalLinkWrapper>
-
-                    {/* progress bar */}
-                    <div>
-                        <div className={classNames.progressContainerUpdated}>
-                            <HandleProgressbar
-                                progress={progress}
-                                progressValue={progressValue}
-                                percentCompleted={content.percentCompleted}
-                                handleProgressChange={handleProgressChange}
-                                debounceSlider={debounceSlider}
-                                startedOn={content.startedOn}
-                                endsOn={content.endsOn}
-                            />
-                        </div>
-                        {dev === 'true' && (
-                            <HandleProgressText
-                                progress={progress}
-                                handleSaveProgressUpdate={
-                                    handleSaveProgressUpdate
-                                }
-                                handleProgressUpdate={handleProgressUpdate}
-                            />
-                        )}
-                    </div>
-                </div>
-                <div className={classNames.taskStatusAndDateContainer}>
-                    <div className={classNames.dateInfo}>
-                        <div>
-                            <span className={classNames.cardSpecialFont}>
-                                Estimated completion
-                            </span>
-                            <span className={classNames.completionDate}>
-                                {renderDate(fromNowEndsOn, shouldEdit)}
-                            </span>
-                        </div>
-                        <span
-                            className={classNames.cardSpecialFont}
-                            contentEditable={shouldEdit}
-                            onKeyDown={(e) => handleChange(e, 'startedOn')}
-                            role="button"
-                            tabIndex={0}
-                        >
-                            {cardDetails.status === TASK_STATUS.AVAILABLE
-                                ? 'Not started'
-                                : `Started on ${fromNowStartedOn}`}
-                        </span>
-                    </div>
-                    {/* EDIT task status */}
-                    <div className={classNames.taskStatusEditMode}>
-                        {shouldEdit && (
-                            <TaskStatusEditMode
-                                task={cardDetails}
-                                updateTask={onContentChange}
-                            />
-                        )}
-                    </div>
-                </div>
-                {showAssignButton() ? (
-                    <AssigneeButton />
-                ) : (
-                    <div className={classNames.contributor}>
-                        <span className={classNames.cardSpecialFont}>
-                            Assigned to
-                        </span>
-                        <span className={classNames.contributorImage}>
-                            <Image
-                                src={assigneeProfileImageURL}
-                                alt={cardDetails.assignee || DUMMY_NAME}
-                                width={30}
-                                height={30}
-                            />
-                        </span>
-                        {shouldEdit ? (
-                            isUserAuthorized && (
-                                <Suggestions
-                                    assigneeName={assigneeName}
-                                    searchTerm={debounceSearchTerm}
-                                    showSuggestion={showSuggestion}
-                                    handleAssignment={handleAssignment}
-                                    handleClick={handleClick}
-                                    handleChange={handleChange}
-                                    ref={inputRef}
-                                />
-                            )
-                        ) : (
-                            <span className={classNames.cardStrongFont}>
-                                {cardDetails.assignee}
-                            </span>
-                        )}
-                    </div>
-                )}
-
-                <div className={classNames.cardItems}>
-                    <div
-                        className={`${classNames.taskTagLevelWrapper} ${
-                            shouldEdit && classNames.editMode
-                        }`}
-                    >
-                        <TaskLevelMap
-                            taskTagLevel={taskTagLevel}
-                            shouldEdit={shouldEdit}
-                            itemId={cardDetails.id}
-                            deleteTaskTagLevel={deleteTaskTagLevel}
-                        />
-                        {shouldEdit && isUserAuthorized && (
-                            <TaskLevelEdit
-                                taskTagLevel={taskTagLevel}
-                                itemId={cardDetails.id}
-                            />
-                        )}
-                    </div>
-                </div>
-
-                {cardDetails.status !== 'Completed' && isIssueClosed() && (
-                    <CloseTaskButton />
-                )}
-                {isUserAuthorized && showEditButton && <EditButton />}
-            </div>
-        );
-
-    return (
-        <div
-            className={`
-            ${classNames.card}
-            ${isLoading && classNames.pointerEventsNone}
-            ${isTaskOverdue() && classNames.overdueTask}
-      `}
+            data-testid="task-card"
         >
             {/* loading spinner */}
             {isLoading && <Loader />}
-
             <div className={classNames.cardItems}>
                 <ConditionalLinkWrapper
+                    redirectingPath="/tasks/[id]"
                     shouldDisplayLink={isTaskDetailsPageLinkEnabled}
+                    taskId={cardDetails.id}
                 >
                     <span
                         className={classNames.cardTitle}
@@ -544,116 +394,119 @@ const Card: FC<CardProps> = ({
                         {cardDetails.title}
                     </span>
                 </ConditionalLinkWrapper>
-                <span>
-                    <span className={classNames.cardSpecialFont}>Status:</span>
+
+                {/* progress bar */}
+                <div>
+                    <div className={classNames.progressContainerUpdated}>
+                        <HandleProgressbar
+                            progress={progress}
+                            progressValue={progressValue}
+                            percentCompleted={content.percentCompleted}
+                            handleProgressChange={handleProgressChange}
+                            debounceSlider={debounceSlider}
+                            startedOn={content.startedOn}
+                            endsOn={content.endsOn}
+                        />
+                    </div>
+                    {dev === 'true' && (
+                        <HandleProgressText
+                            progress={progress}
+                            handleSaveProgressUpdate={handleSaveProgressUpdate}
+                            handleProgressUpdate={handleProgressUpdate}
+                        />
+                    )}
+                </div>
+            </div>
+            <div className={classNames.taskStatusAndDateContainer}>
+                <div className={classNames.dateInfo}>
+                    <div>
+                        <span className={classNames.cardSpecialFont}>
+                            Estimated completion
+                        </span>
+                        <span className={classNames.completionDate}>
+                            {renderDate(fromNowEndsOn, shouldEdit)}
+                        </span>
+                    </div>
                     <span
-                        className={classNames.cardStatusFont}
+                        className={classNames.cardSpecialFont}
                         contentEditable={shouldEdit}
-                        onKeyDown={(e) => handleChange(e, 'status')}
-                        style={{ color: statusFontColor }}
+                        onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
                     >
-                        {cardDetails.status}
+                        {cardDetails.status === TASK_STATUS.AVAILABLE
+                            ? 'Not started'
+                            : `Started on ${fromNowStartedOn}`}
                     </span>
-                </span>
+                </div>
+                {/* EDIT task status */}
+                <div className={classNames.taskStatusEditMode}>
+                    {shouldEdit && (
+                        <TaskStatusEditMode
+                            task={cardDetails}
+                            updateTask={onContentChange}
+                        />
+                    )}
+                </div>
             </div>
-            <div className={classNames.cardItems}>
-                <span>
-                    <Image
-                        src="/calendar-icon.png"
-                        alt="calendar icon"
-                        width={iconWidth}
-                        height={iconHeight}
-                    />
-                    <span className={classNames.cardSpecialFont}>Due Date</span>
-                    {renderDate(fromNowEndsOn, shouldEdit)}
-                </span>
-            </div>
-            <div className={classNames.cardItems}>
-                <span className={classNames.progressContainer}>
-                    <ProgressIndicator
-                        percentCompleted={content.percentCompleted}
-                        startedOn={content.startedOn}
-                        endsOn={content.endsOn}
-                    />
-
-                    <span>{content.percentCompleted}% completed</span>
-                </span>
-            </div>
-
-            <div
-                className={`${classNames.taskTagLevelWrapper} ${
-                    shouldEdit && classNames.editMode
-                }`}
-            >
-                <TaskLevelMap
-                    taskTagLevel={taskTagLevel}
-                    itemId={cardDetails.id}
-                    shouldEdit={shouldEdit}
-                    deleteTaskTagLevel={deleteTaskTagLevel}
-                />
-                {shouldEdit && isUserAuthorized && (
-                    <TaskLevelEdit
-                        taskTagLevel={taskTagLevel}
-                        itemId={cardDetails.id}
-                    />
-                )}
-            </div>
-            <div className={classNames.cardItems}>
-                <span
-                    className={classNames.cardSpecialFont}
-                    contentEditable={shouldEdit}
-                    onKeyDown={(e) => handleChange(e, 'startedOn')}
-                    role="button"
-                    tabIndex={0}
-                >
-                    Started {!cardDetails.startedOn ? 'TBD' : fromNowStartedOn}
-                </span>
-                {
-                    // Assigne to button if task was created from an issue
-                    showAssignButton() ? (
-                        <AssigneeButton />
+            {showAssignButton() ? (
+                <AssigneeButton />
+            ) : (
+                <div className={classNames.contributor}>
+                    <span className={classNames.cardSpecialFont}>
+                        Assigned to
+                    </span>
+                    <span className={classNames.contributorImage}>
+                        <Image
+                            src={assigneeProfileImageURL}
+                            alt={cardDetails.assignee || DUMMY_NAME}
+                            width={30}
+                            height={30}
+                        />
+                    </span>
+                    {shouldEdit ? (
+                        isUserAuthorized && (
+                            <Suggestions
+                                assigneeName={assigneeName}
+                                searchTerm={debounceSearchTerm}
+                                showSuggestion={showSuggestion}
+                                handleAssignment={handleAssignment}
+                                handleChange={handleChange}
+                                handleClick={handleClick}
+                            />
+                        )
                     ) : (
-                        <span>
-                            <span className={classNames.cardSpecialFont}>
-                                Assignee:
-                            </span>
-                            {shouldEdit ? (
-                                isUserAuthorized && (
-                                    <Suggestions
-                                        assigneeName={assigneeName}
-                                        searchTerm={debounceSearchTerm}
-                                        showSuggestion={showSuggestion}
-                                        handleAssignment={handleAssignment}
-                                        handleClick={handleClick}
-                                        handleChange={handleChange}
-                                        ref={inputRef}
-                                    />
-                                )
-                            ) : (
-                                <span className={classNames.cardStrongFont}>
-                                    {cardDetails.assignee}
-                                </span>
-                            )}
-                            <span className={classNames.contributorImage}>
-                                <Image
-                                    src={assigneeProfileImageURL}
-                                    alt={cardDetails.assignee || DUMMY_NAME}
-                                    width={45}
-                                    height={45}
-                                />
-                            </span>
+                        <span className={classNames.cardStrongFont}>
+                            {cardDetails.assignee}
                         </span>
-                    )
-                }
+                    )}
+                </div>
+            )}
+
+            <div className={classNames.cardItems}>
+                <div
+                    className={`${classNames.taskTagLevelWrapper} ${
+                        shouldEdit && classNames.editMode
+                    }`}
+                >
+                    <TaskLevelMap
+                        taskTagLevel={taskTagLevel}
+                        shouldEdit={shouldEdit}
+                        itemId={cardDetails.id}
+                        deleteTaskTagLevel={deleteTaskTagLevel}
+                    />
+                    {shouldEdit && isUserAuthorized && (
+                        <TaskLevelEdit
+                            taskTagLevel={taskTagLevel}
+                            itemId={cardDetails.id}
+                        />
+                    )}
+                </div>
             </div>
-            {
-                // Suggest to close task if issue was closed
-                cardDetails.status !== 'Completed' && isIssueClosed() && (
-                    <CloseTaskButton />
-                )
-            }
+
+            {cardDetails.status !== 'Completed' && isIssueClosed() && (
+                <CloseTaskButton />
+            )}
             {isUserAuthorized && showEditButton && <EditButton />}
         </div>
     );
