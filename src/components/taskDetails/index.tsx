@@ -236,7 +236,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             {isDevModeEnabled && (
                                 <>
                                     <TaskContainer
-                                        title="Task DependsOn"
+                                        title="Task Dependencies"
                                         hasImg={false}
                                     >
                                         <TaskDependency
@@ -244,9 +244,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 taskDependencyIds
                                             }
                                             isEditing={isEditing}
-                                            updatedDependencies={
-                                                taskDetailsData?.dependsOn || []
-                                            }
                                             handleChange={handleChange}
                                             setEditedTaskDetails={
                                                 setEditedTaskDetails
