@@ -470,8 +470,9 @@ const Card: FC<CardProps> = ({
                                 searchTerm={debounceSearchTerm}
                                 showSuggestion={showSuggestion}
                                 handleAssignment={handleAssignment}
-                                handleChange={handleChange}
                                 handleClick={handleClick}
+                                handleChange={handleChange}
+                                ref={inputRef}
                             />
                         )
                     ) : (
