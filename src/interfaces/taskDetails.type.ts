@@ -36,6 +36,7 @@ export type TextAreaProps = {
 export type TaskDependencyProps = {
     taskDependencyIds: string[];
     isEditing?: boolean;
+    updatedDependencies: string[];
     handleChange: (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
