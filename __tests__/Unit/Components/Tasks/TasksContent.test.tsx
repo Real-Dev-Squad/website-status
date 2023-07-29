@@ -6,7 +6,6 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
-import { noTasksFoundHandler } from '../../../../__mocks__/handlers/tasks.handler';
 import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handler';
 import { TABS } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
