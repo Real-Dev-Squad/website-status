@@ -1,7 +1,8 @@
+import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import task, { Tab, TabTasksData } from '@/interfaces/task.type';
-import { useState, useEffect } from 'react';
+import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
@@ -9,7 +10,11 @@ import {
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
-import { getActiveTab } from '@/utils/getActiveTab';
+import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
+
+import { Select } from '../Select';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
+import useIntersection from '@/hooks/useIntersection';
 
 type RenderTaskListProps = {
     tab: string;
@@ -62,6 +67,8 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         MERGED: [],
         COMPLETED: [],
     });
+    const loadingRef = useRef<ElementRef<'div'>>(null);
+    const bottomBoundaryRef = useRef<ElementRef<'div'>>(null);
 
     const {
         data: tasksData = { tasks: [], next: '' },
@@ -84,7 +91,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         router.push({
             query: {
                 ...router.query,
-                section: tab.toLowerCase(),
+                section: tabToUrlParams(tab),
             },
         });
         setNextTasks('');
@@ -106,13 +113,41 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
+    useIntersection(loadingRef, bottomBoundaryRef, fetchMoreTasks);
+
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+    const taskSelectOptions = TABS.map((item) => ({
+        label: getChangedStatusName(item),
+        value: item,
+    }));
 
     return (
         <div className={classNames.tasksContainer}>
-            <TabSection onSelect={onSelect} activeTab={selectedTab} />
+            <div
+                className={classNames['status-tabs-container']}
+                data-testid="status-tabs-container"
+            >
+                <TabSection onSelect={onSelect} activeTab={selectedTab} />
+            </div>
+            <div
+                className={classNames['status-select-container']}
+                data-testid="status-select-container"
+            >
+                <Select
+                    value={{
+                        label: getChangedStatusName(selectedTab),
+                        value: selectedTab,
+                    }}
+                    onChange={(selectedTaskStatus) => {
+                        if (selectedTaskStatus) {
+                            onSelect(selectedTaskStatus.value as Tab);
+                        }
+                    }}
+                    options={taskSelectOptions}
+                />
+            </div>
             <div>
                 <RenderTaskList
                     dev={dev}
@@ -121,15 +156,9 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 />
             </div>
 
-            {dev && (
-                <button
-                    className={classNames.loadMoreButton}
-                    onClick={fetchMoreTasks}
-                    disabled={!tasksData.next}
-                >
-                    {isFetching ? 'Loading...' : 'Load More'}
-                </button>
-            )}
+            <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
+
+            <div ref={bottomBoundaryRef}></div>
         </div>
     );
 };
