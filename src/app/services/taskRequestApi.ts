@@ -1,14 +1,21 @@
 import { api } from './api';
 
-type AddOrUpdateMutation = {
+type AddOrUpdateMutationQuery = {
     taskId: string;
     userId: string;
 };
 
+type AddOrUpdateMutationQueryRes =
+    | { message: string }
+    | { message: string; requestors: string[] };
+
 export const taskRequestApi = api.injectEndpoints({
     endpoints: (build) => ({
-        addOrUpdate: build.mutation({
-            query: (body: AddOrUpdateMutation) => ({
+        addOrUpdate: build.mutation<
+            AddOrUpdateMutationQueryRes,
+            AddOrUpdateMutationQuery
+        >({
+            query: (body) => ({
                 url: 'taskRequests/addOrUpdate',
                 method: 'POST',
                 body,

@@ -4,7 +4,7 @@ const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const taskRequestSuccessHandlers = [
     rest.post(`${URL}/taskRequests/addOrUpdate`, (_, res, ctx) => {
-        return res(ctx.status(204));
+        return res(ctx.status(201), ctx.json({ message: 'Task request successfully created' }));
     }),
 ];
 

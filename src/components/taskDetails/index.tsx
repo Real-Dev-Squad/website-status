@@ -64,7 +64,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { query } = router;
     const isDevModeEnabled = query.dev === 'true' ? true : false;
 
-    const { isUserAuthorized } = useUserData();
+    const { isUserAuthorized, data: userData } = useUserData();
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
@@ -124,7 +124,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         if (!userData) {
             return;
         }
-        addOrUpdateTaskRequest({ taskId: taskID, userId: userData?.id })
+        addOrUpdateTaskRequest({ taskId: taskID, userId: userData.id })
             .unwrap()
             .then(() => toast(SUCCESS, 'Successfully requested for task'))
             .catch((error) => toast(ERROR, error.data.message));
