@@ -6,7 +6,7 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
     value,
     debounceSlider,
     handleProgressChange,
-    loading,
+    isLoading,
 }) => {
     return (
         <input
@@ -17,7 +17,7 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
             step="10"
             onChange={(e) => handleProgressChange(e)}
             onMouseUp={() => debounceSlider(1000)}
-            disabled={loading ? true : false}
+            disabled={isLoading}
         />
     );
 };

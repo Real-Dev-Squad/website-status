@@ -305,6 +305,7 @@ const Card: FC<CardProps> = ({
         }
         const timer = setTimeout(() => {
             handleSliderChangeComplete(cardDetails.id, progressValue);
+            setProgress(false);
         }, 1000);
         setDebounceTimeOut(Number(timer));
     };
@@ -336,10 +337,6 @@ const Card: FC<CardProps> = ({
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setProgressValue(Number(event.target.value));
-    };
-
-    const handleSaveProgressUpdate = () => {
-        setProgress(false);
     };
 
     const AssigneeButton = () => {
@@ -457,7 +454,7 @@ const Card: FC<CardProps> = ({
                 </ConditionalLinkWrapper>
 
                 {/* progress bar */}
-                <div>
+                <div className={classNames.progressContainer}>
                     <div className={classNames.progressContainerUpdated}>
                         <HandleProgressbar
                             progress={progress}
@@ -467,7 +464,7 @@ const Card: FC<CardProps> = ({
                             debounceSlider={debounceSlider}
                             startedOn={content.startedOn}
                             endsOn={content.endsOn}
-                            loading={
+                            isLoading={
                                 isLoadingUpdateTaskDetails ||
                                 isLoadingSelfTaskUpdate
                             }
@@ -475,10 +472,8 @@ const Card: FC<CardProps> = ({
                     </div>
                     {dev === 'true' && (
                         <HandleProgressText
-                            progress={progress}
-                            handleSaveProgressUpdate={handleSaveProgressUpdate}
                             handleProgressUpdate={handleProgressUpdate}
-                            loading={
+                            isLoading={
                                 isLoadingUpdateTaskDetails ||
                                 isLoadingSelfTaskUpdate
                             }

@@ -155,14 +155,17 @@ $progressTextAnimation: #9babb8;
     flex-direction: column;
 }
 
+.progressContainer {
+    padding-top: 1rem;
+}
+
 .changeProgressText {
     cursor: pointer;
     color: $progressText;
     font-weight: 700;
     padding-bottom: 0.5rem;
-    float: right;
     padding-top: 0.5rem;
-    padding-left: 2rem;
+    padding-left: 1rem;
     user-select: none;
     opacity: 0.5;
 }
