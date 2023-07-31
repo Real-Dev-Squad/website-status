@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import Card from '../card';
 import task from '@/interfaces/task.type';
 import beautifyTaskStatus from '@/helperFunctions/beautifyTaskStatus';
@@ -8,9 +8,7 @@ import {
     ADD_MORE_TASKS_LIMIT,
 } from '../constants';
 import styles from '../card/card.module.scss';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import useUserData from '@/hooks/useUserData';
 
 type TaskListProps = {
     tasks: task[];
@@ -38,10 +36,6 @@ export default function TaskList({ tasks, hasLimit = false }: TaskListProps) {
         tasksLimit,
     });
 
-    const { isEditMode } = useEditMode();
-    const { isUserAuthorized } = useUserData();
-    const isEditable = isUserAuthorized && isEditMode;
-
     const [updateCardContent] = useUpdateTaskMutation();
 
     function onSeeMoreTasksHandler() {
@@ -52,7 +46,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaskListProps) {
         cardDetails: any,
         isDevEnabled?: boolean
     ) {
-        if (!isEditable || !updateCardContent) return;
+        if (!updateCardContent) return;
         updateCardContent({ id, task: cardDetails, isDevEnabled });
     }
 
@@ -62,7 +56,7 @@ export default function TaskList({ tasks, hasLimit = false }: TaskListProps) {
                 <Card
                     content={item}
                     key={item.id}
-                    shouldEdit={isEditable}
+                    shouldEdit
                     onContentChange={onContentChangeHandler}
                 />
             ))}
