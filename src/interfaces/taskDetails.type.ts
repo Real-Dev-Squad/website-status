@@ -6,6 +6,7 @@ export type taskDetailsDataType = {
         completionAward: { dinero: number; neelam: number };
         createdBy: string;
         endsOn: number;
+        purpose: string;
         isNoteworthy: boolean;
         dependsOn: string[];
         lossRate: { dinero: number; neelam: number };
@@ -15,17 +16,19 @@ export type taskDetailsDataType = {
         status: string;
         title: string;
         type: string;
+        participants: string[];
+        featureUrl: string;
     };
 };
 
 export type ButtonProps = {
     buttonName: string;
-    clickHandler: (value: any) => void;
+    clickHandler: (value: boolean) => void;
     value?: boolean;
 };
 export type TextAreaProps = {
     name: string;
-    value: string;
+    value: string | undefined;
     onChange: ChangeEventHandler;
     testId: string;
 };
@@ -37,6 +40,9 @@ export type TaskDependencyProps = {
     handleChange: (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
+    setEditedTaskDetails: React.Dispatch<
+        React.SetStateAction<taskDetailsDataType['taskData'] | undefined>
+    >;
 };
 export type DependencyListProps = {
     taskDependencyIds: string[];
