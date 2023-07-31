@@ -4,7 +4,7 @@ import classNames from './task-details.module.scss';
 
 type Props = {
     detailType: string;
-    value: string;
+    value?: string;
 };
 
 const Details: FC<Props> = ({ detailType, value }) => {
@@ -13,7 +13,7 @@ const Details: FC<Props> = ({ detailType, value }) => {
             <span className={classNames.detailType}>{detailType}:</span>
             <span
                 className={classNames.detailValue}
-                style={{ color: setColor?.[value] ?? 'black' }}
+                style={{ color: value ? setColor[value] : 'black' }}
             >
                 {value ?? 'N/A'}
             </span>
