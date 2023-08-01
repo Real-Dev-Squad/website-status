@@ -1,4 +1,5 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -13,9 +14,7 @@ import { TASK_STATUS } from '@/interfaces/task-status';
 import useUserData from '@/hooks/useUserData';
 import { setupServer } from 'msw/node';
 import { adminUserHandler } from '../../../../__mocks__/handlers/self.handler';
-
 const server = setupServer();
-
 const DEFAULT_PROPS = {
     content: {
         id: 'firestoreDocumentId123',
@@ -41,7 +40,7 @@ const DEFAULT_PROPS = {
         type: 'feature',
         createdBy: 'ankush',
     },
-    shouldEdit: false,
+    shouldEdit: true,
     onContentChange: jest.fn(),
 };
 
@@ -141,6 +140,23 @@ describe('Task card', () => {
         await waitFor(() => {
             expect(queryByTestId('edit-button')).toBeInTheDocument();
         });
+    });
+    test('task should be editable if edit button clicked', async () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+        const component = getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        await screen.findByTestId('assignee-input');
     });
 
     it('Should render "Close task" button when parent issue is closed', function () {

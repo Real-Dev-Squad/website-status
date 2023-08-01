@@ -244,10 +244,22 @@ describe('TaskDetails Page', () => {
         });
     });
 
-    it('Should render No Description available for a task without description', async () => {
+    it('Should render Description available for a task', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(
+                getByText('This is a sample description')
+            ).toBeInTheDocument();
+        });
+    });
+    it('Should render No Description available for a task without description', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID="6KhcLU3yr45dzjQIVm0k" />
             </Provider>
         );
         await waitFor(() => {
@@ -313,6 +325,16 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('Ankush')).toBeInTheDocument();
         });
+    });
+    test('should render "Something went wrong!" when isError is true', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={''} />
+            </Provider>
+        );
+
+        const errorElement = await screen.findByText('Something went wrong!');
+        expect(errorElement).toBeInTheDocument();
     });
     it('Renders Task Started-on Date', async () => {
         const { getByText } = renderWithRouter(
