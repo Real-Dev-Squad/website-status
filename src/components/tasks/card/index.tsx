@@ -24,7 +24,6 @@ import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { useGetUserQuery } from '@/app/services/userApi';
@@ -72,6 +71,8 @@ const Card: FC<CardProps> = ({
 
     const [keyLongPressed] = useKeyLongPressed();
 
+    const [isEditMode, setIsEditMode] = useState(false);
+
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
@@ -85,7 +86,6 @@ const Card: FC<CardProps> = ({
     const [assigneeName, setAssigneeName] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const { onEditRoute } = useEditMode();
     const router = useRouter();
     const { dev } = router.query;
     const isDevEnabled = (dev && dev === 'true') || false;
@@ -93,7 +93,7 @@ const Card: FC<CardProps> = ({
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
 
-        if (isAltKeyLongPressed) {
+        if (isAltKeyLongPressed && isUserAuthorized) {
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
@@ -172,8 +172,8 @@ const Card: FC<CardProps> = ({
         }
     }
 
-    function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
-        if (shouldEdit) {
+    function renderDate(fromNowEndsOn: string, isEditable: boolean) {
+        if (isEditable) {
             return (
                 <input
                     type="date"
@@ -237,6 +237,11 @@ const Card: FC<CardProps> = ({
             });
     };
 
+    const onEditRoute = () => {
+        setIsEditMode(true);
+    };
+    const isEditable = shouldEdit && isUserAuthorized && isEditMode;
+
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
         return getDateInString(new Date(closedAt ?? Date.now()));
@@ -267,7 +272,7 @@ const Card: FC<CardProps> = ({
     };
 
     const EditButton = () => (
-        <div className={classNames.editButton} data-testid="edit-button">
+        <div className={classNames.editButton}>
             <Image
                 src="/pencil.webp"
                 alt="pencil icon to represent edit button"
@@ -275,6 +280,7 @@ const Card: FC<CardProps> = ({
                 height={iconHeight}
                 onClick={onEditRoute}
                 tabIndex={0}
+                data-testid="edit-button"
             />
         </div>
     );
@@ -342,7 +348,7 @@ const Card: FC<CardProps> = ({
             <div className={classNames.cardItems}>
                 <span
                     className={classNames.cardSpecialFont}
-                    contentEditable={shouldEdit}
+                    contentEditable={isEditable}
                     onKeyDown={(e) => handleChange(e, 'startedOn')}
                     role="button"
                     tabIndex={0}
@@ -429,7 +435,7 @@ const Card: FC<CardProps> = ({
                 >
                     <span
                         className={classNames.cardTitle}
-                        contentEditable={shouldEdit}
+                        contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'title')}
                         role="button"
                         tabIndex={0}
@@ -467,12 +473,12 @@ const Card: FC<CardProps> = ({
                             Estimated completion
                         </span>
                         <span className={classNames.completionDate}>
-                            {renderDate(fromNowEndsOn, shouldEdit)}
+                            {renderDate(fromNowEndsOn, isEditable)}
                         </span>
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
-                        contentEditable={shouldEdit}
+                        contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
@@ -484,7 +490,7 @@ const Card: FC<CardProps> = ({
                 </div>
                 {/* EDIT task status */}
                 <div className={classNames.taskStatusEditMode}>
-                    {shouldEdit && (
+                    {isEditable && (
                         <TaskStatusEditMode
                             task={cardDetails}
                             updateTask={onContentChange}
@@ -507,10 +513,11 @@ const Card: FC<CardProps> = ({
                             height={30}
                         />
                     </span>
-                    {shouldEdit ? (
+                    {isEditable ? (
                         isUserAuthorized && (
                             <div className={classNames.suggestionDiv}>
                                 <input
+                                    data-testid="assignee-input"
                                     ref={inputRef}
                                     value={assigneeName}
                                     className={classNames.cardStrongFont}
@@ -551,16 +558,16 @@ const Card: FC<CardProps> = ({
             <div className={classNames.cardItems}>
                 <div
                     className={`${classNames.taskTagLevelWrapper} ${
-                        shouldEdit && classNames.editMode
+                        isEditable && classNames.editMode
                     }`}
                 >
                     <TaskLevelMap
                         taskTagLevel={taskTagLevel}
-                        shouldEdit={shouldEdit}
+                        shouldEdit={isEditable}
                         itemId={cardDetails.id}
                         deleteTaskTagLevel={deleteTaskTagLevel}
                     />
-                    {shouldEdit && isUserAuthorized && (
+                    {isEditable && isUserAuthorized && (
                         <TaskLevelEdit
                             taskTagLevel={taskTagLevel}
                             itemId={cardDetails.id}
@@ -572,7 +579,7 @@ const Card: FC<CardProps> = ({
             {cardDetails.status !== 'Completed' && isIssueClosed() && (
                 <CloseTaskButton />
             )}
-            {isUserAuthorized && showEditButton && <EditButton />}
+            {!isEditMode && showEditButton && <EditButton />}
         </div>
     );
 };
