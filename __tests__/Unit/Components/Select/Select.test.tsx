@@ -59,6 +59,23 @@ describe('Select', () => {
         expect(onChangeMock).toHaveBeenCalledWith(sampleOptions[1]);
     });
 
+    test('selects an option for touch', () => {
+        const value = sampleOptions[0];
+        const onChangeMock = jest.fn();
+        render(
+            <Select
+                value={value}
+                onChange={onChangeMock}
+                options={sampleOptions}
+            />
+        );
+
+        const option2 = screen?.getByText('Option 2');
+        fireEvent.pointerEnter(option2);
+
+        expect(onChangeMock).toHaveBeenCalledWith(sampleOptions[1]);
+    });
+
     test('handler should not be called when event target is not a child of container', () => {
         const value = sampleOptions[0];
         const onChangeMock = jest.fn();

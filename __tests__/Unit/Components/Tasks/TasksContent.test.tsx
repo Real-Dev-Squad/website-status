@@ -10,6 +10,11 @@ import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handl
 import { TABS } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
+jest.mock('@/hooks/useIntersection', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
 const server = setupServer(...handlers);
 
 beforeAll(() => {
@@ -111,60 +116,6 @@ describe('tasks content', () => {
             'Design and develop an online booking system'
         );
         expect(task).toBeInTheDocument();
-    });
-
-    test('load more button is disabled when there are no more tasks to load', async () => {
-        server.use(noTasksFoundHandler);
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent dev={true} />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-        await screen.findByTestId('tabs');
-
-        const loadMoreButton = screen.getByRole('button', {
-            name: /load more/i,
-        });
-        expect(loadMoreButton).toBeDisabled();
-    });
-
-    test('load more button is enabled when there are more tasks to load', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent dev={true} />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-        await screen.findByTestId('tabs');
-
-        const loadMoreButton = screen.getByRole('button', {
-            name: /load more/i,
-        });
-        expect(loadMoreButton).toBeEnabled();
-    });
-
-    test('fetch more tasks when load more button is clicked', async () => {
-        const { findByText } = renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent dev={true} />
-            </Provider>,
-            { query: { dev: 'true', section: 'available' } }
-        );
-        await screen.findByTestId('tabs');
-        const task = await findByText(
-            'Design and develop an online booking system'
-        );
-        expect(task).toBeInTheDocument();
-        const loadMoreButton = await screen.getByRole('button', {
-            name: /load more/i,
-        });
-        expect(loadMoreButton).toBeEnabled();
-        fireEvent.click(loadMoreButton);
-        const task2 = await findByText(
-            'Design and develop an online booking system'
-        );
-        expect(task2).toBeInTheDocument();
     });
 
     test('Selecting a tab pushes into query params', async () => {
