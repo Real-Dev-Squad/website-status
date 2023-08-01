@@ -308,4 +308,40 @@ describe('Task card', () => {
         );
         expect(userSelect).toBeInTheDocument();
     });
+
+    it('Should not have any assignee name in user input search field in edit mode when task has no assignee', async () => {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                status: TASK_STATUS.AVAILABLE,
+                assignee: undefined,
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} shouldEdit={true} />
+            </Provider>,
+            {}
+        );
+
+        const taskCard = screen.getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(taskCard, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editIcon = screen.getByTestId('edit-button');
+        expect(editIcon).toBeInTheDocument();
+
+        act(() => {
+            fireEvent.click(editIcon);
+            jest.advanceTimersByTime(300);
+        });
+
+        const userSelect = await screen.findByTestId('assignee-input');
+        expect(userSelect).toHaveValue('');
+    });
 });
