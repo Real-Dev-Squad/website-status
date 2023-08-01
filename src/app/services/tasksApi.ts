@@ -14,15 +14,12 @@ export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
             query: ({
-                dev,
                 status,
                 size = TASK_RESULT_SIZE,
                 nextTasks,
                 prevTasks,
             }) => {
-                let url = dev
-                    ? `/tasks?status=${status}&dev=true&size=${size}`
-                    : '/tasks';
+                let url = `/tasks?status=${status}&size=${size}`;
 
                 if (nextTasks) {
                     url = nextTasks;

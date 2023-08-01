@@ -107,7 +107,6 @@ export type CardProps = {
 export default task;
 
 export type GetAllTaskParamType = {
-    dev?: boolean;
     status?: string;
     nextTasks?: string;
     prevTasks?: string;

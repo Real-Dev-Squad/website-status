@@ -17,42 +17,21 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 
 type RenderTaskListProps = {
-    tab: string;
-    dev: boolean;
     tasks: task[];
 };
 
-const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
-    const tasksGroupedByStatus = tasks?.reduce(
-        (acc: Record<string, task[]>, curr: task) => {
-            return acc[curr.status as keyof task]
-                ? {
-                      ...acc,
-                      [curr.status]: [...acc[curr.status as keyof task], curr],
-                  }
-                : { ...acc, [curr.status]: [curr] };
-        },
-        {}
-    );
-
-    const tasksNotAvailable =
-        tasks === undefined || tasksGroupedByStatus[tab] === undefined;
+const RenderTaskList = ({ tasks }: RenderTaskListProps) => {
+    const tasksNotAvailable = (tasks === undefined) === undefined;
 
     if (tasksNotAvailable || tasks.length === 0) {
         return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
     }
-
-    if (dev) {
-        return <TaskList tasks={tasks} />;
-    }
-
-    return <TaskList tasks={tasksGroupedByStatus[tab]} />;
+    return <TaskList tasks={tasks} />;
 };
-
 type routerQueryParams = {
     section?: string;
 };
-export const TasksContent = ({ dev }: { dev: boolean }) => {
+export const TasksContent = () => {
     const router = useRouter();
     const { section }: routerQueryParams = router.query;
     const selectedTab = getActiveTab(section);
@@ -75,7 +54,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         isLoading,
         isFetching,
     } = useGetAllTasksQuery({
-        dev: dev as boolean,
         status: selectedTab,
         nextTasks,
     });
@@ -152,11 +130,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 />
             </div>
             <div>
-                <RenderTaskList
-                    dev={dev}
-                    tab={selectedTab}
-                    tasks={loadedTasks[selectedTab]}
-                />
+                <RenderTaskList tasks={loadedTasks[selectedTab]} />
             </div>
 
             <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
