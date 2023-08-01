@@ -65,7 +65,12 @@ export const tasksApi = api.injectEndpoints({
                 method: 'PATCH',
                 body: task,
             }),
-            invalidatesTags: ['Tasks'],
+            invalidatesTags: (_result, _err, { id }) => [
+                {
+                    type: 'Tasks',
+                    id,
+                },
+            ],
         }),
     }),
     overrideExisting: true,
