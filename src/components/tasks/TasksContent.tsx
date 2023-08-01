@@ -15,6 +15,7 @@ import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
+import TaskSearch from './TaskSearch/TaskSearch';
 
 type RenderTaskListProps = {
     tab: string;
@@ -128,6 +129,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
 
     return (
         <div className={classNames.tasksContainer}>
+            <TaskSearch />
             <div
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"

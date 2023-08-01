@@ -1,0 +1,167 @@
+$primary-color: #1d1283;
+$secondary-color: #eeeeee;
+$black-color: #000;
+$white-color: #fff;
+
+$radius: 0.3rem;
+.task-search-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.filter-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #e4dfdf;
+    border-radius: $radius;
+    margin-right: 1rem;
+}
+
+.filter-button {
+    max-width: 5rem;
+    height: 2rem;
+    border-radius: $radius 0 0 $radius;
+    background-color: $secondary-color;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    border-left: 1px solid gray;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    border-right: none;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 0.3rem;
+
+    &:after {
+        content: '';
+        border-left: 0.3rem solid transparent;
+        border-right: 0.3rem solid transparent;
+        border-top: 0.3rem solid black;
+        margin-left: 0.3rem;
+    }
+}
+
+.search-input {
+    width: 100%;
+    height: 2rem;
+    padding: 0.5rem 0.5rem 0.5rem 2rem;
+    border-radius: 0 $radius $radius 0;
+    border: 1px solid gray;
+    outline: none;
+    background-color: #eeeeee;
+    background-image: url('https://img.icons8.com/ios-filled/16/000000/search.png');
+    background-repeat: no-repeat;
+    background-position: 0.5rem;
+    padding-left: 2rem;
+
+    &:focus {
+        background-color: #fff;
+    }
+}
+
+.search-button {
+    width: 5rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    border: 1px solid gray;
+    outline: none;
+
+    &:hover {
+        background-color: $primary-color;
+        color: #fff;
+        border: 1px solid $primary-color;
+    }
+}
+
+// modal styles
+
+.filter-modal-content {
+    width: 20rem;
+    height: 100%;
+    padding: 0;
+    position: relative;
+}
+
+.filter-modal {
+    position: relative;
+    top: 8rem;
+    left: -2.6rem;
+    width: 20rem;
+    background-color: #fff;
+    border-radius: $radius;
+    border: 1px solid rgb(177, 172, 172);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.filter-modal-title {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid gray;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+
+    span {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+}
+
+.filter-modal-content-status-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+
+    li {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        cursor: pointer;
+        border-bottom: 1px solid gray;
+
+        &:hover {
+            background-color: #e4dfdf;
+            border-left: 1px solid gray;
+            border-right: 1px solid gray;
+        }
+    }
+
+    button {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        padding-left: 1.5rem;
+    }
+}
+
+.close {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #000;
+}
