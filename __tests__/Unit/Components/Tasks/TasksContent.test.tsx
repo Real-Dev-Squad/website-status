@@ -40,7 +40,7 @@ describe('tasks content', () => {
 
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>
         );
 
@@ -53,7 +53,7 @@ describe('tasks content', () => {
         setWindowInnerWidth(breakpointToShowTabs);
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             {
                 query: { section: 'assigned' },
@@ -75,43 +75,22 @@ describe('tasks content', () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
         expect(errorMessage).toBeInTheDocument();
     });
 
-    test('display tasks when dev is true', async () => {
+    test('display tasks', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
-            { query: { dev: 'true', section: 'available' } }
+            { query: { section: 'available' } }
         );
         await screen.findByTestId('tabs');
 
-        const task = await findByText(
-            'Design and develop an online booking system'
-        );
-        expect(task).toBeInTheDocument();
-    });
-
-    test('display tasks when dev is false', async () => {
-        const { findByText } = renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent dev={false} />
-            </Provider>,
-            { query: { dev: 'false', section: 'available' } }
-        );
-        await screen.findByTestId('tabs');
-        const tabsContainer = within(
-            screen.getByTestId('status-tabs-container')
-        );
-        const unassignedButton = tabsContainer.getByRole('button', {
-            name: /UNASSINGED/i,
-        });
-        expect(unassignedButton).toHaveClass('active');
         const task = await findByText(
             'Design and develop an online booking system'
         );
@@ -123,7 +102,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -153,7 +132,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -169,7 +148,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -185,7 +164,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
