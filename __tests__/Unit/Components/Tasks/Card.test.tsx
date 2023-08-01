@@ -1,8 +1,4 @@
-import {
-    render,
-    fireEvent,
-    waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -14,7 +10,6 @@ import {
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
-import useUserData from '@/hooks/useUserData';
 
 const DEFAULT_PROPS = {
     content: {
