@@ -1,4 +1,5 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -138,7 +139,9 @@ describe('Task card', () => {
             jest.advanceTimersByTime(300);
         });
 
-        expect(queryByTestId('edit-button')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(queryByTestId('edit-button')).toBeInTheDocument();
+        });
     });
     test('task should be editable if edit button clicked', async () => {
         const { getByTestId, queryByTestId } = renderWithRouter(

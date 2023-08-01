@@ -13,6 +13,7 @@ import { ToastContainer } from 'react-toastify';
 import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
 import { adminUserHandler } from '../../../../__mocks__/handlers/self.handler';
+import { mockGetTaskProgress } from '__mocks__/db/progresses';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -27,6 +28,7 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+const mockNavigateToUpdateProgressPage = jest.fn();
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
