@@ -91,17 +91,12 @@ export { TABS, Tab };
 export type TaskRequestPayload = {
     task: updateTaskDetails;
     id: string;
-    isDevEnabled?: boolean;
 };
 
 export type CardProps = {
     content: task;
     shouldEdit: boolean;
-    onContentChange?: (
-        changeId: string,
-        changeObject: object,
-        isDevEnabled?: boolean
-    ) => void;
+    onContentChange?: (changeId: string, changeObject: object) => void;
 };
 
 export default task;
