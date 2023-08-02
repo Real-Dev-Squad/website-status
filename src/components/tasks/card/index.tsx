@@ -471,7 +471,6 @@ const Card: FC<CardProps> = ({
                     </span>
                     {isEditable ? (
                         isUserAuthorized && (
-
                             <Suggestions
                                 assigneeName={assigneeName}
                                 searchTerm={debounceSearchTerm}
@@ -481,7 +480,6 @@ const Card: FC<CardProps> = ({
                                 handleChange={handleChange}
                                 ref={inputRef}
                             />
-
                         )
                     ) : (
                         <span className={classNames.cardStrongFont}>
