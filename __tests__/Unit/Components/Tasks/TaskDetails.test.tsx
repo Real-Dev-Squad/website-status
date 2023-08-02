@@ -12,7 +12,6 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
 import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
-import { mockGetTaskProgress } from '__mocks__/db/progresses';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -66,10 +65,22 @@ describe('TaskDetails Page', () => {
         });
     });
 
-    it('Should render No Description available for a task without description', async () => {
+    it('Should render Description available for a task', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(
+                getByText('This is a sample description')
+            ).toBeInTheDocument();
+        });
+    });
+    it('Should render No Description available for a task without description', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID="6KhcLU3yr45dzjQIVm0k" />
             </Provider>
         );
         await waitFor(() => {
@@ -135,6 +146,16 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('Ankush')).toBeInTheDocument();
         });
+    });
+    test('should render "Something went wrong!" when isError is true', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={''} />
+            </Provider>
+        );
+
+        const errorElement = await screen.findByText('Something went wrong!');
+        expect(errorElement).toBeInTheDocument();
     });
     it('Renders Task Started-on Date', async () => {
         const { getByText } = renderWithRouter(
