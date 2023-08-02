@@ -68,7 +68,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         COMPLETED: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
-    const bottomBoundaryRef = useRef<ElementRef<'div'>>(null);
 
     const {
         data: tasksData = { tasks: [], next: '' },
@@ -113,7 +112,11 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         }
     }, [tasksData.tasks]);
 
-    useIntersection(loadingRef, bottomBoundaryRef, fetchMoreTasks);
+    useIntersection({
+        loadingRef,
+        onLoadMore: fetchMoreTasks,
+        earlyReturn: loadedTasks[selectedTab].length === 0,
+    });
 
     if (isLoading) return <p>Loading...</p>;
 
@@ -157,8 +160,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             </div>
 
             <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
-
-            <div ref={bottomBoundaryRef}></div>
         </div>
     );
 };
