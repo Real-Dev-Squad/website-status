@@ -1,7 +1,7 @@
 import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
@@ -16,18 +16,6 @@ import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 
-type RenderTaskListProps = {
-    tasks: task[];
-};
-
-const RenderTaskList = ({ tasks }: RenderTaskListProps) => {
-    const tasksNotAvailable = (tasks === undefined) === undefined;
-
-    if (tasksNotAvailable || tasks.length === 0) {
-        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
-    }
-    return <TaskList tasks={tasks} />;
-};
 type routerQueryParams = {
     section?: string;
 };
@@ -54,7 +42,7 @@ export const TasksContent = () => {
         isLoading,
         isFetching,
     } = useGetAllTasksQuery({
-        status: selectedTab,
+        status: selectedTab || 'IN_PROGRESS',
         nextTasks,
     });
 
@@ -88,7 +76,7 @@ export const TasksContent = () => {
 
             setLoadedTasks(newTasks);
         }
-    }, [tasksData.tasks]);
+    }, [tasksData.tasks, selectedTab]);
 
     useIntersection({
         loadingRef,
@@ -130,7 +118,11 @@ export const TasksContent = () => {
                 />
             </div>
             <div>
-                <RenderTaskList tasks={loadedTasks[selectedTab]} />
+                {loadedTasks[selectedTab].length > 0 ? (
+                    <TaskList tasks={loadedTasks[selectedTab]} />
+                ) : (
+                    <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                )}
             </div>
 
             <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
