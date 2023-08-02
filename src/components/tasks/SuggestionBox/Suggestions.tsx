@@ -42,6 +42,7 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
         return (
             <div className={classNames.suggestionDiv}>
                 <input
+                    data-testid="assignee-input"
                     ref={ref}
                     value={assigneeName}
                     className={classNames.cardStrongFont}
