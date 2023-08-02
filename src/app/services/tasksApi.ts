@@ -19,7 +19,7 @@ export const tasksApi = api.injectEndpoints({
                 nextTasks,
                 prevTasks,
             }) => {
-                let url = `/tasks?status=${status}&size=${size}`;
+                let url = `/tasks?status=${status}&size=${size}&dev=true`;
 
                 if (nextTasks) {
                     url = nextTasks;

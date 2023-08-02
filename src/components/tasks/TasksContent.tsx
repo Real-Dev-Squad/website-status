@@ -118,14 +118,14 @@ export const TasksContent = () => {
                 />
             </div>
             <div>
-                {loadedTasks[selectedTab].length > 0 ? (
+                {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
                 ) : (
-                    <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                    !isFetching && <p>{NO_TASKS_FOUND_MESSAGE}</p>
                 )}
             </div>
 
-            <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
+            <div ref={loadingRef}>{isFetching && 'Loading...'}</div>
         </div>
     );
 };
