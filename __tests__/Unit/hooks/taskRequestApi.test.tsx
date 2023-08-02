@@ -48,7 +48,7 @@ describe('useAddOrUpdateMutation', () => {
         expect(response.isError).toBe(false);
     });
 
-    it('should update the user', async () => {
+    it('should return error while updating the user', async () => {
         server.use(...taskRequestErrorHandler);
         const { result, waitForNextUpdate } = renderHook(
             () => useAddOrUpdateMutation(),
