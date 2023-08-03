@@ -49,7 +49,7 @@ export type DependencyListProps = {
 };
 export type TaskDetailsProps = {
     detailType: string;
-    value?: string;
+    value: string;
 };
 export type DependencyItem =
     | PromiseFulfilledResult<{
