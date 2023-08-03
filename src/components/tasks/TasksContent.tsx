@@ -42,7 +42,7 @@ export const TasksContent = () => {
         isLoading,
         isFetching,
     } = useGetAllTasksQuery({
-        status: selectedTab || 'IN_PROGRESS',
+        status: selectedTab,
         nextTasks,
     });
 
