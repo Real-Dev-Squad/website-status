@@ -4,7 +4,7 @@ const usersData = [
         'incompleteUserDetails': false,
         'website': '.',
         'roles': {
-          'archived': false
+          'archived': false,
         },
         'linkedin_id': '.',
         'last_name': 'Musab',
@@ -192,6 +192,27 @@ const usersData = [
         'github_id': 'arpit01923',
         'first_name': 'Arpit',
         'username': 'Arpit_02'
+      },
+      {
+        'id': 'iMxYUdnETvu8JOmDq03p',
+        'incompleteUserDetails': false,
+        'website': '.',
+        'roles': {
+          'archived': false,
+          'admin': true,
+          'super_user': true,
+        },
+        'linkedin_id': '.',
+        'last_name': 'Musab',
+        'yoe': 1,
+        'instagram_id': '.',
+        'github_display_name': null,
+        'company': 'NUST',
+        'github_id': 'Muhammad-Musab',
+        'designation': 'student',
+        'twitter_id': 'direksh',
+        'first_name': 'Muhammad',
+        'username': 'muhammadmusab'
       },
 ];
 

@@ -1,3 +1,5 @@
+import { USER_SELF } from '@/constants/url';
+import usersData from '../../__mocks__/db/users';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -27,6 +29,12 @@ const selfHandler = [
 			})
 		);
 	}),
+];
+
+export const adminUserHandler = [
+    rest.get(USER_SELF, (_, res, ctx) => {
+        return res(ctx.status(200), ctx.json(usersData[11]));
+    }),
 ];
 
 export default selfHandler;

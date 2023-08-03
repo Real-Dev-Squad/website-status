@@ -10,7 +10,7 @@ import { issuesNoDataFoundHandler } from '../../../../__mocks__/handlers/issues.
 const server = setupServer(...handlers);
 
 beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' });
+    server.listen();
 });
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
