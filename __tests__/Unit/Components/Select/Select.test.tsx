@@ -71,7 +71,7 @@ describe('Select', () => {
         );
 
         const option2 = screen?.getByText('Option 2');
-        fireEvent.pointerEnter(option2);
+        fireEvent.touchStart(option2);
 
         expect(onChangeMock).toHaveBeenCalledWith(sampleOptions[1]);
     });
