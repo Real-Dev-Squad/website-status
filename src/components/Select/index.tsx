@@ -88,7 +88,7 @@ export function Select({ value, onChange, options }: SelectProps) {
                         onClick={() => {
                             onOptionClick(option);
                         }}
-                        onPointerEnter={() => {
+                        onTouchStart={() => {
                             onOptionClick(option);
                         }}
                         onMouseEnter={() => setHighlightedIndex(index)}
