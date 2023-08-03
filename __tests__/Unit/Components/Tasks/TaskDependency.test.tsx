@@ -8,6 +8,7 @@ import { store } from '@/app/store';
 import { TaskDependencyIds } from '../../../../__mocks__/db/tasks';
 
 const mockNavigateToTask = jest.fn();
+const setEditedTaskDetails = jest.fn();
 describe('TaskDependency', () => {
     const server = setupServer(...taskDetailsHandler);
     beforeAll(() => server.listen());
@@ -23,6 +24,7 @@ describe('TaskDependency', () => {
                     updatedDependencies={[]}
                     handleChange={handleChange}
                     taskDependencyIds={TaskDependencyIds}
+                    setEditedTaskDetails={setEditedTaskDetails}
                 />
             </Provider>,
             {
@@ -52,6 +54,7 @@ describe('TaskDependency', () => {
                     updatedDependencies={[]}
                     handleChange={jest.fn()}
                     taskDependencyIds={TaskDependencyIds}
+                    setEditedTaskDetails={setEditedTaskDetails}
                 />
             </Provider>,
             {

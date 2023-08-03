@@ -1,19 +1,15 @@
 import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
+import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 
-type Props = {
-    detailType: string;
-    value?: string;
-};
-
-const Details: FC<Props> = ({ detailType, value }) => {
+const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     return (
         <div>
             <span className={classNames.detailType}>{detailType}:</span>
             <span
                 className={classNames.detailValue}
-                style={{ color: value ? setColor[value] : 'black' }}
+                style={{ color: setColor?.[value] ?? 'black' }}
             >
                 {value ?? 'N/A'}
             </span>

@@ -47,6 +47,10 @@ export type TaskDependencyProps = {
 export type DependencyListProps = {
     taskDependencyIds: string[];
 };
+export type TaskDetailsProps = {
+    detailType: string;
+    value?: string;
+};
 export type DependencyItem =
     | PromiseFulfilledResult<{
           title: string | undefined;
