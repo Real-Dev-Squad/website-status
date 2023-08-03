@@ -1,43 +1,47 @@
 import { useState } from 'react';
 import className from './tasksearch.module.scss';
+import { Tab } from '@/interfaces/task.type';
 
-const filterStatus = ['All', 'Open', 'In Progress', 'In Review', 'Done'];
+type FilterModalProps = {
+    tabs: Tab[];
+    onSelect: (tab: Tab) => void;
+};
 
-const FilterModal = () => {
+const FilterModal = ({ tabs, onSelect }: FilterModalProps) => {
     return (
         <div className={className['filter-modal']}>
-            <div className={className['filter-modal-content']}>
-                <div className={className['filter-modal-title']}>
-                    <span>Filter</span>
-                    <span className={className['close']}>&times;</span>
-                </div>
-                <div className={className['filter-modal-content-status']}>
-                    <ul
-                        className={
-                            className['filter-modal-content-status-list']
-                        }
+            <div className={className['filter-modal-title']}>
+                <span>Filter</span>
+                <span className={className['close-button']}>&times;</span>
+            </div>
+            <div className={className['status-filter']}>
+                {tabs.map((tab) => (
+                    <button
+                        key={tab}
+                        className={className['status-button']}
+                        onClick={() => onSelect(tab)}
                     >
-                        {filterStatus.map((status) => (
-                            <li key={status}>
-                                <button
-                                    className={
-                                        className[
-                                            'filter-modal-content-status-button'
-                                        ]
-                                    }
-                                >
-                                    {status}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                        {tab}
+                    </button>
+                ))}
             </div>
         </div>
     );
 };
 
-const TaskSearch = () => {
+type TaskSearchProps = {
+    tabs: Tab[];
+    filterStatusHandler: (tab: Tab) => void;
+    inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    inputedValue: string;
+};
+
+const TaskSearch = ({
+    tabs,
+    filterStatusHandler,
+    inputOnChangeHandler,
+    inputedValue,
+}: TaskSearchProps) => {
     const [modalOpen, setModalOpen] = useState(false);
 
     const handleModalOpen = () => {
@@ -46,18 +50,27 @@ const TaskSearch = () => {
 
     return (
         <div className={className['task-search-container']}>
+            {/* Use a div or any other suitable element instead of <button> */}
             <div className={className['filter-container']}>
-                <button
+                <div
                     className={className['filter-button']}
                     onClick={handleModalOpen}
                 >
                     Filter
-                    {modalOpen && <FilterModal />}
-                </button>
+                    {modalOpen && (
+                        <FilterModal
+                            tabs={tabs}
+                            onSelect={filterStatusHandler}
+                        />
+                    )}
+                </div>
+
                 <input
                     className={className['search-input']}
                     type="text"
                     placeholder="Eg: is:active assignee:sunny-s key:task"
+                    onChange={inputOnChangeHandler}
+                    value={inputedValue}
                 />
             </div>
             <div className="buttons">

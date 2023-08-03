@@ -69,6 +69,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         COMPLETED: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
+    const [inputValue, setInputValue] = useState<string>('');
 
     const {
         data: tasksData = { tasks: [], next: '' },
@@ -94,6 +95,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 section: tabToUrlParams(tab),
             },
         });
+        console.log('Tab selected', tab);
         setNextTasks('');
     };
 
@@ -122,14 +124,29 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+
     const taskSelectOptions = TABS.map((item) => ({
         label: getChangedStatusName(item),
         value: item,
     }));
 
+    const onClickFilterStatus = (selectedTaskStatus: Tab) => {
+        if (selectedTaskStatus) {
+            onSelect(selectedTaskStatus);
+        }
+        setInputValue(`is: ${selectedTab}`);
+    };
+
     return (
         <div className={classNames.tasksContainer}>
-            <TaskSearch />
+            <TaskSearch
+                tabs={TABS} // Assuming TABS is defined somewhere or imported
+                filterStatusHandler={() => onClickFilterStatus(selectedTab)}
+                inputOnChangeHandler={() => {
+                    setInputValue(inputValue);
+                }}
+                inputedValue={inputValue}
+            />
             <div
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"
