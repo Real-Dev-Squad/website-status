@@ -7,7 +7,7 @@ type task = {
     featureUrl: string;
     type: string;
     links: string[];
-    endsOn: string;
+    endsOn: number;
     startedOn: string;
     status: string;
     assignee?: string;
@@ -49,6 +49,9 @@ export type ProgressSliderProps = {
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
     startedOn?: number;
     percentCompleted?: number;
+    endsOn?: number;
+    status?: string;
+    assignee?: string;
 };
 
 export type ProgressBarProps = {
