@@ -58,11 +58,8 @@ export const tasksApi = api.injectEndpoints({
             }),
         }),
         updateTask: builder.mutation<void, TaskRequestPayload>({
-            // isDevEnabled is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
-            query: ({ task, id, isDevEnabled }: TaskRequestPayload) => ({
-                url: isDevEnabled
-                    ? `tasks/${id}?userStatusFlag=true`
-                    : `tasks/${id}`,
+            query: ({ task, id }: TaskRequestPayload) => ({
+                url: `tasks/${id}`,
                 method: 'PATCH',
                 body: task,
             }),

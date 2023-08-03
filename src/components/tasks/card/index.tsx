@@ -88,7 +88,6 @@ const Card: FC<CardProps> = ({
 
     const router = useRouter();
     const { dev } = router.query;
-    const isDevEnabled = (dev && dev === 'true') || false;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -147,13 +146,9 @@ const Card: FC<CardProps> = ({
                 toChange[changedProperty] = toTimeStamp;
             }
 
-            onContentChange(
-                toChange.id,
-                {
-                    [changedProperty]: toChange[changedProperty],
-                },
-                isDevEnabled
-            );
+            onContentChange(toChange.id, {
+                [changedProperty]: toChange[changedProperty],
+            });
         }
     }
 
@@ -221,7 +216,6 @@ const Card: FC<CardProps> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isDevEnabled && { isDevEnabled: true }),
         });
         response
             .unwrap()
@@ -254,7 +248,6 @@ const Card: FC<CardProps> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isDevEnabled && { isDevEnabled: true }),
         });
 
         response
