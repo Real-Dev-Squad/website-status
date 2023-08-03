@@ -140,7 +140,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
-                tabs={TABS} // Assuming TABS is defined somewhere or imported
+                tabs={TABS}
                 filterStatusHandler={() => onClickFilterStatus(selectedTab)}
                 inputOnChangeHandler={() => {
                     setInputValue(inputValue);
