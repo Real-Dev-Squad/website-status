@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import TaskSearch from '@/components/tasks/TaskSearch/TaskSearch';
+import { Tab } from '@/interfaces/task.type';
 
 jest.mock('@/utils/getChangedStatusName', () => ({
     getChangedStatusName: jest.fn((tab) => tab),
@@ -118,6 +119,7 @@ describe('TaskSearch', () => {
             <TaskSearch
                 onSelect={onSelect}
                 inputtedValue=""
+                activeTab={Tab.ASSIGNED}
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
