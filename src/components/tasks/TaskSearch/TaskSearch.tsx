@@ -2,8 +2,6 @@ import { useState } from 'react';
 import className from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
-// TaskSearch component
-// ...
 
 type FilterModalProps = {
     tabs: Tab[];
@@ -36,7 +34,7 @@ const FilterModal = ({
                                 : ''
                         }`}
                         onClick={() => {
-                            onSelect(tab); // Call the onSelect function with the selected tab
+                            onSelect(tab);
                             onClose();
                         }}
                     >
@@ -49,17 +47,19 @@ const FilterModal = ({
 };
 
 type TaskSearchProps = {
-    onSelect: (tab: Tab) => void; // Add the tab parameter to the onSelect function
-    inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onSelect: (tab: Tab) => void;
     inputtedValue: string;
     activeTab?: Tab;
+    onInputChange: (value: string) => void;
+    onClickSearchButton: () => void;
 };
 
 const TaskSearch = ({
     onSelect,
-    inputOnChangeHandler,
     inputtedValue,
     activeTab,
+    onInputChange,
+    onClickSearchButton,
 }: TaskSearchProps) => {
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -69,6 +69,12 @@ const TaskSearch = ({
 
     const handleModalClose = () => {
         setModalOpen(false);
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            onClickSearchButton();
+        }
     };
 
     return (
@@ -93,12 +99,18 @@ const TaskSearch = ({
                     className={className['search-input']}
                     type="text"
                     placeholder="Eg: is:active assignee:sunny-s key:task"
-                    onChange={inputOnChangeHandler}
                     value={inputtedValue}
+                    onChange={(e) => onInputChange(e.target.value)}
+                    onKeyDown={handleKeyPress}
                 />
             </div>
             <div className="buttons">
-                <button className={className['search-button']}>Search</button>
+                <button
+                    className={className['search-button']}
+                    onClick={onClickSearchButton}
+                >
+                    Search
+                </button>
             </div>
         </div>
     );

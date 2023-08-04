@@ -17,13 +17,13 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
-type routerQueryParams = {
-    q?: string;
-};
+const getQueryParamValue = (tab: Tab) => `is:${tabToUrlParams(tab)}`;
+
 export const TasksContent = () => {
     const router = useRouter();
-    const { q }: routerQueryParams = router.query;
-    const selectedTab = getActiveTab(q);
+    const allQueryParams = router.query;
+    const q = allQueryParams.q as string;
+    const selectedTab = getActiveTab(q.replace('is:', ''));
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],
@@ -53,16 +53,16 @@ export const TasksContent = () => {
             setNextTasks(tasksData.next);
         }
     };
-
     const onSelect = (tab: Tab) => {
+        const queryParamValue = getQueryParamValue(tab);
         router.push({
             query: {
                 ...router.query,
-                q: tabToUrlParams(tab),
+                q: queryParamValue,
             },
         });
         setNextTasks('');
-        setInputValue(`is:${tabToUrlParams(tab)}`);
+        setInputValue(queryParamValue);
     };
 
     useEffect(() => {
@@ -96,15 +96,20 @@ export const TasksContent = () => {
         value: item,
     }));
 
+    const searchButtonHandler = () => {
+        if (inputValue) {
+            onSelect(getActiveTab(inputValue.replace('is:', '')));
+        }
+    };
+
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
                 onSelect={onSelect}
-                inputOnChangeHandler={() => {
-                    setInputValue(inputValue);
-                }}
                 inputtedValue={inputValue}
                 activeTab={selectedTab}
+                onInputChange={(value) => setInputValue(value)}
+                onClickSearchButton={searchButtonHandler}
             />
             <div
                 className={classNames['status-tabs-container']}
