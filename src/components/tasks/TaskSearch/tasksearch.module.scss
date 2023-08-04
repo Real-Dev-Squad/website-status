@@ -102,8 +102,6 @@ $radius: 0.3rem;
     justify-content: space-between;
     align-items: center;
     z-index: 1;
-
-    // for mobile view open the modal in full width and center
 }
 
 .filter-modal-title {
@@ -141,6 +139,12 @@ $radius: 0.3rem;
         &:hover {
             background-color: #f6f8fa;
         }
+    }
+
+    // status active button styles
+    .status-button-active {
+        background-color: #f6f8fa;
+        border-left: 3px solid $primary-color;
     }
 }
 

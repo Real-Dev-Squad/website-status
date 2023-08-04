@@ -5,9 +5,10 @@ import { Tab } from '@/interfaces/task.type';
 type FilterModalProps = {
     tabs: Tab[];
     onSelect: (tab: Tab) => void;
+    activeTab?: Tab;
 };
 
-const FilterModal = ({ tabs, onSelect }: FilterModalProps) => {
+const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
     return (
         <div className={className['filter-modal']}>
             <div className={className['filter-modal-title']}>
@@ -18,7 +19,13 @@ const FilterModal = ({ tabs, onSelect }: FilterModalProps) => {
                 {tabs.map((tab) => (
                     <button
                         key={tab}
-                        className={className['status-button']}
+                        // className={className['status-button']} status-button-active
+                        // set if activeTab === tab then add status-button-active class
+                        className={`${className['status-button']} ${
+                            activeTab === tab
+                                ? className['status-button-active']
+                                : ''
+                        }`}
                         onClick={() => onSelect(tab)}
                     >
                         {tab}
@@ -31,16 +38,18 @@ const FilterModal = ({ tabs, onSelect }: FilterModalProps) => {
 
 type TaskSearchProps = {
     tabs: Tab[];
-    filterStatusHandler: (tab: Tab) => void;
+    onSelect: (tab: Tab) => void;
     inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    inputedValue: string;
+    inputtedValue: string;
+    activeTab?: Tab;
 };
 
 const TaskSearch = ({
     tabs,
-    filterStatusHandler,
+    onSelect,
     inputOnChangeHandler,
-    inputedValue,
+    inputtedValue,
+    activeTab,
 }: TaskSearchProps) => {
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -60,7 +69,8 @@ const TaskSearch = ({
                     {modalOpen && (
                         <FilterModal
                             tabs={tabs}
-                            onSelect={filterStatusHandler}
+                            onSelect={onSelect}
+                            activeTab={activeTab}
                         />
                     )}
                 </div>
@@ -70,7 +80,7 @@ const TaskSearch = ({
                     type="text"
                     placeholder="Eg: is:active assignee:sunny-s key:task"
                     onChange={inputOnChangeHandler}
-                    value={inputedValue}
+                    value={inputtedValue}
                 />
             </div>
             <div className="buttons">

@@ -96,22 +96,16 @@ export const TasksContent = () => {
         value: item,
     }));
 
-    const onClickFilterStatus = (selectedTaskStatus: Tab) => {
-        if (selectedTaskStatus) {
-            onSelect(selectedTaskStatus);
-        }
-        setInputValue(`is: ${tabToUrlParams(selectedTaskStatus)}`);
-    };
-
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
                 tabs={TABS}
-                filterStatusHandler={() => onClickFilterStatus(selectedTab)}
+                onSelect={() => onSelect}
                 inputOnChangeHandler={() => {
                     setInputValue(inputValue);
                 }}
-                inputedValue={inputValue}
+                inputtedValue={inputValue}
+                activeTab={selectedTab}
             />
             <div
                 className={classNames['status-tabs-container']}
@@ -119,7 +113,7 @@ export const TasksContent = () => {
             >
                 <TabSection onSelect={onSelect} activeTab={selectedTab} />
             </div>
-            {/* <div
+            <div
                 className={classNames['status-select-container']}
                 data-testid="status-select-container"
             >
@@ -135,7 +129,7 @@ export const TasksContent = () => {
                     }}
                     options={taskSelectOptions}
                 />
-            </div> */}
+            </div>
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
