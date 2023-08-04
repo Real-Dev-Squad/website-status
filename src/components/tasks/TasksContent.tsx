@@ -61,7 +61,6 @@ export const TasksContent = () => {
                 q: tabToUrlParams(tab),
             },
         });
-        console.log(q);
         setNextTasks('');
     };
 
@@ -99,7 +98,6 @@ export const TasksContent = () => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
-                tabs={TABS}
                 onSelect={() => onSelect}
                 inputOnChangeHandler={() => {
                     setInputValue(inputValue);

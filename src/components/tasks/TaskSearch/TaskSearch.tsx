@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import className from './tasksearch.module.scss';
-import { Tab } from '@/interfaces/task.type';
+import { TABS, Tab } from '@/interfaces/task.type';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
 type FilterModalProps = {
     tabs: Tab[];
@@ -19,8 +20,6 @@ const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
                 {tabs.map((tab) => (
                     <button
                         key={tab}
-                        // className={className['status-button']} status-button-active
-                        // set if activeTab === tab then add status-button-active class
                         className={`${className['status-button']} ${
                             activeTab === tab
                                 ? className['status-button-active']
@@ -28,7 +27,7 @@ const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
                         }`}
                         onClick={() => onSelect(tab)}
                     >
-                        {tab}
+                        {getChangedStatusName(tab)}
                     </button>
                 ))}
             </div>
@@ -37,7 +36,6 @@ const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
 };
 
 type TaskSearchProps = {
-    tabs: Tab[];
     onSelect: (tab: Tab) => void;
     inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
     inputtedValue: string;
@@ -45,7 +43,6 @@ type TaskSearchProps = {
 };
 
 const TaskSearch = ({
-    tabs,
     onSelect,
     inputOnChangeHandler,
     inputtedValue,
@@ -59,7 +56,6 @@ const TaskSearch = ({
 
     return (
         <div className={className['task-search-container']}>
-            {/* Use a div or any other suitable element instead of <button> */}
             <div className={className['filter-container']}>
                 <div
                     className={className['filter-button']}
@@ -68,7 +64,7 @@ const TaskSearch = ({
                     Filter
                     {modalOpen && (
                         <FilterModal
-                            tabs={tabs}
+                            tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}
                         />
