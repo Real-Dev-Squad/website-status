@@ -19,7 +19,7 @@ import TaskSearch from './TaskSearch/TaskSearch';
 
 const getQueryParamValue = (tab: Tab) => `is:${tabToUrlParams(tab)}`;
 
-export const TasksContent = () => {
+export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
     const allQueryParams = router.query;
     const q = allQueryParams.q as string;
@@ -105,13 +105,15 @@ export const TasksContent = () => {
 
     return (
         <div className={classNames.tasksContainer}>
-            <TaskSearch
-                onSelect={onSelect}
-                inputtedValue={inputValue}
-                activeTab={selectedTab}
-                onInputChange={(value) => setInputValue(value)}
-                onClickSearchButton={searchButtonHandler}
-            />
+            {dev && (
+                <TaskSearch
+                    onSelect={onSelect}
+                    inputtedValue={inputValue}
+                    activeTab={selectedTab}
+                    onInputChange={(value) => setInputValue(value)}
+                    onClickSearchButton={searchButtonHandler}
+                />
+            )}
             <div
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"

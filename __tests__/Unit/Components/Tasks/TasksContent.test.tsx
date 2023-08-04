@@ -39,7 +39,7 @@ describe('tasks content', () => {
 
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
 
@@ -52,7 +52,7 @@ describe('tasks content', () => {
         setWindowInnerWidth(breakpointToShowTabs);
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             {
                 query: { section: 'assigned' },
@@ -74,7 +74,7 @@ describe('tasks content', () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
@@ -84,7 +84,7 @@ describe('tasks content', () => {
     test('display tasks', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { query: { section: 'available' } }
         );
@@ -101,7 +101,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -131,7 +131,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -147,7 +147,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -163,7 +163,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
