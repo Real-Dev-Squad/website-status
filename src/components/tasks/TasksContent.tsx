@@ -51,12 +51,12 @@ const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
 };
 
 type routerQueryParams = {
-    section?: string;
+    q?: string;
 };
 export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
-    const { section }: routerQueryParams = router.query;
-    const selectedTab = getActiveTab(section);
+    const { q }: routerQueryParams = router.query;
+    const selectedTab = getActiveTab(q);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],
@@ -92,10 +92,10 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         router.push({
             query: {
                 ...router.query,
-                section: tabToUrlParams(tab),
+                q: tabToUrlParams(tab),
             },
         });
-        console.log('Tab selected', tab);
+        console.log(q);
         setNextTasks('');
     };
 
@@ -134,7 +134,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         if (selectedTaskStatus) {
             onSelect(selectedTaskStatus);
         }
-        setInputValue(`is: ${selectedTab}`);
+        setInputValue(`is: ${tabToUrlParams(selectedTaskStatus)}`);
     };
 
     return (
@@ -153,7 +153,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             >
                 <TabSection onSelect={onSelect} activeTab={selectedTab} />
             </div>
-            <div
+            {/* <div
                 className={classNames['status-select-container']}
                 data-testid="status-select-container"
             >
@@ -169,7 +169,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                     }}
                     options={taskSelectOptions}
                 />
-            </div>
+            </div> */}
             <div>
                 <RenderTaskList
                     dev={dev}
