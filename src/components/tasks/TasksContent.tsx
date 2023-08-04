@@ -62,6 +62,7 @@ export const TasksContent = () => {
             },
         });
         setNextTasks('');
+        setInputValue(`is:${tabToUrlParams(tab)}`);
     };
 
     useEffect(() => {
@@ -98,7 +99,7 @@ export const TasksContent = () => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
-                onSelect={() => onSelect}
+                onSelect={onSelect}
                 inputOnChangeHandler={() => {
                     setInputValue(inputValue);
                 }}

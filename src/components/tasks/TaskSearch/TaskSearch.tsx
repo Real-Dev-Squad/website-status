@@ -2,19 +2,29 @@ import { useState } from 'react';
 import className from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
+// TaskSearch component
+// ...
 
 type FilterModalProps = {
     tabs: Tab[];
     onSelect: (tab: Tab) => void;
     activeTab?: Tab;
+    onClose: () => void;
 };
 
-const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
+const FilterModal = ({
+    tabs,
+    onSelect,
+    activeTab,
+    onClose,
+}: FilterModalProps) => {
     return (
         <div className={className['filter-modal']}>
             <div className={className['filter-modal-title']}>
                 <span>Filter</span>
-                <span className={className['close-button']}>&times;</span>
+                <span className={className['close-button']} onClick={onClose}>
+                    &times;
+                </span>
             </div>
             <div className={className['status-filter']}>
                 {tabs.map((tab) => (
@@ -25,7 +35,10 @@ const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
                                 ? className['status-button-active']
                                 : ''
                         }`}
-                        onClick={() => onSelect(tab)}
+                        onClick={() => {
+                            onSelect(tab); // Call the onSelect function with the selected tab
+                            onClose();
+                        }}
                     >
                         {getChangedStatusName(tab)}
                     </button>
@@ -36,7 +49,7 @@ const FilterModal = ({ tabs, onSelect, activeTab }: FilterModalProps) => {
 };
 
 type TaskSearchProps = {
-    onSelect: (tab: Tab) => void;
+    onSelect: (tab: Tab) => void; // Add the tab parameter to the onSelect function
     inputOnChangeHandler: (event: React.ChangeEvent<HTMLInputElement>) => void;
     inputtedValue: string;
     activeTab?: Tab;
@@ -54,6 +67,10 @@ const TaskSearch = ({
         setModalOpen(!modalOpen);
     };
 
+    const handleModalClose = () => {
+        setModalOpen(false);
+    };
+
     return (
         <div className={className['task-search-container']}>
             <div className={className['filter-container']}>
@@ -67,6 +84,7 @@ const TaskSearch = ({
                             tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}
+                            onClose={handleModalClose}
                         />
                     )}
                 </div>
