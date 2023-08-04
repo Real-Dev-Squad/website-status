@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
@@ -15,6 +16,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
+    STANDUP_ALREADY_SUBMITTED,
 } from '@/constants/constants';
 import ProgressHeader from '../ProgressForm/ProgressHeader';
 
@@ -26,6 +28,7 @@ const defaultState = {
 };
 
 const StandUpContainer: FC = () => {
+    const router = useRouter();
     const [standupUpdate, setStandupUpdate] =
         useState<standupUpdateType>(defaultState);
 
@@ -65,7 +68,7 @@ const StandUpContainer: FC = () => {
         try {
             const response = await addStandup(standupUpdate);
             if ('error' in response) {
-                toast(ERROR, ERROR_MESSAGE);
+                toast(ERROR, STANDUP_ALREADY_SUBMITTED);
             } else {
                 toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
             }
@@ -74,6 +77,8 @@ const StandUpContainer: FC = () => {
             console.error(error);
             toast(ERROR, ERROR_MESSAGE);
         }
+
+        router.replace(router.asPath);
     };
 
     return (

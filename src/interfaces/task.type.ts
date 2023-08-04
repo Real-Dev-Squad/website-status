@@ -7,7 +7,7 @@ type task = {
     featureUrl: string;
     type: string;
     links: string[];
-    endsOn: string;
+    endsOn: number;
     startedOn: string;
     status: string;
     assignee?: string;
@@ -49,6 +49,9 @@ export type ProgressSliderProps = {
 export type updateTaskDetails = Partial<Omit<task, 'startedOn'>> & {
     startedOn?: number;
     percentCompleted?: number;
+    endsOn?: number;
+    status?: string;
+    assignee?: string;
 };
 
 export type ProgressBarProps = {
@@ -91,23 +94,17 @@ export { TABS, Tab };
 export type TaskRequestPayload = {
     task: updateTaskDetails;
     id: string;
-    isDevEnabled?: boolean;
 };
 
 export type CardProps = {
     content: task;
     shouldEdit: boolean;
-    onContentChange?: (
-        changeId: string,
-        changeObject: object,
-        isDevEnabled?: boolean
-    ) => void;
+    onContentChange?: (changeId: string, changeObject: object) => void;
 };
 
 export default task;
 
 export type GetAllTaskParamType = {
-    dev?: boolean;
     status?: string;
     nextTasks?: string;
     prevTasks?: string;
