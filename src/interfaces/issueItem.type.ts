@@ -23,4 +23,5 @@ export type IssueItem = {
     created_at: string | number | Date;
     updated_at?: string | number | Date;
     taskExists?: boolean;
+    taskId?: string;
 };
