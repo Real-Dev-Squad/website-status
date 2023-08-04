@@ -1,7 +1,7 @@
 import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
@@ -17,43 +17,10 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
-type RenderTaskListProps = {
-    tab: string;
-    dev: boolean;
-    tasks: task[];
-};
-
-const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
-    const tasksGroupedByStatus = tasks?.reduce(
-        (acc: Record<string, task[]>, curr: task) => {
-            return acc[curr.status as keyof task]
-                ? {
-                      ...acc,
-                      [curr.status]: [...acc[curr.status as keyof task], curr],
-                  }
-                : { ...acc, [curr.status]: [curr] };
-        },
-        {}
-    );
-
-    const tasksNotAvailable =
-        tasks === undefined || tasksGroupedByStatus[tab] === undefined;
-
-    if (tasksNotAvailable || tasks.length === 0) {
-        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
-    }
-
-    if (dev) {
-        return <TaskList tasks={tasks} />;
-    }
-
-    return <TaskList tasks={tasksGroupedByStatus[tab]} />;
-};
-
 type routerQueryParams = {
     q?: string;
 };
-export const TasksContent = ({ dev }: { dev: boolean }) => {
+export const TasksContent = () => {
     const router = useRouter();
     const { q }: routerQueryParams = router.query;
     const selectedTab = getActiveTab(q);
@@ -77,7 +44,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         isLoading,
         isFetching,
     } = useGetAllTasksQuery({
-        dev: dev as boolean,
         status: selectedTab,
         nextTasks,
     });
@@ -113,7 +79,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
 
             setLoadedTasks(newTasks);
         }
-    }, [tasksData.tasks]);
+    }, [tasksData.tasks, selectedTab]);
 
     useIntersection({
         loadingRef,
@@ -171,14 +137,14 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 />
             </div> */}
             <div>
-                <RenderTaskList
-                    dev={dev}
-                    tab={selectedTab}
-                    tasks={loadedTasks[selectedTab]}
-                />
+                {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
+                    <TaskList tasks={loadedTasks[selectedTab]} />
+                ) : (
+                    !isFetching && <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                )}
             </div>
 
-            <div ref={loadingRef}>{isFetching ? 'Loading...' : null}</div>
+            <div ref={loadingRef}>{isFetching && 'Loading...'}</div>
         </div>
     );
 };
