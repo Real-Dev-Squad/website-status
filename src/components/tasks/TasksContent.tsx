@@ -23,7 +23,8 @@ export const TasksContent = () => {
     const router = useRouter();
     const allQueryParams = router.query;
     const q = allQueryParams.q as string;
-    const selectedTab = getActiveTab(q.replace('is:', ''));
+    const queryTab = q?.replace('is:', '');
+    const selectedTab = getActiveTab(queryTab);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],

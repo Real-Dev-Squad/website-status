@@ -17,7 +17,7 @@ const FilterModal = ({
     onClose,
 }: FilterModalProps) => {
     return (
-        <div className={className['filter-modal']}>
+        <div className={className['filter-modal']} data-testid="filter-modal">
             <div className={className['filter-modal-title']}>
                 <span>Filter</span>
                 <span className={className['close-button']} onClick={onClose}>
