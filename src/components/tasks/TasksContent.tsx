@@ -37,7 +37,9 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         COMPLETED: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
-    const [inputValue, setInputValue] = useState<string>('');
+    const [inputValue, setInputValue] = useState<string>(
+        getQueryParamValue(selectedTab)
+    );
 
     const {
         data: tasksData = { tasks: [], next: '' },

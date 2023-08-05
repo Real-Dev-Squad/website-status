@@ -29,9 +29,7 @@ const TaskSearch = ({
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            onClickSearchButton();
-        }
+        e.key === 'Enter' && onClickSearchButton();
     };
 
     return (
@@ -54,6 +52,7 @@ const TaskSearch = ({
 
                 <input
                     className={className['search-input']}
+                    data-testid="search-input"
                     type="text"
                     placeholder="Eg: is:active assignee:sunny-s key:task"
                     value={inputtedValue}
