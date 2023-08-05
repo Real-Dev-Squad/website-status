@@ -462,7 +462,7 @@ const Card: FC<CardProps> = ({
                             handleProgressChange={handleProgressChange}
                             debounceSlider={debounceSlider}
                             startedOn={content.startedOn}
-                            endsOn={content.endsOn}
+                            endsOn={String(content.endsOn)}
                             isLoading={
                                 isLoadingUpdateTaskDetails ||
                                 isLoadingSelfTaskUpdate
