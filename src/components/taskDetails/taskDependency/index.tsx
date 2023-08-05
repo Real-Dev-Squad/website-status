@@ -9,6 +9,7 @@ import { Textarea } from '@/components/taskDetails';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { parseDependencyValue } from '@/utils/parseDependency';
+import { useFetchSearchResultsQuery } from '@/app/services/taskSearchApi';
 
 interface Task {
     id: string;
@@ -31,22 +32,24 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     const [editedDependencies, setEditedDependencies] =
         useState<string[]>(taskDependencyIds);
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const [searchResults, setSearchResults] = useState<Task[]>([]);
-    let timeout: NodeJS.Timeout | null = null;
+    const {
+        data: searchResults,
+        isLoading,
+        error,
+    } = useFetchSearchResultsQuery(searchTerm);
 
     const handleDebouncedSearch = useCallback((term: string) => {
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-
-        timeout = setTimeout(() => {
-            fetchSearchResults(term);
-        }, 500);
+        setSearchTerm(term);
     }, []);
 
     useEffect(() => {
         setEditedDependencies(taskDependencyIds);
     }, [taskDependencyIds]);
+    useEffect(() => {
+        if (searchTerm && isEditing) {
+            handleDebouncedSearch(searchTerm);
+        }
+    }, [searchTerm, isEditing]);
 
     const handleDependenciesChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -76,23 +79,6 @@ const TaskDependency: FC<TaskDependencyProps> = ({
 
         handleDependenciesChange(event as ChangeEvent<HTMLInputElement>);
         setSearchTerm(task.id);
-        setSearchResults([]);
-    };
-
-    const fetchSearchResults = async (term: string) => {
-        try {
-            const response = await fetch(
-                `http://localhost:3000/tasks?q=${encodeURIComponent(term)}`
-            );
-            if (!response.ok) {
-                console.error('Error fetching search results');
-                return;
-            }
-            const data = await response.json();
-            setSearchResults(data.tasks);
-        } catch (error) {
-            console.error('Error fetching search results:', error);
-        }
     };
 
     return (
@@ -105,9 +91,11 @@ const TaskDependency: FC<TaskDependencyProps> = ({
                         onChange={handleDependenciesChange}
                         testId="dependency-textarea"
                     />
-                    {searchResults && (
+                    {isLoading && <p>Loading...</p>}
+                    {error && <p>Error fetching search results</p>}
+                    {searchResults && searchResults.tasks && (
                         <div>
-                            {searchResults.map((task) => (
+                            {searchResults.tasks.map((task: Task) => (
                                 <div
                                     key={task.id}
                                     onClick={() => handleTaskClick(task)}
