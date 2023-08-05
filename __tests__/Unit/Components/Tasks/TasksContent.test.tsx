@@ -191,4 +191,41 @@ describe('tasks content', () => {
             },
         });
     });
+
+    test('searchButtonHandler when search button is clicked', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        await screen.findByTestId('tabs');
+        const searchButton = screen.getByTestId('search-button');
+        fireEvent.click(searchButton);
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                q: 'is:in-progress',
+            },
+        });
+    });
+
+    test('setInputValue when input value is changed', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        await screen.findByTestId('tabs');
+        const searchInput = screen.getByTestId('search-input');
+        fireEvent.change(searchInput, { target: { value: 'test' } });
+        expect(searchInput).toHaveValue('test');
+    });
 });

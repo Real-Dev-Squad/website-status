@@ -63,6 +63,7 @@ const TaskSearch = ({
             <div className="buttons">
                 <button
                     className={className['search-button']}
+                    data-testid="search-button"
                     onClick={onClickSearchButton}
                 >
                     Search

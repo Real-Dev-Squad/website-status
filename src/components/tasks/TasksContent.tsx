@@ -100,9 +100,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     }));
 
     const searchButtonHandler = () => {
-        if (inputValue) {
-            onSelect(getActiveTab(inputValue.replace('is:', '')));
-        }
+        inputValue && onSelect(getActiveTab(inputValue.replace('is:', '')));
     };
 
     return (
