@@ -15,7 +15,7 @@ describe('TaskSearch', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
-                inputtedValue=""
+                inputValue=""
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
@@ -33,7 +33,7 @@ describe('TaskSearch', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
-                inputtedValue=""
+                inputValue=""
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
@@ -53,7 +53,7 @@ describe('TaskSearch', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
-                inputtedValue=""
+                inputValue=""
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
@@ -73,7 +73,7 @@ describe('TaskSearch', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
-                inputtedValue=""
+                inputValue=""
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
@@ -92,7 +92,7 @@ describe('TaskSearch', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
-                inputtedValue=""
+                inputValue=""
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
@@ -112,7 +112,7 @@ describe('TaskSearch', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
-                inputtedValue=""
+                inputValue=""
                 activeTab={Tab.ASSIGNED}
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}

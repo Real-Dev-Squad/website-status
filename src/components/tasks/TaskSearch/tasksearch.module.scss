@@ -5,7 +5,7 @@ $light-gray: #d0d7de;
 $gray-color: #808080;
 $dark-light-gray: #b1acac;
 $filter-button-hover: #f6f8fa;
-$radius: 0.3rem;
+$radius: 5px;
 
 .task-search-container {
     display: flex;
@@ -41,13 +41,13 @@ $radius: 0.3rem;
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding-left: 0.3rem;
+    padding-left: 5px;
 
     &:after {
         content: '';
-        border-left: 0.3rem solid transparent;
-        border-right: 0.3rem solid transparent;
-        border-top: 0.3rem solid $black-color;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid $black-color;
         margin-left: 0.5rem;
     }
 }

@@ -5,7 +5,7 @@ import FilterModal from './FilterModal';
 
 type TaskSearchProps = {
     onSelect: (tab: Tab) => void;
-    inputtedValue: string;
+    inputValue: string;
     activeTab?: Tab;
     onInputChange: (value: string) => void;
     onClickSearchButton: () => void;
@@ -13,7 +13,7 @@ type TaskSearchProps = {
 
 const TaskSearch = ({
     onSelect,
-    inputtedValue,
+    inputValue,
     activeTab,
     onInputChange,
     onClickSearchButton,
@@ -51,7 +51,7 @@ const TaskSearch = ({
                     data-testid="search-input"
                     type="text"
                     placeholder="Eg: is:active assignee:sunny-s key:task"
-                    value={inputtedValue}
+                    value={inputValue}
                     onChange={(e) => onInputChange(e.target.value)}
                     onKeyDown={handleKeyPress}
                 />

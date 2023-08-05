@@ -108,7 +108,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             {dev && (
                 <TaskSearch
                     onSelect={onSelect}
-                    inputtedValue={inputValue}
+                    inputValue={inputValue}
                     activeTab={selectedTab}
                     onInputChange={(value) => setInputValue(value)}
                     onClickSearchButton={searchButtonHandler}
