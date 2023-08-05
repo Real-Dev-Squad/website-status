@@ -105,8 +105,22 @@ $radius: 0.5rem;
     background: $theme-nonActiveButtonBackground;
 }
 
+.timeContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.notAuthenticated {
+    text-align: center;
+}
+
 @media (max-width: 980px) {
     .standupUpdateContainer {
         width: 100%;
+    }
+
+    .timeContainer {
+        flex-direction: column;
+        flex-wrap: wrap;
     }
 }

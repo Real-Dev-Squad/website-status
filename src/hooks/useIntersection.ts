@@ -1,20 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-const useIntersection = (
-    loadingRef: React.MutableRefObject<HTMLDivElement | null>,
-    bottomBoundaryRef: React.MutableRefObject<HTMLDivElement | null>,
-    onLoadMore: () => void
-) => {
-    const [isIntersecting, setIsIntersecting] = useState(false);
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0,
-    };
+const options = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0,
+};
 
+interface IntersectionProps {
+    loadingRef: React.MutableRefObject<HTMLDivElement | null>;
+    onLoadMore: () => void;
+    earlyReturn?: boolean;
+}
+
+const useIntersection = ({
+    loadingRef,
+    onLoadMore,
+    earlyReturn = false,
+}: IntersectionProps) => {
     useEffect(() => {
+        if (earlyReturn) {
+            return;
+        }
         const observer = new IntersectionObserver(([entry]) => {
-            setIsIntersecting(entry.isIntersecting);
+            if (entry.isIntersecting) {
+                onLoadMore();
+            }
         }, options);
 
         if (loadingRef.current) {
@@ -22,35 +32,9 @@ const useIntersection = (
         }
 
         return () => {
-            if (loadingRef.current) {
-                observer.unobserve(loadingRef.current);
-            }
+            observer.disconnect();
         };
-    }, [loadingRef]);
-
-    useEffect(() => {
-        if (isIntersecting) {
-            onLoadMore();
-        }
-    }, [isIntersecting, onLoadMore]);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            const bottomBoundaryRect =
-                bottomBoundaryRef.current?.getBoundingClientRect();
-            if (
-                bottomBoundaryRect &&
-                bottomBoundaryRect.top <= window.innerHeight
-            ) {
-                onLoadMore();
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [bottomBoundaryRef, onLoadMore]);
+    }, [loadingRef, onLoadMore]);
 };
 
 export default useIntersection;
