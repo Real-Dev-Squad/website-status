@@ -20,12 +20,8 @@ const TaskSearch = ({
 }: TaskSearchProps) => {
     const [modalOpen, setModalOpen] = useState(false);
 
-    const handleModalOpen = () => {
+    const handleModal = () => {
         setModalOpen(!modalOpen);
-    };
-
-    const handleModalClose = () => {
-        setModalOpen(false);
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -37,7 +33,7 @@ const TaskSearch = ({
             <div className={className['filter-container']}>
                 <div
                     className={className['filter-button']}
-                    onClick={handleModalOpen}
+                    onClick={handleModal}
                 >
                     Filter
                     {modalOpen && (
@@ -45,7 +41,7 @@ const TaskSearch = ({
                             tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}
-                            onClose={handleModalClose}
+                            onClose={handleModal}
                         />
                     )}
                 </div>

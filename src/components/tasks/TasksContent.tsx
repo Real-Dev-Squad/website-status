@@ -22,8 +22,8 @@ const getQueryParamValue = (tab: Tab) => `is:${tabToUrlParams(tab)}`;
 export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
     const allQueryParams = router.query;
-    const q = allQueryParams.q as string;
-    const queryTab = q?.replace('is:', '');
+    const qQueryParam = allQueryParams.q as string;
+    const queryTab = qQueryParam?.replace('is:', '');
     const selectedTab = getActiveTab(queryTab);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
