@@ -88,7 +88,6 @@ const Card: FC<CardProps> = ({
 
     const router = useRouter();
     const { dev } = router.query;
-    const isDevEnabled = (dev && dev === 'true') || false;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -103,7 +102,7 @@ const Card: FC<CardProps> = ({
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
 
-    const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
+    const localEndsOn = new Date(cardDetails.endsOn * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
     const statusFontColor = !statusRedList.includes(
         cardDetails.status as TASK_STATUS
@@ -147,13 +146,9 @@ const Card: FC<CardProps> = ({
                 toChange[changedProperty] = toTimeStamp;
             }
 
-            onContentChange(
-                toChange.id,
-                {
-                    [changedProperty]: toChange[changedProperty],
-                },
-                isDevEnabled
-            );
+            onContentChange(toChange.id, {
+                [changedProperty]: toChange[changedProperty],
+            });
         }
     }
 
@@ -221,7 +216,6 @@ const Card: FC<CardProps> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isDevEnabled && { isDevEnabled: true }),
         });
         response
             .unwrap()
@@ -254,7 +248,6 @@ const Card: FC<CardProps> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isDevEnabled && { isDevEnabled: true }),
         });
 
         response
@@ -454,7 +447,7 @@ const Card: FC<CardProps> = ({
                             handleProgressChange={handleProgressChange}
                             debounceSlider={debounceSlider}
                             startedOn={content.startedOn}
-                            endsOn={content.endsOn}
+                            endsOn={content.endsOn?.toString()}
                         />
                     </div>
                     {dev === 'true' && (

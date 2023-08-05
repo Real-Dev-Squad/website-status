@@ -41,13 +41,9 @@ export default function TaskList({ tasks, hasLimit = false }: TaskListProps) {
     function onSeeMoreTasksHandler() {
         setTasksLimit((prevLimit) => prevLimit + ADD_MORE_TASKS_LIMIT);
     }
-    async function onContentChangeHandler(
-        id: string,
-        cardDetails: any,
-        isDevEnabled?: boolean
-    ) {
+    async function onContentChangeHandler(id: string, cardDetails: any) {
         if (!updateCardContent) return;
-        updateCardContent({ id, task: cardDetails, isDevEnabled });
+        updateCardContent({ id, task: cardDetails });
     }
 
     return (
