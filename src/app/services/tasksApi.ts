@@ -57,6 +57,21 @@ export const tasksApi = api.injectEndpoints({
                 body: task,
             }),
         }),
+
+        updateSelfTask: builder.mutation<void, TaskRequestPayload>({
+            query: (task: TaskRequestPayload) => ({
+                url: `tasks/self/${task.id}`,
+                method: 'PATCH',
+                body: task.task,
+            }),
+            invalidatesTags: (_result, _err, { id }) => [
+                {
+                    type: 'Tasks',
+                    id,
+                },
+            ],
+        }),
+
         updateTask: builder.mutation<void, TaskRequestPayload>({
             query: ({ task, id }: TaskRequestPayload) => ({
                 url: `tasks/${id}`,
@@ -79,4 +94,5 @@ export const {
     useGetMineTasksQuery,
     useAddTaskMutation,
     useUpdateTaskMutation,
+    useUpdateSelfTaskMutation,
 } = tasksApi;

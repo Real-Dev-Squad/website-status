@@ -15,6 +15,11 @@ const taskHandlers = [
     rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
         return res(ctx.delay(5000), ctx.status(204));
     }),
+
+    rest.patch(`${URL}/tasks/self/:taskId`, (_, res, ctx) => {
+        return res(ctx.status(204));
+    }),
+
     rest.post(`${URL}/tasks`, async (req, res, ctx) => {
         const body = await req.json();
         return res(
@@ -63,6 +68,12 @@ export const failedUpdateTaskHandler = rest.patch(
     }
 );
 
+export const failedUpdateSelfTaskHandler = rest.patch(
+    `${URL}/tasks/self/:taskId`,
+    (_, res, ctx) => {
+        return res(ctx.status(404), ctx.json(failedUpdateTaskResponse));
+    }
+);
 export const noTasksFoundResponse = {
     message: 'No Tasks Found',
     tasks: [],
@@ -70,32 +81,17 @@ export const noTasksFoundResponse = {
     prev: null,
 };
 
-export const noTasksFoundHandler = rest.get(
-    `${URL}/tasks`,
-    (_, res, ctx) => {
-        return res(ctx.status(200), ctx.json(noTasksFoundResponse)
-        );
-    }
-);
+export const noTasksFoundHandler = rest.get(`${URL}/tasks`, (_, res, ctx) => {
+    return res(ctx.status(200), ctx.json(noTasksFoundResponse));
+});
 
 export const paginatedTasksHandler = [
     rest.get(`${URL}/tasks?status=AVAILABLE&dev=true`, (_, res, ctx) => {
-        return res(
-            ctx.status(200),
-            ctx.json(
-                PAGINATED_TASKS
-            )
-        );
+        return res(ctx.status(200), ctx.json(PAGINATED_TASKS));
     }),
     rest.patch(`${URL}/${PAGINATED_TASKS.next}`, (_, res, ctx) => {
-        return res(
-            ctx.status(200),
-            ctx.json(
-                NEXT_PAGINATED_TASKS
-            )
-        );
+        return res(ctx.status(200), ctx.json(NEXT_PAGINATED_TASKS));
     }),
-
 ];
 
 export const mineTasksHandler = [
