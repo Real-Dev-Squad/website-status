@@ -8,7 +8,6 @@ function inputParser(input: string) {
 const getPercentageOfDaysLeft = (startedOn: string, endsOn: string): number => {
     const startDate = inputParser(startedOn);
     const endDate = inputParser(endsOn);
-
     /**
      * It provides us with total days that are there for the the project and
      * number of days left
