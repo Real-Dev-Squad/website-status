@@ -18,9 +18,12 @@ export const tasksApi = api.injectEndpoints({
                 size = TASK_RESULT_SIZE,
                 nextTasks,
                 prevTasks,
+                term,
             }) => {
                 let url = `/tasks?status=${status}&size=${size}&dev=true`;
-
+                if (term) {
+                    url = `/tasks?q=searchTerm:${term}`;
+                }
                 if (nextTasks) {
                     url = nextTasks;
                 }
@@ -28,6 +31,7 @@ export const tasksApi = api.injectEndpoints({
                 if (prevTasks) {
                     url = prevTasks;
                 }
+                console.log('url', url);
                 return { url };
             },
             providesTags: ['Tasks'],

@@ -29,8 +29,7 @@ const handlers = [
     ...issuesHandler,
     ...standupHandler,
     ...prsHandler,
-    ...taskRequestSuccessHandlers,
-    ...filterTaskHandler,
+    ...taskRequestSuccessHandlers,  
 ];
 
 export default handlers;

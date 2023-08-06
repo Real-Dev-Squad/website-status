@@ -3,8 +3,8 @@ import { Textarea } from '@/components/taskDetails';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { parseDependencyValue } from '@/utils/parseDependency';
-import { useFetchSearchResultsQuery } from '@/app/services/taskSearchApi';
 import useDebounce from '@/hooks/useDebounce';
+import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 
 interface Task {
     id: string;
@@ -32,7 +32,9 @@ const TaskDependency: FC<TaskDependencyProps> = ({
         data: searchResults,
         isLoading,
         error,
-    } = useFetchSearchResultsQuery(debouncedSearchTerm);
+    } = useGetAllTasksQuery({
+        term: debouncedSearchTerm,
+    });
 
     useEffect(() => {
         setEditedDependencies(taskDependencyIds);

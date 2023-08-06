@@ -109,6 +109,7 @@ export type GetAllTaskParamType = {
     nextTasks?: string;
     prevTasks?: string;
     size?: number;
+    term?: string;
 };
 
 export type TabTasksData = {
