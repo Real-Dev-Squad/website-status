@@ -11,6 +11,7 @@ import issuesHandler from './handlers/issues.handler';
 import standupHandler from './handlers/standup.handler';
 import { prsHandler } from './handlers/pull-requests.handler';
 import { progressHandler } from './handlers/progresses.handler';
+import { taskRequestSuccessHandlers } from './handlers/task-request.handler';
 
 const handlers = [
     ...mineTasksHandler,
@@ -28,6 +29,7 @@ const handlers = [
     ...issuesHandler,
     ...standupHandler,
     ...prsHandler,
+    ...taskRequestSuccessHandlers
 ];
 
 export default handlers;
