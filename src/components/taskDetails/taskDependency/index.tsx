@@ -1,15 +1,10 @@
-import React, {
-    ChangeEvent,
-    FC,
-    useCallback,
-    useEffect,
-    useState,
-} from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Textarea } from '@/components/taskDetails';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import { parseDependencyValue } from '@/utils/parseDependency';
 import { useFetchSearchResultsQuery } from '@/app/services/taskSearchApi';
+import useDebounce from '@/hooks/useDebounce';
 
 interface Task {
     id: string;
@@ -32,24 +27,16 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     const [editedDependencies, setEditedDependencies] =
         useState<string[]>(taskDependencyIds);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const {
         data: searchResults,
         isLoading,
         error,
-    } = useFetchSearchResultsQuery(searchTerm);
-
-    const handleDebouncedSearch = useCallback((term: string) => {
-        setSearchTerm(term);
-    }, []);
+    } = useFetchSearchResultsQuery(debouncedSearchTerm);
 
     useEffect(() => {
         setEditedDependencies(taskDependencyIds);
     }, [taskDependencyIds]);
-    useEffect(() => {
-        if (searchTerm && isEditing) {
-            handleDebouncedSearch(searchTerm);
-        }
-    }, [searchTerm, isEditing]);
 
     const handleDependenciesChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -59,7 +46,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
 
         setEditedDependencies(updatedDependencies);
         handleChange(event);
-        handleDebouncedSearch(value);
+        setSearchTerm(value);
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
             taskData: {

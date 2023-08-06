@@ -1,4 +1,4 @@
-import taskHandlers, { mineTasksHandler, paginatedTasksHandler } from './handlers/tasks.handler';
+import taskHandlers, { mineTasksHandler, paginatedTasksHandler, filterTaskHandler } from './handlers/tasks.handler';
 import selfHandler from './handlers/self.handler';
 import userStatusHandler from './handlers/users-status.handler';
 import tagsHandler from './handlers/tags.handler';
@@ -28,6 +28,7 @@ const handlers = [
     ...issuesHandler,
     ...standupHandler,
     ...prsHandler,
+    ...filterTaskHandler,
 ];
 
 export default handlers;

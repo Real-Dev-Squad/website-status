@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, FILTER_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -109,7 +109,7 @@ export const mineTasksHandler = [
     }),
 ];
 
-export const failedGetMineTask= rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
+export const failedGetMineTask = rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
     return res(ctx.status(500), ctx.json(failedGetTasksResponse));
 });
 
@@ -136,5 +136,15 @@ export const mineTasksErrorHandler = rest.get(
         );
     }
 );
+
+export const filterTaskHandler = [rest.get(`${URL}/tasks?q=searchTerm:task`, (_, res, ctx) => {
+    return res(
+        ctx.status(200),
+        ctx.json({
+            message: 'Filter tasks returned successfully!',
+            tasks: FILTER_TASKS,
+        })
+    );
+})];
 
 export default taskHandlers;

@@ -1,12 +1,11 @@
 import { TASKS_URL } from '@/constants/url';
 import { api } from './api';
-// import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
+import { TasksResponseType } from '@/interfaces/task.type';
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (build) => ({
-        fetchSearchResults: build.query<any, string>({
-            query: (term) =>
-                `${TASKS_URL}?q=searchTerm:${encodeURIComponent(term)}`,
+        fetchSearchResults: build.query<TasksResponseType, string>({
+            query: (term) => `${TASKS_URL}?q=searchTerm:${term}`,
             providesTags: ['Tasks'],
         }),
     }),
