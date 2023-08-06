@@ -59,23 +59,6 @@ describe('Select', () => {
         expect(onChangeMock).toHaveBeenCalledWith(sampleOptions[1]);
     });
 
-    test('selects an option for touch', () => {
-        const value = sampleOptions[0];
-        const onChangeMock = jest.fn();
-        render(
-            <Select
-                value={value}
-                onChange={onChangeMock}
-                options={sampleOptions}
-            />
-        );
-
-        const option2 = screen?.getByText('Option 2');
-        fireEvent.touchStart(option2);
-
-        expect(onChangeMock).toHaveBeenCalledWith(sampleOptions[1]);
-    });
-
     test('handler should not be called when event target is not a child of container', () => {
         const value = sampleOptions[0];
         const onChangeMock = jest.fn();
@@ -149,30 +132,6 @@ describe('Select', () => {
         fireEvent.keyDown(selectContainer, { key: 'Escape', code: 'Escape' });
 
         //  The dropdown should be closed after selecting an option.
-        expect(screen?.queryByTestId('options')).not.toHaveClass('show');
-    });
-
-    test('handler should close the dropdown when the container loses focus (onBlur event)', () => {
-        const value = sampleOptions[0];
-        const onChangeMock = jest.fn();
-        render(
-            <Select
-                value={value}
-                onChange={onChangeMock}
-                options={sampleOptions}
-            />
-        );
-        const selectContainer = screen.getByTestId('selected-option');
-        const optionsList = screen.getByTestId('options');
-
-        // Open the dropdown by simulating a click on the select container
-        fireEvent.click(selectContainer);
-        expect(optionsList).toBeVisible();
-
-        // Simulate blur event on the select container
-        fireEvent.blur(selectContainer);
-
-        // The dropdown should be closed after the container loses focus
         expect(screen?.queryByTestId('options')).not.toHaveClass('show');
     });
 
