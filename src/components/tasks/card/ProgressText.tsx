@@ -1,28 +1,21 @@
 import { FC } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { handleProgressTextProps } from '@/interfaces/task.type';
+import { Loader } from './Loader';
 
 const HandleProgressText: FC<handleProgressTextProps> = ({
-    progress,
-    handleSaveProgressUpdate,
     handleProgressUpdate,
+    isLoading,
 }) => {
-    if (progress) {
-        return (
-            <div
-                className={classNames.changeProgressText}
-                onClick={() => handleSaveProgressUpdate()}
-            >
-                save Progress
-            </div>
-        );
+    if (isLoading) {
+        return <Loader />;
     }
     return (
         <div
             className={classNames.changeProgressText}
             onClick={() => handleProgressUpdate()}
         >
-            Progress update
+            UPDATE
         </div>
     );
 };
