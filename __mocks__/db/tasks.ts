@@ -309,47 +309,5 @@ const MINE_TASKS = [
   }
 ];
 
-const FILTER_TASKS = [
-  {
-    id: 'jkl01211',
-    percentCompleted: 0,
-    isNoteworthy: false,
-    createdBy: 'Sophia',
-    lossRate: {
-      dinero: 100,
-      neelam: 0
-    },
-    assignee: false,
-    type: 'feature',
-    priority: 'HIGH',
-    completionAward: {
-      dinero: 1000,
-      neelam: 0
-    },
-    status: 'AVAILABLE',
-    title: 'create task-dependency',
-    dependsOn: []
-  },
-  {
-    id: 'mno34522',
-    percentCompleted: 0,
-    isNoteworthy: false,
-    createdBy: 'Daniel',
-    lossRate: {
-      dinero: 100,
-      neelam: 0
-    },
-    assignee: false,
-    type: 'feature',
-    priority: 'HIGH',
-    completionAward: {
-      dinero: 1000,
-      neelam: 0
-    },
-    status: 'AVAILABLE',
-    title: 'Improve UX on input slider in task cards',
-    dependsOn: []
-  }
-];
 
-export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, FILTER_TASKS };
+export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, };

@@ -31,7 +31,6 @@ export const tasksApi = api.injectEndpoints({
                 if (prevTasks) {
                     url = prevTasks;
                 }
-                console.log('url', url);
                 return { url };
             },
             providesTags: ['Tasks'],
