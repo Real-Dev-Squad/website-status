@@ -1,6 +1,6 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import NavBar from '../../../../src/components/navBar';
+import { screen, render, fireEvent } from '@testing-library/react';
+import NavBar from '../../../../src/components/Navbar';
 import * as authHooks from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
@@ -90,5 +90,12 @@ describe('Navbar', () => {
         await screen.findAllByTestId('navbar');
         const logo = getByTestId('logo');
         expect(logo).toBeInTheDocument();
+    });
+
+    test('should toggle the dropdown', async () => {
+        renderWithProviders(<NavBar />);
+        const button = await screen.findByTestId('toggler');
+        fireEvent.click(button);
+        expect(screen.getByTestId('dropdown')).toBeInTheDocument();
     });
 });

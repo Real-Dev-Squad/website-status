@@ -7,19 +7,28 @@ import {
 } from '../../constants/url';
 import styles from '@/components/Dropdown/dropdown.module.scss';
 
+export const logout = () => {
+    fetch(LOGOUT_URL, {
+        method: 'GET',
+        credentials: 'include',
+    }).then(() => {
+        location.reload();
+    });
+};
+
 const Dropdown = () => {
-    const logout = () => {
-        fetch(LOGOUT_URL, {
-            method: 'GET',
-            credentials: 'include',
-        }).then(() => {
-            location.reload();
-        });
-    };
+    // // const logout = () => {
+    // //     fetch(LOGOUT_URL, {
+    // //         method: 'GET',
+    // //         credentials: 'include',
+    // //     }).then(() => {
+    // //         location.reload();
+    // //     });
+    // };
 
     return (
-        <div className={styles.dropdown}>
-            <ul className={styles.dropdownList}>
+        <div className={styles.dropdown} data-testid="dropdown">
+            <ul className={styles.dropdownList} data-testid="options">
                 <Link href={MAIN_SITE_URL} className={styles.dropdownLink}>
                     <li className={styles.dropdownItem}>Home</li>
                 </Link>
@@ -45,7 +54,11 @@ const Dropdown = () => {
                     <li className={styles.dropdownItem}>Identity</li>
                 </Link>
                 <hr className={styles.line} />
-                <li className={styles.dropdownItem} onClick={logout}>
+                <li
+                    className={styles.dropdownItem}
+                    onClick={logout}
+                    data-testid="signout"
+                >
                     Sign out
                 </li>
             </ul>
