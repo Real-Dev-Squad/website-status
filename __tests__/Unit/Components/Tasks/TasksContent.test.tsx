@@ -1,14 +1,13 @@
 import { TasksContent } from '@/components/tasks/TasksContent';
 import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
-import { act, fireEvent, screen, within } from '@testing-library/react';
+import { fireEvent, screen, within } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handler';
 import { TABS } from '@/interfaces/task.type';
-import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
 jest.mock('@/hooks/useIntersection', () => ({
     __esModule: true,
@@ -40,7 +39,7 @@ describe('tasks content', () => {
 
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
 
@@ -53,7 +52,7 @@ describe('tasks content', () => {
         setWindowInnerWidth(breakpointToShowTabs);
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             {
                 query: { section: 'assigned' },
@@ -66,7 +65,7 @@ describe('tasks content', () => {
         const assignedButton = tabsContainer.getByRole('button', {
             name: /assigned/i,
         });
-        expect(assignedButton).toHaveClass('active');
+        expect(assignedButton).toHaveTextContent('ASSIGNED');
         await screen.findByText(NO_TASKS_FOUND_MESSAGE);
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
     });
@@ -75,7 +74,7 @@ describe('tasks content', () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
@@ -85,7 +84,7 @@ describe('tasks content', () => {
     test('display tasks', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { query: { section: 'available' } }
         );
@@ -102,7 +101,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -122,7 +121,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                section: 'available',
+                q: 'is:available',
             },
         });
     });
@@ -132,7 +131,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -148,7 +147,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -164,7 +163,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent />
+                <TasksContent dev={false} />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -188,8 +187,45 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                section: TABS[1].toLowerCase(),
+                q: `is:${TABS[1].toLowerCase()}`,
             },
         });
+    });
+
+    test('searchButtonHandler when search button is clicked', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        await screen.findByTestId('tabs');
+        const searchButton = screen.getByTestId('search-button');
+        fireEvent.click(searchButton);
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                q: 'is:in-progress',
+            },
+        });
+    });
+
+    test('setInputValue when input value is changed', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        await screen.findByTestId('tabs');
+        const searchInput = screen.getByTestId('search-input');
+        fireEvent.change(searchInput, { target: { value: 'test' } });
+        expect(searchInput).toHaveValue('test');
     });
 });
