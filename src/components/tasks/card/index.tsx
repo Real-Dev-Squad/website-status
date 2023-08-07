@@ -43,7 +43,6 @@ import {
     useUpdateTaskMutation,
 } from '@/app/services/tasksApi';
 
-
 const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
