@@ -2,7 +2,6 @@ import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 import { Textarea } from '@/components/taskDetails';
 import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
-import { parseDependencyValue } from '@/utils/parseDependency';
 import useDebounce from '@/hooks/useDebounce';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 
@@ -11,23 +10,17 @@ interface Task {
     title: string;
 }
 
-type eventType = {
-    target: {
-        name: string;
-        value: string;
-    };
-};
-
 const TaskDependency: FC<TaskDependencyProps> = ({
     taskDependencyIds,
     isEditing,
-    handleChange,
     setEditedTaskDetails,
+    handleChange,
 }) => {
     const [editedDependencies, setEditedDependencies] =
         useState<string[]>(taskDependencyIds);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
+    console.log(editedDependencies);
     const {
         data: searchResults,
         isLoading,
@@ -35,40 +28,38 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     } = useGetAllTasksQuery({
         term: debouncedSearchTerm,
     });
-
-    useEffect(() => {
-        setEditedDependencies(taskDependencyIds);
-    }, [taskDependencyIds]);
+    const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
 
     const handleDependenciesChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        const { name, value } = event.target;
-        const updatedDependencies = parseDependencyValue(value);
+        setSearchTerm(event.target.value);
+    };
 
+    const handleSelectTask = (task: Task) => {
+        if (!editedDependencies.includes(task.id)) {
+            setSelectedTasks((prevSelected) => [...prevSelected, task]);
+        } else {
+            setSelectedTasks((prevSelected) =>
+                prevSelected.filter((t) => t.id !== task.id)
+            );
+        }
+    };
+
+    useEffect(() => {
+        const updatedDependencies = selectedTasks.map((task) => task.id);
         setEditedDependencies(updatedDependencies);
-        handleChange(event);
-        setSearchTerm(value);
+        console.log('updated dependencies', updatedDependencies);
+
+        console.log('Calling setEditedTaskDetails');
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
             taskData: {
                 ...prevState,
-                [name]: updatedDependencies,
+                dependsOn: updatedDependencies,
             },
         }));
-    };
-
-    const handleTaskClick = (task: Task) => {
-        const event: eventType = {
-            target: {
-                name: 'dependsOn',
-                value: task.id,
-            },
-        };
-
-        handleDependenciesChange(event as ChangeEvent<HTMLInputElement>);
-        setSearchTerm(task.id);
-    };
+    }, [selectedTasks, setEditedTaskDetails]);
 
     return (
         <>
@@ -76,7 +67,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
                 <div>
                     <Textarea
                         name="dependsOn"
-                        value={editedDependencies.join(',')}
+                        value={searchTerm}
                         onChange={handleDependenciesChange}
                         testId="dependency-textarea"
                     />
@@ -85,10 +76,14 @@ const TaskDependency: FC<TaskDependencyProps> = ({
                     {searchResults && searchResults.tasks && (
                         <div>
                             {searchResults.tasks.map((task: Task) => (
-                                <div
-                                    key={task.id}
-                                    onClick={() => handleTaskClick(task)}
-                                >
+                                <div key={task.id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTasks.some(
+                                            (t) => t.id === task.id
+                                        )}
+                                        onChange={() => handleSelectTask(task)}
+                                    />
                                     {task.title}
                                 </div>
                             ))}
