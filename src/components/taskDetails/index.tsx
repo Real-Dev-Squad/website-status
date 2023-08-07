@@ -258,7 +258,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 taskDependencyIds
                                             }
                                             isEditing={isEditing}
-                                            handleChange={handleChange}
                                             setEditedTaskDetails={
                                                 setEditedTaskDetails
                                             }

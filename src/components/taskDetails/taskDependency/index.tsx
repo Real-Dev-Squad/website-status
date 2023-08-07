@@ -14,13 +14,10 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     taskDependencyIds,
     isEditing,
     setEditedTaskDetails,
-    handleChange,
 }) => {
-    const [editedDependencies, setEditedDependencies] =
-        useState<string[]>(taskDependencyIds);
     const [searchTerm, setSearchTerm] = useState<string>('');
     const debouncedSearchTerm = useDebounce(searchTerm, 500);
-    console.log(editedDependencies);
+    const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
     const {
         data: searchResults,
         isLoading,
@@ -28,7 +25,6 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     } = useGetAllTasksQuery({
         term: debouncedSearchTerm,
     });
-    const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
 
     const handleDependenciesChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,27 +33,20 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     };
 
     const handleSelectTask = (task: Task) => {
-        if (!editedDependencies.includes(task.id)) {
-            setSelectedTasks((prevSelected) => [...prevSelected, task]);
-        } else {
-            setSelectedTasks((prevSelected) =>
-                prevSelected.filter((t) => t.id !== task.id)
-            );
-        }
+        setSelectedTasks((prevSelected) => {
+            const isSelected = prevSelected.some((t) => t.id === task.id);
+            return isSelected
+                ? prevSelected.filter((t) => t.id !== task.id)
+                : [...prevSelected, task];
+        });
     };
 
     useEffect(() => {
         const updatedDependencies = selectedTasks.map((task) => task.id);
-        setEditedDependencies(updatedDependencies);
-        console.log('updated dependencies', updatedDependencies);
 
-        console.log('Calling setEditedTaskDetails');
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
-            taskData: {
-                ...prevState,
-                dependsOn: updatedDependencies,
-            },
+            dependsOn: updatedDependencies,
         }));
     }, [selectedTasks, setEditedTaskDetails]);
 
