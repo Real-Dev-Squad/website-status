@@ -9,48 +9,40 @@ import { TaskDependencyIds } from '../../../../__mocks__/db/tasks';
 
 const mockNavigateToTask = jest.fn();
 const setEditedTaskDetails = jest.fn();
+
 describe('TaskDependency', () => {
     const server = setupServer(...taskDetailsHandler);
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    it.skip('should update editedDependencies state and call handleChange when dependencies change', () => {
-        const handleChange = jest.fn();
 
-        const { getByRole } = renderWithRouter(
+    it.skip('should update editedDependencies state and call handleChange when dependencies change', () => {
+        const mockHandleChange = jest.fn();
+
+        const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
                     isEditing={true}
-                    handleChange={handleChange}
                     taskDependencyIds={TaskDependencyIds}
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
-            </Provider>,
-            {
-                push: mockNavigateToTask,
-            }
+            </Provider>
         );
 
-        const textarea = getByRole('textbox');
+        const textarea = getByTestId('dependency-textarea');
         const event = { target: { value: 'task1, task2, task3' } };
-        fireEvent.change(
-            textarea,
-            event as React.ChangeEvent<HTMLInputElement>
-        );
 
-        expect(textarea.innerHTML).toBe('task1, task2, task3');
+        fireEvent.change(textarea, event);
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
-        expect(handleChange.mock.calls[0][0].target.value).toBe(
-            'task1,task2,task3'
-        );
+        expect(mockHandleChange).toHaveBeenCalledTimes(1);
+        expect(mockHandleChange).toHaveBeenCalledWith(event);
     });
+
     it('should render DependencyList when isEditing is false', async () => {
         const { queryByRole, getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
                     isEditing={false}
-                    handleChange={jest.fn()}
                     taskDependencyIds={TaskDependencyIds}
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
@@ -67,5 +59,31 @@ describe('TaskDependency', () => {
             const dependencyList = getByTestId('dependency-list');
             expect(dependencyList).toBeInTheDocument();
         });
+    });
+
+    it.skip('should select/unselect a task when checkbox is clicked', async () => {
+        const { getByText, getByRole } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDependency
+                    isEditing={true}
+                    taskDependencyIds={TaskDependencyIds}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                />
+            </Provider>
+        );
+
+        const taskTitle = await waitFor(() =>
+            getByText('test 1 for drag and drop')
+        );
+
+        const checkbox = getByRole('textbox', {
+            name: 'test 1 for drag and drop',
+        }) as HTMLInputElement;
+
+        fireEvent.click(checkbox);
+        expect(taskTitle).toHaveStyle('text-decoration: line-through;');
+
+        fireEvent.click(checkbox);
+        expect(taskTitle).not.toHaveStyle('text-decoration: line-through;');
     });
 });

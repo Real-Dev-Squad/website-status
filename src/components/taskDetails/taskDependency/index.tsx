@@ -9,22 +9,34 @@ interface Task {
     id: string;
     title: string;
 }
-
 const TaskDependency: FC<TaskDependencyProps> = ({
     taskDependencyIds,
     isEditing,
     setEditedTaskDetails,
 }) => {
     const [searchTerm, setSearchTerm] = useState<string>('');
-    const debouncedSearchTerm = useDebounce(searchTerm, 500);
     const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
+    const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
     const {
         data: searchResults,
         isLoading,
-        error,
-    } = useGetAllTasksQuery({
-        term: debouncedSearchTerm,
-    });
+        isError,
+    } = useGetAllTasksQuery(
+        {
+            term: debouncedSearchTerm,
+        },
+        { skip: debouncedSearchTerm ? false : true }
+    );
+
+    useEffect(() => {
+        const updatedDependencies = selectedTasks.map((task) => task.id);
+
+        setEditedTaskDetails((prevState) => ({
+            ...prevState!,
+            dependsOn: updatedDependencies,
+        }));
+    }, [selectedTasks, setEditedTaskDetails]);
 
     const handleDependenciesChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -41,15 +53,6 @@ const TaskDependency: FC<TaskDependencyProps> = ({
         });
     };
 
-    useEffect(() => {
-        const updatedDependencies = selectedTasks.map((task) => task.id);
-
-        setEditedTaskDetails((prevState) => ({
-            ...prevState!,
-            dependsOn: updatedDependencies,
-        }));
-    }, [selectedTasks, setEditedTaskDetails]);
-
     return (
         <>
             {isEditing && (
@@ -61,7 +64,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
                         testId="dependency-textarea"
                     />
                     {isLoading && <p>Loading...</p>}
-                    {error && <p>Error fetching search results</p>}
+                    {isError && <p>No task found</p>}
                     {searchResults && searchResults.tasks && (
                         <div>
                             {searchResults.tasks.map((task: Task) => (
