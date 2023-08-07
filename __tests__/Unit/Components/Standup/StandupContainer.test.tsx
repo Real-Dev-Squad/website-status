@@ -8,6 +8,7 @@ import handlers from '../../../../__mocks__/handlers';
 import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
+    STANDUP_ALREADY_SUBMITTED,
 } from '@/constants/constants';
 import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
 import { ToastContainer } from 'react-toastify';
@@ -131,7 +132,11 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
         );
         const completedInputField = screen.getByRole('textbox', {
             name: yesterdayDate,
@@ -168,7 +173,11 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
         );
         const completedInputField = screen.getByRole('textbox', {
             name: yesterdayDate,
@@ -195,7 +204,9 @@ describe('StandupContainer', () => {
         fireEvent.submit(getByRole('form'));
 
         await waitFor(() => {
-            expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();
+            expect(
+                screen.getByText(STANDUP_ALREADY_SUBMITTED)
+            ).toBeInTheDocument();
         });
     });
 
@@ -219,7 +230,11 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
         );
         const completedInputField = screen.getByRole('textbox', {
             name: yesterdayDate,
