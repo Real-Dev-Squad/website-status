@@ -14,7 +14,11 @@ import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/constants/constants';
+import {
+    ERROR_MESSAGE,
+    MAX_SEARCH_RESULTS,
+    PROGRESS_SUCCESSFUL,
+} from '@/constants/constants';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -30,9 +34,15 @@ import HandleProgressText from './ProgressText';
 import HandleProgressbar from './ProgressBar';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
-import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+
 import Suggestions from '../SuggestionBox/Suggestions';
 import useDebounce from '../../../hooks/useDebounce';
+
+import {
+    useUpdateSelfTaskMutation,
+    useUpdateTaskMutation,
+} from '@/app/services/tasksApi';
+
 
 const Card: FC<CardProps> = ({
     content,
@@ -50,7 +60,7 @@ const Card: FC<CardProps> = ({
     const { data } = useGetUserQuery();
     const [progress, setProgress] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
-    const [updateTasks] = useUpdateTaskMutation();
+
     const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
@@ -75,6 +85,8 @@ const Card: FC<CardProps> = ({
     const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
+    const [updateSelfTask, { isLoading: isLoadingSelfTaskUpdate }] =
+        useUpdateSelfTaskMutation();
 
     const [assigneeName, setAssigneeName] = useState<string>('');
     const debounceSearchTerm = useDebounce(assigneeName, 500);
@@ -289,6 +301,7 @@ const Card: FC<CardProps> = ({
         }
         const timer = setTimeout(() => {
             handleSliderChangeComplete(cardDetails.id, progressValue);
+            setProgress(false);
         }, 1000);
         setDebounceTimeOut(Number(timer));
     };
@@ -300,21 +313,26 @@ const Card: FC<CardProps> = ({
         const data = {
             percentCompleted: percentCompleted,
         };
-        await updateTasks({
-            task: data,
-            id: id,
-        });
-        toast(SUCCESS, 'Progress Updated Successfully');
+        if (isUserAuthorized) {
+            await updateTask({
+                task: data,
+                id: id,
+            })
+                .unwrap()
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
+        } else {
+            await updateSelfTask({ task: data, id: id })
+                .unwrap()
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
+        }
     };
 
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setProgressValue(Number(event.target.value));
-    };
-
-    const handleSaveProgressUpdate = () => {
-        setProgress(false);
     };
 
     const AssigneeButton = () => {
@@ -394,7 +412,7 @@ const Card: FC<CardProps> = ({
                 </ConditionalLinkWrapper>
 
                 {/* progress bar */}
-                <div>
+                <div className={classNames.progressContainer}>
                     <div className={classNames.progressContainerUpdated}>
                         <HandleProgressbar
                             progress={progress}
@@ -403,14 +421,20 @@ const Card: FC<CardProps> = ({
                             handleProgressChange={handleProgressChange}
                             debounceSlider={debounceSlider}
                             startedOn={content.startedOn}
-                            endsOn={content.endsOn?.toString()}
+                            endsOn={String(content.endsOn)}
+                            isLoading={
+                                isLoadingUpdateTaskDetails ||
+                                isLoadingSelfTaskUpdate
+                            }
                         />
                     </div>
                     {dev === 'true' && (
                         <HandleProgressText
-                            progress={progress}
-                            handleSaveProgressUpdate={handleSaveProgressUpdate}
                             handleProgressUpdate={handleProgressUpdate}
+                            isLoading={
+                                isLoadingUpdateTaskDetails ||
+                                isLoadingSelfTaskUpdate
+                            }
                         />
                     )}
                 </div>

@@ -7,7 +7,9 @@ describe('Progress Slider', () => {
         handleProgressChange: jest.fn(),
     };
     test('should render range input field', async () => {
-        render(<ProgressSlider {...DEFAULT_PROPS} value={40} />);
+        render(
+            <ProgressSlider {...DEFAULT_PROPS} value={40} isLoading={false} />
+        );
         const sliderInput = screen.getByRole('slider');
         await fireEvent.change(sliderInput, { target: { value: 50 } });
         expect(DEFAULT_PROPS.handleProgressChange).toHaveBeenCalled();
