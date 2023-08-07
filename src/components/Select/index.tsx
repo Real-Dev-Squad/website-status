@@ -84,7 +84,8 @@ export function Select({ value, onChange, options }: SelectProps) {
             >
                 {options.map((option, index) => (
                     <li
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
                             onOptionClick(option);
                         }}
                         onMouseEnter={() => setHighlightedIndex(index)}
