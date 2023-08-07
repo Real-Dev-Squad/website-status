@@ -5,23 +5,29 @@ import task, {
 } from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
+import { TASK_RESULT_SIZE } from '@/constants/constants';
 
+type TasksQueryResponse = { message: string; tasks: task[] };
 type TasksCreateMutationResponse = { message: string; task: task };
 
 export const tasksApi = api.injectEndpoints({
     endpoints: (builder) => ({
         getAllTasks: builder.query<TasksResponseType, GetAllTaskParamType>({
-            query: ({ dev, status, nextPage, prevPage }) => {
-                let url = dev ? `/tasks?status=${status}&dev=true` : '/tasks';
+            query: ({
+                status,
+                size = TASK_RESULT_SIZE,
+                nextTasks,
+                prevTasks,
+            }) => {
+                let url = `/tasks?status=${status}&size=${size}&dev=true`;
 
-                if (nextPage) {
-                    url = nextPage;
+                if (nextTasks) {
+                    url = nextTasks;
                 }
 
-                if (prevPage) {
-                    url = prevPage;
+                if (prevTasks) {
+                    url = prevTasks;
                 }
-
                 return { url };
             },
             providesTags: ['Tasks'],
@@ -37,7 +43,7 @@ export const tasksApi = api.injectEndpoints({
             },
         }),
 
-        getMineTasks: builder.query<TasksResponseType, void>({
+        getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
             query: () => MINE_TASKS_URL,
             providesTags: ['Mine_Tasks'],
         }),
@@ -48,12 +54,24 @@ export const tasksApi = api.injectEndpoints({
                 body: task,
             }),
         }),
+
+        updateSelfTask: builder.mutation<void, TaskRequestPayload>({
+            query: (task: TaskRequestPayload) => ({
+                url: `tasks/self/${task.id}`,
+                method: 'PATCH',
+                body: task.task,
+            }),
+            invalidatesTags: (_result, _err, { id }) => [
+                {
+                    type: 'Tasks',
+                    id,
+                },
+            ],
+        }),
+
         updateTask: builder.mutation<void, TaskRequestPayload>({
-            // isDevEnabled is the Feature flag for status update based on task status. This flag is temporary and will be removed once the feature becomes stable.
-            query: ({ task, id, isDevEnabled }: TaskRequestPayload) => ({
-                url: isDevEnabled
-                    ? `tasks/${id}?userStatusFlag=true`
-                    : `tasks/${id}`,
+            query: ({ task, id }: TaskRequestPayload) => ({
+                url: `tasks/${id}`,
                 method: 'PATCH',
                 body: task,
             }),
@@ -73,4 +91,5 @@ export const {
     useGetMineTasksQuery,
     useAddTaskMutation,
     useUpdateTaskMutation,
+    useUpdateSelfTaskMutation,
 } = tasksApi;

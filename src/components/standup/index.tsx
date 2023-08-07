@@ -1,10 +1,11 @@
 import { FC, useState } from 'react';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 import styles from '@/components/standup/standupContainer.module.scss';
 
 import {
     useSaveProgressMutation,
-    useUserProgressDetailsQuery,
+    useGetProgressDetailsQuery,
 } from '@/app/services/progressesApi';
 import { useGetUserQuery } from '@/app/services/userApi';
 
@@ -15,6 +16,7 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
+    STANDUP_ALREADY_SUBMITTED,
 } from '@/constants/constants';
 import ProgressHeader from '../ProgressForm/ProgressHeader';
 
@@ -26,12 +28,15 @@ const defaultState = {
 };
 
 const StandUpContainer: FC = () => {
+    const router = useRouter();
     const [standupUpdate, setStandupUpdate] =
         useState<standupUpdateType>(defaultState);
 
     const [addStandup] = useSaveProgressMutation();
     const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useUserProgressDetailsQuery(user?.id);
+    const { data: userStandupdata } = useGetProgressDetailsQuery({
+        userId: user?.id,
+    });
 
     const { SUCCESS, ERROR } = ToastTypes;
     const standupDates = userStandupdata?.data?.map((element) => element.date);
@@ -63,7 +68,7 @@ const StandUpContainer: FC = () => {
         try {
             const response = await addStandup(standupUpdate);
             if ('error' in response) {
-                toast(ERROR, ERROR_MESSAGE);
+                toast(ERROR, STANDUP_ALREADY_SUBMITTED);
             } else {
                 toast(SUCCESS, STANDUP_SUBMISSION_SUCCESS);
             }
@@ -72,6 +77,8 @@ const StandUpContainer: FC = () => {
             console.error(error);
             toast(ERROR, ERROR_MESSAGE);
         }
+
+        router.replace(router.asPath);
     };
 
     return (

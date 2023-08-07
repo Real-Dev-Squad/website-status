@@ -1,3 +1,6 @@
+$primaryColor: #041484;
+$disabledColor: gray;
+
 .container {
     text-align: center;
     display: flex;
@@ -32,4 +35,38 @@
     padding: 1rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
+}
+
+.status-tabs-container {
+    display: block;
+    @media (max-width: 450px) {
+        display: none;
+    }
+}
+
+.status-select-container {
+    display: none;
+    padding: 1rem;
+    @media (max-width: 450px) {
+        display: block;
+    }
+}
+
+.loadMoreButton {
+    border: none;
+    border-radius: 0.5rem;
+    background-color: transparent;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+        background-color: #fff;
+        color: $primaryColor;
+    }
+
+    &:disabled {
+        color: $disabledColor;
+        cursor: default;
+    }
 }

@@ -1,10 +1,9 @@
 import React, {
     ChangeEvent,
     FC,
-    useEffect,
-    useContext,
-    useRef,
     useState,
+    ReactElement,
+    useEffect,
 } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
@@ -18,10 +17,17 @@ import {
 } from '@/app/services/taskDetailsApi';
 
 import useUserData from '@/hooks/useUserData';
-import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
+import {
+    ButtonProps,
+    TextAreaProps,
+    taskDetailsDataType,
+} from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
 import TaskDependency from '@/components/taskDetails/taskDependency';
-import { parseDependencyValue } from '@/utils/parseDependency';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import { ProgressDetailsData } from '@/types/standup.type';
+import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
+import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -29,7 +35,7 @@ export function Button(props: ButtonProps) {
         <button
             type="button"
             className={classNames['button']}
-            onClick={() => clickHandler(value)}
+            onClick={() => clickHandler(value ?? true)}
         >
             {buttonName}
         </button>
@@ -53,73 +59,75 @@ type Props = {
     url?: string;
     taskID: string;
 };
-
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { query } = router;
+    const isDevModeEnabled = query.dev === 'true' ? true : false;
 
-    const { data: userData, isUserAuthorized } = useUserData();
+    const { isUserAuthorized, data: userData } = useUserData();
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const initialDataRef = useRef<Record<string, any> | undefined>({});
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
 
     const taskDependencyIds: string[] = !isFetching
         ? data?.taskData?.dependsOn || []
         : [];
-
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const taskDetailsData = data?.taskData;
-    const [taskDetails, setTaskDetails] = useState<
-        Record<string, any> | undefined
-    >({});
-    const [editedDetails, setEditedDetails] = useState({});
+    const taskDetailsData: taskDetailsDataType['taskData'] = data?.taskData;
 
-    const [updateTaskDetails] = useUpdateTaskDetailsMutation();
-    const [updatedDependencies, setUpdatedDependencies] = useState<string[]>(
-        taskDetails?.dependsOn || []
-    );
+    const [editedTaskDetails, setEditedTaskDetails] = useState<
+        taskDetailsDataType['taskData'] | undefined
+    >(data?.taskData);
+
+    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
+        useAddOrUpdateMutation();
 
     useEffect(() => {
-        const fetchedData = data?.taskData;
-        setTaskDetails(taskDetailsData);
-        initialDataRef.current = fetchedData;
-    }, [isLoading, data]);
+        if (data?.taskData) {
+            setEditedTaskDetails(data.taskData);
+        }
+    }, [data]);
+
+    const [updateTaskDetails] = useUpdateTaskDetailsMutation();
+
+    function onCancel() {
+        setIsEditing(false);
+        setEditedTaskDetails(taskDetailsData);
+    }
+    async function onSave() {
+        setIsEditing(false);
+        await updateTaskDetails({
+            editedDetails: editedTaskDetails,
+            taskID,
+        })
+            .unwrap()
+            .then(() => toast(SUCCESS, 'Successfully saved'))
+            .catch((error) => toast(ERROR, error.data.message));
+    }
 
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const { name, value } = event.target;
 
-        if (name === 'dependsOn') {
-            const updatedDependencies = parseDependencyValue(value);
-            setUpdatedDependencies(updatedDependencies);
+        setEditedTaskDetails((prevState) => ({
+            ...prevState!,
+            ...(prevState
+                ? { [name]: name === 'dependsOn' ? [value] : value }
+                : {}),
+        }));
+    }
+
+    function taskRequestHandle() {
+        if (!userData) {
+            return;
         }
-        const formData = {
-            ...taskDetails,
-            [event.target.name]: event.target.value,
-            dependsOn: [...updatedDependencies],
-        };
-        setEditedDetails(formData);
-        setTaskDetails(formData);
-    }
-
-    function onCancel() {
-        setIsEditing(false);
-        setTaskDetails(initialDataRef.current);
-    }
-
-    async function onSave() {
-        setIsEditing(false);
-        updateTaskDetails({
-            editedDetails,
-            taskID,
-        })
+        addOrUpdateTaskRequest({ taskId: taskID, userId: userData.id })
             .unwrap()
-            .then(() => toast(SUCCESS, 'Successfully saved'))
+            .then(() => toast(SUCCESS, 'Successfully requested for task'))
             .catch((error) => toast(ERROR, error.data.message));
-        setTaskDetails(initialDataRef.current);
     }
 
     function renderLoadingComponent() {
@@ -132,9 +140,28 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             );
         }
     }
-    const { query } = router;
-    const isDevModeEnabled = query.dev === 'true' ? true : false;
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
+
+    const { data: taskProgress } = useGetProgressDetailsQuery({
+        taskId: taskID,
+    });
+    const taskProgressArray: Array<ReactElement> = [];
+    if (taskProgress) {
+        if (taskProgress.data.length > 0) {
+            taskProgress.data.forEach((data: ProgressDetailsData) => {
+                taskProgressArray.push(
+                    <>
+                        <li>
+                            {getDateFromTimestamp(data.date)} : {data.completed}
+                        </li>
+                        <br />
+                    </>
+                );
+            });
+        }
+    }
+
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -144,7 +171,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         {isEditing ? (
                             <Textarea
                                 name="title"
-                                value={taskDetails?.title}
+                                value={editedTaskDetails?.title}
                                 onChange={handleChange}
                                 testId="title-textarea"
                             />
@@ -153,7 +180,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 data-testid="task-title"
                                 className={classNames.taskTitle}
                             >
-                                {taskDetails?.title}
+                                {taskDetailsData?.title}
                             </span>
                         )}
                         {!isEditing ? (
@@ -184,15 +211,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 {isEditing ? (
                                     <Textarea
                                         name="purpose"
-                                        value={taskDetails?.purpose}
+                                        value={editedTaskDetails?.purpose}
                                         onChange={handleChange}
                                         testId="purpose-textarea"
                                     />
                                 ) : (
                                     <p>
-                                        {!taskDetails?.purpose
+                                        {!taskDetailsData?.purpose
                                             ? 'No description available'
-                                            : taskDetails?.purpose}
+                                            : taskDetailsData?.purpose}
                                     </p>
                                 )}
                             </TaskContainer>
@@ -204,47 +231,68 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 >
                                     <Details
                                         detailType={'Type'}
-                                        value={taskDetails?.type}
+                                        value={taskDetailsData?.type}
                                     />
                                     <Details
                                         detailType={'Priority'}
-                                        value={taskDetails?.priority}
+                                        value={taskDetailsData?.priority}
                                     />
                                     <Details
                                         detailType={'Status'}
-                                        value={taskDetails?.status}
+                                        value={taskDetailsData?.status}
                                     />
                                     <Details
                                         detailType={'Link'}
-                                        value={taskDetails?.featureUrl}
+                                        value={taskDetailsData?.featureUrl}
                                     />
                                 </div>
                             </TaskContainer>
                             {isDevModeEnabled && (
-                                <TaskContainer
-                                    title="Task DependsOn"
-                                    hasImg={false}
-                                >
-                                    <TaskDependency
-                                        taskDependencyIds={taskDependencyIds}
-                                        isEditing={isEditing}
-                                        updatedDependencies={
-                                            updatedDependencies
-                                        }
-                                        handleChange={handleChange}
-                                    />
-                                </TaskContainer>
+                                <>
+                                    <TaskContainer
+                                        title="Task Dependencies"
+                                        hasImg={false}
+                                    >
+                                        <TaskDependency
+                                            taskDependencyIds={
+                                                taskDependencyIds
+                                            }
+                                            isEditing={isEditing}
+                                            updatedDependencies={
+                                                taskDetailsData?.dependsOn || []
+                                            }
+                                            handleChange={handleChange}
+                                            setEditedTaskDetails={
+                                                setEditedTaskDetails
+                                            }
+                                        />
+                                    </TaskContainer>
+                                    <TaskContainer
+                                        title="Progress Updates"
+                                        hasImg={false}
+                                    >
+                                        {taskProgressArray.length > 0 ? (
+                                            <div> {taskProgressArray} </div>
+                                        ) : (
+                                            'No Progress found'
+                                        )}
+                                    </TaskContainer>
+                                </>
                             )}
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            <button
-                                onClick={() =>
-                                    router.push(`/progress/${taskID}?dev=true`)
-                                }
-                            >
-                                Update Progress
-                            </button>
+                            {isDevModeEnabled && (
+                                <button
+                                    onClick={() =>
+                                        router.push(
+                                            `/progress/${taskID}?dev=true`
+                                        )
+                                    }
+                                >
+                                    Update Progress
+                                </button>
+                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
@@ -253,9 +301,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 <Details
                                     detailType={'Assignee'}
                                     value={
-                                        taskDetails?.type === 'feature'
-                                            ? taskDetails?.assignee
-                                            : taskDetails?.participants?.join(
+                                        taskDetailsData?.type === 'feature'
+                                            ? taskDetailsData?.assignee
+                                            : taskDetailsData?.participants?.join(
                                                   ' , '
                                               )
                                     }
@@ -271,17 +319,25 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 hasImg={true}
                             >
                                 <Details
-                                    detailType={'StartedOn'}
+                                    detailType={'Started On'}
                                     value={convertTimeStamp(
-                                        taskDetails?.startedOn
+                                        taskDetailsData?.startedOn ?? 0
                                     )}
                                 />
                                 <Details
-                                    detailType={'EndsOn'}
+                                    detailType={'Ends On'}
                                     value={convertTimeStamp(
-                                        taskDetails?.endsOn
+                                        taskDetailsData?.endsOn ?? 0
                                     )}
                                 />
+                            </TaskContainer>
+                            <TaskContainer
+                                hasImg={false}
+                                title="Request for task"
+                            >
+                                <button onClick={taskRequestHandle}>
+                                    Request for task
+                                </button>
                             </TaskContainer>
                         </section>
                     </section>

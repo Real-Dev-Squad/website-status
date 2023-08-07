@@ -1,5 +1,4 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -11,7 +10,10 @@ import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
+import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
+import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
+import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -40,7 +42,7 @@ jest.mock('@/hooks/useUserData', () => {
         isSuccess: true,
     });
 });
-
+const mockNavigateToUpdateProgressPage = jest.fn();
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
@@ -50,18 +52,6 @@ describe('TaskDetails Page', () => {
         );
         await waitFor(() => {
             expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
-        });
-    });
-
-    it('should render update progress button ', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        await waitFor(() => {
-            const buttonElement = getByText(/Update Progress/i);
-            expect(buttonElement).toBeInTheDocument();
         });
     });
 
@@ -77,10 +67,22 @@ describe('TaskDetails Page', () => {
         });
     });
 
-    it('Should render No Description available for a task without description', async () => {
+    it('Should render Description available for a task', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(
+                getByText('This is a sample description')
+            ).toBeInTheDocument();
+        });
+    });
+    it('Should render No Description available for a task without description', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID="6KhcLU3yr45dzjQIVm0k" />
             </Provider>
         );
         await waitFor(() => {
@@ -146,6 +148,16 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('Ankush')).toBeInTheDocument();
         });
+    });
+    test('should render "Something went wrong!" when isError is true', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={''} />
+            </Provider>
+        );
+
+        const errorElement = await screen.findByText('Something went wrong!');
+        expect(errorElement).toBeInTheDocument();
     });
     it('Renders Task Started-on Date', async () => {
         const { getByText } = renderWithRouter(
@@ -237,6 +249,8 @@ describe('TaskDetails Page', () => {
     });
 
     test('should update the title and description with the new values', async () => {
+        server.use(...taskDetailsHandler);
+
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
@@ -255,6 +269,42 @@ describe('TaskDetails Page', () => {
             fireEvent.click(saveButton);
             expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
         });
+    });
+
+    test('Should render No task progress', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        const noProgressText = screen.getByText('No Progress found');
+        expect(noProgressText).toBeInTheDocument();
+    });
+
+    test('should call progress details query', async () => {
+        const spyfn = jest.spyOn(progressQueries, 'useGetProgressDetailsQuery');
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        let progressUpdatesSection;
+        await waitFor(() => {
+            progressUpdatesSection = screen.getByText('Progress Updates');
+        });
+        expect(progressUpdatesSection).toBeInTheDocument();
+        expect(spyfn).toBeCalled();
     });
 });
 
@@ -306,6 +356,115 @@ describe('Textarea with functionalities', () => {
         const textareaElement = screen.getByTestId('textarea');
         fireEvent.change(textareaElement, { target: { value: 'New value' } });
         expect(mockChangeHandler).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe('Update Progress button', () => {
+    it('renders the Update Progress button when ?dev=true query parameter is present', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' }, push: mockNavigateToUpdateProgressPage }
+        );
+
+        await waitFor(() => {
+            const updateProgressButton = screen.getByText('Update Progress');
+            expect(updateProgressButton).toBeInTheDocument();
+            fireEvent.click(updateProgressButton);
+            expect(mockNavigateToUpdateProgressPage).toHaveBeenLastCalledWith(
+                '/progress/6KhcLU3yr45dzjQIVm0J?dev=true'
+            );
+        });
+    });
+
+    it('Should not render the Update Progress button when ?dev=true query parameter is absent', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        const updateProgressButton = screen.queryByText('Update Progress');
+        expect(updateProgressButton).not.toBeInTheDocument();
+    });
+});
+
+describe('Task Details > Task Request', () => {
+    it('should show task request button when dev is true', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /request for task/i })
+            ).not.toBeNull();
+        });
+    });
+
+    it('should not show task request button when dev is false', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /request for task/i })
+            ).toBeNull();
+        });
+    });
+
+    it('Success toast should be shown on success', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /request for task/i })
+            ).not.toBeNull();
+        });
+
+        const taskRequestButton = screen.getByRole('button', {
+            name: /request for task/i,
+        });
+        fireEvent.click(taskRequestButton);
+
+        await waitFor(() => {
+            screen.getByText(/successfully requested for task/i);
+        });
+    });
+
+    it('Error toast should be shown on error', async () => {
+        server.use(...taskRequestErrorHandler);
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            screen.getByRole('button', { name: /request for task/i });
+        });
+
+        const taskRequestButton = screen.getByRole('button', {
+            name: /request for task/i,
+        });
+        fireEvent.click(taskRequestButton);
+
+        await waitFor(() => {
+            expect(screen.queryByText(/taskId not provided/i)).not.toBeNull();
+        });
     });
 });
 
