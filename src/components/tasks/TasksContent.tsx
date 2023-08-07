@@ -15,14 +15,16 @@ import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
+import TaskSearch from './TaskSearch/TaskSearch';
 
-type routerQueryParams = {
-    section?: string;
-};
-export const TasksContent = () => {
+const getQueryParamValue = (tab: Tab) => `is:${tabToUrlParams(tab)}`;
+
+export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
-    const { section }: routerQueryParams = router.query;
-    const selectedTab = getActiveTab(section);
+    const allQueryParams = router.query;
+    const qQueryParam = allQueryParams.q as string;
+    const queryTab = qQueryParam?.replace('is:', '');
+    const selectedTab = getActiveTab(queryTab);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],
@@ -35,6 +37,9 @@ export const TasksContent = () => {
         COMPLETED: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
+    const [inputValue, setInputValue] = useState<string>(
+        getQueryParamValue(selectedTab)
+    );
 
     const {
         data: tasksData = { tasks: [], next: '' },
@@ -51,15 +56,16 @@ export const TasksContent = () => {
             setNextTasks(tasksData.next);
         }
     };
-
     const onSelect = (tab: Tab) => {
+        const queryParamValue = getQueryParamValue(tab);
         router.push({
             query: {
                 ...router.query,
-                section: tabToUrlParams(tab),
+                q: queryParamValue,
             },
         });
         setNextTasks('');
+        setInputValue(queryParamValue);
     };
 
     useEffect(() => {
@@ -87,13 +93,27 @@ export const TasksContent = () => {
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+
     const taskSelectOptions = TABS.map((item) => ({
         label: getChangedStatusName(item),
         value: item,
     }));
 
+    const searchButtonHandler = () => {
+        inputValue && onSelect(getActiveTab(inputValue.replace('is:', '')));
+    };
+
     return (
         <div className={classNames.tasksContainer}>
+            {dev && (
+                <TaskSearch
+                    onSelect={onSelect}
+                    inputValue={inputValue}
+                    activeTab={selectedTab}
+                    onInputChange={(value) => setInputValue(value)}
+                    onClickSearchButton={searchButtonHandler}
+                />
+            )}
             <div
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"
