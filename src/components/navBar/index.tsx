@@ -95,6 +95,7 @@ const NavBar = () => {
                     <div
                         className={styles.userGreet}
                         onClick={() => setToggleDropdown(!toggleDropdown)}
+                        data-testid="toggler"
                     >
                         <div className={styles.userGreetMsg}>
                             Hello, {userData?.first_name}
