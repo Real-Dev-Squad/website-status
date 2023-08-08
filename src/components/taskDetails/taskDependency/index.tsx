@@ -17,14 +17,12 @@ const TaskInput: FC<{
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
 }> = ({ searchTerm, handleChange }) => (
-    <>
-        <Textarea
-            name="dependsOn"
-            value={searchTerm}
-            onChange={handleChange}
-            testId="dependency-textarea"
-        />
-    </>
+    <Textarea
+        name="dependsOn"
+        value={searchTerm}
+        onChange={handleChange}
+        testId="dependency-textarea"
+    />
 );
 
 const TaskCheckbox: FC<{

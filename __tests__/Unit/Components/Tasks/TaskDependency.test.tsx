@@ -36,33 +36,24 @@ describe('TaskDependency', () => {
             isError: false,
             refetch: jest.fn(),
         });
-
         const { container } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
-                    taskDependencyIds={[]} // Provide an empty array or relevant data
+                    taskDependencyIds={[]}
                     isEditing={true}
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
             </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            { query: { dev: 'true' } }
         );
-
         const checkboxes = container.querySelectorAll('input[type="checkbox"]');
         const firstCheckbox = checkboxes[0] as HTMLInputElement;
-
         expect(firstCheckbox.checked).toBe(false);
-
         fireEvent.click(firstCheckbox);
-
         await waitFor(() => {
             expect(firstCheckbox.checked).toBe(true);
         });
-
         fireEvent.click(firstCheckbox);
-
         await waitFor(() => {
             expect(firstCheckbox.checked).toBe(false);
         });
@@ -70,7 +61,6 @@ describe('TaskDependency', () => {
 
     it('should render loading state when searching for tasks', async () => {
         server.use(filterTaskHandler);
-
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
@@ -79,14 +69,12 @@ describe('TaskDependency', () => {
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
             </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            { query: { dev: 'true' } }
         );
-
         const loadingText = await waitFor(() => getByText('Loading...'));
         expect(loadingText).toBeInTheDocument();
     });
+
     it('should render DependencyList when isEditing is false', async () => {
         const { queryByRole, getByTestId } = renderWithRouter(
             <Provider store={store()}>
@@ -96,9 +84,7 @@ describe('TaskDependency', () => {
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
             </Provider>,
-            {
-                push: mockNavigateToTask,
-            }
+            { push: mockNavigateToTask }
         );
 
         const textarea = queryByRole('textbox');
