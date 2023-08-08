@@ -83,7 +83,9 @@ const Card: FC<CardProps> = ({
     const [isLoadingSuggestions, setIsLoadingSuggestions] =
         useState<boolean>(false);
     const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
-    const [assigneeName, setAssigneeName] = useState<string>('');
+    const [assigneeName, setAssigneeName] = useState<string>(
+        cardDetails.assignee ?? ''
+    );
     const inputRef = useRef<HTMLInputElement>(null);
 
     const router = useRouter();
