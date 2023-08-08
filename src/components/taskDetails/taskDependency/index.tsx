@@ -22,6 +22,7 @@ const TaskInput: FC<{
         value={searchTerm}
         onChange={handleChange}
         testId="dependency-textarea"
+        placeholder="Search for task"
     />
 );
 
@@ -92,7 +93,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     return (
         <>
             {isEditing && (
-                <div className={classNames.task_dependency_search_dropdown}>
+                <div>
                     <TaskInput
                         searchTerm={searchTerm}
                         handleChange={handleChange}
@@ -100,11 +101,13 @@ const TaskDependency: FC<TaskDependencyProps> = ({
                     {isLoading && <p>Loading...</p>}
                     {isError && <p>No task found</p>}
                     {searchResults && searchResults.tasks && (
-                        <TaskCheckbox
-                            tasks={searchResults.tasks}
-                            selectedTasks={selectedTasks}
-                            handleSelectTask={handleSelectTask}
-                        />
+                        <div>
+                            <TaskCheckbox
+                                tasks={searchResults.tasks}
+                                selectedTasks={selectedTasks}
+                                handleSelectTask={handleSelectTask}
+                            />
+                        </div>
                     )}
                 </div>
             )}

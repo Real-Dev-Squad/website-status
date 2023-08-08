@@ -31,6 +31,7 @@ export type TextAreaProps = {
     value: string | undefined;
     onChange: ChangeEventHandler;
     testId: string;
+    placeholder: string;
 };
 
 export type TaskDependencyProps = {

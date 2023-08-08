@@ -133,7 +133,10 @@ $off-white: #f0f0f0;
 .task_dependency_search_dropdown {
     max-height: 5rem;
     overflow-y: scroll;
-    padding: 0.5rem 0 0.5rem 0;
+    padding: 4px 0 4px 0;
+    div {
+        padding: 2px 0 2px 0;
+    }
 }
 
 @media only screen and (max-width: 750px) {
