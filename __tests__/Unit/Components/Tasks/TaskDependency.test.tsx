@@ -24,32 +24,6 @@ describe('TaskDependency', () => {
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
 
-    it.skip('should update editedDependencies state when dependencies change', () => {
-        const { getByTestId } = renderWithRouter(
-            <Provider store={store()}>
-                <TaskDependency
-                    isEditing={true}
-                    taskDependencyIds={TaskDependencyIds}
-                    setEditedTaskDetails={setEditedTaskDetails}
-                />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
-        );
-
-        const textarea = getByTestId('dependency-textarea');
-        const event = { target: { value: 'task1, task2, task3' } };
-
-        fireEvent.change(textarea, event);
-
-        expect(setEditedTaskDetails).toHaveBeenCalledWith(
-            expect.objectContaining({
-                dependsOn: expect.arrayContaining(['task1', 'task2', 'task3']),
-            })
-        );
-    });
-
     it('should select/unselect a task when checkbox is clicked', async () => {
         mockedUseGetAllTasksQuery.mockReturnValue({
             data: {
@@ -66,7 +40,7 @@ describe('TaskDependency', () => {
         const { container } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDependency
-                    taskDependencyIds={TaskDependencyIds}
+                    taskDependencyIds={[]} // Provide an empty array or relevant data
                     isEditing={true}
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
@@ -75,11 +49,23 @@ describe('TaskDependency', () => {
                 query: { dev: 'true' },
             }
         );
-        const checkbox = container.querySelectorAll(
-            'input[type="checkbox"]'
-        )[0] as HTMLInputElement;
-        fireEvent.click(checkbox);
-        expect(checkbox.checked).toBe(true);
+
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        const firstCheckbox = checkboxes[0] as HTMLInputElement;
+
+        expect(firstCheckbox.checked).toBe(false);
+
+        fireEvent.click(firstCheckbox);
+
+        await waitFor(() => {
+            expect(firstCheckbox.checked).toBe(true);
+        });
+
+        fireEvent.click(firstCheckbox);
+
+        await waitFor(() => {
+            expect(firstCheckbox.checked).toBe(false);
+        });
     });
 
     it('should render loading state when searching for tasks', async () => {
