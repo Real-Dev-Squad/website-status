@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -36,7 +36,7 @@ const DEFAULT_PROPS = {
         type: 'feature',
         createdBy: 'ankush',
     },
-    shouldEdit: false,
+    shouldEdit: true,
     onContentChange: jest.fn(),
 };
 
@@ -45,7 +45,7 @@ jest.mock('@/hooks/useUserData', () => {
         data: {
             roles: {
                 admin: true,
-                super_user: false,
+                super_user: true,
             },
         },
         isUserAuthorized: true,
@@ -139,6 +139,23 @@ describe('Task card', () => {
         });
 
         expect(queryByTestId('edit-button')).toBeInTheDocument();
+    });
+    test('task should be editable if edit button clicked', async () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+        const component = getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        await screen.findByTestId('assignee-input');
     });
 
     it('Should render "Close task" button when parent issue is closed', function () {
