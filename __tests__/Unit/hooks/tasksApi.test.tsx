@@ -8,6 +8,7 @@ import { store } from '@/app/store';
 import {
     useAddTaskMutation,
     useGetAllTasksQuery,
+    useUpdateSelfTaskMutation,
     useUpdateTaskMutation,
     useGetMineTasksQuery,
 } from '@/app/services/tasksApi';
@@ -18,6 +19,7 @@ import {
     failedGetMineTask,
     failedGetTasks,
     failedGetTasksResponse,
+    failedUpdateSelfTaskHandler,
     failedUpdateTaskHandler,
 } from '../../../__mocks__/handlers/tasks.handler';
 
@@ -34,11 +36,10 @@ function Wrapper({
 }
 describe('useGetAllTasksQuery()', () => {
     test('returns all tasks', async () => {
-        const dev = false;
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as boolean,
+                    status: 'all',
                 }),
             {
                 wrapper: Wrapper,
@@ -59,11 +60,10 @@ describe('useGetAllTasksQuery()', () => {
 
     test('should fail to return all tasks with error', async () => {
         server.use(failedGetTasks);
-        const dev = false;
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as boolean,
+                    status: 'all',
                 }),
             {
                 wrapper: Wrapper,
@@ -83,36 +83,10 @@ describe('useGetAllTasksQuery()', () => {
             failedGetTasksResponse
         );
     });
-    test('returns all tasks if dev is true', async () => {
-        const dev = true;
+    test('returns filtered tasks', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as boolean,
-                    status: 'all',
-                }),
-            {
-                wrapper: Wrapper,
-            }
-        );
-        const initialResponse = result.current;
-        expect(initialResponse.data).toBeUndefined();
-        expect(initialResponse.isLoading).toBe(true);
-
-        await act(() => waitForNextUpdate());
-
-        const nextResponse = result.current;
-        const tasksData = nextResponse.data;
-        expect(tasksData).not.toBeUndefined();
-        expect(nextResponse.isLoading).toBe(false);
-        expect(nextResponse.isSuccess).toBe(true);
-    });
-    test('returns filtered tasks if dev is true', async () => {
-        const dev = true;
-        const { result, waitForNextUpdate } = renderHook(
-            () =>
-                useGetAllTasksQuery({
-                    dev: dev as boolean,
                     status: 'blocked',
                 }),
             {
@@ -132,11 +106,9 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isSuccess).toBe(true);
     });
     test('returns next page of tasks', async () => {
-        const dev = true;
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as boolean,
                     nextTasks:
                         '/tasks?status=AVAILABLE&dev=true&size=5&next=yVC1KqYuUTZdkUFqF9NY',
                 }),
@@ -158,11 +130,9 @@ describe('useGetAllTasksQuery()', () => {
     });
 
     test('returns prev page of tasks', async () => {
-        const dev = true;
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    dev: dev as boolean,
                     prevTasks:
                         '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
                 }),
@@ -322,11 +292,16 @@ describe('useUpdateTaskMutation()', () => {
             message: 'Task not found',
         });
     });
+});
 
-    test('updates a task with the isDevEnabled set to true', async () => {
-        const taskId = '1eJhUW19D556AhPEpdPr';
+describe('useUpdateSelfTaskMutation', () => {
+    const updatedSelfTaskData = {
+        status: 'COMPLETED',
+    };
+    test('updates a task', async () => {
+        const taskId = '1eJhUW19D556AhPEpdRd';
         const { result, waitForNextUpdate } = renderHook(
-            () => useUpdateTaskMutation(),
+            () => useUpdateSelfTaskMutation(),
             {
                 wrapper: Wrapper,
             }
@@ -337,9 +312,8 @@ describe('useUpdateTaskMutation()', () => {
 
         act(() => {
             const task = {
-                task: updatedTaskData,
+                task: updatedSelfTaskData,
                 id: taskId,
-                isDevEnabled: true,
             };
             updateTask(task);
         });
@@ -355,8 +329,35 @@ describe('useUpdateTaskMutation()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.status).toBe(QueryStatus.fulfilled);
     }, 7000);
-});
 
+    test('should fail to update a task with error when invalid id is passed', async () => {
+        server.use(failedUpdateSelfTaskHandler);
+        const { result, waitForNextUpdate } = renderHook(
+            () => useUpdateSelfTaskMutation(),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const [updateTask, initialResponse] = result.current;
+        expect(initialResponse.isLoading).toBe(false);
+        expect(initialResponse.data).toBeUndefined();
+
+        act(() => {
+            updateTask({ task: updatedSelfTaskData, id: 'incorrectId' });
+        });
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current[1];
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 404);
+        expect(nextResponse.error).toHaveProperty('data', {
+            statusCode: 404,
+            error: 'Not Found',
+            message: 'Task not found',
+        });
+    });
+});
 describe('useGetMineTasksQuery()', () => {
     test('returns all tasks', async () => {
         const { result, waitForNextUpdate } = renderHook(

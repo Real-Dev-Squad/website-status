@@ -63,7 +63,6 @@ export function Select({ value, onChange, options }: SelectProps) {
     return (
         <div
             ref={containerRef}
-            onBlur={() => setIsOpen(false)}
             onClick={() => {
                 setIsOpen((prev) => !prev);
             }}
@@ -85,10 +84,8 @@ export function Select({ value, onChange, options }: SelectProps) {
             >
                 {options.map((option, index) => (
                     <li
-                        onClick={() => {
-                            onOptionClick(option);
-                        }}
-                        onPointerEnter={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
                             onOptionClick(option);
                         }}
                         onMouseEnter={() => setHighlightedIndex(index)}
