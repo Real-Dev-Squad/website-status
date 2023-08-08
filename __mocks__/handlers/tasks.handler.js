@@ -135,10 +135,7 @@ export const mineTasksErrorHandler = rest.get(
 
 export const filterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
     const searchTerm = req.url.searchParams.get('q');
-    console.log(searchTerm);
-    
     const filteredTasks = tasks.filter(task => task.title.includes(searchTerm));
-    console.log(filteredTasks);
 
     return res(
         ctx.status(200),
