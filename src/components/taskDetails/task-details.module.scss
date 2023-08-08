@@ -25,13 +25,20 @@ $off-white: #f0f0f0;
 .button {
     display: block;
     font-size: 1rem;
-    width: 5rem;
-    background-color: $theme-blue;
-    color: $white;
+    min-width: 5rem;
+    background-color: $off-white;
+    color: $theme-blue;
     border-radius: 0.5rem;
+    outline: none;
+    border: 1px solid $theme-blue;
     padding: 0.5rem;
     font-weight: bold;
     cursor: pointer;
+
+    &:hover {
+        background-color: $theme-blue;
+        color: $white;
+    }
 }
 
 .detailsContainer {

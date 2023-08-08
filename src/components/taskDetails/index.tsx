@@ -282,17 +282,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            {isDevModeEnabled && (
-                                <button
-                                    onClick={() =>
-                                        router.push(
-                                            `/progress/${taskID}?dev=true`
-                                        )
-                                    }
-                                >
-                                    Update Progress
-                                </button>
-                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
@@ -331,14 +320,36 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     )}
                                 />
                             </TaskContainer>
-                            <TaskContainer
-                                hasImg={false}
-                                title="Request for task"
-                            >
-                                <button onClick={taskRequestHandle}>
-                                    Request for task
-                                </button>
-                            </TaskContainer>
+                            {isDevModeEnabled && (
+                                <>
+                                    <TaskContainer
+                                        hasImg={false}
+                                        title="Request for task"
+                                    >
+                                        <button
+                                            className={classNames.button}
+                                            onClick={taskRequestHandle}
+                                        >
+                                            Request for task
+                                        </button>
+                                    </TaskContainer>
+                                    <TaskContainer
+                                        hasImg={false}
+                                        title="Update Progress"
+                                    >
+                                        <button
+                                            className={classNames.button}
+                                            onClick={() =>
+                                                router.push(
+                                                    `/progress/${taskID}?dev=true`
+                                                )
+                                            }
+                                        >
+                                            Update Progress
+                                        </button>
+                                    </TaskContainer>
+                                </>
+                            )}
                         </section>
                     </section>
                 </div>
