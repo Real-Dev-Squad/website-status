@@ -10,7 +10,6 @@ $card-text: #78716c;
     border-radius: 0.5rem;
     transition: 0.2s ease-out;
     display: flex;
-    flex-direction: column;
     margin: 1rem auto;
     justify-content: space-between;
     position: relative;
@@ -20,6 +19,38 @@ $card-text: #78716c;
         filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.02))
             drop-shadow(0 8px 5px rgba(0, 0, 0, 0.06));
     }
+
+    @media (max-width: 64rem) {
+        flex-direction: column;
+    }
+}
+
+.actions {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    @media (max-width: 64rem) {
+        flex-direction: row;
+        width: 100%;
+    }
+}
+
+.card_details {
+    display: flex;
+    flex-direction: column;
+}
+
+.assign {
+    width: 9rem;
+    margin-left: 0.5rem;
+    margin-bottom: 1rem;
+    line-height: 2rem;
+}
+
+.assign_label {
+    margin-left: 0.5rem;
+    line-height: 1rem;
+    margin-bottom: 0;
 }
 
 .card__top__details__button {
