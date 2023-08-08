@@ -4,11 +4,49 @@ import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import useDebounce from '@/hooks/useDebounce';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
+import classNames from '../task-details.module.scss';
 
 interface Task {
     id: string;
     title: string;
 }
+
+const TaskInput: FC<{
+    searchTerm: string;
+    handleChange: (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+}> = ({ searchTerm, handleChange }) => (
+    <>
+        <Textarea
+            name="dependsOn"
+            value={searchTerm}
+            onChange={handleChange}
+            testId="dependency-textarea"
+        />
+    </>
+);
+
+const TaskCheckbox: FC<{
+    tasks: Task[];
+    selectedTasks: Task[];
+    handleSelectTask: (task: Task) => void;
+}> = ({ tasks, selectedTasks, handleSelectTask }) => (
+    <div className={classNames['task_dependency_search_dropdown']}>
+        {tasks.map((task: Task) => (
+            <div key={task.id}>
+                <input
+                    data-testid="taskCheckbox"
+                    type="checkbox"
+                    checked={selectedTasks.some((t) => t.id === task.id)}
+                    onChange={() => handleSelectTask(task)}
+                />
+                {task.title}
+            </div>
+        ))}
+    </div>
+);
+
 const TaskDependency: FC<TaskDependencyProps> = ({
     taskDependencyIds,
     isEditing,
@@ -38,7 +76,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
         }));
     }, [selectedTasks, setEditedTaskDetails]);
 
-    const handleDependenciesChange = (
+    const handleChange = (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setSearchTerm(event.target.value);
@@ -56,30 +94,19 @@ const TaskDependency: FC<TaskDependencyProps> = ({
     return (
         <>
             {isEditing && (
-                <div>
-                    <Textarea
-                        name="dependsOn"
-                        value={searchTerm}
-                        onChange={handleDependenciesChange}
-                        testId="dependency-textarea"
+                <div className={classNames.task_dependency_search_dropdown}>
+                    <TaskInput
+                        searchTerm={searchTerm}
+                        handleChange={handleChange}
                     />
                     {isLoading && <p>Loading...</p>}
                     {isError && <p>No task found</p>}
                     {searchResults && searchResults.tasks && (
-                        <div>
-                            {searchResults.tasks.map((task: Task) => (
-                                <div key={task.id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedTasks.some(
-                                            (t) => t.id === task.id
-                                        )}
-                                        onChange={() => handleSelectTask(task)}
-                                    />
-                                    {task.title}
-                                </div>
-                            ))}
-                        </div>
+                        <TaskCheckbox
+                            tasks={searchResults.tasks}
+                            selectedTasks={selectedTasks}
+                            handleSelectTask={handleSelectTask}
+                        />
                     )}
                 </div>
             )}

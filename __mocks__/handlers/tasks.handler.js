@@ -1,4 +1,4 @@
-import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, } from '../db/tasks';
+import { tasks, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS } from '../db/tasks';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -105,7 +105,7 @@ export const mineTasksHandler = [
     }),
 ];
 
-export const failedGetMineTask = rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
+export const failedGetMineTask= rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
     return res(ctx.status(500), ctx.json(failedGetTasksResponse));
 });
 
@@ -133,21 +133,33 @@ export const mineTasksErrorHandler = rest.get(
     }
 );
 
-export const filterTaskHandler = rest.get(`${URL}/tasks?q=searchTerm:task`, (_, res, ctx) => {
+export const filterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
+    const searchTerm = req.url.searchParams.get('q');
+    console.log(searchTerm);
+    
+    const filteredTasks = tasks.filter(task => task.title.includes(searchTerm));
+    console.log(filteredTasks);
+
     return res(
         ctx.status(200),
         ctx.json({
             message: 'Filter tasks returned successfully!',
-            tasks: tasks,
+            tasks: filteredTasks,
         })
     );
 });
-export const failedfilterTaskHandler = rest.get(`${URL}/tasks?q=searchTerm:`, (_, res, ctx) => {
-    return res(
-        ctx.status(404),
-        ctx.json(failedFilterTasksResponse)
-    );
+
+export const failedfilterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
+    const searchTerm = req.url.searchParams.get('q');
+    if (searchTerm === 'searchTerm:') {
+        return res(
+            ctx.status(404),
+            ctx.json(failedFilterTasksResponse)
+        );
+    }
+    return res();
 });
+
 export const failedFilterTasksResponse = {
     message: 'No task found.',
     tasks: [],

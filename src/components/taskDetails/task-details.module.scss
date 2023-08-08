@@ -130,6 +130,12 @@ $off-white: #f0f0f0;
     text-align: center;
 }
 
+.task_dependency_search_dropdown {
+    max-height: 5rem;
+    overflow-y: scroll;
+    padding: 0.5rem 0 0.5rem 0;
+}
+
 @media only screen and (max-width: 750px) {
     .detailsContainer {
         flex-direction: column;

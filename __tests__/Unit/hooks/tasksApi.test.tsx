@@ -155,7 +155,7 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
-    test.only('returns search term based filtered tasks', async () => {
+    test('returns search term based filtered tasks', async () => {
         server.use(filterTaskHandler);
         const { result, waitForNextUpdate } = renderHook(
             () =>
@@ -178,7 +178,7 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
-    test.only('should fail to return filter task', async () => {
+    test('should fail to return filter task', async () => {
         server.use(failedfilterTaskHandler);
         const { result, waitForNextUpdate } = renderHook(
             () =>
