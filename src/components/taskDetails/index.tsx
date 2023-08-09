@@ -321,12 +321,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 />
                             </TaskContainer>
                             {isDevModeEnabled && (
-                                <>
+                                <div>
                                     <TaskContainer
                                         hasImg={false}
                                         title="Request for task"
                                     >
                                         <button
+                                            data-testid="request-task-button"
                                             className={classNames.button}
                                             onClick={taskRequestHandle}
                                         >
@@ -338,6 +339,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         title="Update Progress"
                                     >
                                         <button
+                                            data-testid="update-progress-button"
                                             className={classNames.button}
                                             onClick={() =>
                                                 router.push(
@@ -348,7 +350,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             Update Progress
                                         </button>
                                     </TaskContainer>
-                                </>
+                                </div>
                             )}
                         </section>
                     </section>
