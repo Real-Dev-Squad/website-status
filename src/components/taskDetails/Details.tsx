@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
+import { GITHUB_LOGO } from '@/constants/url';
 
 type Props = {
     detailType: string;
@@ -8,6 +9,10 @@ type Props = {
 };
 
 const Details: FC<Props> = ({ detailType, value }) => {
+    const isGitHubLink = detailType === 'Link';
+    const openGitIssueLink = () => {
+        window.open(value, '_blank');
+    };
     return (
         <div>
             <span className={classNames.detailType}>{detailType}:</span>
@@ -15,7 +20,26 @@ const Details: FC<Props> = ({ detailType, value }) => {
                 className={classNames.detailValue}
                 style={{ color: setColor?.[value] ?? 'black' }}
             >
-                {value ?? 'N/A'}
+                {isGitHubLink && value ? (
+                    <button
+                        className={classNames.button}
+                        onClick={openGitIssueLink}
+                    >
+                        <img
+                            className={classNames.icon}
+                            src={GITHUB_LOGO}
+                            alt="Git Icon"
+                        />{' '}
+                        Open Git Issue
+                    </button>
+                ) : (
+                    <span
+                        className={classNames.detailValue}
+                        style={{ color: setColor?.[value] ?? 'black' }}
+                    >
+                        {value ?? 'N/A'}
+                    </span>
+                )}
             </span>
         </div>
     );
