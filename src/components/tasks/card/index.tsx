@@ -516,9 +516,9 @@ const Card: FC<CardProps> = ({
             </div>
 
             <div className={classNames.contributor}>
-                <span className={classNames.cardSpecialFont}>
+                <p className={classNames.cardSpecialFont}>
                     {cardDetails.assignee ? 'Assigned to' : 'Assign to'}
-                </span>
+                </p>
                 <span className={classNames.contributorImage}>
                     <Image
                         src={assigneeProfileImageURL}
@@ -559,9 +559,9 @@ const Card: FC<CardProps> = ({
                           </div>
                       )
                     : cardDetails.assignee && (
-                          <span className={classNames.cardStrongFont}>
+                          <p className={classNames.cardStrongFont}>
                               {cardDetails.assignee}
-                          </span>
+                          </p>
                       )}
                 {showAssignButton() && <AssigneeButton />}
             </div>
