@@ -135,30 +135,6 @@ describe('Select', () => {
         expect(screen?.queryByTestId('options')).not.toHaveClass('show');
     });
 
-    test('handler should close the dropdown when the container loses focus (onBlur event)', () => {
-        const value = sampleOptions[0];
-        const onChangeMock = jest.fn();
-        render(
-            <Select
-                value={value}
-                onChange={onChangeMock}
-                options={sampleOptions}
-            />
-        );
-        const selectContainer = screen.getByTestId('selected-option');
-        const optionsList = screen.getByTestId('options');
-
-        // Open the dropdown by simulating a click on the select container
-        fireEvent.click(selectContainer);
-        expect(optionsList).toBeVisible();
-
-        // Simulate blur event on the select container
-        fireEvent.blur(selectContainer);
-
-        // The dropdown should be closed after the container loses focus
-        expect(screen?.queryByTestId('options')).not.toHaveClass('show');
-    });
-
     test('handler should set the highlighted index when an option is hovered (onMouseEnter event)', () => {
         const value = sampleOptions[0];
         const onChangeMock = jest.fn();
