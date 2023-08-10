@@ -1,5 +1,6 @@
 $white: #fff;
 $theme-blue: #1d1283;
+$theme-blue-light: #2e1da3;
 $light-black: rgba(0, 0, 0, 0.778);
 $off-white: #f0f0f0;
 
@@ -25,13 +26,20 @@ $off-white: #f0f0f0;
 .button {
     display: block;
     font-size: 1rem;
-    width: 5rem;
-    background-color: $theme-blue;
-    color: $white;
+    min-width: 5rem;
+    background-color: $theme-blue-light;
+    color: $off-white;
     border-radius: 0.5rem;
+    outline: none;
+    border: 1px solid $theme-blue;
     padding: 0.5rem;
     font-weight: bold;
     cursor: pointer;
+
+    &:hover {
+        background-color: $theme-blue;
+        color: $white;
+    }
 }
 
 .detailsContainer {

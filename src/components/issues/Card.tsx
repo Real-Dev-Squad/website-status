@@ -6,12 +6,14 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
 import { TASKS_URL } from '../../constants/url';
+import useUserData from '@/hooks/useUserData';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
     const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
+    const { isUserAuthorized } = useUserData();
 
     const getIssueInfo = () => {
         const issueInfo: any = {
@@ -119,7 +121,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             <div className={styles.actions}>
                 <button
                     className={styles.card__top__button}
-                    disabled={taskExists || isLoading}
+                    disabled={taskExists || isLoading || !isUserAuthorized}
                     onClick={handleClick}
                 >
                     Convert to task
