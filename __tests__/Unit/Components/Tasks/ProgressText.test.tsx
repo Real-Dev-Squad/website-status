@@ -1,4 +1,4 @@
-import HandleProgressText from '@/components/tasks/card/ProgressText';
+import HandleProgressText from '@/components/tasks/card/progressBar/ProgressText';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 const DefaultProps = {
