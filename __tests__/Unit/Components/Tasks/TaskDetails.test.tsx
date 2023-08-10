@@ -264,10 +264,12 @@ describe('TaskDetails Page', () => {
             fireEvent.click(editButton);
         });
 
-        await waitFor(() => {
+        await waitFor(async () => {
             const saveButton = screen.getByRole('button', { name: 'Save' });
             fireEvent.click(saveButton);
-            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+            expect(
+                await screen.findByText(/Successfully saved/i)
+            ).not.toBeNull();
         });
     });
 
