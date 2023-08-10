@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { handleProgressTextProps } from '@/interfaces/task.type';
-import { Loader } from './Loader';
+import { Loader } from '../Loader';
 
 const HandleProgressText: FC<handleProgressTextProps> = ({
     handleProgressUpdate,

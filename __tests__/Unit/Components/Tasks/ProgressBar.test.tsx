@@ -1,7 +1,7 @@
 import { store } from '@/app/store';
-import HandleProgressbar from '@/components/tasks/card/ProgressBar';
-import ProgressIndicator from '@/components/tasks/card/ProgressIndicator';
-import ProgressSlider from '@/components/tasks/card/ProgressSlider';
+import HandleProgressbar from '@/components/tasks/card/progressBar/ProgressBar';
+import ProgressIndicator from '@/components/tasks/card/progressBar/ProgressIndicator';
+import ProgressSlider from '@/components/tasks/card/progressBar/ProgressSlider';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';

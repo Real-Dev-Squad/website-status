@@ -1,4 +1,4 @@
-import ProgressSlider from '@/components/tasks/card/ProgressSlider';
+import ProgressSlider from '@/components/tasks/card/progressBar/ProgressSlider';
 import { fireEvent, render, screen } from '@testing-library/react';
 
 describe('Progress Slider', () => {

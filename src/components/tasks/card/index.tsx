@@ -31,8 +31,8 @@ import {
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import { useGetUserQuery } from '@/app/services/userApi';
-import HandleProgressText from './ProgressText';
-import HandleProgressbar from './ProgressBar';
+import HandleProgressText from './progressBar/ProgressText';
+import HandleProgressbar from './progressBar/ProgressBar';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import {
