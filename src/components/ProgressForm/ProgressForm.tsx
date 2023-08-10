@@ -87,6 +87,7 @@ const ProgressForm = ({ questions }: formProps) => {
                 className={buttonSyle}
                 onClick={(e) => handleSubmit(e)}
                 type="submit"
+                data-testid="submit"
             >
                 Submit
             </button>

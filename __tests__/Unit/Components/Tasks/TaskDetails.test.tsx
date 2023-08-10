@@ -12,6 +12,8 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
 import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
+import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
+import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -247,6 +249,8 @@ describe('TaskDetails Page', () => {
     });
 
     test('should update the title and description with the new values', async () => {
+        server.use(...taskDetailsHandler);
+
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
@@ -365,7 +369,9 @@ describe('Update Progress button', () => {
         );
 
         await waitFor(() => {
-            const updateProgressButton = screen.getByText('Update Progress');
+            const updateProgressButton = screen.getByTestId(
+                'update-progress-button'
+            );
             expect(updateProgressButton).toBeInTheDocument();
             fireEvent.click(updateProgressButton);
             expect(mockNavigateToUpdateProgressPage).toHaveBeenLastCalledWith(
@@ -382,6 +388,111 @@ describe('Update Progress button', () => {
         );
         const updateProgressButton = screen.queryByText('Update Progress');
         expect(updateProgressButton).not.toBeInTheDocument();
+    });
+
+    it('renders the Request for Task button when ?dev=true query parameter is present', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestForTaskButton = screen.getByTestId(
+                'request-task-button'
+            );
+            expect(requestForTaskButton).toBeInTheDocument();
+        });
+    });
+
+    it('Should not render the Request for Task button when ?dev=true query parameter is absent', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        const requestForTaskButton = screen.queryByText('Request for Task');
+        expect(requestForTaskButton).not.toBeInTheDocument();
+    });
+});
+
+describe('Task Details > Task Request', () => {
+    it('should show task request button when dev is true', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /request for task/i })
+            ).not.toBeNull();
+        });
+    });
+
+    it('should not show task request button when dev is false', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /request for task/i })
+            ).toBeNull();
+        });
+    });
+
+    it('Success toast should be shown on success', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /request for task/i })
+            ).not.toBeNull();
+        });
+
+        const taskRequestButton = screen.getByRole('button', {
+            name: /request for task/i,
+        });
+        fireEvent.click(taskRequestButton);
+
+        await waitFor(() => {
+            screen.getByText(/successfully requested for task/i);
+        });
+    });
+
+    it('Error toast should be shown on error', async () => {
+        server.use(...taskRequestErrorHandler);
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            screen.getByRole('button', { name: /request for task/i });
+        });
+
+        const taskRequestButton = screen.getByRole('button', {
+            name: /request for task/i,
+        });
+        fireEvent.click(taskRequestButton);
+
+        await waitFor(() => {
+            expect(screen.queryByText(/taskId not provided/i)).not.toBeNull();
+        });
     });
 });
 

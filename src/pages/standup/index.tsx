@@ -7,6 +7,8 @@ import useAuthenticated from '@/hooks/useAuthenticated';
 import StandUpContainer from '@/components/standup';
 import PageNotFound from '../404';
 
+import styles from '@/components/standup/standupContainer.module.scss';
+
 const StandUp: FC = memo(function StandUp() {
     const { isLoggedIn, isLoading } = useAuthenticated();
 
@@ -23,7 +25,7 @@ const StandUp: FC = memo(function StandUp() {
             }
         } else {
             return (
-                <div>
+                <div className={styles.notAuthenticated}>
                     <p>You are not Authorized</p>
                     <a href={LOGIN_URL} target="_blank" rel="noreferrer">
                         Click here to Login

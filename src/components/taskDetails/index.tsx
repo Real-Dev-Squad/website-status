@@ -27,6 +27,7 @@ import TaskDependency from '@/components/taskDetails/taskDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
+import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -63,7 +64,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { query } = router;
     const isDevModeEnabled = query.dev === 'true' ? true : false;
 
-    const { isUserAuthorized } = useUserData();
+    const { isUserAuthorized, data: userData } = useUserData();
 
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
@@ -79,6 +80,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [editedTaskDetails, setEditedTaskDetails] = useState<
         taskDetailsDataType['taskData'] | undefined
     >(data?.taskData);
+
+    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
+        useAddOrUpdateMutation();
 
     useEffect(() => {
         if (data?.taskData) {
@@ -136,6 +140,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                 ? { [name]: name === 'dependsOn' ? [value] : value }
                 : {}),
         }));
+    }
+
+    function taskRequestHandle() {
+        if (!userData) {
+            return;
+        }
+        addOrUpdateTaskRequest({ taskId: taskID, userId: userData.id })
+            .unwrap()
+            .then(() => toast(SUCCESS, 'Successfully requested for task'))
+            .catch((error) => toast(ERROR, error.data.message));
     }
 
     function renderLoadingComponent() {
@@ -290,17 +304,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         </section>
 
                         <section className={classNames.rightContainer}>
-                            {isDevModeEnabled && (
-                                <button
-                                    onClick={() =>
-                                        router.push(
-                                            `/progress/${taskID}?dev=true`
-                                        )
-                                    }
-                                >
-                                    Update Progress
-                                </button>
-                            )}
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
@@ -339,6 +342,38 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     )}
                                 />
                             </TaskContainer>
+                            {isDevModeEnabled && (
+                                <div>
+                                    <TaskContainer
+                                        hasImg={false}
+                                        title="Request for task"
+                                    >
+                                        <button
+                                            data-testid="request-task-button"
+                                            className={classNames.button}
+                                            onClick={taskRequestHandle}
+                                        >
+                                            Request for task
+                                        </button>
+                                    </TaskContainer>
+                                    <TaskContainer
+                                        hasImg={false}
+                                        title="Update Progress"
+                                    >
+                                        <button
+                                            data-testid="update-progress-button"
+                                            className={classNames.button}
+                                            onClick={() =>
+                                                router.push(
+                                                    `/progress/${taskID}?dev=true`
+                                                )
+                                            }
+                                        >
+                                            Update Progress
+                                        </button>
+                                    </TaskContainer>
+                                </div>
+                            )}
                         </section>
                     </section>
                 </div>
