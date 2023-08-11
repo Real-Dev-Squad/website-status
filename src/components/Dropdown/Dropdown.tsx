@@ -17,15 +17,6 @@ export const logout = () => {
 };
 
 const Dropdown = () => {
-    // // const logout = () => {
-    // //     fetch(LOGOUT_URL, {
-    // //         method: 'GET',
-    // //         credentials: 'include',
-    // //     }).then(() => {
-    // //         location.reload();
-    // //     });
-    // };
-
     return (
         <div className={styles.dropdown} data-testid="dropdown">
             <ul className={styles.dropdownList} data-testid="options">
