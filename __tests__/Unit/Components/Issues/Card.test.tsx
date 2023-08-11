@@ -6,6 +6,20 @@ import {
     issueResponseNullBody,
     issuesResponseSearchedWithQuery,
 } from '../../../../__mocks__/db/issues';
+import { renderWithProviders } from '@/test-utils/renderWithProvider';
+
+jest.mock('@/hooks/useUserData', () => {
+    return () => ({
+        data: {
+            roles: {
+                admin: true,
+                super_user: false,
+            },
+        },
+        isUserAuthorized: true,
+        isSuccess: true,
+    });
+});
 
 describe('Issue card', () => {
     test('Should render issue title correctly', () => {
@@ -20,7 +34,7 @@ describe('Issue card', () => {
         expect(titleElement).toBeInTheDocument();
     });
     test('Should render issue information correctly', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
         expect(
@@ -30,7 +44,7 @@ describe('Issue card', () => {
     });
 
     test('Should render issue created by information correctly', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
         const date = new Date(
@@ -48,7 +62,7 @@ describe('Issue card', () => {
     });
 
     test('Should render the assignee information correctly', () => {
-        const screen = render(
+        const screen = renderWithProviders(
             <Card issue={issuesResponseSearchedWithQuery[0]} />
         );
         const assignee = screen.getByText(

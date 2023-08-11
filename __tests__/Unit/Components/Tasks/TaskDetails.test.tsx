@@ -369,7 +369,9 @@ describe('Update Progress button', () => {
         );
 
         await waitFor(() => {
-            const updateProgressButton = screen.getByText('Update Progress');
+            const updateProgressButton = screen.getByTestId(
+                'update-progress-button'
+            );
             expect(updateProgressButton).toBeInTheDocument();
             fireEvent.click(updateProgressButton);
             expect(mockNavigateToUpdateProgressPage).toHaveBeenLastCalledWith(
@@ -386,6 +388,32 @@ describe('Update Progress button', () => {
         );
         const updateProgressButton = screen.queryByText('Update Progress');
         expect(updateProgressButton).not.toBeInTheDocument();
+    });
+
+    it('renders the Request for Task button when ?dev=true query parameter is present', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestForTaskButton = screen.getByTestId(
+                'request-task-button'
+            );
+            expect(requestForTaskButton).toBeInTheDocument();
+        });
+    });
+
+    it('Should not render the Request for Task button when ?dev=true query parameter is absent', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        const requestForTaskButton = screen.queryByText('Request for Task');
+        expect(requestForTaskButton).not.toBeInTheDocument();
     });
 });
 
