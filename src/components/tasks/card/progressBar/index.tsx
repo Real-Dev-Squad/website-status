@@ -20,8 +20,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     const router = useRouter();
     const { dev } = router.query;
 
-    const cardDetails = content;
-
     const [progress, setProgress] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
 
@@ -57,8 +55,8 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
         }
     };
 
-    const progressDebounce = () => {
-        handleSliderChangeComplete(cardDetails.id, progressValue);
+    const handleDebounceProgress = () => {
+        handleSliderChangeComplete(content.id, progressValue);
         setProgress(false);
     };
 
@@ -67,7 +65,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
             clearTimeout(debounceTimeOut);
         }
         setTimeout(() => {
-            progressDebounce();
+            handleDebounceProgress();
         }, 1000);
     };
 
