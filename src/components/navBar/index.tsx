@@ -18,14 +18,15 @@ import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
 import { Loader } from '../tasks/card/Loader';
 import useUserData from '@/hooks/useUserData';
+import useAuthenticated from '@/hooks/useAuthenticated';
 
 const NavBar = () => {
-    const isLoggedIn = true;
+    const { isLoggedIn } = useAuthenticated();
 
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
-    const { data: userData, isUserAuthorized } = useUserData();
+    const { data: userData } = useUserData();
 
     return (
         <nav data-testid="navbar" className={styles.navBar}>

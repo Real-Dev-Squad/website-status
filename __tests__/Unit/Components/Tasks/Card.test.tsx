@@ -245,6 +245,12 @@ describe('Task card', () => {
             name: /Assign to john/i,
         });
         expect(closeTaskBtn).toBeInTheDocument();
+
+        const dummyNameImage = screen.getByAltText('Dummy Name');
+        const assignToText = screen.getByText('Assign to');
+
+        expect(dummyNameImage).toBeInTheDocument();
+        expect(assignToText).toBeInTheDocument();
     });
 
     it('Should not render "Assign to username" button when parent issue has an assignee and is open, the task status is "Completed" and has not been assigned', function () {
@@ -278,5 +284,103 @@ describe('Task card', () => {
             name: /Assign to john/i,
         });
         expect(closeTaskBtn).not.toBeInTheDocument();
+    });
+
+    it('Should show test "Assigned to" when the task has an assignee', function () {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>
+        );
+
+        const assignedToText = screen.getByText('Assigned to');
+        expect(assignedToText).toBeInTheDocument();
+        const assignToText = screen.queryByText('Assign to');
+        expect(assignToText).not.toBeInTheDocument();
+    });
+
+    it('Should show test "Assign to" when the task does not have an assignee', function () {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                assignee: undefined,
+            },
+        };
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} />
+            </Provider>
+        );
+
+        const assignedToText = screen.queryByText('Assigned to');
+        expect(assignedToText).not.toBeInTheDocument();
+        const assignToText = screen.getByText('Assign to');
+        expect(assignToText).toBeInTheDocument();
+    });
+
+    it('Should render task assignee name in user input search field in edit mode', async () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} shouldEdit={true} />
+            </Provider>,
+            {}
+        );
+
+        const taskCard = screen.getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(taskCard, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editIcon = screen.getByTestId('edit-button');
+        expect(editIcon).toBeInTheDocument();
+
+        act(() => {
+            fireEvent.click(editIcon);
+            jest.advanceTimersByTime(300);
+        });
+
+        const userSelect = await screen.findByDisplayValue(
+            DEFAULT_PROPS.content.assignee
+        );
+        expect(userSelect).toBeInTheDocument();
+    });
+
+    it('Should not have any assignee name in user input search field in edit mode when task has no assignee', async () => {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                status: TASK_STATUS.AVAILABLE,
+                assignee: undefined,
+            },
+        };
+
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS} shouldEdit={true} />
+            </Provider>,
+            {}
+        );
+
+        const taskCard = screen.getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(taskCard, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editIcon = screen.getByTestId('edit-button');
+        expect(editIcon).toBeInTheDocument();
+
+        act(() => {
+            fireEvent.click(editIcon);
+            jest.advanceTimersByTime(300);
+        });
+
+        const userSelect = await screen.findByTestId('assignee-input');
+        expect(userSelect).toHaveValue('');
     });
 });
