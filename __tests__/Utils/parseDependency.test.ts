@@ -1,6 +1,6 @@
 import { parseDependencyValue } from '@/utils/parseDependency';
 
-describe.only('parseDependencyValue', () => {
+describe('parseDependencyValue', () => {
     it('should split and trim a comma-separated string into an array of trimmed values', () => {
         const value = '  task1 , task2 ,  task3  ';
         const expected = ['task1', 'task2', 'task3'];
