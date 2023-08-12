@@ -1,38 +1,47 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import useDebounce from '@/hooks/useDebounce';
-import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react-hooks';
+import useDebounce from '../../../src/hooks/useDebounce';
 
 jest.useFakeTimers();
-let cleanupFunc: any;
-
-jest.spyOn(React, 'useEffect').mockImplementationOnce((func) => {
-    cleanupFunc = func();
-});
-
 describe('useDebounce', () => {
-    test('should return the initial value immediately', () => {
-        const initialValue = 'hello';
-        const { result } = renderHook(() => useDebounce(initialValue, 500));
-
-        expect(result.current).toBe(initialValue);
+    it('should return the initial value immediately', () => {
+        const { result } = renderHook(() => useDebounce('initial', 500));
+        expect(result.current).toBe('initial');
     });
 
-    test('should return the updated value after delay', async () => {
-        renderHook(() => useDebounce('hello world', 500));
-
-        // Second render with "world"
-
-        await waitFor(() => {
-            const { result } = renderHook(() => useDebounce('pratiyush', 500));
-            jest.advanceTimersByTime(300); // Move the timers forward by another 200ms, total 500ms
-            expect(result.current).toBe('pratiyush');
+    it('should debounce the value update and return the final value after the delay', () => {
+        const { result, rerender } = renderHook(
+            ({ value, delay }) => useDebounce(value, delay),
+            { initialProps: { value: 'initial', delay: 500 } }
+        );
+        act(() => {
+            rerender({ value: 'updated', delay: 500 });
         });
-
-        await waitFor(() => {
-            const { result } = renderHook(() => useDebounce('world', 500));
-            jest.advanceTimersByTime(200); // Move the timers forward by another 200ms, total 500ms
-            expect(result.current).toBe('world');
+        expect(result.current).toBe('initial');
+        act(() => {
+            jest.advanceTimersByTime(500);
         });
+        expect(result.current).toBe('updated');
+    });
+
+    it('should reset the timer when the value changes before the delay', () => {
+        const { result, rerender } = renderHook(
+            ({ value, delay }) => useDebounce(value, delay),
+            { initialProps: { value: 'initial', delay: 500 } }
+        );
+        act(() => {
+            rerender({ value: 'updated', delay: 500 });
+        });
+        expect(result.current).toBe('initial');
+        act(() => {
+            jest.advanceTimersByTime(250);
+        });
+        act(() => {
+            rerender({ value: 'final', delay: 500 });
+        });
+        expect(result.current).toBe('initial');
+        act(() => {
+            jest.advanceTimersByTime(250);
+        });
+        expect(result.current).toBe('initial');
     });
 });
