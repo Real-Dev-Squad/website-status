@@ -193,17 +193,18 @@ describe('TaskDetails Page', () => {
             </Provider>,
             {}
         );
-
         await waitFor(() => {
             const editButton = screen.getByRole('button', { name: 'Edit' });
             fireEvent.click(editButton);
         });
         const textareaElement = screen.getByTestId('title-textarea');
-
         fireEvent.change(textareaElement, {
             target: { name: 'title', value: 'New Title' },
         });
-
+        await waitFor(() => {
+            const saveButton = screen.getByRole('button', { name: 'Save' });
+            fireEvent.click(saveButton);
+        });
         expect(textareaElement).toHaveValue('New Title');
     });
     test('should call onCancel and reset state when clicked', async () => {
@@ -258,12 +259,14 @@ describe('TaskDetails Page', () => {
             </Provider>,
             {}
         );
-
         await waitFor(() => {
             const editButton = screen.getByRole('button', { name: 'Edit' });
             fireEvent.click(editButton);
         });
-
+        const textareaElement = screen.getByTestId('title-textarea');
+        fireEvent.change(textareaElement, {
+            target: { name: 'title', value: 'New Title' },
+        });
         await waitFor(async () => {
             const saveButton = screen.getByRole('button', { name: 'Save' });
             fireEvent.click(saveButton);
@@ -271,6 +274,25 @@ describe('TaskDetails Page', () => {
                 await screen.findByText(/Successfully saved/i)
             ).not.toBeNull();
         });
+    });
+    test('should not update the title and description with the same values', async () => {
+        server.use(...taskDetailsHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            {}
+        );
+        const editButton = await screen.findByRole('button', { name: 'Edit' });
+        fireEvent.click(editButton);
+        const textareaElement = await screen.findByTestId('title-textarea');
+        fireEvent.change(textareaElement, {
+            target: { name: 'title', value: 'test 1 for drag and drop' },
+        });
+        const saveButton = await screen.findByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
+        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
     });
 
     test('Should render No task progress', async () => {
@@ -342,6 +364,7 @@ describe('Textarea with functionalities', () => {
         value: 'Initial value',
         onChange: mockChangeHandler,
         testId: 'textarea',
+        placeholder: '',
     };
 
     beforeEach(async () => {
