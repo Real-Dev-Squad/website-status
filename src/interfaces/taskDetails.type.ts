@@ -31,21 +31,22 @@ export type TextAreaProps = {
     value: string | undefined;
     onChange: ChangeEventHandler;
     testId: string;
+    placeholder: string;
 };
 
 export type TaskDependencyProps = {
     taskDependencyIds: string[];
     isEditing?: boolean;
-    updatedDependencies: string[];
-    handleChange: (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void;
     setEditedTaskDetails: React.Dispatch<
         React.SetStateAction<taskDetailsDataType['taskData'] | undefined>
     >;
 };
 export type DependencyListProps = {
     taskDependencyIds: string[];
+};
+export type TaskDetailsProps = {
+    detailType: string;
+    value?: string;
 };
 export type DependencyItem =
     | PromiseFulfilledResult<{

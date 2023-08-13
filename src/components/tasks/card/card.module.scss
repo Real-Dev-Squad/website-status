@@ -98,6 +98,10 @@ $progressTextAnimation: #9babb8;
     align-items: center;
     gap: 1rem;
     margin-top: 0.8rem;
+
+    .card__top__button {
+        margin-top: 0;
+    }
 }
 .completionDate {
     padding-left: 0.5rem;
