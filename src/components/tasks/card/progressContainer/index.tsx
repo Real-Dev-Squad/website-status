@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
     useUpdateSelfTaskMutation,
@@ -8,11 +7,9 @@ import {
 } from '@/app/services/tasksApi';
 import useUserData from '@/hooks/useUserData';
 import { useGetUserQuery } from '@/app/services/userApi';
-
-import HandleProgressText from './ProgressText';
-import HandleProgressbar from './ProgressBar';
+import ProgressText from './ProgressText';
+import Progressbar from './ProgressBar';
 import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
-
 import classNames from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
 
@@ -20,44 +17,46 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     const router = useRouter();
     const { dev } = router.query;
 
-    const [progress, setProgress] = useState<boolean>(false);
+    const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(0);
 
     const { isUserAuthorized } = useUserData();
-    const { data } = useGetUserQuery();
+    const { data: userData } = useGetUserQuery();
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
     const [updateSelfTask, { isLoading: isLoadingSelfTaskUpdate }] =
         useUpdateSelfTaskMutation();
+    const checkingLoading =
+        isLoadingUpdateTaskDetails || isLoadingSelfTaskUpdate;
 
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const handleSliderChangeComplete = async (
+    const handleSliderChangeComplete = (
         id: string,
         percentCompleted: number
     ) => {
-        const data = {
+        const taskData = {
             percentCompleted: percentCompleted,
         };
         if (isUserAuthorized) {
-            await updateTask({
-                task: data,
+            updateTask({
+                task: taskData,
                 id: id,
             })
                 .unwrap()
                 .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
                 .catch(() => toast(ERROR, ERROR_MESSAGE));
         } else {
-            await updateSelfTask({ task: data, id: id })
+            updateSelfTask({ task: taskData, id: id })
                 .unwrap()
                 .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
                 .catch(() => toast(ERROR, ERROR_MESSAGE));
         }
     };
 
-    const handleDebounceProgress = () => {
+    const onProgressChange = () => {
         handleSliderChangeComplete(content.id, progressValue);
-        setProgress(false);
+        setIsProgressMade(false);
     };
 
     const debounceSlider = (debounceTimeOut: number) => {
@@ -65,7 +64,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
             clearTimeout(debounceTimeOut);
         }
         setTimeout(() => {
-            handleDebounceProgress();
+            onProgressChange();
         }, 1000);
     };
 
@@ -77,10 +76,10 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
 
     const handleProgressUpdate = () => {
         if (
-            content.assignee === data?.username ||
-            data?.roles.super_user === true
+            content.assignee === userData?.username ||
+            !!userData?.roles.super_user
         ) {
-            setProgress(true);
+            setIsProgressMade(true);
         } else {
             toast(ERROR, 'You cannot update progress');
         }
@@ -88,25 +87,21 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     return (
         <>
             <div className={classNames.progressContainerUpdated}>
-                <HandleProgressbar
-                    progress={progress}
+                <Progressbar
+                    progress={isProgressMade}
                     progressValue={progressValue}
                     percentCompleted={content.percentCompleted}
                     handleProgressChange={handleProgressChange}
                     debounceSlider={debounceSlider}
                     startedOn={content.startedOn}
                     endsOn={String(content.endsOn)}
-                    isLoading={
-                        isLoadingUpdateTaskDetails || isLoadingSelfTaskUpdate
-                    }
+                    isLoading={checkingLoading}
                 />
             </div>
             {dev === 'true' && (
-                <HandleProgressText
+                <ProgressText
                     handleProgressUpdate={handleProgressUpdate}
-                    isLoading={
-                        isLoadingUpdateTaskDetails || isLoadingSelfTaskUpdate
-                    }
+                    isLoading={checkingLoading}
                 />
             )}
         </>

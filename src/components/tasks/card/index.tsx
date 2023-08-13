@@ -31,7 +31,7 @@ import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
-import ProgressContainer from './progressBar';
+import ProgressContainer from './progressContainer';
 
 let timer: NodeJS.Timeout;
 
