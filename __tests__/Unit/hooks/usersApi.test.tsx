@@ -3,6 +3,7 @@ import {
     useGetUsersQuery,
     useGetUsersByLinkQuery,
     useGetUsersByUsernameQuery,
+    useGetAllUsersByUsernameQuery,
 } from '@/app/services/usersApi';
 import handlers from '../../../__mocks__/handlers';
 import React, { PropsWithChildren } from 'react';
@@ -117,6 +118,33 @@ describe('useGetUsersByUsernameQuery', () => {
         const users = nextResponse.data?.users;
         expect(nextResponse.data).not.toBeUndefined();
         expect(users).toHaveLength(2);
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+        users?.forEach((user) => {
+            expect(user.username).toMatch(/^mu/);
+        });
+    });
+});
+
+describe('useGetAllUsersByUsernameQuery', () => {
+    test('returns all users which match the searchString', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useGetAllUsersByUsernameQuery({ searchString: 'mu' }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const users = nextResponse.data?.users;
+        expect(nextResponse.data).not.toBeUndefined();
+        expect(users).toHaveLength(8);
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
         users?.forEach((user) => {
