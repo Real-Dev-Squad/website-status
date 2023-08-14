@@ -10,7 +10,6 @@ import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
-import fetch from '@/helperFunctions/fetch';
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
@@ -35,15 +34,14 @@ import HandleProgressText from './ProgressText';
 import HandleProgressbar from './ProgressBar';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
+
+import Suggestions from '../SuggestionBox/Suggestions';
+import useDebounce from '../../../hooks/useDebounce';
+
 import {
     useUpdateSelfTaskMutation,
     useUpdateTaskMutation,
 } from '@/app/services/tasksApi';
-import SuggestionBox from '../SuggestionBox/SuggestionBox';
-import { userDataType } from '@/interfaces/user.type';
-import { GithubInfo } from '@/interfaces/suggestionBox.type';
-
-let timer: NodeJS.Timeout;
 
 const Card: FC<CardProps> = ({
     content,
@@ -89,12 +87,8 @@ const Card: FC<CardProps> = ({
     const [updateSelfTask, { isLoading: isLoadingSelfTaskUpdate }] =
         useUpdateSelfTaskMutation();
 
-    const [isLoadingSuggestions, setIsLoadingSuggestions] =
-        useState<boolean>(false);
-    const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
-    const [assigneeName, setAssigneeName] = useState<string>(
-        cardDetails.assignee ?? ''
-    );
+    const [assigneeName, setAssigneeName] = useState<string>('');
+    const debounceSearchTerm = useDebounce(assigneeName, 500);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const router = useRouter();
@@ -387,44 +381,6 @@ const Card: FC<CardProps> = ({
         setAssigneeName(userName);
         setShowSuggestion(false);
     };
-
-    const fetchUsers = async (e: string) => {
-        if (!e) return;
-        setIsLoadingSuggestions(true);
-
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
-        try {
-            const { requestPromise } = fetch({ url });
-            const users = await requestPromise;
-            const usersData = users.data.users;
-            const suggestedUsers: GithubInfo[] = [];
-            usersData.map((data: userDataType) => {
-                suggestedUsers.push({
-                    github_id: data.username,
-                    profileImageUrl: data?.picture?.url
-                        ? data.picture.url
-                        : placeholderImageURL,
-                });
-            });
-
-            setSuggestions(suggestedUsers);
-            setIsLoadingSuggestions(false);
-        } catch (error: any) {
-            setIsLoadingSuggestions(false);
-            toast(ERROR, error.message);
-        }
-    };
-
-    const debounce = (fn: (e: string) => void, delay: number) => {
-        return function (e: string) {
-            clearTimeout(timer);
-            setSuggestions([]);
-            timer = setTimeout(() => {
-                fn(e);
-            }, delay);
-        };
-    };
-
     return (
         <div
             className={`
@@ -514,57 +470,40 @@ const Card: FC<CardProps> = ({
                     )}
                 </div>
             </div>
-
-            <div className={classNames.contributor}>
-                <p className={classNames.cardSpecialFont}>
-                    {cardDetails.assignee ? 'Assigned to' : 'Assign to'}
-                </p>
-                <span className={classNames.contributorImage}>
-                    <Image
-                        src={assigneeProfileImageURL}
-                        alt={cardDetails.assignee || DUMMY_NAME}
-                        width={30}
-                        height={30}
-                    />
-                </span>
-                {isEditable
-                    ? isUserAuthorized && (
-                          <div className={classNames.suggestionDiv}>
-                              <input
-                                  data-testid="assignee-input"
-                                  ref={inputRef}
-                                  value={assigneeName}
-                                  className={classNames.cardStrongFont}
-                                  onKeyDown={(e) => {
-                                      handleChange(e, 'assignee');
-                                  }}
-                                  onChange={(e) => {
-                                      handleAssignment(e);
-                                      debounce(fetchUsers, 400)(e.target.value);
-                                  }}
-                                  role="button"
-                                  tabIndex={0}
-                              />
-
-                              {isLoadingSuggestions ? (
-                                  <Loader />
-                              ) : (
-                                  showSuggestion && (
-                                      <SuggestionBox
-                                          suggestions={suggestions}
-                                          onSelectAssignee={handleClick}
-                                      />
-                                  )
-                              )}
-                          </div>
-                      )
-                    : cardDetails.assignee && (
-                          <p className={classNames.cardStrongFont}>
-                              {cardDetails.assignee}
-                          </p>
-                      )}
-                {showAssignButton() && <AssigneeButton />}
-            </div>
+            {showAssignButton() ? (
+                <AssigneeButton />
+            ) : (
+                <div className={classNames.contributor}>
+                    <span className={classNames.cardSpecialFont}>
+                        Assigned to
+                    </span>
+                    <span className={classNames.contributorImage}>
+                        <Image
+                            src={assigneeProfileImageURL}
+                            alt={cardDetails.assignee || DUMMY_NAME}
+                            width={30}
+                            height={30}
+                        />
+                    </span>
+                    {isEditable ? (
+                        isUserAuthorized && (
+                            <Suggestions
+                                assigneeName={assigneeName}
+                                searchTerm={debounceSearchTerm}
+                                showSuggestion={showSuggestion}
+                                handleAssignment={handleAssignment}
+                                handleClick={handleClick}
+                                handleChange={handleChange}
+                                ref={inputRef}
+                            />
+                        )
+                    ) : (
+                        <span className={classNames.cardStrongFont}>
+                            {cardDetails.assignee}
+                        </span>
+                    )}
+                </div>
+            )}
 
             <div className={classNames.cardItems}>
                 <div
