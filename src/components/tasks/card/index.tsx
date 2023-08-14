@@ -6,6 +6,7 @@ import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
@@ -13,7 +14,11 @@ import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/constants/constants';
+import {
+    ERROR_MESSAGE,
+    MAX_SEARCH_RESULTS,
+    PROGRESS_SUCCESSFUL,
+} from '@/constants/constants';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -24,8 +29,12 @@ import {
 } from '@/app/services/taskTagApi';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
+import { useGetUserQuery } from '@/app/services/userApi';
+import HandleProgressText from './ProgressText';
+import HandleProgressbar from './ProgressBar';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
+
 import Suggestions from '../SuggestionBox/Suggestions';
 import useDebounce from '../../../hooks/useDebounce';
 
@@ -33,8 +42,6 @@ import {
     useUpdateSelfTaskMutation,
     useUpdateTaskMutation,
 } from '@/app/services/tasksApi';
-
-import ProgressContainer from './progressContainer';
 
 const Card: FC<CardProps> = ({
     content,
@@ -49,6 +56,11 @@ const Card: FC<CardProps> = ({
     ];
 
     const cardDetails = content;
+    const { data } = useGetUserQuery();
+    const [progress, setProgress] = useState<boolean>(false);
+    const [progressValue, setProgressValue] = useState<number>(0);
+
+    const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
@@ -58,7 +70,7 @@ const Card: FC<CardProps> = ({
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const { isUserAuthorized } = useUserData();
+    const { data: userData, isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
 
@@ -72,10 +84,15 @@ const Card: FC<CardProps> = ({
     const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
+    const [updateSelfTask, { isLoading: isLoadingSelfTaskUpdate }] =
+        useUpdateSelfTaskMutation();
 
     const [assigneeName, setAssigneeName] = useState<string>('');
     const debounceSearchTerm = useDebounce(assigneeName, 500);
     const inputRef = useRef<HTMLInputElement>(null);
+
+    const router = useRouter();
+    const { dev } = router.query;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
@@ -266,6 +283,57 @@ const Card: FC<CardProps> = ({
         </div>
     );
 
+    const handleProgressUpdate = () => {
+        if (
+            content.assignee === data?.username ||
+            data?.roles.super_user === true
+        ) {
+            setProgress(true);
+        } else {
+            toast(ERROR, 'You cannot update progress');
+        }
+    };
+
+    const debounceSlider = (debounceTimeOut: number) => {
+        if (debounceTimeOut) {
+            clearTimeout(debounceTimeOut);
+        }
+        const timer = setTimeout(() => {
+            handleSliderChangeComplete(cardDetails.id, progressValue);
+            setProgress(false);
+        }, 1000);
+        setDebounceTimeOut(Number(timer));
+    };
+
+    const handleSliderChangeComplete = async (
+        id: string,
+        percentCompleted: number
+    ) => {
+        const data = {
+            percentCompleted: percentCompleted,
+        };
+        if (isUserAuthorized) {
+            await updateTask({
+                task: data,
+                id: id,
+            })
+                .unwrap()
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
+        } else {
+            await updateSelfTask({ task: data, id: id })
+                .unwrap()
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
+        }
+    };
+
+    const handleProgressChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setProgressValue(Number(event.target.value));
+    };
+
     const AssigneeButton = () => {
         return (
             <button
@@ -344,7 +412,30 @@ const Card: FC<CardProps> = ({
 
                 {/* progress bar */}
                 <div className={classNames.progressContainer}>
-                    <ProgressContainer content={content} />
+                    <div className={classNames.progressContainerUpdated}>
+                        <HandleProgressbar
+                            progress={progress}
+                            progressValue={progressValue}
+                            percentCompleted={content.percentCompleted}
+                            handleProgressChange={handleProgressChange}
+                            debounceSlider={debounceSlider}
+                            startedOn={content.startedOn}
+                            endsOn={String(content.endsOn)}
+                            isLoading={
+                                isLoadingUpdateTaskDetails ||
+                                isLoadingSelfTaskUpdate
+                            }
+                        />
+                    </div>
+                    {dev === 'true' && (
+                        <HandleProgressText
+                            handleProgressUpdate={handleProgressUpdate}
+                            isLoading={
+                                isLoadingUpdateTaskDetails ||
+                                isLoadingSelfTaskUpdate
+                            }
+                        />
+                    )}
                 </div>
             </div>
             <div className={classNames.taskStatusAndDateContainer}>
