@@ -99,8 +99,30 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     }
     async function onSave() {
         setIsEditing(false);
+        const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
+        for (const key in editedTaskDetails) {
+            if (
+                taskDetailsData &&
+                editedTaskDetails[
+                    key as keyof taskDetailsDataType['taskData']
+                ] !==
+                    taskDetailsData[
+                        key as keyof taskDetailsDataType['taskData']
+                    ]
+            ) {
+                updatedFields[key as keyof taskDetailsDataType['taskData']] =
+                    editedTaskDetails[
+                        key as keyof taskDetailsDataType['taskData']
+                    ];
+            }
+        }
+
+        if (Object.keys(updatedFields).length === 0) {
+            return;
+        }
+
         await updateTaskDetails({
-            editedDetails: editedTaskDetails,
+            editedDetails: updatedFields,
             taskID,
         })
             .unwrap()
