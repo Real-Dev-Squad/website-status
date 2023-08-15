@@ -6,7 +6,9 @@ import {
     issueResponseNullBody,
     issuesResponseSearchedWithQuery,
 } from '../../../../__mocks__/db/issues';
-import { renderWithProviders } from '@/test-utils/renderWithProvider';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 
 jest.mock('@/hooks/useUserData', () => {
     return () => ({
@@ -34,8 +36,10 @@ describe('Issue card', () => {
         expect(titleElement).toBeInTheDocument();
     });
     test('Should render issue information correctly', () => {
-        const screen = renderWithProviders(
-            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>
         );
         expect(
             screen.getByText(issuesResponseSearchedWithQuery[0].html_url)
@@ -44,8 +48,10 @@ describe('Issue card', () => {
     });
 
     test('Should render issue created by information correctly', () => {
-        const screen = renderWithProviders(
-            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>
         );
         const date = new Date(
             issuesResponseSearchedWithQuery[0].created_at
@@ -62,8 +68,10 @@ describe('Issue card', () => {
     });
 
     test('Should render the assignee information correctly', () => {
-        const screen = renderWithProviders(
-            <Card issue={issuesResponseSearchedWithQuery[0]} />
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>
         );
         const assignee = screen.getByText(
             issuesResponseSearchedWithQuery[0].assignee?.login
@@ -103,5 +111,17 @@ describe('Issue card', () => {
         expect(bodyElement).toBeInTheDocument();
         expect(markdownElement).toBeInTheDocument();
         expect(markdownElement2).toBeInTheDocument();
+    });
+
+    test('Should render action form when dev mode is enabled', () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(screen.getByRole('button')).toHaveTextContent('Assign Task');
     });
 });
