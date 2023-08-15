@@ -1,4 +1,4 @@
-import ProgressIndicator from '@/components/tasks/card/ProgressIndicator';
+import ProgressIndicator from '@/components/tasks/card/progressContainer/ProgressIndicator';
 import { render } from '@testing-library/react';
 
 const DEFAULT_PROPS = {
