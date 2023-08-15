@@ -383,4 +383,42 @@ describe('Task card', () => {
         const userSelect = await screen.findByTestId('assignee-input');
         expect(userSelect).toHaveValue('');
     });
+    test('should show cancel edit button when in edit mode', () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+
+        const component = getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+
+        expect(queryByTestId('cancel-edit-button')).toBeInTheDocument();
+    });
+    test('should show text area for title when in edit mode', () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+
+        const component = getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+
+        expect(queryByTestId('title-textarea')).toBeInTheDocument();
+    });
 });

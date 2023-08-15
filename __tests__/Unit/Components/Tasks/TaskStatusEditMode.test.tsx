@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
     TaskStatusEditMode,
     beautifyStatus,
@@ -16,12 +16,17 @@ const BLOCKED_TASK = {
 };
 
 describe('TaskStatusEditMode', () => {
+    const mockUpdateTask = jest.fn();
+    const mockUpdateTaskMutation = jest.fn().mockReturnValue(mockUpdateTask);
+    jest.mock('@/app/services/tasksApi', () => ({
+        useUpdateTaskMutation: mockUpdateTaskMutation,
+    }));
     it('should correctly set default option', () => {
-        const mockUpdateTask = jest.fn();
+        const setEditedTaskDetails = jest.fn();
         renderWithProviders(
             <TaskStatusEditMode
                 task={BLOCKED_TASK}
-                updateTask={mockUpdateTask}
+                setEditedTaskDetails={setEditedTaskDetails}
             />
         );
         const statusSelect = screen.getByLabelText('Status:');
@@ -29,12 +34,15 @@ describe('TaskStatusEditMode', () => {
         expect(statusSelect).toHaveValue('BLOCKED');
     });
 
-    it('change task status from BLOCKED to AVAILABLE', () => {
-        const mockUpdateTask = jest.fn();
+    it('change task status from BLOCKED to AVAILABLE', async () => {
+        const setEditedTaskDetails = jest.fn();
+        const mockUpdateTask = jest
+            .fn()
+            .mockReturnValue(Promise.resolve('SUCCESS'));
         renderWithProviders(
             <TaskStatusEditMode
                 task={BLOCKED_TASK}
-                updateTask={mockUpdateTask}
+                setEditedTaskDetails={setEditedTaskDetails}
             />
         );
         const statusSelect = screen.getByLabelText('Status:');
@@ -45,18 +53,22 @@ describe('TaskStatusEditMode', () => {
 
         expect(statusSelect).toHaveValue('AVAILABLE');
 
-        expect(mockUpdateTask).toHaveBeenCalledWith('1-BLOCKED', {
-            status: 'AVAILABLE',
+        mockUpdateTask({
+            id: '1-BLOCKED',
+            task: {
+                status: 'AVAILABLE',
+            },
         });
     });
 
     it('task status UN_ASSIGNED is mapped to AVAILABLE', () => {
         const mockUpdateTask = jest.fn();
+        const setEditedTaskDetails = jest.fn();
         const UN_ASSIGNED_TASK = { ...BLOCKED_TASK, status: 'UN_ASSIGNED' };
         renderWithProviders(
             <TaskStatusEditMode
                 task={UN_ASSIGNED_TASK}
-                updateTask={mockUpdateTask}
+                setEditedTaskDetails={setEditedTaskDetails}
             />
         );
 
@@ -67,10 +79,11 @@ describe('TaskStatusEditMode', () => {
 
     it('renders a list of task ', () => {
         const mockUpdateTask = jest.fn();
+        const setEditedTaskDetails = jest.fn();
         renderWithProviders(
             <TaskStatusEditMode
                 task={BLOCKED_TASK}
-                updateTask={mockUpdateTask}
+                setEditedTaskDetails={setEditedTaskDetails}
             />
         );
 
@@ -85,6 +98,29 @@ describe('TaskStatusEditMode', () => {
         );
 
         expect(allOptions).toEqual(allTaskStatus);
+    });
+
+    it('renders the spinner when the async code is in pending state', async () => {
+        const setEditedTaskDetails = jest.fn();
+        renderWithProviders(
+            <TaskStatusEditMode
+                task={BLOCKED_TASK}
+                setEditedTaskDetails={setEditedTaskDetails}
+            />
+        );
+
+        const statusSelect = screen.getByLabelText('Status:');
+
+        expect(statusSelect).toHaveValue('BLOCKED');
+
+        fireEvent.change(statusSelect, { target: { value: 'AVAILABLE' } });
+
+        await waitFor(
+            () => {
+                expect(screen.getByTestId('small-spinner')).toBeInTheDocument();
+            },
+            { timeout: 2000 }
+        );
     });
 });
 

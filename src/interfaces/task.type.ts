@@ -127,3 +127,9 @@ export type TabTasksData = {
     MERGED: task[];
     COMPLETED: task[];
 };
+
+export type CardTaskDetails = task & {
+    assigningUser: string;
+    savingDate: string;
+    savingText: string;
+};
