@@ -507,42 +507,6 @@ const Card: FC<CardProps> = ({
         debouncedHandleTitleChange(value);
     };
 
-    // const handleAssigneeChange = (event: React.KeyboardEvent) => {
-    //     if (event.key === 'Enter') {
-    //         setEditedTaskDetails((prev) => ({
-    //             ...prev,
-    //             assigningUser: PENDING,
-    //         }));
-
-    //         const response = updateTask({
-    //             id: cardDetails.id,
-    //             task: {
-    //                 assignee: assigneeName,
-    //             },
-    //         });
-
-    //         response
-    //             .unwrap()
-    //             .then((result) => {
-    //                 setEditedTaskDetails((prev) => ({
-    //                     ...prev,
-    //                     assigningUser: SAVED,
-    //                 }));
-    //             })
-    //             .catch((err) => {
-    //                 toast(ERROR, err.data.message);
-    //             })
-    //             .finally(() => {
-    //                 setTimeout(() => {
-    //                     setEditedTaskDetails((prev) => ({
-    //                         ...prev,
-    //                         assigningUser: '',
-    //                     }));
-    //                 }, 3000);
-    //             });
-    //     }
-    // };
-
     return (
         <div
             className={`
@@ -655,7 +619,6 @@ const Card: FC<CardProps> = ({
                                       ref={inputRef}
                                       value={assigneeName}
                                       className={classNames.cardStrongFont}
-                                      // onKeyDown={handleAssigneeChange}
                                       onChange={(e) => {
                                           handleAssignment(e);
                                           debounce(
