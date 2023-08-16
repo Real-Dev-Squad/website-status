@@ -42,7 +42,7 @@ export function Button(props: ButtonProps) {
     );
 }
 export function Textarea(props: TextAreaProps) {
-    const { name, value, onChange, testId } = props;
+    const { name, value, onChange, testId, placeholder } = props;
 
     return (
         <textarea
@@ -51,6 +51,7 @@ export function Textarea(props: TextAreaProps) {
             value={value}
             onChange={onChange}
             data-testid={testId}
+            placeholder={placeholder}
         />
     );
 }
@@ -98,8 +99,30 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     }
     async function onSave() {
         setIsEditing(false);
+        const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
+        for (const key in editedTaskDetails) {
+            if (
+                taskDetailsData &&
+                editedTaskDetails[
+                    key as keyof taskDetailsDataType['taskData']
+                ] !==
+                    taskDetailsData[
+                        key as keyof taskDetailsDataType['taskData']
+                    ]
+            ) {
+                updatedFields[key as keyof taskDetailsDataType['taskData']] =
+                    editedTaskDetails[
+                        key as keyof taskDetailsDataType['taskData']
+                    ];
+            }
+        }
+
+        if (Object.keys(updatedFields).length === 0) {
+            return;
+        }
+
         await updateTaskDetails({
-            editedDetails: editedTaskDetails,
+            editedDetails: updatedFields,
             taskID,
         })
             .unwrap()
@@ -174,6 +197,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 value={editedTaskDetails?.title}
                                 onChange={handleChange}
                                 testId="title-textarea"
+                                placeholder=""
                             />
                         ) : (
                             <span
@@ -214,6 +238,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         value={editedTaskDetails?.purpose}
                                         onChange={handleChange}
                                         testId="purpose-textarea"
+                                        placeholder=""
                                     />
                                 ) : (
                                     <p>
@@ -260,10 +285,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 taskDependencyIds
                                             }
                                             isEditing={isEditing}
-                                            updatedDependencies={
-                                                taskDetailsData?.dependsOn || []
-                                            }
-                                            handleChange={handleChange}
                                             setEditedTaskDetails={
                                                 setEditedTaskDetails
                                             }

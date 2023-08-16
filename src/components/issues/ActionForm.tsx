@@ -56,6 +56,7 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
             >
                 Assign Task
             </button>
+            <br />
             <input
                 className={styles.assign}
                 type="text"

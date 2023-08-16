@@ -21,6 +21,9 @@ import {
     failedGetTasksResponse,
     failedUpdateSelfTaskHandler,
     failedUpdateTaskHandler,
+    filterTaskHandler,
+    failedFilterTasksResponse,
+    failedfilterTaskHandler,
 } from '../../../__mocks__/handlers/tasks.handler';
 
 const server = setupServer(...handlers);
@@ -151,6 +154,54 @@ describe('useGetAllTasksQuery()', () => {
         expect(tasksData).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
+    });
+    test('returns search term based filtered tasks', async () => {
+        server.use(filterTaskHandler);
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    term: 'task',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+    test('should fail to return filter task', async () => {
+        server.use(failedfilterTaskHandler);
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    term: ' ',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.isLoading).toBe(true);
+        expect(initialResponse.data).toBeUndefined();
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        expect(nextResponse.isError).toBe(true);
+        expect(nextResponse.error).toHaveProperty('status', 404);
+        expect(nextResponse.error).toHaveProperty(
+            'data',
+            failedFilterTasksResponse
+        );
     });
 });
 
