@@ -193,17 +193,18 @@ describe('TaskDetails Page', () => {
             </Provider>,
             {}
         );
-
         await waitFor(() => {
             const editButton = screen.getByRole('button', { name: 'Edit' });
             fireEvent.click(editButton);
         });
         const textareaElement = screen.getByTestId('title-textarea');
-
         fireEvent.change(textareaElement, {
             target: { name: 'title', value: 'New Title' },
         });
-
+        await waitFor(() => {
+            const saveButton = screen.getByRole('button', { name: 'Save' });
+            fireEvent.click(saveButton);
+        });
         expect(textareaElement).toHaveValue('New Title');
     });
     test('should call onCancel and reset state when clicked', async () => {
@@ -258,17 +259,40 @@ describe('TaskDetails Page', () => {
             </Provider>,
             {}
         );
-
         await waitFor(() => {
             const editButton = screen.getByRole('button', { name: 'Edit' });
             fireEvent.click(editButton);
         });
-
-        await waitFor(() => {
+        const textareaElement = screen.getByTestId('title-textarea');
+        fireEvent.change(textareaElement, {
+            target: { name: 'title', value: 'New Title' },
+        });
+        await waitFor(async () => {
             const saveButton = screen.getByRole('button', { name: 'Save' });
             fireEvent.click(saveButton);
-            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+            expect(
+                await screen.findByText(/Successfully saved/i)
+            ).not.toBeNull();
         });
+    });
+    test('should not update the title and description with the same values', async () => {
+        server.use(...taskDetailsHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+                <ToastContainer />
+            </Provider>,
+            {}
+        );
+        const editButton = await screen.findByRole('button', { name: 'Edit' });
+        fireEvent.click(editButton);
+        const textareaElement = await screen.findByTestId('title-textarea');
+        fireEvent.change(textareaElement, {
+            target: { name: 'title', value: 'test 1 for drag and drop' },
+        });
+        const saveButton = await screen.findByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
+        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
     });
 
     test('Should render No task progress', async () => {
@@ -340,6 +364,7 @@ describe('Textarea with functionalities', () => {
         value: 'Initial value',
         onChange: mockChangeHandler,
         testId: 'textarea',
+        placeholder: '',
     };
 
     beforeEach(async () => {
@@ -369,7 +394,9 @@ describe('Update Progress button', () => {
         );
 
         await waitFor(() => {
-            const updateProgressButton = screen.getByText('Update Progress');
+            const updateProgressButton = screen.getByTestId(
+                'update-progress-button'
+            );
             expect(updateProgressButton).toBeInTheDocument();
             fireEvent.click(updateProgressButton);
             expect(mockNavigateToUpdateProgressPage).toHaveBeenLastCalledWith(
@@ -386,6 +413,32 @@ describe('Update Progress button', () => {
         );
         const updateProgressButton = screen.queryByText('Update Progress');
         expect(updateProgressButton).not.toBeInTheDocument();
+    });
+
+    it('renders the Request for Task button when ?dev=true query parameter is present', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestForTaskButton = screen.getByTestId(
+                'request-task-button'
+            );
+            expect(requestForTaskButton).toBeInTheDocument();
+        });
+    });
+
+    it('Should not render the Request for Task button when ?dev=true query parameter is absent', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        const requestForTaskButton = screen.queryByText('Request for Task');
+        expect(requestForTaskButton).not.toBeInTheDocument();
     });
 });
 

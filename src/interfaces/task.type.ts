@@ -103,6 +103,10 @@ export type CardProps = {
     onContentChange?: (changeId: string, changeObject: object) => void;
 };
 
+export type ProgressContainerProps = {
+    content: task;
+};
+
 export default task;
 
 export type GetAllTaskParamType = {
@@ -110,6 +114,7 @@ export type GetAllTaskParamType = {
     nextTasks?: string;
     prevTasks?: string;
     size?: number;
+    term?: string;
 };
 
 export type TabTasksData = {
