@@ -63,7 +63,7 @@ const Card: FC<CardProps> = ({
         searchString: editedTaskDetails.assignee,
         size: MAX_SEARCH_RESULTS,
     });
-    let assigneeProfileImageURL: string =
+    const assigneeProfileImageURL: string =
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
 
@@ -478,7 +478,7 @@ const Card: FC<CardProps> = ({
     };
 
     const debounceTitle = (func: (value: string) => void, delay: number) => {
-        let timerIdRef = useRef<NodeJS.Timeout | undefined>();
+        const timerIdRef = useRef<NodeJS.Timeout | undefined>();
         return (value: string) => {
             if (timerIdRef.current) {
                 clearTimeout(timerIdRef.current);
