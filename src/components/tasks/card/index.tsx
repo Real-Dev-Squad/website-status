@@ -433,11 +433,11 @@ const Card: FC<CardProps> = ({
         <div className={classNames.cancelEditButton}>
             <Image
                 src="/cancel.png"
-                alt="cancel icon to close edit mode"
+                alt="close edit mode"
                 width={20}
                 height={20}
                 onClick={onCancelEditRoute}
-                tabIndex={0}
+                tabIndex={-1}
                 data-testid="cancel-edit-button"
             />
         </div>
@@ -503,7 +503,8 @@ const Card: FC<CardProps> = ({
             ...prev,
             title: value,
         }));
-
+        if (value.trim() === '')
+            return toast(ERROR, 'Title is not allowed to be empty');
         debouncedHandleTitleChange(value);
     };
 
