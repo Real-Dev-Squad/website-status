@@ -1,7 +1,8 @@
+import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import task, { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
-import { useState, useEffect } from 'react';
+import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
@@ -9,51 +10,21 @@ import {
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
-import { getActiveTab } from '@/utils/getActiveTab';
+import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
 
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
+import useIntersection from '@/hooks/useIntersection';
+import TaskSearch from './TaskSearch/TaskSearch';
 
-type RenderTaskListProps = {
-    tab: string;
-    dev: boolean;
-    tasks: task[];
-};
+const getQueryParamValue = (tab: Tab) => `is:${tabToUrlParams(tab)}`;
 
-const RenderTaskList = ({ tab, dev, tasks }: RenderTaskListProps) => {
-    const tasksGroupedByStatus = tasks?.reduce(
-        (acc: Record<string, task[]>, curr: task) => {
-            return acc[curr.status as keyof task]
-                ? {
-                      ...acc,
-                      [curr.status]: [...acc[curr.status as keyof task], curr],
-                  }
-                : { ...acc, [curr.status]: [curr] };
-        },
-        {}
-    );
-
-    const tasksNotAvailable =
-        tasks === undefined || tasksGroupedByStatus[tab] === undefined;
-
-    if (tasksNotAvailable || tasks.length === 0) {
-        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
-    }
-
-    if (dev) {
-        return <TaskList tasks={tasks} />;
-    }
-
-    return <TaskList tasks={tasksGroupedByStatus[tab]} />;
-};
-
-type routerQueryParams = {
-    section?: string;
-};
 export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
-    const { section }: routerQueryParams = router.query;
-    const selectedTab = getActiveTab(section);
+    const allQueryParams = router.query;
+    const qQueryParam = allQueryParams.q as string;
+    const queryTab = qQueryParam?.replace('is:', '');
+    const selectedTab = getActiveTab(queryTab);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
         IN_PROGRESS: [],
@@ -65,6 +36,10 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         MERGED: [],
         COMPLETED: [],
     });
+    const loadingRef = useRef<ElementRef<'div'>>(null);
+    const [inputValue, setInputValue] = useState<string>(
+        getQueryParamValue(selectedTab)
+    );
 
     const {
         data: tasksData = { tasks: [], next: '' },
@@ -72,7 +47,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         isLoading,
         isFetching,
     } = useGetAllTasksQuery({
-        dev: dev as boolean,
         status: selectedTab,
         nextTasks,
     });
@@ -82,15 +56,16 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             setNextTasks(tasksData.next);
         }
     };
-
     const onSelect = (tab: Tab) => {
+        const queryParamValue = getQueryParamValue(tab);
         router.push({
             query: {
                 ...router.query,
-                section: tab.toLowerCase(),
+                q: queryParamValue,
             },
         });
         setNextTasks('');
+        setInputValue(queryParamValue);
     };
 
     useEffect(() => {
@@ -107,18 +82,38 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
 
             setLoadedTasks(newTasks);
         }
-    }, [tasksData.tasks]);
+    }, [tasksData.tasks, selectedTab]);
+
+    useIntersection({
+        loadingRef,
+        onLoadMore: fetchMoreTasks,
+        earlyReturn: loadedTasks[selectedTab].length === 0,
+    });
 
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
+
     const taskSelectOptions = TABS.map((item) => ({
         label: getChangedStatusName(item),
         value: item,
     }));
 
+    const searchButtonHandler = () => {
+        inputValue && onSelect(getActiveTab(inputValue.replace('is:', '')));
+    };
+
     return (
         <div className={classNames.tasksContainer}>
+            {dev && (
+                <TaskSearch
+                    onSelect={onSelect}
+                    inputValue={inputValue}
+                    activeTab={selectedTab}
+                    onInputChange={(value) => setInputValue(value)}
+                    onClickSearchButton={searchButtonHandler}
+                />
+            )}
             <div
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"
@@ -143,21 +138,14 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 />
             </div>
             <div>
-                <RenderTaskList
-                    dev={dev}
-                    tab={selectedTab}
-                    tasks={loadedTasks[selectedTab]}
-                />
+                {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
+                    <TaskList tasks={loadedTasks[selectedTab]} />
+                ) : (
+                    !isFetching && <p>{NO_TASKS_FOUND_MESSAGE}</p>
+                )}
             </div>
-            {dev && (
-                <button
-                    className={classNames.loadMoreButton}
-                    onClick={fetchMoreTasks}
-                    disabled={!tasksData.next}
-                >
-                    {isFetching ? 'Loading...' : 'Load More'}
-                </button>
-            )}
+
+            <div ref={loadingRef}>{isFetching && 'Loading...'}</div>
         </div>
     );
 };

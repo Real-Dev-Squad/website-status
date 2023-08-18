@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
-import { GITHUB_LOGO, OPENINNEWTAB_ICON } from '@/constants/url';
+import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
+import { GITHUB_LOGO } from '@/constants/url';
+
 type Props = {
     detailType: string;
-    value: string;
+    value?: string;
 };
 
 const Details: FC<Props> = ({ detailType, value }) => {
+    const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const openGitIssueLink = () => {
         window.open(value, '_blank');
@@ -17,7 +20,7 @@ const Details: FC<Props> = ({ detailType, value }) => {
             <span className={classNames.detailType}>{detailType}:</span>
             <span
                 className={classNames.detailValue}
-                style={{ color: setColor?.[value] ?? 'black' }}
+                style={{ color: color ?? 'black' }}
             >
                 {isGitHubLink && value ? (
                     <button

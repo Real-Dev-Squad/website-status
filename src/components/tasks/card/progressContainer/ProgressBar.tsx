@@ -4,7 +4,7 @@ import { ProgressBarProps } from '@/interfaces/task.type';
 import ProgressSlider from './ProgressSlider';
 import ProgressIndicator from './ProgressIndicator';
 
-const HandleProgressbar: FC<ProgressBarProps> = ({
+const Progressbar: FC<ProgressBarProps> = ({
     progress,
     progressValue,
     percentCompleted,
@@ -12,6 +12,7 @@ const HandleProgressbar: FC<ProgressBarProps> = ({
     debounceSlider,
     startedOn,
     endsOn,
+    isLoading,
 }) => {
     const router = useRouter();
     const { dev } = router.query;
@@ -22,6 +23,7 @@ const HandleProgressbar: FC<ProgressBarProps> = ({
                     value={progressValue}
                     debounceSlider={debounceSlider}
                     handleProgressChange={handleProgressChange}
+                    isLoading={isLoading}
                 />
                 <span>{progressValue}%</span>
             </>
@@ -39,4 +41,4 @@ const HandleProgressbar: FC<ProgressBarProps> = ({
     );
 };
 
-export default HandleProgressbar;
+export default Progressbar;

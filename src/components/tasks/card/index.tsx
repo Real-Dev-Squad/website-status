@@ -6,7 +6,6 @@ import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-import { useRouter } from 'next/router';
 import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
@@ -24,18 +23,15 @@ import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
 } from '@/app/services/taskTagApi';
-import { useEditMode } from '@/hooks/useEditMode';
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
-import { useGetUserQuery } from '@/app/services/userApi';
-import HandleProgressText from './ProgressText';
-import HandleProgressbar from './ProgressBar';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
+import ProgressContainer from './progressContainer';
 
 let timer: NodeJS.Timeout;
 
@@ -52,11 +48,6 @@ const Card: FC<CardProps> = ({
     ];
 
     const cardDetails = content;
-    const { data } = useGetUserQuery();
-    const [progress, setProgress] = useState<boolean>(false);
-    const [progressValue, setProgressValue] = useState<number>(0);
-    const [updateTasks] = useUpdateTaskMutation();
-    const [debounceTimeOut, setDebounceTimeOut] = useState<number>(0);
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: cardDetails.assignee,
@@ -66,11 +57,13 @@ const Card: FC<CardProps> = ({
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const { data: userData, isUserAuthorized } = useUserData();
+    const { isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
 
     const [keyLongPressed] = useKeyLongPressed();
+
+    const [isEditMode, setIsEditMode] = useState(false);
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -82,18 +75,15 @@ const Card: FC<CardProps> = ({
     const [isLoadingSuggestions, setIsLoadingSuggestions] =
         useState<boolean>(false);
     const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
-    const [assigneeName, setAssigneeName] = useState<string>('');
+    const [assigneeName, setAssigneeName] = useState<string>(
+        cardDetails.assignee ?? ''
+    );
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const { onEditRoute } = useEditMode();
-    const router = useRouter();
-    const { dev } = router.query;
-    const isDevEnabled = (dev && dev === 'true') || false;
 
     useEffect(() => {
         const isAltKeyLongPressed = keyLongPressed === ALT_KEY;
 
-        if (isAltKeyLongPressed) {
+        if (isAltKeyLongPressed && isUserAuthorized) {
             setShowEditButton(true);
         }
     }, [keyLongPressed]);
@@ -103,7 +93,7 @@ const Card: FC<CardProps> = ({
     const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const fromNowStartedOn = moment(localStartedOn).fromNow();
 
-    const localEndsOn = new Date(parseInt(cardDetails.endsOn, 10) * 1000);
+    const localEndsOn = new Date(cardDetails.endsOn * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
     const statusFontColor = !statusRedList.includes(
         cardDetails.status as TASK_STATUS
@@ -147,13 +137,9 @@ const Card: FC<CardProps> = ({
                 toChange[changedProperty] = toTimeStamp;
             }
 
-            onContentChange(
-                toChange.id,
-                {
-                    [changedProperty]: toChange[changedProperty],
-                },
-                isDevEnabled
-            );
+            onContentChange(toChange.id, {
+                [changedProperty]: toChange[changedProperty],
+            });
         }
     }
 
@@ -172,8 +158,8 @@ const Card: FC<CardProps> = ({
         }
     }
 
-    function renderDate(fromNowEndsOn: string, shouldEdit: boolean) {
-        if (shouldEdit) {
+    function renderDate(fromNowEndsOn: string, isEditable: boolean) {
+        if (isEditable) {
             return (
                 <input
                     type="date"
@@ -221,7 +207,6 @@ const Card: FC<CardProps> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isDevEnabled && { isDevEnabled: true }),
         });
         response
             .unwrap()
@@ -237,6 +222,11 @@ const Card: FC<CardProps> = ({
             });
     };
 
+    const onEditRoute = () => {
+        setIsEditMode(true);
+    };
+    const isEditable = shouldEdit && isUserAuthorized && isEditMode;
+
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
         return getDateInString(new Date(closedAt ?? Date.now()));
@@ -249,7 +239,6 @@ const Card: FC<CardProps> = ({
         const response = updateTask({
             task: data,
             id: cardDetails.id,
-            ...(isDevEnabled && { isDevEnabled: true }),
         });
 
         response
@@ -267,7 +256,7 @@ const Card: FC<CardProps> = ({
     };
 
     const EditButton = () => (
-        <div className={classNames.editButton} data-testid="edit-button">
+        <div className={classNames.editButton}>
             <Image
                 src="/pencil.webp"
                 alt="pencil icon to represent edit button"
@@ -275,54 +264,10 @@ const Card: FC<CardProps> = ({
                 height={iconHeight}
                 onClick={onEditRoute}
                 tabIndex={0}
+                data-testid="edit-button"
             />
         </div>
     );
-
-    const handleProgressUpdate = () => {
-        if (
-            content.assignee === data?.username ||
-            data?.roles.super_user === true
-        ) {
-            setProgress(true);
-        } else {
-            toast(ERROR, 'You cannot update progress');
-        }
-    };
-
-    const debounceSlider = (debounceTimeOut: number) => {
-        if (debounceTimeOut) {
-            clearTimeout(debounceTimeOut);
-        }
-        const timer = setTimeout(() => {
-            handleSliderChangeComplete(cardDetails.id, progressValue);
-        }, 1000);
-        setDebounceTimeOut(Number(timer));
-    };
-
-    const handleSliderChangeComplete = async (
-        id: string,
-        percentCompleted: number
-    ) => {
-        const data = {
-            percentCompleted: percentCompleted,
-        };
-        await updateTasks({
-            task: data,
-            id: id,
-        });
-        toast(SUCCESS, 'Progress Updated Successfully');
-    };
-
-    const handleProgressChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setProgressValue(Number(event.target.value));
-    };
-
-    const handleSaveProgressUpdate = () => {
-        setProgress(false);
-    };
 
     const AssigneeButton = () => {
         return (
@@ -342,7 +287,7 @@ const Card: FC<CardProps> = ({
             <div className={classNames.cardItems}>
                 <span
                     className={classNames.cardSpecialFont}
-                    contentEditable={shouldEdit}
+                    contentEditable={isEditable}
                     onKeyDown={(e) => handleChange(e, 'startedOn')}
                     role="button"
                     tabIndex={0}
@@ -429,7 +374,7 @@ const Card: FC<CardProps> = ({
                 >
                     <span
                         className={classNames.cardTitle}
-                        contentEditable={shouldEdit}
+                        contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'title')}
                         role="button"
                         tabIndex={0}
@@ -439,25 +384,8 @@ const Card: FC<CardProps> = ({
                 </ConditionalLinkWrapper>
 
                 {/* progress bar */}
-                <div>
-                    <div className={classNames.progressContainerUpdated}>
-                        <HandleProgressbar
-                            progress={progress}
-                            progressValue={progressValue}
-                            percentCompleted={content.percentCompleted}
-                            handleProgressChange={handleProgressChange}
-                            debounceSlider={debounceSlider}
-                            startedOn={content.startedOn}
-                            endsOn={content.endsOn}
-                        />
-                    </div>
-                    {dev === 'true' && (
-                        <HandleProgressText
-                            progress={progress}
-                            handleSaveProgressUpdate={handleSaveProgressUpdate}
-                            handleProgressUpdate={handleProgressUpdate}
-                        />
-                    )}
+                <div className={classNames.progressContainer}>
+                    <ProgressContainer content={content} />
                 </div>
             </div>
             <div className={classNames.taskStatusAndDateContainer}>
@@ -467,12 +395,12 @@ const Card: FC<CardProps> = ({
                             Estimated completion
                         </span>
                         <span className={classNames.completionDate}>
-                            {renderDate(fromNowEndsOn, shouldEdit)}
+                            {renderDate(fromNowEndsOn, isEditable)}
                         </span>
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
-                        contentEditable={shouldEdit}
+                        contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
@@ -484,7 +412,7 @@ const Card: FC<CardProps> = ({
                 </div>
                 {/* EDIT task status */}
                 <div className={classNames.taskStatusEditMode}>
-                    {shouldEdit && (
+                    {isEditable && (
                         <TaskStatusEditMode
                             task={cardDetails}
                             updateTask={onContentChange}
@@ -492,75 +420,71 @@ const Card: FC<CardProps> = ({
                     )}
                 </div>
             </div>
-            {showAssignButton() ? (
-                <AssigneeButton />
-            ) : (
-                <div className={classNames.contributor}>
-                    <span className={classNames.cardSpecialFont}>
-                        Assigned to
-                    </span>
-                    <span className={classNames.contributorImage}>
-                        <Image
-                            src={assigneeProfileImageURL}
-                            alt={cardDetails.assignee || DUMMY_NAME}
-                            width={30}
-                            height={30}
-                        />
-                    </span>
-                    {shouldEdit ? (
-                        isUserAuthorized && (
-                            <div className={classNames.suggestionDiv}>
-                                <input
-                                    ref={inputRef}
-                                    value={assigneeName}
-                                    className={classNames.cardStrongFont}
-                                    onKeyDown={(e) => {
-                                        handleChange(e, 'assignee');
-                                    }}
-                                    onChange={(e) => {
-                                        handleAssignment(e);
-                                        debounce(
-                                            fetchUsers,
-                                            400
-                                        )(e.target.value);
-                                    }}
-                                    role="button"
-                                    tabIndex={0}
-                                />
 
-                                {isLoadingSuggestions ? (
-                                    <Loader />
-                                ) : (
-                                    showSuggestion && (
-                                        <SuggestionBox
-                                            suggestions={suggestions}
-                                            onSelectAssignee={handleClick}
-                                        />
-                                    )
-                                )}
-                            </div>
-                        )
-                    ) : (
-                        <span className={classNames.cardStrongFont}>
-                            {cardDetails.assignee}
-                        </span>
-                    )}
-                </div>
-            )}
+            <div className={classNames.contributor}>
+                <p className={classNames.cardSpecialFont}>
+                    {cardDetails.assignee ? 'Assigned to' : 'Assign to'}
+                </p>
+                <span className={classNames.contributorImage}>
+                    <Image
+                        src={assigneeProfileImageURL}
+                        alt={cardDetails.assignee || DUMMY_NAME}
+                        width={30}
+                        height={30}
+                    />
+                </span>
+                {isEditable
+                    ? isUserAuthorized && (
+                          <div className={classNames.suggestionDiv}>
+                              <input
+                                  data-testid="assignee-input"
+                                  ref={inputRef}
+                                  value={assigneeName}
+                                  className={classNames.cardStrongFont}
+                                  onKeyDown={(e) => {
+                                      handleChange(e, 'assignee');
+                                  }}
+                                  onChange={(e) => {
+                                      handleAssignment(e);
+                                      debounce(fetchUsers, 400)(e.target.value);
+                                  }}
+                                  role="button"
+                                  tabIndex={0}
+                              />
+
+                              {isLoadingSuggestions ? (
+                                  <Loader />
+                              ) : (
+                                  showSuggestion && (
+                                      <SuggestionBox
+                                          suggestions={suggestions}
+                                          onSelectAssignee={handleClick}
+                                      />
+                                  )
+                              )}
+                          </div>
+                      )
+                    : cardDetails.assignee && (
+                          <p className={classNames.cardStrongFont}>
+                              {cardDetails.assignee}
+                          </p>
+                      )}
+                {showAssignButton() && <AssigneeButton />}
+            </div>
 
             <div className={classNames.cardItems}>
                 <div
                     className={`${classNames.taskTagLevelWrapper} ${
-                        shouldEdit && classNames.editMode
+                        isEditable && classNames.editMode
                     }`}
                 >
                     <TaskLevelMap
                         taskTagLevel={taskTagLevel}
-                        shouldEdit={shouldEdit}
+                        shouldEdit={isEditable}
                         itemId={cardDetails.id}
                         deleteTaskTagLevel={deleteTaskTagLevel}
                     />
-                    {shouldEdit && isUserAuthorized && (
+                    {isEditable && isUserAuthorized && (
                         <TaskLevelEdit
                             taskTagLevel={taskTagLevel}
                             itemId={cardDetails.id}
@@ -572,7 +496,7 @@ const Card: FC<CardProps> = ({
             {cardDetails.status !== 'Completed' && isIssueClosed() && (
                 <CloseTaskButton />
             )}
-            {isUserAuthorized && showEditButton && <EditButton />}
+            {!isEditMode && showEditButton && <EditButton />}
         </div>
     );
 };
