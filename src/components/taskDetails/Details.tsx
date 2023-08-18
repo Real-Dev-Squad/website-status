@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
-import { GITHUB_LOGO } from '@/constants/url';
-
+import { GITHUB_LOGO, OPENINNEWTAB_ICON } from '@/constants/url';
 type Props = {
     detailType: string;
     value: string;
@@ -23,6 +22,7 @@ const Details: FC<Props> = ({ detailType, value }) => {
                 {isGitHubLink && value ? (
                     <button
                         className={classNames.button}
+                        aria-label="Open GitHub Issue"
                         onClick={openGitIssueLink}
                     >
                         <img
@@ -30,7 +30,11 @@ const Details: FC<Props> = ({ detailType, value }) => {
                             src={GITHUB_LOGO}
                             alt="Git Icon"
                         />{' '}
-                        Open Git Issue
+                        <img
+                            className={classNames.icon}
+                            src={OPENINNEWTAB_ICON}
+                            alt="Open In New Tab Icon"
+                        />
                     </button>
                 ) : (
                     <span
