@@ -42,9 +42,10 @@ $off-white: #f0f0f0;
         height: 16px;
         margin-right: 4px;
 
-    &:hover {
-        background-color: $theme-blue;
-        color: $white;
+        &:hover {
+            background-color: $theme-blue;
+            color: $white;
+        }
     }
 }
 
