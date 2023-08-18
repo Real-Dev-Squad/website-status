@@ -47,16 +47,12 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                 id: id,
             })
                 .unwrap()
-                .then(() => {
-                    toast(SUCCESS, PROGRESS_SUCCESSFUL);
-                })
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
                 .catch(() => toast(ERROR, ERROR_MESSAGE));
         } else {
             updateSelfTask({ task: taskData, id: id })
                 .unwrap()
-                .then((data) => {
-                    toast(SUCCESS, PROGRESS_SUCCESSFUL);
-                })
+                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
                 .catch(() => toast(ERROR, ERROR_MESSAGE));
         }
     };
