@@ -34,7 +34,8 @@ import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import ProgressContainer from './progressContainer';
 import { SmallSpinner } from './SmallSpinner';
 import { SavedCheckmark } from './SavedCheckmark';
-import { PENDING, SAVED } from '../constants';
+import { ShowError } from './ShowError';
+import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 
 let timer: NodeJS.Timeout;
 
@@ -184,7 +185,10 @@ const Card: FC<CardProps> = ({
                     }));
                 })
                 .catch((err) => {
-                    toast(ERROR, err.data.message);
+                    setEditedTaskDetails((prev) => ({
+                        ...prev,
+                        savingDate: ERROR_STATUS,
+                    }));
                 })
                 .finally(() => {
                     setTimeout(() => {
@@ -376,7 +380,10 @@ const Card: FC<CardProps> = ({
                 }));
             })
             .catch((err) => {
-                toast(ERROR, err.data.message);
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    assigningUser: ERROR_STATUS,
+                }));
             })
             .finally(() => {
                 setTimeout(() => {
@@ -465,7 +472,10 @@ const Card: FC<CardProps> = ({
                 }));
             })
             .catch((err) => {
-                toast(ERROR, err.data.message);
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    savingText: ERROR_STATUS,
+                }));
             })
             .finally(() => {
                 setTimeout(() => {
@@ -473,7 +483,7 @@ const Card: FC<CardProps> = ({
                         ...prev,
                         savingText: '',
                     }));
-                }, 3000);
+                }, 2000);
             });
     };
 
@@ -503,9 +513,21 @@ const Card: FC<CardProps> = ({
             ...prev,
             title: value,
         }));
-        if (value.trim() === '')
-            return toast(ERROR, 'Title is not allowed to be empty');
-        debouncedHandleTitleChange(value);
+        if (value.trim() === '') {
+            setEditedTaskDetails((prev) => ({
+                ...prev,
+                savingText: ERROR_STATUS,
+            }));
+            toast(ERROR, 'Title is not allowed to be empty');
+            setTimeout(() => {
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    savingText: '',
+                }));
+            }, 3000);
+        } else {
+            debouncedHandleTitleChange(value);
+        }
     };
 
     return (
@@ -535,6 +557,9 @@ const Card: FC<CardProps> = ({
                         )}
                         {editedTaskDetails.savingText === SAVED && (
                             <SavedCheckmark />
+                        )}
+                        {editedTaskDetails.savingText === ERROR_STATUS && (
+                            <ShowError />
                         )}
                     </div>
                 ) : (
@@ -574,6 +599,9 @@ const Card: FC<CardProps> = ({
                         )}
                         {editedTaskDetails.savingDate === SAVED && (
                             <SavedCheckmark />
+                        )}
+                        {editedTaskDetails.savingDate === ERROR_STATUS && (
+                            <ShowError />
                         )}
                     </div>
                     <span
@@ -648,6 +676,8 @@ const Card: FC<CardProps> = ({
                               {editedTaskDetails.assigningUser === SAVED && (
                                   <SavedCheckmark />
                               )}
+                              {editedTaskDetails.assigningUser ===
+                                  ERROR_STATUS && <ShowError />}
                           </div>
                       )
                     : editedTaskDetails.assignee && (

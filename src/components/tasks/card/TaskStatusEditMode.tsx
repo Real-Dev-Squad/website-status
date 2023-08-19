@@ -1,11 +1,11 @@
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task, { CardTaskDetails } from '@/interfaces/task.type';
 import { useState } from 'react';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { SmallSpinner } from './SmallSpinner';
 import { SavedCheckmark } from './SavedCheckmark';
+import { ShowError } from './ShowError';
 import classNames from '@/components/tasks/card/card.module.scss';
-import { PENDING, SAVED } from '../constants';
+import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 
 type Props = {
@@ -18,7 +18,6 @@ const beautifyStatus = (status: string) => status.split('_').join(' ');
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
 const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
-    const { ERROR } = ToastTypes;
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -40,7 +39,7 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
                 setSaveStatus(SAVED);
             })
             .catch((err: { data: { message: string } }) => {
-                toast(ERROR, err.data.message);
+                setSaveStatus(ERROR_STATUS);
             })
             .finally(() => {
                 setTimeout(() => {
@@ -70,6 +69,7 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
             </label>
             {saveStatus === PENDING && <SmallSpinner />}
             {saveStatus === SAVED && <SavedCheckmark />}
+            {saveStatus === ERROR_STATUS && <ShowError />}
         </div>
     );
 };
