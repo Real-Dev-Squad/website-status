@@ -30,6 +30,11 @@ const taskDetailsHandler = [
                         neelam: 0,
                         dinero: 110,
                     },
+                    github: {
+                        issue: {
+                            html_url:'https://www.sampleGithubUrl.com'
+                        }
+                    }
                 },
             })
         );

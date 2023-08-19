@@ -119,14 +119,45 @@ describe('TaskDetails Page', () => {
             expect(getByText('assigned')).toBeInTheDocument();
         });
     });
-    it('Renders Task Link', async () => {
+    it('Renders Task Link open button', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
             </Provider>
         );
         await waitFor(() => {
-            expect(getByText('https://www.sampleUrl.com')).toBeInTheDocument();
+            const gitIcon = screen.getByAltText('Git Icon');
+            const openInNewTabIcon = screen.getByAltText(
+                'Open In New Tab Icon'
+            );
+            expect(gitIcon).toBeInTheDocument();
+            expect(openInNewTabIcon).toBeInTheDocument();
+        });
+    });
+    it('Test Open Git issue link button', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
+        );
+        await waitFor(() => {
+            const button = screen.getByLabelText('Open GitHub Issue');
+            // Mock the window.open function
+            const originalOpen = window.open;
+            const mockOpen = jest.fn();
+            window.open = mockOpen;
+
+            // Simulate a click on the Git icon button
+            fireEvent.click(button);
+
+            // Check if window.open was called with the correct arguments
+            expect(mockOpen).toHaveBeenCalledWith(
+                'https://www.sampleGithubUrl.com',
+                '_blank'
+            );
+
+            // Restore the original window.open function
+            window.open = originalOpen;
         });
     });
     it('Renders Task Assignee', async () => {
