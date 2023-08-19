@@ -127,7 +127,9 @@ describe('TaskDetails Page', () => {
         );
         await waitFor(() => {
             const gitIcon = screen.getByAltText('Git Icon');
-            const openInNewTabIcon = screen.getByAltText('Open In New Tab Icon');
+            const openInNewTabIcon = screen.getByAltText(
+                'Open In New Tab Icon'
+            );
             expect(gitIcon).toBeInTheDocument();
             expect(openInNewTabIcon).toBeInTheDocument();
         });
@@ -139,20 +141,23 @@ describe('TaskDetails Page', () => {
             </Provider>
         );
         await waitFor(() => {
-        const button = screen.getByLabelText('Open GitHub Issue');
-        // Mock the window.open function
-        const originalOpen = window.open;
-        const mockOpen = jest.fn();
-        window.open = mockOpen;
+            const button = screen.getByLabelText('Open GitHub Issue');
+            // Mock the window.open function
+            const originalOpen = window.open;
+            const mockOpen = jest.fn();
+            window.open = mockOpen;
 
-        // Simulate a click on the Git icon button
-        fireEvent.click(button);
+            // Simulate a click on the Git icon button
+            fireEvent.click(button);
 
-        // Check if window.open was called with the correct arguments
-        expect(mockOpen).toHaveBeenCalledWith('https://www.sampleGithubUrl.com', '_blank');
-        
-        // Restore the original window.open function
-        window.open = originalOpen;
+            // Check if window.open was called with the correct arguments
+            expect(mockOpen).toHaveBeenCalledWith(
+                'https://www.sampleGithubUrl.com',
+                '_blank'
+            );
+
+            // Restore the original window.open function
+            window.open = originalOpen;
         });
     });
     it('Renders Task Assignee', async () => {
