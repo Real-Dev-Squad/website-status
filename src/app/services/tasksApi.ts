@@ -24,7 +24,7 @@ export const tasksApi = api.injectEndpoints({
                 const baseQuery = `/tasks?size=${size}&dev=true`;
 
                 let url =
-                    status === 'ALL'
+                    !status || status === 'ALL'
                         ? baseQuery
                         : `${baseQuery}&status=${status}`;
 
