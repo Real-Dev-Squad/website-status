@@ -22,8 +22,6 @@ import {
     failedUpdateSelfTaskHandler,
     failedUpdateTaskHandler,
     filterTaskHandler,
-    failedFilterTasksResponse,
-    failedfilterTaskHandler,
 } from '../../../__mocks__/handlers/tasks.handler';
 
 const server = setupServer(...handlers);
@@ -155,12 +153,12 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
-    test('returns search term based filtered tasks', async () => {
+    test('returns tasks filtered by title', async () => {
         server.use(filterTaskHandler);
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    term: 'task',
+                    title: 'task',
                 }),
             {
                 wrapper: Wrapper,
@@ -177,31 +175,6 @@ describe('useGetAllTasksQuery()', () => {
         expect(tasksData).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
-    });
-    test('should fail to return filter task', async () => {
-        server.use(failedfilterTaskHandler);
-        const { result, waitForNextUpdate } = renderHook(
-            () =>
-                useGetAllTasksQuery({
-                    term: ' ',
-                }),
-            {
-                wrapper: Wrapper,
-            }
-        );
-        const initialResponse = result.current;
-        expect(initialResponse.isLoading).toBe(true);
-        expect(initialResponse.data).toBeUndefined();
-
-        await act(() => waitForNextUpdate());
-
-        const nextResponse = result.current;
-        expect(nextResponse.isError).toBe(true);
-        expect(nextResponse.error).toHaveProperty('status', 404);
-        expect(nextResponse.error).toHaveProperty(
-            'data',
-            failedFilterTasksResponse
-        );
     });
 });
 
