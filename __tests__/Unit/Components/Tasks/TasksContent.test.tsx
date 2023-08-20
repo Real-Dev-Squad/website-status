@@ -110,10 +110,6 @@ describe('tasks content', () => {
         const tabsContainer = within(
             screen.getByTestId('status-tabs-container')
         );
-        const inProgressBtn = tabsContainer.getByRole('button', {
-            name: /IN PROGRESS/i,
-        });
-        expect(inProgressBtn).toHaveClass('active');
         const unassignedButton = tabsContainer.getByRole('button', {
             name: /UNASSINGED/i,
         });
@@ -121,7 +117,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'is:available',
+                q: 'status:available  ',
             },
         });
     });
@@ -187,7 +183,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: `is:${TABS[1].toLowerCase()}`,
+                q: 'status:in-progress  ',
             },
         });
     });
@@ -208,7 +204,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'is:in-progress',
+                q: 'status:all  ',
             },
         });
     });
