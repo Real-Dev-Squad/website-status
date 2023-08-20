@@ -18,12 +18,24 @@ export const tasksApi = api.injectEndpoints({
                 size = TASK_RESULT_SIZE,
                 nextTasks,
                 prevTasks,
-                term,
+                assignee,
+                title,
             }) => {
-                let url = `/tasks?status=${status}&size=${size}&dev=true`;
-                if (term) {
-                    url = `/tasks?q=searchTerm:${term}`;
+                const baseQuery = `/tasks?size=${size}&dev=true`;
+
+                let url =
+                    status === 'ALL'
+                        ? baseQuery
+                        : `${baseQuery}&status=${status}`;
+
+                if (assignee) {
+                    url += `&assignee=${assignee}`;
                 }
+
+                if (title) {
+                    url += `&title=${title}`;
+                }
+
                 if (nextTasks) {
                     url = nextTasks;
                 }
@@ -31,19 +43,17 @@ export const tasksApi = api.injectEndpoints({
                 if (prevTasks) {
                     url = prevTasks;
                 }
+
                 return { url };
             },
             providesTags: ['Tasks'],
-
-            transformResponse: (response: TasksResponseType) => {
-                return {
-                    tasks: response.tasks?.sort(
-                        (a: task, b: task) => +a.endsOn - +b.endsOn
-                    ),
-                    next: response.next,
-                    prev: response.prev,
-                };
-            },
+            transformResponse: (response: TasksResponseType) => ({
+                tasks: response.tasks?.sort(
+                    (a: task, b: task) => +a.endsOn - +b.endsOn
+                ),
+                next: response.next,
+                prev: response.prev,
+            }),
         }),
 
         getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
