@@ -109,6 +109,10 @@ describe('tasks content', () => {
         const tabsContainer = within(
             screen.getByTestId('status-tabs-container')
         );
+        const inProgressBtn = tabsContainer.getByRole('button', {
+            name: /IN PROGRESS/i,
+        });
+        expect(inProgressBtn).toHaveClass('tabButton');
         const unassignedButton = tabsContainer.getByRole('button', {
             name: /UNASSINGED/i,
         });
