@@ -47,13 +47,15 @@ export const tasksApi = api.injectEndpoints({
                 return { url };
             },
             providesTags: ['Tasks'],
-            transformResponse: (response: TasksResponseType) => ({
-                tasks: response.tasks?.sort(
-                    (a: task, b: task) => +a.endsOn - +b.endsOn
-                ),
-                next: response.next,
-                prev: response.prev,
-            }),
+            transformResponse: (response: TasksResponseType) => {
+                return {
+                    tasks: response.tasks?.sort(
+                        (a: task, b: task) => +a.endsOn - +b.endsOn
+                    ),
+                    next: response.next,
+                    prev: response.prev,
+                };
+            },
         }),
 
         getMineTasks: builder.query<TasksQueryResponse['tasks'], void>({
