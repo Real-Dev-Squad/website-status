@@ -202,6 +202,29 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
+
+    test('returns empty array when no tasks are found by title', async () => {
+        server.use(filterTaskHandler);
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    title: 'task',
+                }),
+            { wrapper: Wrapper }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+        expect(tasksData?.tasks).toHaveLength(0);
+    });
 });
 
 describe('useAddTaskMutation()', () => {
