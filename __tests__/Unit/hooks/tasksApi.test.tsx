@@ -185,9 +185,7 @@ describe('useGetAllTasksQuery()', () => {
                 useGetAllTasksQuery({
                     assignee: 'sunny-s',
                 }),
-            {
-                wrapper: Wrapper,
-            }
+            { wrapper: Wrapper }
         );
         const initialResponse = result.current;
         expect(initialResponse.data).toBeUndefined();
