@@ -56,7 +56,7 @@ const TaskSearch = ({
                     onKeyDown={handleKeyPress}
                 />
             </div>
-            <div className="buttons">
+            <div className={className['search-button-container']}>
                 <button
                     className={className['search-button']}
                     data-testid="search-button"

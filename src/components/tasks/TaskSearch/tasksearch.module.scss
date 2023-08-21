@@ -13,6 +13,12 @@ $radius: 5px;
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .filter-container {
@@ -25,6 +31,11 @@ $radius: 5px;
     border-radius: $radius;
     margin-right: 1rem;
     border: 1px solid $light-gray;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        margin-right: 0;
+    }
 }
 
 .filter-button {
@@ -50,6 +61,10 @@ $radius: 5px;
         border-top: 5px solid $black-color;
         margin-left: 0.5rem;
     }
+
+    @media (max-width: 768px) {
+        width: 6rem;
+    }
 }
 
 .search-input {
@@ -71,6 +86,18 @@ $radius: 5px;
     }
 }
 
+.search-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 10rem;
+    @media (max-width: 768px) {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
 .search-button {
     width: 5rem;
     height: 2rem;
@@ -87,12 +114,18 @@ $radius: 5px;
         color: $white-color;
         border: 1px solid $primary-color;
     }
+
+    @media (max-width: 768px) {
+        width: 100%;
+        border-radius: $radius;
+        margin-left: 0;
+    }
 }
 
 .filter-modal {
     position: relative;
-    top: 10.5rem;
-    left: -2.5rem;
+    top: 11.5rem;
+    left: -2.8rem;
     min-width: 15rem;
     background-color: $white-color;
     border-radius: $radius;
@@ -102,6 +135,13 @@ $radius: 5px;
     justify-content: space-between;
     align-items: center;
     z-index: 1;
+    @media (max-width: 768px) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+    }
 }
 
 .filter-modal-title {
@@ -124,6 +164,13 @@ $radius: 5px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
 
     .status-button {
         width: 100%;
