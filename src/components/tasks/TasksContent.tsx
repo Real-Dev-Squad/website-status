@@ -71,7 +71,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     const onSelect = (tab: Tab, assignee?: string, title?: string) => {
         const queryParamValue = `${getQueryParamTab(tab)} ${
             assignee ? getQueryParamAssignee(assignee) : ''
-        } ${title ? getQueryParamTitle(title) : ''}`;
+        } ${title ? getQueryParamTitle(title) : ''}`.trim();
         router.push({
             query: {
                 ...router.query,
@@ -124,7 +124,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         const { status, assignee, title } = extractQueryParams(inputValue);
         setQueryTitle(title);
         setQueryAssignee(assignee);
-        const statusInput = getActiveTab(status);
         setLoadedTasks({
             ALL: [],
             IN_PROGRESS: [],
@@ -136,7 +135,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             MERGED: [],
             COMPLETED: [],
         });
-        inputValue && onSelect(statusInput, assignee, title);
+        inputValue && onSelect(status as Tab, assignee, title);
     };
 
     const searchInputHandler = (value: string) => {

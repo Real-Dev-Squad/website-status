@@ -153,6 +153,7 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
+
     test('returns tasks filtered by title', async () => {
         server.use(filterTaskHandler);
         const { result, waitForNextUpdate } = renderHook(
@@ -172,6 +173,31 @@ describe('useGetAllTasksQuery()', () => {
 
         const nextResponse = result.current;
         const tasksData = nextResponse.data;
+        expect(tasksData).not.toBeUndefined();
+        expect(nextResponse.isLoading).toBe(false);
+        expect(nextResponse.isSuccess).toBe(true);
+    });
+
+    test('returns tasks filtered by assignee', async () => {
+        server.use(filterTaskHandler);
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetAllTasksQuery({
+                    assignee: 'sunny-s',
+                }),
+            {
+                wrapper: Wrapper,
+            }
+        );
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const tasksData = nextResponse.data;
+        console.log(tasksData);
         expect(tasksData).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);

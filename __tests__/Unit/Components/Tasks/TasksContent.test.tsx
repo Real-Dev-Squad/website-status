@@ -116,7 +116,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:available  ',
+                q: 'status:available',
             },
         });
     });
@@ -182,7 +182,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:in-progress  ',
+                q: 'status:in-progress',
             },
         });
     });
@@ -203,7 +203,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:all  ',
+                q: 'status:all',
             },
         });
     });
