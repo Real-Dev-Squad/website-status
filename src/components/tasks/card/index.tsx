@@ -36,6 +36,7 @@ import { SmallSpinner } from './SmallSpinner';
 import { SavedCheckmark } from './SavedCheckmark';
 import { ShowError } from './ShowError';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
+import { useRouter } from 'next/router';
 
 let timer: NodeJS.Timeout;
 
@@ -52,6 +53,9 @@ const Card: FC<CardProps> = ({
     ];
 
     const cardDetails = content;
+
+    const router = useRouter();
+    const { dev } = router.query;
 
     const [editedTaskDetails, setEditedTaskDetails] = useState({
         ...cardDetails,
@@ -552,14 +556,17 @@ const Card: FC<CardProps> = ({
                             onChange={inputHandler}
                             data-testid="title-textarea"
                         />
-                        {editedTaskDetails.savingText === PENDING && (
-                            <SmallSpinner />
-                        )}
-                        {editedTaskDetails.savingText === SAVED && (
-                            <SavedCheckmark />
-                        )}
-                        {editedTaskDetails.savingText === ERROR_STATUS && (
-                            <ShowError />
+                        {dev === 'true' && (
+                            <>
+                                {editedTaskDetails.savingText === PENDING && (
+                                    <SmallSpinner />
+                                )}
+                                {editedTaskDetails.savingText === SAVED && (
+                                    <SavedCheckmark />
+                                )}
+                                {editedTaskDetails.savingText ===
+                                    ERROR_STATUS && <ShowError />}
+                            </>
                         )}
                     </div>
                 ) : (
@@ -594,14 +601,17 @@ const Card: FC<CardProps> = ({
                         <span className={classNames.completionDate}>
                             {renderDate(fromNowEndsOn, isEditable)}
                         </span>
-                        {editedTaskDetails.savingDate === PENDING && (
-                            <SmallSpinner />
-                        )}
-                        {editedTaskDetails.savingDate === SAVED && (
-                            <SavedCheckmark />
-                        )}
-                        {editedTaskDetails.savingDate === ERROR_STATUS && (
-                            <ShowError />
+                        {dev === 'true' && (
+                            <>
+                                {editedTaskDetails.savingDate === PENDING && (
+                                    <SmallSpinner />
+                                )}
+                                {editedTaskDetails.savingDate === SAVED && (
+                                    <SavedCheckmark />
+                                )}
+                                {editedTaskDetails.savingDate ===
+                                    ERROR_STATUS && <ShowError />}
+                            </>
                         )}
                     </div>
                     <span
@@ -670,14 +680,16 @@ const Card: FC<CardProps> = ({
                                       )
                                   )}
                               </div>
-                              {editedTaskDetails.assigningUser === PENDING && (
-                                  <SmallSpinner />
+                              {dev === 'true' && (
+                                  <>
+                                      {editedTaskDetails.assigningUser ===
+                                          PENDING && <SmallSpinner />}
+                                      {editedTaskDetails.assigningUser ===
+                                          SAVED && <SavedCheckmark />}
+                                      {editedTaskDetails.assigningUser ===
+                                          ERROR_STATUS && <ShowError />}
+                                  </>
                               )}
-                              {editedTaskDetails.assigningUser === SAVED && (
-                                  <SavedCheckmark />
-                              )}
-                              {editedTaskDetails.assigningUser ===
-                                  ERROR_STATUS && <ShowError />}
                           </div>
                       )
                     : editedTaskDetails.assignee && (

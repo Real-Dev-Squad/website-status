@@ -7,6 +7,7 @@ import { ShowError } from './ShowError';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import { useRouter } from 'next/router';
 
 type Props = {
     task: task;
@@ -18,6 +19,9 @@ const beautifyStatus = (status: string) => status.split('_').join(' ');
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
 const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
+    const router = useRouter();
+    const { dev } = router.query;
+
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -67,9 +71,13 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
                     ))}
                 </select>
             </label>
-            {saveStatus === PENDING && <SmallSpinner />}
-            {saveStatus === SAVED && <SavedCheckmark />}
-            {saveStatus === ERROR_STATUS && <ShowError />}
+            {dev === 'true' && (
+                <>
+                    {saveStatus === PENDING && <SmallSpinner />}
+                    {saveStatus === SAVED && <SavedCheckmark />}
+                    {saveStatus === ERROR_STATUS && <ShowError />}
+                </>
+            )}
         </div>
     );
 };
