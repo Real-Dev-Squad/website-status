@@ -10,7 +10,7 @@ import { Tab } from '@/interfaces/task.type';
 describe('extractQueryParams', () => {
     it('should extract status, assignee, and title from query param', () => {
         const queryParam =
-            'status:in-progress assignee:sunny-s title:Develop feature';
+            'status:in-progress assignee:sunny-s Develop feature';
         const result = extractQueryParams(queryParam);
         expect(result.status).toBe('in-progress');
         expect(result.assignee).toBe('sunny-s');
@@ -46,6 +46,6 @@ describe('getQueryParamTitle', () => {
     it('should generate a query param for a title', () => {
         const title = 'Develop feature';
         const result = getQueryParamTitle(title);
-        expect(result).toBe('title:Develop feature');
+        expect(result).toBe('Develop feature');
     });
 });

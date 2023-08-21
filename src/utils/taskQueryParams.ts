@@ -6,37 +6,37 @@ export function extractQueryParams(queryParam: string) {
 
     let isValue = '';
     let assigneeValue = '';
-    let termValue = '';
+    let titleValue = '';
 
     if (!queryParamsArray) {
         return {
             status: isValue,
             assignee: assigneeValue,
-            title: termValue,
+            title: titleValue,
         };
     }
+
     for (let i = 0; i < queryParamsArray.length; i++) {
         const param = queryParamsArray[i];
         if (param.startsWith('status:')) {
             isValue = param.replace('status:', '');
         } else if (param.startsWith('assignee:')) {
             assigneeValue = param.replace('assignee:', '');
-        } else if (param.startsWith('title:')) {
-            termValue = queryParamsArray
-                .slice(i)
-                .join(' ')
-                .replace('title:', '');
+        } else {
+            titleValue += param + ' ';
         }
     }
+
+    titleValue = titleValue.trim();
 
     return {
         status: isValue,
         assignee: assigneeValue,
-        title: termValue,
+        title: titleValue,
     };
 }
 
 export const getQueryParamTab = (tab: Tab) => `status:${tabToUrlParams(tab)}`;
 export const getQueryParamAssignee = (assignee: string) =>
     `assignee:${assignee}`;
-export const getQueryParamTitle = (title: string) => `title:${title}`;
+export const getQueryParamTitle = (title: string) => title;
