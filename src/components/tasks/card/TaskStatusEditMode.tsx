@@ -1,13 +1,11 @@
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task, { CardTaskDetails } from '@/interfaces/task.type';
 import { useState } from 'react';
-import { SmallSpinner } from './SmallSpinner';
-import { SavedCheckmark } from './SavedCheckmark';
-import { ShowError } from './ShowError';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { useRouter } from 'next/router';
+import { StatusIndicator } from './StatusIndicator';
 
 type Props = {
     task: task;
@@ -29,7 +27,10 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
         target: { value },
     }: React.ChangeEvent<HTMLSelectElement>) => {
         setSaveStatus(PENDING);
-        setEditedTaskDetails((prev: any) => ({ ...prev, status: value }));
+        setEditedTaskDetails((prev: CardTaskDetails) => ({
+            ...prev,
+            status: value,
+        }));
         const response = updateTask({
             id: task.id,
             task: {
@@ -71,13 +72,7 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
                     ))}
                 </select>
             </label>
-            {dev === 'true' && (
-                <>
-                    {saveStatus === PENDING && <SmallSpinner />}
-                    {saveStatus === SAVED && <SavedCheckmark />}
-                    {saveStatus === ERROR_STATUS && <ShowError />}
-                </>
-            )}
+            {dev === 'true' && <StatusIndicator status={saveStatus} />}
         </div>
     );
 };

@@ -32,11 +32,9 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import ProgressContainer from './progressContainer';
-import { SmallSpinner } from './SmallSpinner';
-import { SavedCheckmark } from './SavedCheckmark';
-import { ShowError } from './ShowError';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useRouter } from 'next/router';
+import { StatusIndicator } from './StatusIndicator';
 
 let timer: NodeJS.Timeout;
 
@@ -496,10 +494,6 @@ const Card: FC<CardProps> = ({
         return (value: string) => {
             if (timerIdRef.current) {
                 clearTimeout(timerIdRef.current);
-                setEditedTaskDetails((prev) => ({
-                    ...prev,
-                    savingText: '',
-                }));
             }
             timerIdRef.current = setTimeout(() => {
                 func(value);
@@ -547,7 +541,7 @@ const Card: FC<CardProps> = ({
             {/* loading spinner */}
             {isLoading && <Loader />}
             <div className={classNames.cardItems}>
-                {isEditable ? (
+                {isEditable && dev === 'true' ? (
                     <div className={classNames.textareaSection}>
                         <textarea
                             className={classNames.textarea}
@@ -557,16 +551,9 @@ const Card: FC<CardProps> = ({
                             data-testid="title-textarea"
                         />
                         {dev === 'true' && (
-                            <>
-                                {editedTaskDetails.savingText === PENDING && (
-                                    <SmallSpinner />
-                                )}
-                                {editedTaskDetails.savingText === SAVED && (
-                                    <SavedCheckmark />
-                                )}
-                                {editedTaskDetails.savingText ===
-                                    ERROR_STATUS && <ShowError />}
-                            </>
+                            <StatusIndicator
+                                status={editedTaskDetails.savingText}
+                            />
                         )}
                     </div>
                 ) : (
@@ -602,16 +589,9 @@ const Card: FC<CardProps> = ({
                             {renderDate(fromNowEndsOn, isEditable)}
                         </span>
                         {dev === 'true' && (
-                            <>
-                                {editedTaskDetails.savingDate === PENDING && (
-                                    <SmallSpinner />
-                                )}
-                                {editedTaskDetails.savingDate === SAVED && (
-                                    <SavedCheckmark />
-                                )}
-                                {editedTaskDetails.savingDate ===
-                                    ERROR_STATUS && <ShowError />}
-                            </>
+                            <StatusIndicator
+                                status={editedTaskDetails.savingDate}
+                            />
                         )}
                     </div>
                     <span
@@ -681,14 +661,9 @@ const Card: FC<CardProps> = ({
                                   )}
                               </div>
                               {dev === 'true' && (
-                                  <>
-                                      {editedTaskDetails.assigningUser ===
-                                          PENDING && <SmallSpinner />}
-                                      {editedTaskDetails.assigningUser ===
-                                          SAVED && <SavedCheckmark />}
-                                      {editedTaskDetails.assigningUser ===
-                                          ERROR_STATUS && <ShowError />}
-                                  </>
+                                  <StatusIndicator
+                                      status={editedTaskDetails.assigningUser}
+                                  />
                               )}
                           </div>
                       )
@@ -725,7 +700,7 @@ const Card: FC<CardProps> = ({
                 <CloseTaskButton />
             )}
             {!isEditMode && showEditButton && <EditButton />}
-            {isEditMode && <CancelEditButton />}
+            {dev === 'true' && isEditMode && <CancelEditButton />}
         </div>
     );
 };
