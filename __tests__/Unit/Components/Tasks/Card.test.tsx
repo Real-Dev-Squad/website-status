@@ -388,7 +388,7 @@ describe('Task card', () => {
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
             </Provider>,
-            {}
+            { query: { dev: 'true' } }
         );
 
         const component = getByTestId('task-card');
@@ -407,7 +407,7 @@ describe('Task card', () => {
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
             </Provider>,
-            {}
+            { query: { dev: 'true' } }
         );
 
         const component = getByTestId('task-card');
