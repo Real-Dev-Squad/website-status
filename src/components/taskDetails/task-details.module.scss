@@ -40,17 +40,32 @@ $off-white: #f0f0f0;
         background-color: $theme-blue;
         color: $white;
     }
+}
+
+.gitButton {
+    @extend .button;
+    background-color: $off-white;
+    max-height: fit-content;
+    min-width: fit-content;
+    padding: 2px;
+    &:hover {
+        background-color: white;
+    }
 
     .icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 4px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .gitIcon {
+        @extend .icon;
+        filter: invert(100%);
     }
 }
 
 .detailsContainer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
 }
 

@@ -12,7 +12,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     };
 
     return (
-        <div>
+        <div className={classNames.detailsContainer}>
             <span className={classNames.detailType}>{detailType}:</span>
             <span
                 className={classNames.detailValue}
@@ -20,12 +20,13 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
             >
                 {isGitHubLink && value ? (
                     <button
-                        className={classNames.button}
+                        className={classNames.gitButton}
                         aria-label="Open GitHub Issue"
                         onClick={openGitIssueLink}
+                        title={value}
                     >
                         <img
-                            className={classNames.icon}
+                            className={classNames.gitIcon}
                             src={GITHUB_LOGO}
                             alt="Git Icon"
                         />{' '}
