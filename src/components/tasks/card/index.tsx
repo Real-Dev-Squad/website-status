@@ -213,6 +213,7 @@ const Card: FC<CardProps> = ({
                         handelDateChange(e, 'endsOn');
                     }}
                     value={dateTimes}
+                    data-testid="date"
                 />
             );
         }

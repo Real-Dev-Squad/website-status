@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -10,6 +10,7 @@ import {
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import * as tasksApi from '@/app/services/tasksApi';
 
 const DEFAULT_PROPS = {
     content: {
@@ -61,6 +62,10 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 
 jest.useFakeTimers();
 describe('Task card', () => {
+    let updateTaskSpy: any;
+    beforeEach(() => {
+        updateTaskSpy = jest.spyOn(tasksApi, 'useUpdateTaskMutation');
+    });
     test('Should render card', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -70,10 +75,8 @@ describe('Task card', () => {
                 query: { dev: 'true' },
             }
         );
-
         expect(getByText('test 1 for drag and drop')).toBeInTheDocument();
     });
-
     test('Should show n days ago for due tasks', () => {
         let props = {
             ...DEFAULT_PROPS,
@@ -87,9 +90,7 @@ describe('Task card', () => {
                 <Card {...props} />
             </Provider>
         );
-
         expect(getByText('a day ago')).toBeInTheDocument();
-
         // With updated props
         props = {
             ...props,
@@ -98,7 +99,6 @@ describe('Task card', () => {
                 endsOn: `${getFirestoreDateNDaysBefore(2)}`,
             },
         };
-
         rerender(
             <Provider store={store()}>
                 <RouterContext.Provider
@@ -108,10 +108,8 @@ describe('Task card', () => {
                 </RouterContext.Provider>
             </Provider>
         );
-
         expect(getByText('2 days ago')).toBeInTheDocument();
     });
-
     test('should show the redesign only with feature flag on', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
@@ -119,10 +117,8 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-
         expect(queryByTestId('task-card')).toBeInTheDocument();
     });
-
     test('should show edit button when ALT key is long pressed', () => {
         const { getByTestId, queryByTestId } = renderWithRouter(
             <Provider store={store()}>
@@ -130,14 +126,11 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-
         const component = getByTestId('task-card');
-
         act(() => {
             fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
             jest.advanceTimersByTime(300);
         });
-
         expect(queryByTestId('edit-button')).toBeInTheDocument();
     });
     test('task should be editable if edit button clicked', async () => {
@@ -148,7 +141,6 @@ describe('Task card', () => {
             {}
         );
         const component = getByTestId('task-card');
-
         act(() => {
             fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
             jest.advanceTimersByTime(300);
@@ -157,7 +149,6 @@ describe('Task card', () => {
         fireEvent.click(editButton);
         await screen.findByTestId('assignee-input');
     });
-
     it('Should render "Close task" button when parent issue is closed', function () {
         const PROPS = {
             ...DEFAULT_PROPS,
@@ -173,19 +164,16 @@ describe('Task card', () => {
                 },
             },
         };
-
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card {...PROPS} />
             </Provider>
         );
-
         const closeTaskBtn = screen.getByRole('button', {
             name: /Close the task/i,
         });
         expect(closeTaskBtn).toBeInTheDocument();
     });
-
     it('Should not render "Close task" button when parent issue is closed but the task was already completed', function () {
         const PROPS = {
             ...DEFAULT_PROPS,
@@ -200,19 +188,16 @@ describe('Task card', () => {
                 },
             },
         };
-
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card {...PROPS} />
             </Provider>
         );
-
         const closeTaskBtn = screen.queryByRole('button', {
             name: /Close the task/i,
         });
         expect(closeTaskBtn).not.toBeInTheDocument();
     });
-
     it('Should render "Assign to username" button when parent issue has an assignee and is open, the task is available and has not been assigned', function () {
         const PROPS = {
             ...DEFAULT_PROPS,
@@ -234,25 +219,20 @@ describe('Task card', () => {
                 },
             },
         };
-
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card {...PROPS} />
             </Provider>
         );
-
         const closeTaskBtn = screen.queryByRole('button', {
             name: /Assign to john/i,
         });
         expect(closeTaskBtn).toBeInTheDocument();
-
         const dummyNameImage = screen.getByAltText('Dummy Name');
         const assignToText = screen.getByText('Assign to');
-
         expect(dummyNameImage).toBeInTheDocument();
         expect(assignToText).toBeInTheDocument();
     });
-
     it('Should not render "Assign to username" button when parent issue has an assignee and is open, the task status is "Completed" and has not been assigned', function () {
         const PROPS = {
             ...DEFAULT_PROPS,
@@ -273,32 +253,27 @@ describe('Task card', () => {
                 },
             },
         };
-
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card {...PROPS} />
             </Provider>
         );
-
         const closeTaskBtn = screen.queryByRole('button', {
             name: /Assign to john/i,
         });
         expect(closeTaskBtn).not.toBeInTheDocument();
     });
-
     it('Should show test "Assigned to" when the task has an assignee', function () {
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
             </Provider>
         );
-
         const assignedToText = screen.getByText('Assigned to');
         expect(assignedToText).toBeInTheDocument();
         const assignToText = screen.queryByText('Assign to');
         expect(assignToText).not.toBeInTheDocument();
     });
-
     it('Should show test "Assign to" when the task does not have an assignee', function () {
         const PROPS = {
             ...DEFAULT_PROPS,
@@ -312,13 +287,11 @@ describe('Task card', () => {
                 <Card {...PROPS} />
             </Provider>
         );
-
         const assignedToText = screen.queryByText('Assigned to');
         expect(assignedToText).not.toBeInTheDocument();
         const assignToText = screen.getByText('Assign to');
         expect(assignToText).toBeInTheDocument();
     });
-
     it('Should render task assignee name in user input search field in edit mode', async () => {
         const screen = renderWithRouter(
             <Provider store={store()}>
@@ -326,28 +299,22 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-
         const taskCard = screen.getByTestId('task-card');
-
         act(() => {
             fireEvent.keyDown(taskCard, { key: 'Alt', code: 'AltLeft' });
             jest.advanceTimersByTime(300);
         });
-
         const editIcon = screen.getByTestId('edit-button');
         expect(editIcon).toBeInTheDocument();
-
         act(() => {
             fireEvent.click(editIcon);
             jest.advanceTimersByTime(300);
         });
-
         const userSelect = await screen.findByDisplayValue(
             DEFAULT_PROPS.content.assignee
         );
         expect(userSelect).toBeInTheDocument();
     });
-
     it('Should not have any assignee name in user input search field in edit mode when task has no assignee', async () => {
         const PROPS = {
             ...DEFAULT_PROPS,
@@ -357,29 +324,23 @@ describe('Task card', () => {
                 assignee: undefined,
             },
         };
-
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card {...PROPS} shouldEdit={true} />
             </Provider>,
             {}
         );
-
         const taskCard = screen.getByTestId('task-card');
-
         act(() => {
             fireEvent.keyDown(taskCard, { key: 'Alt', code: 'AltLeft' });
             jest.advanceTimersByTime(300);
         });
-
         const editIcon = screen.getByTestId('edit-button');
         expect(editIcon).toBeInTheDocument();
-
         act(() => {
             fireEvent.click(editIcon);
             jest.advanceTimersByTime(300);
         });
-
         const userSelect = await screen.findByTestId('assignee-input');
         expect(userSelect).toHaveValue('');
     });
@@ -390,16 +351,13 @@ describe('Task card', () => {
             </Provider>,
             { query: { dev: 'true' } }
         );
-
         const component = getByTestId('task-card');
-
         act(() => {
             fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
             jest.advanceTimersByTime(300);
         });
         const editButton = getByTestId('edit-button');
         fireEvent.click(editButton);
-
         expect(queryByTestId('cancel-edit-button')).toBeInTheDocument();
     });
     test('should show text area for title when in edit mode', () => {
@@ -409,7 +367,22 @@ describe('Task card', () => {
             </Provider>,
             { query: { dev: 'true' } }
         );
-
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        expect(queryByTestId('title-textarea')).toBeInTheDocument();
+    });
+    test('should change the title value when user starts typing', async () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
         const component = getByTestId('task-card');
 
         act(() => {
@@ -419,6 +392,68 @@ describe('Task card', () => {
         const editButton = getByTestId('edit-button');
         fireEvent.click(editButton);
 
-        expect(queryByTestId('title-textarea')).toBeInTheDocument();
+        const textarea = screen.getByTestId('title-textarea');
+
+        fireEvent.change(textarea, { target: { value: 't' } });
+
+        jest.runAllTimers();
+
+        expect(updateTaskSpy).toBeCalled();
+
+        await waitFor(
+            () => {
+                expect(screen.getByTestId('small-spinner')).toBeInTheDocument();
+            },
+            { timeout: 2000 }
+        );
+        await waitFor(() => {
+            expect(screen.getByTestId('error')).toBeInTheDocument();
+        });
+    });
+    test('should change the date value when date is selected', () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+
+        const dateInput = screen.getByTestId('date');
+        fireEvent.change(dateInput, { target: { value: '2023-08-25' } });
+
+        jest.runAllTimers();
+
+        expect(updateTaskSpy).toBeCalled();
+    });
+    test('should change the assignee when new user is selected from list', async () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        const assignee = screen.getByTestId('assignee-input');
+
+        fireEvent.change(assignee, { target: { value: 'John' } });
+
+        jest.runAllTimers();
+
+        expect(updateTaskSpy).toBeCalled();
     });
 });
