@@ -3,10 +3,16 @@ import ProgressContainer from '@/components/tasks/card/progressContainer';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { CONTENT } from '../../../../__mocks__/db/tasks';
 import { Provider } from 'react-redux';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import handlers from '../../../../__mocks__/handlers';
 import { setupServer } from 'msw/node';
-import ProgressSlider from '@/components/tasks/card/progressContainer/ProgressSlider';
+import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
+import selfHandler from '../../../../__mocks__/handlers/self.handler';
+import {
+    failedUpdateTaskHandler,
+    failedUpdateSelfTaskHandler,
+} from '../../../../__mocks__/handlers/tasks.handler';
+import { ToastContainer } from 'react-toastify';
 
 const server = setupServer(...handlers);
 
@@ -21,33 +27,139 @@ describe('ProgressContainer', () => {
         server.close();
     });
 
-    const debounceSliderMock = jest.fn();
-    const handleProgressChangeMock = jest.fn();
-
-    const ProgressSliderProps = {
-        value: 50,
-        debounceSlider: debounceSliderMock,
-        handleProgressChange: handleProgressChangeMock,
-        isLoading: false,
-    };
-
-    test('should render progress bar component', async () => {
-        const { container } = renderWithRouter(
+    test('should render progress bar component when user is a super user', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
             <Provider store={store()}>
                 <ProgressContainer content={CONTENT} />
+                <ToastContainer />
             </Provider>,
             {
                 query: { dev: 'true' },
             }
         );
-        render(<ProgressSlider {...ProgressSliderProps} />);
-        screen.debug();
-        const boxes = container.getElementsByClassName('progressGreen');
-        expect(boxes[0]).toHaveClass('progressGreen');
-        expect(await screen.findByText('0%')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
-        await fireEvent.change(sliderInput, { target: { value: 50 } });
-        screen.debug();
-        expect(sliderInput).toBeInTheDocument();
+        fireEvent.change(sliderInput, { target: { value: 50 } });
+        expect(screen.getByText('50%')).toBeInTheDocument();
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Progress Updated Successfully')
+                ).toBeInTheDocument();
+            },
+            {
+                timeout: 2000,
+            }
+        );
+    });
+    test('should render progress bar component when user is a assignee', async () => {
+        server.use(...selfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 50 } });
+        expect(screen.getByText('50%')).toBeInTheDocument();
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Progress Updated Successfully')
+                ).toBeInTheDocument();
+            },
+            {
+                timeout: 2000,
+            }
+        );
+    });
+
+    test('should render error message when super user is updating progress', async () => {
+        server.use(superUserSelfHandler);
+        server.use(failedUpdateTaskHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 50 } });
+        expect(screen.getByText('50%')).toBeInTheDocument();
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Something went wrong!')
+                ).toBeInTheDocument();
+            },
+            {
+                timeout: 2000,
+            }
+        );
+    });
+    test('should render error message when assignee is updating progress', async () => {
+        server.use(...selfHandler);
+        server.use(failedUpdateSelfTaskHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 50 } });
+        expect(screen.getByText('50%')).toBeInTheDocument();
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText('Something went wrong!')
+                ).toBeInTheDocument();
+            },
+            {
+                timeout: 2000,
+            }
+        );
     });
 });

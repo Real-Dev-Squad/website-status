@@ -12,6 +12,7 @@ const ProgressText: FC<handleProgressTextProps> = ({
     }
     return (
         <div
+            role="button"
             className={classNames.changeProgressText}
             onClick={() => handleProgressUpdate()}
         >

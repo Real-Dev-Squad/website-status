@@ -13,7 +13,7 @@ const taskHandlers = [
         );
     }),
     rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
-        return res(ctx.delay(5000), ctx.status(204));
+        return res(ctx.status(204));
     }),
 
     rest.patch(`${URL}/tasks/self/:taskId`, (_, res, ctx) => {
@@ -106,8 +106,8 @@ export const mineTasksHandler = [
 ];
 
 export const failedGetMineTask= rest.get(`${URL}/tasks/self`, (_, res, ctx) => {
-    return res(ctx.status(500), ctx.json(failedGetTasksResponse));
-});
+        return res(ctx.status(500), ctx.json(failedGetTasksResponse));
+    });
 
 export const mineTasksNoDataFoundHandler = rest.get(
     `${URL}/tasks/self`,
@@ -147,15 +147,15 @@ export const filterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
 });
 
 export const failedfilterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
-    const searchTerm = req.url.searchParams.get('q');
-    if (searchTerm === 'searchTerm:') {
-        return res(
+        const searchTerm = req.url.searchParams.get('q');
+        if (searchTerm === 'searchTerm:') {
+            return res(
             ctx.status(404),
             ctx.json(failedFilterTasksResponse)
         );
-    }
-    return res();
-});
+        }
+        return res();
+    });
 
 export const failedFilterTasksResponse = {
     message: 'No task found.',
