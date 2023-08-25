@@ -144,15 +144,13 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
 
     return (
         <div className={classNames.tasksContainer}>
-            {dev && (
-                <TaskSearch
-                    onSelect={onSelect}
-                    inputValue={inputValue}
-                    activeTab={selectedTab}
-                    onInputChange={(value) => searchInputHandler(value)}
-                    onClickSearchButton={searchButtonHandler}
-                />
-            )}
+            <TaskSearch
+                onSelect={onSelect}
+                inputValue={inputValue}
+                activeTab={selectedTab}
+                onInputChange={(value) => searchInputHandler(value)}
+                onClickSearchButton={searchButtonHandler}
+            />
             <div
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"
