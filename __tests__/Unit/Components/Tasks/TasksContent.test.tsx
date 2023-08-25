@@ -62,9 +62,31 @@ describe('tasks content', () => {
             screen.getByTestId('status-tabs-container')
         );
         const assignedButton = tabsContainer.getByRole('button', {
-            name: /assigned/i,
+            name: 'ASSIGNED',
         });
         expect(assignedButton).toHaveTextContent('ASSIGNED');
+        await screen.findByText(NO_TASKS_FOUND_MESSAGE);
+        expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
+    });
+
+    test('select unassigned tab and set active when dev is true', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            {
+                query: { section: 'unassigned' },
+            }
+        );
+        await screen.findByTestId('tabs');
+        const tabsContainer = within(
+            screen.getByTestId('status-tabs-container')
+        );
+        const assignedButton = tabsContainer.getByRole('button', {
+            name: /unassigned/i,
+        });
+        expect(assignedButton).toHaveTextContent('UNASSIGNED');
         await screen.findByText(NO_TASKS_FOUND_MESSAGE);
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
     });
@@ -95,6 +117,21 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
+    test('display tasks when dev is true', async () => {
+        const { findByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { query: { section: 'done' } }
+        );
+        await screen.findByTestId('tabs');
+
+        const task = await findByText(
+            'Depreciate task status AVAILABLE and COMPLETED'
+        );
+        expect(task).toBeInTheDocument();
+    });
+
     test('Selecting a tab pushes into query params', async () => {
         setWindowInnerWidth(breakpointToShowTabs);
         const mockPushFunction = jest.fn();
@@ -114,13 +151,43 @@ describe('tasks content', () => {
         });
         expect(inProgressBtn).toHaveClass('tabButton');
         const unassignedButton = tabsContainer.getByRole('button', {
-            name: /UNASSINGED/i,
+            name: /UNASSIGNED/i,
         });
         fireEvent.click(unassignedButton);
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
                 q: 'status:available',
+            },
+        });
+    });
+
+    test('Selecting a tab pushes into query params when dev is true', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        await screen.findByTestId('tabs');
+        const tabsContainer = within(
+            screen.getByTestId('status-tabs-container')
+        );
+        const inProgressBtn = tabsContainer.getByRole('button', {
+            name: /IN PROGRESS/i,
+        });
+        expect(inProgressBtn).toHaveClass('tabButton');
+        const unassignedButton = tabsContainer.getByRole('button', {
+            name: /UNASSIGNED/i,
+        });
+        fireEvent.click(unassignedButton);
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                q: 'status:unassigned',
             },
         });
     });
@@ -187,6 +254,50 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledWith({
             query: {
                 q: 'status:in-progress',
+            },
+        });
+    });
+
+    test('Selecting a value from dropdown pushes into query params when dev is true', async () => {
+        setWindowInnerWidth(breakpointToShowSelect);
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            { push: mockPushFunction }
+        );
+
+        await screen.findByTestId('status-select-container');
+        const selectContainer = screen?.getByTestId(
+            'selected-option-container'
+        );
+
+        fireEvent.click(selectContainer);
+        fireEvent.keyDown(selectContainer, {
+            key: 'ArrowDown',
+            code: 'ArrowDown',
+        });
+
+        fireEvent.keyDown(selectContainer, {
+            key: 'ArrowDown',
+            code: 'ArrowDown',
+        });
+
+        fireEvent.keyDown(selectContainer, {
+            key: 'ArrowDown',
+            code: 'ArrowDown',
+        });
+
+        fireEvent.keyDown(selectContainer, {
+            key: 'Enter',
+            code: 'Enter',
+        });
+
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                q: 'status:unassigned',
             },
         });
     });
