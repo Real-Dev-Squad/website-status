@@ -170,9 +170,12 @@ $progressTextAnimation: #9babb8;
     cursor: pointer;
     color: $progressText;
     font-weight: 700;
-    padding-left: 1.4rem;
+    padding-left: 2rem;
     user-select: none;
     opacity: 0.5;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
 }
 .changeProgressText:hover {
     transition: opacity 2s;
