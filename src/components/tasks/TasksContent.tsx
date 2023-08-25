@@ -37,12 +37,14 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         ALL: [],
         IN_PROGRESS: [],
         ASSIGNED: [],
+        UNASSIGNED: [],
         AVAILABLE: [],
         NEEDS_REVIEW: [],
         IN_REVIEW: [],
         VERIFIED: [],
         MERGED: [],
         COMPLETED: [],
+        DONE: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
@@ -128,12 +130,14 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             ALL: [],
             IN_PROGRESS: [],
             ASSIGNED: [],
+            UNASSIGNED: [],
             AVAILABLE: [],
             NEEDS_REVIEW: [],
             IN_REVIEW: [],
             VERIFIED: [],
             MERGED: [],
             COMPLETED: [],
+            DONE: [],
         });
         inputValue && onSelect(status as Tab, assignee, title);
     };
@@ -145,6 +149,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
+                dev={dev}
                 onSelect={onSelect}
                 inputValue={inputValue}
                 activeTab={selectedTab}
@@ -155,13 +160,18 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"
             >
-                <TabSection onSelect={onSelect} activeTab={selectedTab} />
+                <TabSection
+                    dev={dev}
+                    onSelect={onSelect}
+                    activeTab={selectedTab}
+                />
             </div>
             <div
                 className={classNames['status-select-container']}
                 data-testid="status-select-container"
             >
                 <Select
+                    dev={dev}
                     value={{
                         label: getChangedStatusName(selectedTab),
                         value: selectedTab,

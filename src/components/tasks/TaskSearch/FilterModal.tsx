@@ -1,8 +1,13 @@
 import className from './tasksearch.module.scss';
-import { Tab } from '@/interfaces/task.type';
+import {
+    Tab,
+    depreciatedTaskStatus,
+    newTaskStatus,
+} from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 
 type FilterModalProps = {
+    dev?: boolean;
     tabs: Tab[];
     onSelect: (tab: Tab) => void;
     activeTab?: Tab;
@@ -10,6 +15,7 @@ type FilterModalProps = {
 };
 
 const FilterModal = ({
+    dev,
     tabs,
     onSelect,
     activeTab,
@@ -24,22 +30,28 @@ const FilterModal = ({
                 </span>
             </div>
             <div className={className['status-filter']}>
-                {tabs.map((tab) => (
-                    <button
-                        key={tab}
-                        className={`${className['status-button']} ${
-                            activeTab === tab
-                                ? className['status-button-active']
-                                : ''
-                        }`}
-                        onClick={() => {
-                            onSelect(tab);
-                            onClose();
-                        }}
-                    >
-                        {getChangedStatusName(tab)}
-                    </button>
-                ))}
+                {tabs
+                    .filter((tab: Tab) =>
+                        dev
+                            ? !depreciatedTaskStatus.includes(tab)
+                            : !newTaskStatus.includes(tab)
+                    )
+                    .map((tab) => (
+                        <button
+                            key={tab}
+                            className={`${className['status-button']} ${
+                                activeTab === tab
+                                    ? className['status-button-active']
+                                    : ''
+                            }`}
+                            onClick={() => {
+                                onSelect(tab);
+                                onClose();
+                            }}
+                        >
+                            {getChangedStatusName(tab)}
+                        </button>
+                    ))}
             </div>
         </div>
     );

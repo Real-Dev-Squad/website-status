@@ -4,6 +4,7 @@ import { TABS, Tab } from '@/interfaces/task.type';
 import FilterModal from './FilterModal';
 
 type TaskSearchProps = {
+    dev?: boolean;
     onSelect: (tab: Tab) => void;
     inputValue: string;
     activeTab?: Tab;
@@ -12,6 +13,7 @@ type TaskSearchProps = {
 };
 
 const TaskSearch = ({
+    dev,
     onSelect,
     inputValue,
     activeTab,
@@ -38,6 +40,7 @@ const TaskSearch = ({
                     Filter
                     {modalOpen && (
                         <FilterModal
+                            dev={dev}
                             tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}
