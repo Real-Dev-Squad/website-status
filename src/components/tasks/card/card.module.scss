@@ -76,6 +76,7 @@ $progressTextAnimation: #9babb8;
     white-space: nowrap;
     font-weight: 500;
     color: #041187;
+    width: 65%;
 
     @media (max-width: 48rem) {
         width: 100%;
@@ -137,7 +138,6 @@ $progressTextAnimation: #9babb8;
 .progressContainerUpdated {
     width: 12rem;
     display: flex;
-    gap: 1rem;
     align-items: center;
 }
 
@@ -147,6 +147,13 @@ $progressTextAnimation: #9babb8;
     background-color: $white;
     border: 2px solid $black;
     border-radius: 1rem;
+    max-width: 9rem;
+}
+
+.progressPercentageCompleted {
+    min-width: 2.5rem;
+    width: 1.9rem;
+    margin-left: 8px;
 }
 
 .progressStyle {
@@ -159,19 +166,16 @@ $progressTextAnimation: #9babb8;
     flex-direction: column;
 }
 
-.progressContainer {
-    padding-top: 1rem;
-}
-
 .changeProgressText {
     cursor: pointer;
     color: $progressText;
     font-weight: 700;
-    padding-bottom: 0.5rem;
-    padding-top: 0.5rem;
-    padding-left: 1rem;
+    padding-left: 2rem;
     user-select: none;
     opacity: 0.5;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
 }
 .changeProgressText:hover {
     transition: opacity 2s;
