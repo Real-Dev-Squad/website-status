@@ -142,21 +142,14 @@ describe('TaskDetails Page', () => {
         );
         await waitFor(() => {
             const button = screen.getByLabelText('Open GitHub Issue');
-            // Mock the window.open function
             const originalOpen = window.open;
             const mockOpen = jest.fn();
             window.open = mockOpen;
-
-            // Simulate a click on the Git icon button
             fireEvent.click(button);
-
-            // Check if window.open was called with the correct arguments
             expect(mockOpen).toHaveBeenCalledWith(
                 'https://www.sampleGithubUrl.com',
                 '_blank'
             );
-
-            // Restore the original window.open function
             window.open = originalOpen;
         });
     });
