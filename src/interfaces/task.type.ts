@@ -82,11 +82,13 @@ enum Tab {
     IN_PROGRESS = 'IN_PROGRESS',
     ASSIGNED = 'ASSIGNED',
     AVAILABLE = 'AVAILABLE',
+    UNASSIGNED = 'UNASSIGNED',
     NEEDS_REVIEW = 'NEEDS_REVIEW',
     IN_REVIEW = 'IN_REVIEW',
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
     COMPLETED = 'COMPLETED',
+    DONE = 'DONE',
 }
 
 const TABS = Object.values(Tab);
@@ -123,12 +125,14 @@ export type TabTasksData = {
     ALL: task[];
     IN_PROGRESS: task[];
     ASSIGNED: task[];
+    UNASSIGNED: task[];
     AVAILABLE: task[];
     NEEDS_REVIEW: task[];
     IN_REVIEW: task[];
     VERIFIED: task[];
     MERGED: task[];
     COMPLETED: task[];
+    DONE: task[];
 };
 
 export type CardTaskDetails = task & {
@@ -136,3 +140,6 @@ export type CardTaskDetails = task & {
     savingDate: string;
     savingText: string;
 };
+
+export const depreciatedTaskStatus = ['AVAILABLE', 'COMPLETED'];
+export const newTaskStatus = ['UNASSIGNED', 'DONE'];

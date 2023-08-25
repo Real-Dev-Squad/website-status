@@ -37,12 +37,14 @@ export const TasksContent = () => {
         ALL: [],
         IN_PROGRESS: [],
         ASSIGNED: [],
+        UNASSIGNED: [],
         AVAILABLE: [],
         NEEDS_REVIEW: [],
         IN_REVIEW: [],
         VERIFIED: [],
         MERGED: [],
         COMPLETED: [],
+        DONE: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
@@ -128,12 +130,14 @@ export const TasksContent = () => {
             ALL: [],
             IN_PROGRESS: [],
             ASSIGNED: [],
+            UNASSIGNED: [],
             AVAILABLE: [],
             NEEDS_REVIEW: [],
             IN_REVIEW: [],
             VERIFIED: [],
             MERGED: [],
             COMPLETED: [],
+            DONE: [],
         });
         inputValue && onSelect(status as Tab, assignee, title);
     };
@@ -145,6 +149,7 @@ export const TasksContent = () => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
+                dev={dev}
                 onSelect={(selectedTab: Tab) =>
                     onSelect(selectedTab, queryAssignee, queryTitle)
                 }
@@ -158,10 +163,14 @@ export const TasksContent = () => {
                 data-testid="status-tabs-container"
             >
                 <TabSection
+                    dev={dev}
+                   
                     onSelect={(status: Tab) =>
                         onSelect(status, queryAssignee, queryTitle)
                     }
+                   
                     activeTab={selectedTab}
+               
                 />
             </div>
             <div
@@ -169,6 +178,7 @@ export const TasksContent = () => {
                 data-testid="status-select-container"
             >
                 <Select
+                    dev={dev}
                     value={{
                         label: getChangedStatusName(selectedTab),
                         value: selectedTab,
