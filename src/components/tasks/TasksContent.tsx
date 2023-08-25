@@ -167,7 +167,9 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                     onSelect={(status: Tab) =>
                         onSelect(status, queryAssignee, queryTitle)
                     }
+                   
                     activeTab={selectedTab}
+               
                 />
             </div>
             <div
