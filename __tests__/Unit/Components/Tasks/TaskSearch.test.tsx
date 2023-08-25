@@ -124,7 +124,7 @@ describe('TaskSearch', () => {
         expect(onSelect).toHaveBeenCalledWith('ASSIGNED');
     });
 
-    test.only('calls onSelect when the any one filter button is clicked and dev is true', () => {
+    test('calls onSelect when the any one filter button is clicked and dev is true', () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
