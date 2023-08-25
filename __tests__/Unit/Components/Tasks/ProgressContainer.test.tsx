@@ -31,7 +31,7 @@ describe('ProgressContainer', () => {
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressContainer content={CONTENT} />
+                <ProgressContainer content={CONTENT[0]} />
                 <ToastContainer />
             </Provider>,
             {
@@ -64,7 +64,7 @@ describe('ProgressContainer', () => {
         server.use(...selfHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressContainer content={CONTENT} />
+                <ProgressContainer content={CONTENT[0]} />
                 <ToastContainer />
             </Provider>,
             {
@@ -99,7 +99,7 @@ describe('ProgressContainer', () => {
         server.use(failedUpdateTaskHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressContainer content={CONTENT} />
+                <ProgressContainer content={CONTENT[0]} />
                 <ToastContainer />
             </Provider>,
             {
@@ -133,7 +133,7 @@ describe('ProgressContainer', () => {
         server.use(failedUpdateSelfTaskHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressContainer content={CONTENT} />
+                <ProgressContainer content={CONTENT[0]} />
                 <ToastContainer />
             </Provider>,
             {
@@ -161,5 +161,23 @@ describe('ProgressContainer', () => {
                 timeout: 2000,
             }
         );
+    });
+
+    test('should not render UPDATE button if the user is not the assignee or a super user', async () => {
+        server.use(...selfHandler);
+        server.use(failedUpdateSelfTaskHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[1]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        screen.debug();
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.queryByText('UPDATE')).not.toBeInTheDocument();
+        });
     });
 });
