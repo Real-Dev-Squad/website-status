@@ -153,9 +153,9 @@ const PAGINATED_TASKS = {
         startedOn: 1680398131.277,
         status: 'DONE',
     }
- ],
- prev: '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
- next: '/tasks?status=AVAILABLE&dev=true&size=5&next=abc123',
+  ],
+  prev: '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
+  next: '/tasks?status=AVAILABLE&dev=true&size=5&next=abc123',
 };
 
 const NEXT_PAGINATED_TASKS = {
