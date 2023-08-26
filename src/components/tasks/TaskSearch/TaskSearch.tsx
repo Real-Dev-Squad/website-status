@@ -50,7 +50,7 @@ const TaskSearch = ({
                     className={className['search-input']}
                     data-testid="search-input"
                     type="text"
-                    placeholder="Eg: status:active assignee:sunny-s Build a feature"
+                    placeholder="Eg: status:active assignee:sunny-s title:Build"
                     value={inputValue}
                     onChange={(e) => onInputChange(e.target.value)}
                     onKeyDown={handleKeyPress}
