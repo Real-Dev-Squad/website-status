@@ -50,13 +50,13 @@ const TaskSearch = ({
                     className={className['search-input']}
                     data-testid="search-input"
                     type="text"
-                    placeholder="Eg: status:active assignee:sunny-s title:Build"
+                    placeholder="Eg: is:active assignee:sunny-s key:task"
                     value={inputValue}
                     onChange={(e) => onInputChange(e.target.value)}
                     onKeyDown={handleKeyPress}
                 />
             </div>
-            <div className={className['search-button-container']}>
+            <div className="buttons">
                 <button
                     className={className['search-button']}
                     data-testid="search-button"

@@ -10,31 +10,23 @@ import {
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
-import { getActiveTab } from '@/utils/getActiveTab';
-import {
-    extractQueryParams,
-    getQueryParamTab,
-    getQueryParamAssignee,
-    getQueryParamTitle,
-} from '@/utils/taskQueryParams';
+import { getActiveTab, tabToUrlParams } from '@/utils/getActiveTab';
 
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
+const getQueryParamValue = (tab: Tab) => `is:${tabToUrlParams(tab)}`;
+
 export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
-    const qQueryParam = router.query.q as string;
-    const extractedValues = extractQueryParams(qQueryParam);
-    const selectedTab = getActiveTab(extractedValues.status);
-    const [queryTitle, setQueryTitle] = useState<string>(extractedValues.title);
-    const [queryAssignee, setQueryAssignee] = useState<string>(
-        extractedValues.assignee
-    );
+    const allQueryParams = router.query;
+    const qQueryParam = allQueryParams.q as string;
+    const queryTab = qQueryParam?.replace('is:', '');
+    const selectedTab = getActiveTab(queryTab);
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
-        ALL: [],
         IN_PROGRESS: [],
         ASSIGNED: [],
         AVAILABLE: [],
@@ -46,9 +38,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
-        `${getQueryParamTab(selectedTab)} ${
-            queryAssignee ? getQueryParamAssignee(queryAssignee) : ''
-        } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
+        getQueryParamValue(selectedTab)
     );
 
     const {
@@ -58,8 +48,6 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
         isFetching,
     } = useGetAllTasksQuery({
         status: selectedTab,
-        assignee: queryAssignee,
-        title: queryTitle,
         nextTasks,
     });
 
@@ -68,10 +56,8 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             setNextTasks(tasksData.next);
         }
     };
-    const onSelect = (tab: Tab, assignee?: string, title?: string) => {
-        const queryParamValue = `${getQueryParamTab(tab)} ${
-            assignee ? getQueryParamAssignee(assignee) : ''
-        } ${title ? getQueryParamTitle(title) : ''}`.trim();
+    const onSelect = (tab: Tab) => {
+        const queryParamValue = getQueryParamValue(tab);
         router.push({
             query: {
                 ...router.query,
@@ -79,15 +65,8 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
             },
         });
         setNextTasks('');
+        setInputValue(queryParamValue);
     };
-
-    useEffect(() => {
-        setInputValue(
-            `${getQueryParamTab(selectedTab)} ${
-                queryAssignee ? getQueryParamAssignee(queryAssignee) : ''
-            } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
-        );
-    }, [selectedTab, queryAssignee, queryTitle]);
 
     useEffect(() => {
         if (tasksData.tasks && tasksData.tasks.length && !isFetching) {
@@ -121,25 +100,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     }));
 
     const searchButtonHandler = () => {
-        const { status, assignee, title } = extractQueryParams(inputValue);
-        setQueryTitle(title);
-        setQueryAssignee(assignee);
-        setLoadedTasks({
-            ALL: [],
-            IN_PROGRESS: [],
-            ASSIGNED: [],
-            AVAILABLE: [],
-            NEEDS_REVIEW: [],
-            IN_REVIEW: [],
-            VERIFIED: [],
-            MERGED: [],
-            COMPLETED: [],
-        });
-        inputValue && onSelect(status as Tab, assignee, title);
-    };
-
-    const searchInputHandler = (value: string) => {
-        setInputValue(value);
+        inputValue && onSelect(getActiveTab(inputValue.replace('is:', '')));
     };
 
     return (
@@ -149,7 +110,7 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                     onSelect={onSelect}
                     inputValue={inputValue}
                     activeTab={selectedTab}
-                    onInputChange={(value) => searchInputHandler(value)}
+                    onInputChange={(value) => setInputValue(value)}
                     onClickSearchButton={searchButtonHandler}
                 />
             )}

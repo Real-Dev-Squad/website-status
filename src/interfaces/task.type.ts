@@ -78,7 +78,6 @@ export type handleProgressTextProps = {
 };
 
 enum Tab {
-    ALL = 'ALL',
     IN_PROGRESS = 'IN_PROGRESS',
     ASSIGNED = 'ASSIGNED',
     AVAILABLE = 'AVAILABLE',
@@ -115,12 +114,10 @@ export type GetAllTaskParamType = {
     nextTasks?: string;
     prevTasks?: string;
     size?: number;
-    assignee?: string;
-    title?: string;
+    term?: string;
 };
 
 export type TabTasksData = {
-    ALL: task[];
     IN_PROGRESS: task[];
     ASSIGNED: task[];
     AVAILABLE: task[];

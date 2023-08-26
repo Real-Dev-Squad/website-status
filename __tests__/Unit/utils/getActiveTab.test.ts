@@ -3,7 +3,7 @@ import { getActiveTab } from '@/utils/getActiveTab';
 
 describe('Unit | Util | Get Active Tab', () => {
     test('returns proper value with proper input', () => {
-        expect(getActiveTab()).toEqual(Tab.ALL);
+        expect(getActiveTab()).toEqual(Tab.IN_PROGRESS);
         expect(getActiveTab('assigned')).toEqual(Tab.ASSIGNED);
         expect(getActiveTab('available')).toEqual(Tab.AVAILABLE);
         expect(getActiveTab('needs-review')).toEqual(Tab.NEEDS_REVIEW);
@@ -12,6 +12,6 @@ describe('Unit | Util | Get Active Tab', () => {
         expect(getActiveTab('merged')).toEqual(Tab.MERGED);
         expect(getActiveTab('completed')).toEqual(Tab.COMPLETED);
         expect(getActiveTab('in-progress')).toEqual(Tab.IN_PROGRESS);
-        expect(getActiveTab('someRandomSection')).toEqual(Tab.ALL);
+        expect(getActiveTab('someRandomSection')).toEqual(Tab.IN_PROGRESS);
     });
 });

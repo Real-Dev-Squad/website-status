@@ -61,7 +61,7 @@ const TaskDependency: FC<TaskDependencyProps> = ({
         isError,
     } = useGetAllTasksQuery(
         {
-            title: debouncedSearchTerm,
+            term: debouncedSearchTerm,
         },
         { skip: debouncedSearchTerm ? false : true }
     );

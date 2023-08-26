@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import { noTasksFoundHandler } from '../../../../__mocks__//handlers/tasks.handler';
+import { TABS } from '@/interfaces/task.type';
 
 jest.mock('@/hooks/useIntersection', () => ({
     __esModule: true,
@@ -112,7 +113,7 @@ describe('tasks content', () => {
         const inProgressBtn = tabsContainer.getByRole('button', {
             name: /IN PROGRESS/i,
         });
-        expect(inProgressBtn).toHaveClass('tabButton');
+        expect(inProgressBtn).toHaveClass('active');
         const unassignedButton = tabsContainer.getByRole('button', {
             name: /UNASSINGED/i,
         });
@@ -120,7 +121,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:available',
+                q: 'is:available',
             },
         });
     });
@@ -186,7 +187,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:in-progress',
+                q: `is:${TABS[1].toLowerCase()}`,
             },
         });
     });
@@ -207,7 +208,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:all',
+                q: 'is:in-progress',
             },
         });
     });

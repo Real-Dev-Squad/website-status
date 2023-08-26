@@ -2,8 +2,6 @@ import { Tab } from '@/interfaces/task.type';
 
 export const getActiveTab = (section?: string): Tab => {
     switch (section) {
-        case 'in-progress':
-            return Tab.IN_PROGRESS;
         case 'assigned':
             return Tab.ASSIGNED;
         case 'available':
@@ -19,7 +17,7 @@ export const getActiveTab = (section?: string): Tab => {
         case 'completed':
             return Tab.COMPLETED;
         default:
-            return Tab.ALL;
+            return Tab.IN_PROGRESS;
     }
 };
 

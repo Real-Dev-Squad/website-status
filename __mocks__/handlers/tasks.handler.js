@@ -146,4 +146,19 @@ export const filterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
     );
 });
 
+export const failedfilterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
+    const searchTerm = req.url.searchParams.get('q');
+    if (searchTerm === 'searchTerm:') {
+        return res(
+            ctx.status(404),
+            ctx.json(failedFilterTasksResponse)
+        );
+    }
+    return res();
+});
+
+export const failedFilterTasksResponse = {
+    message: 'No task found.',
+    tasks: [],
+};
 export default taskHandlers;
