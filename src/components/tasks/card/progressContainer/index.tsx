@@ -18,9 +18,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     const { dev } = router.query;
 
     const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
-    const [progressValue, setProgressValue] = useState<number>(
-        content.percentCompleted
-    );
+    const [progressValue, setProgressValue] = useState<number>(0);
 
     const { isUserAuthorized } = useUserData();
     const { data: userData } = useGetUserQuery();
@@ -28,7 +26,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
         useUpdateTaskMutation();
     const [updateSelfTask, { isLoading: isLoadingSelfTaskUpdate }] =
         useUpdateSelfTaskMutation();
-
     const checkingLoading =
         isLoadingUpdateTaskDetails || isLoadingSelfTaskUpdate;
 
@@ -87,21 +84,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
             toast(ERROR, 'You cannot update progress');
         }
     };
-
-    const showUpdateButton = () => {
-        if (
-            content.assignee === userData?.username ||
-            !!userData?.roles.super_user
-        ) {
-            return (
-                <ProgressText
-                    handleProgressUpdate={handleProgressUpdate}
-                    isLoading={checkingLoading}
-                />
-            );
-        }
-    };
-
     return (
         <>
             <div className={classNames.progressContainerUpdated}>
@@ -116,7 +98,12 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                     isLoading={checkingLoading}
                 />
             </div>
-            {dev === 'true' && showUpdateButton()}
+            {dev === 'true' && (
+                <ProgressText
+                    handleProgressUpdate={handleProgressUpdate}
+                    isLoading={checkingLoading}
+                />
+            )}
         </>
     );
 };

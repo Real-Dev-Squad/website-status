@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { ProgressBarProps } from '@/interfaces/task.type';
 import ProgressSlider from './ProgressSlider';
 import ProgressIndicator from './ProgressIndicator';
-import classNames from '@/components/tasks/card/card.module.scss';
 
 const Progressbar: FC<ProgressBarProps> = ({
     progress,
@@ -26,22 +25,18 @@ const Progressbar: FC<ProgressBarProps> = ({
                     handleProgressChange={handleProgressChange}
                     isLoading={isLoading}
                 />
-                <div className={classNames.progressPercentageCompleted}>
-                    {progressValue}%
-                </div>
+                <span>{progressValue}%</span>
             </>
         );
     }
     return (
         <>
             <ProgressIndicator
-                percentCompleted={progressValue}
+                percentCompleted={percentCompleted}
                 startedOn={startedOn}
                 endsOn={endsOn}
             />
-            <div className={classNames.progressPercentageCompleted}>
-                {progressValue}%
-            </div>
+            <span>{percentCompleted}% </span>
         </>
     );
 };

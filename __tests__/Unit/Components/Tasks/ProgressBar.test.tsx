@@ -56,6 +56,6 @@ describe('Progress Bar', () => {
         ),
             { query: { dev: 'false' } };
         render(<ProgressIndicator {...ProgressIndicatorProps} />);
-        expect(screen.getByText('40%')).toBeInTheDocument();
+        expect(screen.getByText('50%')).toBeInTheDocument();
     });
 });

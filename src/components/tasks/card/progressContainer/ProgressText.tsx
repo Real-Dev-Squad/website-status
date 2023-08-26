@@ -11,12 +11,12 @@ const ProgressText: FC<handleProgressTextProps> = ({
         return <Loader />;
     }
     return (
-        <button
+        <div
             className={classNames.changeProgressText}
             onClick={() => handleProgressUpdate()}
         >
             UPDATE
-        </button>
+        </div>
     );
 };
 
