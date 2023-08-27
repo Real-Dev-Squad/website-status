@@ -330,4 +330,71 @@ const MINE_TASKS = [
   }
 ];
 
-export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS };
+const CONTENT = [
+    {
+        id: 'OxYqJgf6Tyl90uci1mzs`',
+        title: 'Evaluate availability panel feature',
+        purpose: 'Try out the feature created by Pavan',
+        featureUrl: 'https://dev.realdevsquad.com/task/create.html',
+        type: 'feature',
+        links: ['this-needs-to-be-fixed'],
+        endsOn: 1692988200000,
+        startedOn: '1692580330711',
+        status: 'BLOCKED',
+        assignee: 'mahima',
+        percentCompleted: 0,
+        dependsOn: [],
+        participants: ['mahima'],
+        completionAward: { dinero: 100, neelam: 0 },
+        lossRate: { dinero: 0, neelam: 0 },
+        isNoteworthy: false,
+        createdBy: 'mahima',
+        github: {
+            issue: {
+                id: 1814970348,
+                assignee: 'mahima',
+                status: 'open',
+                closedAt: '1692988200000',
+                assigneeRdsInfo: {
+                    firstName: 'mahima',
+                    lastName: 'kumar',
+                    username: 'mahima',
+                },
+            },
+        },
+    },
+    {
+        id: 'OxYqJgf6Tyl90uci1mzs`',
+        title: 'Evaluate availability panel feature',
+        purpose: 'Try out the feature created by Pavan',
+        featureUrl: 'https://dev.realdevsquad.com/task/create.html',
+        type: 'feature',
+        links: ['this-needs-to-be-fixed'],
+        endsOn: 1692988200000,
+        startedOn: '1692580330711',
+        status: 'BLOCKED',
+        assignee: '',
+        percentCompleted: 0,
+        dependsOn: [],
+        participants: [],
+        completionAward: { dinero: 100, neelam: 0 },
+        lossRate: { dinero: 0, neelam: 0 },
+        isNoteworthy: false,
+        createdBy: '',
+        github: {
+            issue: {
+                id: 1814970348,
+                assignee: '',
+                status: 'open',
+                closedAt: '1692988200000',
+                assigneeRdsInfo: {
+                    firstName: 'mahima',
+                    lastName: 'kumar',
+                    username: 'mahima',
+                },
+            },
+        },
+    },
+];
+
+export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, CONTENT };

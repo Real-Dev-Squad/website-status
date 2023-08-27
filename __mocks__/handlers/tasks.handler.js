@@ -13,7 +13,7 @@ const taskHandlers = [
         );
     }),
     rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
-        return res(ctx.delay(5000), ctx.status(204));
+        return res(ctx.status(204));
     }),
 
     rest.patch(`${URL}/tasks/self/:taskId`, (_, res, ctx) => {
@@ -145,5 +145,4 @@ export const filterTaskHandler = rest.get(`${URL}/tasks`, (req, res, ctx) => {
         })
     );
 });
-
 export default taskHandlers;
