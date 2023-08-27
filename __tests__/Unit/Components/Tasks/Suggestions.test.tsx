@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor, render } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import Suggestions from '@/components/tasks/SuggestionBox/Suggestions';
 import { Provider } from 'react-redux';
@@ -8,81 +8,52 @@ import { setupServer } from 'msw/node';
 
 import usersHandler from '../../../../__mocks__/handlers/users.handler';
 
+import handlers from '../../../../__mocks__/handlers';
+const server = setupServer(...handlers);
 describe('Suggestions', () => {
-    const server = setupServer(...usersHandler);
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    const handleAssignment = jest.fn();
     const handleChange = jest.fn();
-    const handleClick = jest.fn();
-    it('should render loader first and afterwards User not found as no user named Jan exists', async () => {
+    it('should return User not found', async () => {
+        server.use(...usersHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <Suggestions
-                    assigneeName="Jan"
-                    searchTerm="Jan"
-                    showSuggestion={true}
-                    handleAssignment={handleAssignment}
-                    handleChange={handleChange}
-                    handleClick={handleClick}
-                />
+                <Suggestions handleChange={handleChange} />
             </Provider>
         );
-
-        expect(screen.getByTestId('loader')).toBeInTheDocument();
-
-        await waitFor(() =>
-            expect(screen.getByTestId('user_not_found')).toBeInTheDocument()
-        );
-    });
-
-    it('should render loader first and then show the suggestions list', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <Suggestions
-                    assigneeName="mu"
-                    searchTerm="mu"
-                    showSuggestion={true}
-                    handleAssignment={handleAssignment}
-                    handleChange={handleChange}
-                    handleClick={handleClick}
-                />
-            </Provider>
-        );
-
-        expect(screen.getByTestId('loader')).toBeInTheDocument();
-        await waitFor(() =>
-            expect(screen.getByTestId('suggestions')).toBeInTheDocument()
-        );
-        expect(screen.getByText('muhammadmusab')).toBeInTheDocument();
-        const inputEl = screen.getByRole('button');
-        fireEvent.keyDown(inputEl, {
-            key: 'Enter',
-            code: 'Enter',
-            charCode: 13,
+        const input = screen.getByTestId('assignee-input');
+        fireEvent.change(input, { target: { value: 'xyz' } });
+        await waitFor(() => {
+            expect(screen.getByTestId('loader')).toBeInTheDocument();
         });
-        expect(handleChange).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(screen.getByTestId('user_not_found')).toBeInTheDocument();
+            expect(screen.getByText('User not found!'));
+        });
+
+        screen.debug();
     });
-    it('handleAsignment should be called', async () => {
+
+    it('should return Suggestions List', async () => {
+        server.use(...usersHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <Suggestions
-                    assigneeName=""
-                    searchTerm=""
-                    showSuggestion={false}
-                    handleAssignment={handleAssignment}
-                    handleChange={handleChange}
-                    handleClick={handleClick}
-                />
+                <Suggestions handleChange={handleChange} />
             </Provider>
         );
-        expect(screen.getByRole('button')).toBeInTheDocument();
+        const input = screen.getByTestId('assignee-input');
+        fireEvent.change(input, { target: { value: 'munish' } });
+        await waitFor(() => {
+            expect(screen.getByTestId('loader')).toBeInTheDocument();
+        });
+        await waitFor(() => {
+            expect(screen.getByTestId('suggestions')).toBeInTheDocument();
+            expect(screen.getByTestId('suggestion')).toBeInTheDocument();
+            expect(screen.getByText('munish')).toBeInTheDocument();
+            fireEvent.click(screen.getByText('munish'));
+        });
 
-        const inputEl = screen.getByRole('button');
-        const event = { target: { value: 'ab' } };
-        fireEvent.change(inputEl, event as React.ChangeEvent<HTMLInputElement>);
-
-        expect(handleAssignment).toHaveBeenCalledTimes(1);
+        screen.debug();
     });
 });
