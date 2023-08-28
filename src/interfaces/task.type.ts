@@ -137,3 +137,8 @@ export type TabTasksData = {
 
 export const depreciatedTaskStatus = ['AVAILABLE', 'COMPLETED'];
 export const newTaskStatus = ['UNASSIGNED', 'DONE'];
+export type CardTaskDetails = task & {
+    assigningUser: string;
+    savingDate: string;
+    savingText: string;
+};

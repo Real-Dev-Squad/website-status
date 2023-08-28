@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useEffect, useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
@@ -32,6 +32,9 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import ProgressContainer from './progressContainer';
+import { PENDING, SAVED, ERROR_STATUS } from '../constants';
+import { useRouter } from 'next/router';
+import { StatusIndicator } from './StatusIndicator';
 
 let timer: NodeJS.Timeout;
 
@@ -49,8 +52,18 @@ const Card: FC<CardProps> = ({
 
     const cardDetails = content;
 
+    const router = useRouter();
+    const { dev } = router.query;
+
+    const [editedTaskDetails, setEditedTaskDetails] = useState({
+        ...cardDetails,
+        savingText: '',
+        assigningUser: '',
+        savingDate: '',
+    });
+
     const { data: userResponse } = useGetUsersByUsernameQuery({
-        searchString: cardDetails.assignee,
+        searchString: editedTaskDetails.assignee,
         size: MAX_SEARCH_RESULTS,
     });
     const assigneeProfileImageURL: string =
@@ -152,9 +165,41 @@ const Card: FC<CardProps> = ({
             const toTimeStamp =
                 new Date(`${event.target.value}`).getTime() / 1000;
             toChange[changedProperty] = toTimeStamp;
-            onContentChange(toChange.id, {
-                [changedProperty]: toChange[changedProperty],
+
+            setEditedTaskDetails((prev) => ({
+                ...prev,
+                savingDate: PENDING,
+            }));
+
+            const response = updateTask({
+                id: toChange.id,
+                task: {
+                    [changedProperty]: toChange[changedProperty],
+                },
             });
+
+            response
+                .unwrap()
+                .then((result) => {
+                    setEditedTaskDetails((prev) => ({
+                        ...prev,
+                        savingDate: SAVED,
+                    }));
+                })
+                .catch((err) => {
+                    setEditedTaskDetails((prev) => ({
+                        ...prev,
+                        savingDate: ERROR_STATUS,
+                    }));
+                })
+                .finally(() => {
+                    setTimeout(() => {
+                        setEditedTaskDetails((prev) => ({
+                            ...prev,
+                            savingDate: '',
+                        }));
+                    }, 3000);
+                });
         }
     }
 
@@ -168,6 +213,7 @@ const Card: FC<CardProps> = ({
                         handelDateChange(e, 'endsOn');
                     }}
                     value={dateTimes}
+                    data-testid="date"
                 />
             );
         }
@@ -314,7 +360,42 @@ const Card: FC<CardProps> = ({
     const handleClick = (userName: string) => {
         inputRef.current?.focus();
         setAssigneeName(userName);
+        setEditedTaskDetails((prev) => ({
+            ...prev,
+            assignee: userName,
+            assigningUser: PENDING,
+        }));
         setShowSuggestion(false);
+
+        const response = updateTask({
+            id: cardDetails.id,
+            task: {
+                assignee: userName,
+            },
+        });
+
+        response
+            .unwrap()
+            .then((result) => {
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    assigningUser: SAVED,
+                }));
+            })
+            .catch((err) => {
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    assigningUser: ERROR_STATUS,
+                }));
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setEditedTaskDetails((prev) => ({
+                        ...prev,
+                        assigningUser: '',
+                    }));
+                }, 3000);
+            });
     };
 
     const fetchUsers = async (e: string) => {
@@ -354,6 +435,100 @@ const Card: FC<CardProps> = ({
         };
     };
 
+    const onCancelEditRoute = () => {
+        setIsEditMode(false);
+    };
+
+    const CancelEditButton = () => (
+        <div className={classNames.cancelEditButton}>
+            <Image
+                src="/cancel.png"
+                alt="close edit mode"
+                width={20}
+                height={20}
+                onClick={onCancelEditRoute}
+                tabIndex={-1}
+                data-testid="cancel-edit-button"
+            />
+        </div>
+    );
+
+    const handleTitleChange = (value: string) => {
+        setEditedTaskDetails((prev) => ({
+            ...prev,
+            savingText: PENDING,
+        }));
+
+        const response = updateTask({
+            id: cardDetails.id,
+            task: {
+                title: value,
+            },
+        });
+
+        response
+            .unwrap()
+            .then((result) => {
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    savingText: SAVED,
+                }));
+            })
+            .catch((err) => {
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    savingText: ERROR_STATUS,
+                }));
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setEditedTaskDetails((prev) => ({
+                        ...prev,
+                        savingText: '',
+                    }));
+                }, 2000);
+            });
+    };
+
+    const debounceTitle = (func: (value: string) => void, delay: number) => {
+        const timerIdRef = useRef<NodeJS.Timeout | undefined>();
+        return (value: string) => {
+            if (timerIdRef.current) {
+                clearTimeout(timerIdRef.current);
+            }
+            timerIdRef.current = setTimeout(() => {
+                func(value);
+            }, delay);
+        };
+    };
+
+    const debouncedHandleTitleChange = debounceTitle(handleTitleChange, 3000);
+
+    const inputHandler = (
+        event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        const { value } = event.target;
+        setEditedTaskDetails((prev) => ({
+            ...prev,
+            title: value,
+        }));
+        if (value.trim() === '') {
+            setEditedTaskDetails((prev) => ({
+                ...prev,
+                savingText: ERROR_STATUS,
+            }));
+            toast(ERROR, 'Title is not allowed to be empty');
+            setTimeout(() => {
+                setEditedTaskDetails((prev) => ({
+                    ...prev,
+                    savingText: '',
+                }));
+            }, 3000);
+        } else {
+            debouncedHandleTitleChange(value);
+        }
+    };
+
     return (
         <div
             className={`
@@ -367,21 +542,38 @@ const Card: FC<CardProps> = ({
             {/* loading spinner */}
             {isLoading && <Loader />}
             <div className={classNames.cardItems}>
-                <ConditionalLinkWrapper
-                    redirectingPath="/tasks/[id]"
-                    shouldDisplayLink={isTaskDetailsPageLinkEnabled}
-                    taskId={cardDetails.id}
-                >
-                    <span
-                        className={classNames.cardTitle}
-                        contentEditable={isEditable}
-                        onKeyDown={(e) => handleChange(e, 'title')}
-                        role="button"
-                        tabIndex={0}
+                {isEditable && dev === 'true' ? (
+                    <div className={classNames.textareaSection}>
+                        <textarea
+                            className={classNames.textarea}
+                            name="title"
+                            value={editedTaskDetails.title}
+                            onChange={inputHandler}
+                            data-testid="title-textarea"
+                        />
+                        {dev === 'true' && (
+                            <StatusIndicator
+                                status={editedTaskDetails.savingText}
+                            />
+                        )}
+                    </div>
+                ) : (
+                    <ConditionalLinkWrapper
+                        redirectingPath="/tasks/[id]"
+                        shouldDisplayLink={isTaskDetailsPageLinkEnabled}
+                        taskId={cardDetails.id}
                     >
-                        {cardDetails.title}
-                    </span>
-                </ConditionalLinkWrapper>
+                        <span
+                            className={classNames.cardTitle}
+                            contentEditable={isEditable}
+                            onKeyDown={(e) => handleChange(e, 'title')}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {editedTaskDetails.title}
+                        </span>
+                    </ConditionalLinkWrapper>
+                )}
 
                 {/* progress bar */}
                 <div className={classNames.progressContainer}>
@@ -390,13 +582,18 @@ const Card: FC<CardProps> = ({
             </div>
             <div className={classNames.taskStatusAndDateContainer}>
                 <div className={classNames.dateInfo}>
-                    <div>
+                    <div className={classNames.dateSection}>
                         <span className={classNames.cardSpecialFont}>
                             Estimated completion
                         </span>
                         <span className={classNames.completionDate}>
                             {renderDate(fromNowEndsOn, isEditable)}
                         </span>
+                        {dev === 'true' && (
+                            <StatusIndicator
+                                status={editedTaskDetails.savingDate}
+                            />
+                        )}
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
@@ -414,8 +611,8 @@ const Card: FC<CardProps> = ({
                 <div className={classNames.taskStatusEditMode}>
                     {isEditable && (
                         <TaskStatusEditMode
-                            task={cardDetails}
-                            updateTask={onContentChange}
+                            task={editedTaskDetails}
+                            setEditedTaskDetails={setEditedTaskDetails}
                         />
                     )}
                 </div>
@@ -435,38 +632,45 @@ const Card: FC<CardProps> = ({
                 </span>
                 {isEditable
                     ? isUserAuthorized && (
-                          <div className={classNames.suggestionDiv}>
-                              <input
-                                  data-testid="assignee-input"
-                                  ref={inputRef}
-                                  value={assigneeName}
-                                  className={classNames.cardStrongFont}
-                                  onKeyDown={(e) => {
-                                      handleChange(e, 'assignee');
-                                  }}
-                                  onChange={(e) => {
-                                      handleAssignment(e);
-                                      debounce(fetchUsers, 400)(e.target.value);
-                                  }}
-                                  role="button"
-                                  tabIndex={0}
-                              />
+                          <div className={classNames.assignedToSection}>
+                              <div className={classNames.suggestionDiv}>
+                                  <input
+                                      data-testid="assignee-input"
+                                      ref={inputRef}
+                                      value={assigneeName}
+                                      className={classNames.cardStrongFont}
+                                      onChange={(e) => {
+                                          handleAssignment(e);
+                                          debounce(
+                                              fetchUsers,
+                                              400
+                                          )(e.target.value);
+                                      }}
+                                      role="button"
+                                      tabIndex={0}
+                                  />
 
-                              {isLoadingSuggestions ? (
-                                  <Loader />
-                              ) : (
-                                  showSuggestion && (
-                                      <SuggestionBox
-                                          suggestions={suggestions}
-                                          onSelectAssignee={handleClick}
-                                      />
-                                  )
+                                  {isLoadingSuggestions ? (
+                                      <Loader />
+                                  ) : (
+                                      showSuggestion && (
+                                          <SuggestionBox
+                                              suggestions={suggestions}
+                                              onSelectAssignee={handleClick}
+                                          />
+                                      )
+                                  )}
+                              </div>
+                              {dev === 'true' && (
+                                  <StatusIndicator
+                                      status={editedTaskDetails.assigningUser}
+                                  />
                               )}
                           </div>
                       )
-                    : cardDetails.assignee && (
+                    : editedTaskDetails.assignee && (
                           <p className={classNames.cardStrongFont}>
-                              {cardDetails.assignee}
+                              {editedTaskDetails.assignee}
                           </p>
                       )}
                 {showAssignButton() && <AssigneeButton />}
@@ -497,6 +701,7 @@ const Card: FC<CardProps> = ({
                 <CloseTaskButton />
             )}
             {!isEditMode && showEditButton && <EditButton />}
+            {dev === 'true' && isEditMode && <CancelEditButton />}
         </div>
     );
 };
