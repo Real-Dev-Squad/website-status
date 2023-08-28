@@ -55,6 +55,7 @@ $progressTextAnimation: #9babb8;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 3rem;
 
     @media (max-width: 28rem) {
         flex-wrap: wrap;
@@ -368,4 +369,44 @@ $progressTextAnimation: #9babb8;
 .suggestionDiv {
     position: relative;
     display: inline-block;
+}
+
+.cancelEditButton {
+    text-align: left;
+    cursor: pointer;
+    margin-top: 0.8rem;
+}
+
+.textareaSection,
+.assignedToSection,
+.dateSection,
+.taskSection {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+}
+
+.textarea {
+    width: 90%;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: $white;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.smallSpinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 2px solid #29ab87;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+.selfAlignEnd {
+    align-self: end;
 }

@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { act } from '@testing-library/react-hooks';
 import Card from '@/components/tasks/card/index';
 import { store } from '@/app/store';
@@ -10,6 +10,7 @@ import {
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
+import * as tasksApi from '@/app/services/tasksApi';
 
 const DEFAULT_PROPS = {
     content: {
@@ -61,6 +62,10 @@ const getFirestoreDateNDaysBefore = (n = 1) => {
 
 jest.useFakeTimers();
 describe('Task card', () => {
+    let updateTaskSpy: any;
+    beforeEach(() => {
+        updateTaskSpy = jest.spyOn(tasksApi, 'useUpdateTaskMutation');
+    });
     test('Should render card', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -382,5 +387,117 @@ describe('Task card', () => {
 
         const userSelect = await screen.findByTestId('assignee-input');
         expect(userSelect).toHaveValue('');
+    });
+    test('should show cancel edit button when in edit mode', () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        expect(queryByTestId('cancel-edit-button')).toBeInTheDocument();
+    });
+    test('should show text area for title when in edit mode', () => {
+        const { getByTestId, queryByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        expect(queryByTestId('title-textarea')).toBeInTheDocument();
+    });
+    test('should change the title value when user starts typing', async () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+
+        const textarea = screen.getByTestId('title-textarea');
+
+        fireEvent.change(textarea, { target: { value: 't' } });
+
+        jest.runAllTimers();
+
+        expect(updateTaskSpy).toBeCalled();
+
+        await waitFor(
+            () => {
+                expect(screen.getByTestId('small-spinner')).toBeInTheDocument();
+            },
+            { timeout: 2000 }
+        );
+        await waitFor(() => {
+            expect(screen.getByTestId('error')).toBeInTheDocument();
+        });
+    });
+    test('should change the date value when date is selected', () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+
+        const dateInput = screen.getByTestId('date');
+        fireEvent.change(dateInput, { target: { value: '2023-08-25' } });
+
+        jest.runAllTimers();
+
+        expect(updateTaskSpy).toBeCalled();
+    });
+    test('should change the assignee when new user is selected from list', async () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        const component = getByTestId('task-card');
+        act(() => {
+            fireEvent.keyDown(component, { key: 'Alt', code: 'AltLeft' });
+            jest.advanceTimersByTime(300);
+        });
+
+        const editButton = getByTestId('edit-button');
+        fireEvent.click(editButton);
+        const assignee = screen.getByTestId('assignee-input');
+
+        fireEvent.change(assignee, { target: { value: 'John' } });
+
+        jest.runAllTimers();
+
+        expect(updateTaskSpy).toBeCalled();
     });
 });
