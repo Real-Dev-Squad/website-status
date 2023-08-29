@@ -4,13 +4,13 @@ import classNames from '@/styles/tasks.module.scss';
 import { TasksContent } from '@/components/tasks/TasksContent';
 import { NextPageContext } from 'next';
 
-function Tasks({ dev }: { dev: boolean }) {
+function Tasks() {
     return (
         <Layout>
             <Head title="Tasks" />
 
             <div className={classNames.container}>
-                <TasksContent dev={dev} />
+                <TasksContent />
             </div>
         </Layout>
     );
