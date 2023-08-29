@@ -23,7 +23,7 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
-export const TasksContent = () => {
+export const TasksContent = ({ dev }: { dev: boolean }) => {
     const router = useRouter();
     const qQueryParam = router.query.q as string;
     const extractedValues = extractQueryParams(qQueryParam);
@@ -164,13 +164,10 @@ export const TasksContent = () => {
             >
                 <TabSection
                     dev={dev}
-                   
                     onSelect={(status: Tab) =>
                         onSelect(status, queryAssignee, queryTitle)
                     }
-                   
                     activeTab={selectedTab}
-               
                 />
             </div>
             <div
