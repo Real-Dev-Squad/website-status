@@ -127,11 +127,7 @@ describe('TaskDetails Page', () => {
         );
         await waitFor(() => {
             const gitIcon = screen.getByAltText('Git Icon');
-            const openInNewTabIcon = screen.getByAltText(
-                'Open In New Tab Icon'
-            );
             expect(gitIcon).toBeInTheDocument();
-            expect(openInNewTabIcon).toBeInTheDocument();
         });
     });
     it('Test Open Git issue link button', async () => {

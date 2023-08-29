@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
-import { GITHUB_LOGO, OPENINNEWTAB_ICON } from '@/constants/url';
+import { GITHUB_LOGO } from '@/constants/url';
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const color = value ? setColor?.[value] : undefined;
@@ -29,11 +29,6 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                             className={classNames.gitIcon}
                             src={GITHUB_LOGO}
                             alt="Git Icon"
-                        />{' '}
-                        <img
-                            className={classNames.icon}
-                            src={OPENINNEWTAB_ICON}
-                            alt="Open In New Tab Icon"
                         />
                     </button>
                 ) : (

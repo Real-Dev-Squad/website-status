@@ -15,7 +15,6 @@ export const MEMBERS_IDLE = `${BASE_URL}/members/idle`;
 export const DEFAULT_AVATAR = '/Avatar.png';
 export const RDS_LOGO = '/RDSLogo.png';
 export const GITHUB_LOGO = '/github-white.png';
-export const OPENINNEWTAB_ICON = '/githubLink.svg';
 export const SIGNUP_LINK = 'https://my.realdevsquad.com/signup';
 export const LOGOUT_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/auth/signout`;
 export const IDLE_USERS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/users/status?state=IDLE`;
