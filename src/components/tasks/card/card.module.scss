@@ -55,6 +55,7 @@ $progressTextAnimation: #9babb8;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 3rem;
 
     @media (max-width: 28rem) {
         flex-wrap: wrap;
@@ -76,6 +77,7 @@ $progressTextAnimation: #9babb8;
     white-space: nowrap;
     font-weight: 500;
     color: #041187;
+    width: 65%;
 
     @media (max-width: 48rem) {
         width: 100%;
@@ -137,7 +139,6 @@ $progressTextAnimation: #9babb8;
 .progressContainerUpdated {
     width: 12rem;
     display: flex;
-    gap: 1rem;
     align-items: center;
 }
 
@@ -147,6 +148,13 @@ $progressTextAnimation: #9babb8;
     background-color: $white;
     border: 2px solid $black;
     border-radius: 1rem;
+    max-width: 9rem;
+}
+
+.progressPercentageCompleted {
+    min-width: 2.5rem;
+    width: 1.9rem;
+    margin-left: 8px;
 }
 
 .progressStyle {
@@ -159,19 +167,16 @@ $progressTextAnimation: #9babb8;
     flex-direction: column;
 }
 
-.progressContainer {
-    padding-top: 1rem;
-}
-
 .changeProgressText {
     cursor: pointer;
     color: $progressText;
     font-weight: 700;
-    padding-bottom: 0.5rem;
-    padding-top: 0.5rem;
-    padding-left: 1rem;
+    padding-left: 2rem;
     user-select: none;
     opacity: 0.5;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
 }
 .changeProgressText:hover {
     transition: opacity 2s;
@@ -364,4 +369,44 @@ $progressTextAnimation: #9babb8;
 .suggestionDiv {
     position: relative;
     display: inline-block;
+}
+
+.cancelEditButton {
+    text-align: left;
+    cursor: pointer;
+    margin-top: 0.8rem;
+}
+
+.textareaSection,
+.assignedToSection,
+.dateSection,
+.taskSection {
+    width: 100%;
+    display: flex;
+    gap: 5px;
+}
+
+.textarea {
+    width: 90%;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: $white;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.smallSpinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 2px solid #29ab87;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+.selfAlignEnd {
+    align-self: end;
 }
