@@ -123,7 +123,10 @@ describe('TaskDetails Page', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
         );
         await waitFor(() => {
             const gitIcon = screen.getByAltText('Git Icon');
@@ -134,7 +137,10 @@ describe('TaskDetails Page', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
         );
         await waitFor(() => {
             const button = screen.getByLabelText('Open GitHub Issue');
