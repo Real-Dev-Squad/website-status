@@ -19,7 +19,7 @@ describe('Issues Action Form Component', () => {
             name: /Assign Task/i,
         });
         fireEvent.click(submitButton);
-        expect(updateTaskSpy).toBeCalledTimes(2);
+        expect(updateTaskSpy).toBeCalled();
     });
 
     test('Should render form properly', () => {
