@@ -14,8 +14,6 @@ const ProgressHeader: FC<progressHeaderProps> = ({
     totalMissedUpdates,
     updateType,
 }) => {
-    const currentDate = moment().format(DATEFORMAT);
-    const futureDate = moment().add(1, 'day').format(DATEFORMAT);
     return (
         <div className={styles.bannerContainer}>
             <div className={styles.progressBanner}>
@@ -29,25 +27,6 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                 <p className={styles.bannerPara}>
                     Let us try to avoid having zero days
                 </p>
-                {updateType === STANDUP ? (
-                    <div className={styles.timeContainer}>
-                        <p
-                            className={styles.bannerPara}
-                            data-testid="standupTime"
-                        >
-                            {`${STANDUP_TIME} ${currentDate} ${MORNING6AM} 
-                            ${futureDate} ${MORNING559AM}`}
-                        </p>
-                        <p
-                            className={styles.bannerPara}
-                            data-testid="currentStandupTime"
-                        >
-                            Current Standup Date - {currentDate}
-                        </p>
-                    </div>
-                ) : (
-                    <></>
-                )}
             </div>
         </div>
     );

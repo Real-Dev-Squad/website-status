@@ -10,11 +10,4 @@ describe('ProgressHeader', () => {
         );
         expect(missedUpdatesElement).toBeInTheDocument();
     });
-
-    test('Should render Standup Date and time', () => {
-        jest.useFakeTimers().setSystemTime(new Date('17 July 2023'));
-        render(<ProgressHeader totalMissedUpdates={10} updateType="Standup" />);
-        expect(screen.getByTestId('standupTime')).toBeInTheDocument();
-        expect(screen.getByTestId('currentStandupTime')).toBeInTheDocument();
-    });
 });

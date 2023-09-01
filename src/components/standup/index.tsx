@@ -56,6 +56,8 @@ const StandUpContainer: FC = () => {
             standupUpdate.blockers !== ''
         );
     };
+    console.log('isValidate()', isValidate());
+    console.log('!isValidate()', !isValidate());
 
     const buttonStyleClass = !isValidate()
         ? `${styles.nonActiveButton}`
@@ -91,6 +93,9 @@ const StandUpContainer: FC = () => {
                 <div className={styles.standupContainer}>
                     <div className={styles.standupUpdateContainer}>
                         <h1 className={styles.standupTitle}>Standup Update</h1>
+                        <h4 className={styles.StandupDate}>
+                            Current Date - {yesterdayDate}{' '}
+                        </h4>
                         <form
                             className={styles.standupForm}
                             onSubmit={handleFormSubmission}
@@ -99,7 +104,7 @@ const StandUpContainer: FC = () => {
                             <fieldset className={styles.formFields}>
                                 <FormInputComponent
                                     htmlFor="completed"
-                                    labelValue={yesterdayDate}
+                                    labelValue="Yesterday"
                                     placeholder="e.g Raised PR for adding new config"
                                     name="completed"
                                     value={standupUpdate.completed}
