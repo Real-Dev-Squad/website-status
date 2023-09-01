@@ -38,7 +38,7 @@ describe('tasks content', () => {
 
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>
         );
 
@@ -51,7 +51,7 @@ describe('tasks content', () => {
         setWindowInnerWidth(breakpointToShowTabs);
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             {
                 query: { section: 'assigned' },
@@ -95,7 +95,7 @@ describe('tasks content', () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>
         );
         const errorMessage = await findByText(NO_TASKS_FOUND_MESSAGE);
@@ -105,7 +105,7 @@ describe('tasks content', () => {
     test('display tasks', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             { query: { section: 'available' } }
         );
@@ -137,7 +137,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -197,7 +197,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -213,7 +213,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -229,7 +229,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={false} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -307,7 +307,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -328,7 +328,7 @@ describe('tasks content', () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -337,5 +337,35 @@ describe('tasks content', () => {
         const searchInput = screen.getByTestId('search-input');
         fireEvent.change(searchInput, { target: { value: 'test' } });
         expect(searchInput).toHaveValue('test');
+    });
+
+    test('Query param should be changed when tab is selected', async () => {
+        const mockPushFunction = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent />
+            </Provider>,
+            {
+                push: mockPushFunction,
+                query: {
+                    q: 'status:all assignee:satyam Add',
+                },
+            }
+        );
+
+        await screen.findByTestId('tabs');
+        const tabsContainer = within(
+            screen.getByTestId('status-tabs-container')
+        );
+        const assignedButton = tabsContainer.getByRole('button', {
+            name: /assigned/i,
+        });
+        fireEvent.click(assignedButton);
+        expect(mockPushFunction).toBeCalledTimes(1);
+        expect(mockPushFunction).toBeCalledWith({
+            query: {
+                q: 'status:assigned assignee:satyam Add',
+            },
+        });
     });
 });
