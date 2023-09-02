@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import moment from 'moment';
 import { useRouter } from 'next/router';
 import styles from '@/components/standup/standupContainer.module.scss';
 
@@ -17,8 +16,10 @@ import {
     ERROR_MESSAGE,
     STANDUP_SUBMISSION_SUCCESS,
     STANDUP_ALREADY_SUBMITTED,
+    STANDUPTIME,
 } from '@/constants/constants';
 import ProgressHeader from '../ProgressForm/ProgressHeader';
+import { getCurrentDate } from '@/utils/getCurrentDate';
 
 const defaultState = {
     type: 'user',
@@ -41,7 +42,6 @@ const StandUpContainer: FC = () => {
     const { SUCCESS, ERROR } = ToastTypes;
     const standupDates = userStandupdata?.data?.map((element) => element.date);
     const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
-    const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setStandupUpdate((prevStandupUpdate) => ({
@@ -49,15 +49,16 @@ const StandUpContainer: FC = () => {
             [event.target.name]: event.target.value,
         }));
     };
+
+    const currentDate = getCurrentDate(STANDUPTIME);
+
     const isValidate = () => {
         return (
-            standupUpdate.completed !== '' &&
-            standupUpdate.planned !== '' &&
-            standupUpdate.blockers !== ''
+            standupUpdate.completed &&
+            standupUpdate.planned &&
+            standupUpdate.blockers
         );
     };
-    console.log('isValidate()', isValidate());
-    console.log('!isValidate()', !isValidate());
 
     const buttonStyleClass = !isValidate()
         ? `${styles.nonActiveButton}`
@@ -94,7 +95,7 @@ const StandUpContainer: FC = () => {
                     <div className={styles.standupUpdateContainer}>
                         <h1 className={styles.standupTitle}>Standup Update</h1>
                         <h4 className={styles.StandupDate}>
-                            Current Date - {yesterdayDate}{' '}
+                            Current Date - {currentDate}
                         </h4>
                         <form
                             className={styles.standupForm}

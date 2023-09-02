@@ -1,14 +1,6 @@
 import { FC } from 'react';
-import moment from 'moment';
 import styles from '@/components/standup/standupContainer.module.scss';
 import { progressHeaderProps } from '@/types/ProgressUpdates';
-import {
-    MORNING559AM,
-    MORNING6AM,
-    STANDUP,
-    STANDUP_TIME,
-    DATEFORMAT,
-} from '@/constants/constants';
 
 const ProgressHeader: FC<progressHeaderProps> = ({
     totalMissedUpdates,
@@ -25,7 +17,7 @@ const ProgressHeader: FC<progressHeaderProps> = ({
                     {updateType} updates
                 </p>
                 <p className={styles.bannerPara}>
-                    Let us try to avoid having zero days
+                    Let us try not to miss giving updates
                 </p>
             </div>
         </div>
