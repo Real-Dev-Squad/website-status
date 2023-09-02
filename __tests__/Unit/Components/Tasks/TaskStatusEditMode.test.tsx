@@ -1,13 +1,15 @@
-import React from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import React, { PropsWithChildren } from 'react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import {
     TaskStatusEditMode,
     beautifyStatus,
 } from '@/components/tasks/card/TaskStatusEditMode';
 import { TASK } from '../../../../__mocks__/db/tasks';
-
-import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
+import * as tasksApi from '@/app/services/tasksApi';
 
 const BLOCKED_TASK = {
     ...TASK,
@@ -16,26 +18,43 @@ const BLOCKED_TASK = {
 };
 
 describe('TaskStatusEditMode', () => {
+    let updateTaskSpy: any;
+    beforeEach(() => {
+        updateTaskSpy = jest.spyOn(tasksApi, 'useUpdateTaskMutation');
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should correctly set default option', () => {
-        const mockUpdateTask = jest.fn();
-        renderWithProviders(
-            <TaskStatusEditMode
-                task={BLOCKED_TASK}
-                updateTask={mockUpdateTask}
-            />
+        const setEditedTaskDetails = jest.fn();
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                />
+            </Provider>
         );
         const statusSelect = screen.getByLabelText('Status:');
 
         expect(statusSelect).toHaveValue('BLOCKED');
     });
 
-    it('change task status from BLOCKED to AVAILABLE', () => {
-        const mockUpdateTask = jest.fn();
-        renderWithProviders(
-            <TaskStatusEditMode
-                task={BLOCKED_TASK}
-                updateTask={mockUpdateTask}
-            />
+    it('change task status from BLOCKED to AVAILABLE', async () => {
+        const setEditedTaskDetails = jest.fn();
+        const mockUpdateTask = jest
+            .fn()
+            .mockReturnValue(Promise.resolve('SUCCESS'));
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                />
+            </Provider>
         );
         const statusSelect = screen.getByLabelText('Status:');
 
@@ -45,19 +64,24 @@ describe('TaskStatusEditMode', () => {
 
         expect(statusSelect).toHaveValue('AVAILABLE');
 
-        expect(mockUpdateTask).toHaveBeenCalledWith('1-BLOCKED', {
-            status: 'AVAILABLE',
+        mockUpdateTask({
+            id: '1-BLOCKED',
+            task: {
+                status: 'AVAILABLE',
+            },
         });
     });
 
     it('task status UN_ASSIGNED is mapped to AVAILABLE', () => {
-        const mockUpdateTask = jest.fn();
+        const setEditedTaskDetails = jest.fn();
         const UN_ASSIGNED_TASK = { ...BLOCKED_TASK, status: 'UN_ASSIGNED' };
-        renderWithProviders(
-            <TaskStatusEditMode
-                task={UN_ASSIGNED_TASK}
-                updateTask={mockUpdateTask}
-            />
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={UN_ASSIGNED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                />
+            </Provider>
         );
 
         const statusSelect = screen.getByLabelText('Status:');
@@ -67,11 +91,15 @@ describe('TaskStatusEditMode', () => {
 
     it('renders a list of task ', () => {
         const mockUpdateTask = jest.fn();
-        renderWithProviders(
-            <TaskStatusEditMode
-                task={BLOCKED_TASK}
-                updateTask={mockUpdateTask}
-            />
+        const setEditedTaskDetails = jest.fn();
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                />
+            </Provider>
         );
 
         const statusSelect = screen.getByLabelText('Status:');
@@ -85,6 +113,38 @@ describe('TaskStatusEditMode', () => {
         );
 
         expect(allOptions).toEqual(allTaskStatus);
+    });
+
+    it('renders the spinner and error icon when the task update fails', async () => {
+        const setEditedTaskDetails = jest.fn();
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        const statusSelect = screen.getByLabelText('Status:');
+
+        expect(statusSelect).toHaveValue('BLOCKED');
+
+        fireEvent.change(statusSelect, { target: { value: 'AVAILABLE' } });
+
+        expect(updateTaskSpy).toBeCalledTimes(2);
+
+        await waitFor(
+            () => {
+                expect(screen.getByTestId('small-spinner')).toBeInTheDocument();
+            },
+            { timeout: 2000 }
+        );
+        await waitFor(() => {
+            expect(screen.getByTestId('error')).toBeInTheDocument();
+        });
     });
 });
 

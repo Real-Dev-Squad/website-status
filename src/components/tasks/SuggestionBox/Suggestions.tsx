@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
@@ -7,19 +7,11 @@ import SuggestionBox from '../SuggestionBox/SuggestionBox';
 import { SuggestionsProps } from '@/interfaces/suggestionBox.type';
 import { useGetAllUsersByUsernameQuery } from '@/app/services/usersApi';
 import { DUMMY_PROFILE as placeholderImageURL } from '@/constants/display-sections';
+import useDebounce from '@/hooks/useDebounce';
 
 const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
-    (
-        {
-            assigneeName,
-            searchTerm,
-            showSuggestion,
-            handleAssignment,
-            handleChange,
-            handleClick,
-        },
-        ref
-    ) => {
+    ({ handleClick, assigneeName, showSuggestion, handleAssignment }, ref) => {
+        const searchTerm = useDebounce(assigneeName, 500);
         const { data, isLoading } = useGetAllUsersByUsernameQuery(
             {
                 searchString: searchTerm,
@@ -46,7 +38,6 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
                     ref={ref}
                     value={assigneeName}
                     className={classNames.cardStrongFont}
-                    onKeyDown={(e) => handleChange(e, 'assignee')}
                     onChange={(e) => handleAssignment(e)}
                     role="button"
                     tabIndex={0}

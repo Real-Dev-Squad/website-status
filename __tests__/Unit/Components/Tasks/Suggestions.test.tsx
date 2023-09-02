@@ -14,17 +14,25 @@ describe('Suggestions', () => {
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    const handleChange = jest.fn();
+    const handleClick = jest.fn();
+    const handleAssignment = jest.fn();
     it('should return User not found', async () => {
         server.use(...usersHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <Suggestions handleChange={handleChange} />
+                <Suggestions
+                    handleAssignment={handleAssignment}
+                    handleClick={handleClick}
+                    assigneeName=""
+                    showSuggestion={false}
+                />
             </Provider>
         );
         const input = screen.getByTestId('assignee-input');
         fireEvent.change(input, { target: { value: 'xyz' } });
+
         await waitFor(() => {
+            expect(handleAssignment).toBeCalled();
             expect(screen.getByTestId('loader')).toBeInTheDocument();
         });
         await waitFor(() => {
@@ -39,11 +47,16 @@ describe('Suggestions', () => {
         server.use(...usersHandler);
         renderWithRouter(
             <Provider store={store()}>
-                <Suggestions handleChange={handleChange} />
+                <Suggestions
+                    handleAssignment={handleAssignment}
+                    handleClick={handleClick}
+                    assigneeName="munish"
+                    showSuggestion={true}
+                />
             </Provider>
         );
-        const input = screen.getByTestId('assignee-input');
-        fireEvent.change(input, { target: { value: 'munish' } });
+        // const input = screen.getByTestId('assignee-input');
+        // fireEvent.change(input, { target: { value: 'munish' } });
         await waitFor(() => {
             expect(screen.getByTestId('loader')).toBeInTheDocument();
         });
@@ -52,6 +65,7 @@ describe('Suggestions', () => {
             expect(screen.getByTestId('suggestion')).toBeInTheDocument();
             expect(screen.getByText('munish')).toBeInTheDocument();
             fireEvent.click(screen.getByText('munish'));
+            expect(handleClick).toBeCalled();
         });
 
         screen.debug();

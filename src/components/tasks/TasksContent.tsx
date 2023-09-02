@@ -23,7 +23,7 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
-export const TasksContent = ({ dev }: { dev: boolean }) => {
+export const TasksContent = () => {
     const router = useRouter();
     const qQueryParam = router.query.q as string;
     const extractedValues = extractQueryParams(qQueryParam);
@@ -145,7 +145,9 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
-                onSelect={onSelect}
+                onSelect={(selectedTab: Tab) =>
+                    onSelect(selectedTab, queryAssignee, queryTitle)
+                }
                 inputValue={inputValue}
                 activeTab={selectedTab}
                 onInputChange={(value) => searchInputHandler(value)}
@@ -155,7 +157,12 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                 className={classNames['status-tabs-container']}
                 data-testid="status-tabs-container"
             >
-                <TabSection onSelect={onSelect} activeTab={selectedTab} />
+                <TabSection
+                    onSelect={(status: Tab) =>
+                        onSelect(status, queryAssignee, queryTitle)
+                    }
+                    activeTab={selectedTab}
+                />
             </div>
             <div
                 className={classNames['status-select-container']}
@@ -168,7 +175,11 @@ export const TasksContent = ({ dev }: { dev: boolean }) => {
                     }}
                     onChange={(selectedTaskStatus) => {
                         if (selectedTaskStatus) {
-                            onSelect(selectedTaskStatus.value as Tab);
+                            onSelect(
+                                selectedTaskStatus.value as Tab,
+                                queryAssignee,
+                                queryTitle
+                            );
                         }
                     }}
                     options={taskSelectOptions}
