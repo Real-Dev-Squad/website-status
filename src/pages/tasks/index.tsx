@@ -10,7 +10,7 @@ function Tasks({ dev }: { dev: boolean }) {
             <Head title="Tasks" />
 
             <div className={classNames.container}>
-                <TasksContent dev={dev}/>
+                <TasksContent dev={dev} />
             </div>
         </Layout>
     );
