@@ -358,7 +358,7 @@ describe('tasks content', () => {
             screen.getByTestId('status-tabs-container')
         );
         const assignedButton = tabsContainer.getByRole('button', {
-            name: /assigned/i,
+            name: 'ASSIGNED',
         });
         fireEvent.click(assignedButton);
         expect(mockPushFunction).toBeCalledTimes(1);
