@@ -39,7 +39,6 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
                     value={assigneeName}
                     className={classNames.cardStrongFont}
                     onChange={(e) => handleAssignment(e)}
-                    role="button"
                     tabIndex={0}
                 />
 

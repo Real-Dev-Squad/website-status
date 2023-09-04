@@ -23,13 +23,13 @@ describe('Suggestions', () => {
                 <Suggestions
                     handleAssignment={handleAssignment}
                     handleClick={handleClick}
-                    assigneeName="xyz"
+                    assigneeName="John"
                     showSuggestion={true}
                 />
             </Provider>
         );
         const input = screen.getByTestId('assignee-input');
-        fireEvent.change(input, { target: { value: 'afsf' } });
+        fireEvent.change(input, { target: { value: 'Jan' } });
         expect(handleAssignment).toHaveBeenCalled();
         await waitFor(() => {
             expect(screen.getByTestId('loader')).toBeInTheDocument();
