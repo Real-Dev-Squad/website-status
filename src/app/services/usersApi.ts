@@ -31,6 +31,10 @@ export const usersApi = api.injectEndpoints({
             query: ({ size = 5 }) => `/users?size=${size}`,
             providesTags: ['Users'],
         }),
+        getAllUsersByUsername: build.query<UsersResponse, UsernameQueryArgs>({
+            query: ({ searchString }) => `/users?search=${searchString}`,
+            providesTags: ['Users'],
+        }),
     }),
 });
 
@@ -38,4 +42,5 @@ export const {
     useGetUsersByLinkQuery,
     useGetUsersByUsernameQuery,
     useGetUsersQuery,
+    useGetAllUsersByUsernameQuery,
 } = usersApi;
