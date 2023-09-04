@@ -70,6 +70,7 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
             .then((res) => {
                 toast(SUCCESS, 'Task Assigned saved successfully');
                 setIsLoading(false);
+                setIsAssigned(true);
             })
             .catch((error) => {
                 toast(ERROR, error.data.message);
