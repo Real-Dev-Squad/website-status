@@ -9,9 +9,4 @@ export const PROGRESS_SUCCESSFUL = 'Progress Updated Successfully';
 export const STANDUP_ALREADY_SUBMITTED =
     'Standup already submitted for the day';
 export const DATEFORMAT = 'MMMM DD, YYYY ';
-// export const STANDUP_TIME = 'Standup time -';
-// export const MORNING6AM = '6:00 am to';
-// export const MORNING559AM = '5:59 am';
-// export const TASK_RESULT_SIZE = 5;
-// export const STANDUP = 'Standup';
 export const STANDUPTIME = 6;

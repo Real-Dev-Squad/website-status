@@ -1,4 +1,3 @@
-import { challengesApi } from '@/app/services/challengesApi';
 import { DATEFORMAT } from '@/constants/constants';
 import moment from 'moment';
 
@@ -12,11 +11,7 @@ import moment from 'moment';
 
 export function getCurrentDate(time: number): string {
     const now = moment();
-    console.log('now', now);
     const hour = now.hours();
-    console.log('hour', hour);
-    console.log('time', time);
-    console.log('inside function');
     if (hour < time) {
         console.log('inside if statement');
         now.subtract(1, 'day');
