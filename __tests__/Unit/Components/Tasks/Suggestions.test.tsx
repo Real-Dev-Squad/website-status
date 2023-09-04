@@ -23,24 +23,22 @@ describe('Suggestions', () => {
                 <Suggestions
                     handleAssignment={handleAssignment}
                     handleClick={handleClick}
-                    assigneeName=""
-                    showSuggestion={false}
+                    assigneeName="xyz"
+                    showSuggestion={true}
                 />
             </Provider>
         );
         const input = screen.getByTestId('assignee-input');
-        fireEvent.change(input, { target: { value: 'xyz' } });
-
+        fireEvent.change(input, { target: { value: 'afsf' } });
+        expect(handleAssignment).toHaveBeenCalled();
         await waitFor(() => {
-            expect(handleAssignment).toBeCalled();
             expect(screen.getByTestId('loader')).toBeInTheDocument();
         });
+
         await waitFor(() => {
             expect(screen.getByTestId('user_not_found')).toBeInTheDocument();
-            expect(screen.getByText('User not found!'));
+            expect(screen.getByText('User not found!')).toBeInTheDocument();
         });
-
-        screen.debug();
     });
 
     it('should return Suggestions List', async () => {
@@ -55,8 +53,7 @@ describe('Suggestions', () => {
                 />
             </Provider>
         );
-        // const input = screen.getByTestId('assignee-input');
-        // fireEvent.change(input, { target: { value: 'munish' } });
+
         await waitFor(() => {
             expect(screen.getByTestId('loader')).toBeInTheDocument();
         });
@@ -65,9 +62,9 @@ describe('Suggestions', () => {
             expect(screen.getByTestId('suggestion')).toBeInTheDocument();
             expect(screen.getByText('munish')).toBeInTheDocument();
             fireEvent.click(screen.getByText('munish'));
+            const image = screen.getByTestId('image');
+            expect(image).toBeInTheDocument();
             expect(handleClick).toBeCalled();
         });
-
-        screen.debug();
     });
 });
