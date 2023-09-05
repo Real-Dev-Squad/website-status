@@ -16,6 +16,7 @@ describe('Suggestions', () => {
     afterAll(() => server.close());
     const handleClick = jest.fn();
     const handleAssignment = jest.fn();
+    
     it('should return User not found', async () => {
         server.use(...usersHandler);
         renderWithRouter(
