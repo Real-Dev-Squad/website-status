@@ -23,7 +23,7 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
-export const TasksContent = ({ dev }: { dev: boolean }) => {
+export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
     const qQueryParam = router.query.q as string;
     const extractedValues = extractQueryParams(qQueryParam);
