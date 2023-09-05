@@ -1,12 +1,12 @@
 import React from 'react';
-import { fireEvent, screen, waitFor, render } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
-import Suggestions from '@/components/tasks/SuggestionBox/Suggestions';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { setupServer } from 'msw/node';
 
 import usersHandler from '../../../../__mocks__/handlers/users.handler';
+import Suggestions from '@/components/tasks/SuggestionBox/Suggestions';
 
 import handlers from '../../../../__mocks__/handlers';
 const server = setupServer(...handlers);
@@ -16,7 +16,6 @@ describe('Suggestions', () => {
     afterAll(() => server.close());
     const handleClick = jest.fn();
     const handleAssignment = jest.fn();
-    
     it('should return User not found', async () => {
         server.use(...usersHandler);
         renderWithRouter(
