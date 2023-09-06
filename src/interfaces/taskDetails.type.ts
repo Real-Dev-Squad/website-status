@@ -3,6 +3,7 @@ export type taskDetailsDataType = {
     message?: string;
     taskData?: {
         assignee: string;
+        assigneeId: string;
         completionAward: { dinero: number; neelam: number };
         createdBy: string;
         endsOn: number;
