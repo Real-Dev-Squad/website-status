@@ -31,7 +31,7 @@ const DEFAULT_PROPS = {
         title: 'test 1 for drag and drop',
         purpose: 'string',
         percentCompleted: 0,
-        endsOn: '1618790400',
+        endsOn: 1618790400,
         status: TASK_STATUS.COMPLETED,
         featureUrl: 'string',
         type: 'feature',
@@ -84,7 +84,7 @@ describe('Task card', () => {
             ...DEFAULT_PROPS,
             content: {
                 ...DEFAULT_PROPS.content,
-                endsOn: `${getFirestoreDateNDaysBefore(1)}`,
+                endsOn: getFirestoreDateNDaysBefore(1),
             },
         };
         const { rerender, getByText } = renderWithRouter(
@@ -100,7 +100,7 @@ describe('Task card', () => {
             ...props,
             content: {
                 ...props.content,
-                endsOn: `${getFirestoreDateNDaysBefore(2)}`,
+                endsOn: getFirestoreDateNDaysBefore(2),
             },
         };
 

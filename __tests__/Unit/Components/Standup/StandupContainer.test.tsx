@@ -27,7 +27,7 @@ describe('StandupContainer', () => {
     afterAll(() => {
         server.close();
     });
-    const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
+    // const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
 
     test('should render  inputField ', function () {
         renderWithRouter(
@@ -37,7 +37,7 @@ describe('StandupContainer', () => {
         );
 
         const completedInputField = screen.getByRole('textbox', {
-            name: yesterdayDate,
+            name: 'Yesterday',
         }) as HTMLInputElement;
         const todayInputField = screen.getByRole('textbox', {
             name: 'Today',
@@ -90,7 +90,7 @@ describe('StandupContainer', () => {
             </Provider>
         );
         const completedInputField = screen.getByRole('textbox', {
-            name: yesterdayDate,
+            name: 'Yesterday',
         }) as HTMLInputElement;
         const todayInputField = screen.getByRole('textbox', {
             name: 'Today',
@@ -119,7 +119,7 @@ describe('StandupContainer', () => {
             </Provider>
         );
         const completedInputField = screen.getByRole('textbox', {
-            name: yesterdayDate,
+            name: 'Yesterday',
         }) as HTMLInputElement;
         fireEvent.change(completedInputField, {
             target: { value: 'Working on a backend Go project' },
@@ -139,7 +139,7 @@ describe('StandupContainer', () => {
             }
         );
         const completedInputField = screen.getByRole('textbox', {
-            name: yesterdayDate,
+            name: 'Yesterday',
         }) as HTMLInputElement;
         const todayInputField = screen.getByRole('textbox', {
             name: 'Today',
@@ -180,7 +180,7 @@ describe('StandupContainer', () => {
             }
         );
         const completedInputField = screen.getByRole('textbox', {
-            name: yesterdayDate,
+            name: 'Yesterday',
         }) as HTMLInputElement;
         const todayInputField = screen.getByRole('textbox', {
             name: 'Today',
@@ -237,7 +237,7 @@ describe('StandupContainer', () => {
             }
         );
         const completedInputField = screen.getByRole('textbox', {
-            name: yesterdayDate,
+            name: 'Yesterday',
         }) as HTMLInputElement;
         const todayInputField = screen.getByRole('textbox', {
             name: 'Today',
