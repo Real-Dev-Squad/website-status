@@ -183,6 +183,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     }
 
+    const showUpdateButton = data?.taskData?.assigneeId === userData?.id;
+    const enableRequestForNewTask = data?.taskData?.assigneeId == null;
+
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -341,34 +344,38 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             </TaskContainer>
                             {isDevModeEnabled && (
                                 <div>
-                                    <TaskContainer
-                                        hasImg={false}
-                                        title="Request for task"
-                                    >
-                                        <button
-                                            data-testid="request-task-button"
-                                            className={classNames.button}
-                                            onClick={taskRequestHandle}
+                                    {enableRequestForNewTask && (
+                                        <TaskContainer
+                                            hasImg={false}
+                                            title="Request for task"
                                         >
-                                            Request for task
-                                        </button>
-                                    </TaskContainer>
-                                    <TaskContainer
-                                        hasImg={false}
-                                        title="Update Progress"
-                                    >
-                                        <button
-                                            data-testid="update-progress-button"
-                                            className={classNames.button}
-                                            onClick={() =>
-                                                router.push(
-                                                    `/progress/${taskID}?dev=true`
-                                                )
-                                            }
+                                            <button
+                                                data-testid="request-task-button"
+                                                className={classNames.button}
+                                                onClick={taskRequestHandle}
+                                            >
+                                                Request for task
+                                            </button>
+                                        </TaskContainer>
+                                    )}
+                                    {showUpdateButton && (
+                                        <TaskContainer
+                                            hasImg={false}
+                                            title="Update Progress"
                                         >
-                                            Update Progress
-                                        </button>
-                                    </TaskContainer>
+                                            <button
+                                                data-testid="update-progress-button"
+                                                className={classNames.button}
+                                                onClick={() =>
+                                                    router.push(
+                                                        `/progress/${taskID}?dev=true`
+                                                    )
+                                                }
+                                            >
+                                                Update Progress
+                                            </button>
+                                        </TaskContainer>
+                                    )}
                                 </div>
                             )}
                         </section>
