@@ -129,7 +129,6 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                         value={state.status}
                         onChange={(e) => {
                             dispatch({ type: 'status', value: e.target.value });
-                            console.log(e.target.value);
                         }}
                         className={styles.assign}
                     >
