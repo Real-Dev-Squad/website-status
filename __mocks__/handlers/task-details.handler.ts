@@ -32,7 +32,7 @@ const taskDetailsHandler = [
                     },
                     github: {
                         issue: {
-                            html_url:'https://www.sampleGithubUrl.com'
+                            html_url:'https://github.com/sampleOrg/sampleRepo/issues/000'
                         }
                     }
                 },
