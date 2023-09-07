@@ -134,7 +134,7 @@ describe('TaskDetails Page', () => {
         });
     });
     it('Test Open Git issue link', async () => {
-        const { getByLabelText } = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
             </Provider>,
