@@ -23,6 +23,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
         const issueInfo: any = {
             status: issue.state,
             id: issue.id,
+            html_url: issue.html_url,
         };
 
         if (issue.assignee) {

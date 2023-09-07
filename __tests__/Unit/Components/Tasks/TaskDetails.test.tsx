@@ -119,14 +119,40 @@ describe('TaskDetails Page', () => {
             expect(getByText('assigned')).toBeInTheDocument();
         });
     });
-    it('Renders Task Link', async () => {
+    it('Renders Task Link open button', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
         );
         await waitFor(() => {
-            expect(getByText('https://www.sampleUrl.com')).toBeInTheDocument();
+            const gitIcon = screen.getByAltText('Git Icon');
+            expect(gitIcon).toBeInTheDocument();
+        });
+    });
+    it('Test Open Git issue link button', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        await waitFor(() => {
+            const button = screen.getByLabelText('Open GitHub Issue');
+            const originalOpen = window.open;
+            const mockOpen = jest.fn();
+            window.open = mockOpen;
+            fireEvent.click(button);
+            expect(mockOpen).toHaveBeenCalledWith(
+                'https://www.sampleGithubUrl.com',
+                '_blank'
+            );
+            window.open = originalOpen;
         });
     });
     it('Renders Task Assignee', async () => {
