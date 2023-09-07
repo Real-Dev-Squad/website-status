@@ -18,6 +18,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const router = useRouter();
     const devMode = router.query.dev === 'true' ? true : false;
     const { isUserAuthorized } = useUserData();
+    const [taskId, setTaskId] = useState(issue.taskId);
 
     const getIssueInfo = () => {
         const issueInfo: any = {
@@ -53,7 +54,8 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 method: 'post',
                 data,
             });
-            await requestPromise;
+            const response = await requestPromise;
+            setTaskId(response.data.task.id);
             toast(SUCCESS, 'Added the task');
             setTaskExists(true);
             setIsLoading(false);
@@ -134,7 +136,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                     </button>
                 )}
                 {isUserAuthorized && taskExists && devMode && (
-                    <ActionForm taskId={issue.taskId || ''} />
+                    <ActionForm taskId={taskId || ''} />
                 )}
             </div>
         </div>
