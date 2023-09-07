@@ -50,7 +50,7 @@ describe('Issues Action Form Component', () => {
         const endsOn = screen.getByLabelText(/Ends on:/) as HTMLInputElement;
 
         expect(assignee.value).toBe('');
-        expect(status.value).toBe('AVAILABLE');
+        expect(status.value).toBe('ASSIGNED');
 
         fireEvent.change(assignee, { target: { value: 123 } });
         expect(assignee.value).toBe('123');

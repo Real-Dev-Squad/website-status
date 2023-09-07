@@ -268,7 +268,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                     <Details
                                         detailType={'Link'}
-                                        value={taskDetailsData?.featureUrl}
+                                        value={
+                                            taskDetailsData?.github?.issue
+                                                ?.html_url
+                                        }
                                     />
                                 </div>
                             </TaskContainer>
