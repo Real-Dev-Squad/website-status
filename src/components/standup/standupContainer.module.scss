@@ -7,6 +7,7 @@ $theme-ceriseRed: #d61f69;
 $theme-headingColor: #6b7280;
 $theme-inputFieldBorder: #d1d5db;
 $theme-nonActiveButtonBackground: #e5e7eb;
+$theme-standupDate: rgb(10, 52, 149);
 $radius: 0.5rem;
 
 .bannerContainer {
@@ -49,6 +50,13 @@ $radius: 0.5rem;
     color: $theme-secondaryBackground;
     font-family: 'Inter', sans-serif;
     font-size: 2.2rem;
+    margin-bottom: 0px;
+}
+
+.StandupDate {
+    color: $theme-standupDate;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
 }
 
 .formFields {

@@ -28,15 +28,12 @@ import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import SuggestionBox from '../SuggestionBox/SuggestionBox';
-import { userDataType } from '@/interfaces/user.type';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import ProgressContainer from './progressContainer';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useRouter } from 'next/router';
 import { StatusIndicator } from './StatusIndicator';
-
-let timer: NodeJS.Timeout;
+import Suggestions from '../SuggestionBox/Suggestions';
 
 const Card: FC<CardProps> = ({
     content,
@@ -85,9 +82,6 @@ const Card: FC<CardProps> = ({
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
 
-    const [isLoadingSuggestions, setIsLoadingSuggestions] =
-        useState<boolean>(false);
-    const [suggestions, setSuggestions] = useState<GithubInfo[]>([]);
     const [assigneeName, setAssigneeName] = useState<string>(
         cardDetails.assignee ?? ''
     );
@@ -398,43 +392,6 @@ const Card: FC<CardProps> = ({
             });
     };
 
-    const fetchUsers = async (e: string) => {
-        if (!e) return;
-        setIsLoadingSuggestions(true);
-
-        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users?search=${e}`;
-        try {
-            const { requestPromise } = fetch({ url });
-            const users = await requestPromise;
-            const usersData = users.data.users;
-            const suggestedUsers: GithubInfo[] = [];
-            usersData.map((data: userDataType) => {
-                suggestedUsers.push({
-                    github_id: data.username,
-                    profileImageUrl: data?.picture?.url
-                        ? data.picture.url
-                        : placeholderImageURL,
-                });
-            });
-
-            setSuggestions(suggestedUsers);
-            setIsLoadingSuggestions(false);
-        } catch (error: any) {
-            setIsLoadingSuggestions(false);
-            toast(ERROR, error.message);
-        }
-    };
-
-    const debounce = (fn: (e: string) => void, delay: number) => {
-        return function (e: string) {
-            clearTimeout(timer);
-            setSuggestions([]);
-            timer = setTimeout(() => {
-                fn(e);
-            }, delay);
-        };
-    };
-
     const onCancelEditRoute = () => {
         setIsEditMode(false);
     };
@@ -633,34 +590,13 @@ const Card: FC<CardProps> = ({
                 {isEditable
                     ? isUserAuthorized && (
                           <div className={classNames.assignedToSection}>
-                              <div className={classNames.suggestionDiv}>
-                                  <input
-                                      data-testid="assignee-input"
-                                      ref={inputRef}
-                                      value={assigneeName}
-                                      className={classNames.cardStrongFont}
-                                      onChange={(e) => {
-                                          handleAssignment(e);
-                                          debounce(
-                                              fetchUsers,
-                                              400
-                                          )(e.target.value);
-                                      }}
-                                      role="button"
-                                      tabIndex={0}
-                                  />
-
-                                  {isLoadingSuggestions ? (
-                                      <Loader />
-                                  ) : (
-                                      showSuggestion && (
-                                          <SuggestionBox
-                                              suggestions={suggestions}
-                                              onSelectAssignee={handleClick}
-                                          />
-                                      )
-                                  )}
-                              </div>
+                              <Suggestions
+                                  assigneeName={assigneeName}
+                                  showSuggestion={showSuggestion}
+                                  handleClick={handleClick}
+                                  handleAssignment={handleAssignment}
+                                  ref={inputRef}
+                              />
                               {dev === 'true' && (
                                   <StatusIndicator
                                       status={editedTaskDetails.assigningUser}
