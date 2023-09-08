@@ -3,7 +3,7 @@ const URL = process.env.NEXT_PUBLIC_BASE_URL;
 import usersData from '../db/users';
 
 const usersHandler = [
-    rest.get(`${URL}/users`, (req, res, ctx) => {
+    rest.get(`${URL}/users`,(req, res, ctx) => {
         const searchParamToMatch = req.url.searchParams.get('search') ?? '';
         const nextIdToMatch = req.url.searchParams.get('next');
         const prevIdToMatch = req.url.searchParams.get('prev');
