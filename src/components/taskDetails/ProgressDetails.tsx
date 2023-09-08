@@ -19,7 +19,11 @@ const ProgressDetails: FC<Props> = ({ data }) => {
     };
     return (
         <>
-            <li onClick={openDetails} className={classNames['list-item']}>
+            <li
+                onClick={openDetails}
+                className={classNames['list-item']}
+                data-testid="progress-item"
+            >
                 {getDateFromTimestamp(data.date)}
             </li>
             {showProgressDetails && (
@@ -28,11 +32,15 @@ const ProgressDetails: FC<Props> = ({ data }) => {
                         role="button"
                         className={classNames['container-back']}
                         onClick={closeDetails}
+                        data-testid="modal-background"
                     ></div>
 
                     <div className={classNames['container-main']}>
                         <h2>{getDateFromTimestamp(data.date)}</h2>
-                        <div className={classNames['content']}>
+                        <div
+                            className={classNames['content']}
+                            data-testid="content"
+                        >
                             <div className={classNames['content-wrapper']}>
                                 <div className={classNames['content-item']}>
                                     <span>Completed:</span>
