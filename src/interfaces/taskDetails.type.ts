@@ -18,6 +18,11 @@ export type taskDetailsDataType = {
         type: string;
         participants: string[];
         featureUrl: string;
+        github: {
+            issue: {
+                html_url: string;
+            };
+        };
     };
 };
 
