@@ -1,3 +1,100 @@
+$light-black: rgba(0, 0, 0, 0.778);
+$white: #fff;
+$button-proceed-bg: #008000;
+
 .list-item {
     cursor: pointer;
+}
+
+.container-parent {
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100vw;
+    min-height: 100vh;
+
+    .container-back {
+        background-color: $light-black;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.container-main {
+    z-index: 1;
+    flex-grow: 0;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: $white;
+    position: absolute;
+    left: 30%;
+    right: 30%;
+    height: max-content;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    h2 {
+        text-align: center;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        flex-direction: column;
+        margin: 10px 0;
+
+        .content-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+
+            .content-item {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                span {
+                    font-weight: 700;
+                    margin: 0;
+                    padding: 0;
+                }
+                p {
+                    display: inline;
+                    margin: 0;
+                    padding: 0;
+                    overflow-wrap: break-word;
+                }
+            }
+        }
+    }
+
+    .container-close {
+        background-color: $button-proceed-bg;
+        color: $white;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        padding: 5px 9px;
+        cursor: pointer;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .container-main {
+        margin-left: 10px;
+        margin-right: 10px;
+        left: 0;
+        right: 0;
+    }
 }

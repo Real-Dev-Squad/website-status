@@ -20,17 +20,42 @@ const ProgressDetails: FC<Props> = ({ data }) => {
     return (
         <>
             <li onClick={openDetails} className={classNames['list-item']}>
-                {getDateFromTimestamp(data.date)} : {data.completed}
+                {getDateFromTimestamp(data.date)}
             </li>
             {showProgressDetails && (
-                <div>
-                    {data.completed} <br />
-                    {data.planned} <br />
-                    {data.blockers} <br />
+                <div className={classNames['container-parent']}>
+                    <div
+                        role="button"
+                        className={classNames['container-back']}
+                        onClick={closeDetails}
+                    ></div>
+
+                    <div className={classNames['container-main']}>
+                        <h2>{getDateFromTimestamp(data.date)}</h2>
+                        <div className={classNames['content']}>
+                            <div className={classNames['content-wrapper']}>
+                                <div className={classNames['content-item']}>
+                                    <span>Completed:</span>
+                                    <p>{data.completed}</p>
+                                </div>
+                                <div className={classNames['content-item']}>
+                                    <span>Planned:</span>
+                                    <p>{data.planned}</p>
+                                </div>
+                                <div className={classNames['content-item']}>
+                                    <span>Blockers:</span>
+                                    <p>{data.blockers}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            className={classNames['container-close']}
+                            onClick={closeDetails}
+                        >
+                            Close
+                        </button>
+                    </div>
                 </div>
-            )}
-            {showProgressDetails && (
-                <button onClick={closeDetails}>Close</button>
             )}
         </>
     );
