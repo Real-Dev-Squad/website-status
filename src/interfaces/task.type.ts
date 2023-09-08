@@ -140,3 +140,6 @@ export type CardTaskDetails = task & {
     savingDate: string;
     savingText: string;
 };
+
+export const depreciatedTaskStatus = ['AVAILABLE', 'COMPLETED'];
+export const newTaskStatus = ['UNASSIGNED', 'DONE'];
