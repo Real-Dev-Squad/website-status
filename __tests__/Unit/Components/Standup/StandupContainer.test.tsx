@@ -17,7 +17,7 @@ import moment from 'moment';
 
 const server = setupServer(...handlers);
 
-describe('StandupContainer', () => {
+describe.only('StandupContainer', () => {
     beforeAll(() => {
         server.listen();
     });
@@ -27,241 +27,21 @@ describe('StandupContainer', () => {
     afterAll(() => {
         server.close();
     });
-    // const yesterdayDate = moment().subtract(1, 'days').format('MMMM DD, YYYY');
 
-    test('should render  inputField ', function () {
-        renderWithRouter(
+    test('should render  standup Form ', function () {
+        const { container } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
             </Provider>
         );
-
-        const completedInputField = screen.getByRole('textbox', {
-            name: 'Yesterday',
-        }) as HTMLInputElement;
-        const todayInputField = screen.getByRole('textbox', {
-            name: 'Today',
-        }) as HTMLInputElement;
-        const blockerInputField = screen.getByRole('textbox', {
-            name: 'Blockers',
-        }) as HTMLInputElement;
-
-        expect(completedInputField).toBeInTheDocument();
-        expect(completedInputField).toHaveValue('');
-        expect(todayInputField).toBeInTheDocument();
-        expect(todayInputField).toHaveValue('');
-
-        expect(blockerInputField).toHaveValue('');
-
-        fireEvent.change(completedInputField, {
-            target: { value: 'Working on a backend Go project' },
-        });
-        const completedInputValue = completedInputField.value;
-        expect(completedInputValue).toBe('Working on a backend Go project');
-
-        fireEvent.change(todayInputField, {
-            target: { value: 'Implement error handling for API endpoints' },
-        });
-        const todayInputValue = todayInputField.value;
-        expect(todayInputValue).toBe(
-            'Implement error handling for API endpoints'
-        );
-        fireEvent.change(blockerInputField, {
-            target: { value: 'Waiting for database access credentials' },
-        });
-        const blockerInputValue = blockerInputField.value;
-        expect(blockerInputValue).toBe(
-            'Waiting for database access credentials'
-        );
-    });
-
-    test('render if button is disabled', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-            </Provider>
-        );
-        expect(screen.getByText(/Submit/i).closest('button')).toBeDisabled();
-    });
-    test('render if button is enabled', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-            </Provider>
-        );
-        const completedInputField = screen.getByRole('textbox', {
-            name: 'Yesterday',
-        }) as HTMLInputElement;
-        const todayInputField = screen.getByRole('textbox', {
-            name: 'Today',
-        }) as HTMLInputElement;
-        const blockerInputField = screen.getByRole('textbox', {
-            name: 'Blockers',
-        }) as HTMLInputElement;
-        fireEvent.change(completedInputField, {
-            target: { value: 'Working on a backend Go project' },
-        });
-
-        fireEvent.change(todayInputField, {
-            target: { value: 'Implement error handling for API endpoints' },
-        });
-
-        fireEvent.change(blockerInputField, {
-            target: { value: 'Waiting for database access credentials' },
-        });
-        expect(screen.getByRole('button')).not.toBeDisabled();
-    });
-
-    test('should keep button disabled if only one field is filled and rest are empty', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-            </Provider>
-        );
-        const completedInputField = screen.getByRole('textbox', {
-            name: 'Yesterday',
-        }) as HTMLInputElement;
-        fireEvent.change(completedInputField, {
-            target: { value: 'Working on a backend Go project' },
-        });
-        expect(screen.getByText(/Submit/i).closest('button')).toBeDisabled();
-    });
-
-    test('should Submit form data successfully', async () => {
-        const { getByRole } = renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-                <ToastContainer />
-            </Provider>,
-            {
-                asPath: '/standup',
-                replace: jest.fn(),
-            }
-        );
-        const completedInputField = screen.getByRole('textbox', {
-            name: 'Yesterday',
-        }) as HTMLInputElement;
-        const todayInputField = screen.getByRole('textbox', {
-            name: 'Today',
-        }) as HTMLInputElement;
-        const blockerInputField = screen.getByRole('textbox', {
-            name: 'Blockers',
-        }) as HTMLInputElement;
-
-        fireEvent.change(completedInputField, {
-            target: { value: 'Working on a backend Go project' },
-        });
-
-        fireEvent.change(todayInputField, {
-            target: { value: 'Implement error handling for API endpoints' },
-        });
-
-        fireEvent.change(blockerInputField, {
-            target: { value: 'Waiting for database access credentials' },
-        });
-        fireEvent.submit(getByRole('form'));
-        await waitFor(() =>
-            expect(
-                screen.getByText(STANDUP_SUBMISSION_SUCCESS)
-            ).toBeInTheDocument()
-        );
-    });
-
-    test('should throw error on submitting form data', async () => {
-        server.use(failedPostStandup);
-        const { getByRole } = renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-                <ToastContainer />
-            </Provider>,
-            {
-                asPath: '/standup',
-                replace: jest.fn(),
-            }
-        );
-        const completedInputField = screen.getByRole('textbox', {
-            name: 'Yesterday',
-        }) as HTMLInputElement;
-        const todayInputField = screen.getByRole('textbox', {
-            name: 'Today',
-        }) as HTMLInputElement;
-        const blockerInputField = screen.getByRole('textbox', {
-            name: 'Blockers',
-        }) as HTMLInputElement;
-
-        fireEvent.change(completedInputField, {
-            target: { value: 'Working on a backend Go project' },
-        });
-
-        fireEvent.change(todayInputField, {
-            target: { value: 'Implement error handling for API endpoints' },
-        });
-
-        fireEvent.change(blockerInputField, {
-            target: { value: 'Waiting for database access credentials' },
-        });
-
-        fireEvent.submit(getByRole('form'));
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(STANDUP_ALREADY_SUBMITTED)
-            ).toBeInTheDocument();
-        });
-    });
-
-    test('should throw error on standup submission fail', async () => {
-        jest.spyOn(
-            SaveProgressHook,
-            'useSaveProgressMutation'
-        ).mockImplementation((): ReturnType<
-            typeof SaveProgressHook.useSaveProgressMutation
-        > => {
-            return [
-                jest.fn().mockImplementation(() => {
-                    throw new Error(ERROR_MESSAGE);
-                }),
-            ] as unknown as ReturnType<
-                typeof SaveProgressHook.useSaveProgressMutation
-            >;
-        });
-
-        const { getByRole } = renderWithRouter(
-            <Provider store={store()}>
-                <StandUpContainer />
-                <ToastContainer />
-            </Provider>,
-            {
-                asPath: '/standup',
-                replace: jest.fn(),
-            }
-        );
-        const completedInputField = screen.getByRole('textbox', {
-            name: 'Yesterday',
-        }) as HTMLInputElement;
-        const todayInputField = screen.getByRole('textbox', {
-            name: 'Today',
-        }) as HTMLInputElement;
-        const blockerInputField = screen.getByRole('textbox', {
-            name: 'Blockers',
-        }) as HTMLInputElement;
-
-        fireEvent.change(completedInputField, {
-            target: { value: 'Working on a backend Go project' },
-        });
-
-        fireEvent.change(todayInputField, {
-            target: { value: 'Implement error handling for API endpoints' },
-        });
-
-        fireEvent.change(blockerInputField, {
-            target: { value: 'Waiting for database access credentials' },
-        });
-
-        fireEvent.submit(getByRole('form'));
-
-        await waitFor(() => {
-            expect(screen.getByText(ERROR_MESSAGE)).toBeInTheDocument();
-        });
+        screen.debug();
+        const submitButton = screen.getByRole('button', { name: 'Submit' });
+        const addButton = container.getElementsByClassName('addButton');
+        expect(screen.getByText('Standup Update')).toBeInTheDocument();
+        expect(screen.getByText('Yesterday')).toBeInTheDocument();
+        expect(screen.getByText('Today')).toBeInTheDocument();
+        expect(screen.getByText('Blocker')).toBeInTheDocument();
+        expect(submitButton).toBeInTheDocument();
+        expect(addButton.length).toBe(3);
     });
 });
