@@ -9,11 +9,9 @@ $theme-inputFieldBorder: #d1d5db;
 $theme-nonActiveButtonBackground: #e5e7eb;
 $theme-standupDate: rgb(10, 52, 149);
 $radius: 0.5rem;
-
 .bannerContainer {
     width: 100%;
 }
-
 .progressBanner {
     background-color: $theme-primaryBackground;
     color: $theme-whiteColor;
@@ -22,19 +20,16 @@ $radius: 0.5rem;
     margin-top: 2rem;
     width: 100%;
 }
-
 .bannerPara {
     font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
     font-weight: 600;
 }
-
 .totalMissedUpdates {
     color: $theme-bannerFontColor;
     text-decoration: underline;
     margin: 0 0.4rem;
 }
-
 .standupUpdateContainer {
     display: flex;
     flex-direction: column;
@@ -44,7 +39,6 @@ $radius: 0.5rem;
     border-radius: 1rem;
     margin-top: 4rem;
 }
-
 .standupTitle {
     margin-left: 1rem;
     color: $theme-secondaryBackground;
@@ -52,24 +46,54 @@ $radius: 0.5rem;
     font-size: 2.2rem;
     margin-bottom: 0px;
 }
-
 .StandupDate {
     color: $theme-standupDate;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
+    text-align: center;
 }
-
+.inputContainers {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+}
+.inputBoxContainer {
+    display: flex;
+    flex-direction: column;
+}
+.inputBox {
+    display: flex;
+    flex-direction: row;
+    width: 60vw;
+}
+.addButtonContainer {
+    position: absolute;
+    top: 2rem;
+    left: 100%;
+    margin-left: 10px;
+}
+.addButton {
+    border-radius: 50%;
+    background-color: $theme-secondaryBackground;
+    color: $theme-whiteColor;
+    font-weight: 700;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 1px 2px 4px 2px grey;
+}
+.addButton:active {
+    transform: translateY(4px);
+}
 .formFields {
     text-align: left;
     border: none;
 }
-
 .updateHeading {
     color: $theme-headingColor;
     font-size: 1.4rem;
     font-family: 'Inter', sans-serif;
 }
-
 .inputField {
     height: 4rem;
     width: 100%;
@@ -81,12 +105,10 @@ $radius: 0.5rem;
     font-family: 'Inter', sans-serif;
     margin: 0.8rem 0 2.4rem 0;
 }
-
 .inputField:focus {
     border: 1px solid $theme-focusHighlight;
     outline: none;
 }
-
 .submitButton {
     margin-left: 1rem;
     width: 14rem;
@@ -97,36 +119,38 @@ $radius: 0.5rem;
     border: none;
     cursor: pointer;
     color: var(--toastify-spinner-color);
+    box-shadow: 1px 2px 4px 2px grey;
 }
-
 .submitButton:active {
+    transform: translateY(4px);
+}
+.submitButton:active,
+.submitButton:hover {
     background: $theme-secondaryBackground;
     color: $theme-whiteColor;
 }
-
+.submitButton:disabled {
+    background: $theme-nonActiveButtonBackground;
+    color: var(--toastify-spinner-color);
+}
 .activeButton {
     background: $theme-secondaryBackground;
     color: $theme-whiteColor;
 }
-
 .nonActiveButton {
     background: $theme-nonActiveButtonBackground;
 }
-
 .timeContainer {
     display: flex;
     justify-content: space-between;
 }
-
 .notAuthenticated {
     text-align: center;
 }
-
 @media (max-width: 980px) {
     .standupUpdateContainer {
         width: 100%;
     }
-
     .timeContainer {
         flex-direction: column;
         flex-wrap: wrap;
