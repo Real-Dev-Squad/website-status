@@ -37,7 +37,7 @@ $button-proceed-bg: #008000;
     left: 30%;
     right: 30%;
     height: max-content;
-    gap: 20px;
+    gap: 10px;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -58,12 +58,12 @@ $button-proceed-bg: #008000;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 10px;
+            gap: 15px;
 
             .content-item {
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                gap: 5px;
                 span {
                     font-weight: 700;
                     margin: 0;
