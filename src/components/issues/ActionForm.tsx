@@ -7,6 +7,8 @@ import { reducerAction } from '@/types/ProgressUpdates';
 import { beautifyStatus } from '../tasks/card/TaskStatusEditMode';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import { Loader } from '../tasks/card/Loader';
 
 type ActionFormReducer = {
     assignee: string;
@@ -23,7 +25,7 @@ const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 const initialState = {
     assignee: '',
     endsOn: Date.now() / 1000,
-    status: 'UN ASSIGNED',
+    status: 'ASSIGNED',
 };
 
 const reducer = (state: ActionFormReducer, action: reducerAction) => {
@@ -42,9 +44,12 @@ const reducer = (state: ActionFormReducer, action: reducerAction) => {
     }
 };
 
+const { SUCCESS, ERROR } = ToastTypes;
+
 const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [isAssigned, setIsAssigned] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [updateTask] = useUpdateTaskMutation();
     const { data } = useGetTaskDetailsQuery(taskId);
 
@@ -58,15 +63,31 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
         }
     }, [data]);
 
+    const handleSubmit = () => {
+        setIsLoading(true);
+        updateTask({ task: state, id: taskId })
+            .unwrap()
+            .then((res) => {
+                toast(SUCCESS, 'Task Assigned saved successfully');
+                setIsLoading(false);
+                setIsAssigned(true);
+            })
+            .catch((error) => {
+                toast(ERROR, error.data.message);
+                setIsLoading(false);
+            });
+    };
+
     return (
         <form>
+            {isLoading && <Loader />}
             <button
                 className={styles.card__top__button}
                 type="submit"
                 disabled={isAssigned}
                 onClick={(e) => {
                     e.preventDefault();
-                    updateTask({ task: state, id: taskId });
+                    handleSubmit();
                 }}
             >
                 Assign Task
@@ -106,9 +127,9 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                         name="status"
                         id="status"
                         value={state.status}
-                        onChange={(e) =>
-                            dispatch({ type: 'status', value: e.target.value })
-                        }
+                        onChange={(e) => {
+                            dispatch({ type: 'status', value: e.target.value });
+                        }}
                         className={styles.assign}
                     >
                         {taskStatus.map(([name, status]) => (
