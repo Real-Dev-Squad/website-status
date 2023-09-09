@@ -2,32 +2,9 @@ import StandUpContainer from '@/components/standup';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { setupServer } from 'msw/node';
-import handlers from '../../../../__mocks__/handlers';
-import {
-    ERROR_MESSAGE,
-    STANDUP_SUBMISSION_SUCCESS,
-    STANDUP_ALREADY_SUBMITTED,
-} from '@/constants/constants';
-import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
-import { ToastContainer } from 'react-toastify';
-import * as SaveProgressHook from '@/app/services/progressesApi';
-import moment from 'moment';
+import { screen } from '@testing-library/react';
 
-const server = setupServer(...handlers);
-
-describe.only('StandupContainer', () => {
-    beforeAll(() => {
-        server.listen();
-    });
-    afterEach(() => {
-        server.resetHandlers();
-    });
-    afterAll(() => {
-        server.close();
-    });
-
+describe('StandupContainer', () => {
     test('should render  standup Form ', function () {
         const { container } = renderWithRouter(
             <Provider store={store()}>

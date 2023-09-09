@@ -132,6 +132,7 @@ $radius: 0.5rem;
 .submitButton:disabled {
     background: $theme-nonActiveButtonBackground;
     color: var(--toastify-spinner-color);
+    transform: none;
 }
 .activeButton {
     background: $theme-secondaryBackground;
