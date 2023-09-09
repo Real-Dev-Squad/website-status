@@ -147,7 +147,7 @@ describe('TaskDetails Page', () => {
             fireEvent.click(link);
             expect(link).toHaveAttribute(
                 'href',
-                'https://github.com/sampleOrg/sampleRepo/issues/000'
+                'https://github.com/sample-org/sample-repo/issues/000'
             );
         });
     });

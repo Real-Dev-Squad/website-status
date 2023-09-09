@@ -12,9 +12,10 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const isGitHubLink = detailType === 'Link';
 
     const gitHubIssueLink = isGitHubLink ? value : undefined;
+    const issueNumberRegex = /\/issues\/(\d+)/;
 
     const extractIssueNumber = () => {
-        const issueNumberMatch = value?.match(/\/issues\/(\d+)/);
+        const issueNumberMatch = value?.match(issueNumberRegex);
         if (issueNumberMatch && issueNumberMatch.length > 1) {
             return issueNumberMatch[1];
         }
