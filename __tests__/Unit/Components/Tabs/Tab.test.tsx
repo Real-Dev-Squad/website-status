@@ -63,6 +63,22 @@ describe('Tabs Component', () => {
         expect(onSelectMock).toHaveBeenCalledWith(Tab.ASSIGNED);
     });
 
+    it('check if selectTab() is called with right key when dev is true', () => {
+        render(
+            <Tabs
+                dev={true}
+                tabs={TABS}
+                activeTab={Tab.UNASSIGNED}
+                onSelect={onSelectMock}
+            />
+        );
+        const unassignedBtn = screen.getByRole('button', {
+            name: 'UNASSIGNED',
+        });
+        fireEvent.click(unassignedBtn);
+        expect(onSelectMock).toHaveBeenCalledWith(Tab.UNASSIGNED);
+    });
+
     it('Check if correct button is selected', () => {
         render(
             <Tabs

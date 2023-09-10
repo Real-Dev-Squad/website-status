@@ -69,6 +69,28 @@ describe('tasks content', () => {
         expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
     });
 
+    test('select tab and set active when dev is true', async () => {
+        setWindowInnerWidth(breakpointToShowTabs);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TasksContent dev={true} />
+            </Provider>,
+            {
+                query: { section: 'unassigned' },
+            }
+        );
+        await screen.findByTestId('tabs');
+        const tabsContainer = within(
+            screen.getByTestId('status-tabs-container')
+        );
+        const assignedButton = tabsContainer.getByRole('button', {
+            name: 'UNASSIGNED',
+        });
+        expect(assignedButton).toHaveTextContent('UNASSIGNED');
+        await screen.findByText(NO_TASKS_FOUND_MESSAGE);
+        expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
+    });
+
     test('displays "No tasks found" message when there are no tasks', async () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
