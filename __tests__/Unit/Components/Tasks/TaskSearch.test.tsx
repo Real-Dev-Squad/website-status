@@ -84,6 +84,26 @@ describe('TaskSearch', () => {
         expect(onInputChange).toHaveBeenCalledWith('is:merged');
     });
 
+    test('calls onInputChange when the search input value changes when dev is true', () => {
+        const onSelect = jest.fn();
+        const onInputChange = jest.fn();
+        const onClickSearchButton = jest.fn();
+
+        render(
+            <TaskSearch
+                dev={true}
+                onSelect={onSelect}
+                inputValue=""
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+
+        const searchInput = screen.getByTestId('search-input');
+        fireEvent.change(searchInput, { target: { value: 'is:done' } });
+        expect(onInputChange).toHaveBeenCalledWith('is:done');
+    });
+
     test('calls onSelect when the any one filter button is clicked', () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
@@ -102,6 +122,27 @@ describe('TaskSearch', () => {
         const assignedButton = screen.getByText(/assigned/i);
         fireEvent.click(assignedButton);
         expect(onSelect).toHaveBeenCalledWith('ASSIGNED');
+    });
+
+    test('calls onSelect when the any one filter button is clicked and dev is true', () => {
+        const onSelect = jest.fn();
+        const onInputChange = jest.fn();
+        const onClickSearchButton = jest.fn();
+
+        render(
+            <TaskSearch
+                dev={true}
+                onSelect={onSelect}
+                inputValue=""
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+        const filterButton = screen.getByText('Filter');
+        fireEvent.click(filterButton);
+        const unassignedButton = screen.getByText(/unassigned/i);
+        fireEvent.click(unassignedButton);
+        expect(onSelect).toHaveBeenCalledWith('UNASSIGNED');
     });
 
     test('calls onClickSearchButton when enter key is pressed', () => {
