@@ -129,11 +129,11 @@ describe('TaskDetails Page', () => {
             }
         );
         await waitFor(() => {
-            const gitIcon = screen.getByAltText('Git Icon');
-            expect(gitIcon).toBeInTheDocument();
+            const gitLink = screen.getByText('Issue #000');
+            expect(gitLink).toBeInTheDocument();
         });
     });
-    it('Test Open Git issue link button', async () => {
+    it('Test Open Git issue link', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
@@ -143,16 +143,12 @@ describe('TaskDetails Page', () => {
             }
         );
         await waitFor(() => {
-            const button = screen.getByLabelText('Open GitHub Issue');
-            const originalOpen = window.open;
-            const mockOpen = jest.fn();
-            window.open = mockOpen;
-            fireEvent.click(button);
-            expect(mockOpen).toHaveBeenCalledWith(
-                'https://www.sampleGithubUrl.com',
-                '_blank'
+            const link = screen.getByText('Issue #000');
+            fireEvent.click(link);
+            expect(link).toHaveAttribute(
+                'href',
+                'https://github.com/sample-org/sample-repo/issues/000'
             );
-            window.open = originalOpen;
         });
     });
     it('Renders Task Assignee', async () => {
