@@ -3,7 +3,6 @@ import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
-import { GITHUB_LOGO } from '@/constants/url';
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const router = useRouter();
@@ -11,9 +10,19 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const isDevModeEnabled = query.dev === 'true' ? true : false;
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
-    const openGitIssueLink = () => {
-        window.open(value, '_blank');
+
+    const gitHubIssueLink = isGitHubLink ? value : undefined;
+    const issueNumberRegex = /\/issues\/(\d+)/;
+
+    const extractIssueNumber = () => {
+        const issueNumberMatch = value?.match(issueNumberRegex);
+        if (issueNumberMatch && issueNumberMatch.length > 1) {
+            return issueNumberMatch[1];
+        }
+        return null;
     };
+
+    const issueNumber = extractIssueNumber();
 
     return (
         <div className={classNames.detailsContainer}>
@@ -23,18 +32,16 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                 style={{ color: color ?? 'black' }}
             >
                 {isDevModeEnabled && isGitHubLink && value ? (
-                    <button
-                        className={classNames.gitButton}
+                    <a
+                        className={classNames.gitLink}
+                        href={gitHubIssueLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         aria-label="Open GitHub Issue"
-                        onClick={openGitIssueLink}
                         title={value}
                     >
-                        <img
-                            className={classNames.gitIcon}
-                            src={GITHUB_LOGO}
-                            alt="Git Icon"
-                        />
-                    </button>
+                        {'Issue #' + issueNumber}
+                    </a>
                 ) : (
                     <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
                 )}
