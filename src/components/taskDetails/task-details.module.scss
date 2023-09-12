@@ -42,27 +42,8 @@ $off-white: #f0f0f0;
     }
 }
 
-.gitButton {
-    @extend .button;
-    background-color: $off-white;
-    max-height: fit-content;
-    min-width: fit-content;
-    padding: 2px;
-    padding-left: 8px;
-    padding-right: 8px;
-    &:hover {
-        background-color: white;
-    }
-
-    .icon {
-        width: 12px;
-        height: 12px;
-    }
-
-    .gitIcon {
-        @extend .icon;
-        filter: invert(100%);
-    }
+.gitLink {
+    color: $theme-blue;
 }
 
 .detailsContainer {
