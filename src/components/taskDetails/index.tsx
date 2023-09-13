@@ -26,8 +26,8 @@ import Layout from '@/components/Layout';
 import TaskDependency from '@/components/taskDetails/taskDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
-import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
+import ProgressDetails from './ProgressDetails';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -175,9 +175,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             taskProgress.data.forEach((data: ProgressDetailsData) => {
                 taskProgressArray.push(
                     <>
-                        <li>
-                            {getDateFromTimestamp(data.date)} : {data.completed}
-                        </li>
+                        <ProgressDetails data={data} />
                         <br />
                     </>
                 );
@@ -358,6 +356,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             Request for task
                                         </button>
                                     </TaskContainer>
+
                                     <TaskContainer
                                         hasImg={false}
                                         title="Update Progress"
