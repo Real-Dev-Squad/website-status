@@ -9,9 +9,12 @@ import ProgressHeader from '../ProgressForm/ProgressHeader';
 import { getCurrentDate } from '@/utils/getCurrentDate';
 const StandUpContainer: FC = () => {
     const { data: user } = useGetUserQuery();
-    const { data: userStandupdata } = useGetProgressDetailsQuery({
-        userId: user?.id,
-    });
+    const { data: userStandupdata } = useGetProgressDetailsQuery(
+        {
+            userId: user?.id,
+        },
+        { skip: user?.id ? false : true }
+    );
     const standupDates = userStandupdata?.data?.map((element) => element.date);
     const totalMissedUpdates = getTotalMissedUpdates(standupDates || []);
     const currentDate = getCurrentDate(STANDUPTIME);

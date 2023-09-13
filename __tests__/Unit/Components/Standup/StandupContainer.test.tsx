@@ -16,9 +16,13 @@ describe('StandupContainer', () => {
         const addButton = container.getElementsByClassName('addButton');
         expect(screen.getByText('Standup Update')).toBeInTheDocument();
         expect(screen.getByText('Yesterday')).toBeInTheDocument();
+        expect(screen.getByTestId('Yesterday0')).toBeInTheDocument();
         expect(screen.getByText('Today')).toBeInTheDocument();
+        expect(screen.getByTestId('Today0')).toBeInTheDocument();
         expect(screen.getByText('Blocker')).toBeInTheDocument();
+        expect(screen.getByTestId('Blocker0')).toBeInTheDocument();
         expect(submitButton).toBeInTheDocument();
         expect(addButton.length).toBe(3);
+        screen.debug();
     });
 });
