@@ -494,6 +494,24 @@ describe('Task Details > Task Request', () => {
         });
     });
 
+    it('should disable task request button when dev is true and task is assigned', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestButton = screen.getByRole('button', {
+                name: /request for task/i,
+            });
+            screen.debug();
+            expect(requestButton).toBeInTheDocument();
+            expect(requestButton).toBeDisabled();
+        });
+    });
+
     it('Success toast should be shown on success', async () => {
         renderWithRouter(
             <Provider store={store()}>
