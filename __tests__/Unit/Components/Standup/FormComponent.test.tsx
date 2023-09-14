@@ -20,10 +20,15 @@ describe('FormComponent', () => {
     afterAll(() => {
         server.close();
     });
+
     test('should be able to submit the standup form', async () => {
         const { container } = renderWithRouter(
             <Provider store={store()}>
-                <FormInputComponent />
+                <FormInputComponent
+                    setIsFormVisible={() => {
+                        true;
+                    }}
+                />
                 <ToastContainer />
             </Provider>,
             {
@@ -54,18 +59,25 @@ describe('FormComponent', () => {
         fireEvent.change(BlockerInputField, {
             target: { value: 'None' },
         });
+        screen.debug();
         fireEvent.submit(screen.getByRole('form'));
+        screen.debug();
         await waitFor(() =>
             expect(
                 screen.getByText('User Progress document created successfully.')
             ).toBeInTheDocument()
         );
+        screen.debug();
     });
     test('should throw error toaster when form submitted again', async () => {
         server.use(failedPostStandup);
         const { container } = renderWithRouter(
             <Provider store={store()}>
-                <FormInputComponent />
+                <FormInputComponent
+                    setIsFormVisible={() => {
+                        true;
+                    }}
+                />
                 <ToastContainer />
             </Provider>,
             {

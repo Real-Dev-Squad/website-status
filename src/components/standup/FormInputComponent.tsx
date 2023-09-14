@@ -10,7 +10,13 @@ const intialSection = [
     { title: 'Blocker', inputs: [''] },
 ];
 
-const FormInputComponent: FC = () => {
+interface setIsFormVisibleProps {
+    setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const FormInputComponent: FC<setIsFormVisibleProps> = ({
+    setIsFormVisible,
+}) => {
     const router = useRouter();
     const [sections, setSections] = useState(intialSection);
     const [addStandup] = useSaveProgressMutation();
@@ -47,10 +53,11 @@ const FormInputComponent: FC = () => {
         e.preventDefault();
         const newData = {
             type: 'user',
-            completed: sections[0].inputs.join('. '),
+            completed: sections[0].inputs.join('.'),
             planned: sections[1].inputs.join('. '),
             blockers: sections[2].inputs.join('. '),
         };
+        setIsFormVisible(false);
         await addStandup(newData)
             .unwrap()
             .then((data) => {
@@ -64,6 +71,7 @@ const FormInputComponent: FC = () => {
             { title: 'Today', inputs: [''] },
             { title: 'Blocker', inputs: [''] },
         ]);
+
         router.replace(router.asPath);
     };
 

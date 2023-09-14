@@ -148,6 +148,15 @@ $radius: 0.5rem;
 .notAuthenticated {
     text-align: center;
 }
+
+.formFilledMessage {
+    text-align: center;
+    text-wrap: wrap;
+    margin-top: 2rem;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+}
+
 @media (max-width: 980px) {
     .standupUpdateContainer {
         width: 100%;
