@@ -507,13 +507,12 @@ describe('Task Details > Task Request', () => {
             const requestButton = screen.getByRole('button', {
                 name: /request for task/i,
             });
-            console.log(requestButton);
             expect(requestButton).toBeInTheDocument();
             expect(requestButton).toBeDisabled();
         });
     });
 
-    it.skip('Success toast should be shown on success', async () => {
+    it('Success toast should be shown on success', async () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
@@ -537,7 +536,7 @@ describe('Task Details > Task Request', () => {
         });
     });
 
-    it.skip('Error toast should be shown on error', async () => {
+    it('Error toast should be shown on error', async () => {
         server.use(...taskRequestErrorHandler);
 
         renderWithRouter(
