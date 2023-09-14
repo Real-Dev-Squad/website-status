@@ -22,6 +22,12 @@ const FormInputComponent: FC = () => {
         setSections(newSections);
     };
 
+    const handleRemoveField = (sectionIndex: number) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].inputs.pop();
+        setSections(newSections);
+    };
+
     const handleInputChange = (
         sectionIndex: number,
         inputIndex: number,
@@ -86,34 +92,58 @@ const FormInputComponent: FC = () => {
                             {section.inputs.map((inputValue, inputIndex) => (
                                 <div
                                     key={inputIndex}
-                                    className={styles.inputBox}
+                                    className={styles.inputAndButtons}
                                 >
-                                    <input
-                                        className={styles.inputField}
-                                        data-testid={`${section.title}${inputIndex}`}
-                                        name={section.title}
-                                        type="text"
-                                        required
-                                        value={inputValue}
-                                        onChange={(e) =>
-                                            handleInputChange(
-                                                sectionIndex,
-                                                inputIndex,
-                                                e.target.value
-                                            )
-                                        }
-                                    />
+                                    <div className={styles.inputBox}>
+                                        <input
+                                            className={styles.inputField}
+                                            data-testid={`${section.title}${inputIndex}`}
+                                            name={section.title}
+                                            type="text"
+                                            required
+                                            value={inputValue}
+                                            onChange={(e) =>
+                                                handleInputChange(
+                                                    sectionIndex,
+                                                    inputIndex,
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                    <div className={styles.buttonsContainer}>
+                                        {inputIndex ===
+                                            section.inputs.length - 1 && (
+                                            <button
+                                                className={styles.addButton}
+                                                type="button"
+                                                onClick={() =>
+                                                    handleAddField(sectionIndex)
+                                                }
+                                            >
+                                                +
+                                            </button>
+                                        )}
+                                        {inputIndex ===
+                                            section.inputs.length - 1 &&
+                                            section.inputs.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    className={
+                                                        styles.removeButton
+                                                    }
+                                                    onClick={() =>
+                                                        handleRemoveField(
+                                                            sectionIndex
+                                                        )
+                                                    }
+                                                >
+                                                    x
+                                                </button>
+                                            )}
+                                    </div>
                                 </div>
                             ))}
-                        </div>
-                        <div className={styles.addButtonContainer}>
-                            <button
-                                className={styles.addButton}
-                                type="button"
-                                onClick={() => handleAddField(sectionIndex)}
-                            >
-                                +
-                            </button>
                         </div>
                     </div>
                 </div>
