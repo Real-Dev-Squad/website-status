@@ -62,8 +62,6 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
         searchString: state.assignee,
     });
 
-    console.log(userData?.users);
-
     useEffect(() => {
         if (data?.taskData?.assignee) {
             setIsAssigned(true);
