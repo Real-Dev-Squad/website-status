@@ -1,4 +1,11 @@
-import { FC, useEffect, useReducer, useState } from 'react';
+import {
+    ChangeEvent,
+    FC,
+    useEffect,
+    useReducer,
+    useRef,
+    useState,
+} from 'react';
 
 import styles from '@/components/issues/Card.module.scss';
 
@@ -9,6 +16,12 @@ import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { Loader } from '../tasks/card/Loader';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
+import SuggestionBox from '../tasks/SuggestionBox/SuggestionBox';
+import { useGetAllUsersByUsernameQuery } from '@/app/services/usersApi';
+import { GithubInfo } from '@/interfaces/suggestionBox.type';
+import { userDataType } from '@/interfaces/user.type';
+import { DUMMY_PROFILE } from '@/constants/display-sections';
 
 type ActionFormReducer = {
     assignee: string;
@@ -50,8 +63,14 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     const [isAssigned, setIsAssigned] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [showSuggestion, setShowSuggestion] = useState(false);
     const [updateTask] = useUpdateTaskMutation();
     const { data } = useGetTaskDetailsQuery(taskId);
+    const { data: userData } = useGetAllUsersByUsernameQuery({
+        searchString: state.assignee,
+    });
+
+    console.log(userData?.users);
 
     useEffect(() => {
         if (data?.taskData?.assignee) {
@@ -62,6 +81,11 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
             });
         }
     }, [data]);
+
+    const handleAssignment = (username: string) => {
+        setShowSuggestion(false);
+        dispatch({ type: 'assignee', value: username });
+    };
 
     const handleSubmit = () => {
         setIsLoading(true);
@@ -78,6 +102,17 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
             });
     };
 
+    const suggestedUsers: GithubInfo[] = [];
+
+    userData?.users?.map((data: userDataType) => {
+        suggestedUsers.push({
+            github_id: data.username,
+            profileImageUrl: data?.picture?.url
+                ? data.picture.url
+                : DUMMY_PROFILE,
+        });
+    });
+
     return (
         <form>
             {isLoading && <Loader />}
@@ -87,6 +122,7 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                 disabled={isAssigned}
                 onClick={(e) => {
                     e.preventDefault();
+                    setShowSuggestion(false);
                     handleSubmit();
                 }}
             >
@@ -98,14 +134,23 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                 type="text"
                 placeholder="Assignee"
                 value={state.assignee}
-                onChange={(e) =>
+                onChange={(e) => {
+                    setShowSuggestion(true);
                     dispatch({
                         type: 'assignee',
                         value: e.target.value,
-                    })
-                }
+                    });
+                }}
                 disabled={isAssigned}
             />
+            {showSuggestion && (
+                <div className={styles.suggestions_container}>
+                    <SuggestionBox
+                        suggestions={suggestedUsers}
+                        onSelectAssignee={handleAssignment}
+                    />
+                </div>
+            )}
             {!isAssigned && (
                 <>
                     <label htmlFor="ends-on" className={styles.assign_label}>
