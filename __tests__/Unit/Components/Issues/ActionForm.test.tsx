@@ -1,7 +1,7 @@
 import ActionForm from '@/components/issues/ActionForm';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import * as tasksApi from '@/app/services/tasksApi';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 
 describe('Issues Action Form Component', () => {
     let updateTaskSpy: any;
@@ -60,5 +60,19 @@ describe('Issues Action Form Component', () => {
 
         fireEvent.change(endsOn, { target: { value: '2020-05-12' } });
         expect(endsOn.value).toBe('2020-05-12');
+    });
+
+    test('Should show Suggestion box when username is entered', async () => {
+        const screen = renderWithProviders(<ActionForm taskId="123" />);
+        const assignee = screen.getByPlaceholderText(
+            'Assignee'
+        ) as HTMLInputElement;
+        let notFoundTextNode = null;
+        fireEvent.change(assignee, { target: { value: 123 } });
+        await waitFor(() => {
+            screen.findByText('User not found!');
+        });
+        notFoundTextNode = screen.getByTestId('user_not_found');
+        expect(notFoundTextNode).toBeInTheDocument();
     });
 });
