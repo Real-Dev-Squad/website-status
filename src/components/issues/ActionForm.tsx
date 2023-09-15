@@ -1,4 +1,4 @@
-import { FC, useEffect, useReducer, useState } from 'react';
+import { FC, MouseEvent, useEffect, useReducer, useState } from 'react';
 
 import styles from '@/components/issues/Card.module.scss';
 
@@ -77,7 +77,9 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
         dispatch({ type: 'assignee', value: username });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: MouseEvent) => {
+        e.preventDefault();
+        setShowSuggestion(false);
         setIsLoading(true);
         updateTask({ task: state, id: taskId })
             .unwrap()
@@ -110,11 +112,7 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                 className={styles.card__top__button}
                 type="submit"
                 disabled={isAssigned}
-                onClick={(e) => {
-                    e.preventDefault();
-                    setShowSuggestion(false);
-                    handleSubmit();
-                }}
+                onClick={handleSubmit}
             >
                 Assign Task
             </button>
