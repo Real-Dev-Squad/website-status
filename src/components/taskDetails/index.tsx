@@ -354,6 +354,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             data-testid="request-task-button"
                                             className={classNames.button}
                                             onClick={taskRequestHandle}
+                                            disabled={
+                                                taskDetailsData?.status.toUpperCase() ===
+                                                'ASSIGNED'
+                                            }
                                         >
                                             Request for task
                                         </button>

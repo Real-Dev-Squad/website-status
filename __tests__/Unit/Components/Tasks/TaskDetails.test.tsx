@@ -119,6 +119,42 @@ describe('TaskDetails Page', () => {
             expect(getByText('assigned')).toBeInTheDocument();
         });
     });
+    it('check if Request for Task button is disabled for ASSIGNED task', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestForTaskButton = screen.getByTestId(
+                'request-task-button'
+            );
+            expect(requestForTaskButton).toBeInTheDocument();
+            expect(requestForTaskButton).toBeDisabled();
+        });
+    });
+    it('check if Request for Task button is not disabled for IN_PROGRESS task', async () => {
+        const testTaskDetails = {
+            url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0l/details',
+            taskID: '6KhcLU3yr45dzjQIVm0l',
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={testTaskDetails.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestForTaskButton = screen.getByTestId(
+                'request-task-button'
+            );
+            expect(requestForTaskButton).toBeInTheDocument();
+            expect(requestForTaskButton).not.toBeDisabled();
+        });
+    });
     it('Renders Task Link open button', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -495,9 +531,13 @@ describe('Task Details > Task Request', () => {
     });
 
     it('Success toast should be shown on success', async () => {
+        const testTaskDetails = {
+            url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0l/details',
+            taskID: '6KhcLU3yr45dzjQIVm0l',
+        };
         renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
+                <TaskDetails taskID={testTaskDetails.taskID} />
                 <ToastContainer />
             </Provider>,
             { query: { dev: 'true' } }
@@ -519,11 +559,15 @@ describe('Task Details > Task Request', () => {
     });
 
     it('Error toast should be shown on error', async () => {
+        const testTaskDetails = {
+            url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0l/details',
+            taskID: '6KhcLU3yr45dzjQIVm0l',
+        };
         server.use(...taskRequestErrorHandler);
 
         renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
+                <TaskDetails taskID={testTaskDetails.taskID} />
                 <ToastContainer />
             </Provider>,
             { query: { dev: 'true' } }

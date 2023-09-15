@@ -42,6 +42,13 @@ $off-white: #f0f0f0;
     }
 }
 
+.button[disabled] {
+    background-color: transparent;
+    color: $light-black;
+    cursor: not-allowed;
+    border: 1px solid $light-black;
+}
+
 .gitLink {
     color: $theme-blue;
 }
