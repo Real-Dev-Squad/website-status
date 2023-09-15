@@ -1,7 +1,7 @@
 import ActionForm from '@/components/issues/ActionForm';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import * as tasksApi from '@/app/services/tasksApi';
-import { findAllByText, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 
 describe('Issues Action Form Component', () => {
     let updateTaskSpy: any;
