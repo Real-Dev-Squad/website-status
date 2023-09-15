@@ -353,9 +353,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             className={classNames.button}
                                             onClick={taskRequestHandle}
                                             disabled={
-                                                !(
-                                                    taskDetailsData?.status ===
-                                                    'AVAILABLE'
+                                                !Object.is(
+                                                    taskDetailsData?.assignee,
+                                                    null
                                                 )
                                             }
                                         >

@@ -512,10 +512,35 @@ describe('Task Details > Task Request', () => {
         });
     });
 
-    it('Success toast should be shown on success', async () => {
+    it('Request a task button should be enabled when the assignee is null or task is not assigned', async () => {
+        const testTaskDetails = {
+            url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0l/details',
+            taskID: '6KhcLU3yr45dzjQIVm0l',
+        };
         renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
+                <TaskDetails taskID={testTaskDetails.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        await waitFor(() => {
+            const requestButton = screen.getByRole('button', {
+                name: /request for task/i,
+            });
+            expect(requestButton).toBeInTheDocument();
+            expect(requestButton).not.toBeDisabled();
+        });
+    });
+
+    it('Success toast should be shown on success', async () => {
+        const testTaskDetails = {
+            url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0l/details',
+            taskID: '6KhcLU3yr45dzjQIVm0l',
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={testTaskDetails.taskID} />
                 <ToastContainer />
             </Provider>,
             { query: { dev: 'true' } }
@@ -531,17 +556,23 @@ describe('Task Details > Task Request', () => {
         });
         fireEvent.click(taskRequestButton);
 
-        await waitFor(() => {
-            screen.getByText(/successfully requested for task/i);
-        });
+        await waitFor(() =>
+            expect(
+                screen.getByText(/successfully requested for task/i)
+            ).toBeInTheDocument()
+        );
     });
 
     it('Error toast should be shown on error', async () => {
+        const testTaskDetails = {
+            url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0l/details',
+            taskID: '6KhcLU3yr45dzjQIVm0l',
+        };
         server.use(...taskRequestErrorHandler);
 
         renderWithRouter(
             <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
+                <TaskDetails taskID={testTaskDetails.taskID} />
                 <ToastContainer />
             </Provider>,
             { query: { dev: 'true' } }
