@@ -29,7 +29,7 @@ export const notLoading = {
 };
 
 export const failedToSendStandup = {
-    statusCode: 500,
-    error: 'Internal Server Error',
-    message: 'success',
+    statusCode: 409,
+    error: 'Conflict',
+    message: 'User Progress for the day has already been created.',
 };
