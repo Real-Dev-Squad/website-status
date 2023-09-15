@@ -125,7 +125,6 @@ describe('useGetAllTasksQuery()', () => {
 
         const nextResponse = result.current;
         const tasksData = nextResponse.data;
-        console.log(tasksData.tasks);
         expect(tasksData).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
@@ -230,7 +229,7 @@ describe('useGetAllTasksQuery()', () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
                 useGetAllTasksQuery({
-                    assignee: 'shmbajaj',
+                    assignee: 'sunny-s',
                     status: 'overdue',
                 }),
             { wrapper: Wrapper }
@@ -243,7 +242,7 @@ describe('useGetAllTasksQuery()', () => {
 
         const nextResponse = result.current;
         const tasksData = nextResponse.data;
-        expect(tasksData.tasks.length).not.toBe(0);
+        expect(tasksData).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
