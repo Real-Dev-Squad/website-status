@@ -10,9 +10,9 @@ describe('FilterModal', () => {
     test('renders the modal with correct title and buttons', () => {
         render(
             <FilterModal
-                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.ASSIGNED}
+                activeTab={Tab.OVERDUE}
                 onClose={mockOnClose}
             />
         );
@@ -28,19 +28,22 @@ describe('FilterModal', () => {
 
         const inProgressButton = screen.getByText(/in progress/i);
         expect(inProgressButton).toBeInTheDocument();
+
+        const overdueButton = screen.getByText(/overdue/i);
+        expect(overdueButton).toBeInTheDocument();
     });
 
     test('calls onSelect and onClose when a status button is clicked', () => {
         render(
             <FilterModal
-                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.ASSIGNED}
+                activeTab={Tab.OVERDUE}
                 onClose={mockOnClose}
             />
         );
 
-        const statusButton = screen.getByText(Tab.ASSIGNED);
+        const statusButton = screen.getByText(Tab.OVERDUE);
         fireEvent.click(statusButton);
 
         expect(mockOnSelect).toBeCalled();
@@ -49,9 +52,9 @@ describe('FilterModal', () => {
     test('calls onClose when the close button is clicked', () => {
         render(
             <FilterModal
-                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.ASSIGNED}
+                activeTab={Tab.OVERDUE}
                 onClose={mockOnClose}
             />
         );
@@ -65,17 +68,20 @@ describe('FilterModal', () => {
     test('renders the modal with correct active tab', () => {
         render(
             <FilterModal
-                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.ASSIGNED}
+                activeTab={Tab.OVERDUE}
                 onClose={mockOnClose}
             />
         );
 
         const assignedButton = screen.getByText(/assigned/i);
-        expect(assignedButton).toHaveClass('status-button-active');
+        expect(assignedButton).not.toHaveClass('status-button-active');
 
         const inProgressButton = screen.getByText(/in progress/i);
         expect(inProgressButton).not.toHaveClass('status-button-active');
+
+        const overdueButton = screen.getByText(/overdue/i);
+        expect(overdueButton).toHaveClass('status-button-active');
     });
 });

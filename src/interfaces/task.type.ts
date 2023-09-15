@@ -87,6 +87,7 @@ enum Tab {
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
     COMPLETED = 'COMPLETED',
+    OVERDUE = 'OVERDUE',
 }
 
 const TABS = Object.values(Tab);
@@ -129,6 +130,7 @@ export type TabTasksData = {
     VERIFIED: task[];
     MERGED: task[];
     COMPLETED: task[];
+    OVERDUE: task[];
 };
 
 export type CardTaskDetails = task & {

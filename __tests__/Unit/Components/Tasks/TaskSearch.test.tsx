@@ -99,9 +99,9 @@ describe('TaskSearch', () => {
         );
         const filterButton = screen.getByText('Filter');
         fireEvent.click(filterButton);
-        const assignedButton = screen.getByText(/assigned/i);
-        fireEvent.click(assignedButton);
-        expect(onSelect).toHaveBeenCalledWith('ASSIGNED');
+        const overdueButton = screen.getByText(/overdue/i);
+        fireEvent.click(overdueButton);
+        expect(onSelect).toHaveBeenCalledWith('OVERDUE');
     });
 
     test('calls onClickSearchButton when enter key is pressed', () => {
@@ -113,7 +113,7 @@ describe('TaskSearch', () => {
             <TaskSearch
                 onSelect={onSelect}
                 inputValue=""
-                activeTab={Tab.ASSIGNED}
+                activeTab={Tab.OVERDUE}
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />

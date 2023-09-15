@@ -3,7 +3,6 @@ import { tabToUrlParams } from './getActiveTab';
 
 export function extractQueryParams(queryParam: string) {
     const queryParamsArray = queryParam?.split(' ');
-
     let isValue = '';
     let assigneeValue = '';
     let titleValue = '';
