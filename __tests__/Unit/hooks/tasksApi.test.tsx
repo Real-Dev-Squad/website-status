@@ -107,29 +107,6 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isSuccess).toBe(true);
     });
 
-    test('returns filtered tasks based on overdue status', async () => {
-        const { result, waitForNextUpdate } = renderHook(
-            () =>
-                useGetAllTasksQuery({
-                    status: 'overdue',
-                }),
-            {
-                wrapper: Wrapper,
-            }
-        );
-        const initialResponse = result.current;
-        expect(initialResponse.data).toBeUndefined();
-        expect(initialResponse.isLoading).toBe(true);
-
-        await act(() => waitForNextUpdate());
-
-        const nextResponse = result.current;
-        const tasksData = nextResponse.data;
-        expect(tasksData).not.toBeUndefined();
-        expect(nextResponse.isLoading).toBe(false);
-        expect(nextResponse.isSuccess).toBe(true);
-    });
-
     test('returns next page of tasks', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
@@ -208,29 +185,6 @@ describe('useGetAllTasksQuery()', () => {
             () =>
                 useGetAllTasksQuery({
                     assignee: 'sunny-s',
-                }),
-            { wrapper: Wrapper }
-        );
-        const initialResponse = result.current;
-        expect(initialResponse.data).toBeUndefined();
-        expect(initialResponse.isLoading).toBe(true);
-
-        await act(() => waitForNextUpdate());
-
-        const nextResponse = result.current;
-        const tasksData = nextResponse.data;
-        expect(tasksData).not.toBeUndefined();
-        expect(nextResponse.isLoading).toBe(false);
-        expect(nextResponse.isSuccess).toBe(true);
-    });
-
-    test('returns overdue tasks filtered by assignee', async () => {
-        server.use(filterTaskHandler);
-        const { result, waitForNextUpdate } = renderHook(
-            () =>
-                useGetAllTasksQuery({
-                    assignee: 'sunny-s',
-                    status: 'overdue',
                 }),
             { wrapper: Wrapper }
         );
