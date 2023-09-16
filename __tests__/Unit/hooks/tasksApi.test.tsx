@@ -106,7 +106,6 @@ describe('useGetAllTasksQuery()', () => {
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
     });
-
     test('returns next page of tasks', async () => {
         const { result, waitForNextUpdate } = renderHook(
             () =>
@@ -196,6 +195,7 @@ describe('useGetAllTasksQuery()', () => {
 
         const nextResponse = result.current;
         const tasksData = nextResponse.data;
+        console.log(tasksData);
         expect(tasksData).not.toBeUndefined();
         expect(nextResponse.isLoading).toBe(false);
         expect(nextResponse.isSuccess).toBe(true);
