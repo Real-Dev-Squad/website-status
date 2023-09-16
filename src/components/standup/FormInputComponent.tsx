@@ -1,36 +1,103 @@
-import { FC } from 'react';
-
+import { FC, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSaveProgressMutation } from '@/app/services/progressesApi';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 import styles from '@/components/standup/standupContainer.module.scss';
-import { InputProps } from '@/types/standup.type';
+import SectionComponent from './SectionComponent';
 
-const FormInputComponent: FC<InputProps> = ({
-    placeholder,
-    name,
-    value,
-    labelValue,
-    htmlFor,
-    inputId,
-    handleChange,
-}) => {
-    return (
-        <>
-            <label className={styles.updateHeading} htmlFor={htmlFor}>
-                {labelValue}
-            </label>
-            <input
-                id={inputId}
-                type="text"
-                className={styles.inputField}
-                placeholder={placeholder}
-                required
-                name={name}
-                value={value}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleChange(e)
+const intialSection = [
+    { title: 'Yesterday', inputs: [''] },
+    { title: 'Today', inputs: [''] },
+    { title: 'Blocker', inputs: [''] },
+];
+
+const FormInputComponent: FC = () => {
+    const router = useRouter();
+    const [sections, setSections] = useState(intialSection);
+    const [addStandup] = useSaveProgressMutation();
+    const { SUCCESS, ERROR } = ToastTypes;
+
+    const handleAddField = (sectionIndex: number) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].inputs.push('');
+        setSections(newSections);
+    };
+
+    const handleRemoveField = (sectionIndex: number) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].inputs.pop();
+        setSections(newSections);
+    };
+
+    const handleInputChange = (
+        sectionIndex: number,
+        inputIndex: number,
+        value: string
+    ) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].inputs[inputIndex] = value;
+        setSections(newSections);
+    };
+
+    const isFormValid = () => {
+        for (const section of sections) {
+            for (const input of section.inputs) {
+                if (input.trim() === '') {
+                    return false;
                 }
-            />
-        </>
+            }
+        }
+        return true;
+    };
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const newData = {
+            type: 'user',
+            completed: sections[0].inputs.join('. '),
+            planned: sections[1].inputs.join('. '),
+            blockers: sections[2].inputs.join('. '),
+        };
+        await addStandup(newData)
+            .unwrap()
+            .then((data) => {
+                toast(SUCCESS, data.message);
+            })
+            .catch((error) => {
+                toast(ERROR, error.data.message);
+            });
+        setSections([
+            { title: 'Yesterday', inputs: [''] },
+            { title: 'Today', inputs: [''] },
+            { title: 'Blocker', inputs: [''] },
+        ]);
+        router.replace(router.asPath);
+    };
+
+    return (
+        <form
+            className={styles.standupForm}
+            onSubmit={handleSubmit}
+            aria-label="form"
+        >
+            {sections.map((section, sectionIndex) => (
+                <SectionComponent
+                    key={sectionIndex}
+                    section={section}
+                    sectionIndex={sectionIndex}
+                    onInputChange={handleInputChange}
+                    onAddField={handleAddField}
+                    onRemoveField={handleRemoveField}
+                />
+            ))}
+            <button
+                type="submit"
+                disabled={!isFormValid()}
+                className={`${styles.submitButton}`}
+            >
+                Submit
+            </button>
+        </form>
     );
 };
-
 export default FormInputComponent;

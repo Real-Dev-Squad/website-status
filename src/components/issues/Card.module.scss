@@ -54,6 +54,12 @@ $card-text: #78716c;
     margin-bottom: 0;
 }
 
+.suggestions_container {
+    position: relative;
+    top: -20%;
+    left: 10%;
+}
+
 .card__top__details__button {
     display: flex;
     justify-content: space-between;

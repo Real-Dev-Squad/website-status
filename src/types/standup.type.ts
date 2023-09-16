@@ -32,3 +32,20 @@ export type progressDetails = {
     message: string;
     count: number;
 };
+
+type Section = {
+    title: string;
+    inputs: string[];
+};
+
+export type SectionComponentProps = {
+    section: Section;
+    sectionIndex: number;
+    onInputChange: (
+        sectionIndex: number,
+        inputIndex: number,
+        value: string
+    ) => void;
+    onAddField: (sectionIndex: number) => void;
+    onRemoveField: (sectionIndex: number) => void;
+};
