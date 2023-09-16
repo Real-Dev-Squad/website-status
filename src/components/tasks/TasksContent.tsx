@@ -26,7 +26,6 @@ import TaskSearch from './TaskSearch/TaskSearch';
 export const TasksContent = () => {
     const router = useRouter();
     const qQueryParam = router.query.q as string;
-
     const extractedValues = extractQueryParams(qQueryParam);
     const selectedTab = getActiveTab(extractedValues.status);
     const [queryTitle, setQueryTitle] = useState<string>(extractedValues.title);
@@ -47,7 +46,6 @@ export const TasksContent = () => {
         OVERDUE: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
-
     const [inputValue, setInputValue] = useState<string>(
         `${getQueryParamTab(selectedTab)} ${
             queryAssignee ? getQueryParamAssignee(queryAssignee) : ''
