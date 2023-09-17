@@ -38,7 +38,7 @@ const StandUpContainer: FC = () => {
         if (isLoading) {
             return;
         }
-        if (currentDateResult === dateResult) {
+        if (currentDateResult === dateResult && standupDates) {
             setIsFormVisible(false);
         } else if (hour >= 6 && currentDateResult !== dateResult) {
             setIsFormVisible(true);
