@@ -30,6 +30,32 @@ describe('FilterModal', () => {
         expect(inProgressButton).toBeInTheDocument();
     });
 
+    test('renders the modal having overdue tab with correct title and buttons', () => {
+        render(
+            <FilterModal
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.OVERDUE}
+                onClose={mockOnClose}
+            />
+        );
+
+        const modalTitle = screen.getByText('Filter');
+        expect(modalTitle).toBeInTheDocument();
+
+        const closeButton = screen.getByText('×');
+        expect(closeButton).toBeInTheDocument();
+
+        const assignedButton = screen.getByText(/assigned/i);
+        expect(assignedButton).toBeInTheDocument();
+
+        const inProgressButton = screen.getByText(/in progress/i);
+        expect(inProgressButton).toBeInTheDocument();
+
+        const overdueButton = screen.getByText(/overdue/i);
+        expect(overdueButton).toBeInTheDocument();
+    });
+
     test('calls onSelect and onClose when a status button is clicked', () => {
         render(
             <FilterModal
@@ -77,5 +103,25 @@ describe('FilterModal', () => {
 
         const inProgressButton = screen.getByText(/in progress/i);
         expect(inProgressButton).not.toHaveClass('status-button-active');
+    });
+
+    test('renders the modal with overdue as active tab', () => {
+        render(
+            <FilterModal
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.OVERDUE}
+                onClose={mockOnClose}
+            />
+        );
+
+        const assignedButton = screen.getByText(/assigned/i);
+        expect(assignedButton).not.toHaveClass('status-button-active');
+
+        const inProgressButton = screen.getByText(/in progress/i);
+        expect(inProgressButton).not.toHaveClass('status-button-active');
+
+        const overdueButton = screen.getByText(/overdue/i);
+        expect(overdueButton).toHaveClass('status-button-active');
     });
 });
