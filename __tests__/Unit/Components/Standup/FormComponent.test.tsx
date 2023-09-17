@@ -37,6 +37,7 @@ describe('FormComponent', () => {
             }
         );
         const addButton = container.getElementsByClassName('addButton');
+        const removeButton = container.getElementsByClassName('removeButton');
         const YesterdayInptutField = screen.getByTestId('Yesterday0');
         fireEvent.change(YesterdayInptutField, {
             target: { value: 'Working on a backend Go project' },
@@ -46,6 +47,8 @@ describe('FormComponent', () => {
         fireEvent.change(YesterdayInptutFieldsecond, {
             target: { value: 'Working on a status site project' },
         });
+        fireEvent.click(addButton[0]);
+        fireEvent.click(removeButton[0]);
         const todayInputField = screen.getByTestId('Today0');
         fireEvent.change(todayInputField, {
             target: { value: 'Working on a live-site project' },
@@ -55,19 +58,18 @@ describe('FormComponent', () => {
         fireEvent.change(TodayInptutFieldsecond, {
             target: { value: 'Working on a member-site project' },
         });
+        fireEvent.click(addButton[1]);
+        fireEvent.click(removeButton[1]);
         const BlockerInputField = screen.getByTestId('Blocker0');
         fireEvent.change(BlockerInputField, {
             target: { value: 'None' },
         });
-        screen.debug();
         fireEvent.submit(screen.getByRole('form'));
-        screen.debug();
         await waitFor(() =>
             expect(
                 screen.getByText('User Progress document created successfully.')
             ).toBeInTheDocument()
         );
-        screen.debug();
     });
     test('should throw error toaster when form submitted again', async () => {
         server.use(failedPostStandup);

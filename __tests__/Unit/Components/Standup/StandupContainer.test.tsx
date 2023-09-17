@@ -11,7 +11,6 @@ describe('StandupContainer', () => {
                 <StandUpContainer />
             </Provider>
         );
-        screen.debug();
         const submitButton = screen.getByRole('button', { name: 'Submit' });
         const addButton = container.getElementsByClassName('addButton');
         expect(screen.getByText('Standup Update')).toBeInTheDocument();
@@ -23,6 +22,5 @@ describe('StandupContainer', () => {
         expect(screen.getByTestId('Blocker0')).toBeInTheDocument();
         expect(submitButton).toBeInTheDocument();
         expect(addButton.length).toBe(3);
-        screen.debug();
     });
 });

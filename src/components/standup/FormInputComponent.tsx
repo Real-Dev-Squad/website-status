@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useSaveProgressMutation } from '@/app/services/progressesApi';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import styles from '@/components/standup/standupContainer.module.scss';
+import SectionComponent from './SectionComponent';
 
 const intialSection = [
     { title: 'Yesterday', inputs: [''] },
@@ -25,6 +26,12 @@ const FormInputComponent: FC<setIsFormVisibleProps> = ({
     const handleAddField = (sectionIndex: number) => {
         const newSections = [...sections];
         newSections[sectionIndex].inputs.push('');
+        setSections(newSections);
+    };
+
+    const handleRemoveField = (sectionIndex: number) => {
+        const newSections = [...sections];
+        newSections[sectionIndex].inputs.pop();
         setSections(newSections);
     };
 
@@ -82,49 +89,14 @@ const FormInputComponent: FC<setIsFormVisibleProps> = ({
             aria-label="form"
         >
             {sections.map((section, sectionIndex) => (
-                <div className={styles.formFields} key={sectionIndex}>
-                    <label
-                        className={styles.updateHeading}
-                        htmlFor={section.title}
-                    >
-                        {section.title}
-                    </label>
-                    <div className={styles.inputContainers}>
-                        <div className={styles.inputBoxContainer}>
-                            {section.inputs.map((inputValue, inputIndex) => (
-                                <div
-                                    key={inputIndex}
-                                    className={styles.inputBox}
-                                >
-                                    <input
-                                        className={styles.inputField}
-                                        data-testid={`${section.title}${inputIndex}`}
-                                        name={section.title}
-                                        type="text"
-                                        required
-                                        value={inputValue}
-                                        onChange={(e) =>
-                                            handleInputChange(
-                                                sectionIndex,
-                                                inputIndex,
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                        <div className={styles.addButtonContainer}>
-                            <button
-                                className={styles.addButton}
-                                type="button"
-                                onClick={() => handleAddField(sectionIndex)}
-                            >
-                                +
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <SectionComponent
+                    key={sectionIndex}
+                    section={section}
+                    sectionIndex={sectionIndex}
+                    onInputChange={handleInputChange}
+                    onAddField={handleAddField}
+                    onRemoveField={handleRemoveField}
+                />
             ))}
             <button
                 type="submit"

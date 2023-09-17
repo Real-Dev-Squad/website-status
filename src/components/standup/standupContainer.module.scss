@@ -9,6 +9,8 @@ $theme-inputFieldBorder: #d1d5db;
 $theme-nonActiveButtonBackground: #e5e7eb;
 $theme-standupDate: rgb(10, 52, 149);
 $radius: 0.5rem;
+$theme-removeButton: #ed0808;
+
 .bannerContainer {
     width: 100%;
 }
@@ -52,6 +54,11 @@ $radius: 0.5rem;
     font-weight: 700;
     text-align: center;
 }
+
+.inputAndButtons {
+    display: flex;
+}
+
 .inputContainers {
     display: flex;
     flex-direction: row;
@@ -66,13 +73,21 @@ $radius: 0.5rem;
     flex-direction: row;
     width: 60vw;
 }
+
+.buttonsContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
 .addButtonContainer {
     position: absolute;
     top: 2rem;
     left: 100%;
     margin-left: 10px;
 }
-.addButton {
+.addButton,
+.removeButton {
     border-radius: 50%;
     background-color: $theme-secondaryBackground;
     color: $theme-whiteColor;
@@ -82,7 +97,14 @@ $radius: 0.5rem;
     cursor: pointer;
     box-shadow: 1px 2px 4px 2px grey;
 }
-.addButton:active {
+
+.removeButton {
+    margin-left: 10px;
+    color: $theme-removeButton;
+}
+
+.addButton:active,
+.removeButton:active {
     transform: translateY(4px);
 }
 .formFields {
@@ -133,6 +155,7 @@ $radius: 0.5rem;
     background: $theme-nonActiveButtonBackground;
     color: var(--toastify-spinner-color);
     transform: none;
+    cursor: not-allowed;
 }
 .activeButton {
     background: $theme-secondaryBackground;
