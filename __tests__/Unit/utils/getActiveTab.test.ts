@@ -14,4 +14,8 @@ describe('Unit | Util | Get Active Tab', () => {
         expect(getActiveTab('in-progress')).toEqual(Tab.IN_PROGRESS);
         expect(getActiveTab('someRandomSection')).toEqual(Tab.ALL);
     });
+
+    test('returns proper value for the overdue tab when active', () => {
+        expect(getActiveTab('overdue')).toEqual(Tab.OVERDUE);
+    });
 });
