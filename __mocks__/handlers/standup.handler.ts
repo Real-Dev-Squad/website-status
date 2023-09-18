@@ -15,7 +15,6 @@ const standupHandler = [
         );
     }),
     rest.get(`${URL}/progresses`, async (req, res, ctx) => {
-        console.log('get API is being callled');
         return res(ctx.status(200), ctx.json({ data: [] }));
     }),
 ];

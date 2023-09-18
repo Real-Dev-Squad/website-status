@@ -7,6 +7,7 @@ import { setupServer } from 'msw/node';
 import standupHandler from '../../../../__mocks__/handlers/standup.handler';
 import handlers from '../../../../__mocks__/handlers';
 import { ToastContainer } from 'react-toastify';
+import { Loader } from '@/components/tasks/card/Loader';
 
 const server = setupServer(...handlers);
 
@@ -25,14 +26,17 @@ describe('StandupContainer', () => {
         const { container } = renderWithRouter(
             <Provider store={store()}>
                 <StandUpContainer />
+                <Loader />
             </Provider>
         );
+        screen.debug();
 
         await waitFor(() => {
             const submitButton = screen.getByRole('button', {
                 name: 'Submit',
             });
             const addButton = container.getElementsByClassName('addButton');
+            expect(screen.getByText('loading')).toBeInTheDocument();
             expect(screen.getByText('Standup Update')).toBeInTheDocument();
             expect(screen.getByText('Yesterday')).toBeInTheDocument();
             expect(screen.getByTestId('Yesterday0')).toBeInTheDocument();
@@ -43,6 +47,7 @@ describe('StandupContainer', () => {
             expect(submitButton).toBeInTheDocument();
             expect(addButton.length).toBe(3);
         });
+        // screen.debug();
     });
 
     test('should be able to submit the standup form', async () => {

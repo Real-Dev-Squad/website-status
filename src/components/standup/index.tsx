@@ -47,6 +47,25 @@ const StandUpContainer: FC = () => {
         }
     }, [standupDates]);
 
+    const mainForm = () => {
+        if (isLoading) {
+            return <Loader />;
+        } else {
+            if (isFormVisible) {
+                return (
+                    <FormInputComponent setIsFormVisible={setIsFormVisible} />
+                );
+            } else {
+                return (
+                    <p className={styles.formFilledMessage}>
+                        Your standup for the day has already been submitted,
+                        please fill out the form tomorrow after 6:00 a.m.
+                    </p>
+                );
+            }
+        }
+    };
+
     return (
         <>
             <section className="container">
@@ -60,21 +79,7 @@ const StandUpContainer: FC = () => {
                         <h4 className={styles.StandupDate}>
                             Current Date - {currentDate}
                         </h4>
-                        {isLoading ? (
-                            <>
-                                <Loader />
-                            </>
-                        ) : isFormVisible ? (
-                            <FormInputComponent
-                                setIsFormVisible={setIsFormVisible}
-                            />
-                        ) : (
-                            <p className={styles.formFilledMessage}>
-                                Your standup for the day has already been
-                                submitted, please fill out the form tomorrow
-                                after 6:00 a.m.
-                            </p>
-                        )}
+                        {mainForm()}
                     </div>
                 </div>
             </section>
