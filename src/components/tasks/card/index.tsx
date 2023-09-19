@@ -31,7 +31,6 @@ import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import ProgressContainer from './progressContainer';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
-import { useRouter } from 'next/router';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
 
@@ -48,9 +47,6 @@ const Card: FC<CardProps> = ({
     ];
 
     const cardDetails = content;
-
-    const router = useRouter();
-    const { dev } = router.query;
 
     const [editedTaskDetails, setEditedTaskDetails] = useState({
         ...cardDetails,
@@ -499,7 +495,7 @@ const Card: FC<CardProps> = ({
             {/* loading spinner */}
             {isLoading && <Loader />}
             <div className={classNames.cardItems}>
-                {isEditable && dev === 'true' ? (
+                {isEditable ? (
                     <div className={classNames.textareaSection}>
                         <textarea
                             className={classNames.textarea}
@@ -508,11 +504,10 @@ const Card: FC<CardProps> = ({
                             onChange={inputHandler}
                             data-testid="title-textarea"
                         />
-                        {dev === 'true' && (
-                            <StatusIndicator
-                                status={editedTaskDetails.savingText}
-                            />
-                        )}
+
+                        <StatusIndicator
+                            status={editedTaskDetails.savingText}
+                        />
                     </div>
                 ) : (
                     <ConditionalLinkWrapper
@@ -546,11 +541,10 @@ const Card: FC<CardProps> = ({
                         <span className={classNames.completionDate}>
                             {renderDate(fromNowEndsOn, isEditable)}
                         </span>
-                        {dev === 'true' && (
-                            <StatusIndicator
-                                status={editedTaskDetails.savingDate}
-                            />
-                        )}
+
+                        <StatusIndicator
+                            status={editedTaskDetails.savingDate}
+                        />
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
@@ -597,11 +591,10 @@ const Card: FC<CardProps> = ({
                                   handleAssignment={handleAssignment}
                                   ref={inputRef}
                               />
-                              {dev === 'true' && (
-                                  <StatusIndicator
-                                      status={editedTaskDetails.assigningUser}
-                                  />
-                              )}
+
+                              <StatusIndicator
+                                  status={editedTaskDetails.assigningUser}
+                              />
                           </div>
                       )
                     : editedTaskDetails.assignee && (
@@ -637,7 +630,7 @@ const Card: FC<CardProps> = ({
                 <CloseTaskButton />
             )}
             {!isEditMode && showEditButton && <EditButton />}
-            {dev === 'true' && isEditMode && <CancelEditButton />}
+            {isEditMode && <CancelEditButton />}
         </div>
     );
 };
