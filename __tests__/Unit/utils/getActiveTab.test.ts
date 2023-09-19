@@ -6,6 +6,7 @@ describe('Unit | Util | Get Active Tab', () => {
         expect(getActiveTab()).toEqual(Tab.ALL);
         expect(getActiveTab('assigned')).toEqual(Tab.ASSIGNED);
         expect(getActiveTab('available')).toEqual(Tab.AVAILABLE);
+        expect(getActiveTab('unassigned')).toEqual(Tab.UNASSIGNED);
         expect(getActiveTab('needs-review')).toEqual(Tab.NEEDS_REVIEW);
         expect(getActiveTab('in-review')).toEqual(Tab.IN_REVIEW);
         expect(getActiveTab('verified')).toEqual(Tab.VERIFIED);
