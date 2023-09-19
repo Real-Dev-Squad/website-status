@@ -128,4 +128,22 @@ describe('FilterModal', () => {
         const inProgressButton = screen.getByText(/in progress/i);
         expect(inProgressButton).not.toHaveClass('status-button-active');
     });
+
+    test('renders the modal with correct active tab when dev is true', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.UNASSIGNED, Tab.DONE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.DONE}
+                onClose={mockOnClose}
+            />
+        );
+
+        const doneButton = screen.getByText(/done/i);
+        expect(doneButton).toHaveClass('status-button-active');
+
+        const unassignedButton = screen.getByText(/unassigned/i);
+        expect(unassignedButton).not.toHaveClass('status-button-active');
+    });
 });
