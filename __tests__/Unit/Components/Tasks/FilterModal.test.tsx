@@ -56,6 +56,30 @@ describe('FilterModal', () => {
         expect(overdueButton).toBeInTheDocument();
     });
 
+    test('renders the modal with correct title and buttons when dev is true', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.UNASSIGNED, Tab.DONE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.UNASSIGNED}
+                onClose={mockOnClose}
+            />
+        );
+
+        const modalTitle = screen.getByText('Filter');
+        expect(modalTitle).toBeInTheDocument();
+
+        const closeButton = screen.getByText('×');
+        expect(closeButton).toBeInTheDocument();
+
+        const unassignedButton = screen.getByText(/unassigned/i);
+        expect(unassignedButton).toBeInTheDocument();
+
+        const doneButton = screen.getByText(/done/i);
+        expect(doneButton).toBeInTheDocument();
+    });
+
     test('calls onSelect and onClose when a status button is clicked', () => {
         render(
             <FilterModal
