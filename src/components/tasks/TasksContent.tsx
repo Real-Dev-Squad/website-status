@@ -44,6 +44,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         VERIFIED: [],
         MERGED: [],
         COMPLETED: [],
+        OVERDUE: [],
         DONE: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
@@ -137,6 +138,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             VERIFIED: [],
             MERGED: [],
             COMPLETED: [],
+            OVERDUE: [],
             DONE: [],
         });
         inputValue && onSelect(status as Tab, assignee, title);
