@@ -8,6 +8,8 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.ASSIGNED;
         case 'available':
             return Tab.AVAILABLE;
+        case 'unassigned':
+            return Tab.UNASSIGNED;
         case 'needs-review':
             return Tab.NEEDS_REVIEW;
         case 'in-review':
@@ -18,6 +20,8 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.MERGED;
         case 'completed':
             return Tab.COMPLETED;
+        case 'done':
+            return Tab.DONE;
         default:
             return Tab.ALL;
     }

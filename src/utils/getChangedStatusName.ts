@@ -1,9 +1,9 @@
-import { COMPLETED, DONE, AVAILABLE, UNASSINGED } from '@/constants/constants';
+import { COMPLETED, DONE, AVAILABLE, UNASSIGNED } from '@/constants/constants';
 export function getChangedStatusName(name: string) {
     if (name === COMPLETED) {
         return DONE;
     } else if (name === AVAILABLE) {
-        return UNASSINGED;
+        return UNASSIGNED;
     } else {
         return name.split('_').join(' ');
     }
