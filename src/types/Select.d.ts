@@ -10,4 +10,5 @@ export type SingleSelectProps = {
 
 export type SelectProps = {
     options: SelectOption[];
+    dev?: boolean;
 } & SingleSelectProps;

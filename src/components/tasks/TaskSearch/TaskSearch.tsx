@@ -9,6 +9,7 @@ type TaskSearchProps = {
     activeTab?: Tab;
     onInputChange: (value: string) => void;
     onClickSearchButton: () => void;
+    dev?: boolean;
 };
 
 const TaskSearch = ({
@@ -17,6 +18,7 @@ const TaskSearch = ({
     activeTab,
     onInputChange,
     onClickSearchButton,
+    dev,
 }: TaskSearchProps) => {
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -38,6 +40,7 @@ const TaskSearch = ({
                     Filter
                     {modalOpen && (
                         <FilterModal
+                            dev={dev}
                             tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}

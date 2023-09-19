@@ -23,7 +23,7 @@ import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
-export const TasksContent = () => {
+export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
     const qQueryParam = router.query.q as string;
     const extractedValues = extractQueryParams(qQueryParam);
@@ -38,11 +38,13 @@ export const TasksContent = () => {
         IN_PROGRESS: [],
         ASSIGNED: [],
         AVAILABLE: [],
+        UNASSIGNED: [],
         NEEDS_REVIEW: [],
         IN_REVIEW: [],
         VERIFIED: [],
         MERGED: [],
         COMPLETED: [],
+        DONE: [],
     });
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
@@ -129,11 +131,13 @@ export const TasksContent = () => {
             IN_PROGRESS: [],
             ASSIGNED: [],
             AVAILABLE: [],
+            UNASSIGNED: [],
             NEEDS_REVIEW: [],
             IN_REVIEW: [],
             VERIFIED: [],
             MERGED: [],
             COMPLETED: [],
+            DONE: [],
         });
         inputValue && onSelect(status as Tab, assignee, title);
     };
@@ -145,6 +149,7 @@ export const TasksContent = () => {
     return (
         <div className={classNames.tasksContainer}>
             <TaskSearch
+                dev={dev}
                 onSelect={(selectedTab: Tab) =>
                     onSelect(selectedTab, queryAssignee, queryTitle)
                 }
@@ -158,6 +163,7 @@ export const TasksContent = () => {
                 data-testid="status-tabs-container"
             >
                 <TabSection
+                    dev={dev}
                     onSelect={(status: Tab) =>
                         onSelect(status, queryAssignee, queryTitle)
                     }
@@ -169,6 +175,7 @@ export const TasksContent = () => {
                 data-testid="status-select-container"
             >
                 <Select
+                    dev={dev}
                     value={{
                         label: getChangedStatusName(selectedTab),
                         value: selectedTab,
