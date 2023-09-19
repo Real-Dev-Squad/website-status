@@ -540,12 +540,12 @@ const Card: FC<CardProps> = ({
             <div className={classNames.taskStatusAndDateContainer}>
                 <div className={classNames.dateInfo}>
                     <div className={classNames.dateSection}>
-                        <span className={classNames.cardSpecialFont}>
+                        <p className={classNames.cardSpecialFont}>
                             Estimated completion
-                        </span>
-                        <span className={classNames.completionDate}>
+                        </p>
+                        <p className={classNames.completionDate}>
                             {renderDate(fromNowEndsOn, isEditable)}
-                        </span>
+                        </p>
                         {dev === 'true' && (
                             <StatusIndicator
                                 status={editedTaskDetails.savingDate}

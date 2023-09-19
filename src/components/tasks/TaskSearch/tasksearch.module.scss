@@ -36,6 +36,11 @@ $radius: 5px;
         width: 100%;
         margin-right: 0;
     }
+
+    @media (max-width: 368px) {
+        width: 90%;
+        margin-right: 0;
+    }
 }
 
 .filter-button {
@@ -94,6 +99,10 @@ $radius: 5px;
     width: 10rem;
     @media (max-width: 768px) {
         width: 100%;
+        margin-top: 1rem;
+    }
+    @media (max-width: 368px) {
+        width: 90%;
         margin-top: 1rem;
     }
 }

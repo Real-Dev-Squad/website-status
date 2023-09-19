@@ -39,12 +39,20 @@ $progressTextAnimation: #9babb8;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-    width: 50rem;
+    width: 100%;
 
-    @media (max-width: 48rem) {
-        width: 100%;
+    // between 768px and 1024px
+    @media (min-width: 48rem) and (max-width: 64rem) {
+        width: 90%;
+        justify-content: center;
     }
+
     @media (max-width: 28rem) {
+        justify-content: center;
+    }
+
+    @media (max-width: 23rem) {
+        width: 90%;
         justify-content: center;
     }
 }
@@ -55,9 +63,9 @@ $progressTextAnimation: #9babb8;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3rem;
+    // gap: 3rem;
 
-    @media (max-width: 28rem) {
+    @media (max-width: 600px) {
         flex-wrap: wrap;
     }
 }
@@ -83,6 +91,10 @@ $progressTextAnimation: #9babb8;
         width: 100%;
         white-space: normal;
     }
+
+    @media (max-width: 18rem) {
+        width: 90%;
+    }
 }
 
 .cardSpecialFont {
@@ -107,6 +119,10 @@ $progressTextAnimation: #9babb8;
 }
 .completionDate {
     padding-left: 0.5rem;
+    @media (max-width: 28rem) {
+        padding-left: 0;
+        margin: 0.25rem 0 0.5rem;
+    }
 }
 
 .contributorImage {
@@ -133,7 +149,7 @@ $progressTextAnimation: #9babb8;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 .progressContainerUpdated {
@@ -364,6 +380,14 @@ $progressTextAnimation: #9babb8;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media (max-width: 28rem) {
+        padding: 1rem;
+    }
+
+    // 368px
+    // @media (max-width: 23rem) {
+    //     padding: 0.5rem ;
+    // }
 }
 
 .suggestionDiv {
@@ -384,6 +408,15 @@ $progressTextAnimation: #9babb8;
     width: 100%;
     display: flex;
     gap: 5px;
+
+    @media (max-width: 28rem) {
+        align-items: baseline;
+    }
+
+    @media (max-width: 18rem) {
+        flex-direction: column;
+        width: 90%;
+    }
 }
 
 .textarea {
