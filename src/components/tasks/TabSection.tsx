@@ -4,13 +4,16 @@ import Tabs from '../Tabs';
 export const TabSection = ({
     onSelect,
     activeTab,
+    dev,
 }: {
     onSelect: (tab: Tab) => void;
     activeTab: Tab;
+    dev?: boolean;
 }) => {
     return (
         <div className={classNames.tabsContainer} data-testid="tabs">
             <Tabs
+                dev={dev}
                 tabs={TABS as Tab[]}
                 onSelect={onSelect}
                 activeTab={activeTab}
