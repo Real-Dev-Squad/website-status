@@ -88,6 +88,7 @@ enum Tab {
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
     COMPLETED = 'COMPLETED',
+    OVERDUE = 'OVERDUE',
     DONE = 'DONE',
 }
 
@@ -132,6 +133,7 @@ export type TabTasksData = {
     VERIFIED: task[];
     MERGED: task[];
     COMPLETED: task[];
+    OVERDUE: task[];
     DONE: task[];
 };
 

@@ -30,6 +30,32 @@ describe('FilterModal', () => {
         expect(inProgressButton).toBeInTheDocument();
     });
 
+    test('renders the modal having overdue tab with correct title and buttons', () => {
+        render(
+            <FilterModal
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.OVERDUE}
+                onClose={mockOnClose}
+            />
+        );
+
+        const modalTitle = screen.getByText('Filter');
+        expect(modalTitle).toBeInTheDocument();
+
+        const closeButton = screen.getByText('×');
+        expect(closeButton).toBeInTheDocument();
+
+        const assignedButton = screen.getByText(/assigned/i);
+        expect(assignedButton).toBeInTheDocument();
+
+        const inProgressButton = screen.getByText(/in progress/i);
+        expect(inProgressButton).toBeInTheDocument();
+
+        const overdueButton = screen.getByText(/overdue/i);
+        expect(overdueButton).toBeInTheDocument();
+    });
+
     test('renders the modal with correct title and buttons when dev is true', () => {
         render(
             <FilterModal
