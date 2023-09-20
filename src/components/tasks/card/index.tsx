@@ -150,7 +150,7 @@ const Card: FC<CardProps> = ({
         event: React.ChangeEvent<HTMLInputElement>,
         changedProperty: keyof typeof cardDetails
     ) {
-        const toChange: any = cardDetails;
+        const toChange: any = { ...cardDetails };
         if (changedProperty === 'endsOn' || changedProperty === 'startedOn') {
             const toTimeStamp =
                 new Date(`${event.target.value}`).getTime() / 1000;
