@@ -1,10 +1,4 @@
-import React, {
-    ChangeEvent,
-    FC,
-    useState,
-    ReactElement,
-    useEffect,
-} from 'react';
+import React, { ChangeEvent, FC, useState, useEffect } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
@@ -27,7 +21,7 @@ import TaskDependency from '@/components/taskDetails/taskDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
-import ProgressDetails from './ProgressDetails';
+import Progress from '../ProgressForm/Progress';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -166,22 +160,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
-    const { data: taskProgress } = useGetProgressDetailsQuery({
+    const { data: progressDate } = useGetProgressDetailsQuery({
         taskId: taskID,
     });
-    const taskProgressArray: Array<ReactElement> = [];
-    if (taskProgress) {
-        if (taskProgress.data.length > 0) {
-            taskProgress.data.forEach((data: ProgressDetailsData) => {
-                taskProgressArray.push(
-                    <>
-                        <ProgressDetails data={data} />
-                        <br />
-                    </>
-                );
-            });
-        }
-    }
+    const taskProgress: ProgressDetailsData[] = progressDate?.data || [];
 
     return (
         <Layout hideHeader={true}>
@@ -289,16 +271,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             }
                                         />
                                     </TaskContainer>
-                                    <TaskContainer
-                                        title="Progress Updates"
-                                        hasImg={false}
-                                    >
-                                        {taskProgressArray.length > 0 ? (
-                                            <div> {taskProgressArray} </div>
-                                        ) : (
-                                            'No Progress found'
-                                        )}
-                                    </TaskContainer>
+                                    <Progress taskProgress={taskProgress} />
                                 </>
                             )}
                         </section>
