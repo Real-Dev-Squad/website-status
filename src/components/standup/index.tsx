@@ -35,9 +35,6 @@ const StandUpContainer: FC = () => {
     const hour = now.hours();
 
     useEffect(() => {
-        if (isLoading) {
-            return;
-        }
         if (currentDateResult === dateResult && standupDates) {
             setIsFormVisible(false);
         } else if (hour >= 6 && currentDateResult !== dateResult) {

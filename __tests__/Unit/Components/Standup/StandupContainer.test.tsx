@@ -56,12 +56,14 @@ describe('StandupContainer', () => {
             <Provider store={store()}>
                 <StandUpContainer />
                 <ToastContainer />
+                <Loader />
             </Provider>,
             {
                 asPath: '/standup',
                 replace: jest.fn(),
             }
         );
+
         const addButton = container.getElementsByClassName('addButton');
         const removeButton = container.getElementsByClassName('removeButton');
         const YesterdayInptutField = screen.getByTestId('Yesterday0');
@@ -91,7 +93,8 @@ describe('StandupContainer', () => {
             target: { value: 'None' },
         });
         fireEvent.submit(screen.getByRole('form'));
-
+        screen.debug();
+        expect(screen.getByText('loading')).toBeInTheDocument();
         await waitFor(() => {
             expect(
                 screen.getByText('User Progress document created successfully.')
