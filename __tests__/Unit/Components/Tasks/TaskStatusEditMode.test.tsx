@@ -125,7 +125,7 @@ describe('TaskStatusEditMode', () => {
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
             </Provider>,
-            { query: { dev: 'true' } }
+            {}
         );
 
         const statusSelect = screen.getByLabelText('Status:');
