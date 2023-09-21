@@ -27,8 +27,8 @@ export default function Progress({ taskProgress }: Props) {
     };
 
     useEffect(() => {
-        if (taskProgress && taskProgress.length) {
-            const sorted = taskProgress.sort((first, second) => {
+        if (taskProgress && taskProgress.length > 0) {
+            const sorted = taskProgress.slice().sort((first, second) => {
                 return first.date === second.date
                     ? 0
                     : first.date > second.date
