@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useState } from 'react';
-import classNames from '@/components/tasks/card/card.module.scss';
+import classNames from '@/components/tasks/SuggestionBox/suggestion.module.scss';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
 import { Loader } from '../card/Loader';
@@ -45,10 +45,10 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
             const key = e.key;
             if (suggestedUsers.length > 0) {
                 if (['ArrowDown', 'ArrowUp', 'Enter', 'Escape'].includes(key)) {
-                    e.preventDefault();
                     let operation = 0;
                     switch (key) {
                         case 'ArrowUp': {
+                            e.preventDefault();
                             operation =
                                 activeIndex <= 0
                                     ? suggestedUsers.length - 1
@@ -56,6 +56,7 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
                             break;
                         }
                         case 'ArrowDown': {
+                            e.preventDefault();
                             operation =
                                 (activeIndex + 1) % suggestedUsers.length;
                             break;
@@ -88,7 +89,8 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
                     data-testid="assignee-input"
                     ref={ref}
                     value={assigneeName}
-                    className={classNames.cardStrongFont}
+                    placeholder="Assignee"
+                    className={classNames.suggestionsInput}
                     onChange={(e) => handleAssignment(e)}
                     onKeyDown={handelKeyboardInput}
                     tabIndex={0}
