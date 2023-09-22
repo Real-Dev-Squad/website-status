@@ -20,10 +20,6 @@
         transition: linear background-color 0.3s;
         opacity: 85%;
         border-bottom: 1px solid black;
-        &:hover {
-            background-color: #bcb7b7;
-            opacity: 100%;
-        }
     }
     img {
         margin-left: auto;
@@ -42,6 +38,10 @@
 .suggestions {
     -ms-overflow-style: none;
     scrollbar-width: none;
+}
+
+.suggestions-selected {
+    background-color: #bcb7b7;
 }
 
 .no-suggestions {
