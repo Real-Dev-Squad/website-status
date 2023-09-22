@@ -71,8 +71,6 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
                             setShowSuggestion(false);
                             break;
                         }
-                        default:
-                            break;
                     }
                     setActiveIndex(operation);
                 }
