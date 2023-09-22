@@ -21,7 +21,7 @@ import TaskDependency from '@/components/taskDetails/taskDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
-import Progress from '../ProgressForm/Progress';
+import Progress from '../ProgressCard';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;

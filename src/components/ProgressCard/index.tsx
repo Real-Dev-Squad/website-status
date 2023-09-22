@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import TaskContainer from '../../taskDetails/TaskContainer';
+import TaskContainer from '../taskDetails/TaskContainer';
 import { ProgressDetailsData } from '@/types/standup.type';
-import ProgressDetails from '../../taskDetails/ProgressDetails';
-import styles from '@/components/ProgressForm/Progress/Progress.module.scss';
+import ProgressDetails from '../taskDetails/ProgressDetails';
+import styles from '@/components/ProgressCard/ProgressCard.module.scss';
 
 type SortedProgressType = { data: ProgressDetailsData[]; order: number };
 
 type Props = { taskProgress: ProgressDetailsData[] };
 
-export default function Progress({ taskProgress }: Props) {
+export default function ProgressCard({ taskProgress }: Props) {
     const [sortedProgress, setSortedProgress] = useState<SortedProgressType>();
 
     const reverseSortingOrder = () => {
@@ -32,8 +32,8 @@ export default function Progress({ taskProgress }: Props) {
                 return first.date === second.date
                     ? 0
                     : first.date > second.date
-                    ? 1
-                    : -1;
+                    ? -1
+                    : 1;
             });
             setSortedProgress({ data: sorted, order: 1 });
         }
@@ -42,10 +42,11 @@ export default function Progress({ taskProgress }: Props) {
     return (
         <TaskContainer
             title={
-                <div>
+                <div data-testid="progressCard">
                     Progress Updates
                     {sortedProgress?.data?.length && (
                         <button
+                            data-testid="progressCard-btn"
                             className={styles.ascButton}
                             onClick={reverseSortingOrder}
                         >
