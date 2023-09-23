@@ -160,10 +160,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
-    const { data: progressDate } = useGetProgressDetailsQuery({
+    const { data: progressData } = useGetProgressDetailsQuery({
         taskId: taskID,
     });
-    const taskProgress: ProgressDetailsData[] = progressDate?.data || [];
+    const taskProgress: ProgressDetailsData[] = progressData?.data || [];
 
     return (
         <Layout hideHeader={true}>
