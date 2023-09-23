@@ -4,7 +4,6 @@ import { useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import { useRouter } from 'next/router';
 import { StatusIndicator } from './StatusIndicator';
 
 type Props = {
@@ -17,9 +16,6 @@ const beautifyStatus = (status: string) => status.split('_').join(' ');
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
 const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
-    const router = useRouter();
-    const { dev } = router.query;
-
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -72,7 +68,7 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
                     ))}
                 </select>
             </label>
-            {dev === 'true' && <StatusIndicator status={saveStatus} />}
+            <StatusIndicator status={saveStatus} />
         </div>
     );
 };

@@ -131,6 +131,26 @@ const PAGINATED_TASKS = {
       status: 'AVAILABLE',
       title: 'Implement user authentication and authorization',
       dependsOn: []
+    },
+    {
+      id: 'AB6Y1hVrS0zR5ZcVPwYZ',
+      percentCompleted: 100,
+      isNoteworthy: false,
+      createdBy: 'sahsi',
+      lossRate: {
+        dinero: 100,
+        neelam: 0
+      },
+      assignee: false,
+      type: 'feature',
+      priority: 'HIGH',
+      completionAward: {
+        dinero: 1000,
+        neelam: 0
+      },
+      status: 'DONE',
+      title: 'Depreciate task status AVAILABLE and COMPLETED',
+      dependsOn: []
     }
   ],
   prev: '/tasks?status=AVAILABLE&dev=true&size=5&prev=ARn1G8IxUt1zrfMdTyfn',
