@@ -40,6 +40,11 @@ $off-white: #f0f0f0;
         background-color: $theme-blue;
         color: $white;
     }
+    &:disabled {
+        color: #616161;
+        cursor: not-allowed;
+        background-color: $off-white;
+    }
 }
 
 .gitLink {

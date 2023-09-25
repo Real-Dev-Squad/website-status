@@ -70,6 +70,37 @@ const taskDetailsHandler = [
             })
         );
     }),
+    rest.get(`${URL}/tasks/6KhcLU3yr45dzjQIVm0l/details`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({
+                message: 'task returned successfully',
+                taskData: {
+                    id: '6KhcLU3yr45dzjQIVm0l',
+                    isNoteworthy: true,
+                    lossRate: {
+                        dinero: 0,
+                        neelam: 0,
+                    },
+                    endsOn: null,
+                    title: 'test 1 for drag and drop',
+                    status: 'available',
+                    assignee: null,
+                    links: ['null'],
+                    dependsOn: ['null'],
+                    percentCompleted: 0,
+                    type: 'feature',
+                    priority: 'high',
+                    featureUrl: 'https://www.sampleUrl.com',
+                    startedOn: null,
+                    completionAward: {
+                        neelam: 0,
+                        dinero: 110,
+                    },
+                },
+            })
+        );
+    }),
     rest.patch(`${URL}/tasks/:taskId`, (_, res, ctx) => {
         return res(ctx.status(204));
     }),

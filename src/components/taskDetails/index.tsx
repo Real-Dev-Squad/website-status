@@ -325,6 +325,12 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             data-testid="request-task-button"
                                             className={classNames.button}
                                             onClick={taskRequestHandle}
+                                            disabled={
+                                                !Object.is(
+                                                    taskDetailsData?.assignee,
+                                                    null
+                                                )
+                                            }
                                         >
                                             Request for task
                                         </button>
