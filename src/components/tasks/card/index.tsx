@@ -546,11 +546,9 @@ const Card: FC<CardProps> = ({
                         <p className={classNames.completionDate}>
                             {renderDate(fromNowEndsOn, isEditable)}
                         </p>
-                        {dev === 'true' && (
-                            <StatusIndicator
-                                status={editedTaskDetails.savingDate}
-                            />
-                        )}
+                        <StatusIndicator
+                            status={editedTaskDetails.savingDate}
+                        />
                     </div>
                     <span
                         className={classNames.cardSpecialFont}
