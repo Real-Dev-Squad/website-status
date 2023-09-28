@@ -8,7 +8,7 @@ type task = {
     type: string;
     links: string[];
     endsOn: number;
-    startedOn: string;
+    startedOn?: string;
     status: string;
     assignee?: string;
     percentCompleted: number;
