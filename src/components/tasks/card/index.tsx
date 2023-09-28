@@ -93,8 +93,17 @@ const Card: FC<CardProps> = ({
 
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
-    const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
-    const fromNowStartedOn = moment(localStartedOn).fromNow();
+    function getStartedOn() {
+        if (!cardDetails.startedOn) {
+            return 'N/A';
+        } else {
+            const localStartedOn = new Date(
+                parseInt(cardDetails.startedOn, 10) * 1000
+            );
+            const fromNowStartedOn = moment(localStartedOn).fromNow();
+            return fromNowStartedOn;
+        }
+    }
 
     const localEndsOn = new Date(cardDetails.endsOn * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
@@ -555,7 +564,7 @@ const Card: FC<CardProps> = ({
                     >
                         {cardDetails.status === TASK_STATUS.AVAILABLE
                             ? 'Not started'
-                            : `Started on ${fromNowStartedOn}`}
+                            : `Started ${getStartedOn()}`}
                     </span>
                 </div>
                 {/* EDIT task status */}
