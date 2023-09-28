@@ -500,4 +500,123 @@ describe('Task card', () => {
 
         expect(updateTaskSpy).toBeCalled();
     });
+
+    it('renders "Not started" if status is AVAILABLE', () => {
+        const DEFAULT_PROPS = {
+            content: {
+                id: 'firestoreDocumentId123',
+                lossRate: {
+                    dinero: 10,
+                    neelam: 5,
+                },
+                links: ['https://realdevsquad.com/learn-site'],
+                completionAward: {
+                    dinero: 110,
+                    neelam: 10,
+                },
+                dependsOn: [],
+                assignee: 'ankur',
+                startedOn: '1618790400',
+                isNoteworthy: true,
+                title: 'test 1 for drag and drop',
+                purpose: 'string',
+                percentCompleted: 0,
+                endsOn: 1618790400,
+                status: TASK_STATUS.AVAILABLE,
+                featureUrl: 'string',
+                type: 'feature',
+                createdBy: 'ankush',
+            },
+            shouldEdit: true,
+            onContentChange: jest.fn(),
+        };
+
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+        const spanElement = screen.getByTestId('started-on');
+        expect(spanElement).toHaveTextContent('Not started');
+    });
+
+    it('renders "Started" with a specific date if status is not AVAILABLE', () => {
+        const DEFAULT_PROPS = {
+            content: {
+                id: 'firestoreDocumentId123',
+                lossRate: {
+                    dinero: 10,
+                    neelam: 5,
+                },
+                links: ['https://realdevsquad.com/learn-site'],
+                completionAward: {
+                    dinero: 110,
+                    neelam: 10,
+                },
+                dependsOn: [],
+                assignee: 'ankur',
+                startedOn: '1618790400',
+                isNoteworthy: true,
+                title: 'test 1 for drag and drop',
+                purpose: 'string',
+                percentCompleted: 0,
+                endsOn: 1618790400,
+                status: TASK_STATUS.ASSIGNED,
+                featureUrl: 'string',
+                type: 'feature',
+                createdBy: 'ankush',
+            },
+            shouldEdit: true,
+            onContentChange: jest.fn(),
+        };
+
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+        const spanElement = screen.getByTestId('started-on');
+        expect(spanElement).toHaveTextContent('Started 2 years ago'); // Mocked date from moment
+    });
+
+    it('renders "N/A" if startedOn is not available', () => {
+        const DEFAULT_PROPS = {
+            content: {
+                id: 'firestoreDocumentId123',
+                lossRate: {
+                    dinero: 10,
+                    neelam: 5,
+                },
+                links: ['https://realdevsquad.com/learn-site'],
+                completionAward: {
+                    dinero: 110,
+                    neelam: 10,
+                },
+                dependsOn: [],
+                assignee: 'ankur',
+                isNoteworthy: true,
+                title: 'test 1 for drag and drop',
+                purpose: 'string',
+                percentCompleted: 0,
+                endsOn: 1618790400,
+                status: TASK_STATUS.ASSIGNED,
+                featureUrl: 'string',
+                type: 'feature',
+                createdBy: 'ankush',
+            },
+            shouldEdit: true,
+            onContentChange: jest.fn(),
+        };
+
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {}
+        );
+        const spanElement = screen.getByTestId('started-on');
+        expect(spanElement).toHaveTextContent('N/A');
+    });
 });

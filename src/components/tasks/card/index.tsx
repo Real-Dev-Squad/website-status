@@ -561,6 +561,7 @@ const Card: FC<CardProps> = ({
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
+                        data-testId="started-on"
                     >
                         {cardDetails.status === TASK_STATUS.AVAILABLE
                             ? 'Not started'
