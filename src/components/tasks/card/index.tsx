@@ -94,7 +94,7 @@ const Card: FC<CardProps> = ({
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
     function getStartedAgo() {
-        if (!cardDetails.startedOn) {
+        if (cardDetails.startedOn === undefined) {
             return 'N/A';
         } else {
             const localStartedOn = new Date(

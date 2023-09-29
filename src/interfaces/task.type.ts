@@ -8,7 +8,7 @@ type task = {
     type: string;
     links: string[];
     endsOn: number;
-    startedOn?: string;
+    startedOn: string;
     status: string;
     assignee?: string;
     percentCompleted: number;
@@ -59,7 +59,7 @@ export type ProgressBarProps = {
     progress: boolean;
     progressValue: number;
     percentCompleted: number;
-    startedOn: string | undefined;
+    startedOn: string;
     endsOn: string;
     handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     debounceSlider: (debounceTimeOut: number) => void;

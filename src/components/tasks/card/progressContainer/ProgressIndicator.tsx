@@ -16,7 +16,6 @@ const ProgressIndicator: FC<ProgressIndicatorProps> = ({
     );
     return (
         <div className={classNames.progressIndicator}>
-            {progressColor}
             <div
                 className={`
                 ${progressColor}
