@@ -158,6 +158,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     }
 
+    function getTaskEstimates(value: number | undefined) {
+        if (value === undefined) {
+            return 'N/A';
+        } else {
+            return convertTimeStamp(value);
+        }
+    }
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
     const { data: progressData } = useGetProgressDetailsQuery({
@@ -304,14 +312,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <Details
                                     detailType={'Started On'}
-                                    value={convertTimeStamp(
-                                        taskDetailsData?.startedOn ?? 0
+                                    value={getTaskEstimates(
+                                        taskDetailsData?.startedOn
                                     )}
                                 />
                                 <Details
                                     detailType={'Ends On'}
-                                    value={convertTimeStamp(
-                                        taskDetailsData?.endsOn ?? 0
+                                    value={getTaskEstimates(
+                                        taskDetailsData?.endsOn
                                     )}
                                 />
                             </TaskContainer>

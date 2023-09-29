@@ -59,7 +59,7 @@ export type ProgressBarProps = {
     progress: boolean;
     progressValue: number;
     percentCompleted: number;
-    startedOn: string;
+    startedOn: string | undefined;
     endsOn: string;
     handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     debounceSlider: (debounceTimeOut: number) => void;

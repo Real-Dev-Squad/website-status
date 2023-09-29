@@ -93,7 +93,7 @@ const Card: FC<CardProps> = ({
 
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
-    function getStartedOn() {
+    function getStartedAgo() {
         if (!cardDetails.startedOn) {
             return 'N/A';
         } else {
@@ -243,11 +243,6 @@ const Card: FC<CardProps> = ({
             assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
             status: 'ASSIGNED',
         };
-
-        // Update start date when assigning the task to the issue assignee
-        if (!cardDetails.startedOn) {
-            data.startedOn = new Date().getTime() / 1000;
-        }
 
         const response = updateTask({
             task: data,
@@ -561,11 +556,11 @@ const Card: FC<CardProps> = ({
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
-                        data-testId="started-on"
+                        data-testid="started-on"
                     >
                         {cardDetails.status === TASK_STATUS.AVAILABLE
                             ? 'Not started'
-                            : `Started ${getStartedOn()}`}
+                            : `Started ${getStartedAgo()}`}
                     </span>
                 </div>
                 {/* EDIT task status */}
