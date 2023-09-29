@@ -6,7 +6,7 @@ const ICON_SIZE = 25;
 
 type Props = {
     children?: ReactNode;
-    title: string;
+    title: ReactNode;
     hasImg: boolean;
     src?: string;
 };
@@ -15,7 +15,7 @@ const TaskContainer: FC<Props> = ({ children, title, hasImg, src = '' }) => {
     if (!hasImg) {
         return (
             <section className={classNames['details_section_parent_container']}>
-                <p className={classNames.sectionHeading}>{title}</p>
+                <div className={classNames.sectionHeading}>{title}</div>
                 {children}
             </section>
         );
