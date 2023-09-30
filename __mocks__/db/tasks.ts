@@ -30,56 +30,6 @@ const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
   id: TASK.id + index,
 }));
 
-const assignedTask: task = {
-      id: 'firestoreDocumentId123',
-      lossRate: {
-          dinero: 10,
-          neelam: 5,
-      },
-      links: ['https://realdevsquad.com/learn-site'],
-      completionAward: {
-          dinero: 110,
-          neelam: 10,
-      },
-      dependsOn: [],
-      assignee: 'ankur',
-      startedOn: '1618790400',
-      isNoteworthy: true,
-      title: 'test 1 for drag and drop',
-      purpose: 'string',
-      percentCompleted: 0,
-      endsOn: 1618790400,
-      status: TASK_STATUS.ASSIGNED,
-      featureUrl: 'string',
-      type: 'feature',
-      createdBy: 'ankush',
-  };
-
-  const availableTask: task = {
-    id: 'firestoreDocumentId123',
-    lossRate: {
-        dinero: 10,
-        neelam: 5,
-    },
-    links: ['https://realdevsquad.com/learn-site'],
-    completionAward: {
-        dinero: 110,
-        neelam: 10,
-    },
-    dependsOn: [],
-    assignee: 'ankur',
-    startedOn: '1618790400',
-    isNoteworthy: true,
-    title: 'test 1 for drag and drop',
-    purpose: 'string',
-    percentCompleted: 0,
-    endsOn: 1618790400,
-    status: TASK_STATUS.AVAILABLE,
-    featureUrl: 'string',
-    type: 'feature',
-    createdBy: 'ankush',
-};
-
 const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 
 const PAGINATED_TASKS = {
@@ -512,4 +462,4 @@ const CONTENT = [
 }
 ];
 
-export { tasks, assignedTask, availableTask, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, CONTENT };
+export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, CONTENT };
