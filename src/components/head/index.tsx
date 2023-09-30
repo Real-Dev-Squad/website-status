@@ -7,7 +7,7 @@ type CustomHeadProps = {
 
 const CustomHead: FC<CustomHeadProps> = ({ title }) => (
     <Head>
-        <title>{title} | Status Real Dev Squad</title>
+        <title>{`${title} | Status Real Dev Squad`}</title>
         <link rel="shortcut icon" href="RDSLogo.png" type="image/x-icon" />
     </Head>
 );

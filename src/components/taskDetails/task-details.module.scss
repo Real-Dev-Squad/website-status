@@ -70,6 +70,7 @@ $off-white: #f0f0f0;
 .sectionHeading {
     font-weight: bold;
     font-size: 1.2rem;
+    margin: 1.1rem 0;
 }
 
 .detailType {
@@ -120,7 +121,7 @@ $off-white: #f0f0f0;
 
 .details_container_with_header_image {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     gap: 0.5rem;
     padding-top: 0.5rem;
 }
