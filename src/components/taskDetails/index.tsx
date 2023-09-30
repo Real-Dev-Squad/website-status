@@ -312,15 +312,23 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <Details
                                     detailType={'Started On'}
-                                    value={getTaskEstimates(
+                                    value={
                                         taskDetailsData?.startedOn
-                                    )}
+                                            ? convertTimeStamp(
+                                                  taskDetailsData.startedOn
+                                              )
+                                            : 'N/A'
+                                    }
                                 />
                                 <Details
                                     detailType={'Ends On'}
-                                    value={getTaskEstimates(
+                                    value={
                                         taskDetailsData?.endsOn
-                                    )}
+                                            ? convertTimeStamp(
+                                                  taskDetailsData.endsOn
+                                              )
+                                            : 'TBD'
+                                    }
                                 />
                             </TaskContainer>
                             {isDevModeEnabled && (
