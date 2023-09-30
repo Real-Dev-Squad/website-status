@@ -594,6 +594,7 @@ const Card: FC<CardProps> = ({
                                   showSuggestion={showSuggestion}
                                   handleClick={handleClick}
                                   handleAssignment={handleAssignment}
+                                  setShowSuggestion={setShowSuggestion}
                                   ref={inputRef}
                               />
 

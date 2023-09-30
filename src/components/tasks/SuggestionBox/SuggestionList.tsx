@@ -8,18 +8,29 @@ import classNames from '@/components/tasks/SuggestionBox/suggestion.module.scss'
 const SuggestionList: FC<SuggestionListProps> = ({
     suggestions,
     onSelectAssignee,
+    setActiveIndex,
+    selected,
 }) => {
     const clickHandler = (e: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
-        onSelectAssignee(e.currentTarget.innerText);
+        const textContent = e.currentTarget.textContent;
+        if (textContent !== null) {
+            onSelectAssignee(textContent);
+        }
     };
 
     return (
         <ul className={classNames['suggestions']} data-testid="suggestions">
-            {suggestions.map((suggestion: GithubInfo) => {
+            {suggestions.map((suggestion: GithubInfo, index: number) => {
                 return (
                     <li
                         key={suggestion.github_id}
+                        className={
+                            index === selected
+                                ? classNames['suggestions-selected']
+                                : ''
+                        }
                         onClick={clickHandler}
+                        onMouseOver={() => setActiveIndex(index)}
                         data-testid="suggestion"
                     >
                         <span>{suggestion.github_id}</span>
