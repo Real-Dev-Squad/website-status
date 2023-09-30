@@ -1,3 +1,4 @@
+import { TASK_STATUS } from '@/interfaces/task-status';
 import task from '@/interfaces/task.type';
 
 const TASK = {
@@ -28,6 +29,57 @@ const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
   ...TASK,
   id: TASK.id + index,
 }));
+
+const assignedTask: task = {
+      id: 'firestoreDocumentId123',
+      lossRate: {
+          dinero: 10,
+          neelam: 5,
+      },
+      links: ['https://realdevsquad.com/learn-site'],
+      completionAward: {
+          dinero: 110,
+          neelam: 10,
+      },
+      dependsOn: [],
+      assignee: 'ankur',
+      startedOn: '1618790400',
+      isNoteworthy: true,
+      title: 'test 1 for drag and drop',
+      purpose: 'string',
+      percentCompleted: 0,
+      endsOn: 1618790400,
+      status: TASK_STATUS.ASSIGNED,
+      featureUrl: 'string',
+      type: 'feature',
+      createdBy: 'ankush',
+  };
+
+  const availableTask: task = {
+    id: 'firestoreDocumentId123',
+    lossRate: {
+        dinero: 10,
+        neelam: 5,
+    },
+    links: ['https://realdevsquad.com/learn-site'],
+    completionAward: {
+        dinero: 110,
+        neelam: 10,
+    },
+    dependsOn: [],
+    assignee: 'ankur',
+    startedOn: '1618790400',
+    isNoteworthy: true,
+    title: 'test 1 for drag and drop',
+    purpose: 'string',
+    percentCompleted: 0,
+    endsOn: 1618790400,
+    status: TASK_STATUS.AVAILABLE,
+    featureUrl: 'string',
+    type: 'feature',
+    createdBy: 'ankush',
+};
+
 const TaskDependencyIds = ['6KhcLU3yr45dzjQIVm0J', 'taskid-2'];
 
 const PAGINATED_TASKS = {
@@ -394,6 +446,70 @@ const CONTENT = [
             },
         },
     },
+    {
+      id: 'OxYqJgf6Tyl90uci1mzs`',
+      title: 'Evaluate availability panel feature',
+      purpose: 'Try out the feature created by Pavan',
+      featureUrl: 'https://dev.realdevsquad.com/task/create.html',
+      type: 'feature',
+      links: ['this-needs-to-be-fixed'],
+      endsOn: 1692988200000,
+      startedOn: '1618790400',
+      status: TASK_STATUS.ASSIGNED,
+      assignee: 'mahima',
+      percentCompleted: 0,
+      dependsOn: [],
+      participants: ['mahima'],
+      completionAward: { dinero: 100, neelam: 0 },
+      lossRate: { dinero: 0, neelam: 0 },
+      isNoteworthy: false,
+      createdBy: 'mahima',
+      github: {
+          issue: {
+              id: 1814970348,
+              assignee: 'mahima',
+              status: 'open',
+              closedAt: '1692988200000',
+              assigneeRdsInfo: {
+                  firstName: 'mahima',
+                  lastName: 'kumar',
+                  username: 'mahima',
+              },
+          },
+      },
+  },
+  {
+    id: 'OxYqJgf6Tyl90uci1mzs`',
+    title: 'Evaluate availability panel feature',
+    purpose: 'Try out the feature created by Pavan',
+    featureUrl: 'https://dev.realdevsquad.com/task/create.html',
+    type: 'feature',
+    links: ['this-needs-to-be-fixed'],
+    endsOn: 1692988200000,
+    startedOn: '1692580330711',
+    status: TASK_STATUS.AVAILABLE,
+    assignee: 'mahima',
+    percentCompleted: 0,
+    dependsOn: [],
+    participants: ['mahima'],
+    completionAward: { dinero: 100, neelam: 0 },
+    lossRate: { dinero: 0, neelam: 0 },
+    isNoteworthy: false,
+    createdBy: 'mahima',
+    github: {
+        issue: {
+            id: 1814970348,
+            assignee: 'mahima',
+            status: 'open',
+            closedAt: '1692988200000',
+            assigneeRdsInfo: {
+                firstName: 'mahima',
+                lastName: 'kumar',
+                username: 'mahima',
+            },
+        },
+    },
+}
 ];
 
-export { tasks, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, CONTENT };
+export { tasks, assignedTask, availableTask, TASK, TaskDependencyIds, PAGINATED_TASKS, NEXT_PAGINATED_TASKS, MINE_TASKS, CONTENT };

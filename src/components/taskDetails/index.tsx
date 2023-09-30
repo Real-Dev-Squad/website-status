@@ -158,12 +158,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     }
 
-    function getTaskEstimates(value: number | undefined) {
-        if (value === undefined) {
-            return 'N/A';
-        } else {
-            return convertTimeStamp(value);
-        }
+    function getTaskEstimates(timestamp: number | undefined) {
+        return timestamp ? convertTimeStamp(timestamp) : 'NA';
     }
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
@@ -312,23 +308,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <Details
                                     detailType={'Started On'}
-                                    value={
+                                    value={getTaskEstimates(
                                         taskDetailsData?.startedOn
-                                            ? convertTimeStamp(
-                                                  taskDetailsData.startedOn
-                                              )
-                                            : 'N/A'
-                                    }
+                                    )}
                                 />
                                 <Details
                                     detailType={'Ends On'}
-                                    value={
+                                    value={getTaskEstimates(
                                         taskDetailsData?.endsOn
-                                            ? convertTimeStamp(
-                                                  taskDetailsData.endsOn
-                                              )
-                                            : 'TBD'
-                                    }
+                                    )}
                                 />
                             </TaskContainer>
                             {isDevModeEnabled && (

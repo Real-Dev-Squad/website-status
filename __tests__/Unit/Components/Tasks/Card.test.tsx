@@ -11,6 +11,7 @@ import {
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
 import * as tasksApi from '@/app/services/tasksApi';
+import { CONTENT } from '../../../../__mocks__/db/tasks';
 
 const DEFAULT_PROPS = {
     content: {
@@ -502,38 +503,13 @@ describe('Task card', () => {
     });
 
     it('renders "Not started" if status is AVAILABLE', () => {
-        const DEFAULT_PROPS = {
-            content: {
-                id: 'firestoreDocumentId123',
-                lossRate: {
-                    dinero: 10,
-                    neelam: 5,
-                },
-                links: ['https://realdevsquad.com/learn-site'],
-                completionAward: {
-                    dinero: 110,
-                    neelam: 10,
-                },
-                dependsOn: [],
-                assignee: 'ankur',
-                startedOn: '1618790400',
-                isNoteworthy: true,
-                title: 'test 1 for drag and drop',
-                purpose: 'string',
-                percentCompleted: 0,
-                endsOn: 1618790400,
-                status: TASK_STATUS.AVAILABLE,
-                featureUrl: 'string',
-                type: 'feature',
-                createdBy: 'ankush',
-            },
-            shouldEdit: true,
-            onContentChange: jest.fn(),
-        };
-
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
-                <Card {...DEFAULT_PROPS} />
+                <Card
+                    content={CONTENT[3]}
+                    shouldEdit={true}
+                    onContentChange={jest.fn()}
+                />
             </Provider>,
             {}
         );
@@ -542,38 +518,13 @@ describe('Task card', () => {
     });
 
     it('renders "Started" with a specific date if status is not AVAILABLE', () => {
-        const DEFAULT_PROPS = {
-            content: {
-                id: 'firestoreDocumentId123',
-                lossRate: {
-                    dinero: 10,
-                    neelam: 5,
-                },
-                links: ['https://realdevsquad.com/learn-site'],
-                completionAward: {
-                    dinero: 110,
-                    neelam: 10,
-                },
-                dependsOn: [],
-                assignee: 'ankur',
-                startedOn: '1618790400',
-                isNoteworthy: true,
-                title: 'test 1 for drag and drop',
-                purpose: 'string',
-                percentCompleted: 0,
-                endsOn: 1618790400,
-                status: TASK_STATUS.ASSIGNED,
-                featureUrl: 'string',
-                type: 'feature',
-                createdBy: 'ankush',
-            },
-            shouldEdit: true,
-            onContentChange: jest.fn(),
-        };
-
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
-                <Card {...DEFAULT_PROPS} />
+                <Card
+                    content={CONTENT[2]}
+                    shouldEdit={true}
+                    onContentChange={jest.fn()}
+                />
             </Provider>,
             {}
         );
