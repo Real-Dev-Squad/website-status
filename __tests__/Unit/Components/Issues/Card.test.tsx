@@ -44,7 +44,7 @@ describe('Issue card', () => {
         expect(
             screen.getByText(issuesResponseSearchedWithQuery[0].html_url)
         ).toBeInTheDocument();
-        expect(screen.getByRole('button')).toHaveTextContent('Convert to task');
+        expect(screen.getByRole('button')).toHaveTextContent('Assign Task');
     });
 
     test('Should render issue created by information correctly', () => {
@@ -117,10 +117,7 @@ describe('Issue card', () => {
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card issue={issuesResponseSearchedWithQuery[0]} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         expect(screen.getByRole('button')).toHaveTextContent('Assign Task');
     });

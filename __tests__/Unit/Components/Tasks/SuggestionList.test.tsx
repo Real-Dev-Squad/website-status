@@ -5,11 +5,14 @@ import gitInfo from '../../../../__mocks__/db/githubUser';
 
 describe('SuggestionList', () => {
     const onSelectAssignee = jest.fn();
+    const setActiveIndex = jest.fn();
     it('should render github username and profile picture of the user', () => {
         render(
             <SuggestionList
                 suggestions={gitInfo}
                 onSelectAssignee={onSelectAssignee}
+                setActiveIndex={setActiveIndex}
+                selected={0}
             />
         );
 

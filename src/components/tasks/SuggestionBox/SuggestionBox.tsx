@@ -5,12 +5,16 @@ import UserNotFound from './UserNotFound';
 
 const SuggestionBox: FC<SuggestionBoxProps> = ({
     onSelectAssignee,
+    setActiveIndex,
     suggestions,
+    selected,
 }) => {
     let renderComponent = (
         <SuggestionList
             suggestions={suggestions}
             onSelectAssignee={onSelectAssignee}
+            setActiveIndex={setActiveIndex}
+            selected={selected}
         />
     );
 
