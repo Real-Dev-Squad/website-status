@@ -9,7 +9,7 @@ import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { Loader } from '../tasks/card/Loader';
-import SuggestionBox from '../tasks/SuggestionBox/SuggestionBox';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
 import { useGetAllUsersByUsernameQuery } from '@/app/services/usersApi';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
@@ -117,28 +117,29 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                 Assign Task
             </button>
             <br />
-            <input
-                className={styles.assign}
-                type="text"
-                placeholder="Assignee"
-                value={state.assignee}
-                onChange={(e) => {
-                    setShowSuggestion(true);
-                    dispatch({
-                        type: 'assignee',
-                        value: e.target.value,
-                    });
-                }}
-                disabled={isAssigned}
-            />
-            {showSuggestion && (
-                <div className={styles.suggestions_container}>
-                    <SuggestionBox
-                        suggestions={suggestedUsers}
-                        onSelectAssignee={handleAssignment}
-                    />
-                </div>
-            )}
+
+            <div
+                className={
+                    isAssigned
+                        ? styles.suggestions_container_disabled
+                        : styles.suggestions_container
+                }
+            >
+                <Suggestions
+                    assigneeName={state.assignee}
+                    showSuggestion={showSuggestion}
+                    handleClick={handleAssignment}
+                    handleAssignment={(e) => {
+                        setShowSuggestion(true);
+                        dispatch({
+                            type: 'assignee',
+                            value: e.target.value,
+                        });
+                    }}
+                    setShowSuggestion={setShowSuggestion}
+                />
+            </div>
+
             {!isAssigned && (
                 <>
                     <label htmlFor="ends-on" className={styles.assign_label}>
