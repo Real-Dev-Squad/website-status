@@ -3,15 +3,14 @@ import { tabToUrlParams } from './getActiveTab';
 
 export function extractQueryParams(queryParam: string) {
     const queryParamsArray = queryParam?.split(' ');
-
     let isValue = '';
-    let assigneeValue = '';
+    const assigneeValues: string[] = [];
     let titleValue = '';
 
     if (!queryParamsArray) {
         return {
             status: isValue,
-            assignee: assigneeValue,
+            assignees: assigneeValues,
             title: titleValue,
         };
     }
@@ -21,7 +20,7 @@ export function extractQueryParams(queryParam: string) {
         if (param.startsWith('status:')) {
             isValue = param.replace('status:', '');
         } else if (param.startsWith('assignee:')) {
-            assigneeValue = param.replace('assignee:', '');
+            assigneeValues.push(param.replace('assignee:', ''));
         } else {
             titleValue += param + ' ';
         }
@@ -31,7 +30,7 @@ export function extractQueryParams(queryParam: string) {
 
     return {
         status: isValue,
-        assignee: assigneeValue,
+        assignees: assigneeValues,
         title: titleValue,
     };
 }
