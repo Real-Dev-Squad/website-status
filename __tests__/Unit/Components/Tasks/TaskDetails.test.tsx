@@ -194,6 +194,18 @@ describe('TaskDetails Page', () => {
             expect(getByText('3/30/2021, 12:00:00 AM')).toBeInTheDocument();
         });
     });
+
+    it('Renders N/A when started on is undefined', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Details detailType={'StartedOn'} value={undefined} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('N/A')).toBeInTheDocument();
+        });
+    });
+
     it('Renders Task Ends-on Date', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>

@@ -93,8 +93,17 @@ const Card: FC<CardProps> = ({
 
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
-    const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
-    const fromNowStartedOn = moment(localStartedOn).fromNow();
+    function getStartedAgo() {
+        if (cardDetails.startedOn === undefined) {
+            return 'N/A';
+        } else {
+            const localStartedOn = new Date(
+                parseInt(cardDetails.startedOn, 10) * 1000
+            );
+            const fromNowStartedOn = moment(localStartedOn).fromNow();
+            return fromNowStartedOn;
+        }
+    }
 
     const localEndsOn = new Date(cardDetails.endsOn * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
@@ -234,11 +243,6 @@ const Card: FC<CardProps> = ({
             assignee: cardDetails.github?.issue.assigneeRdsInfo?.username,
             status: 'ASSIGNED',
         };
-
-        // Update start date when assigning the task to the issue assignee
-        if (!cardDetails.startedOn) {
-            data.startedOn = new Date().getTime() / 1000;
-        }
 
         const response = updateTask({
             task: data,
@@ -552,10 +556,11 @@ const Card: FC<CardProps> = ({
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
                         tabIndex={0}
+                        data-testid="started-on"
                     >
                         {cardDetails.status === TASK_STATUS.AVAILABLE
                             ? 'Not started'
-                            : `Started on ${fromNowStartedOn}`}
+                            : `Started ${getStartedAgo()}`}
                     </span>
                 </div>
                 {/* EDIT task status */}
@@ -589,6 +594,7 @@ const Card: FC<CardProps> = ({
                                   showSuggestion={showSuggestion}
                                   handleClick={handleClick}
                                   handleAssignment={handleAssignment}
+                                  setShowSuggestion={setShowSuggestion}
                                   ref={inputRef}
                               />
 
