@@ -17,6 +17,15 @@ describe('extractQueryParams', () => {
         expect(result.title).toBe('Develop feature');
     });
 
+    it('should extract status, multiple assignees, and title from query param', () => {
+        const queryParam =
+            'status:in-progress assignee:sunny-s assignee:ajoy-kumar Develop feature';
+        const result = extractQueryParams(queryParam);
+        expect(result.status).toBe('in-progress');
+        expect(result.assignees).toEqual(['sunny-s', 'ajoy-kumar']);
+        expect(result.title).toBe('Develop feature');
+    });
+
     it('should handle missing query param gracefully', () => {
         const queryParam = '';
         const result = extractQueryParams(queryParam);
