@@ -36,6 +36,18 @@ export function extractQueryParams(queryParam: string) {
 }
 
 export const getQueryParamTab = (tab: Tab) => `status:${tabToUrlParams(tab)}`;
-export const getQueryParamAssignee = (assignee: string) =>
-    `assignee:${assignee}`;
+export const getAPIQueryParamAssignee = (assignees: string[]) => {
+    if (assignees.length === 0) return '';
+    const apiqueryParamAssignee = assignees.join(',');
+    return apiqueryParamAssignee;
+};
+export const getRouterQueryParamAssignee = (assignees: string[]) => {
+    if (assignees.length === 0) return '';
+    let routerqueryParamAssignee = '';
+    assignees.forEach((assignee, index) => {
+        if (index > 0) routerqueryParamAssignee += ` assignee:${assignee}`;
+        else routerqueryParamAssignee += `assignee:${assignee}`;
+    });
+    return routerqueryParamAssignee;
+};
 export const getQueryParamTitle = (title: string) => title;
