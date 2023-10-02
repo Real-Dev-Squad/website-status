@@ -126,7 +126,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 </div>
             </div>
             <div className={styles.actions}>
-                {(!taskExists || !isUserAuthorized || !devMode) && (
+                {(!taskExists || !isUserAuthorized) && (
                     <button
                         className={styles.card__top__button}
                         disabled={taskExists || isLoading || !isUserAuthorized}
@@ -135,7 +135,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                         Convert to task
                     </button>
                 )}
-                {isUserAuthorized && taskExists && devMode && (
+                {isUserAuthorized && taskExists && (
                     <ActionForm taskId={taskId || ''} />
                 )}
             </div>

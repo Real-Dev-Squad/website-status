@@ -11,6 +11,7 @@ import {
 import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
 import * as tasksApi from '@/app/services/tasksApi';
+import { CONTENT } from '../../../../__mocks__/db/tasks';
 
 const DEFAULT_PROPS = {
     content: {
@@ -499,5 +500,35 @@ describe('Task card', () => {
         jest.runAllTimers();
 
         expect(updateTaskSpy).toBeCalled();
+    });
+
+    it('renders "Not started" if status is AVAILABLE', () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card
+                    content={CONTENT[3]}
+                    shouldEdit={true}
+                    onContentChange={jest.fn()}
+                />
+            </Provider>,
+            {}
+        );
+        const spanElement = screen.getByTestId('started-on');
+        expect(spanElement).toHaveTextContent('Not started');
+    });
+
+    it('renders "Started" with a specific date if status is not AVAILABLE', () => {
+        const { getByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Card
+                    content={CONTENT[2]}
+                    shouldEdit={true}
+                    onContentChange={jest.fn()}
+                />
+            </Provider>,
+            {}
+        );
+        const spanElement = screen.getByTestId('started-on');
+        expect(spanElement).toHaveTextContent('Started 2 years ago'); // Mocked date from moment
     });
 });

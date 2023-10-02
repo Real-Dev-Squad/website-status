@@ -29,6 +29,7 @@ $card-text: #78716c;
     display: flex;
     flex-direction: column;
     width: 20%;
+    padding: 12px 4px;
     @media (max-width: 64rem) {
         flex-direction: row;
         width: 100%;
@@ -56,8 +57,12 @@ $card-text: #78716c;
 
 .suggestions_container {
     position: relative;
-    top: -20%;
-    left: 10%;
+    display: inline-block;
+}
+
+.suggestions_container_disabled {
+    pointer-events: none;
+    color: #a9a9a9;
 }
 
 .card__top__details__button {
@@ -80,7 +85,6 @@ $card-text: #78716c;
 .card__top__button {
     @include styles.issues-button;
     min-width: 9rem;
-    margin-left: 0.5rem;
 
     @media (max-width: 48rem) {
         margin-top: 1rem;
@@ -172,5 +176,6 @@ $card-text: #78716c;
     code,
     pre {
         font-family: consolas, monospace;
+        white-space: normal;
     }
 }
