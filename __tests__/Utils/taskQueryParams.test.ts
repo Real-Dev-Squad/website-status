@@ -57,6 +57,19 @@ describe('getAPIQueryParamAssignee', () => {
     });
 });
 
+describe('getRouterQueryParamAssignee', () => {
+    it('should generate a router query param for an assignee', () => {
+        const assignee = ['sunny-s'];
+        const result = getRouterQueryParamAssignee(assignee);
+        expect(result).toBe('assignee:sunny-s');
+    });
+    it('should generate a router query param for multiple assignees', () => {
+        const assignee = ['sunny-s', 'ajoy-kumar'];
+        const result = getRouterQueryParamAssignee(assignee);
+        expect(result).toBe('assignee:sunny-s assignee:ajoy-kumar');
+    });
+});
+
 describe('getQueryParamTitle', () => {
     it('should generate a query param for a title', () => {
         const title = 'Develop feature';
