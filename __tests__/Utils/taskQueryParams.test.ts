@@ -13,7 +13,7 @@ describe('extractQueryParams', () => {
             'status:in-progress assignee:sunny-s Develop feature';
         const result = extractQueryParams(queryParam);
         expect(result.status).toBe('in-progress');
-        expect(result.assignee).toBe('sunny-s');
+        expect(result.assignees).toEqual(['sunny-s']);
         expect(result.title).toBe('Develop feature');
     });
 
@@ -21,7 +21,7 @@ describe('extractQueryParams', () => {
         const queryParam = '';
         const result = extractQueryParams(queryParam);
         expect(result.status).toBe('');
-        expect(result.assignee).toBe('');
+        expect(result.assignees).toEqual([]);
         expect(result.title).toBe('');
     });
 });
