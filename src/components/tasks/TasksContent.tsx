@@ -14,7 +14,8 @@ import { getActiveTab } from '@/utils/getActiveTab';
 import {
     extractQueryParams,
     getQueryParamTab,
-    getQueryParamAssignee,
+    getAPIQueryParamAssignee,
+    getRouterQueryParamAssignee,
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
@@ -29,8 +30,11 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const extractedValues = extractQueryParams(qQueryParam);
     const selectedTab = getActiveTab(extractedValues.status);
     const [queryTitle, setQueryTitle] = useState<string>(extractedValues.title);
-    const [queryAssignee, setQueryAssignee] = useState<string>(
-        extractedValues.assignee
+    const [queryAssignees, setQueryAssignees] = useState<string[]>(
+        extractedValues.assignees
+    );
+    const [apiQueryAssignees, setApiQueryAssignees] = useState<string>(
+        getAPIQueryParamAssignee(queryAssignees)
     );
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
@@ -50,7 +54,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
         `${getQueryParamTab(selectedTab)} ${
-            queryAssignee ? getQueryParamAssignee(queryAssignee) : ''
+            queryAssignees ? getRouterQueryParamAssignee(queryAssignees) : ''
         } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
     );
 
@@ -61,7 +65,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         isFetching,
     } = useGetAllTasksQuery({
         status: selectedTab,
-        assignee: queryAssignee,
+        assignee: apiQueryAssignees,
         title: queryTitle,
         nextTasks,
     });
@@ -71,9 +75,9 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             setNextTasks(tasksData.next);
         }
     };
-    const onSelect = (tab: Tab, assignee?: string, title?: string) => {
+    const onSelect = (tab: Tab, assignees?: string[], title?: string) => {
         const queryParamValue = `${getQueryParamTab(tab)} ${
-            assignee ? getQueryParamAssignee(assignee) : ''
+            assignees ? getRouterQueryParamAssignee(assignees) : ''
         } ${title ? getQueryParamTitle(title) : ''}`.trim();
         router.push({
             query: {
@@ -87,10 +91,12 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     useEffect(() => {
         setInputValue(
             `${getQueryParamTab(selectedTab)} ${
-                queryAssignee ? getQueryParamAssignee(queryAssignee) : ''
+                queryAssignees
+                    ? getRouterQueryParamAssignee(queryAssignees)
+                    : ''
             } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
         );
-    }, [selectedTab, queryAssignee, queryTitle]);
+    }, [selectedTab, queryAssignees, queryTitle]);
 
     useEffect(() => {
         if (tasksData.tasks && tasksData.tasks.length && !isFetching) {
@@ -108,6 +114,27 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         }
     }, [tasksData.tasks, selectedTab]);
 
+    useEffect(() => {
+        setQueryAssignees(extractedValues.assignees);
+        setApiQueryAssignees(
+            getAPIQueryParamAssignee(extractedValues.assignees)
+        );
+        setLoadedTasks({
+            ALL: [],
+            IN_PROGRESS: [],
+            ASSIGNED: [],
+            AVAILABLE: [],
+            UNASSIGNED: [],
+            NEEDS_REVIEW: [],
+            IN_REVIEW: [],
+            VERIFIED: [],
+            MERGED: [],
+            COMPLETED: [],
+            OVERDUE: [],
+            DONE: [],
+        });
+    }, [router.query]);
+
     useIntersection({
         loadingRef,
         onLoadMore: fetchMoreTasks,
@@ -124,9 +151,10 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     }));
 
     const searchButtonHandler = () => {
-        const { status, assignee, title } = extractQueryParams(inputValue);
+        const { status, assignees, title } = extractQueryParams(inputValue);
         setQueryTitle(title);
-        setQueryAssignee(assignee);
+        setQueryAssignees(assignees);
+        setApiQueryAssignees(getAPIQueryParamAssignee(queryAssignees));
         setLoadedTasks({
             ALL: [],
             IN_PROGRESS: [],
@@ -141,7 +169,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             OVERDUE: [],
             DONE: [],
         });
-        inputValue && onSelect(status as Tab, assignee, title);
+        inputValue && onSelect(status as Tab, assignees, title);
     };
 
     const searchInputHandler = (value: string) => {
@@ -153,7 +181,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             <TaskSearch
                 dev={dev}
                 onSelect={(selectedTab: Tab) =>
-                    onSelect(selectedTab, queryAssignee, queryTitle)
+                    onSelect(selectedTab, queryAssignees, queryTitle)
                 }
                 inputValue={inputValue}
                 activeTab={selectedTab}
@@ -167,7 +195,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 <TabSection
                     dev={dev}
                     onSelect={(status: Tab) =>
-                        onSelect(status, queryAssignee, queryTitle)
+                        onSelect(status, queryAssignees, queryTitle)
                     }
                     activeTab={selectedTab}
                 />
@@ -186,7 +214,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                         if (selectedTaskStatus) {
                             onSelect(
                                 selectedTaskStatus.value as Tab,
-                                queryAssignee,
+                                queryAssignees,
                                 queryTitle
                             );
                         }
