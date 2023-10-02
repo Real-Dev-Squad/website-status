@@ -321,10 +321,7 @@ describe('TaskDetails Page', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         let progressUpdatesSection;
         await waitFor(() => {
@@ -340,10 +337,7 @@ describe('TaskDetails Page', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         let progressUpdatesSection;
         await waitFor(() => {
@@ -407,12 +401,12 @@ describe('Textarea with functionalities', () => {
 });
 
 describe('Update Progress button', () => {
-    it('renders the Update Progress button when ?dev=true query parameter is present', async () => {
+    it('renders the Update Progress button', async () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
             </Provider>,
-            { query: { dev: 'true' }, push: mockNavigateToUpdateProgressPage }
+            { push: mockNavigateToUpdateProgressPage }
         );
 
         await waitFor(() => {
@@ -425,16 +419,6 @@ describe('Update Progress button', () => {
                 '/progress/6KhcLU3yr45dzjQIVm0J?dev=true'
             );
         });
-    });
-
-    it('Should not render the Update Progress button when ?dev=true query parameter is absent', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        const updateProgressButton = screen.queryByText('Update Progress');
-        expect(updateProgressButton).not.toBeInTheDocument();
     });
 
     it('renders the Request for Task button when ?dev=true query parameter is present', async () => {
