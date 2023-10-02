@@ -1,7 +1,8 @@
 import {
     extractQueryParams,
     getQueryParamTab,
-    getQueryParamAssignee,
+    getAPIQueryParamAssignee,
+    getRouterQueryParamAssignee,
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
@@ -43,11 +44,16 @@ describe('getQueryParamTab', () => {
     });
 });
 
-describe('getQueryParamAssignee', () => {
-    it('should generate a query param for an assignee', () => {
-        const assignee = 'sunny-s';
-        const result = getQueryParamAssignee(assignee);
-        expect(result).toBe('assignee:sunny-s');
+describe('getAPIQueryParamAssignee', () => {
+    it('should generate a api query param for an assignee', () => {
+        const assignee = ['sunny-s'];
+        const result = getAPIQueryParamAssignee(assignee);
+        expect(result).toBe('sunny-s');
+    });
+    it('should generate a api query param for multiple assignees', () => {
+        const assignee = ['sunny-s', 'ajoy-kumar'];
+        const result = getAPIQueryParamAssignee(assignee);
+        expect(result).toBe('sunny-s,ajoy-kumar');
     });
 });
 
