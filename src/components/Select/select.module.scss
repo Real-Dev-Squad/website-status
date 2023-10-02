@@ -16,6 +16,9 @@ $border-color: #d4d4d5;
     border-radius: 0.25em;
     outline: none;
     margin: auto;
+    @media (max-width: 368px) {
+        width: 90%;
+    }
 }
 
 .container:focus {

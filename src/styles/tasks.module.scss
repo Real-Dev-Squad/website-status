@@ -39,7 +39,7 @@ $disabledColor: gray;
 
 .status-tabs-container {
     display: block;
-    @media (max-width: 450px) {
+    @media (max-width: 600px) {
         display: none;
     }
 }
@@ -47,7 +47,7 @@ $disabledColor: gray;
 .status-select-container {
     display: none;
     padding: 1rem;
-    @media (max-width: 450px) {
+    @media (max-width: 600px) {
         display: block;
     }
 }
