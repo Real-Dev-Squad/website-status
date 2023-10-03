@@ -7,6 +7,7 @@ import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
+import { emptyTasksData } from '@/constants/tasks';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
@@ -37,20 +38,8 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         getAPIQueryParamAssignee(queryAssignees)
     );
     const [nextTasks, setNextTasks] = useState<string>('');
-    const [loadedTasks, setLoadedTasks] = useState<TabTasksData>({
-        ALL: [],
-        IN_PROGRESS: [],
-        ASSIGNED: [],
-        AVAILABLE: [],
-        UNASSIGNED: [],
-        NEEDS_REVIEW: [],
-        IN_REVIEW: [],
-        VERIFIED: [],
-        MERGED: [],
-        COMPLETED: [],
-        OVERDUE: [],
-        DONE: [],
-    });
+    const [loadedTasks, setLoadedTasks] =
+        useState<TabTasksData>(emptyTasksData);
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
         `${getQueryParamTab(selectedTab)} ${
@@ -119,20 +108,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setApiQueryAssignees(
             getAPIQueryParamAssignee(extractedValues.assignees)
         );
-        setLoadedTasks({
-            ALL: [],
-            IN_PROGRESS: [],
-            ASSIGNED: [],
-            AVAILABLE: [],
-            UNASSIGNED: [],
-            NEEDS_REVIEW: [],
-            IN_REVIEW: [],
-            VERIFIED: [],
-            MERGED: [],
-            COMPLETED: [],
-            OVERDUE: [],
-            DONE: [],
-        });
+        setLoadedTasks(emptyTasksData);
     }, [router.query]);
 
     useIntersection({
@@ -155,20 +131,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setQueryTitle(title);
         setQueryAssignees(assignees);
         setApiQueryAssignees(getAPIQueryParamAssignee(queryAssignees));
-        setLoadedTasks({
-            ALL: [],
-            IN_PROGRESS: [],
-            ASSIGNED: [],
-            AVAILABLE: [],
-            UNASSIGNED: [],
-            NEEDS_REVIEW: [],
-            IN_REVIEW: [],
-            VERIFIED: [],
-            MERGED: [],
-            COMPLETED: [],
-            OVERDUE: [],
-            DONE: [],
-        });
+        setLoadedTasks(emptyTasksData);
         inputValue && onSelect(status as Tab, assignees, title);
     };
 
