@@ -1,4 +1,4 @@
-export const emptyTasksData = {
+export const EMPTY_TASKS_DATA = {
     ALL: [],
     IN_PROGRESS: [],
     ASSIGNED: [],

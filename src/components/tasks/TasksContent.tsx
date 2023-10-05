@@ -7,7 +7,7 @@ import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
-import { emptyTasksData } from '@/constants/tasks';
+import { EMPTY_TASKS_DATA } from '@/constants/tasks';
 import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
@@ -28,18 +28,17 @@ import TaskSearch from './TaskSearch/TaskSearch';
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
     const qQueryParam = router.query.q as string;
-    const extractedValues = extractQueryParams(qQueryParam);
-    const selectedTab = getActiveTab(extractedValues.status);
-    const [queryTitle, setQueryTitle] = useState<string>(extractedValues.title);
-    const [queryAssignees, setQueryAssignees] = useState<string[]>(
-        extractedValues.assignees
-    );
-    const [apiQueryAssignees, setApiQueryAssignees] = useState<string>(
-        getAPIQueryParamAssignee(queryAssignees)
-    );
+    const {
+        status: taskStatus,
+        assignees: queryAssignees,
+        title: queryTitle,
+    } = extractQueryParams(qQueryParam);
+    const selectedTab = getActiveTab(taskStatus);
+    const apiQueryAssignees = getAPIQueryParamAssignee(queryAssignees);
+
     const [nextTasks, setNextTasks] = useState<string>('');
     const [loadedTasks, setLoadedTasks] =
-        useState<TabTasksData>(emptyTasksData);
+        useState<TabTasksData>(EMPTY_TASKS_DATA);
     const loadingRef = useRef<ElementRef<'div'>>(null);
     const [inputValue, setInputValue] = useState<string>(
         `${getQueryParamTab(selectedTab)} ${
@@ -64,6 +63,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             setNextTasks(tasksData.next);
         }
     };
+
     const onSelect = (tab: Tab, assignees?: string[], title?: string) => {
         const queryParamValue = `${getQueryParamTab(tab)} ${
             assignees ? getRouterQueryParamAssignee(assignees) : ''
@@ -77,6 +77,15 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setNextTasks('');
     };
 
+    const searchInputHandler = (value: string) => {
+        setInputValue(value);
+    };
+
+    const searchButtonHandler = () => {
+        const { status, assignees, title } = extractQueryParams(inputValue);
+        inputValue && onSelect(status as Tab, assignees, title);
+    };
+
     useEffect(() => {
         setInputValue(
             `${getQueryParamTab(selectedTab)} ${
@@ -85,7 +94,11 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                     : ''
             } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
         );
-    }, [selectedTab, queryAssignees, queryTitle]);
+    }, [selectedTab]);
+
+    useEffect(() => {
+        setLoadedTasks(EMPTY_TASKS_DATA);
+    }, [router.query]);
 
     useEffect(() => {
         if (tasksData.tasks && tasksData.tasks.length && !isFetching) {
@@ -103,41 +116,20 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         }
     }, [tasksData.tasks, selectedTab]);
 
-    useEffect(() => {
-        setQueryAssignees(extractedValues.assignees);
-        setApiQueryAssignees(
-            getAPIQueryParamAssignee(extractedValues.assignees)
-        );
-        setLoadedTasks(emptyTasksData);
-    }, [router.query]);
-
     useIntersection({
         loadingRef,
         onLoadMore: fetchMoreTasks,
         earlyReturn: loadedTasks[selectedTab].length === 0,
     });
 
-    if (isLoading) return <p>Loading...</p>;
-
-    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
-
     const taskSelectOptions = TABS.map((item) => ({
         label: getChangedStatusName(item),
         value: item,
     }));
 
-    const searchButtonHandler = () => {
-        const { status, assignees, title } = extractQueryParams(inputValue);
-        setQueryTitle(title);
-        setQueryAssignees(assignees);
-        setApiQueryAssignees(getAPIQueryParamAssignee(queryAssignees));
-        setLoadedTasks(emptyTasksData);
-        inputValue && onSelect(status as Tab, assignees, title);
-    };
+    if (isLoading) return <p>Loading...</p>;
 
-    const searchInputHandler = (value: string) => {
-        setInputValue(value);
-    };
+    if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
     return (
         <div className={classNames.tasksContainer}>
