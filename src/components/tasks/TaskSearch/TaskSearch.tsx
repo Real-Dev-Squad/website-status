@@ -57,6 +57,7 @@ const TaskSearch = ({
                     value={inputValue}
                     onChange={(e) => onInputChange(e.target.value)}
                     onKeyDown={handleKeyPress}
+                    spellCheck="false"
                 />
             </div>
             <div className={className['search-button-container']}>
