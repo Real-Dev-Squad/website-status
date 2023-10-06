@@ -7,7 +7,6 @@ import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
-import { TabSection } from './TabSection';
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
 import { getActiveTab } from '@/utils/getActiveTab';
@@ -18,7 +17,6 @@ import {
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
-import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
@@ -160,40 +158,6 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 onInputChange={(value) => searchInputHandler(value)}
                 onClickSearchButton={searchButtonHandler}
             />
-            <div
-                className={classNames['status-tabs-container']}
-                data-testid="status-tabs-container"
-            >
-                <TabSection
-                    dev={dev}
-                    onSelect={(status: Tab) =>
-                        onSelect(status, queryAssignee, queryTitle)
-                    }
-                    activeTab={selectedTab}
-                />
-            </div>
-            <div
-                className={classNames['status-select-container']}
-                data-testid="status-select-container"
-            >
-                <Select
-                    dev={dev}
-                    value={{
-                        label: getChangedStatusName(selectedTab),
-                        value: selectedTab,
-                    }}
-                    onChange={(selectedTaskStatus) => {
-                        if (selectedTaskStatus) {
-                            onSelect(
-                                selectedTaskStatus.value as Tab,
-                                queryAssignee,
-                                queryTitle
-                            );
-                        }
-                    }}
-                    options={taskSelectOptions}
-                />
-            </div>
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
