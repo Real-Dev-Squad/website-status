@@ -64,7 +64,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         }
     };
 
-    const onSelect = (tab: Tab, assignees?: string[], title?: string) => {
+    const searchNewTasks = (tab: Tab, assignees?: string[], title?: string) => {
         const queryParamValue = `${getQueryParamTab(tab)} ${
             assignees ? getRouterQueryParamAssignee(assignees) : ''
         } ${title ? getQueryParamTitle(title) : ''}`.trim();
@@ -83,7 +83,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
 
     const searchButtonHandler = () => {
         const { status, assignees, title } = extractQueryParams(inputValue);
-        inputValue && onSelect(status as Tab, assignees, title);
+        inputValue && searchNewTasks(status as Tab, assignees, title);
     };
 
     useEffect(() => {
@@ -136,7 +136,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             <TaskSearch
                 dev={dev}
                 onSelect={(selectedTab: Tab) =>
-                    onSelect(selectedTab, queryAssignees, queryTitle)
+                    searchNewTasks(selectedTab, queryAssignees, queryTitle)
                 }
                 inputValue={inputValue}
                 activeTab={selectedTab}
@@ -150,7 +150,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 <TabSection
                     dev={dev}
                     onSelect={(status: Tab) =>
-                        onSelect(status, queryAssignees, queryTitle)
+                        searchNewTasks(status, queryAssignees, queryTitle)
                     }
                     activeTab={selectedTab}
                 />
@@ -167,7 +167,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                     }}
                     onChange={(selectedTaskStatus) => {
                         if (selectedTaskStatus) {
-                            onSelect(
+                            searchNewTasks(
                                 selectedTaskStatus.value as Tab,
                                 queryAssignees,
                                 queryTitle
