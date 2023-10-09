@@ -7,7 +7,8 @@ import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
-import { EMPTY_TASKS_DATA } from '@/constants/task';
+import { EMPTY_TASKS_DATA } from '@/constants/tasks';
+
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
 import { getActiveTab } from '@/utils/getActiveTab';
@@ -135,6 +136,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 onInputChange={(value) => searchInputHandler(value)}
                 onClickSearchButton={searchButtonHandler}
             />
+
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
