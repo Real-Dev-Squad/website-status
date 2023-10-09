@@ -81,7 +81,6 @@ describe('tasks content', () => {
             </Provider>,
             { push: mockPushFunction }
         );
-        console.log('check:', screen.debug());
 
         const searchButton = await screen.findByTestId('search-button');
         searchButton.onclick = () => {
@@ -111,7 +110,6 @@ describe('tasks content', () => {
             </Provider>,
             { push: mockPushFunction }
         );
-        console.log('check:', screen.debug());
         const searchInput = await screen.findByTestId('search-input');
         fireEvent.change(searchInput, { target: { value: 'test' } });
         expect(searchInput).toHaveValue('test');
