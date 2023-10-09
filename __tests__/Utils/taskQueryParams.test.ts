@@ -1,7 +1,8 @@
 import {
     extractQueryParams,
     getQueryParamTab,
-    getQueryParamAssignee,
+    getAPIQueryParamAssignee,
+    getRouterQueryParamAssignee,
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
@@ -13,7 +14,16 @@ describe('extractQueryParams', () => {
             'status:in-progress assignee:sunny-s Develop feature';
         const result = extractQueryParams(queryParam);
         expect(result.status).toBe('in-progress');
-        expect(result.assignee).toBe('sunny-s');
+        expect(result.assignees).toEqual(['sunny-s']);
+        expect(result.title).toBe('Develop feature');
+    });
+
+    it('should extract status, multiple assignees, and title from query param', () => {
+        const queryParam =
+            'status:in-progress assignee:sunny-s assignee:ajoy-kumar Develop feature';
+        const result = extractQueryParams(queryParam);
+        expect(result.status).toBe('in-progress');
+        expect(result.assignees).toEqual(['sunny-s', 'ajoy-kumar']);
         expect(result.title).toBe('Develop feature');
     });
 
@@ -21,7 +31,7 @@ describe('extractQueryParams', () => {
         const queryParam = '';
         const result = extractQueryParams(queryParam);
         expect(result.status).toBe('');
-        expect(result.assignee).toBe('');
+        expect(result.assignees).toEqual([]);
         expect(result.title).toBe('');
     });
 });
@@ -34,11 +44,29 @@ describe('getQueryParamTab', () => {
     });
 });
 
-describe('getQueryParamAssignee', () => {
-    it('should generate a query param for an assignee', () => {
-        const assignee = 'sunny-s';
-        const result = getQueryParamAssignee(assignee);
+describe('getAPIQueryParamAssignee', () => {
+    it('should generate a api query param for an assignee', () => {
+        const assignee = ['sunny-s'];
+        const result = getAPIQueryParamAssignee(assignee);
+        expect(result).toBe('sunny-s');
+    });
+    it('should generate a api query param for multiple assignees', () => {
+        const assignee = ['sunny-s', 'ajoy-kumar'];
+        const result = getAPIQueryParamAssignee(assignee);
+        expect(result).toBe('sunny-s,ajoy-kumar');
+    });
+});
+
+describe('getRouterQueryParamAssignee', () => {
+    it('should generate a router query param for an assignee', () => {
+        const assignee = ['sunny-s'];
+        const result = getRouterQueryParamAssignee(assignee);
         expect(result).toBe('assignee:sunny-s');
+    });
+    it('should generate a router query param for multiple assignees', () => {
+        const assignee = ['sunny-s', 'ajoy-kumar'];
+        const result = getRouterQueryParamAssignee(assignee);
+        expect(result).toBe('assignee:sunny-s assignee:ajoy-kumar');
     });
 });
 
