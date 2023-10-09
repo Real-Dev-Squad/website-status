@@ -91,13 +91,15 @@ describe('Progress form', function () {
         const button = screen.getByRole('button');
         expect(button).toBeInTheDocument();
 
-        expect(button.className).toBe('buttonDisabled');
+        expect(button).toHaveClass('buttonDisabled');
 
         fireEvent.change(textAreas[0], { target: { value: '123' } });
         fireEvent.change(textAreas[1], { target: { value: '234' } });
         fireEvent.change(textAreas[2], { target: { value: '567' } });
 
-        expect(button.className).toBe('buttonEnabled');
+        expect(button).toHaveClass('buttonEnabled');
+        expect(button).not.toHaveAttribute('disabled');
+
         fireEvent.click(button);
         await waitFor(() =>
             expect(
@@ -119,7 +121,8 @@ describe('Progress form', function () {
 
         const button = screen.getByRole('button');
         fireEvent.click(button);
-        expect(button.className).toBe('buttonDisabled');
+        expect(button).toHaveClass('buttonDisabled');
+        expect(button).toHaveAttribute('disabled');
 
         await waitFor(() =>
             expect(
