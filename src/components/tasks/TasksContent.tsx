@@ -1,7 +1,7 @@
 import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
@@ -17,7 +17,6 @@ import {
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
-import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
@@ -115,11 +114,6 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
-
-    const taskSelectOptions = TABS.map((item) => ({
-        label: getChangedStatusName(item),
-        value: item,
-    }));
 
     const searchButtonHandler = () => {
         const { status, assignee, title } = extractQueryParams(inputValue);
