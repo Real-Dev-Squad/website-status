@@ -83,16 +83,9 @@ describe('tasks content', () => {
         );
 
         const searchButton = await screen.findByTestId('search-button');
-        searchButton.onclick = () => {
-            mockPushFunction({
-                query: {
-                    q: 'status:all',
-                },
-            });
-        };
         fireEvent.click(searchButton);
         await waitFor(() => {
-            expect(mockPushFunction).toHaveBeenCalledTimes(1);
+            expect(mockPushFunction).toBeCalledTimes(1);
         });
         expect(mockPushFunction).toBeCalledWith({
             query: {
