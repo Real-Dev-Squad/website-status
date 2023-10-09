@@ -39,13 +39,19 @@ $progressTextAnimation: #9babb8;
     justify-content: space-between;
     border: 1px solid #d9d9d9;
     position: relative;
-    width: 50rem;
+    width: 100%;
 
-    @media (max-width: 48rem) {
-        width: 100%;
-    }
-    @media (max-width: 28rem) {
+    @media (min-width: 768px) and (max-width: 1024px) {
+        width: 90%;
         justify-content: center;
+    }
+
+    @media (max-width: 448px) {
+        justify-content: center;
+    }
+
+    @media (max-width: 368px) {
+        width: 90%;
     }
 }
 .card_updated {
@@ -55,9 +61,8 @@ $progressTextAnimation: #9babb8;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 3rem;
 
-    @media (max-width: 28rem) {
+    @media (max-width: 600px) {
         flex-wrap: wrap;
     }
 }
@@ -79,9 +84,13 @@ $progressTextAnimation: #9babb8;
     color: #041187;
     width: 65%;
 
-    @media (max-width: 48rem) {
+    @media (max-width: 768px) {
         width: 100%;
         white-space: normal;
+    }
+
+    @media (max-width: 288px) {
+        width: 90%;
     }
 }
 
@@ -107,6 +116,10 @@ $progressTextAnimation: #9babb8;
 }
 .completionDate {
     padding-left: 0.5rem;
+    @media (max-width: 448px) {
+        padding-left: 0;
+        margin: 0.25rem 0 0.5rem;
+    }
 }
 
 .contributorImage {
@@ -133,7 +146,7 @@ $progressTextAnimation: #9babb8;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 .progressContainerUpdated {
@@ -364,6 +377,9 @@ $progressTextAnimation: #9babb8;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    @media (max-width: 448px) {
+        padding: 1rem;
+    }
 }
 
 .suggestionDiv {
@@ -384,6 +400,15 @@ $progressTextAnimation: #9babb8;
     width: 100%;
     display: flex;
     gap: 5px;
+
+    @media (max-width: 448px) {
+        align-items: baseline;
+    }
+
+    @media (max-width: 288px) {
+        flex-direction: column;
+        width: 90%;
+    }
 }
 
 .textarea {
