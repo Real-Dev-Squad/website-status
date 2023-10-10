@@ -41,10 +41,7 @@ const ProgressForm = ({ questions }: formProps) => {
     const [saveProgress] = useSaveProgressMutation();
     const router = useRouter();
 
-    const buttonSyle =
-        state.progress && state.plan && state.blockers
-            ? styles.buttonEnabled
-            : styles.buttonDisabled;
+    const isButtonEnabled = state.progress && state.plan && state.blockers;
 
     if (isLoading) {
         return <Loader></Loader>;
@@ -84,8 +81,13 @@ const ProgressForm = ({ questions }: formProps) => {
                 />
             ))}
             <button
-                className={buttonSyle}
+                className={
+                    isButtonEnabled
+                        ? styles.buttonEnabled
+                        : styles.buttonDisabled
+                }
                 onClick={(e) => handleSubmit(e)}
+                disabled={!isButtonEnabled}
                 type="submit"
                 data-testid="submit"
             >
