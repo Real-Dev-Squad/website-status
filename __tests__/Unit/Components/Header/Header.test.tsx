@@ -89,7 +89,7 @@ describe('Header without dev mode', () => {
     it('should have Open PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/openPRs',
+                pathname: '/open-prs',
                 query: {},
             };
         });
@@ -116,7 +116,7 @@ describe('Header without dev mode', () => {
     it('should have Stale PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/stale-pr',
+                pathname: '/stale-prs',
                 query: {},
             };
         });
@@ -307,7 +307,7 @@ describe('Header with dev mode', () => {
     it('should have Open PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/openPRs',
+                pathname: '/open-prs',
                 query: { dev: true },
             };
         });
@@ -334,7 +334,7 @@ describe('Header with dev mode', () => {
     it('should have Stale PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/stale-pr',
+                pathname: '/stale-prs',
                 query: { dev: true },
             };
         });
