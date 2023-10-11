@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import PullRequestList from '@/components/PullRequestList';
 
-const stalePR: FC = () => <PullRequestList prType="stale" />;
+const stalePRs: FC = () => <PullRequestList prType="stale" />;
 
-export default stalePR;
+export default stalePRs;

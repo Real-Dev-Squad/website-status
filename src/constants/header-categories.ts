@@ -16,13 +16,13 @@ export const headerCategories = [
     },
     {
         title: 'Open PRs',
-        refURL: '/openPRs',
-        pathName: '/openPRs',
+        refURL: '/open-prs',
+        pathName: '/open-prs',
     },
     {
         title: 'Stale PRs',
-        refURL: '/stale-pr',
-        pathName: '/stale-pr',
+        refURL: '/stale-prs',
+        pathName: '/stale-prs',
     },
     {
         title: 'Idle Users',
