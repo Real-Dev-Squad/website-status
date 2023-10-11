@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 
@@ -6,8 +6,10 @@ import ProgressForm from '@/components/ProgressForm/ProgressForm';
 import { questions } from '@/constants/ProgressUpdates';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
+import { setupServer } from 'msw/node';
+import handlers from '../../../../__mocks__/handlers';
+import { ToastContainer } from 'react-toastify';
 
-const mockOnClick = jest.fn();
 const mockQuestion = [
     {
         id: 0,
@@ -15,8 +17,18 @@ const mockQuestion = [
         question: 'Something to test',
     },
 ];
+const server = setupServer(...handlers);
 
 describe('Progress form', function () {
+    beforeAll(() => {
+        server.listen();
+    });
+    afterEach(() => {
+        server.resetHandlers();
+    });
+    afterAll(() => {
+        server.close();
+    });
     it('Should Render 3 input fields with appropriate data', function () {
         renderWithRouter(
             <Provider store={store()}>
@@ -60,11 +72,16 @@ describe('Progress form', function () {
         expect(textAreas[2].value).toBe('567');
     });
 
-    it('Should enable the button when all values are entered', function () {
+    it('Should enable the button  and able to make a api call when all values are entered', async function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressForm questions={questions} />
-            </Provider>
+                <ToastContainer />
+            </Provider>,
+            {
+                asPath: '/progress',
+                replace: jest.fn(),
+            }
         );
 
         const textAreas = screen.getAllByRole(
@@ -74,28 +91,44 @@ describe('Progress form', function () {
         const button = screen.getByRole('button');
         expect(button).toBeInTheDocument();
 
-        expect(button.className).toBe('buttonDisabled');
+        expect(button).toHaveClass('buttonDisabled');
 
         fireEvent.change(textAreas[0], { target: { value: '123' } });
         fireEvent.change(textAreas[1], { target: { value: '234' } });
         fireEvent.change(textAreas[2], { target: { value: '567' } });
 
-        expect(button.className).toBe('buttonEnabled');
+        expect(button).toHaveClass('buttonEnabled');
+        expect(button).not.toHaveAttribute('disabled');
+
+        fireEvent.click(button);
+        await waitFor(() =>
+            expect(
+                screen.getByText('Task Progress saved successfully')
+            ).toBeInTheDocument()
+        );
     });
 
-    it('Check if onClick is working', function () {
+    it('onClick should not work in case of no inputs', async function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressForm questions={questions} />
-            </Provider>
+            </Provider>,
+            {
+                asPath: '/progress',
+                replace: jest.fn(),
+            }
         );
 
         const button = screen.getByRole('button');
-
-        button.onclick = mockOnClick;
         fireEvent.click(button);
+        expect(button).toHaveClass('buttonDisabled');
+        expect(button).toHaveAttribute('disabled');
 
-        expect(mockOnClick).toBeCalledTimes(1);
+        await waitFor(() =>
+            expect(
+                screen.queryByText('Task Progress saved successfully')
+            ).toBeNull()
+        );
     });
 
     it('tests for default case in reducer', function () {
