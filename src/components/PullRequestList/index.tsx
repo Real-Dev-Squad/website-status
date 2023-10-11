@@ -134,8 +134,8 @@ const PullRequestList: FC<PullRequestListProps> = ({ prType }) => {
                         );
                     })}
                     {isLoading &&
-                        [...Array(15)].map((e: number) => (
-                            <CardShimmer key={e} />
+                        [...Array(15)].map((_, index: number) => (
+                            <CardShimmer key={index} />
                         ))}
                 </div>
             </div>
