@@ -26,6 +26,7 @@ export const Header = () => {
     // Dev feature toggle
     const { query } = router;
     const dev = !!query.dev;
+    const queryState = query.state;
 
     return (
         <div className={styles.header}>
@@ -40,12 +41,17 @@ export const Header = () => {
 
             {dev &&
                 devHeaderCategories.map(
-                    ({ title, refURL, pathName }, index) => (
+                    ({ title, refURL, pathName, state }, index) => (
                         <HeaderLink
                             key={index}
                             title={title}
                             link={refURL}
-                            isActive={router.pathname === pathName}
+                            isActive={
+                                router.pathname === pathName &&
+                                (router.pathname === '/pull-requests'
+                                    ? queryState === state
+                                    : true)
+                            }
                         />
                     )
                 )}
