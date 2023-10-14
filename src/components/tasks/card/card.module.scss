@@ -417,7 +417,7 @@ $progressTextAnimation: #9babb8;
         align-items: baseline;
     }
 
-    @media (max-width: 200px) {
+    @media (max-width: 400px) {
         flex-direction: column;
         width: 90%;
     }
