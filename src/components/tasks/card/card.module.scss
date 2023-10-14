@@ -1,3 +1,22 @@
+Amit Prakash
+_thisisamitprakash_
+Invisible
+
+AnishPawaskar — 10/05/2023 9:51 PM
+https://staging-dashboard.realdevsquad.com/
+AnishPawaskar — Today at 3:38 AM
+@use '../../../styles/issues.module.scss' as styles;
+$green: #008000;
+$orange: #ffa500;
+$red: #ff0000;
+$yellow: #ecef08;
+$white: #e5e5e5;
+Expand
+css.txt
+9 KB
+﻿
+AnishPawaskar
+AnishPawaskar#6938
 @use '../../../styles/issues.module.scss' as styles;
 $green: #008000;
 $orange: #ffa500;
@@ -79,18 +98,29 @@ $progressTextAnimation: #9babb8;
     font-size: 1.6rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
     font-weight: 500;
     color: #041187;
     width: 65%;
 
     @media (max-width: 768px) {
         width: 100%;
-        white-space: normal;
     }
 
     @media (max-width: 288px) {
         width: 90%;
+    }
+}
+
+.cardTitleText {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: pre-wrap;
+
+    @media (max-width: 368px) {
+        -webkit-line-clamp: 2;
     }
 }
 
@@ -400,12 +430,13 @@ $progressTextAnimation: #9babb8;
     width: 100%;
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
 
     @media (max-width: 448px) {
         align-items: baseline;
     }
 
-    @media (max-width: 288px) {
+    @media (max-width: 400px) {
         flex-direction: column;
         width: 90%;
     }
@@ -435,3 +466,5 @@ $progressTextAnimation: #9babb8;
 .selfAlignEnd {
     align-self: end;
 }
+css.txt
+9 KB
