@@ -47,17 +47,11 @@ $progressTextAnimation: #9babb8;
     }
 
     @media (max-width: 448px) {
-        @media (max-width: 448px) {
-            justify-content: center;
-        }
+        justify-content: center;
+    }
 
-        @media (max-width: 368px) {
-            width: 90%;
-        }
-
-        @media (max-width: 368px) {
-            width: 90%;
-        }
+    @media (max-width: 368px) {
+        width: 90%;
     }
 }
 .card_updated {
@@ -69,9 +63,7 @@ $progressTextAnimation: #9babb8;
     align-items: center;
 
     @media (max-width: 600px) {
-        @media (max-width: 600px) {
-            flex-wrap: wrap;
-        }
+        flex-wrap: wrap;
     }
 }
 .card_updated .cardItems:not(:nth-child(1)) {
@@ -93,13 +85,11 @@ $progressTextAnimation: #9babb8;
     width: 65%;
 
     @media (max-width: 768px) {
-        @media (max-width: 768px) {
-            width: 100%;
-        }
+        width: 100%;
+    }
 
-        @media (max-width: 288px) {
-            width: 90%;
-        }
+    @media (max-width: 288px) {
+        width: 90%;
     }
 }
 
@@ -141,10 +131,6 @@ $progressTextAnimation: #9babb8;
         padding-left: 0;
         margin: 0.25rem 0 0.5rem;
     }
-    @media (max-width: 448px) {
-        padding-left: 0;
-        margin: 0.25rem 0 0.5rem;
-    }
 }
 
 .contributorImage {
@@ -171,7 +157,6 @@ $progressTextAnimation: #9babb8;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 0.5rem;
     padding-top: 0.5rem;
 }
 
