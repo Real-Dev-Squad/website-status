@@ -103,6 +103,10 @@ $progressTextAnimation: #9babb8;
     @media (max-width: 368px) {
         -webkit-line-clamp: 2;
     }
+
+    @media (max-width: 288px) {
+        width: 90%;
+    }
 }
 
 .cardSpecialFont {
