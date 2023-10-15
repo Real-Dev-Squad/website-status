@@ -15,16 +15,11 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('Navbar', () => {
-    test.skip('check for loading state', () => {
-        const { getByTestId } = renderWithProviders(<NavBar />);
-        const loader = getByTestId('loader');
-        expect(loader).toBeInTheDocument();
-    });
-
-    test.skip('user whether loggedIn or not', async () => {
+    test('user whether loggedIn or not', async () => {
         renderWithProviders(<NavBar />);
-        const navbar = await screen.findAllByTestId('navbar');
-        expect(screen.getByText('Hello, Mahima'));
+        const navbar = await screen.findByTestId('navbar');
+        expect(navbar).toBeInTheDocument();
+        expect(screen.getByText('Sign In With Github'));
     });
 
     test('renders the hamburger icon', async () => {
