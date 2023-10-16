@@ -9,12 +9,12 @@ export const idleUsersApi = api.injectEndpoints({
             query: () => USERS_IDLE,
             providesTags: ['Idle_Users'],
             transformResponse: (response: IdleUsersResponse) => {
-                const filterMembers = response.users.map(
+                const IdleUsers = response.users.map(
                     (user) => user.username
                 );
-                const sortedIdleMembers = filterMembers.sort();
+                const sortedIdleUsers = IdleUsers.sort();
 
-                return sortedIdleMembers;
+                return sortedIdleUsers;
             },
         }),
     }),
