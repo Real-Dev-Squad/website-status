@@ -79,18 +79,26 @@ $progressTextAnimation: #9babb8;
     font-size: 1.6rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;
     font-weight: 500;
     color: #041187;
-    width: 65%;
+    max-width: 30rem;
+    word-break: break-word;
 
     @media (max-width: 768px) {
         width: 100%;
-        white-space: normal;
     }
+}
 
-    @media (max-width: 288px) {
-        width: 90%;
+.cardTitleText {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: pre-wrap;
+
+    @media (max-width: 368px) {
+        -webkit-line-clamp: 2;
     }
 }
 
@@ -109,6 +117,7 @@ $progressTextAnimation: #9babb8;
     align-items: center;
     gap: 1rem;
     margin-top: 0.8rem;
+    flex-wrap: wrap;
 
     .card__top__button {
         margin-top: 0;
@@ -400,12 +409,13 @@ $progressTextAnimation: #9babb8;
     width: 100%;
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
 
     @media (max-width: 448px) {
         align-items: baseline;
     }
 
-    @media (max-width: 288px) {
+    @media (max-width: 400px) {
         flex-direction: column;
         width: 90%;
     }

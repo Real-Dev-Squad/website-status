@@ -520,7 +520,7 @@ const Card: FC<CardProps> = ({
                         taskId={cardDetails.id}
                     >
                         <span
-                            className={classNames.cardTitle}
+                            className={classNames.cardTitleText}
                             contentEditable={isEditable}
                             onKeyDown={(e) => handleChange(e, 'title')}
                             role="button"
