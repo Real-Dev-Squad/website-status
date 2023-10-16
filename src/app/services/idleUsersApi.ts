@@ -10,9 +10,8 @@ export const idleUsersApi = api.injectEndpoints({
             providesTags: ['Idle_Users'],
             transformResponse: (response: IdleUsersResponse) => {
                 const IdleUsers = response.users.map((user) => user.username);
-                const sortedIdleUsers = IdleUsers.sort();
-
-                return sortedIdleUsers;
+                IdleUsers.sort();
+                return IdleUsers;
             },
         }),
     }),
