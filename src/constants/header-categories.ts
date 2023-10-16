@@ -42,4 +42,16 @@ export const devHeaderCategories = [
         refURL: '/availability-panel',
         pathName: '/availability-panel',
     },
+    {
+        title: 'Open PRs(dev)',
+        refURL: '/pull-requests?state=open&dev=true',
+        pathName: '/pull-requests',
+        state: 'open',
+    },
+    {
+        title: 'Stale PRs(dev)',
+        refURL: '/pull-requests?state=stale&dev=true',
+        pathName: '/pull-requests',
+        state: 'stale',
+    },
 ];
