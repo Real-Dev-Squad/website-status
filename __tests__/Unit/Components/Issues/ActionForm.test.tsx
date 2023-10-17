@@ -1,7 +1,13 @@
 import ActionForm from '@/components/issues/ActionForm';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import * as tasksApi from '@/app/services/tasksApi';
+import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
 import { fireEvent, waitFor } from '@testing-library/react';
+
+jest.mock('@/app/services/taskDetailsApi');
+const mockedUseGetAllTasksQuery = useGetTaskDetailsQuery as jest.MockedFunction<
+    typeof useGetTaskDetailsQuery
+>;
 
 describe('Issues Action Form Component', () => {
     let updateTaskSpy: any;
@@ -13,17 +19,47 @@ describe('Issues Action Form Component', () => {
         jest.clearAllMocks();
     });
 
-    test('calls updateTaskMutation on clicking assigned button', () => {
-        const screen = renderWithProviders(<ActionForm taskId="123" />);
+    test('calls updateTaskMutation on clicking assigned button', async () => {
+        const mockedCreateTask = jest.fn();
+        const mockedUpdateTask = jest.fn();
+        mockedUseGetAllTasksQuery.mockReturnValue({
+            data: {},
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        });
+        const screen = renderWithProviders(
+            <ActionForm
+                taskId="123"
+                createTask={mockedCreateTask}
+                updateTask={mockedUpdateTask}
+                taskAssignee=""
+            />
+        );
+
         const submitButton = screen.getByRole('button', {
             name: /Assign Task/i,
         });
-        fireEvent.click(submitButton);
-        expect(updateTaskSpy).toBeCalled();
+
+        expect(submitButton).toBeInTheDocument();
+        await waitFor(() => {
+            fireEvent.click(submitButton);
+        });
+
+        expect(mockedUpdateTask).toHaveBeenCalled();
     });
 
     test('Should render form properly', () => {
-        const screen = renderWithProviders(<ActionForm taskId="123" />);
+        const mockedFunction = jest.fn();
+
+        const screen = renderWithProviders(
+            <ActionForm
+                taskId="123"
+                createTask={mockedFunction}
+                updateTask={mockedFunction}
+                taskAssignee=""
+            />
+        );
         const submitButton = screen.getByRole('button', {
             name: /Assign Task/i,
         });
@@ -39,7 +75,15 @@ describe('Issues Action Form Component', () => {
     });
 
     test('changes the state when value is entered', () => {
-        const screen = renderWithProviders(<ActionForm taskId="123" />);
+        const mockedFunction = jest.fn();
+        const screen = renderWithProviders(
+            <ActionForm
+                taskId="123"
+                createTask={mockedFunction}
+                updateTask={mockedFunction}
+                taskAssignee=""
+            />
+        );
         const assignee = screen.getByPlaceholderText(
             'Assignee'
         ) as HTMLInputElement;
@@ -63,7 +107,15 @@ describe('Issues Action Form Component', () => {
     });
 
     test('Should show Suggestion box when username is entered', async () => {
-        const screen = renderWithProviders(<ActionForm taskId="123" />);
+        const mockedFunction = jest.fn();
+        const screen = renderWithProviders(
+            <ActionForm
+                taskId="123"
+                createTask={mockedFunction}
+                updateTask={mockedFunction}
+                taskAssignee="user123"
+            />
+        );
         const assignee = screen.getByPlaceholderText(
             'Assignee'
         ) as HTMLInputElement;
