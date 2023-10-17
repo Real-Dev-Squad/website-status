@@ -264,24 +264,20 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />
-                            {isDevModeEnabled && (
-                                <>
-                                    <TaskContainer
-                                        title="Task Dependencies"
-                                        hasImg={false}
-                                    >
-                                        <TaskDependency
-                                            taskDependencyIds={
-                                                taskDependencyIds
-                                            }
-                                            isEditing={isEditing}
-                                            setEditedTaskDetails={
-                                                setEditedTaskDetails
-                                            }
-                                        />
-                                    </TaskContainer>
-                                </>
-                            )}
+                            <>
+                                <TaskContainer
+                                    title="Task Dependencies"
+                                    hasImg={false}
+                                >
+                                    <TaskDependency
+                                        taskDependencyIds={taskDependencyIds}
+                                        isEditing={isEditing}
+                                        setEditedTaskDetails={
+                                            setEditedTaskDetails
+                                        }
+                                    />
+                                </TaskContainer>
+                            </>
                         </section>
 
                         <section className={classNames.rightContainer}>
