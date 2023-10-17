@@ -43,8 +43,7 @@ describe('TaskDependency', () => {
                     isEditing={true}
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
-            </Provider>,
-            { query: { dev: 'true' } }
+            </Provider>
         );
         const checkboxes = container.querySelectorAll('input[type="checkbox"]');
         const firstCheckbox = checkboxes[0] as HTMLInputElement;
@@ -68,8 +67,7 @@ describe('TaskDependency', () => {
                     isEditing={true}
                     setEditedTaskDetails={setEditedTaskDetails}
                 />
-            </Provider>,
-            { query: { dev: 'true' } }
+            </Provider>
         );
         const loadingText = await waitFor(() => getByText('Loading...'));
         expect(loadingText).toBeInTheDocument();
