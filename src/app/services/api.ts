@@ -23,7 +23,7 @@ export const api = createApi({
         'Tags',
         'Levels',
         'Challenges',
-        'Idle_Members',
+        'Idle_Users',
         'Progress_Details',
         'User_Standup',
         'TASK_REQUEST',
