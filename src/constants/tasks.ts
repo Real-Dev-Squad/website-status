@@ -12,3 +12,8 @@ export const EMPTY_TASKS_DATA = {
     OVERDUE: [],
     DONE: [],
 };
+
+export const TASK_REQUEST_TYPES = {
+    CREATION: 'CREATION',
+    ASSIGNMENT: 'ASSIGNMENT',
+};

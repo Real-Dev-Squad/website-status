@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import Card from '@/components/issues/Card';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 
@@ -122,6 +122,33 @@ describe('Issue card', () => {
                 query: { dev: 'true' },
             }
         );
-        expect(screen.getByRole('button')).toHaveTextContent('Assign Task');
+        expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
+    });
+    test('should render issue card with convert to task button', () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
+    });
+    test('should open a modal when button is clicked', () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        const convertToTaskButton = screen.getByText(/Convert to Task/i);
+        fireEvent.click(convertToTaskButton);
+        const taskRequestModalTitle = screen.getByText(/Task Request/i);
+        expect(taskRequestModalTitle).toBeInTheDocument();
+        const taskAssignmentModalTitle = screen.getByText(/Task Assignment/i);
+        expect(taskAssignmentModalTitle).toBeInTheDocument();
     });
 });
