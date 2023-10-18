@@ -161,7 +161,6 @@ const ActionForm: FC<ActionFormProps> = ({
                                 className={` ${styles.assign} ${styles.input_date}`}
                                 type="date"
                                 onChange={(e) => {
-                                    console.log(e.target.value);
                                     dispatch({
                                         type: 'startedOn',
                                         value: e.target.value,
