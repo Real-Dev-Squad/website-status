@@ -23,7 +23,7 @@ date.setDate(date.getDate() + 7);
 const sevenDaysFromToday = date.toISOString().split('T')[0];
 
 const initialState = {
-    endsOn: date.getTime(),
+    endsOn: Date.now(),
     startedOn: Date.now(),
     description: ' ',
 };
