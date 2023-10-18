@@ -11,3 +11,15 @@ export const STANDUP_ALREADY_SUBMITTED =
 export const DATEFORMAT = 'MMMM DD, YYYY ';
 export const STANDUPTIME = 6;
 export const TASK_RESULT_SIZE = 5;
+
+export const TASK_STATUS_MAPING: any = {
+    AVAILABLE: 'Available',
+    BLOCKED: 'Blocked',
+    COMPLETED: 'Completed',
+    VERIFIED: 'Verified',
+    IN_PROGRESS: 'In Progress',
+    ASSIGNED: 'ASSIGNED',
+    MERGED: 'Merged',
+    APPROVED: 'Approved',
+    IN_REVIEW: 'In Review',
+};

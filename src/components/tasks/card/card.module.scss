@@ -447,3 +447,12 @@ $progressTextAnimation: #9babb8;
 .selfAlignEnd {
     align-self: end;
 }
+
+.statusContainer {
+    display: flex;
+    align-items: center;
+}
+
+.statusText {
+    margin-left: 0.5rem;
+}
