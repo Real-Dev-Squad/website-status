@@ -22,4 +22,5 @@ export const TASK_STATUS_MAPING: any = {
     MERGED: 'Merged',
     APPROVED: 'Approved',
     IN_REVIEW: 'In Review',
+    NEEDS_REVIEW: 'Needs Review',
 };
