@@ -1,7 +1,5 @@
 import { FC, MouseEvent, useReducer, useState } from 'react';
-
 import styles from '@/components/issues/Card.module.scss';
-
 import { reducerAction } from '@/types/ProgressUpdates';
 import { Loader } from '../tasks/card/Loader';
 
