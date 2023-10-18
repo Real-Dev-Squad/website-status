@@ -13,7 +13,7 @@ describe('DevFeature', () => {
 
         expect(screen.queryByText('Children')).not.toBeInTheDocument();
     });
-    it('Should children when dev=true', () => {
+    it('Should render children when dev=true', () => {
         renderWithRouter(
             <DevFeature>
                 <p>Children</p>
