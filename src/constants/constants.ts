@@ -18,7 +18,7 @@ export const TASK_STATUS_MAPING: any = {
     COMPLETED: 'Completed',
     VERIFIED: 'Verified',
     IN_PROGRESS: 'In Progress',
-    ASSIGNED: 'ASSIGNED',
+    ASSIGNED: 'Assigned',
     MERGED: 'Merged',
     APPROVED: 'Approved',
     IN_REVIEW: 'In Review',

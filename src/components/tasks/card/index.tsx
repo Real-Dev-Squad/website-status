@@ -578,7 +578,10 @@ const Card: FC<CardProps> = ({
                             <p className={classNames.cardSpecialFont}>
                                 Status:
                             </p>
-                            <p className={classNames.statusText}>
+                            <p
+                                data-testid="task-status"
+                                className={classNames.statusText}
+                            >
                                 {TASK_STATUS_MAPING[cardDetails.status] ||
                                     cardDetails.status ||
                                     'NA'}
