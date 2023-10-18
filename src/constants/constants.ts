@@ -12,7 +12,7 @@ export const DATEFORMAT = 'MMMM DD, YYYY ';
 export const STANDUPTIME = 6;
 export const TASK_RESULT_SIZE = 5;
 
-export const TASK_STATUS_MAPING: any = {
+export const TASK_STATUS_MAPING = {
     AVAILABLE: 'Available',
     BLOCKED: 'Blocked',
     COMPLETED: 'Completed',

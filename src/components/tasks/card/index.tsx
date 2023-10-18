@@ -582,7 +582,9 @@ const Card: FC<CardProps> = ({
                                 data-testid="task-status"
                                 className={classNames.statusText}
                             >
-                                {TASK_STATUS_MAPING[cardDetails.status] ||
+                                {TASK_STATUS_MAPING[
+                                    cardDetails.status as keyof typeof TASK_STATUS_MAPING
+                                ] ||
                                     cardDetails.status ||
                                     'NA'}
                             </p>
