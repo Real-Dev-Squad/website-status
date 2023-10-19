@@ -53,7 +53,6 @@ const TaskRequestForm: FC<ActionFormProps> = ({
     createTaskRequest,
     taskId,
 }) => {
-    console.log(requestId);
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [isLoading, setIsLoading] = useState(false);
 
