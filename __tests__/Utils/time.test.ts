@@ -1,5 +1,3 @@
-// Import the function to be tested
-
 import { getDateRelativeToToday } from '@/utils/time';
 
 describe('getDateRelativeToToday', () => {
