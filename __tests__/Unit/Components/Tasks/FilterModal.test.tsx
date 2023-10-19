@@ -146,4 +146,19 @@ describe('FilterModal', () => {
         const unassignedButton = screen.getByText(/unassigned/i);
         expect(unassignedButton).not.toHaveClass('status-button-active');
     });
+
+    test('render the filter model having BLOCKED tab with correct title and buttons when dev is true', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.UNASSIGNED, Tab.BLOCKED]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.BLOCKED}
+                onClose={mockOnClose}
+            />
+        );
+
+        const blockedButton = screen.getByText(/blocked/i);
+        expect(blockedButton).toBeInTheDocument();
+    });
 });
