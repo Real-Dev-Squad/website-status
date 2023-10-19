@@ -75,4 +75,22 @@ describe('Issues Action Form Component', () => {
         notFoundTextNode = screen.getByTestId('user_not_found');
         expect(notFoundTextNode).toBeInTheDocument();
     });
+
+    test('Sets the default ends On date to offset 2 days from today.', () => {
+        const screen = renderWithProviders(<ActionForm taskId="123" />);
+        const endsOn = screen.getByLabelText(/Ends on:/) as HTMLInputElement;
+
+        const today = new Date();
+        const calculatedDate = new Date(today);
+        calculatedDate.setDate(today.getDate() + 2);
+        const offsetDate = `${calculatedDate.getFullYear()}-${(
+            calculatedDate.getMonth() + 1
+        )
+            .toString()
+            .padStart(2, '0')}-${calculatedDate
+            .getDate()
+            .toString()
+            .padStart(2, '0')}`;
+        expect(endsOn.value).toBe(offsetDate);
+    });
 });
