@@ -14,7 +14,6 @@ import { useGetAllUsersByUsernameQuery } from '@/app/services/usersApi';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
 import { DUMMY_PROFILE } from '@/constants/display-sections';
-import { getDateRelativeToToday } from '@/utils/time';
 
 type ActionFormReducer = {
     assignee: string;
@@ -27,10 +26,10 @@ type ActionFormProps = {
 };
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
-const endTimeStamp: number = getDateRelativeToToday(2, 'timestamp') as number;
+
 const initialState = {
     assignee: '',
-    endsOn: endTimeStamp,
+    endsOn: Date.now() / 1000,
     status: 'ASSIGNED',
 };
 
@@ -53,9 +52,6 @@ const reducer = (state: ActionFormReducer, action: reducerAction) => {
 const { SUCCESS, ERROR } = ToastTypes;
 
 const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
-    const [endsOnDate, setEndsOnDate] = useState(
-        getDateRelativeToToday(2, 'formattedDate')
-    );
     const [state, dispatch] = useReducer(reducer, initialState);
     const [isAssigned, setIsAssigned] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -154,11 +150,9 @@ const ActionForm: FC<ActionFormProps> = ({ taskId }) => {
                         id="ends-on"
                         className={styles.assign}
                         type="date"
-                        value={endsOnDate}
-                        onChange={(e) => {
-                            setEndsOnDate(e.target.value);
-                            dispatch({ type: 'endsOn', value: e.target.value });
-                        }}
+                        onChange={(e) =>
+                            dispatch({ type: 'endsOn', value: e.target.value })
+                        }
                     />
                     <label htmlFor="status" className={styles.assign_label}>
                         Status:
