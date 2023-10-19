@@ -42,16 +42,11 @@ $progressTextAnimation: #9babb8;
     width: 100%;
 
     @media (min-width: 768px) and (max-width: 1024px) {
-        width: 90%;
         justify-content: center;
     }
 
     @media (max-width: 448px) {
         justify-content: center;
-    }
-
-    @media (max-width: 368px) {
-        width: 90%;
     }
 }
 .card_updated {

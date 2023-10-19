@@ -1,6 +1,19 @@
 $primaryColor: #041484;
 $disabledColor: gray;
 
+.tasksContainer {
+    width: 64%;
+    @media (max-width: 1280px) {
+        width: 85%;
+    }
+    @media (max-width: 768px) {
+        width: 90%;
+    }
+    @media (max-width: 600px) {
+        width: 100%;
+    }
+}
+
 .container {
     text-align: center;
     display: flex;
@@ -8,6 +21,7 @@ $disabledColor: gray;
     margin: 0 auto;
     flex-wrap: nowrap;
     align-items: center;
+    width: 100%;
 }
 
 .title {
@@ -35,6 +49,21 @@ $disabledColor: gray;
     padding: 1rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
+}
+
+.status-tabs-container {
+    display: block;
+    @media (max-width: 600px) {
+        display: none;
+    }
+}
+
+.status-select-container {
+    display: none;
+    padding: 1rem;
+    @media (max-width: 600px) {
+        display: block;
+    }
 }
 
 .loadMoreButton {

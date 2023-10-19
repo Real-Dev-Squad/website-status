@@ -1,13 +1,14 @@
 import { ElementRef } from 'react';
 import classNames from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { Tab, TabTasksData } from '@/interfaces/task.type';
+import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
 import { EMPTY_TASKS_DATA } from '@/constants/tasks';
+import { TabSection } from './TabSection';
 
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
@@ -20,6 +21,8 @@ import {
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
+import { Select } from '../Select';
+import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
 
@@ -120,6 +123,11 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         earlyReturn: loadedTasks[selectedTab].length === 0,
     });
 
+    const taskSelectOptions = TABS.map((item) => ({
+        label: getChangedStatusName(item),
+        value: item,
+    }));
+
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
@@ -136,7 +144,48 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 onInputChange={(value) => searchInputHandler(value)}
                 onClickSearchButton={searchButtonHandler}
             />
-
+            {dev === true ? (
+                <>
+                    <div
+                        className={classNames['status-tabs-container']}
+                        data-testid="status-tabs-container"
+                    >
+                        <TabSection
+                            dev={dev}
+                            onSelect={(status: Tab) =>
+                                searchNewTasks(
+                                    status,
+                                    queryAssignees,
+                                    queryTitle
+                                )
+                            }
+                            activeTab={selectedTab}
+                        />
+                    </div>
+                    <div
+                        className={classNames['status-select-container']}
+                        data-testid="status-select-container"
+                    >
+                        <Select
+                            dev={dev}
+                            value={{
+                                label: getChangedStatusName(selectedTab),
+                                value: selectedTab,
+                            }}
+                            onChange={(selectedTaskStatus) => {
+                                if (selectedTaskStatus) {
+                                    searchNewTasks(
+                                        selectedTaskStatus.value as Tab,
+                                        queryAssignees,
+                                        queryTitle
+                                    );
+                                }
+                            }}
+                            options={taskSelectOptions}
+                        />
+                    </div>
+                </>
+            ) : null}
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
