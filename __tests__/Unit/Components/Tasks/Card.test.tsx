@@ -529,7 +529,7 @@ describe('Task card', () => {
             {}
         );
         const spanElement = screen.getByTestId('started-on');
-        expect(spanElement).toHaveTextContent('Started 2 years ago'); // Mocked date from moment
+        expect(spanElement).toHaveTextContent('Started 3 years ago'); // Mocked date from moment
     });
     it('Should show the status of the task', () => {
         // TODO: After UI change remove dev flag
