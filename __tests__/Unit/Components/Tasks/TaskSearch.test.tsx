@@ -165,4 +165,28 @@ describe('TaskSearch', () => {
         fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' });
         expect(onClickSearchButton).toBeCalled();
     });
+
+    test('input Value Change when Blocked filter button is clicked', () => {
+        const onSelect = jest.fn();
+        const onInputChange = jest.fn();
+        const onClickSearchButton = jest.fn();
+
+        render(
+            <TaskSearch
+                dev={true}
+                onSelect={onSelect}
+                inputValue="status:blocked"
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+
+        const filterButton = screen.getByText('Filter');
+        fireEvent.click(filterButton);
+        const blockedButton = screen.getByText(/blocked/i);
+        const searchInput = screen.getByTestId('search-input');
+        fireEvent.click(blockedButton);
+        expect(onSelect).toHaveBeenCalledWith('BLOCKED');
+        expect(searchInput).toHaveValue('status:blocked');
+    });
 });
