@@ -161,4 +161,39 @@ describe('FilterModal', () => {
         const blockedButton = screen.getByText(/blocked/i);
         expect(blockedButton).toBeInTheDocument();
     });
+
+    test('onSelect Function Gets Called When the Blocked Status button is Clicked when dev is true', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.BLOCKED, Tab.IN_PROGRESS]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.BLOCKED}
+                onClose={mockOnClose}
+            />
+        );
+
+        const blockedButton = screen.getByRole('button', { name: 'BLOCKED' });
+        fireEvent.click(blockedButton);
+
+        expect(mockOnSelect).toHaveBeenCalledWith(Tab.BLOCKED);
+    });
+
+    test('Selection of the Blocked Button when dev is true', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.BLOCKED, Tab.DONE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.BLOCKED}
+                onClose={mockOnClose}
+            />
+        );
+
+        const blockedButton = screen.getByText(/blocked/i);
+        expect(blockedButton).toHaveClass('status-button-active');
+
+        const doneButton = screen.getByText(/done/i);
+        expect(doneButton).not.toHaveClass('status-button-active');
+    });
 });

@@ -166,7 +166,7 @@ describe('TaskSearch', () => {
         expect(onClickSearchButton).toBeCalled();
     });
 
-    test('input Value Change when Blocked filter button is clicked', () => {
+    test('Blocked Button Selected then Search Bar Display status:blocked', () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
@@ -187,6 +187,6 @@ describe('TaskSearch', () => {
         const searchInput = screen.getByTestId('search-input');
         fireEvent.click(blockedButton);
         expect(onSelect).toHaveBeenCalledWith('BLOCKED');
-        expect(searchInput).toHaveValue('status:blocked');
+        expect(screen.getByDisplayValue('status:blocked')).toBeInTheDocument();
     });
 });
