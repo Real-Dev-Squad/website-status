@@ -12,3 +12,15 @@ export const DATEFORMAT = 'MMMM DD, YYYY ';
 export const STANDUPTIME = 6;
 export const TASK_RESULT_SIZE = 5;
 export const TBD = 'TBD';
+export const TASK_STATUS_MAPING = {
+    AVAILABLE: 'Available',
+    BLOCKED: 'Blocked',
+    COMPLETED: 'Completed',
+    VERIFIED: 'Verified',
+    IN_PROGRESS: 'In Progress',
+    ASSIGNED: 'Assigned',
+    MERGED: 'Merged',
+    APPROVED: 'Approved',
+    IN_REVIEW: 'In Review',
+    NEEDS_REVIEW: 'Needs Review',
+};
