@@ -1,5 +1,6 @@
 export type IssueItem = {
     id: number;
+    url: string;
     title: string;
     user: {
         login: string | null | undefined;
