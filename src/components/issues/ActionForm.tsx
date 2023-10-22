@@ -187,7 +187,10 @@ const ActionForm: FC<ActionFormProps> = ({
                                 type="date"
                                 onChange={(e) => {
                                     setEndsOnDate(e.target.value);
-                                    dispatch({ type: 'endsOn', value: e.target.value });
+                                    dispatch({
+                                        type: 'endsOn',
+                                        value: e.target.value,
+                                    });
                                 }}
                             />
                         </div>
