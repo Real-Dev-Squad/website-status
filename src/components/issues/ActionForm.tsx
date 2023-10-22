@@ -12,6 +12,7 @@ import { useGetAllUsersByUsernameQuery } from '@/app/services/usersApi';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
 import { DUMMY_PROFILE } from '@/constants/display-sections';
+import { getDateRelativeToToday } from '@/utils/time';
 
 type ActionFormReducer = {
     assignee: string;
@@ -28,11 +29,11 @@ type ActionFormProps = {
 };
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
-
+const endTimeStamp: number = getDateRelativeToToday(2, 'timestamp') as number;
 const initialState = {
     assignee: '',
-    endsOn: undefined,
     startedOn: undefined,
+    endsOn: endTimeStamp,
     status: 'ASSIGNED',
 };
 
@@ -69,6 +70,9 @@ const ActionForm: FC<ActionFormProps> = ({
     const [assignee, setAssignee] = useState(taskAssignee);
     const { data, isLoading: loading } = useGetTaskDetailsQuery(taskId);
     const [isLoading, setIsLoading] = useState(loading);
+    const [endsOnDate, setEndsOnDate] = useState(
+        getDateRelativeToToday(2, 'formattedDate')
+    );
     const [showSuggestion, setShowSuggestion] = useState(false);
     const { data: userData } = useGetAllUsersByUsernameQuery({
         searchString: state.assignee,
@@ -179,13 +183,12 @@ const ActionForm: FC<ActionFormProps> = ({
                                 name="ends-on"
                                 id="ends-on"
                                 className={` ${styles.assign} ${styles.input_date}`}
+                                value={endsOnDate}
                                 type="date"
-                                onChange={(e) =>
-                                    dispatch({
-                                        type: 'endsOn',
-                                        value: e.target.value,
-                                    })
-                                }
+                                onChange={(e) => {
+                                    setEndsOnDate(e.target.value);
+                                    dispatch({ type: 'endsOn', value: e.target.value });
+                                }}
                             />
                         </div>
                         <div className={styles.inputContainer}>
