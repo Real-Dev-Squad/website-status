@@ -11,7 +11,7 @@ export const STANDUP_ALREADY_SUBMITTED =
 export const DATEFORMAT = 'MMMM DD, YYYY ';
 export const STANDUPTIME = 6;
 export const TASK_RESULT_SIZE = 5;
-export const TBD = 'TBD';
+export const DEFAULT_TASK_PRIORITY = 'TBD';
 export const TASK_STATUS_MAPING = {
     AVAILABLE: 'Available',
     BLOCKED: 'Blocked',

@@ -2,28 +2,19 @@ import { FC, useContext, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
-
 import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
 import { TASKS_URL, TASK_REQUEST_URL } from '../../constants/url';
 import useUserData from '@/hooks/useUserData';
-import ActionForm from './ActionForm';
 import { useRouter } from 'next/router';
-import TaskRequestForm from './TaskRequestForm';
-import Modal from '../Modal';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import { REQUEST_TABS } from './constants';
 import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 import { FEATURE } from '@/constants/task-type';
 import { AVAILABLE } from '@/constants/task-status';
-import { TBD } from '@/constants/constants';
+import { TaskData, TaskRequestData } from '@/components/issues/constants';
+import { DEFAULT_TASK_PRIORITY } from '@/constants/constants';
+import TaskManagementModal from './TaskManagementModal';
 const { SUCCESS, ERROR } = ToastTypes;
-type TaskData = {
-    assignee?: string;
-    endsOn?: number;
-    startedOn?: number;
-    status?: string;
-};
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
     const date = new Date(issue.created_at).toDateString();
@@ -33,14 +24,14 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const devMode = router.query.dev === 'true' ? true : false;
     const { data: userData, isUserAuthorized } = useUserData();
     const [taskId, setTaskId] = useState(issue.taskId);
-    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [requestId, setRequestId] = useState();
     const [assignee, setAssignee] = useState<string | undefined>();
-    const defaultTaskConversionTab = isUserAuthorized
-        ? REQUEST_TABS.TASK_CREATION
-        : REQUEST_TABS.CREATION_REQUEST;
-    const [selectedTab, setSelectedTab] = useState(defaultTaskConversionTab);
     const [updateTask] = useUpdateTaskMutation();
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+
+    const isTaskButtonDisabled =
+        isLoading || (!isUserAuthorized && (taskExists || !!requestId));
+
     const toggle = () => {
         setIsTaskModalOpen(!isTaskModalOpen);
     };
@@ -93,12 +84,6 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
         }
     };
 
-    const onTaskRequestClick = () => {
-        setSelectedTab(REQUEST_TABS.CREATION_REQUEST);
-    };
-    const onTaskAssignmentClick = () => {
-        setSelectedTab(REQUEST_TABS.TASK_CREATION);
-    };
     const handleUpdateTask = async (taskData: TaskData, taskId: string) => {
         try {
             await updateTask({
@@ -112,14 +97,15 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             toast(ERROR, error.data.message);
         }
     };
-    const handleCreateTaskRequest = async (data: any) => {
+
+    const handleCreateTaskRequest = async (data: TaskRequestData) => {
         const requestData = {
             externalIssueUrl: issue.url,
             userId: userData?.id,
             requestType: TASK_REQUEST_TYPES.CREATION,
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
-            description: data.description,
+            description: data.description || ' ',
         };
         try {
             const url = TASK_REQUEST_URL;
@@ -140,6 +126,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             toast(ERROR, error.message);
         }
     };
+
     const handleCreateTask = async (taskData: TaskData) => {
         try {
             if (!taskData.assignee) delete taskData.assignee;
@@ -149,7 +136,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 type: FEATURE,
                 status: taskData.status || AVAILABLE,
                 percentCompleted: 0,
-                priority: TBD,
+                priority: DEFAULT_TASK_PRIORITY,
                 github: {
                     issue: getIssueInfo(),
                 },
@@ -235,60 +222,24 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                     <>
                         <button
                             className={styles.card__top__button}
-                            disabled={
-                                isLoading ||
-                                (!isUserAuthorized &&
-                                    (taskExists || !!requestId))
-                            }
+                            disabled={isTaskButtonDisabled}
                             onClick={toggle}
                         >
                             {isUserAuthorized
                                 ? 'Convert to Task'
                                 : 'Request as Task'}
                         </button>
-                        <Modal isOpen={isTaskModalOpen} toggle={toggle}>
-                            <div className={styles.taskTabs}>
-                                <button
-                                    onClick={onTaskRequestClick}
-                                    className={`${styles.taskTab} ${
-                                        selectedTab ===
-                                        REQUEST_TABS.CREATION_REQUEST
-                                            ? styles.highlightTaskTab
-                                            : ''
-                                    }`}
-                                >
-                                    Task Request
-                                </button>
-                                {isUserAuthorized && (
-                                    <button
-                                        onClick={onTaskAssignmentClick}
-                                        className={`${styles.taskTab} ${
-                                            selectedTab ===
-                                            REQUEST_TABS.TASK_CREATION
-                                                ? styles.highlightTaskTab
-                                                : ''
-                                        }`}
-                                    >
-                                        Task Assignment
-                                    </button>
-                                )}
-                            </div>
-                            {selectedTab === REQUEST_TABS.CREATION_REQUEST && (
-                                <TaskRequestForm
-                                    requestId={requestId}
-                                    taskId={taskId}
-                                    createTaskRequest={handleCreateTaskRequest}
-                                />
-                            )}
-                            {selectedTab === REQUEST_TABS.TASK_CREATION && (
-                                <ActionForm
-                                    taskId={taskId || ''}
-                                    taskAssignee={assignee}
-                                    createTask={handleCreateTask}
-                                    updateTask={handleUpdateTask}
-                                />
-                            )}
-                        </Modal>
+                        <TaskManagementModal
+                            isUserAuthorized={isUserAuthorized}
+                            isOpen={isTaskModalOpen}
+                            toggle={toggle}
+                            assignee={assignee}
+                            taskId={taskId}
+                            requestId={requestId}
+                            handleCreateTask={handleCreateTask}
+                            handleCreateTaskRequest={handleCreateTaskRequest}
+                            handleUpdateTask={handleUpdateTask}
+                        />
                     </>
                 ) : (
                     <>
