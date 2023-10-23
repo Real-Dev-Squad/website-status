@@ -1,0 +1,31 @@
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+.modalOverlay {
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalBox {
+    display: block;
+    background: white;
+    width: max-content;
+    height: max-content;
+    padding: 1rem;
+    border-radius: 1rem;
+    animation: fadeIn ease-in-out 250ms;
+}

@@ -1,6 +1,7 @@
 import { FC, useState, useEffect, useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
+import DevFeature from '@/components/DevFeature';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { CardProps } from '@/interfaces/task.type';
@@ -14,7 +15,7 @@ import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
-import { MAX_SEARCH_RESULTS } from '@/constants/constants';
+import { MAX_SEARCH_RESULTS, TASK_STATUS_MAPING } from '@/constants/constants';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -571,6 +572,25 @@ const Card: FC<CardProps> = ({
                         />
                     )}
                 </div>
+                <DevFeature>
+                    {cardDetails.status && (
+                        <div className={classNames.statusContainer} style={{}}>
+                            <p className={classNames.cardSpecialFont}>
+                                Status:
+                            </p>
+                            <p
+                                data-testid="task-status"
+                                className={classNames.statusText}
+                            >
+                                {TASK_STATUS_MAPING[
+                                    cardDetails.status as keyof typeof TASK_STATUS_MAPING
+                                ] ||
+                                    cardDetails.status ||
+                                    'NA'}
+                            </p>
+                        </div>
+                    )}
+                </DevFeature>
             </div>
 
             <div className={classNames.contributor}>
