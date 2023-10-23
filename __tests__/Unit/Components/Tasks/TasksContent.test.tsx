@@ -33,12 +33,12 @@ describe('tasks content', () => {
         global.dispatchEvent(new Event('resize'));
     };
 
-    test('renders tabs component when dev is true', async () => {
+    test('renders tabs component', async () => {
         setWindowInnerWidth(breakpointToShowTabs);
 
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>
         );
 
@@ -47,11 +47,11 @@ describe('tasks content', () => {
         await screen.findByTestId('tabs');
     });
 
-    test('select tab and set active when dev is true', async () => {
+    test('select tab and set active', async () => {
         setWindowInnerWidth(breakpointToShowTabs);
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             {
                 query: { section: 'unassigned' },
@@ -94,10 +94,10 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
-    test('display tasks when dev is true', async () => {
+    test('display tasks', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { query: { section: 'done' } }
         );
@@ -108,12 +108,12 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
-    test('Selecting a tab pushes into query params when dev is true', async () => {
+    test('Selecting a tab pushes into query params', async () => {
         setWindowInnerWidth(breakpointToShowTabs);
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -133,17 +133,17 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:unassigned',
+                q: 'status:available',
             },
         });
     });
 
-    test('should show status-tabs-container after 450px of screen width when dev is true', async () => {
+    test('should show status-tabs-container after 450px of screen width', async () => {
         setWindowInnerWidth(breakpointToShowTabs);
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -154,12 +154,12 @@ describe('tasks content', () => {
         expect(tabStyles.display).toBe('block');
     });
 
-    test('should show status-select-container 450px below status-tabs-container when dev is true', async () => {
+    test('should show status-select-container 450px below status-tabs-container', async () => {
         setWindowInnerWidth(breakpointToShowSelect);
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -170,12 +170,12 @@ describe('tasks content', () => {
         expect(selectStyles.display).toBe('block');
     });
 
-    test('Selecting a value from dropdown pushes into query params when dev is true', async () => {
+    test('Selecting a value from dropdown pushes into query params', async () => {
         setWindowInnerWidth(breakpointToShowSelect);
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             { push: mockPushFunction }
         );
@@ -192,16 +192,6 @@ describe('tasks content', () => {
         });
 
         fireEvent.keyDown(selectContainer, {
-            key: 'ArrowDown',
-            code: 'ArrowDown',
-        });
-
-        fireEvent.keyDown(selectContainer, {
-            key: 'ArrowDown',
-            code: 'ArrowDown',
-        });
-
-        fireEvent.keyDown(selectContainer, {
             key: 'Enter',
             code: 'Enter',
         });
@@ -209,7 +199,7 @@ describe('tasks content', () => {
         expect(mockPushFunction).toBeCalledTimes(1);
         expect(mockPushFunction).toBeCalledWith({
             query: {
-                q: 'status:unassigned',
+                q: 'status:in-progress',
             },
         });
     });
@@ -250,11 +240,11 @@ describe('tasks content', () => {
         expect(searchInput).toHaveValue('test');
     });
 
-    test('Query param should be changed when tab is selected when dev is true', async () => {
+    test('Query param should be changed when tab is selected when', async () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
-                <TasksContent dev={true} />
+                <TasksContent />
             </Provider>,
             {
                 push: mockPushFunction,

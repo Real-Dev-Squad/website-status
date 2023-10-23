@@ -144,7 +144,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 onInputChange={(value) => searchInputHandler(value)}
                 onClickSearchButton={searchButtonHandler}
             />
-            {dev === true ? (
+            {dev !== true ? (
                 <>
                     <div
                         className={classNames['status-tabs-container']}
