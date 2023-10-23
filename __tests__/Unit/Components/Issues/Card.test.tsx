@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import Card from '@/components/issues/Card';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 
@@ -9,7 +9,9 @@ import {
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
+import fetch from '@/helperFunctions/fetch';
 
+jest.mock('@/helperFunctions/fetch');
 jest.mock('@/hooks/useUserData', () => {
     return () => ({
         data: {
@@ -122,6 +124,78 @@ describe('Issue card', () => {
                 query: { dev: 'true' },
             }
         );
-        expect(screen.getByRole('button')).toHaveTextContent('Assign Task');
+        expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
+    });
+    test('should render issue card with convert to task button', () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
+    });
+    test('should open a modal when button is clicked', () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        const convertToTaskButton = screen.getByText(/Convert to Task/i);
+        fireEvent.click(convertToTaskButton);
+        const taskRequestModalTitle = screen.getByText(/Task Request/i);
+        expect(taskRequestModalTitle).toBeInTheDocument();
+        const taskAssignmentModalTitle = screen.getByText(/Task Assignment/i);
+        expect(taskAssignmentModalTitle).toBeInTheDocument();
+    });
+    test('should contain task request and assignment tabs', () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card issue={issuesResponseSearchedWithQuery[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        const convertToTaskButton = screen.getByText(/Convert to Task/i);
+        fireEvent.click(convertToTaskButton);
+        const taskRequestTabButton = screen.getByText(/Task Request/i);
+        fireEvent.click(taskRequestTabButton);
+        const createRequestButton = screen.getByText(/Create Request/i);
+        expect(createRequestButton).toBeInTheDocument();
+        const taskAssignmentTabButton = screen.getByText(/Task Assignment/i);
+        fireEvent.click(taskAssignmentTabButton);
+        const assignTaskButton = screen.getByText(/Assign Task/i);
+        expect(assignTaskButton).toBeInTheDocument();
+    });
+    test('should call create task request handler when create request button is clicked', async () => {
+        const screen = renderWithRouter(
+            <Provider store={store()}>
+                <Card
+                    issue={{
+                        ...issuesResponseSearchedWithQuery[0],
+                        taskExists: false,
+                        taskId: undefined,
+                    }}
+                />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        const convertToTaskButton = screen.getByText(/Convert to Task/i);
+        fireEvent.click(convertToTaskButton);
+        const taskRequestTabButton = screen.getByText(/Task Request/i);
+        fireEvent.click(taskRequestTabButton);
+        const createRequestButton = screen.getByText(/Create Request/i);
+        await waitFor(() => {
+            fireEvent.click(createRequestButton);
+        });
+        expect(fetch).toHaveBeenCalled();
     });
 });

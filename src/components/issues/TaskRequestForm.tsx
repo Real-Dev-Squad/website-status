@@ -1,7 +1,5 @@
 import { FC, MouseEvent, useReducer, useState } from 'react';
-
 import styles from '@/components/issues/Card.module.scss';
-
 import { reducerAction } from '@/types/ProgressUpdates';
 import { Loader } from '../tasks/card/Loader';
 
@@ -55,7 +53,6 @@ const TaskRequestForm: FC<ActionFormProps> = ({
     createTaskRequest,
     taskId,
 }) => {
-    console.log(requestId);
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [isLoading, setIsLoading] = useState(false);
 
