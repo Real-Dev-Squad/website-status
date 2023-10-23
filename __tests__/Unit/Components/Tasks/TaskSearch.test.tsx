@@ -184,7 +184,6 @@ describe('TaskSearch', () => {
         const filterButton = screen.getByText('Filter');
         fireEvent.click(filterButton);
         const blockedButton = screen.getByText(/blocked/i);
-        const searchInput = screen.getByTestId('search-input');
         fireEvent.click(blockedButton);
         expect(onSelect).toHaveBeenCalledWith('BLOCKED');
         expect(screen.getByDisplayValue('status:blocked')).toBeInTheDocument();
