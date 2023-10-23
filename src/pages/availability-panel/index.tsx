@@ -9,7 +9,7 @@ import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
 import { AVAILABLE } from '@/constants/task-status';
 import { FEATURE } from '@/constants/task-type';
 import { BASE_URL } from '@/constants/url';
-import { useGetIdleMembersQuery } from '@/app/services/membersApi';
+import { useGetIdleUsersQuery } from '@/app/services/idleUsersApi';
 
 const AvailabilityPanel: FC = () => {
     const [unAssignedTasks, setUnAssignedTasks] = useState<task[]>([]);
@@ -21,7 +21,7 @@ const AvailabilityPanel: FC = () => {
         isError: isIdleMembersError,
         isLoading: isIdleMemberLoading,
         refetch: refreshMemberList,
-    } = useGetIdleMembersQuery();
+    } = useGetIdleUsersQuery();
 
     useEffect(() => {
         const fetchTasks = async () => {

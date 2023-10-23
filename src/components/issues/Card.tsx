@@ -136,7 +136,16 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                     </button>
                 )}
                 {isUserAuthorized && taskExists && devMode && (
-                    <ActionForm taskId={taskId || ''} />
+                    <ActionForm
+                        taskId={taskId || ''}
+                        createTask={async () => {
+                            console.log('Placeholder');
+                        }}
+                        updateTask={async () => {
+                            console.log('Placeholder');
+                        }}
+                        taskAssignee=""
+                    />
                 )}
             </div>
         </div>

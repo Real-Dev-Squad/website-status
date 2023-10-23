@@ -1,13 +1,13 @@
 import { setupServer } from 'msw/node';
 import handlers, {
-    failedIdleMembersHandler,
-} from '../../../__mocks__/handlers/members.handler.js';
+    failedIdleUsersHandler,
+} from '../../../__mocks__/handlers/idle-users.handler.js';
 
 import { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { useGetIdleMembersQuery } from '@/app/services/membersApi';
+import { useGetIdleUsersQuery } from '@/app/services/idleUsersApi';
 
 const server = setupServer(...handlers);
 
@@ -23,10 +23,10 @@ function Wrapper({
     return <Provider store={store()}>{children}</Provider>;
 }
 
-describe('useGetIdleMembersQuery', () => {
-    test('returns idle members', async () => {
+describe('useGetIdleUsersQuery', () => {
+    test('returns idle users', async () => {
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetIdleMembersQuery(),
+            () => useGetIdleUsersQuery(),
             {
                 wrapper: Wrapper,
             }
@@ -46,9 +46,9 @@ describe('useGetIdleMembersQuery', () => {
     });
 
     test('checks for error response', async () => {
-        server.use(failedIdleMembersHandler);
+        server.use(failedIdleUsersHandler);
         const { result, waitForNextUpdate } = renderHook(
-            () => useGetIdleMembersQuery(),
+            () => useGetIdleUsersQuery(),
             {
                 wrapper: Wrapper,
             }
