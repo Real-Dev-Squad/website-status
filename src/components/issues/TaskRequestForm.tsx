@@ -2,6 +2,7 @@ import { FC, MouseEvent, useReducer, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
 import { reducerAction } from '@/types/ProgressUpdates';
 import { Loader } from '../tasks/card/Loader';
+import { getDateRelativeToToday } from '@/utils/time';
 
 type ActionFormReducer = {
     startedOn: number | string;
@@ -15,15 +16,10 @@ type ActionFormProps = {
     createTaskRequest: (data: ActionFormReducer) => Promise<void>;
 };
 
-const date = new Date();
-const today = date.toISOString().split('T')[0];
-date.setDate(date.getDate() + 7);
-const sevenDaysFromToday = date.toISOString().split('T')[0];
-
 const initialState = {
-    endsOn: Date.now(),
-    startedOn: Date.now(),
-    description: ' ',
+    endsOn: (getDateRelativeToToday(7, 'timestamp') as number) * 1000,
+    startedOn: (getDateRelativeToToday(0, 'timestamp') as number) * 1000,
+    description: undefined,
 };
 
 const reducer = (state: ActionFormReducer, action: reducerAction) => {
@@ -76,7 +72,10 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                         className={`${styles.assign} ${styles.input_date}`}
                         type="date"
                         required
-                        defaultValue={today}
+                        defaultValue={getDateRelativeToToday(
+                            0,
+                            'formattedDate'
+                        )}
                         onChange={(e) =>
                             dispatch({
                                 type: 'startedOn',
@@ -94,7 +93,10 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                         id="ends-on"
                         className={` ${styles.assign} ${styles.input_date}`}
                         type="date"
-                        defaultValue={sevenDaysFromToday}
+                        defaultValue={getDateRelativeToToday(
+                            7,
+                            'formattedDate'
+                        )}
                         required
                         onChange={(e) =>
                             dispatch({ type: 'endsOn', value: e.target.value })
