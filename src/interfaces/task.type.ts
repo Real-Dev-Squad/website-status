@@ -83,6 +83,7 @@ enum Tab {
     ASSIGNED = 'ASSIGNED',
     AVAILABLE = 'AVAILABLE',
     UNASSIGNED = 'UNASSIGNED',
+    BLOCKED = 'BLOCKED',
     NEEDS_REVIEW = 'NEEDS_REVIEW',
     IN_REVIEW = 'IN_REVIEW',
     VERIFIED = 'VERIFIED',
@@ -128,6 +129,7 @@ export type TabTasksData = {
     ASSIGNED: task[];
     AVAILABLE: task[];
     UNASSIGNED: task[];
+    BLOCKED: task[];
     NEEDS_REVIEW: task[];
     IN_REVIEW: task[];
     VERIFIED: task[];
