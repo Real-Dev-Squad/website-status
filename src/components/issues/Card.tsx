@@ -105,8 +105,9 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             requestType: TASK_REQUEST_TYPES.CREATION,
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
-            description: data.description || ' ',
+            description: data.description,
         };
+        if (!requestData.description) delete requestData.description;
         try {
             const url = TASK_REQUEST_URL;
             const { requestPromise } = fetch({
