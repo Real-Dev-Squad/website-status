@@ -31,7 +31,9 @@ describe('Tabs Component', () => {
         );
         const presentTabs = screen.queryAllByRole('button');
         expect(presentTabs.length).toBe(
-            TABS.filter((tab) => !newTaskStatus.includes(tab)).length
+            TABS.filter(
+                (tab) => tab != 'BLOCKED' && !newTaskStatus.includes(tab)
+            ).length
         );
     });
 
@@ -115,7 +117,9 @@ describe('Tabs Component', () => {
             />
         );
         const presentTabs = screen.getAllByRole('button');
-        const OLDTABS = TABS.filter((tab) => !newTaskStatus.includes(tab));
+        const OLDTABS = TABS.filter(
+            (tab) => tab != 'BLOCKED' && !newTaskStatus.includes(tab)
+        );
         for (let i = 0; i < presentTabs.length; i++) {
             expect(presentTabs[i].textContent).toBe(changeName(OLDTABS[i]));
         }

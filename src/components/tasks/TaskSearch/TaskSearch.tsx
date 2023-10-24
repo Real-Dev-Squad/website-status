@@ -29,7 +29,6 @@ const TaskSearch = ({
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         e.key === 'Enter' && onClickSearchButton();
     };
-
     return (
         <div className={className['task-search-container']}>
             <div className={className['filter-container']}>
