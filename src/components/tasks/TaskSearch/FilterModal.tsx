@@ -34,7 +34,7 @@ const FilterModal = ({
                     .filter((tab: Tab) =>
                         dev
                             ? !depreciatedTaskStatus.includes(tab)
-                            : !newTaskStatus.includes(tab)
+                            : tab != 'BLOCKED' && !newTaskStatus.includes(tab)
                     )
                     .map((tab) => (
                         <button

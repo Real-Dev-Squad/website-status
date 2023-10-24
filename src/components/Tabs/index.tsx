@@ -19,7 +19,7 @@ const Tabs = ({ dev, tabs, onSelect, activeTab }: TabsProps) => (
             .filter((tab: Tab) =>
                 dev
                     ? !depreciatedTaskStatus.includes(tab)
-                    : !newTaskStatus.includes(tab)
+                    : tab != 'BLOCKED' && !newTaskStatus.includes(tab)
             )
             .map((tab: Tab) => (
                 <button

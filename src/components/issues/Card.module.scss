@@ -16,8 +16,6 @@ $card-text: #78716c;
 
     &:hover {
         border-color: #e5e5e5;
-        filter: drop-shadow(0 20px 13px rgba(0, 0, 0, 0.02))
-            drop-shadow(0 8px 5px rgba(0, 0, 0, 0.06));
     }
 
     @media (max-width: 64rem) {
@@ -35,26 +33,92 @@ $card-text: #78716c;
         width: 100%;
     }
 }
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+}
 
 .card_details {
     display: flex;
     flex-direction: column;
 }
 
+.request_form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+    min-height: 22rem;
+    width: 20rem;
+}
+
+.form_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .assign {
-    width: 9rem;
-    margin-left: 0.5rem;
-    margin-bottom: 1rem;
     line-height: 2rem;
     display: inline-block;
 }
-
-.assign_label {
-    margin-left: 0.5rem;
-    line-height: 1rem;
-    margin-bottom: 0;
+.description_box {
+    background-color: rgb(29 18 255 / 10%);
+    border-radius: 2px;
+    min-height: 5rem;
+    height: 6rem;
+    border: none;
+    resize: none;
 }
 
+.assign_label {
+    line-height: 1rem;
+    margin-bottom: 0;
+    font-size: 0.8rem;
+    color: #a9a9a9;
+    font-weight: 700;
+}
+
+.taskTabs {
+    /* 1s delay after the page loads */
+    display: flex;
+    gap: 1rem;
+    justify-content: space-evenly;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.input_select {
+    padding: 0 4px 0 4px;
+    height: 2rem;
+    border: 1px solid #1f1f1f;
+    border-radius: 4px;
+    outline: none;
+}
+.input_date {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 0 4px 0 4px;
+    height: 2rem;
+    border: 1px solid #1f1f1f;
+    border-radius: 4px;
+    outline: none;
+}
+
+.taskTab {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 4px;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+
+.highlightTaskTab {
+    border-bottom: styles.$color-blue solid 2px;
+    transition: 150ms ease-in-out;
+}
 .suggestions_container {
     position: relative;
     display: inline-block;
