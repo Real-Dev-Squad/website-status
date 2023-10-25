@@ -24,6 +24,8 @@ export const ALL_TAGS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tags`;
 export const ALL_LEVELS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/levels`;
 export const ITEM_TYPES = { task: 'TASK' };
 export const TASKS_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/tasks`;
+// TODO : Rename task requests url GITHUB: @Ajeyakrishna-k https://github.com/Real-Dev-Squad/website-backend/issues/1599
+export const TASK_REQUEST_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/taskRequests`;
 export const ISSUES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/issues`;
 export const USERS_URL = `${BASE_URL}/users`;
 export const MAIN_SITE_URL = 'https://www.realdevsquad.com';

@@ -5,7 +5,7 @@ export const getDateRelativeToToday = (
     const today = new Date();
     const calculatedDate = new Date(today);
     calculatedDate.setDate(today.getDate() + daysFromToday);
-
+    calculatedDate.setHours(5, 30, 0, 0);
     if (format === 'timestamp') {
         return calculatedDate.getTime() / 1000;
     } else if (format === 'formattedDate') {
