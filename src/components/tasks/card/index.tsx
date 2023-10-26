@@ -1,7 +1,6 @@
 import { FC, useState, useEffect, useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-import DevFeature from '@/components/DevFeature';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { CardProps } from '@/interfaces/task.type';
@@ -572,25 +571,21 @@ const Card: FC<CardProps> = ({
                         />
                     )}
                 </div>
-                <DevFeature>
-                    {cardDetails.status && (
-                        <div className={classNames.statusContainer} style={{}}>
-                            <p className={classNames.cardSpecialFont}>
-                                Status:
-                            </p>
-                            <p
-                                data-testid="task-status"
-                                className={classNames.statusText}
-                            >
-                                {TASK_STATUS_MAPING[
-                                    cardDetails.status as keyof typeof TASK_STATUS_MAPING
-                                ] ||
-                                    cardDetails.status ||
-                                    'NA'}
-                            </p>
-                        </div>
-                    )}
-                </DevFeature>
+                {cardDetails.status && (
+                    <div className={classNames.statusContainer} style={{}}>
+                        <p className={classNames.cardSpecialFont}>Status:</p>
+                        <p
+                            data-testid="task-status"
+                            className={classNames.statusText}
+                        >
+                            {TASK_STATUS_MAPING[
+                                cardDetails.status as keyof typeof TASK_STATUS_MAPING
+                            ] ||
+                                cardDetails.status ||
+                                'NA'}
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className={classNames.contributor}>
