@@ -607,7 +607,9 @@ const Card: FC<CardProps> = ({
                 </span>
                 {isEditable
                     ? isUserAuthorized && (
-                          <div className={classNames.assignedToSection}>
+                          <div
+                              className={`${classNames.assigneeSuggestionInput} ${classNames.assignedToSection}`}
+                          >
                               <Suggestions
                                   assigneeName={assigneeName}
                                   showSuggestion={showSuggestion}

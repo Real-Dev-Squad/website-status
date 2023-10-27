@@ -30,9 +30,11 @@ type ActionFormProps = {
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 const endTimeStamp: number = getDateRelativeToToday(2, 'timestamp') as number;
+const startTimeStamp: number = getDateRelativeToToday(0, 'timestamp') as number;
+
 const initialState = {
     assignee: '',
-    startedOn: undefined,
+    startedOn: startTimeStamp,
     endsOn: endTimeStamp,
     status: 'ASSIGNED',
 };
@@ -135,6 +137,12 @@ const ActionForm: FC<ActionFormProps> = ({
                                 : styles.suggestions_container
                         }
                     >
+                        <label
+                            htmlFor="assignee"
+                            className={styles.assign_label}
+                        >
+                            Assignee:
+                        </label>
                         <Suggestions
                             assigneeName={state.assignee}
                             showSuggestion={showSuggestion}
@@ -164,6 +172,10 @@ const ActionForm: FC<ActionFormProps> = ({
                                 id="started-on"
                                 className={` ${styles.assign} ${styles.input_date}`}
                                 type="date"
+                                defaultValue={getDateRelativeToToday(
+                                    0,
+                                    'formattedDate'
+                                )}
                                 onChange={(e) => {
                                     dispatch({
                                         type: 'startedOn',

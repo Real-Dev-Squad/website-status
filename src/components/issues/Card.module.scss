@@ -51,7 +51,15 @@ $card-text: #78716c;
     min-height: 22rem;
     width: 20rem;
 }
-
+.successContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    min-height: 22rem;
+    width: 20rem;
+    align-items: center;
+    gap: 1rem;
+}
 .form_container {
     display: flex;
     flex-direction: column;
@@ -67,6 +75,8 @@ $card-text: #78716c;
     border-radius: 2px;
     min-height: 5rem;
     height: 6rem;
+    font: inherit;
+    font-size: 0.8rem;
     border: none;
     resize: none;
 }
