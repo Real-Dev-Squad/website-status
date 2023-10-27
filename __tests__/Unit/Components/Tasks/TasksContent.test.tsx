@@ -80,7 +80,7 @@ describe('tasks content', () => {
         expect(errorMessage).toBeInTheDocument();
     });
 
-    test('display tasks', async () => {
+    test('display tasks to be rendered on /tasks page', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
                 <TasksContent />
@@ -94,7 +94,7 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
-    test('display tasks', async () => {
+    test('display tasks to be rendered on /tasks page when dev is true', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
                 <TasksContent />
@@ -240,7 +240,7 @@ describe('tasks content', () => {
         expect(searchInput).toHaveValue('test');
     });
 
-    test('Query param should be changed when tab is selected when', async () => {
+    test('Query param should be changed when tab is selected', async () => {
         const mockPushFunction = jest.fn();
         renderWithRouter(
             <Provider store={store()}>
