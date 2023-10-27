@@ -9,6 +9,7 @@ import {
 } from '../../constants/messages';
 import { EMPTY_TASKS_DATA } from '@/constants/tasks';
 import { TabSection } from './TabSection';
+
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
 import { getActiveTab } from '@/utils/getActiveTab';
@@ -143,40 +144,50 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 onInputChange={(value) => searchInputHandler(value)}
                 onClickSearchButton={searchButtonHandler}
             />
-            <div
-                className={classNames['status-tabs-container']}
-                data-testid="status-tabs-container"
-            >
-                <TabSection
-                    dev={dev}
-                    onSelect={(status: Tab) =>
-                        searchNewTasks(status, queryAssignees, queryTitle)
-                    }
-                    activeTab={selectedTab}
-                />
-            </div>
-            <div
-                className={classNames['status-select-container']}
-                data-testid="status-select-container"
-            >
-                <Select
-                    dev={dev}
-                    value={{
-                        label: getChangedStatusName(selectedTab),
-                        value: selectedTab,
-                    }}
-                    onChange={(selectedTaskStatus) => {
-                        if (selectedTaskStatus) {
-                            searchNewTasks(
-                                selectedTaskStatus.value as Tab,
-                                queryAssignees,
-                                queryTitle
-                            );
-                        }
-                    }}
-                    options={taskSelectOptions}
-                />
-            </div>
+            {dev !== true ? (
+                <>
+                    <div
+                        className={classNames['status-tabs-container']}
+                        data-testid="status-tabs-container"
+                    >
+                        <TabSection
+                            dev={dev}
+                            onSelect={(status: Tab) =>
+                                searchNewTasks(
+                                    status,
+                                    queryAssignees,
+                                    queryTitle
+                                )
+                            }
+                            activeTab={selectedTab}
+                        />
+                    </div>
+                    <div
+                        className={classNames['status-select-container']}
+                        data-testid="status-select-container"
+                    >
+                        <Select
+                            dev={dev}
+                            value={{
+                                label: getChangedStatusName(selectedTab),
+                                value: selectedTab,
+                            }}
+                            onChange={(selectedTaskStatus) => {
+                                if (selectedTaskStatus) {
+                                    searchNewTasks(
+                                        selectedTaskStatus.value as Tab,
+                                        queryAssignees,
+                                        queryTitle
+                                    );
+                                }
+                            }}
+                            options={taskSelectOptions}
+                        />
+                    </div>
+                </>
+            ) : (
+                <></>
+            )}
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
