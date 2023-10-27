@@ -564,28 +564,29 @@ const Card: FC<CardProps> = ({
                 </div>
                 {/* EDIT task status */}
                 <div className={classNames.taskStatusEditMode}>
-                    {isEditable && (
+                    {isEditable ? (
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
                         />
+                    ) : (
+                        <div className={classNames.statusContainer} style={{}}>
+                            <p className={classNames.cardSpecialFont}>
+                                Status:
+                            </p>
+                            <p
+                                data-testid="task-status"
+                                className={classNames.statusText}
+                            >
+                                {TASK_STATUS_MAPING[
+                                    cardDetails.status as keyof typeof TASK_STATUS_MAPING
+                                ] ||
+                                    cardDetails.status ||
+                                    'NA'}
+                            </p>
+                        </div>
                     )}
                 </div>
-                {cardDetails.status && (
-                    <div className={classNames.statusContainer} style={{}}>
-                        <p className={classNames.cardSpecialFont}>Status:</p>
-                        <p
-                            data-testid="task-status"
-                            className={classNames.statusText}
-                        >
-                            {TASK_STATUS_MAPING[
-                                cardDetails.status as keyof typeof TASK_STATUS_MAPING
-                            ] ||
-                                cardDetails.status ||
-                                'NA'}
-                        </p>
-                    </div>
-                )}
             </div>
 
             <div className={classNames.contributor}>
