@@ -16,7 +16,7 @@ const getIdleSinceText = (idleSince: string) => {
 
     if (idleDays <= 0) {
         return `${differenceInHours} hours ago`;
-    } else if (idealDays === 1) {
+    } else if (idleDays === 1) {
         return `${idealDays} day ago`;
     }
 
