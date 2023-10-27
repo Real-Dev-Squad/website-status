@@ -20,7 +20,7 @@ const getIdleSinceText = (idleSince: string) => {
         return `${idealDays} day ago`;
     }
 
-    return `${idealDays} days ago`;
+    return `${idleDays} days ago`;
 };
 
 export default getIdleSinceText;
