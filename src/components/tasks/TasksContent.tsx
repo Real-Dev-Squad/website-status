@@ -185,7 +185,9 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                         />
                     </div>
                 </>
-            ) : null}
+            ) : (
+                <></>
+            )}
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
