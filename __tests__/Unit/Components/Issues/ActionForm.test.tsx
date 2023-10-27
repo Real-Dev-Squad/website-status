@@ -63,11 +63,13 @@ describe('Issues Action Form Component', () => {
         const submitButton = screen.getByRole('button', {
             name: /Assign Task/i,
         });
+        const assigneeLabel = screen.getByLabelText(/Assignee:/);
         const assignee = screen.getByPlaceholderText('Assignee');
         const endsOn = screen.getByLabelText(/Ends on:/);
         const status = screen.getByLabelText(/Status:/);
         const options = screen.getAllByRole('option');
         expect(submitButton).toBeInTheDocument();
+        expect(assigneeLabel).toBeInTheDocument();
         expect(assignee).toBeInTheDocument();
         expect(endsOn).toBeInTheDocument();
         expect(status).toBeInTheDocument();
