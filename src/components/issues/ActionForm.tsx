@@ -140,6 +140,7 @@ const ActionForm: FC<ActionFormProps> = ({
                         <label
                             htmlFor="assignee"
                             className={styles.assign_label}
+                            data-testid="assignee-label"
                         >
                             Assignee:
                         </label>

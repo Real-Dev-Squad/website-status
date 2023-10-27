@@ -63,7 +63,7 @@ describe('Issues Action Form Component', () => {
         const submitButton = screen.getByRole('button', {
             name: /Assign Task/i,
         });
-        const assigneeLabel = screen.getByLabelText(/Assignee:/);
+        const assigneeLabel = screen.getByTestId('assignee-label');
         const assignee = screen.getByPlaceholderText('Assignee');
         const endsOn = screen.getByLabelText(/Ends on:/);
         const status = screen.getByLabelText(/Status:/);
