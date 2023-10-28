@@ -324,8 +324,12 @@ describe('TaskDetails Page', () => {
         fireEvent.change(textareaElement, {
             target: { name: 'title', value: 'test 1 for drag and drop' },
         });
-        const saveButton = await screen.findByRole('button', { name: 'Save' });
-        fireEvent.click(saveButton);
+        await waitFor(async () => {
+            const saveButton = await screen.findByRole('button', {
+                name: 'Save',
+            });
+            fireEvent.click(saveButton);
+        });
         expect(screen.queryByText(/Successfully saved/i)).toBeNull();
     });
 
