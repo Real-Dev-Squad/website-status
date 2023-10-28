@@ -4,11 +4,12 @@ const getIdleSinceText = (idleSince: string) => {
     const presentDateInUtc = new Date().toUTCString();
     const idleSinceDateInUtc = new Date(idleSince).toUTCString();
 
-    const presentDate = new Date(presentDateInUtc).valueOf();
-    const idleSinceDate = new Date(idleSinceDateInUtc).valueOf();
+    const presentDateMillisecond = new Date(presentDateInUtc).valueOf();
+    const idleSinceDateMillisecond = new Date(idleSinceDateInUtc).valueOf();
 
     const differenceInHours = Math.round(
-        (presentDate - idleSinceDate) / TOTAL_MILLISECONDS_IN_A_HOUR
+        (presentDateMillisecond - idleSinceDateMillisecond) /
+            TOTAL_MILLISECONDS_IN_A_HOUR
     );
     const idleDays = Math.round(differenceInHours / 24);
 
