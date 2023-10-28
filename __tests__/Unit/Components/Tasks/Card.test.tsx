@@ -535,8 +535,7 @@ describe('Task card', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Card {...DEFAULT_PROPS} />
-            </Provider>,
-            {}
+            </Provider>
         );
         const spanElement = screen.getByTestId('task-status');
         expect(spanElement).toHaveTextContent('Completed');
