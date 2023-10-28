@@ -1,16 +1,14 @@
 import { TOTAL_MILLISECONDS_IN_A_HOUR } from '@/constants/date';
 
 const getIdleSinceText = (idleSince: string) => {
-    const presentDate = new Date();
-    const idleSinceDate = new Date(idleSince);
+    const presentDateInUtc = new Date().toUTCString();
+    const idleSinceDateInUtc = new Date(idleSince).toUTCString();
 
-    const presentDateInUtc = presentDate.toUTCString();
-    const idleSinceDateInUtc = idleSinceDate.toUTCString();
+    const presentDate = new Date(presentDateInUtc).valueOf();
+    const idleSinceDate = new Date(idleSinceDateInUtc).valueOf();
 
     const differenceInHours = Math.round(
-        (new Date(presentDateInUtc).valueOf() -
-            new Date(idleSinceDateInUtc).valueOf()) /
-            TOTAL_MILLISECONDS_IN_A_HOUR
+        (presentDate - idleSinceDate) / TOTAL_MILLISECONDS_IN_A_HOUR
     );
     const idealDays = Math.round(differenceInHours / 24);
 
