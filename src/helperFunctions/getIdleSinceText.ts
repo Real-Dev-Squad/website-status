@@ -10,15 +10,15 @@ const getIdleSinceText = (idleSince: string) => {
     const differenceInHours = Math.round(
         (presentDate - idleSinceDate) / TOTAL_MILLISECONDS_IN_A_HOUR
     );
-    const idealDays = Math.round(differenceInHours / 24);
+    const idleDays = Math.round(differenceInHours / 24);
 
-    if (idealDays <= 0) {
+    if (idleDays <= 0) {
         return `${differenceInHours} hours ago`;
-    } else if (idealDays === 1) {
-        return `${idealDays} day ago`;
+    } else if (idleDays === 1) {
+        return `${idleDays} day ago`;
     }
 
-    return `${idealDays} days ago`;
+    return `${idleDays} days ago`;
 };
 
 export default getIdleSinceText;
