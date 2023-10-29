@@ -64,7 +64,7 @@ describe('Issues Action Form Component', () => {
             name: /Assign Task/i,
         });
         const assigneeLabel = screen.getByTestId('assignee-label');
-        const assignee = screen.getByPlaceholderText('Assignee');
+        const assignee = screen.getByPlaceholderText('Type to search Assignee');
         const endsOn = screen.getByLabelText(/Ends on:/);
         const status = screen.getByLabelText(/Status:/);
         const options = screen.getAllByRole('option');
@@ -87,7 +87,7 @@ describe('Issues Action Form Component', () => {
             />
         );
         const assignee = screen.getByPlaceholderText(
-            'Assignee'
+            'Type to search Assignee'
         ) as HTMLInputElement;
         const status = screen.getByLabelText(/Status:/) as HTMLSelectElement;
         const options = screen.getAllByRole(
@@ -119,7 +119,7 @@ describe('Issues Action Form Component', () => {
             />
         );
         const assignee = screen.getByPlaceholderText(
-            'Assignee'
+            'Type to search Assignee'
         ) as HTMLInputElement;
         let notFoundTextNode = null;
         fireEvent.change(assignee, { target: { value: 123 } });
