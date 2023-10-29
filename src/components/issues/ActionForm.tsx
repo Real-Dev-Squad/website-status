@@ -148,6 +148,7 @@ const ActionForm: FC<ActionFormProps> = ({
                             assigneeName={state.assignee}
                             showSuggestion={showSuggestion}
                             handleClick={handleAssignment}
+                            placeholderText="Type to search Assignee"
                             handleAssignment={(e) => {
                                 setShowSuggestion(true);
                                 dispatch({
