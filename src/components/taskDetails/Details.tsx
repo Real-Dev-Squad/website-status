@@ -1,13 +1,10 @@
 import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
-import { useRouter } from 'next/router';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
+import extractRepoName from '@/utils/extractRepoName';
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
-    const router = useRouter();
-    const { query } = router;
-    const isDevModeEnabled = query.dev === 'true' ? true : false;
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
 
@@ -31,7 +28,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                 className={classNames.detailValue}
                 style={{ color: color ?? 'black' }}
             >
-                {isDevModeEnabled && isGitHubLink && value ? (
+                {isGitHubLink && value ? (
                     <a
                         className={classNames.gitLink}
                         href={gitHubIssueLink}
@@ -40,7 +37,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                         aria-label="Open GitHub Issue"
                         title={value}
                     >
-                        {'Issue #' + issueNumber}
+                        {issueNumber ? `${extractRepoName(value)}` : value}
                     </a>
                 ) : (
                     <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
