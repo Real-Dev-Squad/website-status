@@ -1,28 +1,25 @@
-import {
-    TOTAL_MILLISECONDS_IN_A_DAY,
-    TOTAL_MILLISECONDS_IN_A_HOUR,
-} from '@/constants/date';
+import { TOTAL_MILLISECONDS_IN_A_HOUR } from '@/constants/date';
 
 const getIdleSinceText = (idleSince: string) => {
-    const presentDate = new Date();
-    const idleSinceDate = new Date(idleSince);
-    const differenceInDay = Math.round(
-        (presentDate.setUTCHours(0, 0, 0, 0) -
-            idleSinceDate.setUTCHours(0, 0, 0, 0)) /
-            TOTAL_MILLISECONDS_IN_A_DAY
-    );
-    const differenceInHours = Math.abs(
-        Math.round(
-            (presentDate.getTime() - parseInt(idleSince)) /
-                TOTAL_MILLISECONDS_IN_A_HOUR
-        )
-    );
+    const presentDateInUtc = new Date().toUTCString();
+    const idleSinceDateInUtc = new Date(idleSince).toUTCString();
 
-    if (differenceInDay > 1) {
-        return `${differenceInDay} days ago`;
-    } else {
+    const presentDateMillisecond = new Date(presentDateInUtc).valueOf();
+    const idleSinceDateMillisecond = new Date(idleSinceDateInUtc).valueOf();
+
+    const differenceInHours = Math.round(
+        (presentDateMillisecond - idleSinceDateMillisecond) /
+            TOTAL_MILLISECONDS_IN_A_HOUR
+    );
+    const idleDays = Math.round(differenceInHours / 24);
+
+    if (idleDays <= 0) {
         return `${differenceInHours} hours ago`;
+    } else if (idleDays === 1) {
+        return `${idleDays} day ago`;
     }
+
+    return `${idleDays} days ago`;
 };
 
 export default getIdleSinceText;
