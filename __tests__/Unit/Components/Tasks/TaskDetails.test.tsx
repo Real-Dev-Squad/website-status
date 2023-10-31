@@ -145,6 +145,18 @@ describe('TaskDetails Page', () => {
             );
         });
     });
+
+    it('Renders N/A when link is empty or undefined', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Details detailType={'Link'} value={undefined} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('N/A')).toBeInTheDocument();
+        });
+    });
+
     it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
