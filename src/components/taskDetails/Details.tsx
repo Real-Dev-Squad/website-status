@@ -7,19 +7,7 @@ import extractRepoName from '@/utils/extractRepoName';
 const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
-
     const gitHubIssueLink = isGitHubLink ? value : undefined;
-    const issueNumberRegex = /\/issues\/(\d+)/;
-
-    const extractIssueNumber = () => {
-        const issueNumberMatch = value?.match(issueNumberRegex);
-        if (issueNumberMatch && issueNumberMatch.length > 1) {
-            return issueNumberMatch[1];
-        }
-        return null;
-    };
-
-    const issueNumber = extractIssueNumber();
 
     return (
         <div className={classNames.detailsContainer}>
@@ -37,7 +25,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                         aria-label="Open GitHub Issue"
                         title={value}
                     >
-                        {issueNumber ? `${extractRepoName(value)}` : value}
+                        {isGitHubLink ? `${extractRepoName(value)}` : value}
                     </a>
                 ) : (
                     <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
