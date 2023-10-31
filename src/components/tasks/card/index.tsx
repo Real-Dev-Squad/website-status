@@ -1,7 +1,6 @@
 import { FC, useState, useEffect, useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
-import DevFeature from '@/components/DevFeature';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { CardProps } from '@/interfaces/task.type';
@@ -565,15 +564,12 @@ const Card: FC<CardProps> = ({
                 </div>
                 {/* EDIT task status */}
                 <div className={classNames.taskStatusEditMode}>
-                    {isEditable && (
+                    {isEditable ? (
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
                         />
-                    )}
-                </div>
-                <DevFeature>
-                    {cardDetails.status && (
+                    ) : (
                         <div className={classNames.statusContainer} style={{}}>
                             <p className={classNames.cardSpecialFont}>
                                 Status:
@@ -590,7 +586,7 @@ const Card: FC<CardProps> = ({
                             </p>
                         </div>
                     )}
-                </DevFeature>
+                </div>
             </div>
 
             <div className={classNames.contributor}>
