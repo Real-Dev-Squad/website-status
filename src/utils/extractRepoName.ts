@@ -1,18 +1,8 @@
-function extractRepoName(issueUrl: string): string | null {
-    const regex = /https:\/\/github\.com\/([^/]+)\/([^/]+)\/issues\/(\d+)/;
-    const match = issueUrl.match(regex);
-
-    if (match && match.length === 4) {
-        const repoName = match[2]
-            .replace(/-/g, ' ')
-            .split(' ')
-            .map((word) => word.charAt(0) + word.slice(1))
-            .join(' ');
-        const issueNumber = match[3];
-        return `${repoName} #${issueNumber}`;
-    }
-
-    return null;
+function extractRepoName(issueUrl: string) {
+    const match = issueUrl.match(
+        /github\.com\/([^/]+)\/([^/]+)\/issues\/(\d+)/
+    );
+    return match ? `${match[2].replace(/-/g, ' ')} #${match[3]}` : null;
 }
 
 export default extractRepoName;
