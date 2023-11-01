@@ -74,9 +74,12 @@ const ActionForm: FC<ActionFormProps> = ({
         getDateRelativeToToday(2, 'formattedDate')
     );
     const [showSuggestion, setShowSuggestion] = useState(false);
-    const { data: userData } = useGetAllUsersByUsernameQuery({
-        searchString: state.assignee,
-    });
+    const { data: userData } = useGetAllUsersByUsernameQuery(
+        {
+            searchString: state.assignee,
+        },
+        { skip: !state.assignee }
+    );
 
     useEffect(() => {
         setIsLoading(loading);
