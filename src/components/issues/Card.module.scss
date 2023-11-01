@@ -83,7 +83,7 @@ $card-text: #78716c;
 
 .assign_label {
     line-height: 1rem;
-    margin-bottom: 0;
+    margin-bottom: 2px;
     font-size: 0.8rem;
     color: #a9a9a9;
     font-weight: 700;
@@ -131,7 +131,9 @@ $card-text: #78716c;
 }
 .suggestions_container {
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
 }
 
 .suggestions_container_disabled {
