@@ -39,7 +39,7 @@ export const BACKEND_TASK_STATUS = {
     ASSIGNED,
     IN_PROGRESS,
     BLOCKED,
-    COMPLETED,
+    DONE,
     NEEDS_REVIEW,
     IN_REVIEW,
     APPROVED,
@@ -49,5 +49,4 @@ export const BACKEND_TASK_STATUS = {
     MERGED,
     RELEASED,
     VERIFIED,
-    DONE,
 };
