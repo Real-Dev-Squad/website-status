@@ -123,13 +123,10 @@ describe('TaskDetails Page', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         await waitFor(() => {
-            const gitLink = screen.getByText('Issue #000');
+            const gitLink = screen.getByText('sample repo #000');
             expect(gitLink).toBeInTheDocument();
         });
     });
@@ -137,13 +134,10 @@ describe('TaskDetails Page', () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         await waitFor(() => {
-            const link = screen.getByText('Issue #000');
+            const link = screen.getByText('sample repo #000');
             fireEvent.click(link);
             expect(link).toHaveAttribute(
                 'href',
@@ -151,6 +145,18 @@ describe('TaskDetails Page', () => {
             );
         });
     });
+
+    it('Renders N/A when link is empty or undefined', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Details detailType={'Link'} value={undefined} />
+            </Provider>
+        );
+        await waitFor(() => {
+            expect(getByText('N/A')).toBeInTheDocument();
+        });
+    });
+
     it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
