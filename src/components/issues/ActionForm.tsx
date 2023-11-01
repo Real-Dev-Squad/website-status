@@ -13,6 +13,7 @@ import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
 import { DUMMY_PROFILE } from '@/constants/display-sections';
 import { getDateRelativeToToday } from '@/utils/time';
+import { useRouter } from 'next/router';
 
 type ActionFormReducer = {
     assignee: string;
@@ -28,7 +29,6 @@ type ActionFormProps = {
     taskAssignee: string | undefined;
 };
 
-const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 const endTimeStamp: number = getDateRelativeToToday(2, 'timestamp') as number;
 const initialState = {
     assignee: '',
@@ -66,6 +66,11 @@ const ActionForm: FC<ActionFormProps> = ({
     createTask,
     updateTask,
 }) => {
+    const router = useRouter();
+    const devMode = router.query.dev === 'true' ? true : false;
+    const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
+        ([key]) => !(devMode === true && key === 'COMPLETED')
+    );
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [assignee, setAssignee] = useState(taskAssignee);
     const { data, isLoading: loading } = useGetTaskDetailsQuery(taskId);
