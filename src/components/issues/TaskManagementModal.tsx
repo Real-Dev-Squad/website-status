@@ -5,6 +5,7 @@ import Modal from '../Modal';
 import TaskRequestForm from './TaskRequestForm';
 import ActionForm from './ActionForm';
 import { TaskData, TaskRequestData } from '@/components/issues/constants';
+import Image from 'next/image';
 
 type TaskManagementProps = {
     isUserAuthorized: boolean;
@@ -43,20 +44,22 @@ const TaskManagementModal: FC<TaskManagementProps> = ({
         <>
             <Modal isOpen={isOpen} toggle={toggle}>
                 <div className={styles.taskTabs}>
-                    <button
-                        onClick={() =>
-                            handleTaskRequestTabChange(
-                                REQUEST_TABS.CREATION_REQUEST
-                            )
-                        }
-                        className={`${styles.taskTab} ${
-                            selectedTab === REQUEST_TABS.CREATION_REQUEST
-                                ? styles.highlightTaskTab
-                                : ''
-                        }`}
-                    >
-                        Task Request
-                    </button>
+                    {(!requestId || isUserAuthorized) && (
+                        <button
+                            onClick={() =>
+                                handleTaskRequestTabChange(
+                                    REQUEST_TABS.CREATION_REQUEST
+                                )
+                            }
+                            className={`${styles.taskTab} ${
+                                selectedTab === REQUEST_TABS.CREATION_REQUEST
+                                    ? styles.highlightTaskTab
+                                    : ''
+                            }`}
+                        >
+                            Task Request
+                        </button>
+                    )}
                     {isUserAuthorized && (
                         <button
                             onClick={() =>
@@ -73,6 +76,14 @@ const TaskManagementModal: FC<TaskManagementProps> = ({
                             Task Assignment
                         </button>
                     )}
+                    <button onClick={toggle} className={styles.modalCloseIcon}>
+                        <Image
+                            src="/cancel.png"
+                            alt="close modal icon"
+                            width={20}
+                            height={20}
+                        />
+                    </button>
                 </div>
                 {selectedTab === REQUEST_TABS.CREATION_REQUEST && (
                     <TaskRequestForm

@@ -1,7 +1,7 @@
 @use '../../styles/issues.module.scss' as styles;
 
 $card-text: #78716c;
-
+$color-grey: #a9a9a9;
 .card {
     padding: 1rem;
     width: 100%;
@@ -66,6 +66,35 @@ $card-text: #78716c;
     gap: 1rem;
 }
 
+.modalCloseIcon {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: -12px;
+    top: -6px;
+    cursor: pointer;
+}
+.clipboardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trackMessage {
+    margin: 0;
+    font-size: 0.8rem;
+    color: $color-grey;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.trackMessageContainer {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
 .assign {
     line-height: 2rem;
     display: inline-block;
