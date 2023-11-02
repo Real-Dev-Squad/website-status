@@ -112,7 +112,7 @@ $color-grey: #a9a9a9;
 
 .assign_label {
     line-height: 1rem;
-    margin-bottom: 0;
+    margin-bottom: 2px;
     font-size: 0.8rem;
     color: #a9a9a9;
     font-weight: 700;
@@ -160,7 +160,9 @@ $color-grey: #a9a9a9;
 }
 .suggestions_container {
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
 }
 
 .suggestions_container_disabled {

@@ -140,6 +140,7 @@ const ActionForm: FC<ActionFormProps> = ({
                         <label
                             htmlFor="assignee"
                             className={styles.assign_label}
+                            data-testid="assignee-label"
                         >
                             Assignee:
                         </label>
@@ -147,6 +148,7 @@ const ActionForm: FC<ActionFormProps> = ({
                             assigneeName={state.assignee}
                             showSuggestion={showSuggestion}
                             handleClick={handleAssignment}
+                            placeholderText="Type to search Assignee"
                             handleAssignment={(e) => {
                                 setShowSuggestion(true);
                                 dispatch({

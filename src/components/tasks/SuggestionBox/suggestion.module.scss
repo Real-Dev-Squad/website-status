@@ -1,3 +1,5 @@
+$black-border-color: #1f1f1f;
+
 .suggestions {
     border: 1px solid #999;
     list-style: none;
@@ -52,7 +54,7 @@
     display: inline-block;
     padding: 0 4px 0 4px;
     height: 2rem;
-    border: 1px solid #1f1f1f;
+    border: 1px solid $black-border-color;
     border-radius: 4px;
     outline: none;
 }
