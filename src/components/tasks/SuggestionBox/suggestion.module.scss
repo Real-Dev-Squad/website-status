@@ -1,3 +1,5 @@
+$black-border-color: #1f1f1f;
+
 .suggestions {
     border: 1px solid #999;
     list-style: none;
@@ -43,14 +45,18 @@
 .suggestionDiv {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 
 .suggestionsInput {
-    font-size: 1.3rem;
     font-weight: 400;
-    width: 7rem;
-    height: 2.5rem;
+    width: 100%;
     display: inline-block;
+    padding: 0 4px 0 4px;
+    height: 2rem;
+    border: 1px solid $black-border-color;
+    border-radius: 4px;
+    outline: none;
 }
 
 .suggestions-selected {
@@ -60,7 +66,7 @@
 .no-suggestions {
     color: #f84040;
     position: absolute;
-    top: 40px;
     z-index: 100;
     min-width: 5rem;
+    font-size: 0.8rem;
 }

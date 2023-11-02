@@ -17,6 +17,7 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
             showSuggestion,
             handleAssignment,
             setShowSuggestion,
+            placeholderText = 'Assignee',
         },
         ref
     ) => {
@@ -87,7 +88,7 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
                     data-testid="assignee-input"
                     ref={ref}
                     value={assigneeName}
-                    placeholder="Assignee"
+                    placeholder={placeholderText}
                     className={classNames.suggestionsInput}
                     onChange={(e) => handleAssignment(e)}
                     onKeyDown={handelKeyboardInput}
