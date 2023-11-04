@@ -10,6 +10,8 @@ import {
 import { ISSUES_URL } from '@/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
+import { useRouter } from 'next/router';
+import { getQueryString } from '@/utils/getQueryString';
 
 type SearchFieldProps = {
     onSearchTextSubmitted: (searchString: string) => void;
@@ -17,9 +19,21 @@ type SearchFieldProps = {
 };
 
 const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
+    const router = useRouter();
+    const dev = router?.query?.dev;
     const [searchText, setSearchText] = useState<string>('');
     const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
+    };
+
+    const queryParamValue = getQueryString(searchText);
+    const updateQueryString = () => {
+        router.push({
+            query: {
+                ...router.query,
+                q: `search:${queryParamValue.text.toLowerCase()}`,
+            },
+        });
     };
 
     return (
@@ -28,6 +42,11 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
             onSubmit={(e) => {
                 e.preventDefault();
                 onSearchTextSubmitted(searchText);
+                {
+                    if (dev === 'true') {
+                        updateQueryString();
+                    }
+                }
             }}
         >
             <input
@@ -47,6 +66,17 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
 };
 
 const Issues: FC = () => {
+    let splittedQueryParam = '';
+    const router = useRouter();
+    const dev = router?.query?.dev;
+    if (dev === 'true') {
+        const urlQueryParam = router?.query?.q as string;
+        if (urlQueryParam) {
+            const splittedQueryParamArr = urlQueryParam.split(':');
+            splittedQueryParam = splittedQueryParamArr[1];
+        }
+    }
+
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -81,6 +111,12 @@ const Issues: FC = () => {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (dev === 'true' && splittedQueryParam) {
+            fetchIssues(splittedQueryParam);
+        }
+    }, [splittedQueryParam]);
 
     let renderElement = <p>Loading...</p>;
 
