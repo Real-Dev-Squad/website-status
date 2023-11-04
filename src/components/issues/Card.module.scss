@@ -51,7 +51,15 @@ $card-text: #78716c;
     min-height: 22rem;
     width: 20rem;
 }
-
+.successContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    min-height: 22rem;
+    width: 20rem;
+    align-items: center;
+    gap: 1rem;
+}
 .form_container {
     display: flex;
     flex-direction: column;
@@ -67,13 +75,15 @@ $card-text: #78716c;
     border-radius: 2px;
     min-height: 5rem;
     height: 6rem;
+    font: inherit;
+    font-size: 0.8rem;
     border: none;
     resize: none;
 }
 
 .assign_label {
     line-height: 1rem;
-    margin-bottom: 0;
+    margin-bottom: 2px;
     font-size: 0.8rem;
     color: #a9a9a9;
     font-weight: 700;
@@ -121,7 +131,9 @@ $card-text: #78716c;
 }
 .suggestions_container {
     position: relative;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
 }
 
 .suggestions_container_disabled {

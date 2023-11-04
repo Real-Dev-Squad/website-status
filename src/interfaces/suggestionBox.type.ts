@@ -22,4 +22,5 @@ export type SuggestionsProps = {
     handleAssignment: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleClick: (userName: string) => void;
     setShowSuggestion: (value: boolean) => void;
+    placeholderText?: string;
 };
