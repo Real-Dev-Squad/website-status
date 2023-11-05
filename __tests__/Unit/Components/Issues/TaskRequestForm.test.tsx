@@ -70,7 +70,9 @@ describe('TaskRequestForm Component', () => {
         );
         const successHeader = screen.getByTestId('task-request-success-header');
         const successImage = screen.getByTestId('task-request-success-image');
-        const successLink = screen.getByTestId('task-request-success-message');
+        const successLink = screen.getByTestId(
+            'task-request-success-link-message'
+        );
         expect(successHeader).toBeInTheDocument();
         expect(successImage).toBeInTheDocument();
         expect(successLink).toBeInTheDocument();
