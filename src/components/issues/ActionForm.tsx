@@ -76,9 +76,12 @@ const ActionForm: FC<ActionFormProps> = ({
         getDateRelativeToToday(2, 'formattedDate')
     );
     const [showSuggestion, setShowSuggestion] = useState(false);
-    const { data: userData } = useGetAllUsersByUsernameQuery({
-        searchString: state.assignee,
-    });
+    const { data: userData } = useGetAllUsersByUsernameQuery(
+        {
+            searchString: state.assignee,
+        },
+        { skip: !state.assignee }
+    );
 
     useEffect(() => {
         setIsLoading(loading);
@@ -140,6 +143,7 @@ const ActionForm: FC<ActionFormProps> = ({
                         <label
                             htmlFor="assignee"
                             className={styles.assign_label}
+                            data-testid="assignee-label"
                         >
                             Assignee:
                         </label>
@@ -147,6 +151,7 @@ const ActionForm: FC<ActionFormProps> = ({
                             assigneeName={state.assignee}
                             showSuggestion={showSuggestion}
                             handleClick={handleAssignment}
+                            placeholderText="Type to search Assignee"
                             handleAssignment={(e) => {
                                 setShowSuggestion(true);
                                 dispatch({

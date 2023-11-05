@@ -63,11 +63,13 @@ describe('Issues Action Form Component', () => {
         const submitButton = screen.getByRole('button', {
             name: /Assign Task/i,
         });
-        const assignee = screen.getByPlaceholderText('Assignee');
+        const assigneeLabel = screen.getByTestId('assignee-label');
+        const assignee = screen.getByPlaceholderText('Type to search Assignee');
         const endsOn = screen.getByLabelText(/Ends on:/);
         const status = screen.getByLabelText(/Status:/);
         const options = screen.getAllByRole('option');
         expect(submitButton).toBeInTheDocument();
+        expect(assigneeLabel).toBeInTheDocument();
         expect(assignee).toBeInTheDocument();
         expect(endsOn).toBeInTheDocument();
         expect(status).toBeInTheDocument();
@@ -85,7 +87,7 @@ describe('Issues Action Form Component', () => {
             />
         );
         const assignee = screen.getByPlaceholderText(
-            'Assignee'
+            'Type to search Assignee'
         ) as HTMLInputElement;
         const status = screen.getByLabelText(/Status:/) as HTMLSelectElement;
         const options = screen.getAllByRole(
@@ -117,7 +119,7 @@ describe('Issues Action Form Component', () => {
             />
         );
         const assignee = screen.getByPlaceholderText(
-            'Assignee'
+            'Type to search Assignee'
         ) as HTMLInputElement;
         let notFoundTextNode = null;
         fireEvent.change(assignee, { target: { value: 123 } });

@@ -82,10 +82,6 @@ const Issues: FC = () => {
         }
     };
 
-    useEffect(() => {
-        fetchIssues();
-    }, []);
-
     let renderElement = <p>Loading...</p>;
 
     if (!isLoading) {
