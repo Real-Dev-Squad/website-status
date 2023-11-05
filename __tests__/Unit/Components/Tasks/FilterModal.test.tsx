@@ -129,10 +129,9 @@ describe('FilterModal', () => {
         expect(inProgressButton).not.toHaveClass('status-button-active');
     });
 
-    test('renders the modal with correct active tab when dev is true', () => {
+    test('renders the modal with correct active tab', () => {
         render(
             <FilterModal
-                dev={true}
                 tabs={[Tab.UNASSIGNED, Tab.DONE]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.DONE}
