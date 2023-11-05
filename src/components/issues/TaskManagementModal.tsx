@@ -78,7 +78,7 @@ const TaskManagementModal: FC<TaskManagementProps> = ({
                     )}
                     <button onClick={toggle} className={styles.modalCloseIcon}>
                         <Image
-                            src="/cancel.png"
+                            src="/cancel-icon.svg"
                             alt="close modal icon"
                             width={20}
                             height={20}
