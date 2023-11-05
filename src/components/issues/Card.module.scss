@@ -65,7 +65,6 @@ $color-grey: #a9a9a9;
     flex-direction: column;
     gap: 1rem;
 }
-
 .modalCloseIcon {
     appearance: none;
     background-color: transparent;
@@ -75,12 +74,6 @@ $color-grey: #a9a9a9;
     top: -18px;
     cursor: pointer;
 }
-.clipboardContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .trackMessage {
     margin: 0;
     font-size: 0.8rem;
@@ -88,12 +81,17 @@ $color-grey: #a9a9a9;
     font-weight: 700;
     margin-bottom: 2px;
 }
-
+.hyperlinkOpen {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
 .trackMessageContainer {
     display: flex;
     gap: 4px;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
 }
 .assign {
     line-height: 2rem;

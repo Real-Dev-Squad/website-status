@@ -3,7 +3,6 @@ import styles from '@/components/issues/Card.module.scss';
 import { reducerAction } from '@/types/ProgressUpdates';
 import { Loader } from '../tasks/card/Loader';
 import { getDateRelativeToToday } from '@/utils/time';
-import ClipboardCopy from '../Inputs/ClipboardCopy';
 import Image from 'next/image';
 
 type ActionFormReducer = {
@@ -160,27 +159,18 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                         width={128}
                         height={128}
                     />
-                    <div className={styles.clipboardContainer}>
-                        <div className={styles.trackMessageContainer}>
-                            <p className={styles.trackMessage}>
-                                Track your request using this link
-                            </p>
-                            <a
-                                target="_blank"
-                                href={`https://dashboard.realdevsquad.com/taskRequests/details/?id=${requestId}`}
-                                rel="noreferrer"
-                            >
-                                <Image
-                                    src="/external-link.svg"
-                                    alt="Task Request successful"
-                                    width={16}
-                                    height={16}
-                                />{' '}
-                            </a>
-                        </div>
-                        <ClipboardCopy
-                            copyText={`https://dashboard.realdevsquad.com/taskRequests/details/?id=${requestId}`}
-                        />
+                    <div className={styles.trackMessageContainer}>
+                        <p className={styles.trackMessage}>
+                            Track your request
+                        </p>
+                        <a
+                            className={styles.hyperlinkOpen}
+                            target="_blank"
+                            href={`https://dashboard.realdevsquad.com/taskRequests/details/?id=${requestId}`}
+                            rel="noreferrer"
+                        >
+                            here &gt;
+                        </a>
                     </div>
                 </div>
             )}
