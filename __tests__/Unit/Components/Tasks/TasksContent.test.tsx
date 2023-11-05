@@ -94,7 +94,7 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
-    test('display tasks to be rendered on /tasks page', async () => {
+    test('display tasks to be rendered on /tasks page when dev is true', async () => {
         const { findByText } = renderWithRouter(
             <Provider store={store()}>
                 <TasksContent />
