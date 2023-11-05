@@ -4,6 +4,7 @@ import { reducerAction } from '@/types/ProgressUpdates';
 import { Loader } from '../tasks/card/Loader';
 import { getDateRelativeToToday } from '@/utils/time';
 import Image from 'next/image';
+import { TASK_REQUESTS_DETAILS_URL } from '@/constants/url';
 
 type ActionFormReducer = {
     startedOn: number | string;
@@ -59,7 +60,10 @@ const TaskRequestForm: FC<ActionFormProps> = ({
         await createTaskRequest(state);
         setIsLoading(false);
     };
-
+    const taskRequestIdSearchParam = new URLSearchParams();
+    taskRequestIdSearchParam.append('id', requestId || '');
+    const dashboardTaskRequestUrl = new URL(TASK_REQUESTS_DETAILS_URL);
+    dashboardTaskRequestUrl.search = taskRequestIdSearchParam.toString();
     return (
         <div>
             {!requestId ? (
@@ -151,22 +155,29 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                 </form>
             ) : (
                 <div className={styles.successContainer}>
-                    <h3>Task Request successful!</h3>
+                    <h3 data-testid="task-request-success-header">
+                        Task Request successful!
+                    </h3>
                     <Image
+                        data-testid="task-request-success-image"
                         className={styles.successImage}
                         src="/check-new.svg"
                         alt="Task Request successful"
                         width={128}
                         height={128}
                     />
-                    <div className={styles.trackMessageContainer}>
+                    <div
+                        data-testid="task-request-success-link-message"
+                        className={styles.trackMessageContainer}
+                    >
                         <p className={styles.trackMessage}>
                             Track your request
                         </p>
                         <a
+                            data-testid="task-request-success-link"
                             className={styles.hyperlinkOpen}
                             target="_blank"
-                            href={`https://dashboard.realdevsquad.com/taskRequests/details/?id=${requestId}`}
+                            href={dashboardTaskRequestUrl.toString()}
                             rel="noreferrer"
                         >
                             here &gt;
