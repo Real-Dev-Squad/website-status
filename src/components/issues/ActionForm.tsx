@@ -67,9 +67,9 @@ const ActionForm: FC<ActionFormProps> = ({
     updateTask,
 }) => {
     const router = useRouter();
-    const devMode = router.query.dev === 'true' ? true : false;
+    const isDevMode = router.query.dev === 'true' ? true : false;
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) => !(devMode === true && key === 'COMPLETED')
+        ([key]) => !(isDevMode === true && key === 'COMPLETED')
     );
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [assignee, setAssignee] = useState(taskAssignee);
