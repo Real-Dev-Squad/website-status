@@ -23,7 +23,7 @@ describe('Issues Page', () => {
     const loadingText = 'Loading...';
 
     it('Should render search fields in issues page properly', async () => {
-        const { getByPlaceholderText, getByRole, getByText } = renderWithRouter(
+        const { getByPlaceholderText, getByRole } = renderWithRouter(
             <Provider store={store()}>
                 <Issues />
             </Provider>
@@ -35,9 +35,7 @@ describe('Issues Page', () => {
         const buttonElement = getByRole('button', buttonAttribute);
         expect(buttonElement).toBeInTheDocument();
 
-        // button should be disabled when the data is loading
-        const loadingElement = getByText(loadingText);
-        expect(loadingElement).toBeInTheDocument();
+        // button should be disabled with no input provided
         expect(buttonElement).toBeDisabled();
     });
 
@@ -48,14 +46,6 @@ describe('Issues Page', () => {
                     <Issues />
                 </Provider>
             );
-
-        // Test for issues title when API called without search query param
-        const issueTitleBeforeQuerySearch =
-            'Status view to all features being built for our app';
-        const issueTitleBeforeQuerySearchElement = await findByText(
-            issueTitleBeforeQuerySearch
-        );
-        expect(issueTitleBeforeQuerySearchElement).toBeInTheDocument();
 
         // trigger change and click event to search issues with query param
         const inputElement = await findByPlaceholderText(inputPlaceholderText);

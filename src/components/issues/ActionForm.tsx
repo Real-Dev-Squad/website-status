@@ -29,9 +29,11 @@ type ActionFormProps = {
 };
 
 const endTimeStamp: number = getDateRelativeToToday(2, 'timestamp') as number;
+const startTimeStamp: number = getDateRelativeToToday(0, 'timestamp') as number;
+
 const initialState = {
     assignee: '',
-    startedOn: undefined,
+    startedOn: startTimeStamp,
     endsOn: endTimeStamp,
     status: 'ASSIGNED',
 };
@@ -76,9 +78,12 @@ const ActionForm: FC<ActionFormProps> = ({
         getDateRelativeToToday(2, 'formattedDate')
     );
     const [showSuggestion, setShowSuggestion] = useState(false);
-    const { data: userData } = useGetAllUsersByUsernameQuery({
-        searchString: state.assignee,
-    });
+    const { data: userData } = useGetAllUsersByUsernameQuery(
+        {
+            searchString: state.assignee,
+        },
+        { skip: !state.assignee }
+    );
 
     useEffect(() => {
         setIsLoading(loading);
@@ -137,10 +142,18 @@ const ActionForm: FC<ActionFormProps> = ({
                                 : styles.suggestions_container
                         }
                     >
+                        <label
+                            htmlFor="assignee"
+                            className={styles.assign_label}
+                            data-testid="assignee-label"
+                        >
+                            Assignee:
+                        </label>
                         <Suggestions
                             assigneeName={state.assignee}
                             showSuggestion={showSuggestion}
                             handleClick={handleAssignment}
+                            placeholderText="Type to search Assignee"
                             handleAssignment={(e) => {
                                 setShowSuggestion(true);
                                 dispatch({
@@ -166,6 +179,10 @@ const ActionForm: FC<ActionFormProps> = ({
                                 id="started-on"
                                 className={` ${styles.assign} ${styles.input_date}`}
                                 type="date"
+                                defaultValue={getDateRelativeToToday(
+                                    0,
+                                    'formattedDate'
+                                )}
                                 onChange={(e) => {
                                     dispatch({
                                         type: 'startedOn',
