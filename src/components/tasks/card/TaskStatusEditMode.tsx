@@ -5,21 +5,23 @@ import classNames from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
-import { useRouter } from 'next/router';
 
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
+    isDevMode: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => status.split('_').join(' ');
 
-const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
-    const router = useRouter();
-    const devMode = router.query.dev === 'true' ? true : false;
+const TaskStatusEditMode = ({
+    task,
+    setEditedTaskDetails,
+    isDevMode,
+}: Props) => {
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) => !(devMode === true && key === 'COMPLETED')
+        ([key]) => !(isDevMode && key === 'COMPLETED')
     );
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
