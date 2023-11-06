@@ -2,6 +2,7 @@
 
 $card-text: #78716c;
 $color-grey: #a9a9a9;
+$dark-blue-transparent: rgb(29 18 255 / 10%);
 .card {
     padding: 1rem;
     width: 100%;
@@ -113,7 +114,7 @@ $color-grey: #a9a9a9;
     display: inline-block;
 }
 .description_box {
-    background-color: rgb(29 18 255 / 10%);
+    background-color: $dark-blue-transparent;
     border-radius: 2px;
     min-height: 5rem;
     height: 6rem;
@@ -121,6 +122,15 @@ $color-grey: #a9a9a9;
     font-size: 0.8rem;
     border: none;
     resize: none;
+    border-radius: 4px;
+    line-height: 1.25rem;
+    padding: 0.625rem;
+    border-width: 1px;
+    border: 1px solid $dark-blue-transparent;
+}
+
+.description_box::placeholder {
+    color: $color-grey;
 }
 
 .assign_label {
