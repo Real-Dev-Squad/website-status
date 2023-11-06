@@ -23,8 +23,8 @@ type ActionFormReducer = {
 
 type ActionFormProps = {
     taskId: string;
-    createTask: (data: ActionFormReducer) => Promise<void>;
-    updateTask: (data: ActionFormReducer, taskId: string) => Promise<void>;
+    createTask?: (data: ActionFormReducer) => Promise<void>;
+    updateTask?: (data: ActionFormReducer, taskId: string) => Promise<void>;
     taskAssignee: string | undefined;
 };
 
@@ -106,7 +106,7 @@ const ActionForm: FC<ActionFormProps> = ({
     const handleCreateTask = async (e: MouseEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        await createTask(state);
+        if (createTask) await createTask(state);
         setIsLoading(false);
     };
 
@@ -114,7 +114,7 @@ const ActionForm: FC<ActionFormProps> = ({
         e.preventDefault();
         setIsLoading(true);
         setShowSuggestion(false);
-        await updateTask(state, taskId);
+        if (updateTask) await updateTask(state, taskId);
         setIsLoading(false);
     };
 

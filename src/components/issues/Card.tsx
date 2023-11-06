@@ -14,6 +14,7 @@ import { AVAILABLE } from '@/constants/task-status';
 import { TaskData, TaskRequestData } from '@/components/issues/constants';
 import { DEFAULT_TASK_PRIORITY } from '@/constants/constants';
 import TaskManagementModal from './TaskManagementModal';
+import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
@@ -24,11 +25,12 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const devMode = router.query.dev === 'true' ? true : false;
     const { data: userData, isUserAuthorized } = useUserData();
     const [taskId, setTaskId] = useState(issue.taskId);
-    const [requestId, setRequestId] = useState();
+    const [requestId, setRequestId] = useState<string>();
     const [assignee, setAssignee] = useState<string | undefined>();
     const [updateTask] = useUpdateTaskMutation();
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
+    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
+        useAddOrUpdateMutation();
     const isTaskButtonDisabled =
         isLoading || (!isUserAuthorized && (taskExists || !!requestId));
 
@@ -109,22 +111,11 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
         };
         if (!requestData.description) delete requestData.description;
         try {
-            const url = TASK_REQUEST_URL;
-            const { requestPromise } = fetch({
-                url,
-                method: 'post',
-                data: requestData,
-            });
-            const response = await requestPromise;
-            setRequestId(response.data.data.id);
-            toast(SUCCESS, 'Task Request created successfully');
-            toggle();
+            const response = await addOrUpdateTaskRequest(requestData).unwrap();
+            setRequestId(response.data.id);
+            toast(SUCCESS, response.message);
         } catch (error: any) {
-            if ('response' in error) {
-                toast(ERROR, error.response.data.message);
-                return;
-            }
-            toast(ERROR, error.message);
+            toast(ERROR, error.data.message);
         }
     };
 
