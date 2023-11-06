@@ -13,7 +13,6 @@ import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
 import { DUMMY_PROFILE } from '@/constants/display-sections';
 import { getDateRelativeToToday } from '@/utils/time';
-import { useRouter } from 'next/router';
 
 type ActionFormReducer = {
     assignee: string;
@@ -66,10 +65,8 @@ const ActionForm: FC<ActionFormProps> = ({
     createTask,
     updateTask,
 }) => {
-    const router = useRouter();
-    const isDevMode = router.query.dev === 'true' ? true : false;
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) => !(isDevMode === true && key === 'COMPLETED')
+        ([key]) => !(key === 'COMPLETED')
     );
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [assignee, setAssignee] = useState(taskAssignee);

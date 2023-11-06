@@ -9,14 +9,6 @@ const mockedUseGetAllTasksQuery = useGetTaskDetailsQuery as jest.MockedFunction<
     typeof useGetTaskDetailsQuery
 >;
 
-jest.mock('next/router', () => ({
-    useRouter: () => ({
-        query: {
-            dev: 'true',
-        },
-    }),
-}));
-
 describe('Issues Action Form Component', () => {
     let updateTaskSpy: any;
     beforeEach(() => {
