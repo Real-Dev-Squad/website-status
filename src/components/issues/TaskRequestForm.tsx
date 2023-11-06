@@ -104,98 +104,89 @@ const TaskRequestForm: FC<ActionFormProps> = ({
         setIsLoading(false);
     };
 
+    if (requestId) {
+        return <TaskRequestSuccessMessage requestId={requestId} />;
+    }
     return (
-        <div>
-            {!requestId ? (
-                <form className={styles.request_form}>
-                    <div className={styles.form_container}>
-                        <div className={styles.inputContainer}>
-                            <label
-                                htmlFor="starts-on"
-                                className={styles.assign_label}
-                            >
-                                Start date:
-                            </label>
-                            <input
-                                name="starts-on"
-                                id="starts-on"
-                                className={`${styles.assign} ${styles.input_date}`}
-                                type="date"
-                                required
-                                defaultValue={getDateRelativeToToday(
-                                    0,
-                                    'formattedDate'
-                                )}
-                                onChange={(e) =>
-                                    dispatch({
-                                        type: 'startedOn',
-                                        value: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <label
-                                htmlFor="ends-on"
-                                className={styles.assign_label}
-                            >
-                                End date:
-                            </label>
-                            <input
-                                name="ends-on"
-                                id="ends-on"
-                                className={` ${styles.assign} ${styles.input_date}`}
-                                type="date"
-                                defaultValue={getDateRelativeToToday(
-                                    7,
-                                    'formattedDate'
-                                )}
-                                required
-                                onChange={(e) =>
-                                    dispatch({
-                                        type: 'endsOn',
-                                        value: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <label
-                                htmlFor="description"
-                                className={styles.assign_label}
-                            >
-                                Description:
-                            </label>
-                            <textarea
-                                name="description"
-                                id="description"
-                                placeholder="Why do you want this task?"
-                                className={`${styles.assign} ${styles.description_box}`}
-                                onChange={(e) =>
-                                    dispatch({
-                                        type: 'description',
-                                        value: e.target.value,
-                                    })
-                                }
-                            />
-                        </div>
-                    </div>
-                    {isLoading && <Loader />}
-                    <div className={styles.form_container}>
-                        <button
-                            className={styles.card__top__button}
-                            type="submit"
-                            disabled={isLoading || !!requestId || !!taskId}
-                            onClick={handleSubmit}
-                        >
-                            Create Request
-                        </button>
-                    </div>
-                </form>
-            ) : (
-                <TaskRequestSuccessMessage requestId={requestId} />
-            )}
-        </div>
+        <form className={styles.request_form}>
+            <div className={styles.form_container}>
+                <div className={styles.inputContainer}>
+                    <label htmlFor="starts-on" className={styles.assign_label}>
+                        Start date:
+                    </label>
+                    <input
+                        name="starts-on"
+                        id="starts-on"
+                        className={`${styles.assign} ${styles.input_date}`}
+                        type="date"
+                        required
+                        defaultValue={getDateRelativeToToday(
+                            0,
+                            'formattedDate'
+                        )}
+                        onChange={(e) =>
+                            dispatch({
+                                type: 'startedOn',
+                                value: e.target.value,
+                            })
+                        }
+                    />
+                </div>
+                <div className={styles.inputContainer}>
+                    <label htmlFor="ends-on" className={styles.assign_label}>
+                        End date:
+                    </label>
+                    <input
+                        name="ends-on"
+                        id="ends-on"
+                        className={` ${styles.assign} ${styles.input_date}`}
+                        type="date"
+                        defaultValue={getDateRelativeToToday(
+                            7,
+                            'formattedDate'
+                        )}
+                        required
+                        onChange={(e) =>
+                            dispatch({
+                                type: 'endsOn',
+                                value: e.target.value,
+                            })
+                        }
+                    />
+                </div>
+                <div className={styles.inputContainer}>
+                    <label
+                        htmlFor="description"
+                        className={styles.assign_label}
+                    >
+                        Description:
+                    </label>
+                    <textarea
+                        name="description"
+                        id="description"
+                        placeholder="Why do you want this task?"
+                        className={`${styles.assign} ${styles.description_box}`}
+                        onChange={(e) =>
+                            dispatch({
+                                type: 'description',
+                                value: e.target.value,
+                            })
+                        }
+                    />
+                </div>
+            </div>
+            {isLoading && <Loader />}
+            <div className={styles.form_container}>
+                <button
+                    className={styles.card__top__button}
+                    type="submit"
+                    disabled={isLoading || !!requestId || !!taskId}
+                    onClick={handleSubmit}
+                >
+                    Create Request
+                </button>
+            </div>
+        </form>
     );
 };
 
