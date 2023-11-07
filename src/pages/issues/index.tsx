@@ -15,7 +15,7 @@ import { getQueryStringFromInput } from '@/utils/getQueryStringFromInput';
 import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
 
 type SearchFieldProps = {
-    onSearchTextSubmitted: (searchString: string) => void;
+    onSearchTextSubmitted: (querySearchString: string) => void;
     loading: boolean;
 };
 
@@ -27,6 +27,8 @@ const handleFeatureFlag = (dev = '', cb: () => void) => {
 
 const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     const router = useRouter();
+    const dev = router?.query?.dev;
+    const qQueryParam = router?.query?.q;
     const [searchText, setSearchText] = useState<string>('');
     const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
@@ -49,11 +51,11 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     };
 
     useEffect(() => {
-        const searchString = getQueryStringFromUrl(router) as string;
-        handleFeatureFlag(router?.query?.dev?.toString(), () => {
-            setSearchText(searchString);
+        const querySearchString = getQueryStringFromUrl(router) as string;
+        handleFeatureFlag(dev?.toString(), () => {
+            setSearchText(querySearchString);
         });
-    }, [router?.query?.dev, router.query.q]);
+    }, [dev, qQueryParam]);
     return (
         <form
             className={classNames.searchFieldContainer}
@@ -78,8 +80,12 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
 };
 
 const Issues: FC = () => {
-    const searchString = '';
+    const querySearchString = '';
     const router = useRouter();
+    const dev = router?.query?.dev;
+    const isDevMode = dev === 'true';
+
+    // const qQueryParam = router?.query?.q;
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);
@@ -115,11 +121,11 @@ const Issues: FC = () => {
     };
 
     useEffect(() => {
-        const searchString = getQueryStringFromUrl(router) as string;
-        if (router?.query?.dev === 'true' && searchString) {
-            fetchIssues(searchString);
+        const querySearchString = getQueryStringFromUrl(router) as string;
+        if (isDevMode && querySearchString) {
+            fetchIssues(querySearchString);
         }
-    }, [router?.query?.dev, searchString]);
+    }, [dev, querySearchString]);
 
     let renderElement = <p>Loading...</p>;
 
