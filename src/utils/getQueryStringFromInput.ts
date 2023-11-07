@@ -1,4 +1,4 @@
-export function getQueryString(searchQuery: string) {
+export const getQueryStringFromInput = (searchQuery: string) => {
     let searchText = '';
 
     if (!searchQuery) {
@@ -10,6 +10,6 @@ export function getQueryString(searchQuery: string) {
     searchText = searchQuery.trim();
 
     return {
-        text: searchText,
+        text: searchText.toLowerCase(),
     };
-}
+};

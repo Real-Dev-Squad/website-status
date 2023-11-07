@@ -11,22 +11,28 @@ import { ISSUES_URL } from '@/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 import { useRouter } from 'next/router';
-import { getQueryString } from '@/utils/getQueryString';
+import { getQueryStringFromInput } from '@/utils/getQueryStringFromInput';
+import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
 
 type SearchFieldProps = {
     onSearchTextSubmitted: (searchString: string) => void;
     loading: boolean;
 };
 
+const handleFeatureFlag = (dev = '', cb: () => void) => {
+    if (dev === 'true') {
+        cb();
+    }
+};
+
 const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     const router = useRouter();
-    const dev = router?.query?.dev;
     const [searchText, setSearchText] = useState<string>('');
     const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
     };
 
-    const queryParamValue = getQueryString(searchText);
+    const queryParamValue = getQueryStringFromInput(searchText);
     const updateQueryString = () => {
         router.push({
             query: {
@@ -36,17 +42,23 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
         });
     };
 
+    const handleOnSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        onSearchTextSubmitted(searchText);
+        handleFeatureFlag(router?.query?.dev?.toString(), updateQueryString);
+    };
+
+    useEffect(() => {
+        const searchString = getQueryStringFromUrl(router) as string;
+        handleFeatureFlag(router?.query?.dev?.toString(), () => {
+            setSearchText(searchString);
+        });
+    }, [router?.query?.dev, router.query.q]);
     return (
         <form
             className={classNames.searchFieldContainer}
             onSubmit={(e) => {
-                e.preventDefault();
-                onSearchTextSubmitted(searchText);
-                {
-                    if (dev === 'true') {
-                        updateQueryString();
-                    }
-                }
+                handleOnSubmit(e);
             }}
         >
             <input
@@ -57,7 +69,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
             />
             <button
                 className={classNames.issuesSearchSubmitButton}
-                disabled={loading || !searchText.trim()}
+                disabled={loading || !(searchText ?? '').trim()}
             >
                 Submit
             </button>
@@ -66,19 +78,9 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
 };
 
 const Issues: FC = () => {
-    let splittedQueryParam = '';
+    const searchString = '';
     const router = useRouter();
-    const dev = router?.query?.dev;
-    if (dev === 'true') {
-        const urlQueryParam = router?.query?.q as string;
-        if (urlQueryParam) {
-            const splittedQueryParamArr = urlQueryParam.split(':');
-            splittedQueryParam = splittedQueryParamArr[1];
-        }
-    }
-
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);
 
@@ -113,10 +115,11 @@ const Issues: FC = () => {
     };
 
     useEffect(() => {
-        if (dev === 'true' && splittedQueryParam) {
-            fetchIssues(splittedQueryParam);
+        const searchString = getQueryStringFromUrl(router) as string;
+        if (router?.query?.dev === 'true' && searchString) {
+            fetchIssues(searchString);
         }
-    }, [splittedQueryParam]);
+    }, [router?.query?.dev, searchString]);
 
     let renderElement = <p>Loading...</p>;
 
