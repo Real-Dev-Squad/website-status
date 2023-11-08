@@ -81,6 +81,18 @@ describe('Tabs Component', () => {
 
     it('Check if correct button is selected', () => {
         render(
+            <Tabs
+                tabs={TABS}
+                activeTab={Tab.COMPLETED}
+                onSelect={onSelectMock}
+            />
+        );
+        const completedBtn = screen.getByRole('button', { name: /COMPLETED/i });
+        expect(completedBtn).toHaveClass('active');
+    });
+
+    it('Check if done button is selected', () => {
+        render(
             <Tabs tabs={TABS} activeTab={Tab.DONE} onSelect={onSelectMock} />
         );
         const doneBtn = screen.getByRole('button', { name: /DONE/i });
