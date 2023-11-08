@@ -115,6 +115,33 @@ describe('TaskStatusEditMode', () => {
         expect(allOptions).toEqual(allTaskStatus);
     });
 
+    it('renders a list of task under feature flag', () => {
+        const mockUpdateTask = jest.fn();
+        const setEditedTaskDetails = jest.fn();
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                    isDevMode={true}
+                />
+            </Provider>
+        );
+
+        const statusSelect = screen.getByLabelText('Status:');
+
+        const allOptions = Array.from(
+            statusSelect.querySelectorAll('option')
+        ).map((option) => [option.value, option.textContent]);
+
+        const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
+            .map(([name, status]) => [status, beautifyStatus(name)])
+            .filter(([status]) => status !== BACKEND_TASK_STATUS.COMPLETED);
+
+        expect(allOptions).toEqual(allTaskStatus);
+    });
+
     it('renders the spinner and error icon when the task update fails', async () => {
         const setEditedTaskDetails = jest.fn();
 
