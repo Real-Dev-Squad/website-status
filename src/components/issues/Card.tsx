@@ -28,9 +28,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const [assignee, setAssignee] = useState<string | undefined>();
     const [updateTask] = useUpdateTaskMutation();
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-
-    const isTaskButtonDisabled =
-        isLoading || (!isUserAuthorized && (taskExists || !!requestId));
+    const isTaskButtonDisabled = isLoading || (!isUserAuthorized && taskExists);
 
     const toggle = () => {
         setIsTaskModalOpen(!isTaskModalOpen);
@@ -118,7 +116,6 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             const response = await requestPromise;
             setRequestId(response.data.data.id);
             toast(SUCCESS, 'Task Request created successfully');
-            toggle();
         } catch (error: any) {
             if ('response' in error) {
                 toast(ERROR, error.response.data.message);

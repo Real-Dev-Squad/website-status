@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import TaskRequestForm from '@/components/issues/TaskRequestForm';
+import { TASK_REQUESTS_DETAILS_URL } from '@/constants/url';
 
 describe('TaskRequestForm Component', () => {
     const date = new Date();
@@ -58,5 +59,39 @@ describe('TaskRequestForm Component', () => {
         await waitFor(() => {
             expect(createTaskRequestMock).toHaveBeenCalled();
         });
+    });
+    test('should display success message with a link', async () => {
+        const createTaskRequestMock = jest.fn();
+        render(
+            <TaskRequestForm
+                createTaskRequest={createTaskRequestMock}
+                requestId="1234"
+            />
+        );
+        const successHeader = screen.getByTestId('task-request-success-header');
+        const successImage = screen.getByTestId('task-request-success-image');
+        const successLink = screen.getByTestId(
+            'task-request-success-link-message'
+        );
+        expect(successHeader).toBeInTheDocument();
+        expect(successImage).toBeInTheDocument();
+        expect(successLink).toBeInTheDocument();
+    });
+    test('should contain the request id', async () => {
+        const requestId = '1234';
+        const createTaskRequestMock = jest.fn();
+        render(
+            <TaskRequestForm
+                createTaskRequest={createTaskRequestMock}
+                requestId={requestId}
+            />
+        );
+        const successLink = screen.getByTestId('task-request-success-link');
+        const href = successLink.getAttribute('href');
+        const taskRequestIdSearchParam = new URLSearchParams();
+        taskRequestIdSearchParam.append('id', requestId);
+        const dashboardTaskRequestUrl = new URL(TASK_REQUESTS_DETAILS_URL);
+        dashboardTaskRequestUrl.search = taskRequestIdSearchParam.toString();
+        expect(href).toEqual(dashboardTaskRequestUrl.toString());
     });
 });
