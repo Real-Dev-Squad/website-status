@@ -30,5 +30,6 @@ export const ISSUES_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/issues`;
 export const USERS_URL = `${BASE_URL}/users`;
 export const MAIN_SITE_URL = 'https://www.realdevsquad.com';
 export const MY_SITE_URL = 'https://my.realdevsquad.com';
-export const USER_MANAGEMENT_URL =
-    'https://dashboard.realdevsquad.com/users/details/';
+export const DASHBOARD_URL = 'https://dashboard.realdevsquad.com';
+export const USER_MANAGEMENT_URL = `${DASHBOARD_URL}/users/details/`;
+export const TASK_REQUESTS_DETAILS_URL = `${DASHBOARD_URL}/taskRequests/details/`;
