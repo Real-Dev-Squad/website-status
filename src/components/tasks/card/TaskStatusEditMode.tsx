@@ -9,13 +9,20 @@ import { StatusIndicator } from './StatusIndicator';
 type Props = {
     task: task;
     handleTaskStatusUpdate: (status: string) => void;
+    isDevMode: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => status.split('_').join(' ');
-const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
-const TaskStatusEditMode = ({ task, handleTaskStatusUpdate }: Props) => {
+const TaskStatusEditMode = ({
+    task,
+    handleTaskStatusUpdate,
+    isDevMode,
+}: Props) => {
+    const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
+        ([key]) => !(isDevMode && key === 'COMPLETED')
+    );
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 

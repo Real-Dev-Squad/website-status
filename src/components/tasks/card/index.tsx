@@ -33,12 +33,15 @@ import ProgressContainer from './progressContainer';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
+import { useRouter } from 'next/router';
 
 const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
 }) => {
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true' ? true : false;
     const statusRedList = [TASK_STATUS.BLOCKED];
     const statusNotOverDueList = [
         TASK_STATUS.COMPLETED,
@@ -574,6 +577,7 @@ const Card: FC<CardProps> = ({
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             handleTaskStatusUpdate={handleTaskStatusUpdate}
+                            isDevMode={isDevMode}
                         />
                     ) : (
                         <div className={classNames.statusContainer} style={{}}>

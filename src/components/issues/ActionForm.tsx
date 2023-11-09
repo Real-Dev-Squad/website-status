@@ -28,7 +28,6 @@ type ActionFormProps = {
     taskAssignee: string | undefined;
 };
 
-const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 const endTimeStamp: number = getDateRelativeToToday(2, 'timestamp') as number;
 const startTimeStamp: number = getDateRelativeToToday(0, 'timestamp') as number;
 
@@ -68,6 +67,9 @@ const ActionForm: FC<ActionFormProps> = ({
     createTask,
     updateTask,
 }) => {
+    const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
+        ([key]) => !(key === 'COMPLETED')
+    );
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [assignee, setAssignee] = useState(taskAssignee);
     const { data, isLoading: loading } = useGetTaskDetailsQuery(taskId);
