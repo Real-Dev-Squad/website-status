@@ -12,13 +12,13 @@ describe('getQueryString', () => {
         asPath: '/',
         basePath: '/',
         isLocaleDomain: false,
-        push: jest.fn(), // Mock the push method with a basic implementation
-        replace: jest.fn(), // Mock the replace method with a basic implementation
-        reload: jest.fn(), // Mock the reload method
-        back: jest.fn(), // Mock the back method
-        forward: jest.fn(), // Mock the forward method
-        prefetch: jest.fn(), // Mock the prefetch method with a basic implementation
-        beforePopState: jest.fn(), // Mock the beforePopState method
+        push: jest.fn(),
+        replace: jest.fn(),
+        reload: jest.fn(),
+        back: jest.fn(),
+        forward: jest.fn(),
+        prefetch: jest.fn(),
+        beforePopState: jest.fn(),
         events: {
             on: jest.fn(),
             off: jest.fn(),
