@@ -14,6 +14,7 @@ import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
 import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
+import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -467,6 +468,80 @@ describe('Update Progress button', () => {
         );
         const requestForTaskButton = screen.queryByText('Request for Task');
         expect(requestForTaskButton).not.toBeInTheDocument();
+    });
+});
+
+describe('Task details Edit mode ', () => {
+    test('Should render task progress', async () => {
+        server.use(superUserSelfHandler);
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(screen.queryByText('UPDATE')).toBeInTheDocument();
+            expect(screen.queryByText('0%')).toBeInTheDocument();
+        });
+    });
+
+    test('Should render task status dropdown', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editBtn = screen.getByRole('button', {
+                name: /Edit/i,
+            });
+            fireEvent.click(editBtn);
+            expect(screen.getByLabelText('Status:')).toBeInTheDocument();
+        });
+    });
+
+    test('Should set new status on click at any option', async () => {
+        server.use(...taskDetailsHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+        const opt = screen.getByRole('option', { name: /COMPLETED/i });
+        fireEvent.click(opt);
+
+        await waitFor(() => {
+            const saveButton = screen.getByRole('button', { name: 'Save' });
+            fireEvent.click(saveButton);
+        });
+        expect(screen.findByText(/COMPLETED/i)).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+        });
+    });
+
+    test('Should render assignee dropdown', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editBtn = screen.getByRole('button', {
+                name: /Edit/i,
+            });
+            fireEvent.click(editBtn);
+            expect(screen.getByTestId('assignee-input')).toBeInTheDocument();
+        });
     });
 });
 
