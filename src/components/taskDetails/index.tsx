@@ -309,6 +309,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 handleTaskStatusUpdate={
                                                     handleTaskStatusUpdate
                                                 }
+                                                isDevMode={true}
                                             />
                                         )}
                                     </DevFeature>
