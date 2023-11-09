@@ -33,7 +33,7 @@ describe('TaskStatusEditMode', () => {
             <Provider store={store()}>
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
+                    handleTaskStatusUpdate={setEditedTaskDetails}
                 />
             </Provider>
         );
@@ -52,7 +52,7 @@ describe('TaskStatusEditMode', () => {
             <Provider store={store()}>
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
+                    handleTaskStatusUpdate={setEditedTaskDetails}
                 />
             </Provider>
         );
@@ -79,7 +79,7 @@ describe('TaskStatusEditMode', () => {
             <Provider store={store()}>
                 <TaskStatusEditMode
                     task={UN_ASSIGNED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
+                    handleTaskStatusUpdate={setEditedTaskDetails}
                 />
             </Provider>
         );
@@ -97,7 +97,7 @@ describe('TaskStatusEditMode', () => {
             <Provider store={store()}>
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
+                    handleTaskStatusUpdate={setEditedTaskDetails}
                 />
             </Provider>
         );
@@ -122,7 +122,7 @@ describe('TaskStatusEditMode', () => {
             <Provider store={store()}>
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
+                    handleTaskStatusUpdate={setEditedTaskDetails}
                 />
             </Provider>,
             {}

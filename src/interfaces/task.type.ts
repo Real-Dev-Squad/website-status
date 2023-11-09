@@ -6,31 +6,35 @@ type task = {
     purpose: string;
     featureUrl: string;
     type: string;
-    links: string[];
+    links?: string[];
     endsOn: number;
     startedOn: string;
-    status: string;
+    createdBy: string;
     assignee?: string;
     percentCompleted: number;
-    dependsOn: string[];
+    dependsOn?: string[];
+    level?: 1 | 2 | 3 | 4 | 5;
     participants?: string[];
-    completionAward: award;
-    lossRate: award;
+    completionAward: { dinero: number; neelam: number };
+    lossRate: { dinero: number; neelam: number };
     isNoteworthy: boolean;
-    createdBy: string;
     github?: {
         issue: {
-            assignee?: string;
+            html_url: string;
             status: string;
+            assignee?: string; // optional
             id: number;
-            closedAt?: string;
+            closedAt?: string; // optional
             assigneeRdsInfo?: {
-                firstName: string | null | undefined;
-                lastName: string | null | undefined;
-                username: string;
+                // optional
+                firstName?: string;
+                lastName?: string;
+                username?: string;
             };
         };
     };
+    status: string;
+    priority: string;
 };
 
 export type TasksResponseType = {
@@ -139,7 +143,7 @@ export type TabTasksData = {
     DONE: task[];
 };
 
-export type CardTaskDetails = task & {
+export type CardTaskEditMode = task & {
     assigningUser: string;
     savingDate: string;
     savingText: string;

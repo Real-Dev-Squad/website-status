@@ -19,11 +19,12 @@ const TASK = {
   title: 'Testing and Determinsitic State',
   purpose: 'string',
   percentCompleted: 0,
-  endsOn: '1618790400',
+  endsOn: 1618790400,
   status: 'progress',
   featureUrl: 'progress',
   type: 'feature',
   createdBy: 'shmbajaj',
+  priority:'TBD'
 };
 const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
   ...TASK,
@@ -332,7 +333,8 @@ const MINE_TASKS = [
 ];
 
 const CONTENT = [
-    {
+    {   
+        priority: 'TBD',
         id: 'OxYqJgf6Tyl90uci1mzs`',
         title: 'Evaluate availability panel feature',
         purpose: 'Try out the feature created by Pavan',
@@ -352,6 +354,7 @@ const CONTENT = [
         createdBy: 'mahima',
         github: {
             issue: {
+                html_url:'html_url',
                 id: 1814970348,
                 assignee: 'mahima',
                 status: 'open',
@@ -365,7 +368,8 @@ const CONTENT = [
         },
     },
     {
-        id: 'OxYqJgf6Tyl90uci1mzs`',
+      priority: 'TBD',
+      id: 'OxYqJgf6Tyl90uci1mzs`',
         title: 'Evaluate availability panel feature',
         purpose: 'Try out the feature created by Pavan',
         featureUrl: 'https://dev.realdevsquad.com/task/create.html',
@@ -384,7 +388,8 @@ const CONTENT = [
         createdBy: '',
         github: {
             issue: {
-                id: 1814970348,
+              html_url:'html_url',
+              id: 1814970348,
                 assignee: '',
                 status: 'open',
                 closedAt: '1692988200000',
@@ -397,6 +402,7 @@ const CONTENT = [
         },
     },
     {
+      priority: 'TBD',
       id: 'OxYqJgf6Tyl90uci1mzs`',
       title: 'Evaluate availability panel feature',
       purpose: 'Try out the feature created by Pavan',
@@ -416,7 +422,8 @@ const CONTENT = [
       createdBy: 'mahima',
       github: {
           issue: {
-              id: 1814970348,
+            html_url:'html_url',
+            id: 1814970348,
               assignee: 'mahima',
               status: 'open',
               closedAt: '1692988200000',
@@ -429,6 +436,7 @@ const CONTENT = [
       },
   },
   {
+    priority: 'TBD',
     id: 'OxYqJgf6Tyl90uci1mzs`',
     title: 'Evaluate availability panel feature',
     purpose: 'Try out the feature created by Pavan',
@@ -448,7 +456,8 @@ const CONTENT = [
     createdBy: 'mahima',
     github: {
         issue: {
-            id: 1814970348,
+          html_url:'html_url',
+          id: 1814970348,
             assignee: 'mahima',
             status: 'open',
             closedAt: '1692988200000',

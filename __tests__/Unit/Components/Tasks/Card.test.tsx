@@ -25,6 +25,7 @@ const DEFAULT_PROPS = {
             dinero: 110,
             neelam: 10,
         },
+        priority: 'TBD',
         dependsOn: [],
         assignee: 'ankur',
         startedOn: '1618790400',
@@ -172,6 +173,7 @@ describe('Task card', () => {
                 status: TASK_STATUS.ASSIGNED,
                 github: {
                     issue: {
+                        html_url: 'html_url',
                         closedAt: '2023-04-02T17:31:50',
                         status: 'closed',
                         id: 12278,
@@ -199,6 +201,7 @@ describe('Task card', () => {
                 ...DEFAULT_PROPS.content,
                 github: {
                     issue: {
+                        html_url: 'html_url',
                         closedAt: '2023-04-02T17:31:50',
                         status: 'closed',
                         id: 12278,
@@ -228,6 +231,7 @@ describe('Task card', () => {
                 assignee: undefined,
                 github: {
                     issue: {
+                        html_url: 'html_url',
                         assignee: 'johndoe',
                         status: 'open',
                         id: 12278,
@@ -270,6 +274,7 @@ describe('Task card', () => {
                         assignee: 'johndoe',
                         status: 'open',
                         id: 12278,
+                        html_url: 'string',
                         assigneeRdsInfo: {
                             username: 'john',
                             firstName: 'John',

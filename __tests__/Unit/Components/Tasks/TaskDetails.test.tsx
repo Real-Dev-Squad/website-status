@@ -14,6 +14,10 @@ import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
 import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
+import selfHandler, {
+    superUserSelfHandler,
+} from '../../../../__mocks__/handlers/self.handler';
+import useUserData from '@/hooks/useUserData';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -30,20 +34,39 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-jest.mock('@/hooks/useUserData', () => {
-    return () => ({
-        data: {
-            roles: {
-                admin: true,
-                super_user: false,
-            },
-        },
-        isUserAuthorized: true,
-        isSuccess: true,
-    });
-});
+jest.mock('@/hooks/useUserData', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
 const mockNavigateToUpdateProgressPage = jest.fn();
+const useUserDataMock = useUserData as jest.Mock;
+
+const useUserDataMockFactory = {
+    superUser: () =>
+        useUserDataMock.mockReturnValue({
+            data: {
+                roles: {
+                    admin: true,
+                    super_user: true,
+                },
+            },
+            isUserAuthorized: true,
+            isSuccess: true,
+        }),
+    otherUser: () =>
+        useUserDataMock.mockReturnValue({
+            data: {
+                roles: {
+                    admin: false,
+                    super_user: false,
+                },
+            },
+            isUserAuthorized: false,
+            isSuccess: true,
+        }),
+};
 describe('TaskDetails Page', () => {
+    useUserDataMockFactory['superUser']();
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -367,6 +390,72 @@ describe('TaskDetails Page', () => {
         });
         expect(progressUpdatesSection).toBeInTheDocument();
         expect(spyfn).toBeCalled();
+    });
+});
+describe('Task details Edit mode ', () => {
+    test('Should render task progress', async () => {
+        server.use(superUserSelfHandler);
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={'6KhcLU3yr45dzjQIVm0J1'} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(screen.queryByText('UPDATE')).toBeInTheDocument();
+            expect(screen.queryByText('1%')).toBeInTheDocument();
+        });
+    });
+
+    test('Should render task status dropdown', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={'6KhcLU3yr45dzjQIVm0J1'} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editBtn = screen.getByRole('button', {
+                name: /Edit/i,
+            });
+            fireEvent.click(editBtn);
+            expect(screen.getByLabelText('Status:')).toBeInTheDocument();
+        });
+    });
+    test('Should render assignee dropdown', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={'6KhcLU3yr45dzjQIVm0J1'} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editBtn = screen.getByRole('button', {
+                name: /Edit/i,
+            });
+            fireEvent.click(editBtn);
+            expect(screen.getByTestId('assignee-input')).toBeInTheDocument();
+        });
+    });
+
+    test('Should not render to member', async () => {
+        server.use(selfHandler[0]);
+        // Changeing the useUserDate hook  behaviour
+        useUserDataMockFactory['otherUser']();
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={'6KhcLU3yr45dzjQIVm0J1'} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(screen.queryByText('UPDATE')).not.toBeInTheDocument();
+            expect(screen.queryByText('1%')).not.toBeInTheDocument();
+        });
+        // Reseting the useUserData hook behaviour
+        useUserDataMockFactory['superUser']();
     });
 });
 

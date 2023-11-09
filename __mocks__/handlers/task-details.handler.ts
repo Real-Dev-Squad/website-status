@@ -32,13 +32,53 @@ const taskDetailsHandler = [
                     },
                     github: {
                         issue: {
-                            html_url:'https://github.com/sample-org/sample-repo/issues/000'
-                        }
-                    }
+                            html_url:
+                                'https://github.com/sample-org/sample-repo/issues/000',
+                        },
+                    },
                 },
             })
         );
     }),
+    rest.get(`${URL}/tasks/6KhcLU3yr45dzjQIVm0J1/details`, (_, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({
+                message: 'task returned successfully',
+                taskData: {
+                    id: '6KhcLU3yr45dzjQIVm0J1',
+                    isNoteworthy: true,
+                    lossRate: {
+                        dinero: 0,
+                        neelam: 0,
+                    },
+                    purpose: 'This is a sample description',
+                    endsOn: 1618790410,
+                    title: 'test 1 for drag and drop',
+                    status: 'IN_PROGRESS',
+                    assignee: 'ankur',
+                    links: ['null'],
+                    dependsOn: ['null'],
+                    percentCompleted: 1,
+                    type: 'feature',
+                    priority: 'high',
+                    featureUrl: 'https://www.sampleUrl.com',
+                    startedOn: 1617062400,
+                    completionAward: {
+                        neelam: 0,
+                        dinero: 110,
+                    },
+                    github: {
+                        issue: {
+                            html_url:
+                                'https://github.com/sample-org/sample-repo/issues/000',
+                        },
+                    },
+                },
+            })
+        );
+    }),
+
     rest.get(`${URL}/tasks/6KhcLU3yr45dzjQIVm0k/details`, (_, res, ctx) => {
         return res(
             ctx.status(200),

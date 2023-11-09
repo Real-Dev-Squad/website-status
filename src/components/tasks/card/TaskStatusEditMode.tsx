@@ -1,5 +1,5 @@
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
-import task, { CardTaskDetails } from '@/interfaces/task.type';
+import task from '@/interfaces/task.type';
 import { useState } from 'react';
 import classNames from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
@@ -8,14 +8,17 @@ import { StatusIndicator } from './StatusIndicator';
 
 type Props = {
     task: task;
-    setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
+    handleTaskStatusUpdate: (status: string) => void;
 };
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => status.split('_').join(' ');
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
-const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
+const TaskStatusEditMode = ({
+    task,
+    handleTaskStatusUpdate: setEditedTaskDetails,
+}: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -23,10 +26,8 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
         target: { value },
     }: React.ChangeEvent<HTMLSelectElement>) => {
         setSaveStatus(PENDING);
-        setEditedTaskDetails((prev: CardTaskDetails) => ({
-            ...prev,
-            status: value,
-        }));
+
+        setEditedTaskDetails(value);
         const response = updateTask({
             id: task.id,
             task: {

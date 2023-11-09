@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, useEffect } from 'react';
+import React, { ChangeEvent, FC, useState, useEffect, useRef } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
@@ -22,6 +22,13 @@ import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 import Progress from '../ProgressCard';
+import ProgressContainer from '../tasks/card/progressContainer';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
+import { TaskStatusEditMode } from '../tasks/card/TaskStatusEditMode';
+import task from '@/interfaces/task.type';
+import { StatusIndicator } from '../tasks/card/StatusIndicator';
+import { ERROR_STATUS, PENDING, SAVED } from '../tasks/constants';
+import DevFeature from '../DevFeature';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -64,29 +71,74 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
+    const inputRef = useRef<HTMLInputElement>(null);
 
+    const [assigneeName, setAssigneeName] = useState<string>(
+        data?.taskData?.assignee || ''
+    );
+    const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+    const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAssigneeName(e.target.value);
+        setShowSuggestion(Boolean(e.target.value));
+    };
+    const handleAssigneSelect = async (userName: string) => {
+        setNewAssigneState(PENDING);
+        inputRef.current?.focus();
+        setAssigneeName(userName);
+        setShowSuggestion(false);
+        await updateTaskDetails({
+            taskID,
+            editedDetails: {
+                assignee: userName,
+            },
+        })
+            .unwrap()
+            .then(() => {
+                setNewAssigneState(SAVED);
+            })
+            .catch((error) => {
+                setNewAssigneState(ERROR_STATUS);
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setNewAssigneState('');
+                }, 3000);
+            });
+    };
     const taskDependencyIds: string[] = !isFetching
         ? data?.taskData?.dependsOn || []
         : [];
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const taskDetailsData: taskDetailsDataType['taskData'] = data?.taskData;
+    const taskDetailsData: task = {
+        ...(data?.taskData || {}),
+        id: taskID,
+    } as task;
 
-    const [editedTaskDetails, setEditedTaskDetails] = useState<
-        taskDetailsDataType['taskData'] | undefined
-    >(data?.taskData);
-
+    const [editedTaskDetails, setEditedTaskDetails] = useState<task>({
+        ...(data?.taskData || {}),
+        id: taskID,
+    } as task);
     const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
         useAddOrUpdateMutation();
 
     useEffect(() => {
         if (data?.taskData) {
-            setEditedTaskDetails(data.taskData);
+            setEditedTaskDetails({
+                ...(data?.taskData || {}),
+                id: taskID,
+            } as task);
         }
     }, [data]);
 
     const [updateTaskDetails] = useUpdateTaskDetailsMutation();
-
+    const [newAssigneState, setNewAssigneState] = useState('');
+    const handleTaskStatusUpdate = (newStatus: string) => {
+        setEditedTaskDetails((prev) => ({
+            ...prev,
+            status: newStatus,
+        }));
+    };
     function onCancel() {
         setIsEditing(false);
         setEditedTaskDetails(taskDetailsData);
@@ -158,8 +210,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     }
 
-    function getStartedOn(timestamp: number | undefined) {
-        return timestamp ? convertTimeStamp(timestamp) : 'N/A';
+    function getStartedOn(timestamp: string | undefined) {
+        return timestamp ? convertTimeStamp(parseInt(timestamp, 10)) : 'N/A';
     }
 
     function getEndsOn(timestamp: number | undefined) {
@@ -250,6 +302,17 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Priority'}
                                         value={taskDetailsData?.priority}
                                     />
+                                    <DevFeature>
+                                        {isEditing && (
+                                            <TaskStatusEditMode
+                                                task={editedTaskDetails}
+                                                handleTaskStatusUpdate={
+                                                    handleTaskStatusUpdate
+                                                }
+                                            />
+                                        )}
+                                    </DevFeature>
+
                                     <Details
                                         detailType={'Status'}
                                         value={taskDetailsData?.status}
@@ -261,6 +324,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
+                                    <DevFeature>
+                                        {isUserAuthorized && (
+                                            <ProgressContainer
+                                                content={taskDetailsData}
+                                            />
+                                        )}
+                                    </DevFeature>
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />
@@ -296,6 +366,38 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                               )
                                     }
                                 />
+                                <DevFeature>
+                                    {isEditing && isUserAuthorized && (
+                                        <div
+                                            className={`${classNames.assigneeSuggestionInput} ${classNames.assignedToSection}`}
+                                        >
+                                            <Suggestions
+                                                assigneeName={assigneeName}
+                                                showSuggestion={showSuggestion}
+                                                handleClick={
+                                                    handleAssigneSelect
+                                                }
+                                                handleAssignment={
+                                                    handleAssignment
+                                                }
+                                                setShowSuggestion={
+                                                    setShowSuggestion
+                                                }
+                                                ref={inputRef}
+                                            />
+                                            <div
+                                                className={
+                                                    classNames.statusIndicator
+                                                }
+                                            >
+                                                <StatusIndicator
+                                                    status={newAssigneState}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </DevFeature>
+
                                 <Details
                                     detailType={'Reporter'}
                                     value={'Ankush'}

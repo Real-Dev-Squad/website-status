@@ -3,7 +3,7 @@ import Image from 'next/image';
 import classNames from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
-import { CardProps } from '@/interfaces/task.type';
+import { CardProps, CardTaskEditMode } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import TaskLevelEdit from './TaskTagEdit';
@@ -48,12 +48,13 @@ const Card: FC<CardProps> = ({
 
     const cardDetails = content;
 
-    const [editedTaskDetails, setEditedTaskDetails] = useState({
-        ...cardDetails,
-        savingText: '',
-        assigningUser: '',
-        savingDate: '',
-    });
+    const [editedTaskDetails, setEditedTaskDetails] =
+        useState<CardTaskEditMode>({
+            ...cardDetails,
+            savingText: '',
+            assigningUser: '',
+            savingDate: '',
+        });
 
     const { data: userResponse } = useGetUsersByUsernameQuery({
         searchString: editedTaskDetails.assignee,
@@ -350,7 +351,12 @@ const Card: FC<CardProps> = ({
         setAssigneeName(e.target.value);
         e.target.value ? setShowSuggestion(true) : setShowSuggestion(false);
     };
-
+    const handleTaskStatusUpdate = (val: string) => {
+        setEditedTaskDetails((prev) => ({
+            ...prev,
+            status: val,
+        }));
+    };
     const handleClick = (userName: string) => {
         inputRef.current?.focus();
         setAssigneeName(userName);
@@ -567,7 +573,7 @@ const Card: FC<CardProps> = ({
                     {isEditable ? (
                         <TaskStatusEditMode
                             task={editedTaskDetails}
-                            setEditedTaskDetails={setEditedTaskDetails}
+                            handleTaskStatusUpdate={handleTaskStatusUpdate}
                         />
                     ) : (
                         <div className={classNames.statusContainer} style={{}}>
