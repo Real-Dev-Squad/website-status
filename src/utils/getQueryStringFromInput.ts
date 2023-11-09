@@ -10,6 +10,6 @@ export const getQueryStringFromInput = (searchQuery: string) => {
     searchText = searchQuery.trim();
 
     return {
-        text: searchText.toLowerCase(),
+        text: searchText,
     };
 };

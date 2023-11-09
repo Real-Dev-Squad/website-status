@@ -13,71 +13,7 @@ import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 import { useRouter } from 'next/router';
 import { getQueryStringFromInput } from '@/utils/getQueryStringFromInput';
 import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
-
-type SearchFieldProps = {
-    onSearchTextSubmitted: (querySearchString: string) => void;
-    loading: boolean;
-};
-
-const handleFeatureFlag = (dev = '', cb: () => void) => {
-    if (dev === 'true') {
-        cb();
-    }
-};
-
-const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
-    const router = useRouter();
-    const dev = router?.query?.dev;
-    const qQueryParam = router?.query?.q;
-    const [searchText, setSearchText] = useState<string>('');
-    const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchText(e.target.value);
-    };
-
-    const queryParamValue = getQueryStringFromInput(searchText);
-    const updateQueryString = () => {
-        router.push({
-            query: {
-                ...router.query,
-                q: `search:${queryParamValue.text.toLowerCase()}`,
-            },
-        });
-    };
-
-    const handleOnSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        onSearchTextSubmitted(searchText);
-        handleFeatureFlag(router?.query?.dev?.toString(), updateQueryString);
-    };
-
-    useEffect(() => {
-        const querySearchString = getQueryStringFromUrl(router) as string;
-        handleFeatureFlag(dev?.toString(), () => {
-            setSearchText(querySearchString);
-        });
-    }, [dev, qQueryParam]);
-    return (
-        <form
-            className={classNames.searchFieldContainer}
-            onSubmit={(e) => {
-                handleOnSubmit(e);
-            }}
-        >
-            <input
-                placeholder="Enter query string to search issues"
-                value={searchText}
-                onChange={onSearchTextChanged}
-                className={classNames.issueSearchInput}
-            />
-            <button
-                className={classNames.issuesSearchSubmitButton}
-                disabled={loading || !(searchText ?? '').trim()}
-            >
-                Submit
-            </button>
-        </form>
-    );
-};
+import { SearchField } from '@/components/issues/SearchField';
 
 const Issues: FC = () => {
     const querySearchString = '';
