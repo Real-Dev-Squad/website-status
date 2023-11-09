@@ -15,10 +15,7 @@ type Props = {
 const beautifyStatus = (status: string) => status.split('_').join(' ');
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
-const TaskStatusEditMode = ({
-    task,
-    handleTaskStatusUpdate: setEditedTaskDetails,
-}: Props) => {
+const TaskStatusEditMode = ({ task, handleTaskStatusUpdate }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -27,7 +24,7 @@ const TaskStatusEditMode = ({
     }: React.ChangeEvent<HTMLSelectElement>) => {
         setSaveStatus(PENDING);
 
-        setEditedTaskDetails(value);
+        handleTaskStatusUpdate(value);
         const response = updateTask({
             id: task.id,
             task: {
