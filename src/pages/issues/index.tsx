@@ -10,45 +10,16 @@ import {
 import { ISSUES_URL } from '@/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
-
-type SearchFieldProps = {
-    onSearchTextSubmitted: (searchString: string) => void;
-    loading: boolean;
-};
-
-const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
-    const [searchText, setSearchText] = useState<string>('');
-    const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchText(e.target.value);
-    };
-
-    return (
-        <form
-            className={classNames.searchFieldContainer}
-            onSubmit={(e) => {
-                e.preventDefault();
-                onSearchTextSubmitted(searchText);
-            }}
-        >
-            <input
-                placeholder="Enter query string to search issues"
-                value={searchText}
-                onChange={onSearchTextChanged}
-                className={classNames.issueSearchInput}
-            />
-            <button
-                className={classNames.issuesSearchSubmitButton}
-                disabled={loading || !searchText.trim()}
-            >
-                Submit
-            </button>
-        </form>
-    );
-};
+import { useRouter } from 'next/router';
+import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
+import { SearchField } from '@/components/issues/SearchField';
 
 const Issues: FC = () => {
+    const querySearchString = '';
+    const router = useRouter();
+    const dev = router?.query?.dev;
+    const isDevMode = dev === 'true';
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
-
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);
 
@@ -81,6 +52,13 @@ const Issues: FC = () => {
             setIsLoading(false);
         }
     };
+
+    useEffect(() => {
+        const querySearchString = getQueryStringFromUrl(router) as string;
+        if (isDevMode && querySearchString) {
+            fetchIssues(querySearchString);
+        }
+    }, [dev, querySearchString]);
 
     let renderElement = <p>Loading...</p>;
 
