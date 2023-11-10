@@ -67,7 +67,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const isDevModeEnabled = query.dev === 'true' ? true : false;
 
     const { isUserAuthorized, data: userData } = useUserData();
-
+    const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
@@ -125,9 +125,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function onCancel() {
         setIsEditing(false);
         setEditedTaskDetails(taskDetailsData);
+        setNewEndOnDate('');
     }
     async function onSave() {
         setIsEditing(false);
+        setNewEndOnDate('');
         const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
         for (const key in editedTaskDetails) {
             if (
@@ -207,6 +209,17 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         taskId: taskID,
     });
     const taskProgress: ProgressDetailsData[] = progressData?.data || [];
+
+    const handleBlurOfEndsOn = () => {
+        const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
+
+        if (endsOn > 0) {
+            setEditedTaskDetails((prev) => ({
+                ...prev,
+                endsOn,
+            }));
+        }
+    };
 
     return (
         <Layout hideHeader={true}>
@@ -403,10 +416,33 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetailsData?.startedOn
                                     )}
                                 />
+
                                 <Details
                                     detailType={'Ends On'}
                                     value={getEndsOn(taskDetailsData?.endsOn)}
                                 />
+                                <DevFeature>
+                                    {isEditing && (
+                                        <>
+                                            <label htmlFor="endsOnTaskDetails">
+                                                Ends On:
+                                            </label>
+                                            <input
+                                                id="endsOnTaskDetails"
+                                                type="date"
+                                                name="endsOn"
+                                                onChange={(e) => {
+                                                    setNewEndOnDate(
+                                                        e.target.value
+                                                    );
+                                                }}
+                                                onBlur={handleBlurOfEndsOn}
+                                                value={newEndOnDate}
+                                                data-testid="endsOnTaskDetails"
+                                            />
+                                        </>
+                                    )}
+                                </DevFeature>
                             </TaskContainer>
                             <TaskContainer
                                 hasImg={false}

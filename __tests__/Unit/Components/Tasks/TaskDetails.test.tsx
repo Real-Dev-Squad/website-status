@@ -472,6 +472,31 @@ describe('Update Progress button', () => {
 });
 
 describe('Task details Edit mode ', () => {
+    test('Should be able to edit stated on ', async () => {
+        server.use(superUserSelfHandler);
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editBtn = screen.getByRole('button', {
+                name: /Edit/i,
+            });
+            fireEvent.click(editBtn);
+        });
+        const endsOnField = screen.getByTestId('endsOnTaskDetails');
+        fireEvent.change(endsOnField, {
+            target: { name: 'endsOn', value: '11-11-2023' },
+        });
+        const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
+        await waitFor(() => {
+            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+        });
+    });
     test('Should render task progress', async () => {
         server.use(superUserSelfHandler);
 
