@@ -72,7 +72,7 @@ const Card: FC<CardProps> = ({
 
     const [keyLongPressed] = useKeyLongPressed();
 
-    const [isEditMode, setIsEditMode] = useState(true);
+    const [isEditMode, setIsEditMode] = useState(false);
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
