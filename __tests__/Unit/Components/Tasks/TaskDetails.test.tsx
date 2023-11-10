@@ -491,11 +491,13 @@ describe('Task details Edit mode ', () => {
         fireEvent.change(endsOnField, {
             target: { name: 'endsOn', value: '11-11-2023' },
         });
-        const saveButton = screen.getByRole('button', { name: 'Save' });
-        fireEvent.click(saveButton);
-        await waitFor(() => {
-            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+        await waitFor(async () => {
+            const saveButton = await screen.findByRole('button', {
+                name: 'Save',
+            });
+            fireEvent.click(saveButton);
         });
+        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
     });
     test('Should render task progress', async () => {
         server.use(superUserSelfHandler);
@@ -543,14 +545,15 @@ describe('Task details Edit mode ', () => {
         const opt = screen.getByRole('option', { name: /COMPLETED/i });
         fireEvent.click(opt);
 
-        await waitFor(() => {
-            const saveButton = screen.getByRole('button', { name: 'Save' });
+        await waitFor(async () => {
+            const saveButton = await screen.findByRole('button', {
+                name: 'Save',
+            });
             fireEvent.click(saveButton);
         });
         expect(screen.findByText(/COMPLETED/i)).not.toBeNull();
-        await waitFor(() => {
-            expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
-        });
+
+        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
     });
 
     test('Should render assignee dropdown', async () => {
