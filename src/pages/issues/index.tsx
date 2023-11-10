@@ -11,7 +11,6 @@ import { ISSUES_URL } from '@/constants/url';
 import { IssueItem } from '@/interfaces/issueItem.type';
 import { PullRequestAndIssueItem } from '@/interfaces/pullRequestIssueItem';
 import { useRouter } from 'next/router';
-import { getQueryStringFromInput } from '@/utils/getQueryStringFromInput';
 import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
 import { SearchField } from '@/components/issues/SearchField';
 
@@ -20,8 +19,6 @@ const Issues: FC = () => {
     const router = useRouter();
     const dev = router?.query?.dev;
     const isDevMode = dev === 'true';
-
-    // const qQueryParam = router?.query?.q;
     const [issueList, setIssueList] = useState<IssueItem[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<null | any>(null);

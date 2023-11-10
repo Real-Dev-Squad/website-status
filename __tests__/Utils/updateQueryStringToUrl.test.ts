@@ -4,19 +4,30 @@ import { NextRouter } from 'next/router';
 
 // Mock Next.js router
 const mockRouter: NextRouter = {
-    push: jest.fn() as any,
-    replace: jest.fn() as any,
-    prefetch: jest.fn() as any,
-    pathname: '',
-    query: {},
-    asPath: '',
+    route: '/issues',
+    pathname: '/issues',
+    query: {
+        q: 'search:dark mode',
+    },
+    asPath: '/issues?dev=true&q=search%3Adark+mode',
+    basePath: '',
+    isLocaleDomain: false,
+    push: jest.fn(),
+    replace: jest.fn(),
+    reload: jest.fn(),
+    back: jest.fn(),
+    forward: jest.fn(),
+    prefetch: jest.fn(),
+    beforePopState: jest.fn(),
     events: {
-        on: jest.fn() as any,
-        off: jest.fn() as any,
-        emit: jest.fn() as any,
+        on: jest.fn(),
+        off: jest.fn(),
+        emit: jest.fn(),
     },
     isFallback: false,
-} as NextRouter;
+    isReady: true,
+    isPreview: false,
+};
 
 describe('updateQueryString', () => {
     it('should update the search query to url', async () => {

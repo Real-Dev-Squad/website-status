@@ -25,7 +25,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     const handleOnSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSearchTextSubmitted(searchText);
-        handleFeatureFlag(router?.query?.dev?.toString(), () =>
+        handleFeatureFlag(dev?.toString(), () =>
             updateQueryStringToUrl(router, queryParamValue)
         );
     };

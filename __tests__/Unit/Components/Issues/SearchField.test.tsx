@@ -6,7 +6,6 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { act } from 'react-dom/test-utils';
 import { useRouter } from 'next/router';
-// import userEvent from '@testing-library/user-event';
 
 jest.mock('next/router', () => ({
     useRouter: jest.fn(),

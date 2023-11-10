@@ -4,13 +4,13 @@ import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
 
 describe('getQueryString', () => {
     const mockRouter: NextRouter = {
-        route: '/',
-        pathname: '/',
+        route: '/issues',
+        pathname: '/issues',
         query: {
             q: 'search:dark mode',
         },
-        asPath: '/',
-        basePath: '/',
+        asPath: '/issues?dev=true&q=search%3Adark+mode',
+        basePath: '',
         isLocaleDomain: false,
         push: jest.fn(),
         replace: jest.fn(),
