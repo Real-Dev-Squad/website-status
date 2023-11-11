@@ -19,11 +19,13 @@ const TASK = {
   title: 'Testing and Determinsitic State',
   purpose: 'string',
   percentCompleted: 0,
-  endsOn: '1618790400',
+  endsOn: 1618790400,
   status: 'progress',
   featureUrl: 'progress',
   type: 'feature',
   createdBy: 'shmbajaj',
+  priority:'TBD'
+  
 };
 const tasks: task[] = Array.from({ length: 10 }).map((_, index) => ({
   ...TASK,
