@@ -12,6 +12,7 @@ import { NextRouter } from 'next/router';
 import { TASK_STATUS } from '@/interfaces/task-status';
 import * as tasksApi from '@/app/services/tasksApi';
 import { CONTENT } from '../../../../__mocks__/db/tasks';
+import { AVAILABLE } from '@/constants/task-status';
 
 const DEFAULT_PROPS = {
     content: {
@@ -503,13 +504,16 @@ describe('Task card', () => {
     });
 
     it('renders "Not started" if status is AVAILABLE', () => {
+        const PROPS = {
+            ...DEFAULT_PROPS,
+            content: {
+                ...DEFAULT_PROPS.content,
+                status: AVAILABLE,
+            },
+        };
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
-                <Card
-                    content={CONTENT[3]}
-                    shouldEdit={true}
-                    onContentChange={jest.fn()}
-                />
+                <Card {...PROPS} />
             </Provider>,
             {}
         );
