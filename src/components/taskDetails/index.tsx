@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState, useEffect } from 'react';
+import React, { ChangeEvent, FC, useState, useEffect, useRef } from 'react';
 import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
@@ -25,6 +25,13 @@ import Progress from '../ProgressCard';
 import TaskManagementModal from '../issues/TaskManagementModal';
 import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 import { TaskRequestData } from '../issues/constants';
+import ProgressContainer from '../tasks/card/progressContainer';
+import DevFeature from '../DevFeature';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
+import { BACKEND_TASK_STATUS } from '@/constants/task-status';
+import task from '@/interfaces/task.type';
+
+const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -68,6 +75,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         setIsTaskModalOpen(!isTaskModalOpen);
     };
     const [requestId, setRequestId] = useState<string>();
+    const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
@@ -77,18 +85,46 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         : [];
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const taskDetailsData: taskDetailsDataType['taskData'] = data?.taskData;
+    const taskDetailsData: task = {
+        ...(data?.taskData || {}),
+        id: taskID,
+    } as task;
 
-    const [editedTaskDetails, setEditedTaskDetails] = useState<
-        taskDetailsDataType['taskData'] | undefined
-    >(data?.taskData);
+    const [editedTaskDetails, setEditedTaskDetails] = useState<task>({
+        ...(data?.taskData || {}),
+        id: taskID,
+    } as task);
+    const [assigneeName, setAssigneeName] = useState<string>(
+        data?.taskData?.assignee || ''
+    );
+    const inputRef = useRef<HTMLInputElement>(null);
+    const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+    const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAssigneeName(e.target.value);
+        setShowSuggestion(Boolean(e.target.value));
+    };
+    const handleAssigneSelect = async (userName: string) => {
+        inputRef.current?.focus();
+        setAssigneeName(userName);
+        setShowSuggestion(false);
+        setEditedTaskDetails((prev) => ({ ...prev, assignee: userName }));
+    };
+    const handleTaskStatusUpdate = (
+        ev: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const newStatus: string = ev.target.value;
 
+        setEditedTaskDetails((prev) => ({ ...prev, status: newStatus }));
+    };
     const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
         useAddOrUpdateMutation();
 
     useEffect(() => {
         if (data?.taskData) {
-            setEditedTaskDetails(data.taskData);
+            setEditedTaskDetails({
+                ...data?.taskData,
+                id: taskID,
+            } as task);
         }
     }, [data]);
 
@@ -97,9 +133,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function onCancel() {
         setIsEditing(false);
         setEditedTaskDetails(taskDetailsData);
+        setNewEndOnDate('');
     }
     async function onSave() {
         setIsEditing(false);
+        setNewEndOnDate('');
         const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
         for (const key in editedTaskDetails) {
             if (
@@ -174,8 +212,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     }
 
-    function getStartedOn(timestamp: number | undefined) {
-        return timestamp ? convertTimeStamp(timestamp) : 'N/A';
+    function getStartedOn(timestamp: string | undefined) {
+        return timestamp ? convertTimeStamp(parseInt(timestamp, 10)) : 'N/A';
     }
 
     function getEndsOn(timestamp: number | undefined) {
@@ -188,6 +226,17 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         taskId: taskID,
     });
     const taskProgress: ProgressDetailsData[] = progressData?.data || [];
+
+    const handleBlurOfEndsOn = () => {
+        const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
+
+        if (endsOn > 0) {
+            setEditedTaskDetails((prev) => ({
+                ...prev,
+                endsOn,
+            }));
+        }
+    };
 
     return (
         <Layout hideHeader={true}>
@@ -266,6 +315,33 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Priority'}
                                         value={taskDetailsData?.priority}
                                     />
+                                    <DevFeature>
+                                        {isEditing && (
+                                            <label>
+                                                Status:
+                                                <select
+                                                    name="status"
+                                                    onChange={
+                                                        handleTaskStatusUpdate
+                                                    }
+                                                    value={
+                                                        editedTaskDetails?.status
+                                                    }
+                                                >
+                                                    {taskStatus.map(
+                                                        ([name, status]) => (
+                                                            <option
+                                                                key={status}
+                                                                value={status}
+                                                            >
+                                                                {name}
+                                                            </option>
+                                                        )
+                                                    )}
+                                                </select>
+                                            </label>
+                                        )}
+                                    </DevFeature>
                                     <Details
                                         detailType={'Status'}
                                         value={taskDetailsData?.status}
@@ -277,6 +353,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
+                                    <DevFeature>
+                                        {isUserAuthorized && (
+                                            <ProgressContainer
+                                                content={taskDetailsData}
+                                            />
+                                        )}
+                                    </DevFeature>
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />
@@ -312,6 +395,28 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                               )
                                     }
                                 />
+                                <DevFeature>
+                                    {isEditing && isUserAuthorized && (
+                                        <div
+                                            className={`${classNames.assigneeSuggestionInput} ${classNames.assignedToSection}`}
+                                        >
+                                            <Suggestions
+                                                assigneeName={assigneeName}
+                                                showSuggestion={showSuggestion}
+                                                handleClick={
+                                                    handleAssigneSelect
+                                                }
+                                                handleAssignment={
+                                                    handleAssignment
+                                                }
+                                                setShowSuggestion={
+                                                    setShowSuggestion
+                                                }
+                                                ref={inputRef}
+                                            />
+                                        </div>
+                                    )}
+                                </DevFeature>
                                 <Details
                                     detailType={'Reporter'}
                                     value={'Ankush'}
@@ -328,10 +433,33 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetailsData?.startedOn
                                     )}
                                 />
+
                                 <Details
                                     detailType={'Ends On'}
                                     value={getEndsOn(taskDetailsData?.endsOn)}
                                 />
+                                <DevFeature>
+                                    {isEditing && (
+                                        <>
+                                            <label htmlFor="endsOnTaskDetails">
+                                                Ends On:
+                                            </label>
+                                            <input
+                                                id="endsOnTaskDetails"
+                                                type="date"
+                                                name="endsOn"
+                                                onChange={(e) => {
+                                                    setNewEndOnDate(
+                                                        e.target.value
+                                                    );
+                                                }}
+                                                onBlur={handleBlurOfEndsOn}
+                                                value={newEndOnDate}
+                                                data-testid="endsOnTaskDetails"
+                                            />
+                                        </>
+                                    )}
+                                </DevFeature>
                             </TaskContainer>
                             <TaskContainer
                                 hasImg={false}

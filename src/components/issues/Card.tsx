@@ -31,8 +31,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
     const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
         useAddOrUpdateMutation();
-    const isTaskButtonDisabled =
-        isLoading || (!isUserAuthorized && (taskExists || !!requestId));
+    const isTaskButtonDisabled = isLoading || (!isUserAuthorized && taskExists);
 
     const toggle = () => {
         setIsTaskModalOpen(!isTaskModalOpen);
