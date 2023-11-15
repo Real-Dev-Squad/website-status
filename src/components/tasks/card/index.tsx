@@ -230,7 +230,7 @@ const Card: FC<CardProps> = ({
     const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
     const hasTaskAssignee = () => cardDetails.assignee ?? false;
     const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
-    const isTaskComplete = () => cardDetails.status === 'Completed';
+    const isTaskComplete = () => cardDetails.status === COMPLETED;
 
     const showAssignButton = () =>
         hasIssueAssignee() &&
@@ -650,7 +650,7 @@ const Card: FC<CardProps> = ({
                 </div>
             </div>
 
-            {cardDetails.status !== 'Completed' && isIssueClosed() && (
+            {cardDetails.status !== COMPLETED && isIssueClosed() && (
                 <CloseTaskButton />
             )}
             {!isEditMode && showEditButton && <EditButton />}
