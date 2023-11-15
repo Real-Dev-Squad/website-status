@@ -38,6 +38,7 @@ const DEFAULT_PROPS = {
         featureUrl: 'string',
         type: 'feature',
         createdBy: 'ankush',
+        priority: 'HIGH',
     },
     shouldEdit: true,
     onContentChange: jest.fn(),
@@ -176,6 +177,7 @@ describe('Task card', () => {
                         closedAt: '2023-04-02T17:31:50',
                         status: 'closed',
                         id: 12278,
+                        html_url: 'https://github.com',
                     },
                 },
             },
@@ -200,6 +202,7 @@ describe('Task card', () => {
                 ...DEFAULT_PROPS.content,
                 github: {
                     issue: {
+                        html_url: 'https://github.com',
                         closedAt: '2023-04-02T17:31:50',
                         status: 'closed',
                         id: 12278,
@@ -229,6 +232,7 @@ describe('Task card', () => {
                 assignee: undefined,
                 github: {
                     issue: {
+                        html_url: 'https://github.com',
                         assignee: 'johndoe',
                         status: 'open',
                         id: 12278,
@@ -268,6 +272,7 @@ describe('Task card', () => {
                 assignee: undefined,
                 github: {
                     issue: {
+                        html_url: 'https://github.com',
                         assignee: 'johndoe',
                         status: 'open',
                         id: 12278,
