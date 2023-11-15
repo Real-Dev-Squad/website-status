@@ -11,7 +11,18 @@ import {
 import { NextRouter } from 'next/router';
 import * as tasksApi from '@/app/services/tasksApi';
 import { CONTENT } from '../../../../__mocks__/db/tasks';
-import { ASSIGNED, AVAILABLE, COMPLETED } from '@/constants/task-status';
+import {
+    APPROVED,
+    ASSIGNED,
+    AVAILABLE,
+    BLOCKED,
+    COMPLETED,
+    DONE,
+    IN_PROGRESS,
+    MERGED,
+    NEEDS_REVIEW,
+    VERIFIED,
+} from '@/constants/task-status';
 
 const DEFAULT_PROPS = {
     content: {
@@ -547,5 +558,119 @@ describe('Task card', () => {
         );
         const spanElement = screen.getByTestId('task-status');
         expect(spanElement).toHaveTextContent('Completed');
+    });
+});
+
+describe('Task card, color based on status ', () => {
+    const OVER_DUE_CLASS = 'overdueTask';
+    it('Should not render card in red, if task status is COMPLETED ', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = COMPLETED;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).not.toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should not render card in red, if task status is DONE ', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = DONE;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).not.toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should not render card in red, if task status is VERIFIED ', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = VERIFIED;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).not.toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should not render card in red, if task status is AVAILABLE ', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = AVAILABLE;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).not.toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should not render card in red, if task status is ASSIGNED ', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = ASSIGNED;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should render card in red if task status is BLOCKED', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = BLOCKED;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should render card in red if task status is IN_PROGRESS', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = IN_PROGRESS;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should render card in red if task status is NEEDS_REVIEW', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = NEEDS_REVIEW;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should render card in red if task status is APPROVED', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = APPROVED;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).toHaveClass(OVER_DUE_CLASS);
+    });
+    it('Should render card in red if task status is MERGED', () => {
+        const TASK_DATA = DEFAULT_PROPS;
+        TASK_DATA.content.status = MERGED;
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...TASK_DATA} />
+            </Provider>
+        );
+        const taskCard = screen.getByTestId('task-card');
+        expect(taskCard).toHaveClass(OVER_DUE_CLASS);
     });
 });
