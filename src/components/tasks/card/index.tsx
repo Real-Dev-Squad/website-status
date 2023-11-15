@@ -15,6 +15,7 @@ import {
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
 import { MAX_SEARCH_RESULTS, TASK_STATUS_MAPING } from '@/constants/constants';
+import { COMPLETED, VERIFIED, AVAILABLE, DONE } from '@/constants/task-status';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
@@ -43,11 +44,7 @@ const Card: FC<CardProps> = ({
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
     const statusRedList = [TASK_STATUS.BLOCKED];
-    const statusNotOverDueList = [
-        TASK_STATUS.COMPLETED,
-        TASK_STATUS.VERIFIED,
-        TASK_STATUS.AVAILABLE,
-    ];
+    const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE, DONE];
 
     const cardDetails = content;
 
