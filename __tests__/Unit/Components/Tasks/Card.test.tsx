@@ -9,10 +9,9 @@ import {
     renderWithRouter,
 } from '@/test_utils/createMockRouter';
 import { NextRouter } from 'next/router';
-import { TASK_STATUS } from '@/interfaces/task-status';
 import * as tasksApi from '@/app/services/tasksApi';
 import { CONTENT } from '../../../../__mocks__/db/tasks';
-import { AVAILABLE } from '@/constants/task-status';
+import { ASSIGNED, AVAILABLE, COMPLETED } from '@/constants/task-status';
 
 const DEFAULT_PROPS = {
     content: {
@@ -34,7 +33,7 @@ const DEFAULT_PROPS = {
         purpose: 'string',
         percentCompleted: 0,
         endsOn: 1618790400,
-        status: TASK_STATUS.COMPLETED,
+        status: COMPLETED,
         featureUrl: 'string',
         type: 'feature',
         createdBy: 'ankush',
@@ -171,7 +170,7 @@ describe('Task card', () => {
             ...DEFAULT_PROPS,
             content: {
                 ...DEFAULT_PROPS.content,
-                status: TASK_STATUS.ASSIGNED,
+                status: ASSIGNED,
                 github: {
                     issue: {
                         closedAt: '2023-04-02T17:31:50',
@@ -365,7 +364,7 @@ describe('Task card', () => {
             ...DEFAULT_PROPS,
             content: {
                 ...DEFAULT_PROPS.content,
-                status: TASK_STATUS.AVAILABLE,
+                status: AVAILABLE,
                 assignee: undefined,
             },
         };

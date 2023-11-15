@@ -1,4 +1,4 @@
-import { TASK_STATUS } from '@/interfaces/task-status';
+import { ASSIGNED,AVAILABLE } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
 
 const TASK = {
@@ -407,7 +407,7 @@ const CONTENT = [
       links: ['this-needs-to-be-fixed'],
       endsOn: 1692988200000,
       startedOn: '1618790400',
-      status: TASK_STATUS.ASSIGNED,
+      status: ASSIGNED,
       assignee: 'mahima',
       percentCompleted: 0,
       dependsOn: [],
@@ -439,7 +439,7 @@ const CONTENT = [
     links: ['this-needs-to-be-fixed'],
     endsOn: 1692988200000,
     startedOn: '1692580330711',
-    status: TASK_STATUS.AVAILABLE,
+    status: AVAILABLE,
     assignee: 'mahima',
     percentCompleted: 0,
     dependsOn: [],
