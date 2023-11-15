@@ -174,7 +174,6 @@ describe('ProgressContainer', () => {
                 query: { dev: 'true' },
             }
         );
-        screen.debug();
         await waitFor(() => {
             expect(screen.getByText('0%')).toBeInTheDocument();
             expect(screen.queryByText('UPDATE')).not.toBeInTheDocument();
