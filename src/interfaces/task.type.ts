@@ -1,5 +1,3 @@
-import award from '@/interfaces/award.type';
-
 type task = {
     id: string;
     title: string;
@@ -33,7 +31,7 @@ type task = {
             };
         };
     };
-    status: string;
+    status: string; // Update the type of task status once this is addressed https://github.com/Real-Dev-Squad/website-status/issues/1002
     priority: string;
 };
 

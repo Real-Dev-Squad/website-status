@@ -12,7 +12,7 @@ export const SANITY_CHECK = 'SANITY_CHECK';
 export const REGRESSION_CHECK = 'REGRESSION_CHECK';
 export const RELEASED = 'RELEASED';
 export const VERIFIED = 'VERIFIED';
-const DONE = 'DONE';
+export const DONE = 'DONE';
 // TODO: to change the value to UN_ASSIGNED after migration is done from backend
 const UN_ASSIGNED = 'AVAILABLE';
 
@@ -51,3 +51,7 @@ export const BACKEND_TASK_STATUS = {
     VERIFIED,
     DONE,
 };
+
+// https://github.com/Real-Dev-Squad/website-status/issues/1002
+// TODO: convert this file into TS
+// TODO: use all status as ENUMS
