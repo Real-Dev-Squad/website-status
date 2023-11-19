@@ -29,7 +29,6 @@ describe('StandupContainer', () => {
                 <Loader />
             </Provider>
         );
-        screen.debug();
 
         await waitFor(() => {
             const submitButton = screen.getByRole('button', {
@@ -47,7 +46,6 @@ describe('StandupContainer', () => {
             expect(submitButton).toBeInTheDocument();
             expect(addButton.length).toBe(3);
         });
-        // screen.debug();
     });
 
     test('should be able to submit the standup form', async () => {
@@ -93,7 +91,6 @@ describe('StandupContainer', () => {
             target: { value: 'None' },
         });
         fireEvent.submit(screen.getByRole('form'));
-        screen.debug();
         expect(screen.getByText('loading')).toBeInTheDocument();
         await waitFor(() => {
             expect(

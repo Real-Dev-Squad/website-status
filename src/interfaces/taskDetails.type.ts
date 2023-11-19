@@ -1,29 +1,8 @@
 import { ChangeEvent, ChangeEventHandler } from 'react';
+import task from './task.type';
 export type taskDetailsDataType = {
     message?: string;
-    taskData?: {
-        assignee: string;
-        completionAward: { dinero: number; neelam: number };
-        createdBy: string;
-        endsOn: number;
-        purpose: string;
-        isNoteworthy: boolean;
-        dependsOn: string[];
-        lossRate: { dinero: number; neelam: number };
-        percentCompleted: number;
-        priority: string;
-        startedOn: number;
-        status: string;
-        title: string;
-        type: string;
-        participants: string[];
-        featureUrl: string;
-        github: {
-            issue: {
-                html_url: string;
-            };
-        };
-    };
+    taskData?: task;
 };
 
 export type ButtonProps = {
@@ -42,9 +21,7 @@ export type TextAreaProps = {
 export type TaskDependencyProps = {
     taskDependencyIds: string[];
     isEditing?: boolean;
-    setEditedTaskDetails: React.Dispatch<
-        React.SetStateAction<taskDetailsDataType['taskData'] | undefined>
-    >;
+    setEditedTaskDetails: React.Dispatch<React.SetStateAction<task>>;
 };
 export type DependencyListProps = {
     taskDependencyIds: string[];

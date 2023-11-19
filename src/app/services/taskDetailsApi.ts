@@ -68,11 +68,7 @@ export const taskDetailsApi = api.injectEndpoints({
                 return {
                     url: `${TASKS_URL + '/' + taskID}`,
                     method: 'PATCH',
-                    body: {
-                        title: editedDetails.title,
-                        purpose: editedDetails.purpose,
-                        dependsOn: editedDetails.dependsOn,
-                    },
+                    body: editedDetails,
                 };
             },
             invalidatesTags: ['Task_Details'],

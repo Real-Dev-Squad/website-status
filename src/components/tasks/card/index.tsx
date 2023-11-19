@@ -9,16 +9,21 @@ import { toast, ToastTypes } from '@/helperFunctions/toast';
 import TaskLevelEdit from './TaskTagEdit';
 import { TaskStatusEditMode } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
-import fetch from '@/helperFunctions/fetch';
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
 import { MAX_SEARCH_RESULTS, TASK_STATUS_MAPING } from '@/constants/constants';
+import {
+    COMPLETED,
+    VERIFIED,
+    AVAILABLE,
+    DONE,
+    BLOCKED,
+} from '@/constants/task-status';
 import moment from 'moment';
 import { Loader } from './Loader';
 import { TaskLevelMap } from './TaskLevelMap';
-import { TASK_STATUS } from '@/interfaces/task-status';
 import {
     useDeleteTaskTagLevelMutation,
     useGetTaskTagsQuery,
@@ -28,23 +33,21 @@ import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import ProgressContainer from './progressContainer';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
+import { useRouter } from 'next/router';
 
 const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
 }) => {
-    const statusRedList = [TASK_STATUS.BLOCKED];
-    const statusNotOverDueList = [
-        TASK_STATUS.COMPLETED,
-        TASK_STATUS.VERIFIED,
-        TASK_STATUS.AVAILABLE,
-    ];
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true' ? true : false;
+    const statusRedList = [BLOCKED];
+    const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE, DONE];
 
     const cardDetails = content;
 
@@ -107,9 +110,7 @@ const Card: FC<CardProps> = ({
 
     const localEndsOn = new Date(cardDetails.endsOn * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
-    const statusFontColor = !statusRedList.includes(
-        cardDetails.status as TASK_STATUS
-    )
+    const statusFontColor = !statusRedList.includes(cardDetails.status)
         ? '#00a337'
         : '#f83535';
     const iconHeight = '25';
@@ -121,8 +122,7 @@ const Card: FC<CardProps> = ({
     function isTaskOverdue() {
         const timeLeft = localEndsOn.valueOf() - Date.now();
         return (
-            !statusNotOverDueList.includes(cardDetails.status as TASK_STATUS) &&
-            timeLeft <= 0
+            !statusNotOverDueList.includes(cardDetails.status) && timeLeft <= 0
         );
     }
 
@@ -230,7 +230,7 @@ const Card: FC<CardProps> = ({
     const hasIssueAssignee = () => cardDetails.github?.issue.assignee ?? false;
     const hasTaskAssignee = () => cardDetails.assignee ?? false;
     const isIssueClosed = () => cardDetails.github?.issue?.status === 'closed';
-    const isTaskComplete = () => cardDetails.status === 'Completed';
+    const isTaskComplete = () => cardDetails.status === COMPLETED;
 
     const showAssignButton = () =>
         hasIssueAssignee() &&
@@ -557,7 +557,7 @@ const Card: FC<CardProps> = ({
                         tabIndex={0}
                         data-testid="started-on"
                     >
-                        {cardDetails.status === TASK_STATUS.AVAILABLE
+                        {cardDetails.status === AVAILABLE
                             ? 'Not started'
                             : `Started ${getStartedAgo()}`}
                     </span>
@@ -568,6 +568,7 @@ const Card: FC<CardProps> = ({
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
+                            isDevMode={isDevMode}
                         />
                     ) : (
                         <div className={classNames.statusContainer} style={{}}>
@@ -649,7 +650,7 @@ const Card: FC<CardProps> = ({
                 </div>
             </div>
 
-            {cardDetails.status !== 'Completed' && isIssueClosed() && (
+            {cardDetails.status !== COMPLETED && isIssueClosed() && (
                 <CloseTaskButton />
             )}
             {!isEditMode && showEditButton && <EditButton />}

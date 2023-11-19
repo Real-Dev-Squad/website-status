@@ -1,36 +1,38 @@
-import award from '@/interfaces/award.type';
-
 type task = {
     id: string;
     title: string;
     purpose: string;
     featureUrl: string;
     type: string;
-    links: string[];
+    links?: string[];
     endsOn: number;
     startedOn: string;
-    status: string;
+    createdBy: string;
     assignee?: string;
     percentCompleted: number;
-    dependsOn: string[];
+    dependsOn?: string[];
+    level?: 1 | 2 | 3 | 4 | 5;
     participants?: string[];
-    completionAward: award;
-    lossRate: award;
+    completionAward: { dinero: number; neelam: number };
+    lossRate: { dinero: number; neelam: number };
     isNoteworthy: boolean;
-    createdBy: string;
     github?: {
         issue: {
-            assignee?: string;
+            html_url: string;
             status: string;
+            assignee?: string; // optional
             id: number;
-            closedAt?: string;
+            closedAt?: string; // optional
             assigneeRdsInfo?: {
-                firstName: string | null | undefined;
-                lastName: string | null | undefined;
-                username: string;
+                // optional
+                firstName?: string;
+                lastName?: string;
+                username?: string;
             };
         };
     };
+    status: string; // Update the type of task status once this is addressed https://github.com/Real-Dev-Squad/website-status/issues/1002
+    priority: string;
 };
 
 export type TasksResponseType = {
