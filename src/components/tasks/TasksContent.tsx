@@ -144,50 +144,6 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 onInputChange={(value) => searchInputHandler(value)}
                 onClickSearchButton={searchButtonHandler}
             />
-            {dev !== true ? (
-                <>
-                    <div
-                        className={classNames['status-tabs-container']}
-                        data-testid="status-tabs-container"
-                    >
-                        <TabSection
-                            dev={dev}
-                            onSelect={(status: Tab) =>
-                                searchNewTasks(
-                                    status,
-                                    queryAssignees,
-                                    queryTitle
-                                )
-                            }
-                            activeTab={selectedTab}
-                        />
-                    </div>
-                    <div
-                        className={classNames['status-select-container']}
-                        data-testid="status-select-container"
-                    >
-                        <Select
-                            dev={dev}
-                            value={{
-                                label: getChangedStatusName(selectedTab),
-                                value: selectedTab,
-                            }}
-                            onChange={(selectedTaskStatus) => {
-                                if (selectedTaskStatus) {
-                                    searchNewTasks(
-                                        selectedTaskStatus.value as Tab,
-                                        queryAssignees,
-                                        queryTitle
-                                    );
-                                }
-                            }}
-                            options={taskSelectOptions}
-                        />
-                    </div>
-                </>
-            ) : (
-                <></>
-            )}
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
