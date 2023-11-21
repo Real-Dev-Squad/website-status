@@ -130,6 +130,14 @@ $radius: 5px;
         margin-left: 0;
     }
 }
+.filter-modal-background {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
 
 .filter-modal {
     position: relative;
@@ -150,6 +158,22 @@ $radius: 5px;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 80%;
+    }
+}
+.filter-modal-dev {
+    top: 13.5rem;
+
+    @media (max-width: 768px) {
+        top: 50%;
+    }
+    @media (max-width: 483px) {
+        top: 55%;
+    }
+    @media (max-width: 450px) and (min-width: 444px) {
+        top: 50%;
+    }
+    @media (max-width: 343px) {
+        top: 59%;
     }
 }
 
