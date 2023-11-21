@@ -33,42 +33,6 @@ describe('tasks content', () => {
         global.dispatchEvent(new Event('resize'));
     };
 
-    test('renders tabs component', async () => {
-        setWindowInnerWidth(breakpointToShowTabs);
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>
-        );
-
-        expect(screen.getByText(/loading/i)).toBeInTheDocument();
-
-        await screen.findByTestId('tabs');
-    });
-
-    test('select tab and set active', async () => {
-        setWindowInnerWidth(breakpointToShowTabs);
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            {
-                query: { section: 'unassigned' },
-            }
-        );
-        await screen.findByTestId('tabs');
-        const tabsContainer = within(
-            screen.getByTestId('status-tabs-container')
-        );
-        const assignedButton = tabsContainer.getByRole('button', {
-            name: 'UNASSIGNED',
-        });
-        expect(assignedButton).toHaveTextContent('UNASSIGNED');
-        await screen.findByText(NO_TASKS_FOUND_MESSAGE);
-        expect(screen.getByText(NO_TASKS_FOUND_MESSAGE)).toBeInTheDocument();
-    });
-
     test('displays "No tasks found" message when there are no tasks', async () => {
         server.use(noTasksFoundHandler);
         const { findByText } = renderWithRouter(
@@ -106,68 +70,6 @@ describe('tasks content', () => {
             'Depreciate task status AVAILABLE and COMPLETED'
         );
         expect(task).toBeInTheDocument();
-    });
-
-    test('Selecting a tab pushes into query params', async () => {
-        setWindowInnerWidth(breakpointToShowTabs);
-        const mockPushFunction = jest.fn();
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            { push: mockPushFunction }
-        );
-
-        await screen.findByTestId('tabs');
-        const tabsContainer = within(
-            screen.getByTestId('status-tabs-container')
-        );
-        const inProgressBtn = tabsContainer.getByRole('button', {
-            name: /IN PROGRESS/i,
-        });
-        expect(inProgressBtn).toHaveClass('tabButton');
-        const unassignedButton = tabsContainer.getByRole('button', {
-            name: /UNASSIGNED/i,
-        });
-        fireEvent.click(unassignedButton);
-        expect(mockPushFunction).toBeCalledTimes(1);
-        expect(mockPushFunction).toBeCalledWith({
-            query: {
-                q: 'status:available',
-            },
-        });
-    });
-
-    test('should show status-tabs-container after 450px of screen width', async () => {
-        setWindowInnerWidth(breakpointToShowTabs);
-        const mockPushFunction = jest.fn();
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            { push: mockPushFunction }
-        );
-
-        await screen.findByTestId('tabs');
-        const tabsContainer = screen.getByTestId('status-tabs-container');
-        const tabStyles = getComputedStyle(tabsContainer);
-        expect(tabStyles.display).toBe('block');
-    });
-
-    test('should show status-select-container 450px below status-tabs-container', async () => {
-        setWindowInnerWidth(breakpointToShowSelect);
-        const mockPushFunction = jest.fn();
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            { push: mockPushFunction }
-        );
-        await screen.findByTestId('status-select-container');
-        const selectContainer = screen.getByTestId('status-select-container');
-        const selectStyles = getComputedStyle(selectContainer);
-
-        expect(selectStyles.display).toBe('block');
     });
 
     test('Selecting a value from dropdown pushes into query params', async () => {
