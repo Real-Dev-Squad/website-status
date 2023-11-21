@@ -627,7 +627,7 @@ describe('Task Details > Task Request', () => {
         });
     });
 
-    test('Error toast should be shown on error', async () => {
+    it('Error toast should be shown on error', async () => {
         server.use(...taskRequestErrorHandler);
 
         renderWithRouter(

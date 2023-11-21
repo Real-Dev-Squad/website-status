@@ -71,7 +71,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     const { isUserAuthorized, data: userData } = useUserData();
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const toggle = () => {
+    const toggleTaskRequestModal = () => {
         setIsTaskModalOpen(!isTaskModalOpen);
     };
     const [requestId, setRequestId] = useState<string>();
@@ -486,14 +486,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         <button
                                             data-testid="request-task-button"
                                             className={classNames.button}
-                                            onClick={toggle}
+                                            onClick={toggleTaskRequestModal}
                                         >
                                             Request for task
                                         </button>
                                         <TaskManagementModal
                                             isUserAuthorized={false}
                                             isOpen={isTaskModalOpen}
-                                            toggle={toggle}
+                                            toggle={toggleTaskRequestModal}
                                             requestId={requestId}
                                             handleCreateTaskRequest={
                                                 handleCreateTaskRequest
