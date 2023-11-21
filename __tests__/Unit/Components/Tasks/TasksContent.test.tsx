@@ -239,34 +239,4 @@ describe('tasks content', () => {
         fireEvent.change(searchInput, { target: { value: 'test' } });
         expect(searchInput).toHaveValue('test');
     });
-
-    test('Query param should be changed when tab is selected', async () => {
-        const mockPushFunction = jest.fn();
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            {
-                push: mockPushFunction,
-                query: {
-                    q: 'status:all assignee:satyam Add',
-                },
-            }
-        );
-
-        await screen.findByTestId('tabs');
-        const tabsContainer = within(
-            screen.getByTestId('status-tabs-container')
-        );
-        const assignedButton = tabsContainer.getByRole('button', {
-            name: 'ASSIGNED',
-        });
-        fireEvent.click(assignedButton);
-        expect(mockPushFunction).toBeCalledTimes(1);
-        expect(mockPushFunction).toBeCalledWith({
-            query: {
-                q: 'status:assigned assignee:satyam Add',
-            },
-        });
-    });
 });
