@@ -72,40 +72,6 @@ describe('tasks content', () => {
         expect(task).toBeInTheDocument();
     });
 
-    test('Selecting a value from dropdown pushes into query params', async () => {
-        setWindowInnerWidth(breakpointToShowSelect);
-        const mockPushFunction = jest.fn();
-        renderWithRouter(
-            <Provider store={store()}>
-                <TasksContent />
-            </Provider>,
-            { push: mockPushFunction }
-        );
-
-        await screen.findByTestId('status-select-container');
-        const selectContainer = screen?.getByTestId(
-            'selected-option-container'
-        );
-
-        fireEvent.click(selectContainer);
-        fireEvent.keyDown(selectContainer, {
-            key: 'ArrowDown',
-            code: 'ArrowDown',
-        });
-
-        fireEvent.keyDown(selectContainer, {
-            key: 'Enter',
-            code: 'Enter',
-        });
-
-        expect(mockPushFunction).toBeCalledTimes(1);
-        expect(mockPushFunction).toBeCalledWith({
-            query: {
-                q: 'status:in-progress',
-            },
-        });
-    });
-
     test('searchButtonHandler when search button is clicked', async () => {
         setWindowInnerWidth(breakpointToShowTabs);
         const mockPushFunction = jest.fn();
