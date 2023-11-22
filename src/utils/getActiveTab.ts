@@ -24,6 +24,8 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.OVERDUE;
         case 'done':
             return Tab.DONE;
+        case 'completed':
+            return Tab.COMPLETED;
         default:
             return Tab.ALL;
     }
