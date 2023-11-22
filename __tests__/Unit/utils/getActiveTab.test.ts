@@ -12,6 +12,7 @@ describe('Unit | Util | Get Active Tab', () => {
         expect(getActiveTab('verified')).toEqual(Tab.VERIFIED);
         expect(getActiveTab('merged')).toEqual(Tab.MERGED);
         expect(getActiveTab('done')).toEqual(Tab.DONE);
+        expect(getActiveTab('completed')).toEqual(Tab.COMPLETED);
         expect(getActiveTab('in-progress')).toEqual(Tab.IN_PROGRESS);
         expect(getActiveTab('someRandomSection')).toEqual(Tab.ALL);
     });

@@ -11,6 +11,7 @@ export const EMPTY_TASKS_DATA = {
     MERGED: [],
     OVERDUE: [],
     DONE: [],
+    COMPLETED: [],
 };
 
 export const TASK_REQUEST_TYPES = {

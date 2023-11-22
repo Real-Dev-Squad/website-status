@@ -87,6 +87,18 @@ describe('Tabs Component', () => {
         expect(doneBtn).toHaveClass('active');
     });
 
+    it('Check if correct button is selected', () => {
+        render(
+            <Tabs
+                tabs={TABS}
+                activeTab={Tab.COMPLETED}
+                onSelect={onSelectMock}
+            />
+        );
+        const completedBtn = screen.getByRole('button', { name: /COMPLETED/i });
+        expect(completedBtn).toHaveClass('active');
+    });
+
     it('Check if correct button is selected when dev is true', () => {
         render(
             <Tabs
