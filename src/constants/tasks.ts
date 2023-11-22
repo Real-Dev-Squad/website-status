@@ -9,7 +9,6 @@ export const EMPTY_TASKS_DATA = {
     IN_REVIEW: [],
     VERIFIED: [],
     MERGED: [],
-    COMPLETED: [],
     OVERDUE: [],
     DONE: [],
 };
