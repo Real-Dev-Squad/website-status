@@ -1,7 +1,6 @@
 export const MAX_SEARCH_RESULTS = 1;
 export const ERROR_MESSAGE = 'Something went wrong!';
 export const STANDUP_SUBMISSION_SUCCESS = 'Standup submitted successfully';
-export const COMPLETED = 'COMPLETED';
 export const DONE = 'DONE';
 export const AVAILABLE = 'AVAILABLE';
 export const UNASSIGNED = 'UNASSIGNED';
@@ -23,4 +22,5 @@ export const TASK_STATUS_MAPING = {
     APPROVED: 'Approved',
     IN_REVIEW: 'In Review',
     NEEDS_REVIEW: 'Needs Review',
+    DONE: 'Done',
 };

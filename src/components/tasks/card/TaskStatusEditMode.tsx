@@ -21,7 +21,7 @@ const TaskStatusEditMode = ({
     isDevMode,
 }: Props) => {
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) => !(isDevMode && key === 'COMPLETED')
+        ([key]) => !(key === 'COMPLETED')
     );
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();

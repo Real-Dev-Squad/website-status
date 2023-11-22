@@ -90,7 +90,6 @@ enum Tab {
     IN_REVIEW = 'IN_REVIEW',
     VERIFIED = 'VERIFIED',
     MERGED = 'MERGED',
-    COMPLETED = 'COMPLETED',
     OVERDUE = 'OVERDUE',
     DONE = 'DONE',
 }
@@ -136,7 +135,6 @@ export type TabTasksData = {
     IN_REVIEW: task[];
     VERIFIED: task[];
     MERGED: task[];
-    COMPLETED: task[];
     OVERDUE: task[];
     DONE: task[];
 };
@@ -147,5 +145,5 @@ export type CardTaskDetails = task & {
     savingText: string;
 };
 
-export const depreciatedTaskStatus = ['AVAILABLE', 'COMPLETED'];
-export const newTaskStatus = ['UNASSIGNED', 'DONE'];
+export const depreciatedTaskStatus = ['AVAILABLE'];
+export const newTaskStatus = ['UNASSIGNED'];

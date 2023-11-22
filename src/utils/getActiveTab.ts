@@ -20,8 +20,6 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.VERIFIED;
         case 'merged':
             return Tab.MERGED;
-        case 'completed':
-            return Tab.COMPLETED;
         case 'overdue':
             return Tab.OVERDUE;
         case 'done':
