@@ -6,10 +6,12 @@ import {
     depreciatedTaskStatus,
     newTaskStatus,
 } from '@/interfaces/task.type';
-import { AVAILABLE, UNASSIGNED } from '@/constants/constants';
+import { COMPLETED, DONE, AVAILABLE, UNASSIGNED } from '@/constants/constants';
 
 function changeName(name: string) {
-    if (name === AVAILABLE) {
+    if (name === COMPLETED) {
+        return DONE;
+    } else if (name === AVAILABLE) {
         return UNASSIGNED;
     } else {
         return name.split('_').join(' ');
@@ -81,10 +83,14 @@ describe('Tabs Component', () => {
 
     it('Check if correct button is selected', () => {
         render(
-            <Tabs tabs={TABS} activeTab={Tab.DONE} onSelect={onSelectMock} />
+            <Tabs
+                tabs={TABS}
+                activeTab={Tab.COMPLETED}
+                onSelect={onSelectMock}
+            />
         );
-        const doneBtn = screen.getByRole('button', { name: /DONE/i });
-        expect(doneBtn).toHaveClass('active');
+        const completedBtn = screen.getByRole('button', { name: /DONE/i });
+        expect(completedBtn).toHaveClass('active');
     });
 
     it('Check if correct button is selected when dev is true', () => {
