@@ -34,7 +34,6 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    isDevMode={false}
                 />
             </Provider>
         );
@@ -54,7 +53,6 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    isDevMode={false}
                 />
             </Provider>
         );
@@ -82,7 +80,6 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={UN_ASSIGNED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    isDevMode={false}
                 />
             </Provider>
         );
@@ -92,7 +89,7 @@ describe('TaskStatusEditMode', () => {
         expect(statusSelect).toHaveValue('AVAILABLE');
     });
 
-    it('renders a list of task', () => {
+    it('renders a list of task ', () => {
         const mockUpdateTask = jest.fn();
         const setEditedTaskDetails = jest.fn();
 
@@ -101,7 +98,33 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    isDevMode={false}
+                />
+            </Provider>
+        );
+
+        const statusSelect = screen.getByLabelText('Status:');
+
+        const allOptions = Array.from(
+            statusSelect.querySelectorAll('option')
+        ).map((option) => [option.value, option.textContent]);
+
+        const allTaskStatus = Object.entries(BACKEND_TASK_STATUS).map(
+            ([name, status]) => [status, beautifyStatus(name)]
+        );
+
+        expect(allOptions).toEqual(allTaskStatus);
+    });
+
+    it('renders a list of task under feature flag', () => {
+        const mockUpdateTask = jest.fn();
+        const setEditedTaskDetails = jest.fn();
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                    isDevMode={true}
                 />
             </Provider>
         );
@@ -127,7 +150,6 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    isDevMode={false}
                 />
             </Provider>,
             {}
