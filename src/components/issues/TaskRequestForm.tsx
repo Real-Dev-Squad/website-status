@@ -15,7 +15,7 @@ type ActionFormReducer = {
 type ActionFormProps = {
     requestId?: string;
     taskId?: string;
-    createTaskRequest: (data: ActionFormReducer) => Promise<void>;
+    createTaskRequest?: (data: ActionFormReducer) => Promise<void>;
 };
 
 type TaskRequestSuccessMessage = {
@@ -100,7 +100,7 @@ const TaskRequestForm: FC<ActionFormProps> = ({
     const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        await createTaskRequest(state);
+        if (createTaskRequest) await createTaskRequest(state);
         setIsLoading(false);
     };
 
