@@ -166,7 +166,7 @@ describe('TaskSearch', () => {
         expect(onClickSearchButton).toBeCalled();
     });
 
-    test('Blocked Button Selected then Search Bar Display status:blocked', () => {
+    test('Blocked Button Selected then Search Bar Display status:blocked in dev', () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
@@ -183,9 +183,53 @@ describe('TaskSearch', () => {
 
         const filterButton = screen.getByText('Filter');
         fireEvent.click(filterButton);
-        const blockedButton = screen.getByText(/blocked/i);
+        const blockedButton = screen.getByRole('button', { name: /blocked/i });
         fireEvent.click(blockedButton);
         expect(onSelect).toHaveBeenCalledWith('BLOCKED');
         expect(screen.getByDisplayValue('status:blocked')).toBeInTheDocument();
+    });
+    test('Should not display status:all in search bar in dev mode', () => {
+        const onSelect = jest.fn();
+        const onInputChange = jest.fn();
+        const onClickSearchButton = jest.fn();
+
+        render(
+            <TaskSearch
+                dev={true}
+                onSelect={onSelect}
+                inputValue=""
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+
+        const filterButton = screen.getByText('Filter');
+        fireEvent.click(filterButton);
+        const blockedButton = screen.getByRole('button', { name: /all/i });
+        fireEvent.click(blockedButton);
+        expect(onSelect).toHaveBeenCalledWith('ALL');
+        expect(screen.queryByText('status:all')).not.toBeInTheDocument();
+    });
+    test('Should display status:all in search bar', () => {
+        const onSelect = jest.fn();
+        const onInputChange = jest.fn();
+        const onClickSearchButton = jest.fn();
+
+        render(
+            <TaskSearch
+                dev={false}
+                onSelect={onSelect}
+                inputValue="status:all"
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+
+        const filterButton = screen.getByText('Filter');
+        fireEvent.click(filterButton);
+        const blockedButton = screen.getByRole('button', { name: /all/i });
+        fireEvent.click(blockedButton);
+        expect(onSelect).toHaveBeenCalledWith('ALL');
+        expect(screen.getByDisplayValue('status:all')).toBeInTheDocument();
     });
 });
