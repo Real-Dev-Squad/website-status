@@ -88,13 +88,20 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     };
 
     useEffect(() => {
-        setInputValue(
-            `${getQueryParamTab(selectedTab)} ${
+        let possibleInputValue = '';
+        if ((dev && selectedTab !== Tab.ALL) || !dev) {
+            possibleInputValue += `${getQueryParamTab(selectedTab)} `;
+        }
+        if (queryAssignees) {
+            possibleInputValue += `${getRouterQueryParamAssignee(
                 queryAssignees
-                    ? getRouterQueryParamAssignee(queryAssignees)
-                    : ''
-            } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
-        );
+            )}`;
+        }
+        if (queryTitle) {
+            possibleInputValue += `${getQueryParamTitle(queryTitle)}`;
+        }
+
+        setInputValue(possibleInputValue.trim());
     }, [selectedTab]);
 
     useEffect(() => {
