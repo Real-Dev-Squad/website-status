@@ -8,17 +8,17 @@ import { TaskData, TaskRequestData } from '@/components/issues/constants';
 import Image from 'next/image';
 
 type TaskManagementProps = {
-    isUserAuthorized: boolean;
+    isUserAuthorized?: boolean;
     isOpen: boolean;
     assignee?: string;
     taskId?: string;
     requestId?: string;
     toggle: () => void;
-    handleCreateTaskRequest: (
+    handleCreateTaskRequest?: (
         TaskRequestData: TaskRequestData
     ) => Promise<void>;
-    handleCreateTask: (taskData: TaskData) => Promise<void>;
-    handleUpdateTask: (taskData: TaskData, taskId: string) => Promise<void>;
+    handleCreateTask?: (taskData: TaskData) => Promise<void>;
+    handleUpdateTask?: (taskData: TaskData, taskId: string) => Promise<void>;
 };
 
 const TaskManagementModal: FC<TaskManagementProps> = ({

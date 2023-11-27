@@ -6,6 +6,7 @@ import { PropsWithChildren } from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 import { taskRequestErrorHandler } from '../../../__mocks__/handlers/task-request.handler';
+import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 
 function Wrapper({
     children,
@@ -31,7 +32,14 @@ describe('useAddOrUpdateMutation', () => {
         expect(initialResponse.isLoading).toBe(false);
 
         act(() => {
-            addTask({ taskId: 'taskId', userId: 'userId' });
+            addTask({
+                taskId: 'taskId',
+                userId: 'userId',
+                requestType: TASK_REQUEST_TYPES.ASSIGNMENT,
+                description: '',
+                proposedStartDate: Date.now(),
+                proposedDeadline: Date.now(),
+            });
         });
 
         expect(result.current[1].isLoading).toBe(true);
