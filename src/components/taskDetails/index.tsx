@@ -22,6 +22,9 @@ import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 import Progress from '../ProgressCard';
+import TaskManagementModal from '../issues/TaskManagementModal';
+import { TASK_REQUEST_TYPES } from '@/constants/tasks';
+import { TaskRequestData } from '../issues/constants';
 import ProgressContainer from '../tasks/card/progressContainer';
 import DevFeature from '../DevFeature';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
@@ -67,6 +70,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const isDevModeEnabled = query.dev === 'true' ? true : false;
 
     const { isUserAuthorized, data: userData } = useUserData();
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+    const toggleTaskRequestModal = () => {
+        setIsTaskModalOpen(!isTaskModalOpen);
+    };
+    const [requestId, setRequestId] = useState<string>();
     const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
@@ -174,15 +182,24 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }));
     }
 
-    function taskRequestHandle() {
-        if (!userData) {
-            return;
+    const handleCreateTaskRequest = async (data: TaskRequestData) => {
+        const requestData = {
+            taskId: taskID,
+            userId: userData?.id || '',
+            requestType: TASK_REQUEST_TYPES.ASSIGNMENT,
+            proposedStartDate: data.startedOn,
+            proposedDeadline: data.endsOn,
+            description: data.description,
+        };
+        if (!requestData.description) delete requestData.description;
+        try {
+            const response = await addOrUpdateTaskRequest(requestData).unwrap();
+            setRequestId(response.data.id);
+            toast(SUCCESS, response.message);
+        } catch (error: any) {
+            toast(ERROR, error.data.message);
         }
-        addOrUpdateTaskRequest({ taskId: taskID, userId: userData.id })
-            .unwrap()
-            .then(() => toast(SUCCESS, 'Successfully requested for task'))
-            .catch((error) => toast(ERROR, error.data.message));
-    }
+    };
 
     function renderLoadingComponent() {
         if (isLoading) {
@@ -469,10 +486,19 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         <button
                                             data-testid="request-task-button"
                                             className={classNames.button}
-                                            onClick={taskRequestHandle}
+                                            onClick={toggleTaskRequestModal}
                                         >
                                             Request for task
                                         </button>
+                                        <TaskManagementModal
+                                            isUserAuthorized={false}
+                                            isOpen={isTaskModalOpen}
+                                            toggle={toggleTaskRequestModal}
+                                            requestId={requestId}
+                                            handleCreateTaskRequest={
+                                                handleCreateTaskRequest
+                                            }
+                                        />
                                     </TaskContainer>
                                 </div>
                             )}

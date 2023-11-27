@@ -32,7 +32,7 @@ const Content = () => {
     if (error) return <p>Something went wrong! Please contact admin</p>;
     if (tasks?.length)
         return (
-            <div>
+            <div className={classNames.mineTasksContainer}>
                 <CardList tasks={tasks} />
             </div>
         );
