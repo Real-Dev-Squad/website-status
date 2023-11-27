@@ -18,7 +18,7 @@ function matchStatus(text: string) {
  */
 export default function generateSuggestions(
     userInput: string,
-    choosenOptions: IOption = {},
+    choosenOptions: Array<IOption> = [],
     typedKey?: string
 ) {
     const typedValue = userInput.includes(':')
@@ -31,7 +31,10 @@ export default function generateSuggestions(
         const additionalCheck = typedKey ? typedKey === field : true;
 
         // As we can have multiple assignees
-        if (field !== 'assignee' && choosenOptions[field]) {
+        if (
+            field !== 'assignee' &&
+            choosenOptions.find((option) => option[field])
+        ) {
             continue;
         } else {
             if (
