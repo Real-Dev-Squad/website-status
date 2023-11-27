@@ -42,9 +42,17 @@ export default function generateSuggestions(
                     [field]: typedValue.trim().toLowerCase(),
                 };
                 if (additionalCheck && field === 'title') {
+                    /* When PR https://github.com/Real-Dev-Squad/website-status/pull/1026
+                       gets merged replace the below code with this
                     value[field] = value[field].replaceAll('-', '');
+                    */
+                    value[field] = value[field].replace(/-/g, '');
                 } else if (additionalCheck) {
+                    /* When PR https://github.com/Real-Dev-Squad/website-status/pull/1026
+                       gets merged replace the below code with this
                     value[field] = value[field].replaceAll(' ', '-');
+                    */
+                    value[field] = value[field].replace(/ /g, '-');
                 }
                 suggestions.push(value);
             }
