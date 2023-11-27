@@ -89,16 +89,16 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
 
     useEffect(() => {
         let possibleInputValue = '';
-        if ((dev && selectedTab !== Tab.ALL) || !dev) {
+        if (!dev || selectedTab !== Tab.ALL) {
             possibleInputValue += `${getQueryParamTab(selectedTab)} `;
         }
         if (queryAssignees) {
             possibleInputValue += `${getRouterQueryParamAssignee(
                 queryAssignees
-            )}`;
+            )} `;
         }
         if (queryTitle) {
-            possibleInputValue += `${getQueryParamTitle(queryTitle)}`;
+            possibleInputValue += `${getQueryParamTitle(queryTitle)} `;
         }
 
         setInputValue(possibleInputValue.trim());
