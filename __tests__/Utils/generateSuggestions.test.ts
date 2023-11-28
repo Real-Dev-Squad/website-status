@@ -76,5 +76,16 @@ describe('getCurrentDate', () => {
             );
             expect(result).toEqual([{ assignee: 'joy' }]);
         });
+        it('should not generate duplicate assignee suggestion', () => {
+            const userInput = 'joy';
+            const chosenOptions = [{ assignee: 'joy' }];
+            const typedKey = 'assignee';
+            const result = generateSuggestions(
+                userInput,
+                chosenOptions,
+                typedKey
+            );
+            expect(result).toEqual([]);
+        });
     });
 });

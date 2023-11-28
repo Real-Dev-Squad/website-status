@@ -29,11 +29,12 @@ export default function generateSuggestions(
     for (const field of SEARCH_OPTIONS) {
         // If user has also typed key, then show suggestions based on that only
         const additionalCheck = typedKey ? typedKey === field : true;
+        const matchedOptions = choosenOptions.find((option) => option[field]);
 
         // As we can have multiple assignees
         if (
-            field !== 'assignee' &&
-            choosenOptions.find((option) => option[field])
+            matchedOptions &&
+            (field !== 'assignee' || matchedOptions['assignee'] === userInput)
         ) {
             continue;
         } else {
