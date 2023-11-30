@@ -1,3 +1,3 @@
-export interface ISearchOption {
+export interface TaskSearchOption {
     [key: string]: string;
 }
