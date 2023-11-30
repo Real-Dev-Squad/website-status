@@ -1,8 +1,8 @@
-import { IOption } from '@/interfaces/searchOptions.type';
+import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import { extractQueryParams } from './taskQueryParams';
 export default function convertStringToOptions(
     userString: string
-): Array<IOption> {
+): Array<TaskSearchOption> {
     const convertedObject = extractQueryParams(userString);
     let convertedArray = [];
     if (convertedObject?.title) {

@@ -1,5 +1,5 @@
 import { STATUSES, SEARCH_OPTIONS } from '@/constants/constants';
-import { IOption } from '@/interfaces/searchOptions.type';
+import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 
 function matchStatus(text: string) {
     const formattedText = text.replace(/[\s-]/g, '').toLowerCase();
@@ -18,13 +18,13 @@ function matchStatus(text: string) {
  */
 export default function generateSuggestions(
     userInput: string,
-    choosenOptions: Array<IOption> = [],
+    choosenOptions: Array<TaskSearchOption> = [],
     typedKey?: string
 ) {
     const typedValue = userInput.includes(':')
         ? userInput.split(':')[1]
         : userInput;
-    let suggestions: Array<IOption> = [];
+    let suggestions: Array<TaskSearchOption> = [];
 
     for (const field of SEARCH_OPTIONS) {
         // If user has also typed key, then show suggestions based on that only
@@ -43,7 +43,7 @@ export default function generateSuggestions(
                 (field === 'title' || field === 'assignee')
             ) {
                 const value = {
-                    [field]: typedValue.trim().toLowerCase(),
+                    [field]: typedValue.trim(),
                 };
                 if (additionalCheck && field === 'title') {
                     /* When PR https://github.com/Real-Dev-Squad/website-status/pull/1026
@@ -56,7 +56,9 @@ export default function generateSuggestions(
                        gets merged replace the below code with this
                     value[field] = value[field].replaceAll(' ', '-');
                     */
-                    value[field] = value[field].replace(/ /g, '-');
+                    value[field] = value[field]
+                        .replace(/ /g, '-')
+                        .toLowerCase();
                 }
                 suggestions.push(value);
             }

@@ -1,5 +1,3 @@
-export interface IOption {
+export interface ISearchOption {
     [key: string]: string;
 }
-
-export type IOptions = Array<IOption>;

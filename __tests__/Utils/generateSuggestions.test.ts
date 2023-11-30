@@ -1,4 +1,4 @@
-import { IOption } from '@/interfaces/searchOptions.type';
+import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import generateSuggestions from '@/utils/generateSuggestions';
 
 describe('getCurrentDate', () => {
@@ -44,7 +44,7 @@ describe('getCurrentDate', () => {
 
         it('should handle empty chosen options', () => {
             const userInput = 'title:test';
-            const chosenOptions: Array<IOption> = [];
+            const chosenOptions: Array<TaskSearchOption> = [];
             const typedKey = 'title';
             const result = generateSuggestions(
                 userInput,
