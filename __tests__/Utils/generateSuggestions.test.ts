@@ -62,4 +62,14 @@ describe('generateSuggestions', () => {
         const result = generateSuggestions(userInput, chosenOptions, typedKey);
         expect(result).toEqual([]);
     });
+    it('should handle case sensitivity for status suggestion', () => {
+        const userInput = 'Joy-gupta';
+        const chosenOptions = [{ status: 'amit' }];
+        const typedKey = '';
+        const result = generateSuggestions(userInput, chosenOptions, typedKey);
+        expect(result).toEqual([
+            { title: 'Joy-gupta' },
+            { assignee: 'joy-gupta' },
+        ]);
+    });
 });
