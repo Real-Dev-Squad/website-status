@@ -15,49 +15,53 @@ function matchStatus(text: string) {
  * @param choosenOptions - An object representing the options that have already been chosen.
  * @param typedKey - The search field that the user has typed (optional).
  * @returns An array of objects representing the generated suggestions.
+ * This function generates suggestions in 2 cases, if user is updating an existing selected option or newly typing.
+ * 1. If user has typed key, then show suggestions based on that only
+ * 2. If user is updating an existing selected option, then show suggestions based on that
  */
 export default function generateSuggestions(
     userInput: string,
     choosenOptions: Array<TaskSearchOption> = [],
-    typedKey?: string
+    typedKey?: string,
+    selectedPill: false | number = false
 ) {
     const typedValue = userInput.includes(':')
         ? userInput.split(':')[1]
         : userInput;
     let suggestions: Array<TaskSearchOption> = [];
+    let updatedOptions = choosenOptions;
+
+    if (selectedPill !== false) {
+        // Remove the selected pill from the choosenOptions to enable suggestions
+        updatedOptions = choosenOptions.filter(
+            (_, idx: number) => idx !== selectedPill
+        );
+    }
 
     for (const field of SEARCH_OPTIONS) {
-        // If user has also typed key, then show suggestions based on that only
-        const additionalCheck = typedKey ? typedKey === field : true;
-        const matchedOptions = choosenOptions.find((option) => option[field]);
-
-        // As we can have multiple assignees
-        if (
-            matchedOptions &&
-            (field !== 'assignee' || matchedOptions['assignee'] === userInput)
-        ) {
+        const includeFieldInSuggestion = typedKey ? typedKey === field : true; // True, if typedKey matches field, if present, else True all the time
+        const matchedOptions = updatedOptions.find((option) => {
+            if (field === 'assignee') {
+                return option['assignee'] === userInput; // If assignee is the key, check for its value, as assignee can be multiple
+            } else {
+                return option[field]; // Otherwise check if the field is present
+            }
+        });
+        if (matchedOptions || !includeFieldInSuggestion) {
             continue;
         } else {
-            if (
-                additionalCheck &&
-                (field === 'title' || field === 'assignee')
-            ) {
+            if (field === 'title') {
                 const value = {
                     [field]: typedValue.trim(),
                 };
-
-                if (additionalCheck && field === 'assignee') {
-                    /* When PR https://github.com/Real-Dev-Squad/website-status/pull/1026
-                       gets merged replace the below code with this
-                    value[field] = value[field].replaceAll(' ', '-');
-                    */
-                    value[field] = value[field]
-                        .replace(/ /g, '-')
-                        .toLowerCase();
-                }
                 suggestions.push(value);
-            }
-            if (additionalCheck && field === 'status') {
+            } else if (field === 'assignee') {
+                const value = {
+                    [field]: typedValue.trim(),
+                };
+                value[field] = value[field].replace(/ /g, '-').toLowerCase();
+                suggestions.push(value);
+            } else if (field === 'status') {
                 const result = matchStatus(typedValue);
                 if (result) suggestions = [...suggestions, ...result];
             }

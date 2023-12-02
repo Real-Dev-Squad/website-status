@@ -72,4 +72,32 @@ describe('generateSuggestions', () => {
             { assignee: 'joy-gupta' },
         ]);
     });
+
+    it('should generate the suggestion for assignee even if it already selected & is in edit mode', () => {
+        const userInput = 'amit';
+        const chosenOptions = [{ assignee: 'amit' }];
+        const typedKey = 'assignee';
+        const result = generateSuggestions(
+            userInput,
+            chosenOptions,
+            typedKey,
+            0
+        );
+        expect(result).toEqual([{ assignee: 'amit' }]);
+    });
+    it('should generate the suggestion for all possibile fields if a pill is in edit mode and key has been removed', () => {
+        const userInput = 'hello world';
+        const chosenOptions = [{ title: 'Implement RBAC' }];
+        const typedKey = '';
+        const result = generateSuggestions(
+            userInput,
+            chosenOptions,
+            typedKey,
+            0
+        );
+        expect(result).toEqual([
+            { title: 'hello world' },
+            { assignee: 'hello-world' },
+        ]);
+    });
 });
