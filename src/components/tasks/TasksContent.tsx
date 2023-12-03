@@ -82,12 +82,9 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setInputValue(value);
     };
 
-    const searchButtonHandler = (searchString?: string) => {
-        const { status, assignees, title } = extractQueryParams(
-            searchString || inputValue
-        );
-        (searchString || inputValue) &&
-            searchNewTasks(status as Tab, assignees, title);
+    const searchButtonHandler = () => {
+        const { status, assignees, title } = extractQueryParams(inputValue);
+        inputValue && searchNewTasks(status as Tab, assignees, title);
     };
 
     useEffect(() => {
