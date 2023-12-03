@@ -47,7 +47,10 @@ export default function RenderPills({
                     <input
                         data-testid="pill-input"
                         ref={pillInputRef}
-                        onChange={(e) => setNewPillValue(e.target.value)}
+                        onChange={(e) => {
+                            setNewPillValue(e.target.value);
+                            e.preventDefault();
+                        }}
                         onKeyDown={handleKeyPress}
                         defaultValue={`${field}:${value}`}
                         className={classNames['pill-input']}
