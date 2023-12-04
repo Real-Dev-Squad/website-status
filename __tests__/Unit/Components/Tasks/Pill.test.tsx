@@ -83,7 +83,7 @@ describe('RenderPills', () => {
         expect(setSelectedPill).toBeCalled();
         expect(setSelectedPill).toBeCalledWith(0);
     });
-    it('pill should be highlighted with is about to delete', () => {
+    it('pill should be highlighted when it is about to delete', () => {
         const props: PillProps = {
             idx: 0,
             option: {
@@ -103,7 +103,7 @@ describe('RenderPills', () => {
         expect(pillContent).toHaveClass('highlight');
     });
 
-    it('it should handle backspace', () => {
+    it('should handle backspace', () => {
         const props: PillProps = {
             idx: 0,
             option: {
@@ -130,7 +130,32 @@ describe('RenderPills', () => {
         );
     });
 
-    it('it should handle Esc', () => {
+    it('should handle Escape', () => {
+        const props: PillProps = {
+            idx: 0,
+            option: {
+                title: 'Make UI for task page better',
+            },
+            newPillValue: '',
+            setNewPillValue,
+            handleKeyPress,
+            removePill,
+            selectedPill: 0,
+            pillToBeRemoved: -1,
+            setSelectedPill,
+        };
+        const { getByTestId } = render(<RenderPills {...props} />);
+        const pillInput = getByTestId('pill-input');
+        expect(pillInput).toBeInTheDocument();
+
+        // Keeping single character to test backspace
+        fireEvent.keyDown(pillInput, { key: 'Escape' });
+        expect(setNewPillValue).toBeCalled();
+        expect(handleKeyPress).toHaveBeenCalledWith(
+            expect.objectContaining({ key: 'Escape' })
+        );
+    });
+    it('delete button should be clickable', () => {
         const props: PillProps = {
             idx: 0,
             option: {
