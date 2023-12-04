@@ -6,12 +6,14 @@ export function extractQueryParams(queryParam: string) {
     let isValue = '';
     const assigneeValues: string[] = [];
     let titleValue = '';
+    let assigneeRole = '';
 
     if (!queryParamsArray) {
         return {
             status: isValue,
             assignees: assigneeValues,
             title: titleValue,
+            assigneeRole: assigneeRole,
         };
     }
 
@@ -21,6 +23,9 @@ export function extractQueryParams(queryParam: string) {
             isValue = param.replace('status:', '');
         } else if (param.startsWith('assignee:')) {
             assigneeValues.push(param.replace('assignee:', ''));
+        } else if (param.startsWith('assignee-role:')) {
+            assigneeRole = param.replace('assignee-role:', '');
+            isValue = param.replace('assignee-role:', '');
         } else {
             titleValue += param + ' ';
         }
@@ -32,10 +37,16 @@ export function extractQueryParams(queryParam: string) {
         status: isValue,
         assignees: assigneeValues,
         title: titleValue,
+        assigneeRole: assigneeRole,
     };
 }
 
-export const getQueryParamTab = (tab: Tab) => `status:${tabToUrlParams(tab)}`;
+export const getQueryParamTab = (tab: Tab) => {
+    if (tab === Tab.ASSIGNEE_ARCHIVED) {
+        return 'assignee-role:archived';
+    }
+    return `status:${tabToUrlParams(tab)}`;
+};
 export const getAPIQueryParamAssignee = (assignees: string[]) => {
     if (assignees.length === 0) return '';
     const apiqueryParamAssignee = assignees.join(',');

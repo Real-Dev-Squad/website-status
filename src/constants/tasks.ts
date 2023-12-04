@@ -12,6 +12,7 @@ export const EMPTY_TASKS_DATA = {
     COMPLETED: [],
     OVERDUE: [],
     DONE: [],
+    ASSIGNEE_ARCHIVED: [],
 };
 
 export const TASK_REQUEST_TYPES = {

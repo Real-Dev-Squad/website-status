@@ -17,7 +17,14 @@ describe('extractQueryParams', () => {
         expect(result.assignees).toEqual(['sunny-s']);
         expect(result.title).toBe('Develop feature');
     });
-
+    it('should extract assignee-role and title assignee role from query param', () => {
+        const queryParam =
+            'assignee-role:archived assignee:sunny-s Develop feature';
+        const result = extractQueryParams(queryParam);
+        expect(result.assignees).toEqual(['sunny-s']);
+        expect(result.title).toBe('Develop feature');
+        expect(result.assigneeRole).toBe('archived');
+    });
     it('should extract status, multiple assignees, and title from query param', () => {
         const queryParam =
             'status:in-progress assignee:sunny-s assignee:ajoy-kumar Develop feature';
@@ -41,6 +48,11 @@ describe('getQueryParamTab', () => {
         const tab = Tab.IN_PROGRESS;
         const result = getQueryParamTab(tab);
         expect(result).toBe('status:in-progress');
+    });
+    it('should generate a query param for assignee archived tab', () => {
+        const tab = Tab.ASSIGNEE_ARCHIVED;
+        const result = getQueryParamTab(tab);
+        expect(result).toBe('assignee-role:archived');
     });
 });
 

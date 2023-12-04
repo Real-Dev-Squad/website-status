@@ -54,4 +54,9 @@ export const devHeaderCategories = [
         pathName: '/pull-requests',
         state: 'stale',
     },
+    {
+        title: 'Tasks Assigned to Archived users',
+        refURL: '/tasks?q=assignee-role%3Aarchived&dev=true',
+        pathName: '/tasks',
+    },
 ];
