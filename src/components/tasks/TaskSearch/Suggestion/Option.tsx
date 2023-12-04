@@ -1,8 +1,8 @@
 import className from './option.module.scss';
 
-interface IProps {
+interface OptionProps {
     idx: number;
-    onClickHandler: (idx: number) => void;
+    onClickHandler: (pillIndex: number) => void;
     suggestion: { [key: string]: string };
     activeSuggestionIndex: number;
 }
@@ -11,7 +11,7 @@ export default function Option({
     onClickHandler,
     suggestion,
     activeSuggestionIndex,
-}: IProps) {
+}: OptionProps) {
     const [key] = Object.keys(suggestion);
 
     return (
