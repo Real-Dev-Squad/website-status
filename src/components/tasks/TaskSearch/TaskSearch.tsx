@@ -238,6 +238,7 @@ const TaskSearch = ({
                 {dev ? (
                     <div className={className['search-bar-div']}>
                         <div
+                            data-testid="pill-input-wrapper"
                             style={{ position: 'relative' }}
                             className={className['pill-input-wrapper']}
                             onClick={handleClickOutside}
@@ -280,7 +281,7 @@ const TaskSearch = ({
                                         type="text"
                                         value={typedInput}
                                         readOnly={activeSuggestionIndex !== -1}
-                                        placeholder="Eg: status:active assignee:sunny-s title:Build a feature"
+                                        placeholder="Eg: status:in-progress assignee:sunny-s title:Build a feature"
                                         onChange={(e) => {
                                             pillToBeRemoved !== -1 &&
                                                 setPillToBeRemoved(-1);
@@ -311,7 +312,7 @@ const TaskSearch = ({
                         className={className['search-input']}
                         data-testid="search-input"
                         type="text"
-                        placeholder="Eg: status:active assignee:sunny-s Build a feature"
+                        placeholder="Eg: status:in-progress assignee:sunny-s Build a feature"
                         value={inputValue}
                         onChange={(e) => onInputChange(e.target.value)}
                         onKeyDown={handleKeyPress}
