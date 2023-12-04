@@ -30,32 +30,34 @@ export const Header = () => {
 
     return (
         <div className={styles.header}>
-            {headerCategories.map(({ title, refURL, pathName }, index) => (
-                <HeaderLink
-                    key={index}
-                    title={title}
-                    link={refURL}
-                    isActive={
-                        router.pathname === pathName &&
-                        (router.pathname === '/tasks' && dev
-                            ? !router?.asPath?.includes('assignee-role%3A')
-                            : true)
-                    }
-                />
-            ))}
+            {headerCategories.map(
+                ({ title, refURL, pathName, state }, index) => (
+                    <HeaderLink
+                        key={index}
+                        title={title}
+                        link={refURL}
+                        isActive={
+                            router.pathname === pathName &&
+                            (router.pathname === '/pull-requests'
+                                ? queryState === state
+                                : true) &&
+                            (router.pathname === '/tasks' && dev
+                                ? !router?.asPath?.includes('assignee-role%3A')
+                                : true)
+                        }
+                    />
+                )
+            )}
 
             {dev &&
                 devHeaderCategories.map(
-                    ({ title, refURL, pathName, state }, index) => (
+                    ({ title, refURL, pathName }, index) => (
                         <HeaderLink
                             key={index}
                             title={title}
                             link={refURL}
                             isActive={
                                 router.pathname === pathName &&
-                                (router.pathname === '/pull-requests'
-                                    ? queryState === state
-                                    : true) &&
                                 (router.pathname === '/tasks'
                                     ? router?.asPath?.includes(
                                           'assignee-role%3A'

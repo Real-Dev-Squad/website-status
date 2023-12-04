@@ -5,6 +5,7 @@ import {
     newTaskStatus,
 } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
+import { useEffect } from 'react';
 
 type FilterModalProps = {
     tabs: Tab[];
@@ -21,41 +22,65 @@ const FilterModal = ({
     onClose,
     dev,
 }: FilterModalProps) => {
+    const onKeyDownHandler = (event: KeyboardEvent) => {
+        if (dev && event.key === 'Escape') onClose();
+    };
+    useEffect(() => {
+        document.addEventListener('keydown', onKeyDownHandler);
+        return () => document.removeEventListener('keydown', onKeyDownHandler);
+    }, []);
+
     return (
-        <div className={className['filter-modal']} data-testid="filter-modal">
-            <div className={className['filter-modal-title']}>
-                <span>Filter</span>
-                <span className={className['close-button']} onClick={onClose}>
-                    &times;
-                </span>
+        <>
+            {dev && (
+                <div
+                    onClick={onClose}
+                    className={className['filter-modal-background']}
+                ></div>
+            )}
+            <div
+                className={`${className['filter-modal']} ${
+                    dev ? className['filter-modal-dev'] : ''
+                }`}
+                data-testid="filter-modal"
+            >
+                <div className={className['filter-modal-title']}>
+                    <span>Filter</span>
+                    <span
+                        className={className['close-button']}
+                        onClick={onClose}
+                    >
+                        &times;
+                    </span>
+                </div>
+                <div className={className['status-filter']}>
+                    {tabs
+                        .filter((tab: Tab) =>
+                            dev
+                                ? !depreciatedTaskStatus.includes(tab)
+                                : tab != Tab.BLOCKED &&
+                                  tab != Tab.ASSIGNEE_ARCHIVED &&
+                                  !newTaskStatus.includes(tab)
+                        )
+                        .map((tab) => (
+                            <button
+                                key={tab}
+                                className={`${className['status-button']} ${
+                                    activeTab === tab
+                                        ? className['status-button-active']
+                                        : ''
+                                }`}
+                                onClick={() => {
+                                    onSelect(tab);
+                                    onClose();
+                                }}
+                            >
+                                {getChangedStatusName(tab)}
+                            </button>
+                        ))}
+                </div>
             </div>
-            <div className={className['status-filter']}>
-                {tabs
-                    .filter((tab: Tab) =>
-                        dev
-                            ? !depreciatedTaskStatus.includes(tab)
-                            : tab != Tab.BLOCKED &&
-                              tab != Tab.ASSIGNEE_ARCHIVED &&
-                              !newTaskStatus.includes(tab)
-                    )
-                    .map((tab) => (
-                        <button
-                            key={tab}
-                            className={`${className['status-button']} ${
-                                activeTab === tab
-                                    ? className['status-button-active']
-                                    : ''
-                            }`}
-                            onClick={() => {
-                                onSelect(tab);
-                                onClose();
-                            }}
-                        >
-                            {getChangedStatusName(tab)}
-                        </button>
-                    ))}
-            </div>
-        </div>
+        </>
     );
 };
 

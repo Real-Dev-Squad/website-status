@@ -16,13 +16,15 @@ export const headerCategories = [
     },
     {
         title: 'Open PRs',
-        refURL: '/openPRs',
-        pathName: '/openPRs',
+        refURL: '/pull-requests?state=open',
+        pathName: '/pull-requests',
+        state: 'open',
     },
     {
         title: 'Stale PRs',
-        refURL: '/stale-pr',
-        pathName: '/stale-pr',
+        refURL: '/pull-requests?state=stale',
+        pathName: '/pull-requests',
+        state: 'stale',
     },
     {
         title: 'Idle Users',
@@ -34,25 +36,13 @@ export const headerCategories = [
 export const devHeaderCategories = [
     {
         title: 'Standup',
-        refURL: '/standup/?dev=true',
+        refURL: '/standup?dev=true',
         pathName: '/standup',
     },
     {
         title: 'Availability Panel',
-        refURL: '/availability-panel',
+        refURL: '/availability-panel?dev=true',
         pathName: '/availability-panel',
-    },
-    {
-        title: 'Open PRs(dev)',
-        refURL: '/pull-requests?state=open&dev=true',
-        pathName: '/pull-requests',
-        state: 'open',
-    },
-    {
-        title: 'Stale PRs(dev)',
-        refURL: '/pull-requests?state=stale&dev=true',
-        pathName: '/pull-requests',
-        state: 'stale',
     },
     {
         title: 'Tasks Assigned to Archived users',
