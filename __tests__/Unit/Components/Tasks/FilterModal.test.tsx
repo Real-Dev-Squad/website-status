@@ -111,6 +111,46 @@ describe('FilterModal', () => {
 
         expect(mockOnClose).toBeCalled();
     });
+    test('calls onClose when clicked on outside', () => {
+        render(
+            <FilterModal
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.ASSIGNED}
+                onClose={mockOnClose}
+                dev={true}
+            />
+        );
+
+        const closeButton = screen.getByText('×');
+        const { left, top } = closeButton.getBoundingClientRect();
+        fireEvent(
+            closeButton,
+            new MouseEvent('click', {
+                bubbles: true,
+                cancelable: true,
+                clientX: left + 100,
+                clientY: top + 100,
+            })
+        );
+
+        expect(mockOnClose).toBeCalled();
+    });
+    test('calls onClose when escape button is clicked', () => {
+        render(
+            <FilterModal
+                tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.ASSIGNED}
+                onClose={mockOnClose}
+                dev={true}
+            />
+        );
+
+        fireEvent.keyDown(document, { key: 'Escape', code: 'Escape' });
+
+        expect(mockOnClose).toBeCalled();
+    });
 
     test('renders the modal with correct active tab', () => {
         render(

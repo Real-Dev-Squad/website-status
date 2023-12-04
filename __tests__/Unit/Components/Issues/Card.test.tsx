@@ -10,8 +10,8 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import fetch from '@/helperFunctions/fetch';
+import * as tasksRequestApi from '@/app/services/taskRequestApi';
 
-jest.mock('@/helperFunctions/fetch');
 jest.mock('@/hooks/useUserData', () => {
     return () => ({
         data: {
@@ -174,6 +174,11 @@ describe('Issue card', () => {
         expect(assignTaskButton).toBeInTheDocument();
     });
     test('should call create task request handler when create request button is clicked', async () => {
+        const addTaskRequestSpy = jest.spyOn(
+            tasksRequestApi,
+            'useAddOrUpdateMutation'
+        );
+
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card
@@ -196,6 +201,6 @@ describe('Issue card', () => {
         await waitFor(() => {
             fireEvent.click(createRequestButton);
         });
-        expect(fetch).toHaveBeenCalled();
+        expect(addTaskRequestSpy).toHaveBeenCalled();
     });
 });

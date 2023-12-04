@@ -25,3 +25,17 @@ export const TASK_STATUS_MAPING = {
     NEEDS_REVIEW: 'Needs Review',
     ASSIGNEE_ARCHIVED: 'Assignee Archived',
 };
+export const SEARCH_OPTIONS = ['title', 'assignee', 'status'];
+export const STATUSES = [
+    'in-progress',
+    'assigned',
+    'unassigned',
+    'blocked',
+    'needs-review',
+    'in-review',
+    'verified',
+    'merged',
+    'overdue',
+    'completed',
+    'done',
+];
