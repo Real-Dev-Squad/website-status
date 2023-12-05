@@ -277,7 +277,7 @@ const TaskSearch = ({
                                         type="text"
                                         value={typedInput}
                                         readOnly={activeSuggestionIndex !== -1}
-                                        placeholder="Eg: status:in-progress assignee:sunny-s title:Build a feature"
+                                        placeholder="Eg: status:done assignee:joy title:New Feature"
                                         onChange={(e) => {
                                             pillToBeRemoved !== -1 &&
                                                 setPillToBeRemoved(-1);
