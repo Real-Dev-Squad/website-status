@@ -30,28 +30,30 @@ export const Header = () => {
 
     return (
         <div className={styles.header}>
-            {headerCategories.map(({ title, refURL, pathName }, index) => (
-                <HeaderLink
-                    key={index}
-                    title={title}
-                    link={refURL}
-                    isActive={router.pathname === pathName}
-                />
-            ))}
+            {headerCategories.map(
+                ({ title, refURL, pathName, state }, index) => (
+                    <HeaderLink
+                        key={index}
+                        title={title}
+                        link={refURL}
+                        isActive={
+                            router.pathname === pathName &&
+                            (router.pathname === '/pull-requests'
+                                ? queryState === state
+                                : true)
+                        }
+                    />
+                )
+            )}
 
             {dev &&
                 devHeaderCategories.map(
-                    ({ title, refURL, pathName, state }, index) => (
+                    ({ title, refURL, pathName }, index) => (
                         <HeaderLink
                             key={index}
                             title={title}
                             link={refURL}
-                            isActive={
-                                router.pathname === pathName &&
-                                (router.pathname === '/pull-requests'
-                                    ? queryState === state
-                                    : true)
-                            }
+                            isActive={router.pathname === pathName}
                         />
                     )
                 )}
