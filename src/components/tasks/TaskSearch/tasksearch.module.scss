@@ -24,10 +24,10 @@ $radius: 5px;
 .filter-container {
     width: 100%;
     display: flex;
+    position: relative;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    background-color: $light-gray;
     border-radius: $radius;
     margin-right: 1rem;
     border: 1px solid $light-gray;
@@ -72,6 +72,29 @@ $radius: 5px;
     }
 }
 
+.search-bar-div {
+    // min-width: 90%;
+    width: 43vw;
+    flex: 1;
+    min-height: 2rem;
+    // position: relative;
+    border-radius: 0 $radius $radius 0;
+    background-color: $white-color;
+    border-left: 1px solid $light-gray;
+    background-image: url('https://img.icons8.com/ios-filled/16/000000/search.png');
+    background-repeat: no-repeat;
+    background-position: 0.5rem;
+    padding-left: 1.8rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+.in-focus {
+    border: 1px solid $gray-color;
+    cursor: pointer;
+    color: $black-color;
+}
 .search-input {
     width: 100%;
     height: 2rem;
@@ -89,6 +112,57 @@ $radius: 5px;
     &:focus {
         border: 1px solid $primary-color;
     }
+}
+.search-bar-div:focus-within {
+    border: 1px solid $gray-color;
+    cursor: pointer;
+    color: $black-color;
+}
+.search-input-parent {
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 4px;
+    margin-top: -3px;
+
+    @media (min-width: 558px) {
+        min-width: 347px;
+    }
+    @media (max-width: 557px) {
+        width: 100% !important;
+    }
+}
+.pill-input-wrapper {
+    width: 100%;
+    padding: 3px 5px 3px 5px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+}
+.remove-caret {
+    caret-color: transparent;
+}
+.search-input-dev {
+    width: 100%;
+    height: 27px;
+    padding: 0.45rem;
+    border-radius: 0 $radius $radius 0;
+    border: none;
+    outline: none;
+}
+.suggestion-box {
+    width: 100%;
+    top: 104%;
+    z-index: 5;
+    position: absolute;
+    text-align: left;
+    background-color: white;
+}
+.empty-box {
+    padding: 5.3px;
+    text-align: center;
+    border: 1px solid $light-gray;
+    border-top: none;
 }
 
 .search-button-container {
