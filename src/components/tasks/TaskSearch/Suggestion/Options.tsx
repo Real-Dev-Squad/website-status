@@ -1,7 +1,7 @@
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import className from './option.module.scss';
 import Option from './Option';
-interface IProp {
+interface OptionsProp {
     suggestions: Array<TaskSearchOption>;
     activeSuggestionIndex: number;
     onSuggestionSelected: (idx: number) => void;
@@ -10,7 +10,7 @@ export default function Options({
     suggestions,
     activeSuggestionIndex,
     onSuggestionSelected,
-}: IProp) {
+}: OptionsProp) {
     return (
         <div className={className['suggestion-box']}>
             {suggestions.length > 0 ? (
