@@ -422,7 +422,7 @@ describe('Multi select task search in dev mode', () => {
         expect(pillContent).toBeNull();
         expect(searchInput).toHaveFocus();
     });
-    test('should delete the pill if entire value its is cleared', async () => {
+    test('should delete the pill if entire value of its is cleared', async () => {
         const { getByTestId } = render(
             <TaskSearch
                 dev={true}
