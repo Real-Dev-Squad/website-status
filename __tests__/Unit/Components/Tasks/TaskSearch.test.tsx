@@ -217,7 +217,7 @@ describe('Multi select task search in dev mode', () => {
     const onSelect = jest.fn();
     const onInputChange = jest.fn();
     const onClickSearchButton = jest.fn();
-    test.skip('renders search input with empty string if dev mode is enabled', () => {
+    test('renders search input with empty string if dev mode is enabled', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
@@ -232,7 +232,7 @@ describe('Multi select task search in dev mode', () => {
         expect(searchInput).toHaveTextContent('');
     });
 
-    test.skip('should contain pill based on query param', async () => {
+    test('should contain pill based on query param', async () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
@@ -251,7 +251,7 @@ describe('Multi select task search in dev mode', () => {
         expect(pillContent).toBeInTheDocument();
         expect(pillContent).toHaveTextContent('status:blocked');
     });
-    test.skip('search button should be clickable even if search input is empty', () => {
+    test('search button should be clickable even if search input is empty', () => {
         render(
             <TaskSearch
                 onSelect={onSelect}
@@ -268,7 +268,7 @@ describe('Multi select task search in dev mode', () => {
         expect(onClickSearchButton).toBeCalledWith('status:all');
     });
 
-    test.skip('should display suggestions based on typed key through user input', async () => {
+    test('should display suggestions based on typed key through user input', async () => {
         const onClickSearchButton = jest.fn();
         render(
             <TaskSearch
@@ -291,7 +291,7 @@ describe('Multi select task search in dev mode', () => {
         );
     });
 
-    test.skip('Blocked Button Selected then Search Bar Display status:blocked in dev', async () => {
+    test('Blocked Button Selected then Search Bar Display status:blocked in dev', async () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
@@ -321,7 +321,7 @@ describe('Multi select task search in dev mode', () => {
         );
     });
 
-    test.skip('should generate suggestion once clicked on option pill', async () => {
+    test('should generate suggestion once clicked on option pill', async () => {
         const { getByTestId } = render(
             <TaskSearch
                 dev={true}
@@ -342,7 +342,7 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
-    test.skip('input should be in readonly mode if a suggestion is in focus', async () => {
+    test('input should be in readonly mode if a suggestion is in focus', async () => {
         const onClickSearchButton = jest.fn();
         render(
             <TaskSearch
@@ -365,7 +365,7 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
-    test.skip('should set focus back to input if clicked in surrounding of it', async () => {
+    test('should set focus back to input if clicked in surrounding of it', async () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
             <TaskSearch
@@ -382,7 +382,7 @@ describe('Multi select task search in dev mode', () => {
         fireEvent.click(wrapperDiv);
         expect(searchInput).toHaveFocus();
     });
-    test.skip('should discard changes and set focus back to input if escape is pressed', async () => {
+    test('should discard changes and set focus back to input if escape is pressed', async () => {
         const { getByTestId } = render(
             <TaskSearch
                 dev={true}
@@ -402,7 +402,7 @@ describe('Multi select task search in dev mode', () => {
         const suggestions = screen.queryByTestId('suggestion-box');
         expect(suggestions).toBeNull();
     });
-    test.skip('should take 2 backspaces to remove a pill, if pressed in an empty input field', async () => {
+    test('should take 2 backspaces to remove a pill, if pressed in an empty input field', async () => {
         render(
             <TaskSearch
                 dev={true}
@@ -422,7 +422,7 @@ describe('Multi select task search in dev mode', () => {
         expect(pillContent).toBeNull();
         expect(searchInput).toHaveFocus();
     });
-    test.skip('should delete the pill if entire value its is cleared', async () => {
+    test('should delete the pill if entire value its is cleared', async () => {
         const { getByTestId } = render(
             <TaskSearch
                 dev={true}
@@ -440,7 +440,7 @@ describe('Multi select task search in dev mode', () => {
         const isPillPresent = screen.queryByTestId('pill-content');
         expect(isPillPresent).toBeNull();
     });
-    test.skip('should be able to traverse between options through arrow keys', async () => {
+    test('should be able to traverse between options through arrow keys', async () => {
         render(
             <TaskSearch
                 dev={true}
@@ -465,7 +465,7 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
-    test.skip('should be able to select options using ENTER key', async () => {
+    test('should be able to select options using ENTER key', async () => {
         const { getByTestId } = render(
             <TaskSearch
                 dev={true}
@@ -490,7 +490,7 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
-    test.skip('should fetch tasks if ENTER is pressed', async () => {
+    test('should fetch tasks if ENTER is pressed', async () => {
         render(
             <TaskSearch
                 dev={true}
@@ -508,7 +508,7 @@ describe('Multi select task search in dev mode', () => {
         const suggestions = screen.queryByTestId('suggestion-box');
         expect(suggestions).toBeNull();
     });
-    it.skip('should remove pill from UI if clicked on delete button', () => {
+    it('should remove pill from UI if clicked on delete button', () => {
         render(
             <TaskSearch
                 dev={true}
@@ -526,7 +526,7 @@ describe('Multi select task search in dev mode', () => {
         const searchInput = screen.getByTestId('search-input');
         expect(searchInput).toHaveFocus();
     });
-    test.skip('should discard changes made in pill and set focus back to input if clicked outside of pill', async () => {
+    test('should discard changes made in pill and set focus back to input if clicked outside of pill', async () => {
         const { getByTestId } = render(
             <TaskSearch
                 dev={true}
@@ -550,7 +550,7 @@ describe('Multi select task search in dev mode', () => {
         expect(searchInput).toHaveFocus();
         expect(pillContent).not.toHaveTextContent('status:blocked');
     });
-    test.skip('should be able to update pill value through keyboard', async () => {
+    test('should be able to update pill value through keyboard', async () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
             <TaskSearch

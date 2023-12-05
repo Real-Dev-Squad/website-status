@@ -6,12 +6,8 @@ import useDebounce from '@/hooks/useDebounce';
 import generateSuggestions from '@/utils/generateSuggestions';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 
-/* TODO : Remove the uncommented code once these PRs get merged
-    1. https://github.com/Real-Dev-Squad/website-status/pull/1035
-    2. https://github.com/Real-Dev-Squad/website-status/pull/1036
-*/
-// import Options from './Suggestion/Options';
-// import RenderPills from './Suggestion/Pill';
+import Options from './Suggestion/Options';
+import RenderPills from './Suggestion/Pill';
 import convertStringToOptions from '@/utils/convertStringToOptions';
 import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
 
@@ -243,7 +239,7 @@ const TaskSearch = ({
                             className={className['pill-input-wrapper']}
                             onClick={handleClickOutside}
                         >
-                            {/* {selectedOptions.map((value, key) => (
+                            {selectedOptions.map((value, key) => (
                                 <RenderPills
                                     idx={key}
                                     key={key}
@@ -256,7 +252,7 @@ const TaskSearch = ({
                                     setSelectedPill={setSelectedPill}
                                     setNewPillValue={setNewPillValue}
                                 />
-                            ))} */}
+                            ))}
 
                             {selectedPill === false && (
                                 <div
@@ -294,7 +290,7 @@ const TaskSearch = ({
                             )}
                         </div>
 
-                        {/* {dev &&
+                        {dev &&
                             suggestionModal &&
                             (typedInput ||
                                 (selectedPill !== false && newPillValue)) && (
@@ -305,7 +301,7 @@ const TaskSearch = ({
                                     }
                                     onSuggestionSelected={onSuggestionSelected}
                                 />
-                            )} */}
+                            )}
                     </div>
                 ) : (
                     <input

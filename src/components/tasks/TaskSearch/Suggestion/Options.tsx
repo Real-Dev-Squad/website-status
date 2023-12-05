@@ -14,7 +14,7 @@ export default function Options({
     return (
         <div className={className['suggestion-box']}>
             {suggestions.length > 0 ? (
-                <div className="suggestion-box">
+                <div data-testid="suggestion-box" className="suggestion-box">
                     {suggestions.map((data, key) => (
                         <Option
                             idx={key}
