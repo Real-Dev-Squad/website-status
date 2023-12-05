@@ -9,7 +9,7 @@ describe('RenderPills', () => {
     const handleKeyPress = jest.fn();
     const removePill = jest.fn();
     const setSelectedPill = jest.fn();
-    test('should truncate the text if it is too', () => {
+    test('should truncate the text if it is too long', () => {
         const props: PillProps = {
             idx: 0,
             option: {
