@@ -46,6 +46,7 @@ $radius: 5px;
 .filter-button {
     width: 5rem;
     height: 2rem;
+    position: relative;
     border-radius: $radius 0 0 $radius;
     background-color: $white-color;
     color: $black-color;
@@ -238,19 +239,8 @@ $radius: 5px;
     top: 13.5rem;
 
     @media (max-width: 768px) {
-        top: 50%;
-    }
-    @media (max-width: 664px) {
-        top: 55%;
-    }
-    @media (max-width: 483px) {
-        top: 55%;
-    }
-    @media (max-width: 450px) and (min-width: 444px) {
-        top: 55%;
-    }
-    @media (max-width: 343px) {
-        top: 59%;
+        top: 14.5rem;
+        left: 7.5rem;
     }
 }
 
