@@ -5,9 +5,9 @@ $filter-button-hover: #f6f8fa;
 .suggestion-div {
     border: 1px solid $light-gray;
     padding: 5.2px;
-    padding-left: 2.05rem;
+    word-break: break-all;
     word-wrap: break-word;
-    font-size: 13px;
+    font-size: 0.88rem;
     &:hover {
         background-color: $filter-button-hover;
         border: 1px solid $gray-color;
@@ -15,7 +15,6 @@ $filter-button-hover: #f6f8fa;
         color: $black-color;
     }
 }
-
 .selected-suggestion {
     background-color: $filter-button-hover;
     border: 1px solid $gray-color;

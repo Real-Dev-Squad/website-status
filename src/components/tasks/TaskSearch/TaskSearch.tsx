@@ -5,11 +5,20 @@ import FilterModal from './FilterModal';
 import useDebounce from '@/hooks/useDebounce';
 import generateSuggestions from '@/utils/generateSuggestions';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
-
 import Options from './Suggestion/Options';
 import RenderPills from './Suggestion/Pill';
 import convertStringToOptions from '@/utils/convertStringToOptions';
 import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
+import findCoordinates from '@/helperFunctions/findCoordinates';
+
+interface SuggestionCoordinates {
+    left: number | null;
+    width: number | null;
+}
+const initialSuggestionCoordinates: SuggestionCoordinates = {
+    left: null,
+    width: null,
+};
 
 type TaskSearchProps = {
     onSelect: (tab: Tab) => void;
@@ -37,11 +46,13 @@ const TaskSearch = ({
     >(convertStringToOptions(inputValue));
     const [suggestions, setSuggestions] = useState<Array<TaskSearchOption>>([]);
     const [suggestionModal, setSuggestionModal] = useState(false);
-    const defferedUserInput: string = useDebounce(typedInput, 500);
+    const defferedUserInput: string = useDebounce(typedInput, 200);
     const [selectedPill, setSelectedPill] = useState<false | number>(false);
     const [newPillValue, setNewPillValue] = useState<string>('');
-    const defferedPillValue = useDebounce(newPillValue, 500);
+    const defferedPillValue = useDebounce(newPillValue, 200);
     const [pillToBeRemoved, setPillToBeRemoved] = useState(-1);
+    const [suggestionCoordinates, setSuggestionCoordinates] =
+        useState<SuggestionCoordinates>(initialSuggestionCoordinates);
 
     const searchButtonHandler = () => {
         if (dev && selectedPill === false) {
@@ -131,6 +142,18 @@ const TaskSearch = ({
         }
     };
 
+    const onResizeHandler = () => {
+        if (suggestionModal) {
+            setSuggestionCoordinates(findCoordinates());
+        } else {
+            setSuggestionCoordinates(initialSuggestionCoordinates);
+        }
+    };
+    useEffect(onResizeHandler, [
+        defferedPillValue,
+        defferedUserInput,
+        suggestionModal,
+    ]);
     const removePill = (idx: number) => {
         const updatedOptions = selectedOptions.filter(
             (_, index) => index !== idx
@@ -179,12 +202,22 @@ const TaskSearch = ({
     }, [selectedPill]);
 
     useEffect(() => {
+        !suggestionModal &&
+            setSuggestionCoordinates(initialSuggestionCoordinates);
+    }, [suggestionModal]);
+
+    useEffect(() => {
         let updatedOptions = suggestionModal;
         let userInput;
-        if (selectedPill === false) {
+        if (selectedPill === false && typedInput === defferedUserInput) {
             userInput = defferedUserInput;
-        } else {
+        } else if (
+            selectedPill !== false &&
+            newPillValue === defferedPillValue
+        ) {
             userInput = defferedPillValue;
+        } else {
+            return;
         }
         userInput = userInput.trim();
         let key = '';
@@ -212,6 +245,9 @@ const TaskSearch = ({
         setSuggestionModal(updatedOptions);
     }, [defferedUserInput, defferedPillValue]);
 
+    useEffect(() => {
+        window.addEventListener('resize', onResizeHandler);
+    }, []);
     return (
         <div className={className['task-search-container']}>
             <div className={className['filter-container']}>
@@ -232,7 +268,10 @@ const TaskSearch = ({
                 </div>
 
                 {dev ? (
-                    <div className={className['search-bar-div']}>
+                    <div
+                        id="search-bar-div"
+                        className={className['search-bar-div']}
+                    >
                         <div
                             data-testid="pill-input-wrapper"
                             style={{ position: 'relative' }}
@@ -295,6 +334,10 @@ const TaskSearch = ({
                             (typedInput ||
                                 (selectedPill !== false && newPillValue)) && (
                                 <Options
+                                    style={{
+                                        maxWidth: suggestionCoordinates.width,
+                                        left: suggestionCoordinates.left,
+                                    }}
                                     suggestions={suggestions}
                                     activeSuggestionIndex={
                                         activeSuggestionIndex
