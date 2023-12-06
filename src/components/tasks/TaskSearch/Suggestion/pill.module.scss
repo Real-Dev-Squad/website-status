@@ -19,6 +19,7 @@ $delete-button-bg-color: #ffb0b0;
     margin-right: 5px;
     width: fit-content;
     max-width: 100%;
+    cursor: pointer;
 }
 .delete-option {
     background: none;
@@ -27,6 +28,7 @@ $delete-button-bg-color: #ffb0b0;
     align-self: center;
     margin-left: 6px;
     padding: 0;
+    cursor: pointer;
 }
 .highlight {
     background-color: $highlight-fill-color;
@@ -50,7 +52,6 @@ $delete-button-bg-color: #ffb0b0;
     white-space: nowrap;
     width: min-content;
     letter-spacing: 0.2px;
-    cursor: pointer;
 }
 .pill-input {
     width: 100%;
