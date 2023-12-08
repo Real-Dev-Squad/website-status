@@ -4,6 +4,7 @@ import Option from './Option';
 interface SuggestionCoordinates {
     left: number | null;
     maxWidth: number | null;
+    top: number | null;
 }
 interface OptionsProp {
     style: SuggestionCoordinates;
@@ -25,6 +26,7 @@ export default function Options({
                           left: style.left || 'auto',
                           maxWidth: style.maxWidth || 'auto',
                           width: 'auto',
+                          top: style.top || 'auto',
                       }
                     : {}
             }

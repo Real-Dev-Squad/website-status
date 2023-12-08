@@ -13,11 +13,13 @@ import findCoordinates from '@/helperFunctions/findCoordinates';
 
 interface SuggestionCoordinates {
     left: number | null;
-    width: number | null;
+    maxWidth: number | null;
+    top: number | null;
 }
 const initialSuggestionCoordinates: SuggestionCoordinates = {
     left: null,
-    width: null,
+    maxWidth: null,
+    top: null,
 };
 
 type TaskSearchProps = {
@@ -246,7 +248,10 @@ const TaskSearch = ({
     }, []);
     return (
         <div className={className['task-search-container']}>
-            <div className={className['filter-container']}>
+            <div
+                id="filter-container"
+                className={className['filter-container']}
+            >
                 <div
                     className={className['filter-button']}
                     onClick={handleModal}
@@ -330,10 +335,7 @@ const TaskSearch = ({
                             (typedInput ||
                                 (selectedPill !== false && newPillValue)) && (
                                 <Options
-                                    style={{
-                                        maxWidth: suggestionCoordinates.width,
-                                        left: suggestionCoordinates.left,
-                                    }}
+                                    style={suggestionCoordinates}
                                     suggestions={suggestions}
                                     activeSuggestionIndex={
                                         activeSuggestionIndex
