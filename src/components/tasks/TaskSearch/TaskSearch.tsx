@@ -102,6 +102,7 @@ const TaskSearch = ({
             case 'ArrowUp':
                 if (activeSuggestionIndex > -1) {
                     setActiveSuggestionIndex(activeSuggestionIndex - 1);
+                    event.preventDefault();
                 }
                 break;
             case 'ArrowDown':
@@ -143,11 +144,7 @@ const TaskSearch = ({
     };
 
     const onResizeHandler = () => {
-        if (suggestionModal) {
-            setSuggestionCoordinates(findCoordinates());
-        } else {
-            setSuggestionCoordinates(initialSuggestionCoordinates);
-        }
+        setSuggestionCoordinates(findCoordinates());
     };
     useEffect(onResizeHandler, [
         defferedPillValue,
@@ -241,7 +238,6 @@ const TaskSearch = ({
             updatedOptions = false;
             setSuggestions([]);
         }
-
         setSuggestionModal(updatedOptions);
     }, [defferedUserInput, defferedPillValue]);
 

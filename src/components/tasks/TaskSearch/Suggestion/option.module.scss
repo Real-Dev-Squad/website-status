@@ -3,8 +3,8 @@ $gray-color: #808080;
 $light-gray: #d0d7de;
 $filter-button-hover: #f6f8fa;
 .suggestion-div {
-    border: 1px solid $light-gray;
     padding: 5.2px;
+    border: 1px solid white;
     word-break: break-all;
     word-wrap: break-word;
     font-size: 0.88rem;
@@ -21,10 +21,9 @@ $filter-button-hover: #f6f8fa;
     cursor: pointer;
     color: $black-color;
 }
-
 .suggestion-box {
     width: 100%;
-    top: 102%;
+    top: 103%;
     z-index: 5;
     position: absolute;
     text-align: left;

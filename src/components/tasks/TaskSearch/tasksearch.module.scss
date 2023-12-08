@@ -118,6 +118,8 @@ $radius: 5px;
     border: 1px solid $gray-color;
     cursor: pointer;
     color: $black-color;
+    margin-top: -1px;
+    margin-bottom: -1px;
 }
 .search-input-parent {
     display: flex;

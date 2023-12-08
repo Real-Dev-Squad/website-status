@@ -4,7 +4,6 @@ export default function findCoordinates() {
     if (searchBar && input) {
         const searchBarRect = searchBar.getBoundingClientRect();
         const inputRect = input.getBoundingClientRect();
-        console.log({ searchBarRect, inputRect });
         return {
             left: inputRect.left - searchBarRect.left,
             width: inputRect.width,
