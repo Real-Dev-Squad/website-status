@@ -186,13 +186,13 @@ const TaskSearch = ({
         } else {
             userInput = defferedPillValue;
         }
-        userInput = userInput.trim();
+        userInput = userInput.trimStart();
         let key = '';
         if (userInput.includes(':')) {
             const [potentialKey, ...values] = userInput.split(':');
             if (potentialKey.length > 0) {
                 key = potentialKey.trim();
-                userInput = values.join(':').trim();
+                userInput = values.join(':').trimStart();
             }
         }
         if (userInput.length > 2) {
