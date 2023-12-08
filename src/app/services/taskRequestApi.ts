@@ -1,13 +1,21 @@
 import { api } from './api';
 
 type AddOrUpdateMutationQuery = {
-    taskId: string;
-    userId: string;
+    taskId?: string;
+    userId?: string;
+    externalIssueUrl?: string;
+    requestType: string;
+    description: string | undefined;
+    proposedStartDate: number | string;
+    proposedDeadline: number | string;
 };
 
-type AddOrUpdateMutationQueryRes =
-    | { message: string }
-    | { message: string; requestors: string[] };
+type AddOrUpdateMutationQueryRes = {
+    message: string;
+    data: {
+        id: string;
+    };
+};
 
 export const taskRequestApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -16,7 +24,7 @@ export const taskRequestApi = api.injectEndpoints({
             AddOrUpdateMutationQuery
         >({
             query: (body) => ({
-                url: 'taskRequests/addOrUpdate',
+                url: 'taskRequests',
                 method: 'POST',
                 body,
             }),

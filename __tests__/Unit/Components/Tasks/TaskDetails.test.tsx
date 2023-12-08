@@ -588,7 +588,6 @@ describe('Task Details > Task Request', () => {
             ).not.toBeNull();
         });
     });
-
     it('should not show task request button when dev is false', async () => {
         renderWithRouter(
             <Provider store={store()}>
@@ -603,7 +602,7 @@ describe('Task Details > Task Request', () => {
         });
     });
 
-    it('Success toast should be shown on success', async () => {
+    it('Task request modal should open on clicking request task button', async () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
@@ -623,7 +622,8 @@ describe('Task Details > Task Request', () => {
         fireEvent.click(taskRequestButton);
 
         await waitFor(() => {
-            screen.getByText(/successfully requested for task/i);
+            const taskRequestModalTitle = screen.getByText(/Task Request/i);
+            expect(taskRequestModalTitle).toBeInTheDocument();
         });
     });
 
@@ -645,7 +645,10 @@ describe('Task Details > Task Request', () => {
             name: /request for task/i,
         });
         fireEvent.click(taskRequestButton);
-
+        const createRequestButton = screen.getByText(/Create Request/i);
+        await waitFor(() => {
+            fireEvent.click(createRequestButton);
+        });
         await waitFor(() => {
             expect(screen.queryByText(/taskId not provided/i)).not.toBeNull();
         });

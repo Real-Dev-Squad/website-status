@@ -89,8 +89,8 @@ describe('Header without dev mode', () => {
     it('should have Open PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/openPRs',
-                query: {},
+                pathname: '/pull-requests',
+                query: { state: 'open' },
             };
         });
         render(<Header />);
@@ -116,8 +116,8 @@ describe('Header without dev mode', () => {
     it('should have Stale PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/stale-pr',
-                query: {},
+                pathname: '/pull-requests',
+                query: { state: 'stale' },
             };
         });
         render(<Header />);
@@ -239,8 +239,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeTruthy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -250,8 +248,6 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Issues category', () => {
@@ -270,8 +266,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeTruthy();
@@ -281,8 +275,6 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Mine category', () => {
@@ -301,8 +293,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -312,15 +302,13 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Open PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/openPRs',
-                query: { dev: true },
+                pathname: '/pull-requests',
+                query: { state: 'open', dev: true },
             };
         });
         render(<Header />);
@@ -332,8 +320,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -343,15 +329,13 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Stale PRs category', () => {
         useRouter.mockImplementation(() => {
             return {
-                pathname: '/stale-pr',
-                query: { dev: true },
+                pathname: '/pull-requests',
+                query: { state: 'stale', dev: true },
             };
         });
         render(<Header />);
@@ -363,8 +347,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -374,8 +356,6 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Idle Users category', () => {
@@ -394,8 +374,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -405,8 +383,6 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeTruthy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Standup category', () => {
@@ -425,8 +401,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -436,8 +410,6 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeTruthy();
         expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
     });
 
     it('should have Availability Panel category', () => {
@@ -456,8 +428,6 @@ describe('Header with dev mode', () => {
         const idleUsersElement = screen.getByText('Idle Users');
         const standupElement = screen.getByText('Standup');
         const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
 
         expect(taskElement.classList.contains('active')).toBeFalsy();
         expect(issueElement.classList.contains('active')).toBeFalsy();
@@ -467,69 +437,5 @@ describe('Header with dev mode', () => {
         expect(idleUsersElement.classList.contains('active')).toBeFalsy();
         expect(standupElement.classList.contains('active')).toBeFalsy();
         expect(availabilityElement.classList.contains('active')).toBeTruthy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
-    });
-
-    it('should have Open PRs Dev category', () => {
-        useRouter.mockImplementation(() => {
-            return {
-                pathname: '/pull-requests',
-                query: { state: 'open', dev: true },
-            };
-        });
-        render(<Header />);
-        const taskElement = screen.getByText('Tasks');
-        const issueElement = screen.getByText('Issues');
-        const mineElement = screen.getByText('Mine');
-        const openPRElement = screen.getByText('Open PRs');
-        const stalePRElement = screen.getByText('Stale PRs');
-        const idleUsersElement = screen.getByText('Idle Users');
-        const standupElement = screen.getByText('Standup');
-        const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
-
-        expect(taskElement.classList.contains('active')).toBeFalsy();
-        expect(issueElement.classList.contains('active')).toBeFalsy();
-        expect(mineElement.classList.contains('active')).toBeFalsy();
-        expect(openPRElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRElement.classList.contains('active')).toBeFalsy();
-        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
-        expect(standupElement.classList.contains('active')).toBeFalsy();
-        expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeTruthy();
-        expect(stalePRDevElement.classList.contains('active')).toBeFalsy();
-    });
-
-    it('should have Stale PRs Dev category', () => {
-        useRouter.mockImplementation(() => {
-            return {
-                pathname: '/pull-requests',
-                query: { state: 'stale', dev: true },
-            };
-        });
-        render(<Header />);
-        const taskElement = screen.getByText('Tasks');
-        const issueElement = screen.getByText('Issues');
-        const mineElement = screen.getByText('Mine');
-        const openPRElement = screen.getByText('Open PRs');
-        const stalePRElement = screen.getByText('Stale PRs');
-        const idleUsersElement = screen.getByText('Idle Users');
-        const standupElement = screen.getByText('Standup');
-        const availabilityElement = screen.getByText('Availability Panel');
-        const openPRDevElement = screen.getByText('Open PRs(dev)');
-        const stalePRDevElement = screen.getByText('Stale PRs(dev)');
-
-        expect(taskElement.classList.contains('active')).toBeFalsy();
-        expect(issueElement.classList.contains('active')).toBeFalsy();
-        expect(mineElement.classList.contains('active')).toBeFalsy();
-        expect(openPRElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRElement.classList.contains('active')).toBeFalsy();
-        expect(idleUsersElement.classList.contains('active')).toBeFalsy();
-        expect(standupElement.classList.contains('active')).toBeFalsy();
-        expect(availabilityElement.classList.contains('active')).toBeFalsy();
-        expect(openPRDevElement.classList.contains('active')).toBeFalsy();
-        expect(stalePRDevElement.classList.contains('active')).toBeTruthy();
     });
 });
