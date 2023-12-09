@@ -85,7 +85,6 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     };
 
     const searchButtonHandler = (searchString?: string) => {
-        console.log(searchString, inputValue);
         const { status, assignees, title, assigneeRole } = extractQueryParams(
             searchString || inputValue
         );

@@ -1,0 +1,60 @@
+$pill-color: #dedede;
+$highlight-fill-color: #ffdddd;
+$delete-button-bg-color: #ffb0b0;
+
+.parent-pill {
+    min-width: 46px;
+    margin-top: 0px;
+}
+.selected-options {
+    background-color: $pill-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 4px 6px;
+    font-size: 0.85rem;
+    height: min-content;
+    overflow: hidden;
+    margin-right: 5px;
+    width: fit-content;
+    max-width: 100%;
+    cursor: pointer;
+}
+.delete-option {
+    background: none;
+    border: none;
+    display: flex;
+    align-self: center;
+    margin-left: 6px;
+    padding: 0;
+    cursor: pointer;
+}
+.highlight {
+    background-color: $highlight-fill-color;
+    border: 1px solid red;
+}
+.highlight .delete-option {
+    border-radius: 50%;
+    background-color: $delete-button-bg-color;
+    padding: 2px;
+}
+.highlight .delete-option svg {
+    fill: red;
+}
+.highlight input {
+    border: 1px solid red;
+}
+
+.pill-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: min-content;
+    letter-spacing: 0.2px;
+}
+.pill-input {
+    width: 100%;
+    border: none;
+    outline: none;
+}
