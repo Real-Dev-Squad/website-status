@@ -579,6 +579,28 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
+    test('should display suggestions even if white space is present at the end', async () => {
+        const onClickSearchButton = jest.fn();
+        render(
+            <TaskSearch
+                onSelect={onSelect}
+                inputValue=""
+                dev={true}
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+        const searchInput = screen.getByTestId('search-input');
+        fireEvent.change(searchInput, { target: { value: ' status:in ' } });
+
+        await waitFor(
+            () => {
+                const options = screen.getAllByTestId('option');
+                expect(options).toHaveLength(2);
+            },
+            { timeout: 1000 }
+        );
+    });
 
     test('should be able to close suggestions if input is out of focus', async () => {
         const onClickSearchButton = jest.fn();
