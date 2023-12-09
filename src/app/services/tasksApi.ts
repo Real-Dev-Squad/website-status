@@ -30,7 +30,9 @@ export const tasksApi = api.injectEndpoints({
                     status === 'ASSIGNEE_ARCHIVED'
                         ? baseQuery
                         : `${baseQuery}&status=${status}`;
-
+                if (assigneeRole || status === 'ASSIGNEE_ARCHIVED') {
+                    url += `&assignee-role=${assigneeRole}`;
+                }
                 if (assignee) {
                     url += `&assignee=${assignee}`;
                 }
@@ -45,9 +47,6 @@ export const tasksApi = api.injectEndpoints({
 
                 if (prevTasks) {
                     url = prevTasks;
-                }
-                if (assigneeRole || status === 'ASSIGNEE_ARCHIVED') {
-                    url += `&assignee-role=${assigneeRole}`;
                 }
                 return { url };
             },

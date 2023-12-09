@@ -84,10 +84,12 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setInputValue(value);
     };
 
-    const searchButtonHandler = () => {
-        const { status, assignees, title, assigneeRole } =
-            extractQueryParams(inputValue);
-        if (inputValue) {
+    const searchButtonHandler = (searchString?: string) => {
+        console.log(searchString, inputValue);
+        const { status, assignees, title, assigneeRole } = extractQueryParams(
+            searchString || inputValue
+        );
+        if (searchString || inputValue) {
             if (assigneeRole) {
                 searchNewTasks(Tab.ASSIGNEE_ARCHIVED, assignees, title);
             } else {
