@@ -20,6 +20,7 @@ export default function Options({
 }: OptionsProp) {
     return (
         <div
+            data-testid="suggestion-box-container"
             style={{
                 left: style.left || 'auto',
                 maxWidth: style.maxWidth || 'auto',

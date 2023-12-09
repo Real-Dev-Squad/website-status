@@ -64,4 +64,25 @@ describe('Option component', () => {
         fireEvent.click(getByText('title: This is a title'));
         expect(onSuggestionSelected).toHaveBeenCalledWith(0);
     });
+    test('should apply styles to suggestion provide through props', () => {
+        const suggestions: Array<TaskSearchOption> = [
+            { title: 'This is a title' },
+            { assignee: 'joy-gupta' },
+            { status: 'in-progress' },
+        ];
+
+        const { getByTestId } = render(
+            <Options
+                style={{ left: 10, maxWidth: 500, top: 20 }}
+                suggestions={suggestions}
+                activeSuggestionIndex={activeSuggestionIndex}
+                onSuggestionSelected={onSuggestionSelected}
+            />
+        );
+        const container = getByTestId('suggestion-box-container');
+        expect(container.style.left).toBe('10px');
+        expect(container.style.maxWidth).toBe('500px');
+        expect(container.style.width).toBe('auto');
+        expect(container.style.top).toBe('20px');
+    });
 });
