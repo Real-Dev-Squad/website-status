@@ -16,7 +16,7 @@ describe('Option component', () => {
 
         const { getByText } = render(
             <Options
-                style={{ left: 2, maxWidth: 3 }}
+                style={{ left: 2, maxWidth: 3, top: 3 }}
                 suggestions={suggestions}
                 activeSuggestionIndex={activeSuggestionIndex}
                 onSuggestionSelected={onSuggestionSelected}
@@ -35,7 +35,7 @@ describe('Option component', () => {
 
         const { getByText } = render(
             <Options
-                style={{ left: 2, maxWidth: 3 }}
+                style={{ left: 2, maxWidth: 3, top: 3 }}
                 suggestions={suggestions}
                 activeSuggestionIndex={activeSuggestionIndex}
                 onSuggestionSelected={onSuggestionSelected}
@@ -54,7 +54,7 @@ describe('Option component', () => {
 
         const { getByText } = render(
             <Options
-                style={{ left: 2, maxWidth: 3 }}
+                style={{ left: 2, maxWidth: 3, top: 3 }}
                 suggestions={suggestions}
                 activeSuggestionIndex={activeSuggestionIndex}
                 onSuggestionSelected={onSuggestionSelected}

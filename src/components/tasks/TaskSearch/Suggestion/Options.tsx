@@ -20,16 +20,12 @@ export default function Options({
 }: OptionsProp) {
     return (
         <div
-            style={
-                suggestions.length !== 0
-                    ? {
-                          left: style.left || 'auto',
-                          maxWidth: style.maxWidth || 'auto',
-                          width: 'auto',
-                          top: style.top || 'auto',
-                      }
-                    : {}
-            }
+            style={{
+                left: style.left || 'auto',
+                maxWidth: style.maxWidth || 'auto',
+                width: 'auto',
+                top: style.top || 'auto',
+            }}
             className={className['suggestion-box']}
         >
             {suggestions.length > 0 ? (

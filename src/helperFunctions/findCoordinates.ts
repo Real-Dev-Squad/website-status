@@ -9,7 +9,7 @@ export default function findCoordinates() {
         return {
             left: inputRect.left - searchBarRect.left + 75,
             maxWidth: inputRect.width,
-            top: taskSearchRect.height - 1,
+            top: taskSearchRect.height - 2.25,
         };
     }
     return {

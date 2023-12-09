@@ -48,10 +48,10 @@ const TaskSearch = ({
     >(convertStringToOptions(inputValue));
     const [suggestions, setSuggestions] = useState<Array<TaskSearchOption>>([]);
     const [suggestionModal, setSuggestionModal] = useState(false);
-    const defferedUserInput: string = useDebounce(typedInput, 200);
+    const defferedUserInput: string = useDebounce(typedInput, 300);
     const [selectedPill, setSelectedPill] = useState<false | number>(false);
     const [newPillValue, setNewPillValue] = useState<string>('');
-    const defferedPillValue = useDebounce(newPillValue, 200);
+    const defferedPillValue = useDebounce(newPillValue, 300);
     const [pillToBeRemoved, setPillToBeRemoved] = useState(-1);
     const [suggestionCoordinates, setSuggestionCoordinates] =
         useState<SuggestionCoordinates>(initialSuggestionCoordinates);
@@ -154,6 +154,7 @@ const TaskSearch = ({
         suggestionModal,
     ]);
     const removePill = (idx: number) => {
+        setSuggestionModal(false);
         const updatedOptions = selectedOptions.filter(
             (_, index) => index !== idx
         );
@@ -173,8 +174,9 @@ const TaskSearch = ({
             setSelectedOptions(newOptions);
             setSelectedPill(false);
         }
-        toggleInputFocus();
         setActiveSuggestionIndex(-1);
+        setSuggestionModal(false);
+        toggleInputFocus(true);
     };
 
     const handleClickOutside = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -306,6 +308,7 @@ const TaskSearch = ({
                                         onClick={() =>
                                             setActiveSuggestionIndex(-1)
                                         }
+                                        onBlur={() => setSuggestionModal(false)}
                                         className={`${
                                             className['search-input-dev']
                                         } ${

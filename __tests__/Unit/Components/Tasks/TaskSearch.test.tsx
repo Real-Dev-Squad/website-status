@@ -579,4 +579,33 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
+
+    test('should be able to close suggestions if input is out of focus', async () => {
+        const onClickSearchButton = jest.fn();
+        const { getByTestId } = render(
+            <TaskSearch
+                onSelect={onSelect}
+                inputValue="status:in-progress"
+                dev={true}
+                onInputChange={onInputChange}
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+        const searchInput = getByTestId('search-input');
+        fireEvent.change(searchInput, {
+            target: { value: 'status:assigned' },
+        });
+        const onBlurMock = jest.fn();
+        searchInput.addEventListener('blur', onBlurMock);
+
+        await waitFor(
+            () => {
+                fireEvent.blur(searchInput);
+                expect(onBlurMock).toHaveBeenCalled();
+                const suggestions = screen.queryByTestId('suggestion-box');
+                expect(suggestions).toBeNull();
+            },
+            { timeout: 1000 }
+        );
+    });
 });
