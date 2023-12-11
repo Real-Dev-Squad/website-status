@@ -5,11 +5,22 @@ import FilterModal from './FilterModal';
 import useDebounce from '@/hooks/useDebounce';
 import generateSuggestions from '@/utils/generateSuggestions';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
-
 import Options from './Suggestion/Options';
 import RenderPills from './Suggestion/Pill';
 import convertStringToOptions from '@/utils/convertStringToOptions';
 import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
+import findCoordinates from '@/helperFunctions/findCoordinates';
+
+interface SuggestionCoordinates {
+    left: number | null;
+    maxWidth: number | null;
+    top: number | null;
+}
+const initialSuggestionCoordinates: SuggestionCoordinates = {
+    left: null,
+    maxWidth: null,
+    top: null,
+};
 
 type TaskSearchProps = {
     onSelect: (tab: Tab) => void;
@@ -37,11 +48,13 @@ const TaskSearch = ({
     >(convertStringToOptions(inputValue));
     const [suggestions, setSuggestions] = useState<Array<TaskSearchOption>>([]);
     const [suggestionModal, setSuggestionModal] = useState(false);
-    const defferedUserInput: string = useDebounce(typedInput, 500);
+    const defferedUserInput: string = useDebounce(typedInput, 300);
     const [selectedPill, setSelectedPill] = useState<false | number>(false);
     const [newPillValue, setNewPillValue] = useState<string>('');
-    const defferedPillValue = useDebounce(newPillValue, 500);
+    const defferedPillValue = useDebounce(newPillValue, 300);
     const [pillToBeRemoved, setPillToBeRemoved] = useState(-1);
+    const [suggestionCoordinates, setSuggestionCoordinates] =
+        useState<SuggestionCoordinates>(initialSuggestionCoordinates);
 
     const searchButtonHandler = () => {
         if (dev && selectedPill === false) {
@@ -91,6 +104,7 @@ const TaskSearch = ({
             case 'ArrowUp':
                 if (activeSuggestionIndex > -1) {
                     setActiveSuggestionIndex(activeSuggestionIndex - 1);
+                    event.preventDefault();
                 }
                 break;
             case 'ArrowDown':
@@ -131,7 +145,16 @@ const TaskSearch = ({
         }
     };
 
+    const onResizeHandler = () => {
+        setSuggestionCoordinates(findCoordinates());
+    };
+    useEffect(onResizeHandler, [
+        defferedPillValue,
+        defferedUserInput,
+        suggestionModal,
+    ]);
     const removePill = (idx: number) => {
+        setSuggestionModal(false);
         const updatedOptions = selectedOptions.filter(
             (_, index) => index !== idx
         );
@@ -143,16 +166,19 @@ const TaskSearch = ({
     const onSuggestionSelected = (idx = activeSuggestionIndex) => {
         if (selectedPill === false) {
             const optionDetails = suggestions[idx];
-            setSelectedOptions([...selectedOptions, optionDetails]);
-            setTypedInput('');
+            if (optionDetails) {
+                setSelectedOptions([...selectedOptions, optionDetails]);
+                setTypedInput('');
+            }
         } else {
             const newOptions = selectedOptions;
             newOptions[selectedPill] = suggestions[idx];
             setSelectedOptions(newOptions);
             setSelectedPill(false);
         }
-        toggleInputFocus();
         setActiveSuggestionIndex(-1);
+        setSuggestionModal(false);
+        toggleInputFocus(true);
     };
 
     const handleClickOutside = (event: React.MouseEvent<HTMLInputElement>) => {
@@ -179,12 +205,22 @@ const TaskSearch = ({
     }, [selectedPill]);
 
     useEffect(() => {
+        !suggestionModal &&
+            setSuggestionCoordinates(initialSuggestionCoordinates);
+    }, [suggestionModal]);
+
+    useEffect(() => {
         let updatedOptions = suggestionModal;
         let userInput;
-        if (selectedPill === false) {
+        if (selectedPill === false && typedInput === defferedUserInput) {
             userInput = defferedUserInput;
-        } else {
+        } else if (
+            selectedPill !== false &&
+            newPillValue === defferedPillValue
+        ) {
             userInput = defferedPillValue;
+        } else {
+            return;
         }
         userInput = userInput.trimStart();
         let key = '';
@@ -203,18 +239,24 @@ const TaskSearch = ({
                 selectedPill
             );
             updatedOptions = true;
+            result.length > 0 && setActiveSuggestionIndex(0);
             setSuggestions(result);
         } else {
             updatedOptions = false;
             setSuggestions([]);
         }
-
         setSuggestionModal(updatedOptions);
     }, [defferedUserInput, defferedPillValue]);
 
+    useEffect(() => {
+        window.addEventListener('resize', onResizeHandler);
+    }, []);
     return (
         <div className={className['task-search-container']}>
-            <div className={className['filter-container']}>
+            <div
+                id="filter-container"
+                className={className['filter-container']}
+            >
                 <div
                     className={className['filter-button']}
                     onClick={handleModal}
@@ -232,7 +274,10 @@ const TaskSearch = ({
                 </div>
 
                 {dev ? (
-                    <div className={className['search-bar-div']}>
+                    <div
+                        id="search-bar-div"
+                        className={className['search-bar-div']}
+                    >
                         <div
                             data-testid="pill-input-wrapper"
                             style={{ position: 'relative' }}
@@ -266,7 +311,8 @@ const TaskSearch = ({
                                         onClick={() =>
                                             setActiveSuggestionIndex(-1)
                                         }
-                                        className={`${
+                                        onBlur={() => setSuggestionModal(false)}
+                                        className={`task-search-input ${
                                             className['search-input-dev']
                                         } ${
                                             pillToBeRemoved !== -1
@@ -276,7 +322,6 @@ const TaskSearch = ({
                                         data-testid="search-input"
                                         type="text"
                                         value={typedInput}
-                                        readOnly={activeSuggestionIndex !== -1}
                                         placeholder="Eg: status:done assignee:joy title:New Feature"
                                         onChange={(e) => {
                                             pillToBeRemoved !== -1 &&
@@ -295,6 +340,7 @@ const TaskSearch = ({
                             (typedInput ||
                                 (selectedPill !== false && newPillValue)) && (
                                 <Options
+                                    style={suggestionCoordinates}
                                     suggestions={suggestions}
                                     activeSuggestionIndex={
                                         activeSuggestionIndex
