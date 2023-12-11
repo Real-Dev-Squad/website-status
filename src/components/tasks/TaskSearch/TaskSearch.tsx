@@ -312,7 +312,7 @@ const TaskSearch = ({
                                             setActiveSuggestionIndex(-1)
                                         }
                                         onBlur={() => setSuggestionModal(false)}
-                                        className={`${
+                                        className={`task-search-input ${
                                             className['search-input-dev']
                                         } ${
                                             pillToBeRemoved !== -1

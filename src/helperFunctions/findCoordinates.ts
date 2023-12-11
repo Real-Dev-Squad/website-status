@@ -1,7 +1,7 @@
 export default function findCoordinates() {
     const searchBar = document.querySelector('#search-bar-div');
     const filterContainer = document.querySelector('#filter-container');
-    const input = document.querySelector('input');
+    const input = document.querySelector('.task-search-input');
     if (searchBar && input && filterContainer) {
         const searchBarRect = searchBar.getBoundingClientRect();
         const inputRect = input.getBoundingClientRect();
