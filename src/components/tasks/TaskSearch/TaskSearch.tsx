@@ -166,8 +166,10 @@ const TaskSearch = ({
     const onSuggestionSelected = (idx = activeSuggestionIndex) => {
         if (selectedPill === false) {
             const optionDetails = suggestions[idx];
-            setSelectedOptions([...selectedOptions, optionDetails]);
-            setTypedInput('');
+            if (optionDetails) {
+                setSelectedOptions([...selectedOptions, optionDetails]);
+                setTypedInput('');
+            }
         } else {
             const newOptions = selectedOptions;
             newOptions[selectedPill] = suggestions[idx];
@@ -237,6 +239,7 @@ const TaskSearch = ({
                 selectedPill
             );
             updatedOptions = true;
+            result.length > 0 && setActiveSuggestionIndex(0);
             setSuggestions(result);
         } else {
             updatedOptions = false;
@@ -319,7 +322,6 @@ const TaskSearch = ({
                                         data-testid="search-input"
                                         type="text"
                                         value={typedInput}
-                                        readOnly={activeSuggestionIndex !== -1}
                                         placeholder="Eg: status:done assignee:joy title:New Feature"
                                         onChange={(e) => {
                                             pillToBeRemoved !== -1 &&

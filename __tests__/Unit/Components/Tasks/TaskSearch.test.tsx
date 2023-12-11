@@ -342,29 +342,7 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
-    test('input should be in readonly mode if a suggestion is in focus', async () => {
-        const onClickSearchButton = jest.fn();
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue=""
-                dev={true}
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-        const searchInput = screen.getByTestId('search-input');
-        fireEvent.change(searchInput, { target: { value: 'testing work' } });
 
-        await waitFor(
-            () => {
-                fireEvent.click(searchInput);
-                fireEvent.keyDown(searchInput, { key: 'ArrowDown' });
-                expect(searchInput).toHaveAttribute('readonly');
-            },
-            { timeout: 1000 }
-        );
-    });
     test('should set focus back to input if clicked in surrounding of it', async () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
@@ -455,12 +433,12 @@ describe('Multi select task search in dev mode', () => {
         fireEvent.change(searchInput, { target: { value: 'testing work' } });
 
         await waitFor(
-            () => {
+            async () => {
                 fireEvent.click(searchInput);
                 fireEvent.keyDown(searchInput, { key: 'ArrowDown' });
-                expect(searchInput).toHaveAttribute('readonly');
+                await expect(searchInput).not.toHaveAttribute('readonly');
                 fireEvent.keyDown(searchInput, { key: 'ArrowUp' });
-                expect(searchInput).not.toHaveAttribute('readonly');
+                await expect(searchInput).not.toHaveAttribute('readonly');
             },
             { timeout: 1000 }
         );
@@ -570,7 +548,6 @@ describe('Multi select task search in dev mode', () => {
 
         await waitFor(
             () => {
-                fireEvent.keyDown(pillInput, { key: 'ArrowDown' });
                 fireEvent.keyDown(pillInput, { key: 'Enter', code: 'Enter' });
                 const pillContent = getByTestId('pill-content');
                 expect(pillContent).toBeInTheDocument();
