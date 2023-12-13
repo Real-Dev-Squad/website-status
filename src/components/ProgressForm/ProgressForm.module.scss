@@ -62,6 +62,14 @@ $theme-focusHighlight: #1c64f2;
     outline: none;
 }
 
+.buttonDisabled,
+.buttonEnabled {
+    border: none;
+    width: 14rem;
+    color: var(--toastify-spinner-color);
+    cursor: pointer;
+}
+
 .buttonEnabled {
     background-color: $color-blue;
     color: $color-white;
@@ -69,13 +77,6 @@ $theme-focusHighlight: #1c64f2;
     border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
     font-size: $base-font-size * 4;
-}
-
-.buttonDisabled,
-.buttonEnabled {
-    border: none;
-    width: 14rem;
-    color: var(--toastify-spinner-color);
 }
 
 .buttonDisabled {
