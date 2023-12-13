@@ -53,7 +53,7 @@ export default function RenderPills({
                         }}
                         onKeyDown={handleKeyPress}
                         defaultValue={`${field}:${value}`}
-                        className={classNames['pill-input']}
+                        className={`task-search-input ${classNames['pill-input']}`}
                     />
                 </div>
             ) : (

@@ -13,11 +13,19 @@ export default function Option({
     activeSuggestionIndex,
 }: OptionProps) {
     const [key] = Object.keys(suggestion);
-
+    const selectOption = (
+        e:
+            | React.MouseEvent<HTMLDivElement, MouseEvent>
+            | React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>
+    ) => {
+        e.preventDefault();
+        onClickHandler(idx);
+    };
     return (
         <div
             data-testid="option"
-            onClick={() => onClickHandler(idx)}
+            onMouseDown={selectOption}
+            onClick={selectOption}
             className={`${className['suggestion-div']} ${
                 idx === activeSuggestionIndex
                     ? className['selected-suggestion']

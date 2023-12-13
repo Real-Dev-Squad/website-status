@@ -89,7 +89,6 @@ $radius: 5px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    position: relative;
 }
 .in-focus {
     border: 1px solid $gray-color;
@@ -118,6 +117,8 @@ $radius: 5px;
     border: 1px solid $gray-color;
     cursor: pointer;
     color: $black-color;
+    margin-top: -1px;
+    margin-bottom: -1px;
 }
 .search-input-parent {
     display: flex;
@@ -130,6 +131,15 @@ $radius: 5px;
     }
     @media (max-width: 557px) {
         width: 100% !important;
+    }
+    @media (max-width: 562px) and (min-width: 558px) {
+        min-width: 302px !important;
+    }
+    @media (max-width: 617px) and (min-width: 601px) {
+        min-width: 310px !important;
+    }
+    @media (max-width: 793px) and (min-width: 769px) {
+        min-width: 328px !important;
     }
 }
 .pill-input-wrapper {
