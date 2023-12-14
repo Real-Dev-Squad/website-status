@@ -81,11 +81,7 @@ const ProgressForm = ({ questions }: formProps) => {
                 />
             ))}
             <button
-                className={
-                    isButtonEnabled
-                        ? styles.buttonEnabled
-                        : styles.buttonDisabled
-                }
+                className={styles.button}
                 onClick={(e) => handleSubmit(e)}
                 disabled={!isButtonEnabled}
                 type="submit"
