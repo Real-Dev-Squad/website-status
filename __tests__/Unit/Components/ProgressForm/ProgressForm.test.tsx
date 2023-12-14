@@ -72,7 +72,7 @@ describe('Progress form', function () {
         expect(textAreas[2].value).toBe('567');
     });
 
-    it('Should enable the button  and able to make a api call when all values are entered', async function () {
+    it('Should enable the button and able to make a api call when all values are entered', async function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressForm questions={questions} />
@@ -91,13 +91,12 @@ describe('Progress form', function () {
         const button = screen.getByRole('button');
         expect(button).toBeInTheDocument();
 
-        expect(button).toHaveClass('buttonDisabled');
+        expect(button).toHaveAttribute('disabled');
 
         fireEvent.change(textAreas[0], { target: { value: '123' } });
         fireEvent.change(textAreas[1], { target: { value: '234' } });
         fireEvent.change(textAreas[2], { target: { value: '567' } });
 
-        expect(button).toHaveClass('buttonEnabled');
         expect(button).not.toHaveAttribute('disabled');
 
         fireEvent.click(button);
@@ -121,7 +120,6 @@ describe('Progress form', function () {
 
         const button = screen.getByRole('button');
         fireEvent.click(button);
-        expect(button).toHaveClass('buttonDisabled');
         expect(button).toHaveAttribute('disabled');
 
         await waitFor(() =>
