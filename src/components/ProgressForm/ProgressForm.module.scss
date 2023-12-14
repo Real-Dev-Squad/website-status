@@ -62,30 +62,26 @@ $theme-focusHighlight: #1c64f2;
     outline: none;
 }
 
-.buttonDisabled,
-.buttonEnabled {
-    border: none;
-    width: 14rem;
-    color: var(--toastify-spinner-color);
-    cursor: pointer;
-}
-
-.buttonEnabled {
+.button {
     background-color: $color-blue;
     color: $color-white;
     padding: $base-unit * 4 $base-unit * 8;
     border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
     font-size: $base-font-size * 4;
-}
+    border: none;
+    width: 14rem;
+    cursor: pointer;
 
-.buttonDisabled {
-    cursor: not-allowed;
-    background-color: $color-disabled;
-    padding: $base-unit * 4 $base-unit * 8;
-    border-radius: $base-unit * 2;
-    margin-bottom: $diff-margin;
-    font-size: $base-font-size * 4;
+    &:hover {
+        background-color: darken($color-blue, 10%);
+    }
+
+    &:disabled {
+        color: var(--toastify-spinner-color);
+        cursor: not-allowed;
+        background-color: $color-disabled;
+    }
 }
 
 @media (max-width: 770px) {
