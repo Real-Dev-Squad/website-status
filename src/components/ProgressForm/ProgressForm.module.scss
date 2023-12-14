@@ -63,14 +63,14 @@ $theme-focusHighlight: #1c64f2;
 }
 
 .button {
-    background-color: $color-blue;
-    color: $color-white;
-    padding: $base-unit * 4 $base-unit * 8;
-    border-radius: $base-unit * 2;
-    margin-bottom: $diff-margin;
-    font-size: $base-font-size * 4;
-    border: none;
     width: 14rem;
+    margin-bottom: $diff-margin;
+    padding: $base-unit * 4 $base-unit * 8;
+    font-size: $base-font-size * 4;
+    color: $color-white;
+    background-color: $color-blue;
+    border: none;
+    border-radius: $base-unit * 2;
     cursor: pointer;
 
     &:hover {
