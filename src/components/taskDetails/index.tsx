@@ -350,7 +350,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Link'}
                                         value={
                                             taskDetailsData?.github?.issue
-                                                ?.html_url
+                                                ?.html_url ??
+                                            taskDetailsData?.github?.issue?.url
                                         }
                                     />
                                     <DevFeature>

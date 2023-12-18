@@ -3,11 +3,12 @@ import setColor from './taskPriorityColors';
 import classNames from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
+import transformGitHubApiUrl from '@/utils/transformGitHubApiUrl';
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
-    const gitHubIssueLink = isGitHubLink ? value : undefined;
+    const gitHubIssueLink = isGitHubLink ? transformGitHubApiUrl(value) : '#';
 
     return (
         <div className={classNames.detailsContainer}>

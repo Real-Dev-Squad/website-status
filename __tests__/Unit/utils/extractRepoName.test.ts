@@ -9,9 +9,9 @@ describe('Unit | Util | Extract Repo Name', () => {
         ).toEqual('todo action items #196');
         expect(
             extractRepoName(
-                'https://github.com/Real-Dev-Squad/website-status/issues/950'
+                'https://api.github.com/repos/Real-Dev-Squad/todo-action-items/issues/196'
             )
-        ).toEqual('website status #950');
+        ).toEqual('todo action items #196');
     });
 
     test('returns null with improper input', () => {
