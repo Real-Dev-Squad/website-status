@@ -19,6 +19,7 @@ type task = {
     github?: {
         issue: {
             html_url: string;
+            url?: string;
             status: string;
             assignee?: string; // optional
             id: number;
