@@ -13,13 +13,14 @@
     "test": "jest --coverage",
     "test-watch": "jest --watch ",
     "lint": "next lint",
-    "lint-fix": "eslint . --fix --ext js,jsx,ts,tsx",
+    "lint:fix": "eslint . --fix --ext js,jsx,ts,tsx",
     "postinstall": "husky install",
     "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook",
     "prettier": "npx prettier src __tests__ --check",
-    "prettier:fix": "npm run prettier -- --write"
-  },
+    "prettier:fix": "npm run prettier -- --write",
+    "fix": "yarn prettier:fix && yarn lint:fix"
+    },
   "repository": {
     "type": "git",
     "url": "https://github.com/Real-Dev-Squad/website-status.git"
