@@ -4,7 +4,7 @@ type AddOrUpdateMutationQuery = {
     taskId?: string;
     userId?: string;
     externalIssueUrl?: string;
-    externalIssueHtmlUrl: string;
+    externalIssueHtmlUrl?: string;
     requestType: string;
     description: string | undefined;
     proposedStartDate: number | string;
