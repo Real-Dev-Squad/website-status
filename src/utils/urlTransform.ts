@@ -1,3 +1,13 @@
+function transformGitHubApiUrl(apiUrl?: string) {
+    if (!apiUrl) return '#';
+    const transformedUrl = apiUrl.replace(
+        /https:\/\/api\.github\.com\/repos\//,
+        'https://github.com/'
+    );
+
+    return transformedUrl;
+}
+
 function extractRepoName(issueUrl: string) {
     const match = issueUrl.match(
         /(?:https:\/\/github\.com\/([^/]+)\/([^/]+)\/issues\/(\d+))|(?:https:\/\/api\.github\.com\/repos\/([^/]+)\/([^/]+)\/issues\/(\d+))/
@@ -12,4 +22,4 @@ function extractRepoName(issueUrl: string) {
     return null;
 }
 
-export default extractRepoName;
+export { transformGitHubApiUrl, extractRepoName };
