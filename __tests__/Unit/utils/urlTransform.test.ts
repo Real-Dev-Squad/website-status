@@ -1,4 +1,23 @@
-import extractRepoName from '../../../src/utils/extractRepoName';
+import {
+    extractRepoName,
+    transformGitHubApiUrl,
+} from '../../../src/utils/urlTransform';
+
+describe('Unit | Util | Transform GitHub Api Url', () => {
+    test('returns proper value with proper input', () => {
+        expect(
+            transformGitHubApiUrl(
+                'https://api.github.com/repos/Real-Dev-Squad/todo-action-items/issues/196'
+            )
+        ).toEqual(
+            'https://github.com/Real-Dev-Squad/todo-action-items/issues/196'
+        );
+    });
+
+    test('returns # with improper input', () => {
+        expect(transformGitHubApiUrl('')).toEqual('#');
+    });
+});
 
 describe('Unit | Util | Extract Repo Name', () => {
     test('returns proper value with proper input', () => {
