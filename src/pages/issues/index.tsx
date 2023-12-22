@@ -26,7 +26,7 @@ const Issues: FC = () => {
     const fetchIssues = async (searchText = '') => {
         try {
             setIsLoading(true);
-            const res = await fetch(`${ISSUES_URL}?dev=true&q=${searchText}`);
+            const res = await fetch(`${ISSUES_URL}?q=${searchText}`);
             const data = await res.json();
             if ('issues' in data) {
                 // GitHub treats issues and PRs as issues
