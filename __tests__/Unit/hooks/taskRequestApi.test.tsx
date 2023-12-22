@@ -81,4 +81,43 @@ describe('useAddOrUpdateMutation', () => {
         expect(response.isSuccess).toBe(false);
         expect(response.isError).toBe(true);
     });
+
+    it('should update successfully', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () => useAddOrUpdateMutation(),
+            { wrapper: Wrapper }
+        );
+
+        const [addTask, initialResponse] = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(false);
+
+        act(() => {
+            addTask({
+                taskId: 'taskId',
+                userId: 'userId',
+                externalIssueUrl:
+                    'https://api.github.com/repos/Real-Dev-Squad/website-status/issues/1050',
+                externalIssueHtmlUrl:
+                    'https://github.com/Real-Dev-Squad/website-status/issues/1050',
+                requestType: TASK_REQUEST_TYPES.ASSIGNMENT,
+                description: '',
+                proposedStartDate: Date.now(),
+                proposedDeadline: Date.now(),
+            });
+        });
+
+        expect(result.current[1].isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const response = result.current[1];
+        expect(response.data).not.toBeUndefined();
+        expect(response.data?.message).toBe(
+            'Task request successfully created'
+        );
+        expect(response.isLoading).toBe(false);
+        expect(response.isSuccess).toBe(true);
+        expect(response.isError).toBe(false);
+    });
 });

@@ -102,6 +102,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const handleCreateTaskRequest = async (data: TaskRequestData) => {
         const requestData = {
             externalIssueUrl: issue.url,
+            externalIssueHtmlUrl: issue.html_url,
             userId: userData?.id,
             requestType: TASK_REQUEST_TYPES.CREATION,
             proposedStartDate: data.startedOn,
