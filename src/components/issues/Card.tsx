@@ -207,7 +207,6 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 </div>
             </div>
             <div className={styles.actions}>
-                (
                 <>
                     <button
                         className={styles.card__top__button}
@@ -230,7 +229,6 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                         handleUpdateTask={handleUpdateTask}
                     />
                 </>
-                )
             </div>
         </div>
     );
