@@ -2,30 +2,41 @@ import { useState, FC } from 'react';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 import classNames from './progress-details.module.scss';
+import { useRouter } from 'next/router';
+import ProgressUpdateCard from './ProgressUpdateCard/ProgressUpdateCard';
 
 type Props = {
     data: ProgressDetailsData;
 };
 const ProgressDetails: FC<Props> = ({ data }) => {
+    const router = useRouter();
+    console.log(data, ' data');
     const [showProgressDetails, setShowProgressDetails] =
         useState<boolean>(false);
 
-    const openDetails = () => {
+    const openDetails = (e: MouseEvent) => {
+        console.log('ha bhai mai hi hu');
         setShowProgressDetails(true);
     };
 
     const closeDetails = () => {
         setShowProgressDetails(false);
     };
+
+    const isDev = router.query.dev === 'true';
     return (
         <>
-            <li
-                onClick={openDetails}
-                className={classNames['list-item']}
-                data-testid="progress-item"
-            >
-                {getDateFromTimestamp(data.date)}
-            </li>
+            {isDev ? (
+                <ProgressUpdateCard data={data} openDetails={openDetails} />
+            ) : (
+                <li
+                    onClick={openDetails}
+                    className={classNames['list-item']}
+                    data-testid="progress-item"
+                >
+                    {getDateFromTimestamp(data.date)}
+                </li>
+            )}
             {showProgressDetails && (
                 <div className={classNames['container-parent']}>
                     <div

@@ -1,0 +1,26 @@
+@import '../../../styles/variables';
+
+.progress-update-card {
+    background-color: $color-white;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    cursor: pointer;
+
+    span {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+
+    .progress-update-card__title {
+        .progress-update-card__more-button {
+            all: unset;
+            color: $theme-ceriseRed;
+            cursor: pointer;
+        }
+    }
+}
