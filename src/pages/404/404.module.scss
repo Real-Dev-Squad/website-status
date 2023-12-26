@@ -8,16 +8,16 @@
     text-decoration: none;
 
     .notFoundImage {
-        width: 40%;
+        width: 30%;
         height: auto;
         object-fit: contain;
 
         @media screen and (max-width: 768px) {
-            width: 80%;
+            width: 50%;
         }
 
         @media screen and (max-width: 480px) {
-            width: 100%;
+            width: 70%;
         }
     }
     .notFoundText {
