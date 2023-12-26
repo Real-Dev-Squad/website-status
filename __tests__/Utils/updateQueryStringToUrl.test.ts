@@ -1,4 +1,3 @@
-import { render, fireEvent, screen } from '@testing-library/react';
 import { updateQueryStringToUrl } from '@/utils/updateQueryStringToUrl';
 import { NextRouter } from 'next/router';
 
