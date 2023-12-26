@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, FC, MouseEvent } from 'react';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
 import classNames from './progress-details.module.scss';
@@ -14,7 +14,7 @@ const ProgressDetails: FC<Props> = ({ data }) => {
     const [showProgressDetails, setShowProgressDetails] =
         useState<boolean>(false);
 
-    const openDetails = (e: MouseEvent) => {
+    const openDetails = (e: MouseEvent<HTMLElement>) => {
         console.log('ha bhai mai hi hu');
         setShowProgressDetails(true);
     };
