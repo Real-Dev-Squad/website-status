@@ -11,10 +11,10 @@ type Props = {
 };
 
 export default function ProgressUpdateCard({ data, openDetails }: Props) {
-    const dateInAgoFormat = moment(data.date).fromNow();
-    const titleLength = data.completed.length;
+    const dateInAgoFormat = moment(data?.date).fromNow();
+    const titleLength = data?.completed?.length;
     const charactersToShow = 50;
-    const titleToShow = readMoreFormatter(data.completed, charactersToShow);
+    const titleToShow = readMoreFormatter(data?.completed, charactersToShow);
     const isLengthMoreThanCharactersToShow = titleLength > charactersToShow;
 
     return (
