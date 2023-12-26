@@ -10,19 +10,29 @@ import moment from 'moment';
 
 const server = setupServer(...handlers);
 
+let mockedOpenDetailsFunction: jest.Mock<void, [React.MouseEvent<HTMLElement>]>;
+
 beforeAll(() => {
     server.listen({
         onUnhandledRequest: 'error',
     });
 });
+
+beforeEach(() => {
+    mockedOpenDetailsFunction =
+        jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+});
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe.only('ProgressUpdateCard Component', () => {
+describe('ProgressUpdateCard Component', () => {
     it('should render completed section string as title in card', () => {
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressUpdateCard data={mockGetTaskProgress.data[2]} />
+                <ProgressUpdateCard
+                    data={mockGetTaskProgress.data[2]}
+                    openDetails={mockedOpenDetailsFunction}
+                />
             </Provider>
         );
 
@@ -30,13 +40,15 @@ describe.only('ProgressUpdateCard Component', () => {
         expect(cardTitle.textContent).toBe(
             mockGetTaskProgress.data[2].completed
         );
-        console.log('cardTitle ', cardTitle);
     });
 
     it('should render date with ago format', () => {
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressUpdateCard data={mockGetTaskProgress.data[2]} />
+                <ProgressUpdateCard
+                    data={mockGetTaskProgress.data[2]}
+                    openDetails={mockedOpenDetailsFunction}
+                />
             </Provider>
         );
         const dateInAgoFormat = moment(
