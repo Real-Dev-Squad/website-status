@@ -28,9 +28,7 @@ export default function LatestProgressUpdateCard({
     });
 
     function onHoverOnDate(e: MouseEvent<HTMLElement>) {
-        console.log(e, 'hovered ');
         setIsTooltipVisible(true);
-        console.log(isTooltipVisible);
     }
 
     function onMouseOutOnDate(e: MouseEvent<HTMLElement>) {

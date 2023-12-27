@@ -63,13 +63,11 @@ export default function ProgressCard({ taskProgress }: Props) {
             {sortedProgress && sortedProgress.data.length ? (
                 <div>
                     {sortedProgress.data.map((progress, idx) =>
-                        idx === 0 ? (
-                            isDev && (
-                                <LatestProgressUpdateCard
-                                    key={progress.id}
-                                    data={progress}
-                                />
-                            )
+                        idx === 0 && isDev ? (
+                            <LatestProgressUpdateCard
+                                key={progress.id}
+                                data={progress}
+                            />
                         ) : (
                             <ProgressDetails
                                 key={progress.id}
