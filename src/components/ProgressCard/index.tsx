@@ -3,6 +3,7 @@ import TaskContainer from '../taskDetails/TaskContainer';
 import { ProgressDetailsData } from '@/types/standup.type';
 import ProgressDetails from '../taskDetails/ProgressDetails';
 import styles from '@/components/ProgressCard/ProgressCard.module.scss';
+import LatestProgressUpdateCard from '../taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
 
 type SortedProgressType = { data: ProgressDetailsData[]; order: number };
 
@@ -59,9 +60,19 @@ export default function ProgressCard({ taskProgress }: Props) {
         >
             {sortedProgress && sortedProgress.data.length ? (
                 <div>
-                    {sortedProgress.data.map((progress) => (
-                        <ProgressDetails key={progress.id} data={progress} />
-                    ))}
+                    {sortedProgress.data.map((progress, idx) =>
+                        idx === 0 ? (
+                            <LatestProgressUpdateCard
+                                key={progress.id}
+                                data={progress}
+                            />
+                        ) : (
+                            <ProgressDetails
+                                key={progress.id}
+                                data={progress}
+                            />
+                        )
+                    )}
                 </div>
             ) : (
                 'No Progress found'
