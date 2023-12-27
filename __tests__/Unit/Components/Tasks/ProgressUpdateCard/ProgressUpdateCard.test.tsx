@@ -25,7 +25,7 @@ beforeEach(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-describe('ProgressUpdateCard Component', () => {
+describe.only('ProgressUpdateCard Component', () => {
     it('should render completed section string as title in card', () => {
         renderWithRouter(
             <Provider store={store()}>
@@ -57,5 +57,34 @@ describe('ProgressUpdateCard Component', () => {
         const date = screen.getByTestId('progress-update-card-date');
 
         expect(date.textContent).toBe(dateInAgoFormat);
+    });
+
+    it('should render the tooltip on hover on the date and shouldnt render on mouse out off date', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCard
+                    data={mockGetTaskProgress.data[2]}
+                    openDetails={mockedOpenDetailsFunction}
+                />
+            </Provider>
+        );
+
+        const momentDate = moment(mockGetTaskProgress.data[2].date);
+        const fullDate = momentDate.format('DD-MM-YY');
+        const time = momentDate.format('hh:mmA');
+
+        const tooltipString = `Updated at ${fullDate}, ${time}`;
+        const dateElement = screen.getByTestId('progress-update-card-date');
+
+        fireEvent.mouseOver(dateElement);
+
+        const tooltip = screen.getByTestId('tooltip');
+
+        expect(tooltip).toBeInTheDocument();
+        expect(tooltip.textContent).toBe(tooltipString);
+
+        fireEvent.mouseOut(dateElement);
+
+        expect(tooltip).not.toBeInTheDocument();
     });
 });

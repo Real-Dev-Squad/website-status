@@ -10,10 +10,20 @@
     border-radius: 10px;
     cursor: pointer;
 
-    span {
+    h3 {
+        font-weight: 600;
+        font-size: 1.125rem;
+    }
+
+    .progress-update-card__date-container {
         display: flex;
         gap: 5px;
         align-items: center;
+        position: relative;
+
+        .progress-update-card__date-text {
+            font-size: 0.934rem;
+        }
     }
 
     .progress-update-card__title {
@@ -21,6 +31,7 @@
             all: unset;
             color: $theme-ceriseRed;
             cursor: pointer;
+            font-weight: 600;
         }
     }
 }

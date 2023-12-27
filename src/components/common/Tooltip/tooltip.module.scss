@@ -1,0 +1,30 @@
+@import '../../../styles/variables';
+
+.tooltip {
+    position: absolute;
+    width: 17rem;
+    top: -40px;
+    left: -60px;
+    right: 0;
+    background-color: $theme-primary;
+    border: 1px solid $theme-primary;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-align: center;
+    color: $color-white;
+    z-index: 1;
+    font-weight: 600;
+
+    &::before {
+        content: '';
+        position: absolute;
+        transform: rotate(45deg);
+        height: 12px;
+        bottom: -5px;
+        z-index: -1;
+        left: 8rem;
+        right: 8rem;
+        width: 13px;
+        background: #1d1283;
+    }
+}

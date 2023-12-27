@@ -1,38 +1,48 @@
-import { ProgressDetailsData } from '@/types/standup.type';
-import React from 'react';
-import styles from './progress-update-card.module.scss';
 import moment from 'moment';
-import { FaRegClock } from 'react-icons/fa';
+import React, { MouseEvent, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
+import { ProgressDetailsData } from '@/types/standup.type';
+import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCardPresentation';
 
-type Props = {
+type ProgressUpdateCardProps = {
     data: ProgressDetailsData;
-    openDetails: (event: React.MouseEvent<HTMLElement>) => void;
+    openDetails: (event: MouseEvent<HTMLElement>) => void;
 };
 
-export default function ProgressUpdateCard({ data, openDetails }: Props) {
-    const dateInAgoFormat = moment(data?.date).fromNow();
+export default function ProgressUpdateCard({
+    data,
+    openDetails,
+}: ProgressUpdateCardProps) {
+    const momentDate = moment(data?.date);
+    const dateInAgoFormat = momentDate.fromNow();
     const titleLength = data?.completed?.length;
     const charactersToShow = 50;
     const titleToShow = readMoreFormatter(data?.completed, charactersToShow);
-    const isLengthMoreThanCharactersToShow = titleLength > charactersToShow;
+    const isLengthMoreThanCharactersToShow: boolean =
+        titleLength > charactersToShow;
+    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+    const fullDate = momentDate.format('DD-MM-YY');
+    const time = momentDate.format('hh:mmA');
+    const tooltipString = `Updated at ${fullDate}, ${time}`;
+
+    function onHoverOnDate(e: MouseEvent<HTMLElement>) {
+        setIsTooltipVisible(true);
+    }
+
+    function onMouseOutOnDate(e: MouseEvent<HTMLElement>) {
+        setIsTooltipVisible(false);
+    }
 
     return (
-        <div onClick={openDetails} className={styles['progress-update-card']}>
-            <h3 className={styles['progress-update-card__title']}>
-                {titleToShow}
-                {isLengthMoreThanCharactersToShow && (
-                    <button
-                        className={styles['progress-update-card__more-button']}
-                    >
-                        More
-                    </button>
-                )}
-            </h3>
-            <span data-testid="progress-update-card-date">
-                <FaRegClock />
-                {dateInAgoFormat}
-            </span>
-        </div>
+        <ProgressUpdateCardPresentation
+            openDetails={openDetails}
+            titleToShow={titleToShow}
+            isMoreButtonVisible={isLengthMoreThanCharactersToShow}
+            onHoverOnDate={onHoverOnDate}
+            onMouseOutOnDate={onMouseOutOnDate}
+            dateInAgoFormat={dateInAgoFormat}
+            isTooltipVisible={isTooltipVisible}
+            tooltipString={tooltipString}
+        />
     );
 }
