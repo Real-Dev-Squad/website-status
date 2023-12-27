@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import TaskContainer from '../taskDetails/TaskContainer';
 import { ProgressDetailsData } from '@/types/standup.type';
@@ -11,7 +12,8 @@ type Props = { taskProgress: ProgressDetailsData[] };
 
 export default function ProgressCard({ taskProgress }: Props) {
     const [sortedProgress, setSortedProgress] = useState<SortedProgressType>();
-
+    const router = useRouter();
+    const isDev = router.query.dev === 'true';
     const reverseSortingOrder = () => {
         if (sortedProgress && sortedProgress.data.length) {
             const newSortedArr: ProgressDetailsData[] = [];
@@ -62,10 +64,12 @@ export default function ProgressCard({ taskProgress }: Props) {
                 <div>
                     {sortedProgress.data.map((progress, idx) =>
                         idx === 0 ? (
-                            <LatestProgressUpdateCard
-                                key={progress.id}
-                                data={progress}
-                            />
+                            isDev && (
+                                <LatestProgressUpdateCard
+                                    key={progress.id}
+                                    data={progress}
+                                />
+                            )
                         ) : (
                             <ProgressDetails
                                 key={progress.id}
