@@ -1,31 +1,19 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import moment from 'moment';
 import { Provider } from 'react-redux';
+import { fireEvent, screen } from '@testing-library/react';
 import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
-import { setupServer } from 'msw/node';
-import handlers from '../../../../../__mocks__/handlers';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import ProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCard';
-import moment from 'moment';
-
-const server = setupServer(...handlers);
 
 let mockedOpenDetailsFunction: jest.Mock<void, [React.MouseEvent<HTMLElement>]>;
-
-beforeAll(() => {
-    server.listen({
-        onUnhandledRequest: 'error',
-    });
-});
 
 beforeEach(() => {
     mockedOpenDetailsFunction =
         jest.fn<void, [React.MouseEvent<HTMLElement>]>();
 });
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
-describe.only('ProgressUpdateCard Component', () => {
+describe('ProgressUpdateCard Component', () => {
     it('should render completed section string as title in card', () => {
         renderWithRouter(
             <Provider store={store()}>
@@ -59,7 +47,7 @@ describe.only('ProgressUpdateCard Component', () => {
         expect(date.textContent).toBe(dateInAgoFormat);
     });
 
-    it('should render the tooltip on hover on the date and shouldnt render on mouse out off date', () => {
+    it('should render the tooltip on hover on the date and should not render on mouse out off date', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCard
