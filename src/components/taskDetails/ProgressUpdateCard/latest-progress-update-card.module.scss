@@ -24,11 +24,14 @@
             justify-content: flex-end;
         }
 
-        // .latest-progress-update-card__info-body {
-        // }
-        .tooltip {
-            background-color: $theme-primary;
+        .latest-progress-update-card__more-less-button {
+            all: unset;
+            color: $theme-ceriseRed;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 5px;
         }
+
         .latest-progress-update-card__date-container {
             position: relative;
             display: flex;
