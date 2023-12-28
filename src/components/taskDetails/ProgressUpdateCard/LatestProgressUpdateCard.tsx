@@ -1,18 +1,24 @@
 import { ProgressDetailsData } from '@/types/standup.type';
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import styles from './latest-progress-update-card.module.scss';
 import { FaRegClock } from 'react-icons/fa6';
 import moment from 'moment';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
+import { readMoreFormatter } from '@/utils/common';
 
 type LatestProgressUpdateCardProps = {
     data: ProgressDetailsData;
 };
 
-type ReadMoreState = {
+type ProgressUpdateDataToShow = {
+    id: string;
+    label: string;
+    body: string;
+    trimmedBody: string;
+    shouldReadMoreButtonShow: boolean;
     isReadMoreEnabled: boolean;
-    enabledFor: string;
 };
+
 export default function LatestProgressUpdateCard({
     data,
 }: LatestProgressUpdateCardProps) {
@@ -22,12 +28,37 @@ export default function LatestProgressUpdateCard({
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
     const tooltipString = `Updated at ${fullDate}, ${time}`;
-    const charactersToShow = 50;
-    const [readMoreState, setReadMoreState] = useState<ReadMoreState>({
-        isReadMoreEnabled: false,
-        enabledFor: '',
-    });
-    const moreOrLessText = 'More';
+    const charactersToShow = 70;
+
+    const dataToShow = [
+        {
+            id: `completed-${data.id}`,
+            label: 'Completed:',
+            body: data.completed,
+            trimmedBody: readMoreFormatter(data.completed, charactersToShow),
+            shouldReadMoreButtonShow: data.completed.length > charactersToShow,
+            isReadMoreEnabled: false,
+        },
+        {
+            id: `planned-${data.id}`,
+            label: 'Planned:',
+            body: data.planned,
+            trimmedBody: readMoreFormatter(data.planned, charactersToShow),
+            shouldReadMoreButtonShow: data.planned.length > charactersToShow,
+            isReadMoreEnabled: false,
+        },
+        {
+            id: `blockers-${data.id}`,
+            label: 'Blockers:',
+            body: data.blockers,
+            trimmedBody: readMoreFormatter(data.blockers, charactersToShow),
+            shouldReadMoreButtonShow: data.blockers.length > charactersToShow,
+            isReadMoreEnabled: false,
+        },
+    ];
+
+    const [dataToShowState, setDataToShowState] = useState(dataToShow);
+
     function onHoverOnDate(e: MouseEvent<HTMLElement>) {
         setIsTooltipVisible(true);
     }
@@ -35,33 +66,24 @@ export default function LatestProgressUpdateCard({
     function onMouseOutOnDate(e: MouseEvent<HTMLElement>) {
         setIsTooltipVisible(false);
     }
-    const dummyLongString =
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ';
 
-    const dataToShow = [
-        {
-            id: `completed-${data.id}`,
-            label: 'Completed:',
-            // body: data.completed,
-            // shouldReadMoreButtonShow: data.completed.length > charactersToShow,
-            body: dummyLongString,
-            shouldReadMoreButtonShow: dummyLongString.length > charactersToShow,
-        },
-        {
-            id: `planned-${data.id}`,
-            label: 'Planned:',
-            body: data.planned,
-            shouldReadMoreButtonShow: data.planned.length > charactersToShow,
-        },
-        {
-            id: `blockers-${data.id}`,
-            label: 'Blockers:',
-            body: data.blockers,
-            shouldReadMoreButtonShow: data.blockers.length > charactersToShow,
-        },
-    ];
+    function onMoreOrLessButtonClick(
+        e: MouseEvent<HTMLElement>,
+        clickedOnData: ProgressUpdateDataToShow
+    ) {
+        setDataToShowState((prevState) => {
+            const newPrevState = prevState.map((datum) => {
+                if (datum.id === clickedOnData.id) {
+                    datum.isReadMoreEnabled = !datum.isReadMoreEnabled;
+                }
+                return datum;
+            });
 
-    const progressInfoMapping = dataToShow.map((datum) => (
+            return newPrevState;
+        });
+    }
+
+    const progressInfoMapping = dataToShowState.map((datum) => (
         <div
             key={datum.id}
             className={styles['latest-progress-update-card__info-container']}
@@ -69,18 +91,22 @@ export default function LatestProgressUpdateCard({
             <span className={styles['latest-progress-update-card__info-title']}>
                 {datum.label}
             </span>
-            <span className={styles['latest-progress-update-card__info-body']}>
-                {datum.body}
+            <span
+                data-testid="info-body"
+                className={styles['latest-progress-update-card__info-body']}
+            >
+                {datum.isReadMoreEnabled ? datum.body : datum.trimmedBody}
 
                 {datum.shouldReadMoreButtonShow && (
                     <button
+                        onClick={(e) => onMoreOrLessButtonClick(e, datum)}
                         className={
                             styles[
                                 'latest-progress-update-card__more-less-button'
                             ]
                         }
                     >
-                        {moreOrLessText}
+                        {datum.isReadMoreEnabled ? 'Less' : 'More'}
                     </button>
                 )}
             </span>

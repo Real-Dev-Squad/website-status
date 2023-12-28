@@ -1,10 +1,11 @@
 import moment from 'moment';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, getAllByTestId, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import LatestProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
+import { readMoreFormatter } from '@/utils/common';
 
 describe('LatestProgressUpdateCard Component', () => {
     it('should render the component with the passed data', () => {
@@ -70,5 +71,126 @@ describe('LatestProgressUpdateCard Component', () => {
         fireEvent.mouseOut(dateElement);
 
         expect(tooltip).not.toBeInTheDocument();
+    });
+
+    it('should not show readMoreButton if text is smaller than charactersToShow', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <LatestProgressUpdateCard data={mockGetTaskProgress.data[2]} />
+            </Provider>
+        );
+
+        const moreOrLessButton = screen.queryAllByRole('button');
+        moreOrLessButton.forEach((button) => {
+            expect(button).not.toBeInTheDocument();
+        });
+    });
+
+    it('should show the more or less button when text is greater than charactersToShow', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <LatestProgressUpdateCard data={mockGetTaskProgress.data[3]} />
+            </Provider>
+        );
+
+        const moreOrLessButton = screen.getAllByRole('button');
+
+        moreOrLessButton.forEach((button) => {
+            expect(button).toBeInTheDocument();
+        });
+        expect(moreOrLessButton.length).toBe(3);
+    });
+
+    it('should toggle the text between More and Less when more or less button is clicked', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <LatestProgressUpdateCard data={mockGetTaskProgress.data[3]} />
+            </Provider>
+        );
+
+        const moreOrLessButton = screen.getAllByRole('button')[0];
+
+        expect(moreOrLessButton.textContent).toBe('More');
+
+        fireEvent.click(moreOrLessButton);
+
+        expect(moreOrLessButton.textContent).toBe('Less');
+    });
+
+    it('should show trimmed value in body of completed, planned and blockers if length is greater than charactersToShow', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <LatestProgressUpdateCard data={mockGetTaskProgress.data[3]} />
+            </Provider>
+        );
+
+        const charactersToShow = 70;
+        const trimmedCompletedBody = readMoreFormatter(
+            mockGetTaskProgress.data[3].completed,
+            charactersToShow
+        );
+        const trimmedPlannedBody = readMoreFormatter(
+            mockGetTaskProgress.data[3].planned,
+            charactersToShow
+        );
+        const trimmedBlockersBody = readMoreFormatter(
+            mockGetTaskProgress.data[3].blockers,
+            charactersToShow
+        );
+        const trimmedBodyArray = [
+            trimmedCompletedBody,
+            trimmedPlannedBody,
+            trimmedBlockersBody,
+        ];
+        const allProgressUpdatesBody = screen.getAllByTestId('info-body');
+
+        allProgressUpdatesBody.forEach((updateBody, idx) => {
+            expect(updateBody.textContent).toBe(trimmedBodyArray[idx] + 'More');
+        });
+    });
+
+    it('should toggle the body from trimmed to full on click on more or less button', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <LatestProgressUpdateCard data={mockGetTaskProgress.data[3]} />
+            </Provider>
+        );
+
+        const charactersToShow = 70;
+        const trimmedCompletedBody = readMoreFormatter(
+            mockGetTaskProgress.data[3].completed,
+            charactersToShow
+        );
+        const trimmedPlannedBody = readMoreFormatter(
+            mockGetTaskProgress.data[3].planned,
+            charactersToShow
+        );
+        const trimmedBlockersBody = readMoreFormatter(
+            mockGetTaskProgress.data[3].blockers,
+            charactersToShow
+        );
+        const trimmedBodyArray = [
+            trimmedCompletedBody,
+            trimmedPlannedBody,
+            trimmedBlockersBody,
+        ];
+
+        const fullBody = [
+            mockGetTaskProgress.data[3].completed,
+            mockGetTaskProgress.data[3].planned,
+            mockGetTaskProgress.data[3].blockers,
+        ];
+        const allProgressUpdatesBody = screen.getAllByTestId('info-body');
+        const moreOrLessButton = screen.getAllByRole('button');
+
+        allProgressUpdatesBody.forEach((updateBody, idx) => {
+            expect(updateBody.textContent).toBe(trimmedBodyArray[idx] + 'More');
+        });
+
+        allProgressUpdatesBody.forEach((updateBody, idx) => {
+            fireEvent.click(moreOrLessButton[idx]);
+
+            expect(updateBody.textContent).toBe(fullBody[idx] + 'Less');
+        });
     });
 });
