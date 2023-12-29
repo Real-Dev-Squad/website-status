@@ -12,13 +12,32 @@
         gap: 1rem;
         padding: 10px 1rem;
 
-        .latest-progress-update-card__info-title {
-            font-weight: 700;
-            flex: 1;
+        &:not(:last-child) {
+            @media (width<=425px) {
+                flex-direction: column;
+            }
         }
 
-        .latest-progress-update-card__info-body {
-            flex: 6;
+        .latest-progress-update-card__info-title {
+            font-weight: 700;
+        }
+
+        &:nth-child(2) {
+            .latest-progress-update-card__info-body {
+                margin-left: 1.2rem;
+                @media (width<=425px) {
+                    margin-left: 0;
+                }
+            }
+        }
+
+        &:nth-child(3) {
+            .latest-progress-update-card__info-body {
+                margin-left: 1rem;
+                @media (width<=425px) {
+                    margin-left: 0;
+                }
+            }
         }
 
         &:nth-child(2n) {
