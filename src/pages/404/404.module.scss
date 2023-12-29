@@ -1,0 +1,30 @@
+.notFound {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 16rem);
+    text-decoration: none;
+
+    .notFoundImage {
+        width: 30%;
+        height: auto;
+        object-fit: contain;
+
+        @media screen and (max-width: 768px) {
+            width: 50%;
+        }
+
+        @media screen and (max-width: 480px) {
+            width: 70%;
+        }
+    }
+    .notFoundText {
+        text-align: center;
+        color: var(--color-primary);
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        text-decoration: none;
+    }
+}
