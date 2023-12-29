@@ -5,6 +5,7 @@
     margin-bottom: 5px;
     padding: 5px 10px;
     display: flex;
+    gap: 10px;
     align-items: center;
     justify-content: space-between;
     border-radius: 10px;
@@ -13,6 +14,9 @@
     h3 {
         font-weight: 500;
         font-size: 1.125rem;
+        @media (width<= 1024px) {
+            flex: 2;
+        }
     }
 
     .progress-update-card__date-container {
@@ -20,7 +24,10 @@
         gap: 5px;
         align-items: center;
         position: relative;
-
+        @media (width<= 1024px) {
+            flex: 1;
+            justify-content: flex-end;
+        }
         .progress-update-card__date-text {
             font-size: 0.934rem;
         }
