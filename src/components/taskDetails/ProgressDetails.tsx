@@ -10,12 +10,10 @@ type Props = {
 };
 const ProgressDetails: FC<Props> = ({ data }) => {
     const router = useRouter();
-    console.log(data, ' data');
     const [showProgressDetails, setShowProgressDetails] =
         useState<boolean>(false);
 
     const openDetails = (e: MouseEvent<HTMLElement>) => {
-        console.log('ha bhai mai hi hu');
         setShowProgressDetails(true);
     };
 
