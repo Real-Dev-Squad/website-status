@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler } from 'react';
+import { ChangeEventHandler } from 'react';
 import task from './task.type';
 export type taskDetailsDataType = {
     message?: string;

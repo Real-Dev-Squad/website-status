@@ -8,7 +8,6 @@ import {
     HOME_URL,
     WELCOME_URL,
     EVENTS_URL,
-    CRYPTO_URL,
     MEMBERS_URL,
     STATUS_URL,
     GITHUB_LOGO,
@@ -16,7 +15,6 @@ import {
 } from '@/constants/url';
 import Dropdown from '../Dropdown/Dropdown';
 import styles from '@/components/navBar/navBar.module.scss';
-import { Loader } from '../tasks/card/Loader';
 import useUserData from '@/hooks/useUserData';
 import useAuthenticated from '@/hooks/useAuthenticated';
 

@@ -4,7 +4,6 @@ import styles from '@/components/Layout/Layout.module.scss';
 import NavBar from '@/components/navBar';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { Loader } from '../tasks/card/Loader';
-import useUserData from '@/hooks/useUserData';
 import { Header } from '@/components/Header';
 
 interface Props {
