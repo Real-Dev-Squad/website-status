@@ -22,7 +22,7 @@ type ProgressUpdateDataToShow = {
 export default function LatestProgressUpdateCard({
     data,
 }: LatestProgressUpdateCardProps) {
-    const momentDate = moment(data?.date);
+    const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');

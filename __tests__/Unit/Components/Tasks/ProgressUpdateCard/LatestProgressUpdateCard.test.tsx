@@ -38,7 +38,7 @@ describe('LatestProgressUpdateCard Component', () => {
             </Provider>
         );
         const dateInAgoFormat = moment(
-            mockGetTaskProgress.data[2].date
+            mockGetTaskProgress.data[2].createdAt
         ).fromNow();
         const date = screen.getByTestId('latest-progress-update-card-date');
 
@@ -52,7 +52,7 @@ describe('LatestProgressUpdateCard Component', () => {
             </Provider>
         );
 
-        const momentDate = moment(mockGetTaskProgress.data[2].date);
+        const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
         const fullDate = momentDate.format('DD-MM-YY');
         const time = momentDate.format('hh:mmA');
 

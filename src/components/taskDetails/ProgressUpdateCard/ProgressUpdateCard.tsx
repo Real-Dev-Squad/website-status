@@ -13,7 +13,7 @@ export default function ProgressUpdateCard({
     data,
     openDetails,
 }: ProgressUpdateCardProps) {
-    const momentDate = moment(data?.date);
+    const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
     const titleLength = data?.completed?.length;
     const charactersToShow = 50;
