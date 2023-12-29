@@ -59,7 +59,7 @@ const ProgressForm = ({ questions }: formProps) => {
         };
         saveProgress(data)
             .unwrap()
-            .then((res) => {
+            .then(() => {
                 toast(SUCCESS, 'Task Progress saved successfully');
                 setIsLoading(false);
             })
