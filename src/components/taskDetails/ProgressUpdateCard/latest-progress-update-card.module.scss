@@ -11,8 +11,14 @@
         display: flex;
         gap: 1rem;
         padding: 10px 1rem;
+
         .latest-progress-update-card__info-title {
             font-weight: 700;
+            flex: 1;
+        }
+
+        .latest-progress-update-card__info-body {
+            flex: 6;
         }
 
         &:nth-child(2n) {
