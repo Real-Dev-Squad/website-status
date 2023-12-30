@@ -5,7 +5,6 @@ import { reducerAction } from '@/types/ProgressUpdates';
 import { beautifyStatus } from '../tasks/card/TaskStatusEditMode';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { useGetTaskDetailsQuery } from '@/app/services/taskDetailsApi';
-import { ToastTypes } from '@/helperFunctions/toast';
 import { Loader } from '../tasks/card/Loader';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
 import { useGetAllUsersByUsernameQuery } from '@/app/services/usersApi';
@@ -58,8 +57,6 @@ const reducer = (state: ActionFormReducer, action: reducerAction) => {
             return state;
     }
 };
-
-const { SUCCESS, ERROR } = ToastTypes;
 
 const ActionForm: FC<ActionFormProps> = ({
     taskId,
