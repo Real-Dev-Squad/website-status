@@ -24,10 +24,9 @@ describe('LatestProgressUpdateCard Component', () => {
 
         const date = screen.getByTestId('latest-progress-update-card-date');
 
-        //TODO : uncomment when remove dummyLongString
-        // expect(completedString).toBe(mockGetTaskProgress.data[2].completed);
-        // expect(plannedString).toBe(mockGetTaskProgress.data[2].planned);
-        // expect(blockersString).toBe(mockGetTaskProgress.data[2].blockers);
+        expect(completedString).toBe(mockGetTaskProgress.data[2].completed);
+        expect(plannedString).toBe(mockGetTaskProgress.data[2].planned);
+        expect(blockersString).toBe(mockGetTaskProgress.data[2].blockers);
         expect(date).toBeInTheDocument();
     });
 
