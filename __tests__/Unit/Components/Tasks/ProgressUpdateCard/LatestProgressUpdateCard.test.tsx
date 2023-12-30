@@ -15,18 +15,21 @@ describe('LatestProgressUpdateCard Component', () => {
             </Provider>
         );
 
-        const completedString =
-            screen.getByText('Completed:').nextSibling.textContent;
-        const plannedString =
-            screen.getByText('Planned:').nextSibling.textContent;
-        const blockersString =
-            screen.getByText('Blockers:').nextSibling.textContent;
+        const completedSection = screen.getByText('Completed:').nextSibling;
+        const plannedSection = screen.getByText('Planned:').nextSibling;
+        const blockersSection = screen.getByText('Blockers:').nextSibling;
 
         const date = screen.getByTestId('latest-progress-update-card-date');
 
-        expect(completedString).toBe(mockGetTaskProgress.data[2].completed);
-        expect(plannedString).toBe(mockGetTaskProgress.data[2].planned);
-        expect(blockersString).toBe(mockGetTaskProgress.data[2].blockers);
+        expect(completedSection).toHaveTextContent(
+            mockGetTaskProgress.data[2].completed
+        );
+        expect(plannedSection).toHaveTextContent(
+            mockGetTaskProgress.data[2].planned
+        );
+        expect(blockersSection).toHaveTextContent(
+            mockGetTaskProgress.data[2].blockers
+        );
         expect(date).toBeInTheDocument();
     });
 
@@ -41,7 +44,7 @@ describe('LatestProgressUpdateCard Component', () => {
         ).fromNow();
         const date = screen.getByTestId('latest-progress-update-card-date');
 
-        expect(date.textContent).toBe(dateInAgoFormat);
+        expect(date).toHaveTextContent(dateInAgoFormat);
     });
 
     it('should render the tooltip on hover on the date and should not render on mouse out off date', () => {
@@ -65,7 +68,7 @@ describe('LatestProgressUpdateCard Component', () => {
         const tooltip = screen.getByTestId('tooltip');
 
         expect(tooltip).toBeInTheDocument();
-        expect(tooltip.textContent).toBe(tooltipString);
+        expect(tooltip).toHaveTextContent(tooltipString);
 
         fireEvent.mouseOut(dateElement);
 
@@ -109,11 +112,11 @@ describe('LatestProgressUpdateCard Component', () => {
 
         const moreOrLessButton = screen.getAllByRole('button')[0];
 
-        expect(moreOrLessButton.textContent).toBe('More');
+        expect(moreOrLessButton).toHaveTextContent('More');
 
         fireEvent.click(moreOrLessButton);
 
-        expect(moreOrLessButton.textContent).toBe('Less');
+        expect(moreOrLessButton).toHaveTextContent('Less');
     });
 
     it('should show trimmed value in body of completed, planned and blockers if length is greater than charactersToShow', () => {
@@ -144,7 +147,9 @@ describe('LatestProgressUpdateCard Component', () => {
         const allProgressUpdatesBody = screen.getAllByTestId('info-body');
 
         allProgressUpdatesBody.forEach((updateBody, idx) => {
-            expect(updateBody.textContent).toBe(trimmedBodyArray[idx] + 'More');
+            expect(updateBody).toHaveTextContent(
+                trimmedBodyArray[idx] + 'More'
+            );
         });
     });
 
@@ -183,13 +188,15 @@ describe('LatestProgressUpdateCard Component', () => {
         const moreOrLessButton = screen.getAllByRole('button');
 
         allProgressUpdatesBody.forEach((updateBody, idx) => {
-            expect(updateBody.textContent).toBe(trimmedBodyArray[idx] + 'More');
+            expect(updateBody).toHaveTextContent(
+                trimmedBodyArray[idx] + 'More'
+            );
         });
 
         allProgressUpdatesBody.forEach((updateBody, idx) => {
             fireEvent.click(moreOrLessButton[idx]);
 
-            expect(updateBody.textContent).toBe(fullBody[idx] + 'Less');
+            expect(updateBody).toHaveTextContent(fullBody[idx] + 'Less');
         });
     });
 });

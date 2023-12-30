@@ -25,7 +25,7 @@ describe('ProgressUpdateCard Component', () => {
         );
 
         const cardTitle = screen.getByRole('heading');
-        expect(cardTitle.textContent).toBe(
+        expect(cardTitle).toHaveTextContent(
             mockGetTaskProgress.data[2].completed
         );
     });
@@ -44,7 +44,7 @@ describe('ProgressUpdateCard Component', () => {
         ).fromNow();
         const date = screen.getByTestId('progress-update-card-date');
 
-        expect(date.textContent).toBe(dateInAgoFormat);
+        expect(date).toHaveTextContent(dateInAgoFormat);
     });
 
     it('should render the tooltip on hover on the date and should not render on mouse out off date', () => {
@@ -69,7 +69,7 @@ describe('ProgressUpdateCard Component', () => {
         const tooltip = screen.getByTestId('tooltip');
 
         expect(tooltip).toBeInTheDocument();
-        expect(tooltip.textContent).toBe(tooltipString);
+        expect(tooltip).toHaveTextContent(tooltipString);
 
         fireEvent.mouseOut(dateElement);
 
