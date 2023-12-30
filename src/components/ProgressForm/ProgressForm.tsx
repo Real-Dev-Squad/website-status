@@ -59,7 +59,7 @@ const ProgressForm = ({ questions }: formProps) => {
         };
         saveProgress(data)
             .unwrap()
-            .then((res) => {
+            .then(() => {
                 toast(SUCCESS, 'Task Progress saved successfully');
                 setIsLoading(false);
             })
@@ -81,11 +81,7 @@ const ProgressForm = ({ questions }: formProps) => {
                 />
             ))}
             <button
-                className={
-                    isButtonEnabled
-                        ? styles.buttonEnabled
-                        : styles.buttonDisabled
-                }
+                className={styles.button}
                 onClick={(e) => handleSubmit(e)}
                 disabled={!isButtonEnabled}
                 type="submit"

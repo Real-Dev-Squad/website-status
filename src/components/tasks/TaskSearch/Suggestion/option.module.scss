@@ -1,0 +1,42 @@
+$black-color: #000;
+$gray-color: #808080;
+$light-gray: #d0d7de;
+$filter-button-hover: #f6f8fa;
+.suggestion-div {
+    padding: 5.2px;
+    word-break: break-all;
+    word-wrap: break-word;
+    font-size: 0.88rem;
+    &:hover {
+        background-color: $filter-button-hover;
+        cursor: pointer;
+        color: $black-color;
+    }
+}
+.suggestion-div:last-child {
+    border-radius: 0 0px 5px 5px;
+}
+.selected-suggestion {
+    background-color: $filter-button-hover;
+    cursor: pointer;
+    color: $black-color;
+}
+.suggestion-box {
+    width: 100%;
+    top: 103%;
+    border-radius: 0 0px 5px 5px;
+    border: 1px solid $gray-color;
+    border-top: none;
+    z-index: 5;
+    position: absolute;
+    text-align: left;
+    background-color: white;
+    left: 0;
+}
+.empty-box {
+    padding: 5.3px;
+    text-align: center;
+    border: 1px solid $light-gray;
+    border-top: none;
+    width: auto;
+}

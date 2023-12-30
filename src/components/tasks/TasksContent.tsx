@@ -82,19 +82,29 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setInputValue(value);
     };
 
-    const searchButtonHandler = () => {
-        const { status, assignees, title } = extractQueryParams(inputValue);
-        inputValue && searchNewTasks(status as Tab, assignees, title);
+    const searchButtonHandler = (searchString?: string) => {
+        const { status, assignees, title } = extractQueryParams(
+            searchString || inputValue
+        );
+        (searchString || inputValue) &&
+            searchNewTasks(status as Tab, assignees, title);
     };
 
     useEffect(() => {
-        setInputValue(
-            `${getQueryParamTab(selectedTab)} ${
+        let possibleInputValue = '';
+        if (!dev || selectedTab !== Tab.ALL) {
+            possibleInputValue += `${getQueryParamTab(selectedTab)} `;
+        }
+        if (queryAssignees) {
+            possibleInputValue += `${getRouterQueryParamAssignee(
                 queryAssignees
-                    ? getRouterQueryParamAssignee(queryAssignees)
-                    : ''
-            } ${queryTitle ? getQueryParamTitle(queryTitle) : ''}`
-        );
+            )} `;
+        }
+        if (queryTitle) {
+            possibleInputValue += `${getQueryParamTitle(queryTitle)} `;
+        }
+
+        setInputValue(possibleInputValue.trim());
     }, [selectedTab]);
 
     useEffect(() => {

@@ -116,8 +116,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
         setEditedTaskDetails((prev) => ({ ...prev, status: newStatus }));
     };
-    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
-        useAddOrUpdateMutation();
+    const [addOrUpdateTaskRequest] = useAddOrUpdateMutation();
 
     useEffect(() => {
         if (data?.taskData) {

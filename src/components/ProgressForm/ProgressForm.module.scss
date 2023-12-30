@@ -58,33 +58,30 @@ $theme-focusHighlight: #1c64f2;
 }
 
 .input:focus {
-    border: 1px solid $theme-focusHighlight;
+    border: 2px solid $theme-focusHighlight;
     outline: none;
 }
 
-.buttonEnabled {
-    background-color: $color-blue;
-    color: $color-white;
-    padding: $base-unit * 4 $base-unit * 8;
-    border-radius: $base-unit * 2;
-    margin-bottom: $diff-margin;
-    font-size: $base-font-size * 4;
-}
-
-.buttonDisabled,
-.buttonEnabled {
-    border: none;
+.button {
     width: 14rem;
-    color: var(--toastify-spinner-color);
-}
-
-.buttonDisabled {
-    cursor: not-allowed;
-    background-color: $color-disabled;
-    padding: $base-unit * 4 $base-unit * 8;
-    border-radius: $base-unit * 2;
     margin-bottom: $diff-margin;
+    padding: $base-unit * 4 $base-unit * 8;
     font-size: $base-font-size * 4;
+    color: $color-white;
+    background-color: $color-blue;
+    border: none;
+    border-radius: $base-unit * 2;
+    cursor: pointer;
+
+    &:hover {
+        background-color: darken($color-blue, 10%);
+    }
+
+    &:disabled {
+        color: var(--toastify-spinner-color);
+        cursor: not-allowed;
+        background-color: $color-disabled;
+    }
 }
 
 @media (max-width: 770px) {

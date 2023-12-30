@@ -1,10 +1,10 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
-import { TASKS_URL, TASK_REQUEST_URL } from '../../constants/url';
+import { TASKS_URL } from '../../constants/url';
 import useUserData from '@/hooks/useUserData';
 import { useRouter } from 'next/router';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
@@ -27,8 +27,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const [assignee, setAssignee] = useState<string | undefined>();
     const [updateTask] = useUpdateTaskMutation();
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
-        useAddOrUpdateMutation();
+    const [addOrUpdateTaskRequest] = useAddOrUpdateMutation();
     const isTaskButtonDisabled = isLoading || (!isUserAuthorized && taskExists);
 
     const toggle = () => {
@@ -100,6 +99,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const handleCreateTaskRequest = async (data: TaskRequestData) => {
         const requestData = {
             externalIssueUrl: issue.url,
+            externalIssueHtmlUrl: issue.html_url,
             userId: userData?.id,
             requestType: TASK_REQUEST_TYPES.CREATION,
             proposedStartDate: data.startedOn,
