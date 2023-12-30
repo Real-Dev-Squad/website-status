@@ -1,10 +1,8 @@
-import { ProgressDetailsData } from '@/types/standup.type';
-import React, { MouseEvent, useEffect, useState } from 'react';
-import styles from './latest-progress-update-card.module.scss';
-import { FaRegClock } from 'react-icons/fa6';
 import moment from 'moment';
-import Tooltip from '@/components/common/Tooltip/Tooltip';
+import React, { MouseEvent, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
+import { ProgressDetailsData } from '@/types/standup.type';
+import LatestProgressUpdateCardPresentation from './LatestProgressUpdateCardPresentation';
 
 type LatestProgressUpdateCardProps = {
     data: ProgressDetailsData;
@@ -27,7 +25,7 @@ export default function LatestProgressUpdateCard({
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
-    const tooltipString = `Updated at ${fullDate}, ${time}`;
+    const tooltipText = `Updated at ${fullDate}, ${time}`;
     const charactersToShow = 70;
 
     const dataToShow = [
@@ -57,7 +55,8 @@ export default function LatestProgressUpdateCard({
         },
     ];
 
-    const [dataToShowState, setDataToShowState] = useState(dataToShow);
+    const [dataToShowState, setDataToShowState] =
+        useState<ProgressUpdateDataToShow[]>(dataToShow);
 
     function onHoverOnDate(e: MouseEvent<HTMLElement>) {
         setIsTooltipVisible(true);
@@ -83,61 +82,15 @@ export default function LatestProgressUpdateCard({
         });
     }
 
-    const progressInfoMapping = dataToShowState.map((datum) => (
-        <div
-            key={datum.id}
-            className={styles['latest-progress-update-card__info-container']}
-        >
-            <span className={styles['latest-progress-update-card__info-title']}>
-                {datum.label}
-            </span>
-            <span
-                data-testid="info-body"
-                className={styles['latest-progress-update-card__info-body']}
-            >
-                {datum.isReadMoreEnabled ? datum.body : datum.trimmedBody}
-
-                {datum.shouldReadMoreButtonShow && (
-                    <button
-                        onClick={(e) => onMoreOrLessButtonClick(e, datum)}
-                        className={
-                            styles[
-                                'latest-progress-update-card__more-less-button'
-                            ]
-                        }
-                    >
-                        {datum.isReadMoreEnabled ? 'Less' : 'More'}
-                    </button>
-                )}
-            </span>
-        </div>
-    ));
-
     return (
-        <div className={styles['latest-progress-update-card']}>
-            {progressInfoMapping}
-            <div
-                className={
-                    styles['latest-progress-update-card__info-container']
-                }
-            >
-                <div
-                    className={
-                        styles['latest-progress-update-card__date-container']
-                    }
-                    onMouseOver={onHoverOnDate}
-                    onMouseOut={onMouseOutOnDate}
-                >
-                    <FaRegClock />
-                    <span
-                        className={styles['progress-update-card__date-text']}
-                        data-testid="latest-progress-update-card-date"
-                    >
-                        {dateInAgoFormat}
-                    </span>
-                    {isTooltipVisible && <Tooltip textToShow={tooltipString} />}
-                </div>
-            </div>
-        </div>
+        <LatestProgressUpdateCardPresentation
+            dataToShowState={dataToShowState}
+            isTooltipVisible={isTooltipVisible}
+            tooltipText={tooltipText}
+            onMoreOrLessButtonClick={onMoreOrLessButtonClick}
+            onHoverOnDate={onHoverOnDate}
+            onMouseOutOnDate={onMouseOutOnDate}
+            dateInAgoFormat={dateInAgoFormat}
+        />
     );
 }
