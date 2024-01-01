@@ -51,6 +51,7 @@ export default function ProgressCard({ taskProgress }: Props) {
         }
 
         if (
+            sortedProgressLength &&
             idx === sortedProgressLength - 1 &&
             sortedProgress.order === 0 &&
             isDev
