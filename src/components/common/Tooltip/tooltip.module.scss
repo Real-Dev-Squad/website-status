@@ -29,3 +29,29 @@
         background: #1d1283;
     }
 }
+
+.fade-in {
+    animation: fade-in 0.3s linear 0s 1 normal forwards;
+    display: block;
+    @keyframes fade-in {
+        0% {
+            opacity: 0.2;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+}
+
+.fade-out {
+    animation: fade-out 0.3s linear 0s 1 normal forwards;
+    @keyframes fade-out {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            display: none;
+        }
+    }
+}

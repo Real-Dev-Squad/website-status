@@ -47,7 +47,10 @@ export default function ProgressUpdateCardPresentation({
                 >
                     {dateInAgoFormat}
                 </span>
-                {isTooltipVisible && <Tooltip textToShow={tooltipString} />}
+                <Tooltip
+                    isVisible={isTooltipVisible}
+                    textToShow={tooltipString}
+                />
             </span>
         </div>
     );
