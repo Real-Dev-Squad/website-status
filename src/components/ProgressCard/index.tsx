@@ -14,12 +14,13 @@ export default function ProgressCard({ taskProgress }: Props) {
     const [sortedProgress, setSortedProgress] = useState<SortedProgressType>();
     const router = useRouter();
     const isDev = router.query.dev === 'true';
+    const sortedProgressLength = sortedProgress?.data?.length;
     const reverseSortingOrder = () => {
-        if (sortedProgress && sortedProgress.data.length) {
+        if (sortedProgress && sortedProgressLength) {
             const newSortedArr: ProgressDetailsData[] = [];
-            for (let i = 0; i < sortedProgress.data.length; i++) {
+            for (let i = 0; i < sortedProgressLength; i++) {
                 newSortedArr[i] =
-                    sortedProgress.data[sortedProgress.data.length - i - 1];
+                    sortedProgress.data[sortedProgressLength - i - 1];
             }
 
             setSortedProgress({
@@ -42,6 +43,26 @@ export default function ProgressCard({ taskProgress }: Props) {
         }
     }, [taskProgress]);
 
+    const cardsToShow = sortedProgress?.data?.map((progress, idx) => {
+        if (idx === 0 && sortedProgress?.order === 1 && isDev) {
+            return (
+                <LatestProgressUpdateCard key={progress.id} data={progress} />
+            );
+        }
+
+        if (
+            idx === sortedProgressLength - 1 &&
+            sortedProgress.order === 0 &&
+            isDev
+        ) {
+            return (
+                <LatestProgressUpdateCard key={progress.id} data={progress} />
+            );
+        }
+
+        return <ProgressDetails key={progress.id} data={progress} />;
+    });
+
     return (
         <TaskContainer
             title={
@@ -53,6 +74,7 @@ export default function ProgressCard({ taskProgress }: Props) {
                             className={styles.ascButton}
                             onClick={reverseSortingOrder}
                         >
+                            {/* Ascending order = 1, descending order = 0 */}
                             {sortedProgress.order === 0 ? 'Asc' : 'Dsc'}
                         </button>
                     )}
@@ -60,22 +82,8 @@ export default function ProgressCard({ taskProgress }: Props) {
             }
             hasImg={false}
         >
-            {sortedProgress && sortedProgress.data.length ? (
-                <div>
-                    {sortedProgress.data.map((progress, idx) =>
-                        idx === 0 && isDev ? (
-                            <LatestProgressUpdateCard
-                                key={progress.id}
-                                data={progress}
-                            />
-                        ) : (
-                            <ProgressDetails
-                                key={progress.id}
-                                data={progress}
-                            />
-                        )
-                    )}
-                </div>
+            {sortedProgress && sortedProgressLength ? (
+                <div>{cardsToShow}</div>
             ) : (
                 'No Progress found'
             )}
