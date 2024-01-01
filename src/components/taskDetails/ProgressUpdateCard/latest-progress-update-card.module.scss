@@ -11,6 +11,11 @@
         display: flex;
         gap: 1rem;
         padding: 10px 1rem;
+        border-bottom: 2px solid $color-light-grey;
+
+        &:last-child {
+            border-bottom: none;
+        }
 
         &:not(:last-child) {
             @media (width<=425px) {
@@ -38,10 +43,6 @@
                     margin-left: 0;
                 }
             }
-        }
-
-        &:nth-child(2n) {
-            background-color: rgba($color-light-grey, 0.44);
         }
 
         &:last-of-type {
