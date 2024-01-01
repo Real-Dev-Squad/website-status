@@ -11,11 +11,17 @@
     border-radius: 10px;
     cursor: pointer;
 
-    h3 {
+    .progress-update-card__title {
         font-weight: 500;
-        font-size: 1.125rem;
+        font-size: 1rem;
         @media (width<= 1024px) {
             flex: 2;
+        }
+        .progress-update-card__more-button {
+            all: unset;
+            color: $theme-ceriseRed;
+            cursor: pointer;
+            font-weight: 600;
         }
     }
 
@@ -30,15 +36,6 @@
         }
         .progress-update-card__date-text {
             font-size: 0.934rem;
-        }
-    }
-
-    .progress-update-card__title {
-        .progress-update-card__more-button {
-            all: unset;
-            color: $theme-ceriseRed;
-            cursor: pointer;
-            font-weight: 600;
         }
     }
 }

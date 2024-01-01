@@ -67,12 +67,12 @@ describe('LatestProgressUpdateCard Component', () => {
 
         const tooltip = screen.getByTestId('tooltip');
 
-        expect(tooltip).toBeInTheDocument();
+        expect(tooltip).toHaveClass('fade-in');
         expect(tooltip).toHaveTextContent(tooltipString);
 
         fireEvent.mouseOut(dateElement);
 
-        expect(tooltip).not.toBeInTheDocument();
+        expect(tooltip).toHaveClass('fade-out');
     });
 
     it('should not show readMoreButton if text is smaller than charactersToShow', () => {

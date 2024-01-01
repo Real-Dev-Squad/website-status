@@ -68,11 +68,11 @@ describe('ProgressUpdateCard Component', () => {
 
         const tooltip = screen.getByTestId('tooltip');
 
-        expect(tooltip).toBeInTheDocument();
+        expect(tooltip).toHaveClass('fade-in');
         expect(tooltip).toHaveTextContent(tooltipString);
 
         fireEvent.mouseOut(dateElement);
 
-        expect(tooltip).not.toBeInTheDocument();
+        expect(tooltip).toHaveClass('fade-out');
     });
 });

@@ -6,7 +6,6 @@ import styles from './progress-update-card.module.scss';
 type ProgressUpdateCardPresentationProps = {
     openDetails: (event: MouseEvent<HTMLElement>) => void;
     titleToShow: string;
-    isMoreButtonVisible: boolean;
     onHoverOnDate: (event: MouseEvent<HTMLElement>) => void;
     onMouseOutOnDate: (event: MouseEvent<HTMLElement>) => void;
     dateInAgoFormat: string;
@@ -16,7 +15,6 @@ type ProgressUpdateCardPresentationProps = {
 export default function ProgressUpdateCardPresentation({
     openDetails,
     titleToShow,
-    isMoreButtonVisible,
     onHoverOnDate,
     onMouseOutOnDate,
     dateInAgoFormat,
@@ -27,13 +25,6 @@ export default function ProgressUpdateCardPresentation({
         <div onClick={openDetails} className={styles['progress-update-card']}>
             <h3 className={styles['progress-update-card__title']}>
                 {titleToShow}
-                {isMoreButtonVisible && (
-                    <button
-                        className={styles['progress-update-card__more-button']}
-                    >
-                        More
-                    </button>
-                )}
             </h3>
             <span
                 className={styles['progress-update-card__date-container']}

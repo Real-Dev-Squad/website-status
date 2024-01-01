@@ -15,11 +15,8 @@ export default function ProgressUpdateCard({
 }: ProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
-    const titleLength = data?.completed?.length;
-    const charactersToShow = 50;
+    const charactersToShow = 70;
     const titleToShow = readMoreFormatter(data?.completed, charactersToShow);
-    const isLengthMoreThanCharactersToShow: boolean =
-        titleLength > charactersToShow;
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
@@ -37,7 +34,6 @@ export default function ProgressUpdateCard({
         <ProgressUpdateCardPresentation
             openDetails={openDetails}
             titleToShow={titleToShow}
-            isMoreButtonVisible={isLengthMoreThanCharactersToShow}
             onHoverOnDate={onHoverOnDate}
             onMouseOutOnDate={onMouseOutOnDate}
             dateInAgoFormat={dateInAgoFormat}
