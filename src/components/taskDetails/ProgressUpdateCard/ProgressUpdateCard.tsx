@@ -15,8 +15,13 @@ export default function ProgressUpdateCard({
 }: ProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
+    const titleLength = data?.completed?.length;
     const charactersToShow = 70;
-    const titleToShow = readMoreFormatter(data?.completed, charactersToShow);
+    const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
+    const [titleToShow, setTitleToShow] = useState(readMoreTitle);
+    const [isTitleWrapped, setIsTitleWrapped] = useState(true);
+    const isLengthMoreThanCharactersToShow: boolean =
+        titleLength > charactersToShow;
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
@@ -30,10 +35,22 @@ export default function ProgressUpdateCard({
         setIsTooltipVisible(false);
     }
 
+    function onMoreButtonClick(e: MouseEvent<HTMLElement>) {
+        if (isTitleWrapped) {
+            setTitleToShow(data.completed);
+            setIsTitleWrapped((prevState) => !prevState);
+            return;
+        }
+
+        setTitleToShow(readMoreTitle);
+        setIsTitleWrapped((prevState) => !prevState);
+    }
     return (
         <ProgressUpdateCardPresentation
-            openDetails={openDetails}
             titleToShow={titleToShow}
+            isTitleWrapped={isTitleWrapped}
+            isMoreButtonVisible={isLengthMoreThanCharactersToShow}
+            onMoreButtonClick={onMoreButtonClick}
             onHoverOnDate={onHoverOnDate}
             onMouseOutOnDate={onMouseOutOnDate}
             dateInAgoFormat={dateInAgoFormat}
