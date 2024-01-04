@@ -41,11 +41,8 @@ const ProgressForm = ({ questions }: formProps) => {
     const [saveProgress] = useSaveProgressMutation();
     const router = useRouter();
 
-    const isButtonEnabled = state.progress && state.plan && state.blockers;
-
-    if (isLoading) {
-        return <Loader></Loader>;
-    }
+    const isButtonEnabled =
+        state.progress && state.plan && state.blockers && !isLoading;
 
     const handleSubmit = (e: MouseEvent) => {
         setIsLoading(true);
@@ -62,6 +59,7 @@ const ProgressForm = ({ questions }: formProps) => {
             .then(() => {
                 toast(SUCCESS, 'Task Progress saved successfully');
                 setIsLoading(false);
+                router.push(`/tasks/${router.query.id}`);
             })
             .catch((error) => {
                 toast(ERROR, error.data.message);
@@ -70,26 +68,29 @@ const ProgressForm = ({ questions }: formProps) => {
     };
 
     return (
-        <form className={styles.form}>
-            {questions.map((question, index) => (
-                <InputWithQuestions
-                    key={question.id}
-                    name={question.name}
-                    question={question.question}
-                    value={manager[index]}
-                    onChange={dispatch}
-                />
-            ))}
-            <button
-                className={styles.button}
-                onClick={(e) => handleSubmit(e)}
-                disabled={!isButtonEnabled}
-                type="submit"
-                data-testid="submit"
-            >
-                Submit
-            </button>
-        </form>
+        <>
+            <form className={styles.form}>
+                {questions.map((question, index) => (
+                    <InputWithQuestions
+                        key={question.id}
+                        name={question.name}
+                        question={question.question}
+                        value={manager[index]}
+                        onChange={dispatch}
+                    />
+                ))}
+                <button
+                    className={styles.button}
+                    onClick={(e) => handleSubmit(e)}
+                    disabled={!isButtonEnabled}
+                    type="submit"
+                    data-testid="submit"
+                >
+                    Submit
+                </button>
+            </form>
+            {isLoading && <Loader />}
+        </>
     );
 };
 

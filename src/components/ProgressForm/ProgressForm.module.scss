@@ -15,6 +15,7 @@ $theme-focusHighlight: #1c64f2;
 
 .progressUpdateContainer {
     padding: 2rem;
+    position: relative;
 }
 .mark {
     color: $color-red;
@@ -82,6 +83,45 @@ $theme-focusHighlight: #1c64f2;
         cursor: not-allowed;
         background-color: $color-disabled;
     }
+}
+
+.loadingBg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: grid;
+    place-content: center;
+    z-index: 5;
+    .spinner {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 1s ease-in-out infinite;
+    }
+}
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.screenReaderOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 @media (max-width: 770px) {
