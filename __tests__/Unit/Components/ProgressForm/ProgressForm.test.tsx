@@ -79,8 +79,7 @@ describe('Progress form', function () {
                 <ToastContainer />
             </Provider>,
             {
-                asPath: '/progress',
-                replace: jest.fn(),
+                push: jest.fn(),
             }
         );
 
@@ -111,11 +110,7 @@ describe('Progress form', function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressForm questions={questions} />
-            </Provider>,
-            {
-                asPath: '/progress',
-                replace: jest.fn(),
-            }
+            </Provider>
         );
 
         const button = screen.getByRole('button');
