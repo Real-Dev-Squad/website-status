@@ -12,9 +12,9 @@ type Props = { taskProgress: ProgressDetailsData[] };
 
 export default function ProgressCard({ taskProgress }: Props) {
     const [sortedProgress, setSortedProgress] = useState<SortedProgressType>();
-    const router = useRouter();
-    const isDev = router.query.dev === 'true';
+    const isDev = useRouter().query?.dev === 'true';
     const sortedProgressLength = sortedProgress?.data?.length;
+
     const reverseSortingOrder = () => {
         if (sortedProgress && sortedProgressLength) {
             const newSortedArr: ProgressDetailsData[] = [];
