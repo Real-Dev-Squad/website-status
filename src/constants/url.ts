@@ -32,4 +32,4 @@ export const MAIN_SITE_URL = 'https://www.realdevsquad.com';
 export const MY_SITE_URL = 'https://my.realdevsquad.com';
 export const DASHBOARD_URL = 'https://dashboard.realdevsquad.com';
 export const USER_MANAGEMENT_URL = `${DASHBOARD_URL}/users/details/`;
-export const TASK_REQUESTS_DETAILS_URL = `${DASHBOARD_URL}/taskRequests/details/`;
+export const TASK_REQUESTS_DETAILS_URL = `${DASHBOARD_URL}/task-requests/details/`;

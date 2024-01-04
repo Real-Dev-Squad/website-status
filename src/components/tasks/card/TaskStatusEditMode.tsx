@@ -43,10 +43,10 @@ const TaskStatusEditMode = ({
 
         response
             .unwrap()
-            .then((result: any) => {
+            .then(() => {
                 setSaveStatus(SAVED);
             })
-            .catch((err: { data: { message: string } }) => {
+            .catch(() => {
                 setSaveStatus(ERROR_STATUS);
             })
             .finally(() => {

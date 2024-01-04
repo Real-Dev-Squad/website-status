@@ -116,8 +116,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
         setEditedTaskDetails((prev) => ({ ...prev, status: newStatus }));
     };
-    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
-        useAddOrUpdateMutation();
+    const [addOrUpdateTaskRequest] = useAddOrUpdateMutation();
 
     useEffect(() => {
         if (data?.taskData) {
@@ -477,31 +476,29 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     Update Progress
                                 </button>
                             </TaskContainer>
-                            {isDevModeEnabled && (
-                                <div>
-                                    <TaskContainer
-                                        hasImg={false}
-                                        title="Request for task"
+                            <div>
+                                <TaskContainer
+                                    hasImg={false}
+                                    title="Request for task"
+                                >
+                                    <button
+                                        data-testid="request-task-button"
+                                        className={classNames.button}
+                                        onClick={toggleTaskRequestModal}
                                     >
-                                        <button
-                                            data-testid="request-task-button"
-                                            className={classNames.button}
-                                            onClick={toggleTaskRequestModal}
-                                        >
-                                            Request for task
-                                        </button>
-                                        <TaskManagementModal
-                                            isUserAuthorized={false}
-                                            isOpen={isTaskModalOpen}
-                                            toggle={toggleTaskRequestModal}
-                                            requestId={requestId}
-                                            handleCreateTaskRequest={
-                                                handleCreateTaskRequest
-                                            }
-                                        />
-                                    </TaskContainer>
-                                </div>
-                            )}
+                                        Request for task
+                                    </button>
+                                    <TaskManagementModal
+                                        isUserAuthorized={false}
+                                        isOpen={isTaskModalOpen}
+                                        toggle={toggleTaskRequestModal}
+                                        requestId={requestId}
+                                        handleCreateTaskRequest={
+                                            handleCreateTaskRequest
+                                        }
+                                    />
+                                </TaskContainer>
+                            </div>
                         </section>
                     </section>
                 </div>

@@ -1,10 +1,10 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
 import MarkdownRenderer from '@/components/MarkdownRenderer/MarkdownRenderer';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
-import { TASKS_URL, TASK_REQUEST_URL } from '../../constants/url';
+import { TASKS_URL } from '../../constants/url';
 import useUserData from '@/hooks/useUserData';
 import { useRouter } from 'next/router';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
@@ -21,16 +21,13 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
-    const devMode = router.query.dev === 'true' ? true : false;
     const { data: userData, isUserAuthorized } = useUserData();
     const [taskId, setTaskId] = useState(issue.taskId);
     const [requestId, setRequestId] = useState<string>();
     const [assignee, setAssignee] = useState<string | undefined>();
     const [updateTask] = useUpdateTaskMutation();
     const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
-    const [addOrUpdateTaskRequest, taskRequestUpdateStatus] =
-        useAddOrUpdateMutation();
+    const [addOrUpdateTaskRequest] = useAddOrUpdateMutation();
     const isTaskButtonDisabled = isLoading || (!isUserAuthorized && taskExists);
 
     const toggle = () => {
@@ -210,42 +207,28 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
                 </div>
             </div>
             <div className={styles.actions}>
-                {devMode ? (
-                    <>
-                        <button
-                            className={styles.card__top__button}
-                            disabled={isTaskButtonDisabled}
-                            onClick={toggle}
-                        >
-                            {isUserAuthorized
-                                ? 'Convert to Task'
-                                : 'Request as Task'}
-                        </button>
-                        <TaskManagementModal
-                            isUserAuthorized={isUserAuthorized}
-                            isOpen={isTaskModalOpen}
-                            toggle={toggle}
-                            assignee={assignee}
-                            taskId={taskId}
-                            requestId={requestId}
-                            handleCreateTask={handleCreateTask}
-                            handleCreateTaskRequest={handleCreateTaskRequest}
-                            handleUpdateTask={handleUpdateTask}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <button
-                            className={styles.card__top__button}
-                            disabled={
-                                taskExists || isLoading || !isUserAuthorized
-                            }
-                            onClick={handleClick}
-                        >
-                            Convert to task
-                        </button>
-                    </>
-                )}
+                <>
+                    <button
+                        className={styles.card__top__button}
+                        disabled={isTaskButtonDisabled}
+                        onClick={toggle}
+                    >
+                        {isUserAuthorized
+                            ? 'Convert to Task'
+                            : 'Request as Task'}
+                    </button>
+                    <TaskManagementModal
+                        isUserAuthorized={isUserAuthorized}
+                        isOpen={isTaskModalOpen}
+                        toggle={toggle}
+                        assignee={assignee}
+                        taskId={taskId}
+                        requestId={requestId}
+                        handleCreateTask={handleCreateTask}
+                        handleCreateTaskRequest={handleCreateTaskRequest}
+                        handleUpdateTask={handleUpdateTask}
+                    />
+                </>
             </div>
         </div>
     );
