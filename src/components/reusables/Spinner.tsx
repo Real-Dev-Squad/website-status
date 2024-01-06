@@ -1,4 +1,4 @@
-import styles from '@/components/reusables/reusables.module.scss';
+import styles from '@/components/reusables/spinner.module.scss';
 
 const Spinner = () => {
     return (
