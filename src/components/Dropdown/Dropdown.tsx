@@ -1,10 +1,5 @@
 import Link from 'next/link';
-import {
-    LOGOUT_URL,
-    MAIN_SITE_URL,
-    MY_SITE_URL,
-    USER_PROFILE_URL,
-} from '../../constants/url';
+import { LOGOUT_URL, MAIN_SITE_URL, MY_SITE_URL } from '../../constants/url';
 import styles from '@/components/Dropdown/dropdown.module.scss';
 
 export const logout = () => {
@@ -23,7 +18,7 @@ const Dropdown = () => {
                 <Link href={MAIN_SITE_URL} className={styles.dropdownLink}>
                     <li className={styles.dropdownItem}>Home</li>
                 </Link>
-                <Link href={USER_PROFILE_URL} className={styles.dropdownLink}>
+                <Link href={`${MY_SITE_URL}`} className={styles.dropdownLink}>
                     <li className={styles.dropdownItem}>Status</li>
                 </Link>
                 <Link
