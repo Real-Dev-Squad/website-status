@@ -68,28 +68,26 @@ const ProgressForm = ({ questions }: formProps) => {
     };
 
     return (
-        <>
-            <form className={styles.form}>
-                {questions.map((question, index) => (
-                    <InputWithQuestions
-                        key={question.id}
-                        name={question.name}
-                        question={question.question}
-                        value={manager[index]}
-                        onChange={dispatch}
-                    />
-                ))}
-                <button
-                    className={styles.button}
-                    onClick={(e) => handleSubmit(e)}
-                    disabled={!isButtonEnabled}
-                    type="submit"
-                    data-testid="submit"
-                >
-                    {isLoading ? <Spinner /> : 'Submit'}
-                </button>
-            </form>
-        </>
+        <form className={styles.form}>
+            {questions.map((question, index) => (
+                <InputWithQuestions
+                    key={question.id}
+                    name={question.name}
+                    question={question.question}
+                    value={manager[index]}
+                    onChange={dispatch}
+                />
+            ))}
+            <button
+                className={styles.button}
+                onClick={(e) => handleSubmit(e)}
+                disabled={!isButtonEnabled}
+                type="submit"
+                data-testid="submit"
+            >
+                {isLoading ? <Spinner /> : 'Submit'}
+            </button>
+        </form>
     );
 };
 
