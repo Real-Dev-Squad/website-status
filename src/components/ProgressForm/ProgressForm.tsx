@@ -11,7 +11,7 @@ import {
 } from '@/types/ProgressUpdates';
 import { useSaveProgressMutation } from '@/app/services/progressesApi';
 import { useRouter } from 'next/router';
-import { Loader } from '../tasks/card/Loader';
+import Spinner from '../reusables/Spinner';
 
 const initialState = {
     progress: '',
@@ -86,10 +86,9 @@ const ProgressForm = ({ questions }: formProps) => {
                     type="submit"
                     data-testid="submit"
                 >
-                    Submit
+                    {isLoading ? <Spinner /> : 'Submit'}
                 </button>
             </form>
-            {isLoading && <Loader />}
         </>
     );
 };

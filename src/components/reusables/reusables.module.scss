@@ -1,0 +1,21 @@
+$gray: #808080;
+
+.spinner {
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 0.25rem solid $gray;
+    border-bottom-color: lighten($gray, 80%);
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}

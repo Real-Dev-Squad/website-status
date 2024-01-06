@@ -65,8 +65,12 @@ $theme-focusHighlight: #1c64f2;
 
 .button {
     width: 14rem;
+    height: 3.5rem;
     margin-bottom: $diff-margin;
-    padding: $base-unit * 4 $base-unit * 8;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     font-size: $base-font-size * 4;
     color: $color-white;
     background-color: $color-blue;
