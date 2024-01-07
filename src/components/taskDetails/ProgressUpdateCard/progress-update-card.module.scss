@@ -1,0 +1,45 @@
+@import '../../../styles/variables';
+
+.progress-update-card {
+    background-color: $color-white;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    cursor: pointer;
+
+    .progress-update-card__title {
+        font-weight: 500;
+        font-size: 1rem;
+        width: 82%;
+        @media (width<= 1024px) {
+            flex: 2;
+        }
+        .progress-update-card__more-button {
+            all: unset;
+            color: $theme-ceriseRed;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+    }
+
+    .progress-update-card__date-container {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        justify-content: flex-end;
+        position: relative;
+
+        @media (width<= 1024px) {
+            flex: 1;
+            justify-content: flex-end;
+        }
+        .progress-update-card__date-text {
+            font-size: 0.934rem;
+        }
+    }
+}

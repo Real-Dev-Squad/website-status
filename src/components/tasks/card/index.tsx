@@ -110,9 +110,6 @@ const Card: FC<CardProps> = ({
 
     const localEndsOn = new Date(cardDetails.endsOn * 1000);
     const fromNowEndsOn = moment(localEndsOn).fromNow();
-    const statusFontColor = !statusRedList.includes(cardDetails.status)
-        ? '#00a337'
-        : '#f83535';
     const iconHeight = '25';
     const iconWidth = '25';
 
@@ -179,13 +176,13 @@ const Card: FC<CardProps> = ({
 
             response
                 .unwrap()
-                .then((result) => {
+                .then(() => {
                     setEditedTaskDetails((prev) => ({
                         ...prev,
                         savingDate: SAVED,
                     }));
                 })
-                .catch((err) => {
+                .catch(() => {
                     setEditedTaskDetails((prev) => ({
                         ...prev,
                         savingDate: ERROR_STATUS,
@@ -283,9 +280,7 @@ const Card: FC<CardProps> = ({
 
         response
             .unwrap()
-            .then((result) =>
-                toast(SUCCESS, 'Task status changed successfully!')
-            )
+            .then(() => toast(SUCCESS, 'Task status changed successfully!'))
             .catch((err) => {
                 if ('response' in err) {
                     toast(ERROR, err.response.data.message);
@@ -370,13 +365,13 @@ const Card: FC<CardProps> = ({
 
         response
             .unwrap()
-            .then((result) => {
+            .then(() => {
                 setEditedTaskDetails((prev) => ({
                     ...prev,
                     assigningUser: SAVED,
                 }));
             })
-            .catch((err) => {
+            .catch(() => {
                 setEditedTaskDetails((prev) => ({
                     ...prev,
                     assigningUser: ERROR_STATUS,
@@ -425,13 +420,13 @@ const Card: FC<CardProps> = ({
 
         response
             .unwrap()
-            .then((result) => {
+            .then(() => {
                 setEditedTaskDetails((prev) => ({
                     ...prev,
                     savingText: SAVED,
                 }));
             })
-            .catch((err) => {
+            .catch(() => {
                 setEditedTaskDetails((prev) => ({
                     ...prev,
                     savingText: ERROR_STATUS,

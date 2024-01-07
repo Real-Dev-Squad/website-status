@@ -8,7 +8,6 @@ import classNames from '@/components/tasks/card/card.module.scss';
 const Progressbar: FC<ProgressBarProps> = ({
     progress,
     progressValue,
-    percentCompleted,
     handleProgressChange,
     debounceSlider,
     startedOn,

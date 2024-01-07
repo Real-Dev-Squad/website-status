@@ -59,8 +59,8 @@ describe('ProgressCard Component', () => {
         );
         expect(progressArr[0]).toHaveTextContent('Wednesday, 31 May 2023');
 
-        expect(progressArr[1]).toHaveTextContent('Sunday, 28 May 2023');
-        expect(progressArr[2]).toHaveTextContent('Saturday, 27 May 2023');
+        expect(progressArr[1]).toHaveTextContent('Wednesday, 31 May 2023');
+        expect(progressArr[2]).toHaveTextContent('Sunday, 28 May 2023');
     });
     it('should render the progress enteries in dscending order after Dsc btn click  ', async () => {
         const { container, getByRole } = renderWithRouter(

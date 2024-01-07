@@ -46,7 +46,7 @@ describe('Issue card', () => {
         expect(
             screen.getByText(issuesResponseSearchedWithQuery[0].html_url)
         ).toBeInTheDocument();
-        expect(screen.getByRole('button')).toHaveTextContent('Convert to task');
+        expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
     });
 
     test('Should render issue created by information correctly', () => {
@@ -115,25 +115,11 @@ describe('Issue card', () => {
         expect(markdownElement2).toBeInTheDocument();
     });
 
-    test('Should render action form when dev mode is enabled', () => {
-        const screen = renderWithRouter(
-            <Provider store={store()}>
-                <Card issue={issuesResponseSearchedWithQuery[0]} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
-        );
-        expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
-    });
     test('should render issue card with convert to task button', () => {
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card issue={issuesResponseSearchedWithQuery[0]} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         expect(screen.getByRole('button')).toHaveTextContent('Convert to Task');
     });
@@ -141,10 +127,7 @@ describe('Issue card', () => {
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card issue={issuesResponseSearchedWithQuery[0]} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         const convertToTaskButton = screen.getByText(/Convert to Task/i);
         fireEvent.click(convertToTaskButton);
@@ -157,10 +140,7 @@ describe('Issue card', () => {
         const screen = renderWithRouter(
             <Provider store={store()}>
                 <Card issue={issuesResponseSearchedWithQuery[0]} />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         const convertToTaskButton = screen.getByText(/Convert to Task/i);
         fireEvent.click(convertToTaskButton);
@@ -188,10 +168,7 @@ describe('Issue card', () => {
                         taskId: undefined,
                     }}
                 />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
         const convertToTaskButton = screen.getByText(/Convert to Task/i);
         fireEvent.click(convertToTaskButton);
