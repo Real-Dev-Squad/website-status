@@ -11,7 +11,7 @@ import {
 } from '@/types/ProgressUpdates';
 import { useSaveProgressMutation } from '@/app/services/progressesApi';
 import { useRouter } from 'next/router';
-import { Loader } from '../tasks/card/Loader';
+import Spinner from '../reusables/Spinner';
 
 const initialState = {
     progress: '',
@@ -41,11 +41,8 @@ const ProgressForm = ({ questions }: formProps) => {
     const [saveProgress] = useSaveProgressMutation();
     const router = useRouter();
 
-    const isButtonEnabled = state.progress && state.plan && state.blockers;
-
-    if (isLoading) {
-        return <Loader></Loader>;
-    }
+    const isButtonEnabled =
+        state.progress && state.plan && state.blockers && !isLoading;
 
     const handleSubmit = (e: MouseEvent) => {
         setIsLoading(true);
@@ -62,6 +59,7 @@ const ProgressForm = ({ questions }: formProps) => {
             .then(() => {
                 toast(SUCCESS, 'Task Progress saved successfully');
                 setIsLoading(false);
+                router.push(`/tasks/${router.query.id}`);
             })
             .catch((error) => {
                 toast(ERROR, error.data.message);
@@ -87,7 +85,7 @@ const ProgressForm = ({ questions }: formProps) => {
                 type="submit"
                 data-testid="submit"
             >
-                Submit
+                {isLoading ? <Spinner /> : 'Submit'}
             </button>
         </form>
     );
