@@ -79,8 +79,7 @@ describe('Progress form', function () {
                 <ToastContainer />
             </Provider>,
             {
-                asPath: '/progress',
-                replace: jest.fn(),
+                push: jest.fn(),
             }
         );
 
@@ -100,22 +99,26 @@ describe('Progress form', function () {
         expect(button).not.toHaveAttribute('disabled');
 
         fireEvent.click(button);
-        await waitFor(() =>
-            expect(
-                screen.getByText('Task Progress saved successfully')
-            ).toBeInTheDocument()
-        );
+
+        await Promise.all([
+            waitFor(() =>
+                expect(
+                    screen.getByText('Task Progress saved successfully')
+                ).toBeInTheDocument()
+            ),
+            waitFor(() =>
+                expect(
+                    screen.getByTestId('loading-spinner')
+                ).toBeInTheDocument()
+            ),
+        ]);
     });
 
     it('onClick should not work in case of no inputs', async function () {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressForm questions={questions} />
-            </Provider>,
-            {
-                asPath: '/progress',
-                replace: jest.fn(),
-            }
+            </Provider>
         );
 
         const button = screen.getByRole('button');
