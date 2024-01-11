@@ -7,26 +7,32 @@ type ProgressUpdateCardPresentationProps = {
     titleToShow: string;
     isTitleWrapped: boolean;
     isMoreButtonVisible: boolean;
-    onMoreButtonClick: (event: MouseEvent<HTMLElement>) => void;
-    onHoverOnDate: (event: MouseEvent<HTMLElement>) => void;
-    onMouseOutOnDate: (event: MouseEvent<HTMLElement>) => void;
     dateInAgoFormat: string;
     isTooltipVisible: boolean;
     tooltipString: string;
+    onMoreButtonClick: (event: MouseEvent<HTMLElement>) => void;
+    onHoverOnDate: (event: MouseEvent<HTMLElement>) => void;
+    onMouseOutOnDate: (event: MouseEvent<HTMLElement>) => void;
+    openDetails: (event: MouseEvent<HTMLElement>) => void;
 };
 export default function ProgressUpdateCardPresentation({
     titleToShow,
     isTitleWrapped,
     isMoreButtonVisible,
-    onMoreButtonClick,
-    onHoverOnDate,
-    onMouseOutOnDate,
     dateInAgoFormat,
     isTooltipVisible,
     tooltipString,
+    onMoreButtonClick,
+    onHoverOnDate,
+    onMouseOutOnDate,
+    openDetails,
 }: ProgressUpdateCardPresentationProps) {
     return (
-        <div className={styles['progress-update-card']}>
+        <div
+            data-testid="progress-update-card"
+            onClick={openDetails}
+            className={styles['progress-update-card']}
+        >
             <h3 className={styles['progress-update-card__title']}>
                 {titleToShow}
                 {isMoreButtonVisible && (

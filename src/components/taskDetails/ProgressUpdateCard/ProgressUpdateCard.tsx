@@ -36,6 +36,8 @@ export default function ProgressUpdateCard({
     }
 
     function onMoreButtonClick(e: MouseEvent<HTMLElement>) {
+        e.stopPropagation();
+
         if (isTitleWrapped) {
             setTitleToShow(data.completed);
             setIsTitleWrapped((prevState) => !prevState);
@@ -56,6 +58,7 @@ export default function ProgressUpdateCard({
             dateInAgoFormat={dateInAgoFormat}
             isTooltipVisible={isTooltipVisible}
             tooltipString={tooltipString}
+            openDetails={openDetails}
         />
     );
 }

@@ -36,7 +36,10 @@ const ProgressDetails: FC<Props> = ({ data }) => {
                 </li>
             )}
             {showProgressDetails && (
-                <div className={classNames['container-parent']}>
+                <div
+                    data-testid="progress-update-modal"
+                    className={classNames['container-parent']}
+                >
                     <div
                         role="button"
                         className={classNames['container-back']}
