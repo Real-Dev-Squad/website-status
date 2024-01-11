@@ -1,12 +1,11 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { setupServer } from 'msw/node';
 import { Provider } from 'react-redux';
+import { fireEvent, screen } from '@testing-library/react';
 import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
-import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { mockGetTaskProgress } from '../../../../__mocks__/db/progresses';
 import ProgressDetails from '@/components/taskDetails/ProgressDetails';
-import { MouseEvent } from 'react';
 
 const server = setupServer(...handlers);
 jest.mock('next/router', () => ({
