@@ -21,7 +21,7 @@ const ProgressDetails: FC<Props> = ({ data }) => {
         setShowProgressDetails(false);
     };
 
-    const isDev = router.query.dev === 'true';
+    const isDev = router.query?.dev === 'true';
     return (
         <>
             {isDev ? (
