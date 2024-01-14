@@ -6,7 +6,6 @@ import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
 import { TASKS_URL } from '../../constants/url';
 import useUserData from '@/hooks/useUserData';
-import { useRouter } from 'next/router';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 import { FEATURE } from '@/constants/task-type';
@@ -45,41 +44,6 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
         }
 
         return issueInfo;
-    };
-
-    const handleClick = async () => {
-        try {
-            setIsLoading(true);
-            const url = TASKS_URL;
-            const data = {
-                title: issue.title,
-                type: 'feature',
-                status: 'AVAILABLE',
-                percentCompleted: 0,
-                priority: 'TBD',
-                github: {
-                    issue: getIssueInfo(),
-                },
-            };
-
-            const { requestPromise } = fetch({
-                url,
-                method: 'post',
-                data,
-            });
-            const response = await requestPromise;
-            setTaskId(response.data.task.id);
-            toast(SUCCESS, 'Added the task');
-            setTaskExists(true);
-            setIsLoading(false);
-        } catch (error: any) {
-            setIsLoading(false);
-            if ('response' in error) {
-                toast(ERROR, error.response.data.message);
-                return;
-            }
-            toast(ERROR, error.message);
-        }
     };
 
     const handleUpdateTask = async (taskData: TaskData, taskId: string) => {
