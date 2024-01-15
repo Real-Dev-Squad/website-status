@@ -40,7 +40,7 @@ const ProgressLayout: FC<ProgressLayoutPropsType> = ({ taskId }) => {
             );
         } else {
             totalProgressMissedUpdates = getTotalMissedTaskProgressUpdate(
-                taskStartedOn * 1000
+                Number(taskStartedOn) * 1000
             );
         }
     } else {
