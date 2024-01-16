@@ -12,7 +12,7 @@
     cursor: pointer;
 
     &:disabled {
-        background-color: $very-light-gray;
+        background-color: lighten($color-light-grey, 5%);
         color: darken($grayish-brown, 10%);
         cursor: default;
     }
@@ -46,7 +46,7 @@
     font-size: 0.875rem;
     border-radius: 0.25rem;
     border: none;
-    background-color: $very-light-gray;
+    background-color: lighten($color-light-grey, 5%);
 }
 
 .issuesSearchSubmitButton {

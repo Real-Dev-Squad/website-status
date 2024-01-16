@@ -1,5 +1,7 @@
+@import '../../styles/variables.scss';
+
 .card {
-    box-shadow: 0 0 15px -7px rgba(0, 0, 0, 0.65);
+    box-shadow: 0 0 15px -7px rgba($color-black, 0.65);
     border-radius: 10px;
     padding: 1.5rem;
     display: flex;
@@ -9,7 +11,7 @@
 
     .title {
         width: 100%;
-        color: #041484;
+        color: $color-blue;
         font-size: 2rem;
         font-weight: bold;
         overflow: hidden;
@@ -20,8 +22,8 @@
     }
 
     .card:hover {
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-            0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        box-shadow: 0 4px 8px 0 rgba($color-black, 0.2),
+            0 6px 20px 0 rgba($color-black, 0.19);
     }
 
     .cardFooter {
@@ -45,7 +47,7 @@
     }
 
     .statusLable {
-        color: grey;
+        color: $gray;
         font-weight: bold;
     }
 
@@ -79,9 +81,9 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #4fb90d;
-        color: white;
-        border: 2px solid black;
+        background: lighten($progress-green, 10%);
+        color: $color-white;
+        border: 2px solid $color-black;
         border-radius: 5px;
         padding: 0.5rem 1rem;
         font: inherit;
@@ -92,6 +94,6 @@
 
     .activeBtn:hover,
     .activeBtn:active {
-        background: darkgreen;
+        background: $progress-green;
     }
 }
