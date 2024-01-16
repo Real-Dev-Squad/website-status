@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressIndicatorProps } from '@/interfaces/task.type';
 import handleProgressColor from '@/utils/handleProgressColor';
 
@@ -15,11 +15,11 @@ const ProgressIndicator: FC<ProgressIndicatorProps> = ({
         endsOn
     );
     return (
-        <div className={classNames.progressIndicator}>
+        <div className={styles.progressIndicator}>
             <div
                 className={`
                 ${progressColor}
-                ${classNames.progressStyle}
+                ${styles.progressStyle}
                 `}
                 style={{
                     width: `${percentCompleted}%`,

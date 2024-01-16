@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useRef, ChangeEvent } from 'react';
 import Image from 'next/image';
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import getDateInString from '@/helperFunctions/getDateInString';
 import { useKeyLongPressed } from '@/hooks/useKeyLongPressed';
 import { CardProps } from '@/interfaces/task.type';
@@ -214,11 +214,7 @@ const Card: FC<CardProps> = ({
             );
         }
         return (
-            <span
-                className={classNames.cardStrongFont}
-                role="button"
-                tabIndex={0}
-            >
+            <span className={styles.cardStrongFont} role="button" tabIndex={0}>
                 {!cardDetails.endsOn ? 'TBD' : fromNowEndsOn}
             </span>
         );
@@ -291,7 +287,7 @@ const Card: FC<CardProps> = ({
     };
 
     const EditButton = () => (
-        <div className={classNames.editButton}>
+        <div className={styles.editButton}>
             <Image
                 src="/pencil.webp"
                 alt="pencil icon to represent edit button"
@@ -307,7 +303,7 @@ const Card: FC<CardProps> = ({
     const AssigneeButton = () => {
         return (
             <button
-                className={classNames.card__top__button}
+                className={styles.card__top__button}
                 type="button"
                 disabled={isLoadingUpdateTaskDetails}
                 onClick={handleAssignToIssueAssignee}
@@ -319,9 +315,9 @@ const Card: FC<CardProps> = ({
 
     const CloseTaskButton = () => {
         return (
-            <div className={classNames.cardItems}>
+            <div className={styles.cardItems}>
                 <span
-                    className={classNames.cardSpecialFont}
+                    className={styles.cardSpecialFont}
                     contentEditable={isEditable}
                     onKeyDown={(e) => handleChange(e, 'startedOn')}
                     role="button"
@@ -330,7 +326,7 @@ const Card: FC<CardProps> = ({
                     The issue was closed on {getFormattedClosedAtDate()}
                 </span>
                 <button
-                    className={classNames.close__task__button}
+                    className={styles.close__task__button}
                     type="button"
                     disabled={isLoadingUpdateTaskDetails}
                     onClick={handleCloseTask}
@@ -392,7 +388,7 @@ const Card: FC<CardProps> = ({
     };
 
     const CancelEditButton = () => (
-        <div className={classNames.cancelEditButton}>
+        <div className={styles.cancelEditButton}>
             <Image
                 src="/cancel.png"
                 alt="close edit mode"
@@ -484,20 +480,20 @@ const Card: FC<CardProps> = ({
     return (
         <div
             className={`
-                ${classNames.card}
-                ${classNames.card_updated}
-                ${isLoading && classNames.pointerEventsNone}
-                ${isTaskOverdue() && classNames.overdueTask}
+                ${styles.card}
+                ${styles.card_updated}
+                ${isLoading && styles.pointerEventsNone}
+                ${isTaskOverdue() && styles.overdueTask}
     `}
             data-testid="task-card"
         >
             {/* loading spinner */}
             {isLoading && <Loader />}
-            <div className={classNames.cardItems}>
+            <div className={styles.cardItems}>
                 {isEditable ? (
-                    <div className={classNames.textareaSection}>
+                    <div className={styles.textareaSection}>
                         <textarea
-                            className={classNames.textarea}
+                            className={styles.textarea}
                             name="title"
                             value={editedTaskDetails.title}
                             onChange={inputHandler}
@@ -515,7 +511,7 @@ const Card: FC<CardProps> = ({
                         taskId={cardDetails.id}
                     >
                         <span
-                            className={classNames.cardTitleText}
+                            className={styles.cardTitleText}
                             contentEditable={isEditable}
                             onKeyDown={(e) => handleChange(e, 'title')}
                             role="button"
@@ -527,17 +523,17 @@ const Card: FC<CardProps> = ({
                 )}
 
                 {/* progress bar */}
-                <div className={classNames.progressContainer}>
+                <div className={styles.progressContainer}>
                     <ProgressContainer content={content} />
                 </div>
             </div>
-            <div className={classNames.taskStatusAndDateContainer}>
-                <div className={classNames.dateInfo}>
-                    <div className={classNames.dateSection}>
-                        <p className={classNames.cardSpecialFont}>
+            <div className={styles.taskStatusAndDateContainer}>
+                <div className={styles.dateInfo}>
+                    <div className={styles.dateSection}>
+                        <p className={styles.cardSpecialFont}>
                             Estimated completion
                         </p>
-                        <p className={classNames.completionDate}>
+                        <p className={styles.completionDate}>
                             {renderDate(fromNowEndsOn, isEditable)}
                         </p>
                         <StatusIndicator
@@ -545,7 +541,7 @@ const Card: FC<CardProps> = ({
                         />
                     </div>
                     <span
-                        className={classNames.cardSpecialFont}
+                        className={styles.cardSpecialFont}
                         contentEditable={isEditable}
                         onKeyDown={(e) => handleChange(e, 'startedOn')}
                         role="button"
@@ -558,7 +554,7 @@ const Card: FC<CardProps> = ({
                     </span>
                 </div>
                 {/* EDIT task status */}
-                <div className={classNames.taskStatusEditMode}>
+                <div className={styles.taskStatusEditMode}>
                     {isEditable ? (
                         <TaskStatusEditMode
                             task={editedTaskDetails}
@@ -566,13 +562,11 @@ const Card: FC<CardProps> = ({
                             isDevMode={isDevMode}
                         />
                     ) : (
-                        <div className={classNames.statusContainer} style={{}}>
-                            <p className={classNames.cardSpecialFont}>
-                                Status:
-                            </p>
+                        <div className={styles.statusContainer} style={{}}>
+                            <p className={styles.cardSpecialFont}>Status:</p>
                             <p
                                 data-testid="task-status"
-                                className={classNames.statusText}
+                                className={styles.statusText}
                             >
                                 {TASK_STATUS_MAPING[
                                     cardDetails.status as keyof typeof TASK_STATUS_MAPING
@@ -585,11 +579,11 @@ const Card: FC<CardProps> = ({
                 </div>
             </div>
 
-            <div className={classNames.contributor}>
-                <p className={classNames.cardSpecialFont}>
+            <div className={styles.contributor}>
+                <p className={styles.cardSpecialFont}>
                     {cardDetails.assignee ? 'Assigned to' : 'Assign to'}
                 </p>
-                <span className={classNames.contributorImage}>
+                <span className={styles.contributorImage}>
                     <Image
                         src={assigneeProfileImageURL}
                         alt={cardDetails.assignee || DUMMY_NAME}
@@ -600,7 +594,7 @@ const Card: FC<CardProps> = ({
                 {isEditable
                     ? isUserAuthorized && (
                           <div
-                              className={`${classNames.assigneeSuggestionInput} ${classNames.assignedToSection}`}
+                              className={`${styles.assigneeSuggestionInput} ${styles.assignedToSection}`}
                           >
                               <Suggestions
                                   assigneeName={assigneeName}
@@ -617,17 +611,17 @@ const Card: FC<CardProps> = ({
                           </div>
                       )
                     : editedTaskDetails.assignee && (
-                          <p className={classNames.cardStrongFont}>
+                          <p className={styles.cardStrongFont}>
                               {editedTaskDetails.assignee}
                           </p>
                       )}
                 {showAssignButton() && <AssigneeButton />}
             </div>
 
-            <div className={classNames.cardItems}>
+            <div className={styles.cardItems}>
                 <div
-                    className={`${classNames.taskTagLevelWrapper} ${
-                        isEditable && classNames.editMode
+                    className={`${styles.taskTagLevelWrapper} ${
+                        isEditable && styles.editMode
                     }`}
                 >
                     <TaskLevelMap

@@ -1,4 +1,4 @@
-import className from './option.module.scss';
+import styles from './option.module.scss';
 
 interface OptionProps {
     idx: number;
@@ -26,9 +26,9 @@ export default function Option({
             data-testid="option"
             onMouseDown={selectOption}
             onClick={selectOption}
-            className={`${className['suggestion-div']} ${
+            className={`${styles['suggestion-div']} ${
                 idx === activeSuggestionIndex
-                    ? className['selected-suggestion']
+                    ? styles['selected-suggestion']
                     : ''
             }`}
         >

@@ -1,4 +1,4 @@
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import useUserData from '@/hooks/useUserData';
 import taskItem from '@/interfaces/taskItem.type';
 
@@ -16,11 +16,11 @@ export const TaskLevelMap = ({
 }: Props) => {
     const { isUserAuthorized } = useUserData();
     return (
-        <div className={classNames.taskTagLevelContainer}>
+        <div className={styles.taskTagLevelContainer}>
             {taskTagLevel?.map((item) => (
                 <span
                     key={item.tagId}
-                    className={classNames.taskTagLevel}
+                    className={styles.taskTagLevel}
                     data-testid="tag-name"
                 >
                     {item.tagName}
@@ -31,7 +31,7 @@ export const TaskLevelMap = ({
                         <span>
                             <button
                                 data-testid="delete-btn"
-                                className={classNames.removeTaskTagLevelBtn}
+                                className={styles.removeTaskTagLevelBtn}
                                 onClick={() =>
                                     deleteTaskTagLevel({
                                         taskItemToDelete: item,

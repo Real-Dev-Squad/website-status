@@ -1,6 +1,6 @@
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import classNames from '@/styles/tasks.module.scss';
+import styles from '@/styles/tasks.module.scss';
 import { TasksContent } from '@/components/tasks/TasksContent';
 import { NextPageContext } from 'next';
 
@@ -9,7 +9,7 @@ function Tasks({ dev }: { dev?: boolean }) {
         <Layout>
             <Head title="Tasks" />
 
-            <div className={classNames.container}>
+            <div className={styles.container}>
                 <TasksContent dev={dev} />
             </div>
         </Layout>
