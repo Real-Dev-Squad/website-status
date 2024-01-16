@@ -1,15 +1,13 @@
-$pill-color: #dedede;
-$highlight-fill-color: #ffdddd;
-$delete-button-bg-color: #ffb0b0;
+@import '../../../../styles/variables.scss';
 
 .parent-pill {
     min-width: 46px;
     margin-top: 0px;
 }
 .selected-options {
-    background-color: $pill-color;
+    background-color: $reddish-gray;
     display: flex;
-    border: 1px solid $pill-color;
+    border: 1px solid $reddish-gray;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
@@ -34,12 +32,12 @@ $delete-button-bg-color: #ffb0b0;
     cursor: pointer;
 }
 .highlight {
-    background-color: $highlight-fill-color;
+    background-color: $light-red-2;
     border: 1px solid red;
 }
 .highlight .delete-option {
     border-radius: 50%;
-    background-color: $delete-button-bg-color;
+    background-color: $light-red-1;
     padding: 2px;
 }
 .highlight .delete-option svg {

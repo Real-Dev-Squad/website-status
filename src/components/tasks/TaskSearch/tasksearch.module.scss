@@ -1,11 +1,4 @@
-$primary-color: #1d1283;
-$black-color: #000;
-$white-color: #fff;
-$light-gray: #d0d7de;
-$gray-color: #808080;
-$dark-light-gray: #b1acac;
-$filter-button-hover: #f6f8fa;
-$radius: 5px;
+@import '../../../styles/variables.scss';
 
 .task-search-container {
     display: flex;
@@ -28,9 +21,9 @@ $radius: 5px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-radius: $radius;
+    border-radius: $border-radius;
     margin-right: 1rem;
-    border: 1px solid $light-gray;
+    border: 1px solid $color-light-grey;
 
     @media (max-width: 768px) {
         width: 100%;
@@ -47,9 +40,9 @@ $radius: 5px;
     width: 5rem;
     height: 2rem;
     position: relative;
-    border-radius: $radius 0 0 $radius;
-    background-color: $white-color;
-    color: $black-color;
+    border-radius: $border-radius 0 0 $border-radius;
+    background-color: $color-white;
+    color: $color-black;
     font-weight: bold;
     cursor: pointer;
     border: none;
@@ -64,7 +57,7 @@ $radius: 5px;
         content: '';
         border-left: 5px solid transparent;
         border-right: 5px solid transparent;
-        border-top: 5px solid $black-color;
+        border-top: 5px solid $color-black;
         margin-left: 0.5rem;
     }
 
@@ -74,14 +67,12 @@ $radius: 5px;
 }
 
 .search-bar-div {
-    // min-width: 90%;
     width: 43vw;
     flex: 1;
     min-height: 2rem;
-    // position: relative;
-    border-radius: 0 $radius $radius 0;
-    background-color: $white-color;
-    border-left: 1px solid $light-gray;
+    border-radius: 0 $border-radius $border-radius 0;
+    background-color: $color-white;
+    border-left: 1px solid $color-light-grey;
     background-image: url('https://img.icons8.com/ios-filled/16/000000/search.png');
     background-repeat: no-repeat;
     background-position: 0.5rem;
@@ -91,32 +82,32 @@ $radius: 5px;
     flex-wrap: wrap;
 }
 .in-focus {
-    border: 1px solid $gray-color;
+    border: 1px solid $gray;
     cursor: pointer;
-    color: $black-color;
+    color: $color-black;
 }
 .search-input {
     width: 100%;
     height: 2rem;
     padding: 0.5rem 0.5rem 0.5rem 2rem;
-    border-radius: 0 $radius $radius 0;
+    border-radius: 0 $border-radius $border-radius 0;
     border: none;
     outline: none;
     background-image: url('https://img.icons8.com/ios-filled/16/000000/search.png');
     background-repeat: no-repeat;
     background-position: 0.5rem;
     padding-left: 2rem;
-    background-color: $white-color;
-    border-left: 1px solid $light-gray;
+    background-color: $color-white;
+    border-left: 1px solid $color-light-grey;
 
     &:focus {
-        border: 1px solid $primary-color;
+        border: 1px solid $theme-primary;
     }
 }
 .search-bar-div:focus-within {
-    border: 1px solid $gray-color;
+    border: 1px solid $gray;
     cursor: pointer;
-    color: $black-color;
+    color: $color-black;
     margin-top: -1px;
     margin-bottom: -1px;
 }
@@ -157,7 +148,7 @@ $radius: 5px;
     width: 100%;
     height: 27px;
     padding: 0.45rem;
-    border-radius: 0 $radius $radius 0;
+    border-radius: 0 $border-radius $border-radius 0;
     border: none;
     outline: none;
 }
@@ -167,12 +158,12 @@ $radius: 5px;
     z-index: 5;
     position: absolute;
     text-align: left;
-    background-color: white;
+    background-color: $color-white;
 }
 .empty-box {
     padding: 5.3px;
     text-align: center;
-    border: 1px solid $light-gray;
+    border: 1px solid $color-light-grey;
     border-top: none;
 }
 
@@ -195,23 +186,23 @@ $radius: 5px;
 .search-button {
     width: 100%;
     height: 2rem;
-    border-radius: $radius;
-    background-color: $white-color;
-    color: $black-color;
+    border-radius: $border-radius;
+    background-color: $color-white;
+    color: $color-black;
     font-weight: bold;
     cursor: pointer;
-    border: 1px solid $gray-color;
+    border: 1px solid $gray;
     outline: none;
 
     &:hover {
-        background-color: $primary-color;
-        color: $white-color;
-        border: 1px solid $primary-color;
+        background-color: $theme-primary;
+        color: $color-white;
+        border: 1px solid $theme-primary;
     }
 
     @media (max-width: 768px) {
         width: 100%;
-        border-radius: $radius;
+        border-radius: $border-radius;
         margin-left: 0;
     }
 }
@@ -229,9 +220,9 @@ $radius: 5px;
     top: 11.5rem;
     left: -2.8rem;
     min-width: 15rem;
-    background-color: $white-color;
-    border-radius: $radius;
-    border: 1px solid $dark-light-gray;
+    background-color: $color-white;
+    border-radius: $border-radius;
+    border: 1px solid $light-gray;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -260,7 +251,7 @@ $radius: 5px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid $gray-color;
+    border-bottom: 1px solid $gray;
     padding: 0.5rem 0.5rem 0.5rem 1rem;
 
     span {
@@ -294,13 +285,13 @@ $radius: 5px;
         border-bottom: 1px solid $light-gray;
         border-left: none;
         &:hover {
-            background-color: $filter-button-hover;
+            background-color: $light-gray;
         }
     }
 
     .status-button-active {
-        background-color: $filter-button-hover;
-        border-left: 3px solid $primary-color;
+        background-color: $light-gray;
+        border-left: 3px solid $theme-primary;
     }
 }
 

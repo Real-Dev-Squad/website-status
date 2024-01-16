@@ -1,7 +1,7 @@
-$black-border-color: #1f1f1f;
+@import '../../../styles/variables.scss';
 
 .suggestions {
-    border: 1px solid #999;
+    border: 1px solid $color-light-grey;
     list-style: none;
     margin-top: 0;
     max-height: 10rem;
@@ -9,7 +9,7 @@ $black-border-color: #1f1f1f;
     max-width: 12rem;
     min-width: 7rem;
     overflow: auto;
-    background-color: white;
+    background-color: $color-white;
     position: absolute;
     top: 40px;
     border-radius: 5px;
@@ -21,7 +21,7 @@ $black-border-color: #1f1f1f;
         cursor: pointer;
         transition: linear background-color 0.3s;
         opacity: 85%;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid $color-black;
     }
     img {
         margin-left: auto;
@@ -54,17 +54,17 @@ $black-border-color: #1f1f1f;
     display: inline-block;
     padding: 0 4px 0 4px;
     height: 2rem;
-    border: 1px solid $black-border-color;
+    border: 1px solid $color-black;
     border-radius: 4px;
     outline: none;
 }
 
 .suggestions-selected {
-    background-color: #bcb7b7;
+    background-color: $color-light-grey;
 }
 
 .no-suggestions {
-    color: #f84040;
+    color: $coral-red;
     position: absolute;
     z-index: 100;
     min-width: 5rem;
