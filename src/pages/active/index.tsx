@@ -3,7 +3,7 @@ import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
 import useFetch from '@/hooks/useFetch';
-import classNames from '@/styles/tasks.module.scss';
+import styles from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import { BLOCKED, IN_PROGRESS, SMOKE_TESTING } from '@/constants/task-status';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
@@ -47,8 +47,8 @@ const Active: FC = () => {
                 {isLoading ? (
                     <p>Loading...</p>
                 ) : (
-                    <div className={classNames.container}>
-                        <div className={classNames.title}>Active</div>
+                    <div className={styles.container}>
+                        <div className={styles.title}>Active</div>
                         <>
                             {activeTasks.length === 0 ? (
                                 <p>No active tasks found</p>
