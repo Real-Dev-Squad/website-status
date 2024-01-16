@@ -1,9 +1,4 @@
-$color-blue: #041187;
-$color-red: #e30062;
-$color-green: #85da6b;
-$color-disabled: #7c7e82;
-$color-white: #fff;
-$color-black: #000;
+@import '../../styles/variables.scss';
 
 .container {
     margin: 40px auto;
@@ -26,7 +21,7 @@ $color-black: #000;
 .btn {
     background-color: $color-blue;
     border-radius: 4px;
-    color: white;
+    color: $color-white;
     background-color: $color-blue;
     border: none;
     padding: 12px 60px;
@@ -34,8 +29,8 @@ $color-black: #000;
 }
 
 .btn:disabled {
-    color: white;
-    background-color: $color-disabled;
+    color: $color-white;
+    background-color: $light-gray;
     cursor: not-allowed;
 }
 
