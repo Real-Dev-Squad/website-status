@@ -1,24 +1,13 @@
-$theme-focusHighlight: #1c64f2;
-$theme-primaryBackground: #1c325e;
-$theme-whiteColor: #ffffff;
-$theme-bannerFontColor: #f1416c;
-$theme-secondaryBackground: #1e429f;
-$theme-ceriseRed: #d61f69;
-$theme-headingColor: #6b7280;
-$theme-inputFieldBorder: #d1d5db;
-$theme-nonActiveButtonBackground: #e5e7eb;
-$theme-standupDate: rgb(10, 52, 149);
-$radius: 0.5rem;
-$theme-removeButton: #ed0808;
+@import '../../styles/variables.scss';
 
 .bannerContainer {
     width: 100%;
 }
 .progressBanner {
-    background-color: $theme-primaryBackground;
-    color: $theme-whiteColor;
+    background-color: $banner-background;
+    color: $color-white;
     padding: 2rem;
-    border-radius: $radius;
+    border-radius: $border-radius-bigger;
     margin-top: 2rem;
     width: 100%;
 }
@@ -28,7 +17,7 @@ $theme-removeButton: #ed0808;
     font-weight: 600;
 }
 .totalMissedUpdates {
-    color: $theme-bannerFontColor;
+    color: $theme-light-cerise-red;
     text-decoration: underline;
     margin: 0 0.4rem;
 }
@@ -43,13 +32,13 @@ $theme-removeButton: #ed0808;
 }
 .standupTitle {
     margin-left: 1rem;
-    color: $theme-secondaryBackground;
+    color: $theme-primary;
     font-family: 'Inter', sans-serif;
     font-size: 2.2rem;
     margin-bottom: 0px;
 }
 .StandupDate {
-    color: $theme-standupDate;
+    color: $theme-primary-light;
     font-family: 'Inter', sans-serif;
     font-weight: 700;
     text-align: center;
@@ -89,8 +78,8 @@ $theme-removeButton: #ed0808;
 .addButton,
 .removeButton {
     border-radius: 50%;
-    background-color: $theme-secondaryBackground;
-    color: $theme-whiteColor;
+    background-color: $theme-primary;
+    color: $color-white;
     font-weight: 700;
     border: none;
     font-size: 1.5rem;
@@ -100,7 +89,7 @@ $theme-removeButton: #ed0808;
 
 .removeButton {
     margin-left: 10px;
-    color: $theme-removeButton;
+    color: $progress-red;
 }
 
 .addButton:active,
@@ -112,57 +101,57 @@ $theme-removeButton: #ed0808;
     border: none;
 }
 .updateHeading {
-    color: $theme-headingColor;
+    color: darken($gray, 10%);
     font-size: 1.4rem;
     font-family: 'Inter', sans-serif;
 }
 .inputField {
     height: 4rem;
     width: 100%;
-    border-radius: $radius;
-    border: 2px solid $theme-inputFieldBorder;
-    background: $theme-whiteColor;
+    border-radius: $border-radius-bigger;
+    border: 2px solid lighten($light-gray, 10%);
+    background: $color-white;
     padding: 1rem;
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
     margin: 0.8rem 0 2.4rem 0;
 }
 .inputField:focus {
-    border: 1px solid $theme-focusHighlight;
+    border: 2px solid $royal-blue;
     outline: none;
 }
 .submitButton {
     margin-left: 1rem;
     width: 14rem;
     height: 4rem;
-    border-radius: $radius;
+    border-radius: $border-radius-bigger;
     font-size: 1.2rem;
     font-family: 'Inter', sans-serif;
     border: none;
     cursor: pointer;
     color: var(--toastify-spinner-color);
-    box-shadow: 1px 2px 4px 2px grey;
+    box-shadow: 1px 2px 4px 2px $gray;
 }
 .submitButton:active {
     transform: translateY(4px);
 }
 .submitButton:active,
 .submitButton:hover {
-    background: $theme-secondaryBackground;
-    color: $theme-whiteColor;
+    background: $theme-primary;
+    color: $color-white;
 }
 .submitButton:disabled {
-    background: $theme-nonActiveButtonBackground;
+    background: $light-gray;
     color: var(--toastify-spinner-color);
     transform: none;
     cursor: not-allowed;
 }
 .activeButton {
-    background: $theme-secondaryBackground;
-    color: $theme-whiteColor;
+    background: $theme-primary;
+    color: $color-white;
 }
 .nonActiveButton {
-    background: $theme-nonActiveButtonBackground;
+    background: $light-gray;
 }
 .timeContainer {
     display: flex;
