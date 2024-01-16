@@ -4,10 +4,10 @@
     width: 100%;
 }
 .progressBanner {
-    background-color: $banner-background;
-    color: $color-white;
+    background-color: $cello-blue;
+    color: $white;
     padding: 2rem;
-    border-radius: $border-radius-bigger;
+    border-radius: $bigger-radius;
     margin-top: 2rem;
     width: 100%;
 }
@@ -17,7 +17,7 @@
     font-weight: 600;
 }
 .totalMissedUpdates {
-    color: $theme-light-cerise-red;
+    color: $light-cerise-red;
     text-decoration: underline;
     margin: 0 0.4rem;
 }
@@ -79,7 +79,7 @@
 .removeButton {
     border-radius: 50%;
     background-color: $theme-primary;
-    color: $color-white;
+    color: $white;
     font-weight: 700;
     border: none;
     font-size: 1.5rem;
@@ -89,7 +89,7 @@
 
 .removeButton {
     margin-left: 10px;
-    color: $progress-red;
+    color: $red;
 }
 
 .addButton:active,
@@ -108,9 +108,9 @@
 .inputField {
     height: 4rem;
     width: 100%;
-    border-radius: $border-radius-bigger;
+    border-radius: $bigger-radius;
     border: 2px solid lighten($light-gray, 10%);
-    background: $color-white;
+    background: $white;
     padding: 1rem;
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
@@ -124,7 +124,7 @@
     margin-left: 1rem;
     width: 14rem;
     height: 4rem;
-    border-radius: $border-radius-bigger;
+    border-radius: $bigger-radius;
     font-size: 1.2rem;
     font-family: 'Inter', sans-serif;
     border: none;
@@ -138,7 +138,7 @@
 .submitButton:active,
 .submitButton:hover {
     background: $theme-primary;
-    color: $color-white;
+    color: $white;
 }
 .submitButton:disabled {
     background: $light-gray;
@@ -148,7 +148,7 @@
 }
 .activeButton {
     background: $theme-primary;
-    color: $color-white;
+    color: $white;
 }
 .nonActiveButton {
     background: $light-gray;

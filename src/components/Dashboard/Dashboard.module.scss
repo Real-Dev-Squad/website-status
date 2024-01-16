@@ -19,17 +19,17 @@
 }
 
 .btn {
-    background-color: $color-blue;
+    background-color: $theme-primary-alt;
     border-radius: 4px;
-    color: $color-white;
-    background-color: $color-blue;
+    color: $white;
+    background-color: $theme-primary-alt;
     border: none;
     padding: 12px 60px;
     cursor: pointer;
 }
 
 .btn:disabled {
-    color: $color-white;
+    color: $white;
     background-color: $light-gray;
     cursor: not-allowed;
 }

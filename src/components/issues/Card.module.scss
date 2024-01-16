@@ -4,7 +4,7 @@
 .card {
     padding: 1rem;
     width: 100%;
-    background: $color-white;
+    background: $white;
     border: 1px solid lighten($light-gray, 20%);
     border-radius: 0.5rem;
     transition: 0.2s ease-out;
@@ -183,7 +183,7 @@
 }
 
 .highlightTaskTab {
-    border-bottom: $color-blue solid 2px;
+    border-bottom: $theme-primary-alt solid 2px;
     transition: 150ms ease-in-out;
 }
 .suggestions_container {

@@ -1,7 +1,7 @@
 @import '../../../styles/variables.scss';
 
 .suggestions {
-    border: 1px solid $color-light-grey;
+    border: 1px solid $lighter-gray;
     list-style: none;
     margin-top: 0;
     max-height: 10rem;
@@ -9,7 +9,7 @@
     max-width: 12rem;
     min-width: 7rem;
     overflow: auto;
-    background-color: $color-white;
+    background-color: $white;
     position: absolute;
     top: 40px;
     border-radius: 5px;
@@ -21,7 +21,7 @@
         cursor: pointer;
         transition: linear background-color 0.3s;
         opacity: 85%;
-        border-bottom: 1px solid $color-black;
+        border-bottom: 1px solid $black;
     }
     img {
         margin-left: auto;
@@ -54,13 +54,13 @@
     display: inline-block;
     padding: 0 4px 0 4px;
     height: 2rem;
-    border: 1px solid $color-black;
+    border: 1px solid $black;
     border-radius: 4px;
     outline: none;
 }
 
 .suggestions-selected {
-    background-color: $color-light-grey;
+    background-color: $lighter-gray;
 }
 
 .no-suggestions {

@@ -22,7 +22,7 @@ $section-padding-left-right: $base-unit * 25;
 }
 
 .formHeading {
-    color: $color-blue;
+    color: $theme-primary-alt;
     font-size: $base-unit * 8;
 }
 
@@ -66,20 +66,20 @@ $section-padding-left-right: $base-unit * 25;
     align-items: center;
     justify-content: center;
     font-size: $base-font-size * 4;
-    color: $color-white;
-    background-color: $color-blue;
+    color: $white;
+    background-color: $theme-primary-alt;
     border: none;
     border-radius: $base-unit * 2;
     cursor: pointer;
 
     &:hover {
-        background-color: darken($color-blue, 10%);
+        background-color: darken($theme-primary-alt, 10%);
     }
 
     &:disabled {
         color: var(--toastify-spinner-color);
         cursor: not-allowed;
-        background-color: $color-light-grey;
+        background-color: $lighter-gray;
     }
 }
 

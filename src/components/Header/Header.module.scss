@@ -13,7 +13,7 @@
     padding: 0.6rem;
     text-decoration: none;
     font-weight: 700;
-    color: $color-blue;
+    color: $theme-primary-alt;
     cursor: pointer;
     background: none;
     border: none;
@@ -25,7 +25,7 @@
         height: 1rem;
         width: 2px;
         right: 0;
-        background-color: rgba($color-black, 0.45);
+        background-color: rgba($black, 0.45);
     }
 }
 

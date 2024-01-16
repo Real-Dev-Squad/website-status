@@ -1,6 +1,8 @@
+@import '../../../styles/variables.scss';
+
 .card {
-    border: 2px solid #fff;
-    box-shadow: 0px 0px 10px 0 #a9a9a9;
+    border: 2px solid $white;
+    box-shadow: 0px 0px 10px 0 $light-gray;
     padding: 10px;
     border-radius: 8px;
 
@@ -33,7 +35,12 @@
 
 .animate {
     animation: shimmer 2s infinite linear;
-    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    background: linear-gradient(
+        to right,
+        $shimmer-lighter 4%,
+        $shimmer-darker 25%,
+        $shimmer-lighter 36%
+    );
     background-size: 1000px 100%;
 }
 

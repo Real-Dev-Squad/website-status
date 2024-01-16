@@ -1,6 +1,6 @@
 @import '../../../styles/variables.scss';
 
-$borderForItem: 2px solid $color-light-grey;
+$borderForItem: 2px solid $lighter-gray;
 
 .flexContainer {
     display: flex;
@@ -30,7 +30,7 @@ $borderForItem: 2px solid $color-light-grey;
     justify-content: center;
     padding: 1rem;
     font-weight: bold;
-    color: $color-blue;
+    color: $theme-primary-alt;
 }
 
 .divider {
@@ -47,7 +47,7 @@ $borderForItem: 2px solid $color-light-grey;
         height: 1.5rem;
         width: 100%;
         font-size: 1.5rem;
-        color: $color-blue;
+        color: $theme-primary-alt;
         margin-bottom: 0.5rem;
     }
 
@@ -58,7 +58,7 @@ $borderForItem: 2px solid $color-light-grey;
     input {
         height: 2.5rem;
         width: 32rem;
-        background: $color-white;
+        background: $white;
         border: 2px solid $grayish-brown;
         border-radius: 5px;
     }
@@ -70,7 +70,7 @@ $borderForItem: 2px solid $color-light-grey;
     width: 32rem;
     margin: 0.5rem 0;
     border-radius: 5px;
-    background-color: $color-light-grey;
+    background-color: $lighter-gray;
 }
 
 .taskItem {
@@ -79,7 +79,7 @@ $borderForItem: 2px solid $color-light-grey;
     margin: 1rem 0;
     display: flex;
     align-items: center;
-    color: $color-blue;
+    color: $theme-primary-alt;
     font-size: large;
     border: $borderForItem;
     border-radius: 5px;

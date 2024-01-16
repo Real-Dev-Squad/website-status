@@ -1,7 +1,7 @@
 @import '../../../styles/variables';
 
 .latest-progress-update-card {
-    background-color: $color-white;
+    background-color: $white;
     border-radius: 10px;
     margin-bottom: 5px;
 
@@ -10,7 +10,7 @@
         display: flex;
         gap: 1rem;
         padding: 10px 1rem;
-        border-bottom: 1px solid $color-light-grey;
+        border-bottom: 1px solid $lighter-gray;
 
         &:last-child {
             border-bottom: none;

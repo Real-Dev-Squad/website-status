@@ -19,7 +19,7 @@
     width: auto;
     font-size: 3.5rem;
     font-weight: bold;
-    color: $color-blue;
+    color: $theme-primary-alt;
     border: none;
     text-transform: capitalize;
 
@@ -59,8 +59,8 @@
     transition: all 0.3s ease-in-out;
 
     &:hover {
-        background-color: $color-white;
-        color: $color-blue;
+        background-color: $white;
+        color: $theme-primary-alt;
     }
 
     &:disabled {

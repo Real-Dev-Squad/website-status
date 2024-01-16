@@ -1,8 +1,8 @@
 @import '../styles/variables.scss';
 
 @mixin issues-button {
-    background-color: $color-blue;
-    color: $color-white;
+    background-color: $theme-primary-alt;
+    color: $white;
     display: block;
     padding: 0.6rem 0.8rem;
     font-size: 0.875rem;
@@ -12,13 +12,13 @@
     cursor: pointer;
 
     &:disabled {
-        background-color: lighten($color-light-grey, 5%);
+        background-color: lighten($lighter-gray, 5%);
         color: darken($grayish-brown, 10%);
         cursor: default;
     }
 
     &:not(:disabled):hover {
-        background-color: darken($color-blue, 10%);
+        background-color: darken($theme-primary-alt, 10%);
     }
 }
 
@@ -46,7 +46,7 @@
     font-size: 0.875rem;
     border-radius: 0.25rem;
     border: none;
-    background-color: lighten($color-light-grey, 5%);
+    background-color: lighten($lighter-gray, 5%);
 }
 
 .issuesSearchSubmitButton {

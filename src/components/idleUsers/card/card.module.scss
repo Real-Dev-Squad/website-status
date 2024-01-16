@@ -1,7 +1,7 @@
 @import '../../../styles/variables.scss';
 
 .card {
-    border: 2px solid $color-black;
+    border: 2px solid $black;
     color: $theme-primary;
     border-radius: 10px;
     padding: 1.5rem;
@@ -17,8 +17,8 @@
 
     &:hover {
         color: $theme-ceriseRed;
-        box-shadow: 0 4px 8px 0 rgba($color-black, 0.2),
-            0 6px 20px 0 rgba($color-black, 0.19);
+        box-shadow: 0 4px 8px 0 rgba($black, 0.2),
+            0 6px 20px 0 rgba($black, 0.19);
     }
 
     img {

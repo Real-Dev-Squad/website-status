@@ -13,7 +13,7 @@
 
 .title {
     margin: 20px;
-    color: $color-blue;
+    color: $theme-primary-alt;
     font-size: 25px;
 }
 
@@ -58,14 +58,14 @@
     padding: 4px 6px 4px 10px;
     border-radius: 7px;
     border: 2px solid $reddish-gray;
-    color: $color-blue;
+    color: $theme-primary-alt;
     display: flex;
     justify-content: space-between;
 }
 
 .subtaskStatus {
     margin-left: 8px;
-    color: $progress-green;
+    color: $green;
 }
 
 .taskStatus {
@@ -97,7 +97,7 @@
     font-size: 15px;
     border-radius: 7px;
     border: 2px solid $reddish-gray;
-    color: $color-blue;
+    color: $theme-primary-alt;
     justify-content: space-between;
 }
 

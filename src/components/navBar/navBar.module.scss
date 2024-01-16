@@ -1,13 +1,12 @@
+@import '../../styles/variables.scss';
+
 $offset: 10px;
 $thickness: 3px;
-$white: #fff;
-$theme-blue: #1d1283;
-$theme-active: #87d870;
 
 .navBar {
     display: flex;
     width: 100%;
-    background-color: $theme-blue;
+    background-color: $theme-primary;
     align-items: center;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -24,12 +23,12 @@ $theme-active: #87d870;
             text-decoration: none;
 
             &:hover {
-                color: $theme-active;
+                color: $active-green;
             }
         }
 
         .active {
-            color: $theme-active;
+            color: $active-green;
             text-decoration: underline;
             text-decoration-thickness: $thickness;
             text-underline-offset: $offset;
@@ -43,7 +42,7 @@ $theme-active: #87d870;
     .signInLink {
         border-radius: 6px;
         padding: 5px;
-        background-color: $theme-blue;
+        background-color: $theme-primary;
         color: $white;
         border: 1px solid $white;
         display: flex;
@@ -96,7 +95,7 @@ $theme-active: #87d870;
     }
 
     .active {
-        color: $theme-active;
+        color: $active-green;
         text-decoration: underline;
         text-decoration-thickness: $thickness;
         text-underline-offset: $offset;
@@ -114,7 +113,7 @@ $theme-active: #87d870;
             a {
                 padding: 10px 40px;
                 text-align: left;
-                color: $theme-blue;
+                color: $theme-primary;
                 display: none;
             }
         }
@@ -166,7 +165,7 @@ $theme-active: #87d870;
 
     .navBarMenu li a {
         text-decoration: none;
-        color: $theme-blue;
+        color: $theme-primary;
     }
 
     .userProfile {
@@ -180,10 +179,10 @@ $theme-active: #87d870;
     }
 
     .navBarMenu .mobile_menu > li a:hover {
-        color: $theme-active;
+        color: $active-green;
     }
 
     .navBarMenu .mobile_menu > li a:active {
-        color: $theme-active;
+        color: $active-green;
     }
 }

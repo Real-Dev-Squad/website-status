@@ -14,7 +14,7 @@
 
 .taskTitle {
     font-size: 1.5rem;
-    color: lighten($color-black, 20%);
+    color: lighten($black, 20%);
     padding: 0.5rem 0;
     font-weight: bold;
 }
@@ -34,7 +34,7 @@
 
     &:hover {
         background-color: $theme-primary;
-        color: $color-white;
+        color: $white;
     }
 }
 
@@ -131,7 +131,7 @@
     width: 100%;
     padding: 0.5rem 0.5rem;
     border-radius: 0.5rem;
-    background-color: $color-white;
+    background-color: $white;
     font-weight: bold;
 }
 

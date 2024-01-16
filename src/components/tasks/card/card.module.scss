@@ -25,7 +25,7 @@
     margin-bottom: 2rem;
     margin-bottom: 25px;
     justify-content: space-between;
-    border: 1px solid $color-light-grey;
+    border: 1px solid $lighter-gray;
     position: relative;
     width: 100%;
 
@@ -64,7 +64,7 @@
     text-overflow: ellipsis;
     white-space: normal;
     font-weight: 500;
-    color: $color-blue;
+    color: $theme-primary-alt;
     max-width: 30rem;
     word-break: break-word;
 
@@ -150,8 +150,8 @@
 .progressIndicator {
     width: 100%;
     height: 0.6rem;
-    background-color: $color-white;
-    border: 2px solid $color-black;
+    background-color: $white;
+    border: 2px solid $black;
     border-radius: 1rem;
     max-width: 9rem;
 }
@@ -193,19 +193,19 @@
 }
 
 .progressGreen {
-    background-color: $progress-green;
+    background-color: $green;
 }
 
 .progressOrange {
-    background-color: $progress-orange;
+    background-color: $orange;
 }
 
 .progressRed {
-    background-color: $progress-red;
+    background-color: $red;
 }
 
 .progressYellow {
-    background-color: $progress-yellow;
+    background-color: $yellow;
 }
 .editButton {
     text-align: left;
@@ -272,7 +272,7 @@
 }
 
 .selectWrapper {
-    border: 1px solid $color-black;
+    border: 1px solid $black;
     border-radius: 0.25em;
     padding: 0.25em 0.5em;
     display: grid;
@@ -299,7 +299,7 @@
         grid-area: select;
         width: 0.7em;
         height: 0.5em;
-        background-color: $color-blue;
+        background-color: $theme-primary-alt;
         clip-path: polygon(100% 0%, 0 0%, 50% 100%);
         justify-self: end;
     }
@@ -313,8 +313,8 @@
     cursor: pointer;
     width: calc((100% / 3) - 0.5rem);
     padding: 1rem;
-    color: $color-white;
-    background-color: $color-blue;
+    color: $white;
+    background-color: $theme-primary-alt;
     border: none;
     border-radius: 3px;
     font-size: 0.75rem;
@@ -335,7 +335,7 @@
     left: 0;
     bottom: 0;
     pointer-events: none;
-    background-color: lighten($color-black, 80%);
+    background-color: lighten($black, 80%);
     display: grid;
     place-content: center;
     z-index: 5;
@@ -345,7 +345,7 @@
         height: 30px;
         border: 3px solid lignten($gray, 70%);
         border-radius: 50%;
-        border-top-color: $color-white;
+        border-top-color: $white;
         animation: spin 1s ease-in-out infinite;
     }
 }
@@ -409,7 +409,7 @@
     width: 90%;
     padding: 0.5rem 0.5rem;
     border-radius: 0.5rem;
-    background-color: $color-white;
+    background-color: $white;
     font-weight: bold;
     font-family: inherit;
     font-size: inherit;
@@ -419,7 +419,7 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid lighten($color-black, 10%);
+    border: 3px solid lighten($black, 10%);
     border-radius: 50%;
     border-top: 2px solid $jungle-green;
     animation: spin 1s ease-in-out infinite;
