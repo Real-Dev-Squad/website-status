@@ -5,7 +5,7 @@ import Active from '@/components/challenges/active';
 import Complete from '@/components/challenges/complete';
 import Accordion from '@/components/Accordion';
 import { challenge, ChallengeMap } from '@/interfaces/challenge.type';
-import classNames from '@/styles/tasks.module.scss';
+import styles from '@/styles/tasks.module.scss';
 import { LOGIN_URL } from '@/constants/url';
 import { useGetUserQuery } from '@/app/services/userApi';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
@@ -48,7 +48,7 @@ const Challenges: FC = () => {
         <Layout>
             <Head title="Challenges" />
 
-            <div className={classNames.container}>
+            <div className={styles.container}>
                 {!isAuthenticating &&
                     (isLoggedIn ? (
                         isLoading ? (

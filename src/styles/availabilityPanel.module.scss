@@ -1,10 +1,10 @@
-$blueColor: #041484;
+@import '../styles/variables.scss';
 
 .heading {
     font-size: 3rem;
     font-weight: bold;
     text-align: center;
-    color: $blueColor;
+    color: $color-blue;
     margin-bottom: 1rem;
 }
 .statusMessage {
@@ -12,7 +12,7 @@ $blueColor: #041484;
     justify-content: center;
     padding: 1rem;
     font-weight: bold;
-    color: $blueColor;
+    color: $color-blue;
 }
 
 @media (max-width: 340px) {
