@@ -1,8 +1,4 @@
-$white: #fff;
-$theme-blue: #1d1283;
-$theme-blue-light: #2e1da3;
-$light-black: rgba(0, 0, 0, 0.778);
-$off-white: #f0f0f0;
+@import '../../styles/variables.scss';
 
 .parentContainer {
     margin: 2rem 4rem 0;
@@ -18,7 +14,7 @@ $off-white: #f0f0f0;
 
 .taskTitle {
     font-size: 1.5rem;
-    color: $light-black;
+    color: lighten($color-black, 20%);
     padding: 0.5rem 0;
     font-weight: bold;
 }
@@ -27,23 +23,23 @@ $off-white: #f0f0f0;
     display: block;
     font-size: 1rem;
     min-width: 5rem;
-    background-color: $theme-blue-light;
+    background-color: $theme-primary-light;
     color: $off-white;
     border-radius: 0.5rem;
     outline: none;
-    border: 1px solid $theme-blue;
+    border: 1px solid $theme-primary;
     padding: 0.5rem;
     font-weight: bold;
     cursor: pointer;
 
     &:hover {
-        background-color: $theme-blue;
-        color: $white;
+        background-color: $theme-primary;
+        color: $color-white;
     }
 }
 
 .gitLink {
-    color: $theme-blue;
+    color: $theme-primary;
 }
 
 .detailsContainer {
@@ -98,7 +94,7 @@ $off-white: #f0f0f0;
 
     a {
         text-decoration: none;
-        color: $theme-blue;
+        color: $theme-primary;
         padding: 0.5rem 0;
     }
 
@@ -135,7 +131,7 @@ $off-white: #f0f0f0;
     width: 100%;
     padding: 0.5rem 0.5rem;
     border-radius: 0.5rem;
-    background-color: $white;
+    background-color: $color-white;
     font-weight: bold;
 }
 

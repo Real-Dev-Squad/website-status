@@ -1,15 +1,11 @@
-$light-black: rgba(0, 0, 0, 0.778);
-$white: #fff;
-$theme-blue-light: #2e1da3;
-$theme-blue: #1d1283;
-$off-white: #f0f0f0;
+@import '../../styles/variables.scss';
 
 .list-item {
     cursor: pointer;
 
     &:hover {
         text-decoration: underline;
-        color: $theme-blue;
+        color: $theme-primary;
     }
 }
 
@@ -25,7 +21,7 @@ $off-white: #f0f0f0;
     min-height: 100vh;
 
     .container-back {
-        background-color: $light-black;
+        background-color: lighten($color-black, 20%);
         position: absolute;
         top: 0;
         left: 0;
@@ -39,7 +35,7 @@ $off-white: #f0f0f0;
     flex-grow: 0;
     padding: 15px;
     border-radius: 10px;
-    background-color: $white;
+    background-color: $color-white;
     position: absolute;
     left: 30%;
     right: 30%;
@@ -87,8 +83,8 @@ $off-white: #f0f0f0;
     }
 
     .container-close {
-        background-color: $theme-blue-light;
-        color: $white;
+        background-color: $theme-primary-light;
+        color: $color-white;
         font-size: 1.2rem;
         border: none;
         border-radius: 8px;
@@ -96,8 +92,8 @@ $off-white: #f0f0f0;
         cursor: pointer;
 
         &:hover {
-            background-color: $theme-blue;
-            color: $white;
+            background-color: $theme-primary;
+            color: $color-white;
         }
     }
 }
