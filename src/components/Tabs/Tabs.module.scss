@@ -1,14 +1,11 @@
-$theme-grey: #d4d4d5;
-$theme-grey-light: #f1f1f5;
-$gray-shade-color: #808080;
-$gray-shade-color2: #5c5b5b;
+@import '../../styles/variables.scss';
 
 .tabButton {
     border: none;
-    border-bottom: 1.8px solid $theme-grey;
+    border-bottom: 1.8px solid lighten($light-gray, 15%);
     font-size: 0.85rem;
     font-weight: bold;
-    color: $gray-shade-color;
+    color: $grayish-brown;
     background: var(--toastify-color-light);
     padding: 0.45rem 0.8rem;
     border-radius: 0.2rem 0.2rem 0 0;
@@ -16,16 +13,16 @@ $gray-shade-color2: #5c5b5b;
 }
 
 .tabButton:hover {
-    color: $gray-shade-color2;
+    color: $gray;
 }
 
 .tabButton:active {
-    background-color: $theme-grey-light;
+    background-color: $off-white;
 }
 
 .active {
     color: var(--toastify-color-dark);
-    border: 1.8px solid $theme-grey;
+    border: 1.8px solid lighten($light-gray, 15%);
     border-bottom: none;
     background: var(--toastify-color-light);
 }
