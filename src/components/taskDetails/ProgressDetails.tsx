@@ -1,7 +1,7 @@
 import { useState, FC, MouseEvent } from 'react';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { getDateFromTimestamp } from '@/utils/getDateFromTimestamp';
-import classNames from './progress-details.module.scss';
+import styles from './progress-details.module.scss';
 import { useRouter } from 'next/router';
 import ProgressUpdateCard from './ProgressUpdateCard/ProgressUpdateCard';
 
@@ -29,44 +29,44 @@ const ProgressDetails: FC<Props> = ({ data }) => {
             ) : (
                 <li
                     onClick={openDetails}
-                    className={classNames['list-item']}
+                    className={styles['list-item']}
                     data-testid="progress-item"
                 >
                     {getDateFromTimestamp(data.date)}
                 </li>
             )}
             {showProgressDetails && (
-                <div className={classNames['container-parent']}>
+                <div className={styles['container-parent']}>
                     <div
                         role="button"
-                        className={classNames['container-back']}
+                        className={styles['container-back']}
                         onClick={closeDetails}
                         data-testid="modal-background"
                     ></div>
 
-                    <div className={classNames['container-main']}>
+                    <div className={styles['container-main']}>
                         <h2>{getDateFromTimestamp(data.date)}</h2>
                         <div
-                            className={classNames['content']}
+                            className={styles['content']}
                             data-testid="content"
                         >
-                            <div className={classNames['content-wrapper']}>
-                                <div className={classNames['content-item']}>
+                            <div className={styles['content-wrapper']}>
+                                <div className={styles['content-item']}>
                                     <span>Completed:</span>
                                     <p>{data.completed}</p>
                                 </div>
-                                <div className={classNames['content-item']}>
+                                <div className={styles['content-item']}>
                                     <span>Planned:</span>
                                     <p>{data.planned}</p>
                                 </div>
-                                <div className={classNames['content-item']}>
+                                <div className={styles['content-item']}>
                                     <span>Blockers:</span>
                                     <p>{data.blockers}</p>
                                 </div>
                             </div>
                         </div>
                         <button
-                            className={classNames['container-close']}
+                            className={styles['container-close']}
                             onClick={closeDetails}
                         >
                             Close

@@ -1,5 +1,6 @@
-$blueColor: #041484;
-$borderForItem: 2px solid #e0e0e0;
+@import '../../../styles/variables.scss';
+
+$borderForItem: 2px solid $lighter-gray;
 
 .flexContainer {
     display: flex;
@@ -29,11 +30,11 @@ $borderForItem: 2px solid #e0e0e0;
     justify-content: center;
     padding: 1rem;
     font-weight: bold;
-    color: $blueColor;
+    color: $theme-primary-alt;
 }
 
 .divider {
-    border-left: 1px solid #d9d9d9;
+    border-left: 1px solid $light-gray;
     position: absolute;
     height: 100%;
 }
@@ -46,7 +47,7 @@ $borderForItem: 2px solid #e0e0e0;
         height: 1.5rem;
         width: 100%;
         font-size: 1.5rem;
-        color: $blueColor;
+        color: $theme-primary-alt;
         margin-bottom: 0.5rem;
     }
 
@@ -57,8 +58,8 @@ $borderForItem: 2px solid #e0e0e0;
     input {
         height: 2.5rem;
         width: 32rem;
-        background: #ffffff;
-        border: 2px solid #646464;
+        background: $white;
+        border: 2px solid $grayish-brown;
         border-radius: 5px;
     }
 }
@@ -69,7 +70,7 @@ $borderForItem: 2px solid #e0e0e0;
     width: 32rem;
     margin: 0.5rem 0;
     border-radius: 5px;
-    background-color: rgb(209, 209, 209);
+    background-color: $lighter-gray;
 }
 
 .taskItem {
@@ -78,7 +79,7 @@ $borderForItem: 2px solid #e0e0e0;
     margin: 1rem 0;
     display: flex;
     align-items: center;
-    color: $blueColor;
+    color: $theme-primary-alt;
     font-size: large;
     border: $borderForItem;
     border-radius: 5px;
@@ -103,7 +104,7 @@ $borderForItem: 2px solid #e0e0e0;
         padding-left: 1rem;
         font-weight: bold;
         font-size: 1rem;
-        color: #646464;
+        color: darken($grayish-brown, 10%);
     }
 }
 
@@ -111,7 +112,7 @@ $borderForItem: 2px solid #e0e0e0;
     .divider {
         position: relative;
         margin-bottom: 1rem;
-        border-top: 1px solid #d9d9d9;
+        border-top: 1px solid $light-gray;
     }
     .flexContainer {
         flex-direction: column;

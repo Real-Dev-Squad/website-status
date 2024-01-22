@@ -1,8 +1,10 @@
+@import '../../../styles/variables.scss';
+
 .heading {
     font-size: 3.5rem;
     font-weight: bold;
     text-align: center;
-    color: #041484;
+    color: $theme-primary;
     margin-bottom: 1rem;
 }
 

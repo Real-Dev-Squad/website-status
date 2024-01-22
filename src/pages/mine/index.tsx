@@ -2,7 +2,7 @@ import { FC } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import Card from '@/components/tasks/card';
-import classNames from '@/styles/tasks.module.scss';
+import styles from '@/styles/tasks.module.scss';
 import task from '@/interfaces/task.type';
 import { LOGIN_URL } from '@/constants/url';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
@@ -32,7 +32,7 @@ const Content = () => {
     if (error) return <p>Something went wrong! Please contact admin</p>;
     if (tasks?.length)
         return (
-            <div className={classNames.mineTasksContainer}>
+            <div className={styles.mineTasksContainer}>
                 <CardList tasks={tasks} />
             </div>
         );
@@ -45,7 +45,7 @@ const Mine: FC = () => {
     return (
         <Layout>
             <Head title="Mine" />
-            <div className={classNames.container}>
+            <div className={styles.container}>
                 {isAuthenticating ? (
                     <Loader />
                 ) : isLoggedIn ? (

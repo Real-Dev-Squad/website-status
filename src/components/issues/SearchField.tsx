@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/router';
 import { getQueryStringFromInput } from '@/utils/getQueryStringFromInput';
 import { getQueryStringFromUrl } from '@/utils/getQueryStringFromUrl';
-import classNames from '@/styles/issues.module.scss';
+import styles from '@/styles/issues.module.scss';
 import { handleFeatureFlag } from '@/utils/handleFeatureFlag';
 import { updateQueryStringToUrl } from '@/utils/updateQueryStringToUrl';
 
@@ -38,7 +38,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     }, [dev, qQueryParam]);
     return (
         <form
-            className={classNames.searchFieldContainer}
+            className={styles.searchFieldContainer}
             onSubmit={(e) => {
                 handleOnSubmit(e);
             }}
@@ -48,10 +48,10 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
                 placeholder="Enter query string to search issues"
                 value={searchText}
                 onChange={onSearchTextChanged}
-                className={classNames.issueSearchInput}
+                className={styles.issueSearchInput}
             />
             <button
-                className={classNames.issuesSearchSubmitButton}
+                className={styles.issuesSearchSubmitButton}
                 disabled={loading || !(searchText ?? '').trim()}
             >
                 Submit

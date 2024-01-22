@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .header {
     padding-top: 0.6rem;
     display: flex;
@@ -11,7 +13,7 @@
     padding: 0.6rem;
     text-decoration: none;
     font-weight: 700;
-    color: #041484;
+    color: $theme-primary-alt;
     cursor: pointer;
     background: none;
     border: none;
@@ -23,7 +25,7 @@
         height: 1rem;
         width: 2px;
         right: 0;
-        background-color: #00000077;
+        background-color: rgba($black, 0.45);
     }
 }
 
@@ -35,5 +37,5 @@
 }
 
 .active {
-    color: #e30464;
+    color: $theme-pink;
 }

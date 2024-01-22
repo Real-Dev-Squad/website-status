@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import levelType from '@/interfaces/level.type';
 import tagType from '@/interfaces/tag.type';
 import taskItem from '@/interfaces/taskItem.type';
@@ -35,9 +35,9 @@ const SelectComponent = ({
     return (
         <div>
             <label htmlFor={id}>
-                <span className={classNames.screenReaderOnly}>{label}</span>
+                <span className={styles.screenReaderOnly}>{label}</span>
             </label>
-            <div className={classNames.selectWrapper}>
+            <div className={styles.selectWrapper}>
                 <select
                     id={id}
                     name={name}
@@ -45,7 +45,7 @@ const SelectComponent = ({
                     onChange={(e) => {
                         setNewValueOnChange(e.target.value);
                     }}
-                    className={classNames.selectDropdown}
+                    className={styles.selectDropdown}
                 >
                     <option disabled selected>
                         {defaultOption}
@@ -122,7 +122,7 @@ const TaskTagEdit = ({ taskTagLevel, itemId }: TaskTagPropsType) => {
         return (
             <>
                 <form
-                    className={classNames.addTaskTagLevel}
+                    className={styles.addTaskTagLevel}
                     onSubmit={handleSubmit}
                 >
                     <SelectComponent
@@ -143,7 +143,7 @@ const TaskTagEdit = ({ taskTagLevel, itemId }: TaskTagPropsType) => {
                         options={levelOptions}
                         setNewValueOnChange={setNewLevelValue}
                     />
-                    <button className={classNames.addTagLevelBtn}>Add</button>
+                    <button className={styles.addTagLevelBtn}>Add</button>
                 </form>
             </>
         );

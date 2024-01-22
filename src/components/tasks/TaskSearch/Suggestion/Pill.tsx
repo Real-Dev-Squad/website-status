@@ -1,6 +1,6 @@
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import { useRef } from 'react';
-import classNames from './pill.module.scss';
+import styles from './pill.module.scss';
 
 export interface PillProps {
     idx: number;
@@ -42,7 +42,7 @@ export default function RenderPills({
                     style={{
                         width: `${newPillValue.length * 0.95}ch`,
                     }}
-                    className={classNames['parent-pill']}
+                    className={styles['parent-pill']}
                 >
                     <input
                         data-testid="pill-input"
@@ -53,20 +53,20 @@ export default function RenderPills({
                         }}
                         onKeyDown={handleKeyPress}
                         defaultValue={`${field}:${value}`}
-                        className={`task-search-input ${classNames['pill-input']}`}
+                        className={`task-search-input ${styles['pill-input']}`}
                     />
                 </div>
             ) : (
                 <div
                     data-testid="parent-pill"
-                    className={`parent-pill ${classNames['parent-pill']} ${
-                        classNames['selected-options']
-                    } ${pillToBeRemoved == idx ? classNames['highlight'] : ''}`}
+                    className={`parent-pill ${styles['parent-pill']} ${
+                        styles['selected-options']
+                    } ${pillToBeRemoved == idx ? styles['highlight'] : ''}`}
                 >
                     <span
                         data-testid="pill-content"
                         onClick={activatePillInEditMode}
-                        className={classNames['pill-content']}
+                        className={styles['pill-content']}
                     >
                         {' '}
                         {`${field}:${value}`}
@@ -77,7 +77,7 @@ export default function RenderPills({
                             e.stopPropagation();
                             removePill(idx);
                         }}
-                        className={classNames['delete-option']}
+                        className={styles['delete-option']}
                     >
                         <svg
                             className="svg-icon iconClearSm pe-none"

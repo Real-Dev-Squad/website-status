@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
-import classNames from './task-details.module.scss';
+import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
 
@@ -10,15 +10,15 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
     const gitHubIssueLink = isGitHubLink ? value : undefined;
 
     return (
-        <div className={classNames.detailsContainer}>
-            <span className={classNames.detailType}>{detailType}:</span>
+        <div className={styles.detailsContainer}>
+            <span className={styles.detailType}>{detailType}:</span>
             <span
-                className={classNames.detailValue}
+                className={styles.detailValue}
                 style={{ color: color ?? 'black' }}
             >
                 {isGitHubLink && value ? (
                     <a
-                        className={classNames.gitLink}
+                        className={styles.gitLink}
                         href={gitHubIssueLink}
                         target="_blank"
                         rel="noopener noreferrer"

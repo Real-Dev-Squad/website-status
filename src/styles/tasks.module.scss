@@ -1,5 +1,4 @@
-$primaryColor: #041484;
-$disabledColor: gray;
+@import './variables.scss';
 
 .tasksContainer {
     width: 64%;
@@ -20,7 +19,7 @@ $disabledColor: gray;
     width: auto;
     font-size: 3.5rem;
     font-weight: bold;
-    color: #041484;
+    color: $theme-primary-alt;
     border: none;
     text-transform: capitalize;
 
@@ -60,12 +59,12 @@ $disabledColor: gray;
     transition: all 0.3s ease-in-out;
 
     &:hover {
-        background-color: #fff;
-        color: $primaryColor;
+        background-color: $white;
+        color: $theme-primary-alt;
     }
 
     &:disabled {
-        color: $disabledColor;
+        color: $gray;
         cursor: default;
     }
 }

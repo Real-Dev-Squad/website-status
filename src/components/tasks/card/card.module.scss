@@ -1,17 +1,5 @@
 @use '../../../styles/issues.module.scss' as styles;
-$green: #008000;
-$orange: #ffa500;
-$red: #ff0000;
-$yellow: #ecef08;
-$white: #e5e5e5;
-$black: #252525;
-$grey: #adadad;
-$taskTagLevelBorder: #4169e1;
-$taskTagLevelBg: hsla(225, 73%, 57%, 0.5);
-$seeMoreTasksBg: #041187;
-$seeMoreTasksShadow: #595959cc;
-$progressText: rgb(34 32 32 / 70%);
-$progressTextAnimation: #9babb8;
+@import '../../../styles/variables.scss';
 
 .screenReaderOnly {
     position: absolute;
@@ -37,7 +25,7 @@ $progressTextAnimation: #9babb8;
     margin-bottom: 2rem;
     margin-bottom: 25px;
     justify-content: space-between;
-    border: 1px solid #d9d9d9;
+    border: 1px solid $lighter-gray;
     position: relative;
     width: 100%;
 
@@ -76,7 +64,7 @@ $progressTextAnimation: #9babb8;
     text-overflow: ellipsis;
     white-space: normal;
     font-weight: 500;
-    color: #041187;
+    color: $theme-primary-alt;
     max-width: 30rem;
     word-break: break-word;
 
@@ -142,7 +130,7 @@ $progressTextAnimation: #9babb8;
 
 .overdueTask {
     border: solid red 2px;
-    background-color: #ffebee;
+    background-color: lighten($light-red-2, 3%);
 }
 
 .progressContainer {
@@ -186,7 +174,7 @@ $progressTextAnimation: #9babb8;
 
 .changeProgressText {
     cursor: pointer;
-    color: $progressText;
+    color: lighten($dark-grayish-red, 50%);
     font-weight: 700;
     padding-left: 2rem;
     user-select: none;
@@ -251,10 +239,10 @@ $progressTextAnimation: #9babb8;
 
 .taskTagLevel {
     position: relative;
-    background-color: $taskTagLevelBg;
+    background-color: lighten($royal-blue, 50%);
     padding: 0.35em;
     border-radius: 20px;
-    border: 2px solid $taskTagLevelBorder;
+    border: 2px solid $royal-blue;
     font-size: 0.85em;
     font-weight: 500;
     small {
@@ -271,7 +259,7 @@ $progressTextAnimation: #9babb8;
         width: 15px;
         height: 15px;
         outline: none;
-        border: 1px solid grey;
+        border: 1px solid $gray;
         display: grid;
         place-content: center;
         cursor: pointer;
@@ -311,7 +299,7 @@ $progressTextAnimation: #9babb8;
         grid-area: select;
         width: 0.7em;
         height: 0.5em;
-        background-color: #041187;
+        background-color: $theme-primary-alt;
         clip-path: polygon(100% 0%, 0 0%, 50% 100%);
         justify-self: end;
     }
@@ -326,7 +314,7 @@ $progressTextAnimation: #9babb8;
     width: calc((100% / 3) - 0.5rem);
     padding: 1rem;
     color: $white;
-    background-color: $seeMoreTasksBg;
+    background-color: $theme-primary-alt;
     border: none;
     border-radius: 3px;
     font-size: 0.75rem;
@@ -336,7 +324,7 @@ $progressTextAnimation: #9babb8;
 }
 
 .seeMoreTasks:hover {
-    box-shadow: 0 1px 0.5rem $seeMoreTasksShadow;
+    box-shadow: 0 1px 0.5rem $grayish-brown;
 }
 
 /* loading spinner  */
@@ -347,7 +335,7 @@ $progressTextAnimation: #9babb8;
     left: 0;
     bottom: 0;
     pointer-events: none;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: lighten($black, 80%);
     display: grid;
     place-content: center;
     z-index: 5;
@@ -355,9 +343,9 @@ $progressTextAnimation: #9babb8;
         display: inline-block;
         width: 30px;
         height: 30px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
+        border: 3px solid lignten($gray, 70%);
         border-radius: 50%;
-        border-top-color: #fff;
+        border-top-color: $white;
         animation: spin 1s ease-in-out infinite;
     }
 }
@@ -431,9 +419,9 @@ $progressTextAnimation: #9babb8;
     display: inline-block;
     width: 20px;
     height: 20px;
-    border: 3px solid rgba(0, 0, 0, 0.1);
+    border: 3px solid lighten($black, 10%);
     border-radius: 50%;
-    border-top: 2px solid #29ab87;
+    border-top: 2px solid $jungle-green;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
 }

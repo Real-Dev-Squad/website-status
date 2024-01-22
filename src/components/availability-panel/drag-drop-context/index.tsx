@@ -7,7 +7,7 @@ import task from '@/interfaces/task.type';
 import fetch from '@/helperFunctions/fetch';
 import { ASSIGNED } from '@/constants/task-status';
 import DroppableComponent from './DroppableComponent';
-import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import styles from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import {
     THOUSAND_MILLI_SECONDS,
     FOURTEEN_DAYS,
@@ -21,9 +21,9 @@ type NotFoundErrorProps = {
 const { SUCCESS, ERROR } = ToastTypes;
 
 const NotFoundError: FC<NotFoundErrorProps> = ({ message = 'Not found' }) => (
-    <div className={classNames.emptyArray}>
+    <div className={styles.emptyArray}>
         <Image src="/ghost.png" alt="ghost" width={160} height={190} />
-        <span className={classNames.emptyText}>{message}</span>
+        <span className={styles.emptyText}>{message}</span>
     </div>
 );
 
@@ -151,25 +151,25 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
     return (
         <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
             <disableDrag.Provider value={draggableIds}>
-                <div className={classNames.flexContainer}>
+                <div className={styles.flexContainer}>
                     <div>
                         {taskList.length === 0 ? (
                             <NotFoundError message="No task found" />
                         ) : (
                             <div>
-                                <div className={classNames.searchBoxContainer}>
+                                <div className={styles.searchBoxContainer}>
                                     <span
                                         onClick={() => {
                                             setToggleSearch(!toggleSearch);
                                         }}
                                         aria-hidden="true"
-                                        className={classNames.searchText}
+                                        className={styles.searchText}
                                     >
                                         Search
                                     </span>
                                     {toggleSearch && <input />}
                                 </div>
-                                <div className={classNames.heading}> </div>
+                                <div className={styles.heading}> </div>
                                 <DroppableComponent
                                     droppableId="tasks"
                                     idleMembers={[]}
@@ -179,18 +179,18 @@ const DragDropContextWrapper: FC<dragDropProps> = ({
                             </div>
                         )}
                     </div>
-                    <div className={classNames.divider} />
+                    <div className={styles.divider} />
                     <div>
                         {memberList.length === 0 ? (
                             <NotFoundError message="No idle members found" />
                         ) : (
                             <div>
-                                <div className={classNames.searchBoxContainer}>
+                                <div className={styles.searchBoxContainer}>
                                     <span />
                                     {toggleSearch && <input />}
                                 </div>
-                                <div className={classNames.heading}> </div>
-                                <div className={classNames.idleMember}>
+                                <div className={styles.heading}> </div>
+                                <div className={styles.idleMember}>
                                     <DroppableComponent
                                         droppableId="members"
                                         idleMembers={memberList}

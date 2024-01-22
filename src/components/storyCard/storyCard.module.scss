@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .container {
     max-width: 450px;
     padding: 15px;
@@ -5,19 +7,19 @@
     align-items: stretch;
     align-content: center;
     justify-content: space-between;
-    border: 5px solid #e0e0e0;
+    border: 5px solid $off-white;
     border-radius: 25px;
 }
 
 .title {
     margin: 20px;
-    color: #041287;
+    color: $theme-primary-alt;
     font-size: 25px;
 }
 
 .description {
     margin: 0px 20px 20px 20px;
-    color: #aeaeae;
+    color: $light-gray;
     text-overflow: ellipsis;
     overflow: hidden;
 }
@@ -42,7 +44,7 @@
 }
 
 .taskStarted {
-    color: #aeaeae;
+    color: $light-gray;
     margin-bottom: 8px;
 }
 
@@ -51,19 +53,19 @@
 }
 
 .subtask {
-    background-color: #f9f9f9;
+    background-color: $off-white;
     margin: 8px 8px 8px 0px;
     padding: 4px 6px 4px 10px;
     border-radius: 7px;
-    border: 2px solid #e0e0e0;
-    color: #041287;
+    border: 2px solid $reddish-gray;
+    color: $theme-primary-alt;
     display: flex;
     justify-content: space-between;
 }
 
 .subtaskStatus {
     margin-left: 8px;
-    color: #01a338;
+    color: $green;
 }
 
 .taskStatus {
@@ -91,11 +93,11 @@
 }
 
 .toBeDecided {
-    background-color: #f9f9f9;
+    background-color: $off-white;
     font-size: 15px;
     border-radius: 7px;
-    border: 2px solid #e0e0e0;
-    color: #041287;
+    border: 2px solid $reddish-gray;
+    color: $theme-primary-alt;
     justify-content: space-between;
 }
 

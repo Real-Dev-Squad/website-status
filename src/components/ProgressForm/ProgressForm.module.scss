@@ -1,24 +1,18 @@
+@import '../../styles/variables.scss';
+
 $base-unit: 4px;
 $base-font-size: 0.3rem;
-$color-blue: #041187;
-$color-red: #e30062;
-$color-green: #85da6b;
-$color-disabled: #e5e7eb;
-$color-white: #fff;
-$color-black: #000;
 $diff-margin: $base-unit * 15;
 $similar-margin: $base-unit * 8;
 $section-padding-top-bottom: $base-unit * 30;
 $section-padding-left-right: $base-unit * 25;
-$theme-inputFieldBorder: #d1d5db;
-$theme-focusHighlight: #1c64f2;
 
 .progressUpdateContainer {
     padding: 2rem;
     position: relative;
 }
 .mark {
-    color: $color-red;
+    color: $theme-cerise-red;
     text-decoration: underline;
 }
 
@@ -28,7 +22,7 @@ $theme-focusHighlight: #1c64f2;
 }
 
 .formHeading {
-    color: $color-blue;
+    color: $theme-primary-alt;
     font-size: $base-unit * 8;
 }
 
@@ -48,7 +42,7 @@ $theme-focusHighlight: #1c64f2;
 }
 
 .input {
-    border: 2px solid $theme-inputFieldBorder;
+    border: 2px solid lighten($light-gray, 10%);
     display: block;
     resize: none;
     padding: $base-unit * 2;
@@ -59,7 +53,7 @@ $theme-focusHighlight: #1c64f2;
 }
 
 .input:focus {
-    border: 2px solid $theme-focusHighlight;
+    border: 2px solid $royal-blue;
     outline: none;
 }
 
@@ -72,20 +66,20 @@ $theme-focusHighlight: #1c64f2;
     align-items: center;
     justify-content: center;
     font-size: $base-font-size * 4;
-    color: $color-white;
-    background-color: $color-blue;
+    color: $white;
+    background-color: $theme-primary-alt;
     border: none;
     border-radius: $base-unit * 2;
     cursor: pointer;
 
     &:hover {
-        background-color: darken($color-blue, 10%);
+        background-color: darken($theme-primary-alt, 10%);
     }
 
     &:disabled {
         color: var(--toastify-spinner-color);
         cursor: not-allowed;
-        background-color: $color-disabled;
+        background-color: $lighter-gray;
     }
 }
 

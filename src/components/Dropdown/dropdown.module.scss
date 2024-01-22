@@ -1,11 +1,4 @@
-$dropdown-hover: #d0e7ff;
-$white: #fff;
-$theme-blue: #1d1283;
-$theme-active: #87d870;
-$black: #000;
-$dropdown-item: #0d6efd;
-$box-shadow-1: rgba(60, 64, 67, 0.3);
-$box-shadow-2: rgba(60, 64, 67, 0.15);
+@import '../../styles/variables.scss';
 
 .dropdown {
     width: 150px;
@@ -20,8 +13,9 @@ $box-shadow-2: rgba(60, 64, 67, 0.15);
     padding: 15px 0;
     font-size: 0.87rem;
     justify-content: center;
-    background-color: #fffbfb;
-    box-shadow: $box-shadow-1 0 1px 2px 0, $box-shadow-2 0 2px 6px 2px;
+    background-color: $very-light-gray;
+    box-shadow: rgba($baltic-sea, 0.3) 0 1px 2px 0,
+        rgba($baltic-sea, 0.15) 0 2px 6px 2px;
 
     .dropdownList {
         padding: 0;
@@ -31,7 +25,7 @@ $box-shadow-2: rgba(60, 64, 67, 0.15);
     .dropdownItem {
         padding: 15px 30px;
         list-style-type: none;
-        color: $dropdown-item;
+        color: $royal-blue;
         cursor: pointer;
         font-weight: 700;
         font-family: 'Roboto', sans-serif;
@@ -39,7 +33,7 @@ $box-shadow-2: rgba(60, 64, 67, 0.15);
     }
 
     .dropdownItem:hover {
-        background-color: $dropdown-hover;
+        background-color: lighten($royal-blue, 30%);
         transition: background-color 0.38s ease-in;
     }
 

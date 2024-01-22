@@ -3,7 +3,7 @@ import TaskContainer from './TaskContainer';
 import Details from './Details';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import classNames from './task-details.module.scss';
+import styles from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import {
     useGetTaskDetailsQuery,
@@ -38,7 +38,7 @@ export function Button(props: ButtonProps) {
     return (
         <button
             type="button"
-            className={classNames['button']}
+            className={styles['button']}
             onClick={() => clickHandler(value ?? true)}
         >
             {buttonName}
@@ -50,7 +50,7 @@ export function Textarea(props: TextAreaProps) {
 
     return (
         <textarea
-            className={classNames['textarea']}
+            className={styles['textarea']}
             name={name}
             value={value}
             onChange={onChange}
@@ -202,12 +202,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     function renderLoadingComponent() {
         if (isLoading) {
-            return <p className={classNames.textCenter}>Loading...</p>;
+            return <p className={styles.textCenter}>Loading...</p>;
         }
         if (isError) {
-            return (
-                <p className={classNames.textCenter}>Something went wrong!</p>
-            );
+            return <p className={styles.textCenter}>Something went wrong!</p>;
         }
     }
 
@@ -241,8 +239,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
             {shouldRenderParentContainer() && (
-                <div className={classNames.parentContainer}>
-                    <div className={classNames.titleContainer}>
+                <div className={styles.parentContainer}>
+                    <div className={styles.titleContainer}>
                         {isEditing ? (
                             <Textarea
                                 name="title"
@@ -254,7 +252,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         ) : (
                             <span
                                 data-testid="task-title"
-                                className={classNames.taskTitle}
+                                className={styles.taskTitle}
                             >
                                 {taskDetailsData?.title}
                             </span>
@@ -268,7 +266,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 />
                             )
                         ) : (
-                            <div className={classNames.editMode}>
+                            <div className={styles.editMode}>
                                 <Button
                                     buttonName="Cancel"
                                     clickHandler={onCancel}
@@ -281,8 +279,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         )}
                     </div>
 
-                    <section className={classNames.detailsContainer}>
-                        <section className={classNames.leftContainer}>
+                    <section className={styles.detailsContainer}>
+                        <section className={styles.leftContainer}>
                             <TaskContainer title="Description" hasImg={false}>
                                 {isEditing ? (
                                     <Textarea
@@ -303,7 +301,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             <TaskContainer title="Details" hasImg={false}>
                                 <div
                                     className={
-                                        classNames['sub_details_grid_container']
+                                        styles['sub_details_grid_container']
                                     }
                                 >
                                     <Details
@@ -378,7 +376,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             </>
                         </section>
 
-                        <section className={classNames.rightContainer}>
+                        <section className={styles.rightContainer}>
                             <TaskContainer
                                 src="/participant_logo.png"
                                 title="Participants"
@@ -397,7 +395,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 <DevFeature>
                                     {isEditing && isUserAuthorized && (
                                         <div
-                                            className={`${classNames.assigneeSuggestionInput} ${classNames.assignedToSection}`}
+                                            className={`${styles.assigneeSuggestionInput} ${styles.assignedToSection}`}
                                         >
                                             <Suggestions
                                                 assigneeName={assigneeName}
@@ -466,7 +464,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <button
                                     data-testid="update-progress-button"
-                                    className={classNames.button}
+                                    className={styles.button}
                                     onClick={() =>
                                         router.push(
                                             `/progress/${taskID}?dev=true`
@@ -483,7 +481,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 >
                                     <button
                                         data-testid="request-task-button"
-                                        className={classNames.button}
+                                        className={styles.button}
                                         onClick={toggleTaskRequestModal}
                                     >
                                         Request for task

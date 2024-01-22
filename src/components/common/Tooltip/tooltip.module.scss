@@ -11,7 +11,7 @@
     padding: 6px 10px;
     border-radius: 5px;
     text-align: center;
-    color: $color-white;
+    color: $white;
     z-index: 1;
     font-weight: 600;
     font-size: 1rem;
@@ -27,7 +27,7 @@
         left: 8rem;
         right: 8rem;
         width: 13px;
-        background: #1d1283;
+        background: $theme-primary;
     }
 }
 

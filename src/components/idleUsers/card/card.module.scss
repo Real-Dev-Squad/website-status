@@ -1,9 +1,8 @@
-$theme-blue: #1d1283;
-$theme-pink: #e30464;
+@import '../../../styles/variables.scss';
 
 .card {
-    border: 2px solid black;
-    color: $theme-blue;
+    border: 2px solid $black;
+    color: $theme-primary;
     border-radius: 10px;
     padding: 1.5rem;
     display: flex;
@@ -17,8 +16,9 @@ $theme-pink: #e30464;
     width: 15rem;
 
     &:hover {
-        color: $theme-pink;
-        box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+        color: $theme-cerise-red;
+        box-shadow: 0 4px 8px 0 rgba($black, 0.2),
+            0 6px 20px 0 rgba($black, 0.19);
     }
 
     img {

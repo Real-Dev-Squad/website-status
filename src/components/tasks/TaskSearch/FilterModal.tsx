@@ -1,4 +1,4 @@
-import className from './tasksearch.module.scss';
+import styles from './tasksearch.module.scss';
 import {
     Tab,
     depreciatedTaskStatus,
@@ -35,25 +35,22 @@ const FilterModal = ({
             {dev && (
                 <div
                     onClick={onClose}
-                    className={className['filter-modal-background']}
+                    className={styles['filter-modal-background']}
                 ></div>
             )}
             <div
-                className={`${className['filter-modal']} ${
-                    dev ? className['filter-modal-dev'] : ''
+                className={`${styles['filter-modal']} ${
+                    dev ? styles['filter-modal-dev'] : ''
                 }`}
                 data-testid="filter-modal"
             >
-                <div className={className['filter-modal-title']}>
+                <div className={styles['filter-modal-title']}>
                     <span>Filter</span>
-                    <span
-                        className={className['close-button']}
-                        onClick={onClose}
-                    >
+                    <span className={styles['close-button']} onClick={onClose}>
                         &times;
                     </span>
                 </div>
-                <div className={className['status-filter']}>
+                <div className={styles['status-filter']}>
                     {tabs
                         .filter((tab: Tab) =>
                             dev
@@ -64,9 +61,9 @@ const FilterModal = ({
                         .map((tab) => (
                             <button
                                 key={tab}
-                                className={`${className['status-button']} ${
+                                className={`${styles['status-button']} ${
                                     activeTab === tab
-                                        ? className['status-button-active']
+                                        ? styles['status-button-active']
                                         : ''
                                 }`}
                                 onClick={() => {

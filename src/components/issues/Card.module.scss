@@ -1,13 +1,11 @@
 @use '../../styles/issues.module.scss' as styles;
+@import '../../styles/variables.scss';
 
-$card-text: #78716c;
-$color-grey: #a9a9a9;
-$dark-blue-transparent: rgb(29 18 255 / 10%);
 .card {
     padding: 1rem;
     width: 100%;
-    background: #fff;
-    border: 1px solid styles.$border-color;
+    background: $white;
+    border: 1px solid lighten($light-gray, 20%);
     border-radius: 0.5rem;
     transition: 0.2s ease-out;
     display: flex;
@@ -16,7 +14,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
     position: relative;
     overflow: hidden;
     &:hover {
-        border-color: #e5e5e5;
+        border-color: $light-gray;
     }
 
     @media (max-width: 64rem) {
@@ -92,7 +90,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
 .trackMessage {
     margin: 0;
     font-size: 0.8rem;
-    color: $color-grey;
+    color: $light-gray;
     font-weight: 700;
     margin-bottom: 2px;
 }
@@ -130,14 +128,14 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
 }
 
 .description_box::placeholder {
-    color: $color-grey;
+    color: $light-gray;
 }
 
 .assign_label {
     line-height: 1rem;
     margin-bottom: 2px;
     font-size: 0.8rem;
-    color: #a9a9a9;
+    color: $light-gray;
     font-weight: 700;
 }
 
@@ -159,7 +157,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
 .input_select {
     padding: 0 4px 0 4px;
     height: 2rem;
-    border: 1px solid #1f1f1f;
+    border: 1px solid $dark-grayish-red;
     border-radius: 4px;
     outline: none;
 }
@@ -169,7 +167,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
     -moz-appearance: none;
     padding: 0 4px 0 4px;
     height: 2rem;
-    border: 1px solid #1f1f1f;
+    border: 1px solid $dark-grayish-red;
     border-radius: 4px;
     outline: none;
 }
@@ -185,7 +183,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
 }
 
 .highlightTaskTab {
-    border-bottom: styles.$color-blue solid 2px;
+    border-bottom: $theme-primary-alt solid 2px;
     transition: 150ms ease-in-out;
 }
 .suggestions_container {
@@ -197,7 +195,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
 
 .suggestions_container_disabled {
     pointer-events: none;
-    color: #a9a9a9;
+    color: $light-gray;
 }
 
 .card__top__details__button {
@@ -231,7 +229,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
     margin-bottom: 0.5rem;
 
     a {
-        color: styles.$link-text;
+        color: $bright-blue;
         text-decoration: none;
         margin-left: 0.2rem;
 
@@ -241,22 +239,15 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
     }
 }
 
-.card__body__description {
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-}
-
 .card__link {
     font-family: 'Inter';
     font-style: normal;
     font-size: 0.8rem;
     line-height: 140%;
-    color: $card-text;
+    color: $grayish-brown;
 
     & a {
-        color: styles.$link-text;
+        color: $bright-blue;
         text-decoration: none;
 
         &:hover {
@@ -271,7 +262,7 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
     font-size: 0.8rem;
     border: none;
     border-radius: 1.25rem;
-    background: styles.$link-bg;
+    background: lighten($bright-blue, 40%);
     font-weight: 500;
     font-family: 'Inter';
     margin-right: 0.5rem;
@@ -291,19 +282,19 @@ $dark-blue-transparent: rgb(29 18 255 / 10%);
 
     img {
         max-width: 100%;
-        border: 1px solid $card-text;
+        border: 1px solid $grayish-brown;
         border-radius: 0.5rem;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        border: 1px solid $card-text;
+        border: 1px solid $grayish-brown;
         border-radius: 0.5rem;
 
         th,
         td {
-            border: 1px solid $card-text;
+            border: 1px solid $grayish-brown;
             padding: 0.5rem;
         }
     }
