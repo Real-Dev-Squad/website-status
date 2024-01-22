@@ -3,7 +3,7 @@ import {
     GithubInfo,
     SuggestionListProps,
 } from '@/interfaces/suggestionBox.type';
-import classNames from '@/components/tasks/SuggestionBox/suggestion.module.scss';
+import styles from '@/components/tasks/SuggestionBox/suggestion.module.scss';
 
 const SuggestionList: FC<SuggestionListProps> = ({
     suggestions,
@@ -19,14 +19,14 @@ const SuggestionList: FC<SuggestionListProps> = ({
     };
 
     return (
-        <ul className={classNames['suggestions']} data-testid="suggestions">
+        <ul className={styles['suggestions']} data-testid="suggestions">
             {suggestions.map((suggestion: GithubInfo, index: number) => {
                 return (
                     <li
                         key={suggestion.github_id}
                         className={
                             index === selected
-                                ? classNames['suggestions-selected']
+                                ? styles['suggestions-selected']
                                 : ''
                         }
                         onClick={clickHandler}

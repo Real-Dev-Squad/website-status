@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Card from '@/components/Card/index';
 import prDetails from '@/components/pullRequests/PRDetails';
-import classNames from '@/components/pullRequests/section/section.module.scss';
+import styles from '@/components/pullRequests/section/section.module.scss';
 
 import moment from 'moment';
 
@@ -46,9 +46,9 @@ function cards(content: Array<pullRequestType>) {
 }
 
 const Section: FC<Props> = ({ heading, content }) => (
-    <div className={classNames.section}>
-        <div className={classNames.heading}>{heading}</div>
-        <div className={classNames.cardContainer}>{cards(content)}</div>
+    <div className={styles.section}>
+        <div className={styles.heading}>{heading}</div>
+        <div className={styles.cardContainer}>{cards(content)}</div>
     </div>
 );
 

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import classNames from '@/components/Card/card.module.scss';
+import styles from '@/components/Card/card.module.scss';
 import Image from 'next/image';
 
 const DUMMY_PROFILE_PICTURE = 'dummyProfile.png';
@@ -41,8 +41,8 @@ const Card: FC<Props> = ({
     const { text: tileText } = title;
 
     const informationElement = (key: string, value: string) => (
-        <span className={classNames.statusElement}>
-            <span className={classNames.statusLable}>{`${key}: `}</span>
+        <span className={styles.statusElement}>
+            <span className={styles.statusLable}>{`${key}: `}</span>
             <strong>{value}</strong>
         </span>
     );
@@ -50,8 +50,8 @@ const Card: FC<Props> = ({
     return (
         <div
             className={`
-        ${classNames.card}
-        ${title.link && classNames.links}
+        ${styles.card}
+        ${title.link && styles.links}
       `}
             onClick={() => {
                 if (title.link) {
@@ -66,7 +66,7 @@ const Card: FC<Props> = ({
             role="button"
             tabIndex={0}
         >
-            <span className={classNames.title} title={tileText}>
+            <span className={styles.title} title={tileText}>
                 {tileText}
             </span>
 
@@ -79,8 +79,8 @@ const Card: FC<Props> = ({
             </div>
 
             {assignee && (
-                <div className={classNames.cardFooter}>
-                    <div className={classNames.profilePicture}>
+                <div className={styles.cardFooter}>
+                    <div className={styles.profilePicture}>
                         <Image
                             src={assignee.imgUrl}
                             alt={assignee.userName}
@@ -92,12 +92,12 @@ const Card: FC<Props> = ({
             )}
 
             {participants && (
-                <div className={classNames.Center}>
-                    <ul className={classNames.participantsLists}>
+                <div className={styles.Center}>
+                    <ul className={styles.participantsLists}>
                         {participants.map((participant) => (
                             <li
                                 key={participant.userName}
-                                className={classNames.participantsList}
+                                className={styles.participantsList}
                             >
                                 <Image
                                     src={participant.imgUrl}
@@ -114,17 +114,17 @@ const Card: FC<Props> = ({
             )}
 
             {button && (
-                <div className={classNames.Center}>
+                <div className={styles.Center}>
                     <a
                         href={button?.link}
-                        className={classNames.links}
+                        className={styles.links}
                         target="_blank"
                         rel="noreferrer"
                     >
                         <button
                             type="button"
                             onClick={button?.onClick}
-                            className={classNames.activeBtn}
+                            className={styles.activeBtn}
                         >
                             {button.text}
                         </button>

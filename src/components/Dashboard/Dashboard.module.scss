@@ -1,9 +1,4 @@
-$color-blue: #041187;
-$color-red: #e30062;
-$color-green: #85da6b;
-$color-disabled: #7c7e82;
-$color-white: #fff;
-$color-black: #000;
+@import '../../styles/variables.scss';
 
 .container {
     margin: 40px auto;
@@ -24,18 +19,18 @@ $color-black: #000;
 }
 
 .btn {
-    background-color: $color-blue;
+    background-color: $theme-primary-alt;
     border-radius: 4px;
-    color: white;
-    background-color: $color-blue;
+    color: $white;
+    background-color: $theme-primary-alt;
     border: none;
     padding: 12px 60px;
     cursor: pointer;
 }
 
 .btn:disabled {
-    color: white;
-    background-color: $color-disabled;
+    color: $white;
+    background-color: $light-gray;
     cursor: not-allowed;
 }
 

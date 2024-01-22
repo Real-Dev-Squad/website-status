@@ -4,7 +4,7 @@ import { TaskDependencyProps } from '@/interfaces/taskDetails.type';
 import DependencyList from '@/components/taskDetails/taskDependency/DependencyList';
 import useDebounce from '@/hooks/useDebounce';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import classNames from '../task-details.module.scss';
+import styles from '../task-details.module.scss';
 
 interface Task {
     id: string;
@@ -31,7 +31,7 @@ const TaskCheckbox: FC<{
     selectedTasks: Task[];
     handleSelectTask: (task: Task) => void;
 }> = ({ tasks, selectedTasks, handleSelectTask }) => (
-    <div className={classNames['task_dependency_search_dropdown']}>
+    <div className={styles['task_dependency_search_dropdown']}>
         {tasks.map((task: Task) => (
             <div key={task.id}>
                 <input

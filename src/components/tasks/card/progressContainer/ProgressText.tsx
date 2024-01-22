@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import { handleProgressTextProps } from '@/interfaces/task.type';
 import { Loader } from '../Loader';
 
@@ -12,7 +12,7 @@ const ProgressText: FC<handleProgressTextProps> = ({
     }
     return (
         <button
-            className={classNames.changeProgressText}
+            className={styles.changeProgressText}
             onClick={() => handleProgressUpdate()}
         >
             UPDATE

@@ -1,5 +1,5 @@
 import { ElementRef } from 'react';
-import classNames from '@/styles/tasks.module.scss';
+import styles from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
 import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect, useRef } from 'react';
@@ -143,7 +143,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
     return (
-        <div className={classNames.tasksContainer}>
+        <div className={styles.tasksContainer}>
             <TaskSearch
                 dev={dev}
                 onSelect={(selectedTab: Tab) =>
@@ -157,7 +157,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
             {dev !== true ? (
                 <>
                     <div
-                        className={classNames['status-tabs-container']}
+                        className={styles['status-tabs-container']}
                         data-testid="status-tabs-container"
                     >
                         <TabSection
@@ -173,7 +173,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                         />
                     </div>
                     <div
-                        className={classNames['status-select-container']}
+                        className={styles['status-select-container']}
                         data-testid="status-select-container"
                     >
                         <Select

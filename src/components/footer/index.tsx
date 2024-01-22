@@ -1,9 +1,9 @@
 import React from 'react';
-import classNames from '@/components/footer/footer.module.scss';
+import styles from '@/components/footer/footer.module.scss';
 import Link from 'next/link';
 
 const Footer = () => (
-    <footer className={classNames.infoRepo}>
+    <footer className={styles.infoRepo}>
         <p>
             The contents of this website are deployed from this{' '}
             <Link

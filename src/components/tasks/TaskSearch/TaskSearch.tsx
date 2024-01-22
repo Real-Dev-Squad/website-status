@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import className from './tasksearch.module.scss';
+import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import FilterModal from './FilterModal';
 import useDebounce from '@/hooks/useDebounce';
@@ -252,15 +252,9 @@ const TaskSearch = ({
         window.addEventListener('resize', onResizeHandler);
     }, []);
     return (
-        <div className={className['task-search-container']}>
-            <div
-                id="filter-container"
-                className={className['filter-container']}
-            >
-                <div
-                    className={className['filter-button']}
-                    onClick={handleModal}
-                >
+        <div className={styles['task-search-container']}>
+            <div id="filter-container" className={styles['filter-container']}>
+                <div className={styles['filter-button']} onClick={handleModal}>
                     Filter
                     {modalOpen && (
                         <FilterModal
@@ -276,12 +270,12 @@ const TaskSearch = ({
                 {dev ? (
                     <div
                         id="search-bar-div"
-                        className={className['search-bar-div']}
+                        className={styles['search-bar-div']}
                     >
                         <div
                             data-testid="pill-input-wrapper"
                             style={{ position: 'relative' }}
-                            className={className['pill-input-wrapper']}
+                            className={styles['pill-input-wrapper']}
                             onClick={handleClickOutside}
                         >
                             {selectedOptions.map((value, key) => (
@@ -304,7 +298,7 @@ const TaskSearch = ({
                                     style={{
                                         width: `${typedInput.length * 1.3}%`,
                                     }}
-                                    className={className['search-input-parent']}
+                                    className={styles['search-input-parent']}
                                 >
                                     <input
                                         ref={userInputRef}
@@ -313,10 +307,10 @@ const TaskSearch = ({
                                         }
                                         onBlur={() => setSuggestionModal(false)}
                                         className={`task-search-input ${
-                                            className['search-input-dev']
+                                            styles['search-input-dev']
                                         } ${
                                             pillToBeRemoved !== -1
-                                                ? className['remove-caret']
+                                                ? styles['remove-caret']
                                                 : ''
                                         }`}
                                         data-testid="search-input"
@@ -351,7 +345,7 @@ const TaskSearch = ({
                     </div>
                 ) : (
                     <input
-                        className={className['search-input']}
+                        className={styles['search-input']}
                         data-testid="search-input"
                         type="text"
                         placeholder="Eg: status:in-progress assignee:sunny-s Build a feature"
@@ -362,9 +356,9 @@ const TaskSearch = ({
                     />
                 )}
             </div>
-            <div className={className['search-button-container']}>
+            <div className={styles['search-button-container']}>
                 <button
-                    className={className['search-button']}
+                    className={styles['search-button']}
                     data-testid="search-button"
                     onClick={searchButtonHandler}
                 >

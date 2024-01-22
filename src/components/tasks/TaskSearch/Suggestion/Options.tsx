@@ -1,5 +1,5 @@
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
-import className from './option.module.scss';
+import styles from './option.module.scss';
 import Option from './Option';
 interface SuggestionCoordinates {
     left: number | null;
@@ -27,7 +27,7 @@ export default function Options({
                 width: 'auto',
                 top: style.top || 'auto',
             }}
-            className={className['suggestion-box']}
+            className={styles['suggestion-box']}
         >
             {suggestions.length > 0 ? (
                 <div data-testid="suggestion-box" className="suggestion-box">
@@ -43,7 +43,7 @@ export default function Options({
                 </div>
             ) : (
                 <div
-                    className={`${className['suggestion-box']} ${className['empty-box']}`}
+                    className={`${styles['suggestion-box']} ${styles['empty-box']}`}
                 >
                     No suggestion found
                 </div>
