@@ -335,7 +335,7 @@
     left: 0;
     bottom: 0;
     pointer-events: none;
-    background-color: lighten($black, 80%);
+    background-color: rgba($black, 0.2);
     display: grid;
     place-content: center;
     z-index: 5;
