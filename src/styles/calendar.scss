@@ -1,0 +1,56 @@
+.react-calendar .OOO {
+    background: #000000;
+    color: #ffffff;
+}
+
+.react-calendar .sunday {
+    background: #727270;
+    color: #ffffff;
+}
+
+.react-calendar .IDLE {
+    background: #f3e496;
+    color: #000000;
+}
+
+.calendar-container {
+    padding: 20px;
+    max-width: 750px;
+    width: 100%;
+    margin: auto;
+}
+
+.calendar-div {
+    width: 100%;
+}
+
+.calendar {
+    max-width: 90%;
+    margin-top: 20px;
+}
+
+.messageDiv {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    padding: 20px;
+    width: 350px;
+    max-width: 90%;
+    background-color: #e5e7eb;
+    color: #000000;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.messageDiv:before {
+    content: '';
+    position: absolute;
+    top: -9px;
+    left: calc(50% - 5px);
+    width: 0;
+    border-bottom: 10px solid #e5e7eb;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
