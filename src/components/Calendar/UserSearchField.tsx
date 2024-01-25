@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, useRef } from 'react';
 import classNames from './UserSearchField.module.scss';
 import { useGetAllUsersQuery } from '@/app/services/usersApi';
 import { logs } from '@/constants/calendar';
@@ -8,7 +8,27 @@ type SearchFieldProps = {
     loading: boolean;
 };
 
+function useOutsideAlerter(ref: any, handleOutsideClick: any) {
+    useEffect(() => {
+        function handleClickOutside(event: any) {
+            if (ref.current && !ref.current.contains(event.target)) {
+                handleOutsideClick();
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [ref]);
+}
+
 const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
+    const handleOutsideClick = () => {
+        setDisplayList([]);
+    };
+    const suggestionInputRef = useRef(null);
+    useOutsideAlerter(suggestionInputRef, handleOutsideClick);
     const [searchText, setSearchText] = useState<string>('');
     const onSearchTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
         setSearchText(e.target.value);
@@ -76,6 +96,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
                 handleOnSubmit(e);
             }}
             data-testid="issue-form"
+            ref={suggestionInputRef}
         >
             <input
                 placeholder="Enter username"
