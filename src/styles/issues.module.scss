@@ -12,7 +12,7 @@
     cursor: pointer;
 
     &:disabled {
-        background-color: lighten($lighter-gray, 5%);
+        background-color: lighten($lighter-gray, 10%);
         color: darken($grayish-brown, 10%);
         cursor: default;
     }

@@ -21,7 +21,7 @@
     min-height: 100vh;
 
     .container-back {
-        background-color: lighten($black, 20%);
+        background-color: rgba($black, 0.6);
         position: absolute;
         top: 0;
         left: 0;
