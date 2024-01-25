@@ -10,16 +10,16 @@ interface LOG_DATA {
     taskTitle: string;
 }
 
-const getDateWithTimeOfStartingTheDay = (date: Date): Date => {
+export const getStartOfDay = (date: Date): Date => {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 };
 
-const getDatesInRange = (startDate: Date, endDate: Date) => {
-    const date = getDateWithTimeOfStartingTheDay(startDate);
+export const getDatesInRange = (startDate: Date, endDate: Date) => {
+    const date = getStartOfDay(startDate);
     const dates = [];
 
-    while (date <= getDateWithTimeOfStartingTheDay(endDate)) {
-        dates.push(getDateWithTimeOfStartingTheDay(date).getTime());
+    while (date <= getStartOfDay(endDate)) {
+        dates.push(getStartOfDay(date).getTime());
         date.setDate(date.getDate() + 1);
     }
 
