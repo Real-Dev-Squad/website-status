@@ -1,35 +1,33 @@
-import React, { ChangeEvent, FC, useState, useEffect, useRef } from 'react';
-import TaskContainer from './TaskContainer';
-import Details from './Details';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import styles from './task-details.module.scss';
-import { useRouter } from 'next/router';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-
+import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
+import Layout from '@/components/Layout';
+import TaskDependency from '@/components/taskDetails/taskDependency';
+import { BACKEND_TASK_STATUS } from '@/constants/task-status';
+import { TASK_REQUEST_TYPES } from '@/constants/tasks';
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
+import { ToastTypes, toast } from '@/helperFunctions/toast';
 import useUserData from '@/hooks/useUserData';
+import task from '@/interfaces/task.type';
 import {
     ButtonProps,
     TextAreaProps,
     taskDetailsDataType,
 } from '@/interfaces/taskDetails.type';
-import Layout from '@/components/Layout';
-import TaskDependency from '@/components/taskDetails/taskDependency';
-import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
-import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
+import { useRouter } from 'next/router';
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 import Progress from '../ProgressCard';
 import TaskManagementModal from '../issues/TaskManagementModal';
-import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 import { TaskRequestData } from '../issues/constants';
-import ProgressContainer from '../tasks/card/progressContainer';
-import DevFeature from '../DevFeature';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
-import task from '@/interfaces/task.type';
+import ProgressContainer from '../tasks/card/progressContainer';
+import Details from './Details';
+import TaskContainer from './TaskContainer';
+import styles from './task-details.module.scss';
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
@@ -312,33 +310,33 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Priority'}
                                         value={taskDetailsData?.priority}
                                     />
-                                    <DevFeature>
-                                        {isEditing && (
-                                            <label>
-                                                Status:
-                                                <select
-                                                    name="status"
-                                                    onChange={
-                                                        handleTaskStatusUpdate
-                                                    }
-                                                    value={
-                                                        editedTaskDetails?.status
-                                                    }
-                                                >
-                                                    {taskStatus.map(
-                                                        ([name, status]) => (
-                                                            <option
-                                                                key={status}
-                                                                value={status}
-                                                            >
-                                                                {name}
-                                                            </option>
-                                                        )
-                                                    )}
-                                                </select>
-                                            </label>
-                                        )}
-                                    </DevFeature>
+
+                                    {isEditing && (
+                                        <label>
+                                            Status:
+                                            <select
+                                                name="status"
+                                                onChange={
+                                                    handleTaskStatusUpdate
+                                                }
+                                                value={
+                                                    editedTaskDetails?.status
+                                                }
+                                            >
+                                                {taskStatus.map(
+                                                    ([name, status]) => (
+                                                        <option
+                                                            key={status}
+                                                            value={status}
+                                                        >
+                                                            {name}
+                                                        </option>
+                                                    )
+                                                )}
+                                            </select>
+                                        </label>
+                                    )}
+
                                     <Details
                                         detailType={'Status'}
                                         value={taskDetailsData?.status}
@@ -350,13 +348,12 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
-                                    <DevFeature>
-                                        {isUserAuthorized && (
-                                            <ProgressContainer
-                                                content={taskDetailsData}
-                                            />
-                                        )}
-                                    </DevFeature>
+
+                                    {isUserAuthorized && (
+                                        <ProgressContainer
+                                            content={taskDetailsData}
+                                        />
+                                    )}
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />
@@ -392,28 +389,24 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                               )
                                     }
                                 />
-                                <DevFeature>
-                                    {isEditing && isUserAuthorized && (
-                                        <div
-                                            className={`${styles.assigneeSuggestionInput} ${styles.assignedToSection}`}
-                                        >
-                                            <Suggestions
-                                                assigneeName={assigneeName}
-                                                showSuggestion={showSuggestion}
-                                                handleClick={
-                                                    handleAssigneSelect
-                                                }
-                                                handleAssignment={
-                                                    handleAssignment
-                                                }
-                                                setShowSuggestion={
-                                                    setShowSuggestion
-                                                }
-                                                ref={inputRef}
-                                            />
-                                        </div>
-                                    )}
-                                </DevFeature>
+
+                                {isEditing && isUserAuthorized && (
+                                    <div
+                                        className={`${styles.assigneeSuggestionInput} ${styles.assignedToSection}`}
+                                    >
+                                        <Suggestions
+                                            assigneeName={assigneeName}
+                                            showSuggestion={showSuggestion}
+                                            handleClick={handleAssigneSelect}
+                                            handleAssignment={handleAssignment}
+                                            setShowSuggestion={
+                                                setShowSuggestion
+                                            }
+                                            ref={inputRef}
+                                        />
+                                    </div>
+                                )}
+
                                 <Details
                                     detailType={'Reporter'}
                                     value={'Ankush'}
@@ -435,28 +428,25 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     detailType={'Ends On'}
                                     value={getEndsOn(taskDetailsData?.endsOn)}
                                 />
-                                <DevFeature>
-                                    {isEditing && (
-                                        <>
-                                            <label htmlFor="endsOnTaskDetails">
-                                                Ends On:
-                                            </label>
-                                            <input
-                                                id="endsOnTaskDetails"
-                                                type="date"
-                                                name="endsOn"
-                                                onChange={(e) => {
-                                                    setNewEndOnDate(
-                                                        e.target.value
-                                                    );
-                                                }}
-                                                onBlur={handleBlurOfEndsOn}
-                                                value={newEndOnDate}
-                                                data-testid="endsOnTaskDetails"
-                                            />
-                                        </>
-                                    )}
-                                </DevFeature>
+
+                                {isEditing && (
+                                    <>
+                                        <label htmlFor="endsOnTaskDetails">
+                                            Ends On:
+                                        </label>
+                                        <input
+                                            id="endsOnTaskDetails"
+                                            type="date"
+                                            name="endsOn"
+                                            onChange={(e) => {
+                                                setNewEndOnDate(e.target.value);
+                                            }}
+                                            onBlur={handleBlurOfEndsOn}
+                                            value={newEndOnDate}
+                                            data-testid="endsOnTaskDetails"
+                                        />
+                                    </>
+                                )}
                             </TaskContainer>
                             <TaskContainer
                                 hasImg={false}

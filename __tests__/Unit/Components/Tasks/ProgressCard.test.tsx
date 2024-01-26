@@ -1,11 +1,12 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
 import { store } from '@/app/store';
-import { renderWithRouter } from '@/test_utils/createMockRouter';
-import { setupServer } from 'msw/node';
-import handlers from '../../../../__mocks__/handlers';
-import { mockGetTaskProgress } from '../../../../__mocks__/db/progresses';
 import ProgressCard from '@/components/ProgressCard';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { fireEvent, screen } from '@testing-library/react';
+import moment from 'moment';
+import { setupServer } from 'msw/node';
+import { Provider } from 'react-redux';
+import { mockGetTaskProgress } from '../../../../__mocks__/db/progresses';
+import handlers from '../../../../__mocks__/handlers';
 
 const server = setupServer(...handlers);
 
@@ -15,11 +16,21 @@ beforeAll(() => {
     });
 });
 
+const dateInAgoFormatOne = moment(
+    mockGetTaskProgress.data[0].createdAt
+).fromNow();
+const dateInAgoFormatTwo = moment(
+    mockGetTaskProgress.data[1].createdAt
+).fromNow();
+const dateInAgoFormatThree = moment(
+    mockGetTaskProgress.data[2].createdAt
+).fromNow();
+
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('ProgressCard Component', () => {
-    it('shuld render the ProgressCard', async () => {
+    it('should render the ProgressCard', async () => {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressCard taskProgress={mockGetTaskProgress.data} />
@@ -55,12 +66,12 @@ describe('ProgressCard Component', () => {
             </Provider>
         );
         const progressArr = container.querySelectorAll(
-            '[data-testid="progress-item"]'
+            '[data-testid="progress-update-card-date"]'
         );
-        expect(progressArr[0]).toHaveTextContent('Wednesday, 31 May 2023');
 
-        expect(progressArr[1]).toHaveTextContent('Wednesday, 31 May 2023');
-        expect(progressArr[2]).toHaveTextContent('Sunday, 28 May 2023');
+        expect(progressArr[0]).toHaveTextContent(dateInAgoFormatOne);
+        expect(progressArr[1]).toHaveTextContent(dateInAgoFormatTwo);
+        expect(progressArr[2]).toHaveTextContent(dateInAgoFormatThree);
     });
     it('should render the progress enteries in dscending order after Dsc btn click  ', async () => {
         const { container, getByRole } = renderWithRouter(
@@ -72,10 +83,16 @@ describe('ProgressCard Component', () => {
         const btn = getByRole('button', { name: 'Dsc' });
         fireEvent.click(btn);
         const progressArr = container.querySelectorAll(
-            '[data-testid="progress-item"]'
+            '[data-testid="progress-update-card-date"]'
         );
-        expect(progressArr[2]).toHaveTextContent('Wednesday, 31 May 2023');
-        expect(progressArr[1]).toHaveTextContent('Sunday, 28 May 2023');
-        expect(progressArr[0]).toHaveTextContent('Saturday, 27 May 2023');
+        expect(progressArr[progressArr.length - 1]).toHaveTextContent(
+            dateInAgoFormatOne
+        );
+        expect(progressArr[progressArr.length - 2]).toHaveTextContent(
+            dateInAgoFormatTwo
+        );
+        expect(progressArr[progressArr.length - 3]).toHaveTextContent(
+            dateInAgoFormatThree
+        );
     });
 });
