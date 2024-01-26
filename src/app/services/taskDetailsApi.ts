@@ -56,7 +56,10 @@ const getTasksDependencyDetailsQueryFn = async (
 
 export const taskDetailsApi = api.injectEndpoints({
     endpoints: (build) => ({
-        getTaskDetails: build.query<taskDetailsDataType, string>({
+        getTaskDetails: build.query<
+            taskDetailsDataType,
+            string[] | undefined | string
+        >({
             query: (taskId): string => `${TASKS_URL}/${taskId}/details`,
             providesTags: ['Task_Details'],
         }),
