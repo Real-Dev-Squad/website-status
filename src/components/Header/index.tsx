@@ -40,6 +40,9 @@ export const Header = () => {
                             router.pathname === pathName &&
                             (router.pathname === '/pull-requests'
                                 ? queryState === state
+                                : true) &&
+                            (router.pathname === '/tasks' && dev
+                                ? !router?.asPath?.includes('assignee-role%3A')
                                 : true)
                         }
                     />
@@ -53,7 +56,14 @@ export const Header = () => {
                             key={index}
                             title={title}
                             link={refURL}
-                            isActive={router.pathname === pathName}
+                            isActive={
+                                router.pathname === pathName &&
+                                (router.pathname === '/tasks'
+                                    ? router?.asPath?.includes(
+                                          'assignee-role%3A'
+                                      )
+                                    : true)
+                            }
                         />
                     )
                 )}

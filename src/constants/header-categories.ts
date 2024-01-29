@@ -44,4 +44,9 @@ export const devHeaderCategories = [
         refURL: '/availability-panel?dev=true',
         pathName: '/availability-panel',
     },
+    {
+        title: 'Tasks Assigned to Archived users',
+        refURL: '/tasks?q=assignee-role%3Aarchived&dev=true',
+        pathName: '/tasks',
+    },
 ];

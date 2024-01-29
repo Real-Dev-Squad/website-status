@@ -93,6 +93,7 @@ enum Tab {
     COMPLETED = 'COMPLETED',
     OVERDUE = 'OVERDUE',
     DONE = 'DONE',
+    ASSIGNEE_ARCHIVED = 'ASSIGNEE_ARCHIVED',
 }
 
 const TABS = Object.values(Tab);
@@ -123,6 +124,7 @@ export type GetAllTaskParamType = {
     size?: number;
     assignee?: string;
     title?: string;
+    assigneeRole?: string;
 };
 
 export type TabTasksData = {
@@ -139,6 +141,7 @@ export type TabTasksData = {
     COMPLETED: task[];
     OVERDUE: task[];
     DONE: task[];
+    ASSIGNEE_ARCHIVED: task[];
 };
 
 export type CardTaskDetails = task & {

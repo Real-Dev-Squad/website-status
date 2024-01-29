@@ -33,6 +33,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         status: taskStatus,
         assignees: queryAssignees,
         title: queryTitle,
+        assigneeRole,
     } = extractQueryParams(qQueryParam);
     const selectedTab = getActiveTab(taskStatus);
     const apiQueryAssignees = getAPIQueryParamAssignee(queryAssignees);
@@ -56,6 +57,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         status: selectedTab,
         assignee: apiQueryAssignees,
         title: queryTitle,
+        assigneeRole: assigneeRole,
         nextTasks,
     });
 
@@ -83,11 +85,16 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
     };
 
     const searchButtonHandler = (searchString?: string) => {
-        const { status, assignees, title } = extractQueryParams(
+        const { status, assignees, title, assigneeRole } = extractQueryParams(
             searchString || inputValue
         );
-        (searchString || inputValue) &&
-            searchNewTasks(status as Tab, assignees, title);
+        if (searchString || inputValue) {
+            if (assigneeRole) {
+                searchNewTasks(Tab.ASSIGNEE_ARCHIVED, assignees, title);
+            } else {
+                searchNewTasks(status as Tab, assignees, title);
+            }
+        }
     };
 
     useEffect(() => {

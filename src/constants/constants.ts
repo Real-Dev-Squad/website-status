@@ -23,6 +23,7 @@ export const TASK_STATUS_MAPING = {
     APPROVED: 'Approved',
     IN_REVIEW: 'In Review',
     NEEDS_REVIEW: 'Needs Review',
+    ASSIGNEE_ARCHIVED: 'Assignee Archived',
 };
 export const SEARCH_OPTIONS = ['title', 'assignee', 'status'];
 export const STATUSES = [

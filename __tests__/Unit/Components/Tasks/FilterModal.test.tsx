@@ -236,4 +236,48 @@ describe('FilterModal', () => {
         const doneButton = screen.getByText(/done/i);
         expect(doneButton).not.toHaveClass('status-button-active');
     });
+    test('Assignee Archived Modal should be visibel in tasks page when dev=true', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.ASSIGNEE_ARCHIVED, Tab.ALL]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.ALL}
+                onClose={mockOnClose}
+            />
+        );
+
+        const assignee_archivedButton = screen.getByText(/assignee archived/i);
+        expect(assignee_archivedButton).toBeInTheDocument();
+    });
+    test('Assignee Archived should not be visible when dev!=true', () => {
+        render(
+            <FilterModal
+                dev={false}
+                tabs={[Tab.ASSIGNEE_ARCHIVED, Tab.ALL]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.ALL}
+                onClose={mockOnClose}
+            />
+        );
+
+        expect(
+            screen.queryByText(/assignee archived/i)
+        ).not.toBeInTheDocument();
+    });
+    test('Clicking on Assignee Archived from filter modal should call hte onSelect function with the right props', () => {
+        render(
+            <FilterModal
+                dev={true}
+                tabs={[Tab.ASSIGNEE_ARCHIVED, Tab.ALL]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.ALL}
+                onClose={mockOnClose}
+            />
+        );
+
+        const assignee_archivedButton = screen.getByText(/assignee archived/i);
+        fireEvent.click(assignee_archivedButton);
+        expect(mockOnSelect).toBeCalledWith(Tab.ASSIGNEE_ARCHIVED);
+    });
 });

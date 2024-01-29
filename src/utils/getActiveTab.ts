@@ -26,6 +26,8 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.OVERDUE;
         case 'done':
             return Tab.DONE;
+        case 'archived':
+            return Tab.ASSIGNEE_ARCHIVED;
         default:
             return Tab.ALL;
     }
