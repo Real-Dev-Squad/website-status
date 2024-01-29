@@ -29,6 +29,9 @@ export type DependencyListProps = {
 export type TaskDetailsProps = {
     detailType: string;
     value?: string;
+    icon_url?: string;
+    icon?: React.ReactElement;
+    showIcon?: boolean;
 };
 export type DependencyItem =
     | PromiseFulfilledResult<{

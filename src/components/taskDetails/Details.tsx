@@ -3,8 +3,15 @@ import setColor from './taskPriorityColors';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
+import Link from 'next/link';
 
-const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
+const Details: FC<TaskDetailsProps> = ({
+    detailType,
+    value,
+    icon,
+    icon_url,
+    showIcon,
+}) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
@@ -30,6 +37,9 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                 ) : (
                     <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
                 )}
+            </span>
+            <span>
+                {icon && showIcon && <Link href={`${icon_url}`}>{icon}</Link>}
             </span>
         </div>
     );

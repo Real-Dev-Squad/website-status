@@ -30,6 +30,8 @@ import DevFeature from '../DevFeature';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
+import { FaReceipt } from 'react-icons/fa6';
+import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
@@ -430,11 +432,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetailsData?.startedOn
                                     )}
                                 />
-
                                 <Details
                                     detailType={'Ends On'}
                                     value={getEndsOn(taskDetailsData?.endsOn)}
+                                    icon={<FaReceipt color="green" />}
+                                    icon_url={`${TASK_EXTENSION_REQUEST_URL}?taskId=${taskDetailsData?.id}`}
+                                    showIcon={
+                                        taskDetailsData?.isPendingExtensionRequest
+                                    }
                                 />
+
                                 <DevFeature>
                                     {isEditing && (
                                         <>
@@ -467,7 +474,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     className={styles.button}
                                     onClick={() =>
                                         router.push(
-                                            `/progress/${taskID}?dev=true`
+                                            `/progress/${taskID}?dev=false`
                                         )
                                     }
                                 >
