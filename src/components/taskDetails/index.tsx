@@ -482,7 +482,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     className={styles.button}
                                     onClick={() =>
                                         router.push(
-                                            `/progress/${taskID}?dev=false`
+                                            `/progress/${taskID}?dev=true`
                                         )
                                     }
                                 >
