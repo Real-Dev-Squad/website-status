@@ -219,6 +219,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         return timestamp ? convertTimeStamp(timestamp) : 'TBD';
     }
 
+    function getExtensionRequestLink(
+        taskId: string,
+        isExtensionRequestPending?: boolean
+    ) {
+        return isExtensionRequestPending
+            ? `${TASK_EXTENSION_REQUEST_URL}?taskId=${taskId}`
+            : null;
+    }
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
     const { data: progressData } = useGetProgressDetailsQuery({
@@ -435,11 +444,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 <Details
                                     detailType={'Ends On'}
                                     value={getEndsOn(taskDetailsData?.endsOn)}
-                                    icon={<FaReceipt color="green" />}
-                                    icon_url={`${TASK_EXTENSION_REQUEST_URL}?taskId=${taskDetailsData?.id}`}
-                                    showIcon={
-                                        taskDetailsData?.isPendingExtensionRequest
-                                    }
+                                    url={getExtensionRequestLink(
+                                        taskDetailsData.id,
+                                        taskDetailsData.isExtensionRequestPending
+                                    )}
                                 />
 
                                 <DevFeature>

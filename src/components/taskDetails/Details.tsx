@@ -4,14 +4,9 @@ import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
 import Link from 'next/link';
+import { FaReceipt } from 'react-icons/fa6';
 
-const Details: FC<TaskDetailsProps> = ({
-    detailType,
-    value,
-    icon,
-    icon_url,
-    showIcon,
-}) => {
+const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
@@ -39,7 +34,11 @@ const Details: FC<TaskDetailsProps> = ({
                 )}
             </span>
             <span>
-                {icon && showIcon && <Link href={`${icon_url}`}>{icon}</Link>}
+                {detailType === 'Ends On' && url && (
+                    <Link href={url}>
+                        <FaReceipt color="green" />
+                    </Link>
+                )}
             </span>
         </div>
     );
