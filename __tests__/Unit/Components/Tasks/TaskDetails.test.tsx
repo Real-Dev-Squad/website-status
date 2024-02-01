@@ -15,6 +15,7 @@ import Details from '@/components/taskDetails/Details';
 import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
+import DevFeature from '@/components/DevFeature';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -237,17 +238,22 @@ describe('TaskDetails Page', () => {
                     value={'4/19/2021, 12:00:10 AM'}
                     url={details.extension_request_url}
                 />
-            </Provider>
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
         );
-        const element = screen.getByTestId('extension-request-icon');
+
         await waitFor(() => {
+            const element = screen.queryByTestId('extension-request-icon');
+            expect(element).toHaveAttribute(
+                'href',
+                'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy'
+            );
             expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
         });
-        expect(element).toHaveAttribute(
-            'href',
-            'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy'
-        );
     });
+
     it('Doesnot Renders Extension Request icon when url not available', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -256,9 +262,12 @@ describe('TaskDetails Page', () => {
                     value={'4/19/2021, 12:00:10 AM'}
                     url={null}
                 />
-            </Provider>
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
         );
-        const element = screen.queryByTestId('element-to-test');
+        const element = screen.queryByTestId('extension-request-icon');
         expect(element).toBeNull();
         await waitFor(() => {
             expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();

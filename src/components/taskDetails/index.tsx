@@ -31,7 +31,6 @@ import DevFeature from '../DevFeature';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
-import { FaReceipt } from 'react-icons/fa6';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
