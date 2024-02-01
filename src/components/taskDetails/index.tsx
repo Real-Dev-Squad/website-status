@@ -85,7 +85,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { data: extensionRequests } =
         useGetExtensionRequestDetailsQuery(taskID);
     const isExtensionRequestPending = Boolean(
-        extensionRequests?.allExtensionRequests.length || []
+        extensionRequests?.allExtensionRequests.length
     );
     const taskDependencyIds: string[] = !isFetching
         ? data?.taskData?.dependsOn || []
