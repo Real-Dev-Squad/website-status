@@ -35,7 +35,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
             </span>
             <span>
                 {detailType === 'Ends On' && url && (
-                    <Link href={url}>
+                    <Link href={url} data-testid="extension-request-icon">
                         <FaReceipt color="green" />
                     </Link>
                 )}

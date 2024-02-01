@@ -19,6 +19,8 @@ import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handle
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
+    extension_request_url:
+        'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy',
 };
 
 const server = setupServer(...handlers);
@@ -225,6 +227,26 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
         });
+    });
+
+    it('Renders Extension Request icon', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Details
+                    detailType={'Ends On'}
+                    value={'4/19/2021, 12:00:10 AM'}
+                    url={details.extension_request_url}
+                />
+            </Provider>
+        );
+        const element = screen.getByTestId('extension-request-icon');
+        await waitFor(() => {
+            expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
+        });
+        expect(element).toHaveAttribute(
+            'href',
+            'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy'
+        );
     });
 
     test('should update taskDetails and editedDetails correctly on input change', async () => {
