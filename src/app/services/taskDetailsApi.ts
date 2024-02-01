@@ -1,4 +1,4 @@
-import { TASKS_URL } from '@/constants/url';
+import { BASE_URL, TASKS_URL } from '@/constants/url';
 import { api } from './api';
 import { taskDetailsDataType } from '@/interfaces/taskDetails.type';
 import {
@@ -73,6 +73,10 @@ export const taskDetailsApi = api.injectEndpoints({
             },
             invalidatesTags: ['Task_Details'],
         }),
+        getExtensionRequestDetails: build.query<taskDetailsDataType, string>({
+            query: (taskId): string =>
+                `${BASE_URL}/extension-requests?q=status%3APENDING%2CtaskId%3A${taskId}`,
+        }),
     }),
     overrideExisting: true,
 });
@@ -81,4 +85,5 @@ export const {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
     useGetTasksDependencyDetailsQuery,
+    useGetExtensionRequestDetailsQuery,
 } = taskDetailsApi;

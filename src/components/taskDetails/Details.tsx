@@ -3,8 +3,11 @@ import setColor from './taskPriorityColors';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
+import Link from 'next/link';
+import { FaReceipt } from 'react-icons/fa6';
+import DevFeature from '../DevFeature';
 
-const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
+const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
@@ -31,6 +34,15 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value }) => {
                     <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
                 )}
             </span>
+            <DevFeature>
+                <span>
+                    {detailType === 'Ends On' && url && (
+                        <Link href={url} data-testid="extension-request-icon">
+                            <FaReceipt color="green" />
+                        </Link>
+                    )}
+                </span>
+            </DevFeature>
         </div>
     );
 };
