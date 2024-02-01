@@ -6,6 +6,7 @@ import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import styles from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import {
+    useGetExtensionRequestDetailsQuery,
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
@@ -81,7 +82,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
-
+    const { data: extensionRequests } =
+        useGetExtensionRequestDetailsQuery(taskID);
+    const isExtensionRequestPending = Boolean(
+        extensionRequests?.allExtensionRequests.length || []
+    );
     const taskDependencyIds: string[] = !isFetching
         ? data?.taskData?.dependsOn || []
         : [];
@@ -446,7 +451,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     value={getEndsOn(taskDetailsData?.endsOn)}
                                     url={getExtensionRequestLink(
                                         taskDetailsData.id,
-                                        taskDetailsData.isExtensionRequestPending
+                                        isExtensionRequestPending
                                     )}
                                 />
 

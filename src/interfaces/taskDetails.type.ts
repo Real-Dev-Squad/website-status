@@ -3,6 +3,7 @@ import task from './task.type';
 export type taskDetailsDataType = {
     message?: string;
     taskData?: task;
+    allExtensionRequests: [];
 };
 
 export type ButtonProps = {

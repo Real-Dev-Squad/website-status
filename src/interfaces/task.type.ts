@@ -33,7 +33,6 @@ type task = {
     };
     status: string; // Update the type of task status once this is addressed https://github.com/Real-Dev-Squad/website-status/issues/1002
     priority: string;
-    isExtensionRequestPending?: boolean;
 };
 
 export type TasksResponseType = {
