@@ -248,6 +248,22 @@ describe('TaskDetails Page', () => {
             'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy'
         );
     });
+    it('Doesnot Renders Extension Request icon when url not available', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Details
+                    detailType={'Ends On'}
+                    value={'4/19/2021, 12:00:10 AM'}
+                    url={null}
+                />
+            </Provider>
+        );
+        const element = screen.queryByTestId('element-to-test');
+        expect(element).toBeNull();
+        await waitFor(() => {
+            expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
+        });
+    });
 
     test('should update taskDetails and editedDetails correctly on input change', async () => {
         renderWithRouter(
