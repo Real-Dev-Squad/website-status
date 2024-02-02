@@ -11,7 +11,7 @@ interface LOG_DATA {
 }
 
 export const getStartOfDay = (date: Date): Date => {
-    if (date)
+    if (date instanceof Date && !isNaN(date.getTime()))
         return new Date(date.getFullYear(), date.getMonth(), date.getDate());
     return new Date(
         new Date().getFullYear(),
