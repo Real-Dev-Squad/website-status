@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from '@/components/PaginationButton/paginationbutton.module.scss';
+import styles from '@/components/PaginationButton/paginationbutton.module.scss';
 
 type PaginationButtonProps = {
     fetchPrev: () => void;
@@ -24,17 +24,17 @@ const PaginationButton: React.FC<PaginationButtonProps> = ({
 }) => {
     return (
         <div
-            className={`${classNames.paginationButtonContainer} ${containerClassName}`}
+            className={`${styles.paginationButtonContainer} ${containerClassName}`}
         >
             <button
-                className={`${classNames.paginationButton} ${buttonClassName}`}
+                className={`${styles.paginationButton} ${buttonClassName}`}
                 onClick={fetchPrev}
                 disabled={!hasPrev}
             >
                 {prevLabel}
             </button>
             <button
-                className={`${classNames.paginationButton} ${buttonClassName}`}
+                className={`${styles.paginationButton} ${buttonClassName}`}
                 onClick={fetchNext}
                 disabled={!hasNext}
             >

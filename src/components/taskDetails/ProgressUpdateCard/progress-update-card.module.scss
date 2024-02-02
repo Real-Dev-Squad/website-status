@@ -1,7 +1,7 @@
 @import '../../../styles/variables';
 
 .progress-update-card {
-    background-color: $color-white;
+    background-color: $white;
     margin-bottom: 5px;
     padding: 5px 10px;
     display: flex;
@@ -20,7 +20,7 @@
         }
         .progress-update-card__more-button {
             all: unset;
-            color: $theme-ceriseRed;
+            color: $theme-cerise-red;
             cursor: pointer;
             font-weight: 600;
             margin-left: 5px;

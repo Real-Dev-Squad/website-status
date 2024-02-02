@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import Link from 'next/link';
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 
 interface ConditionalLinkWrapperProps {
     children?: ReactNode;
@@ -22,7 +22,7 @@ export const ConditionalLinkWrapper: FC<ConditionalLinkWrapperProps> = ({
                     pathname: redirectingPath,
                 }}
                 as={`/tasks/${taskId}`}
-                className={classNames.cardTitle}
+                className={styles.cardTitle}
                 data-testid="link"
             >
                 {children}

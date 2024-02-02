@@ -11,12 +11,20 @@ interface LOG_DATA {
 }
 
 export const getStartOfDay = (date: Date): Date => {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    if (date)
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    return new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate()
+    );
 };
 
 export const getDatesInRange = (startDate: Date, endDate: Date) => {
     const date = getStartOfDay(startDate);
     const dates = [];
+
+    if (!startDate || !endDate) return [];
 
     while (date <= getStartOfDay(endDate)) {
         dates.push(getStartOfDay(date).getTime());
@@ -26,16 +34,19 @@ export const getDatesInRange = (startDate: Date, endDate: Date) => {
     return dates;
 };
 
-export const processData = (itemId: string, data: []): any => {
+export const processData = (
+    itemId: string | null,
+    data: []
+): [object, object] => {
     if (!itemId) {
-        return {};
+        return [{}, {}];
     } else {
         const log: any = data.find((log: LOG_TYPE) => {
             return log.userId === itemId;
         });
-        if (!log || log.data?.length == 0) return {};
-        const dictWithStatus: any = {};
-        const dictWithTask: any = {};
+        if (!log || log.data?.length == 0) return [{}, {}];
+        const dictWithStatus: Record<number, string> = {};
+        const dictWithTask: Record<number, string> = {};
         log.data.forEach((logData: LOG_DATA) => {
             const dates = getDatesInRange(
                 new Date(logData.startTime),

@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
 import task from '@/interfaces/task.type';
-import classNames from '@/styles/availabilityPanel.module.scss';
+import styles from '@/styles/availabilityPanel.module.scss';
 import fetch from '@/helperFunctions/fetch';
 import DragDropContextWrapper from '@/components/availability-panel/drag-drop-context/index';
 import updateTasksStatus from '@/helperFunctions/updateTasksStatus';
@@ -47,13 +47,13 @@ const AvailabilityPanel: FC = () => {
     let isErrorOrIsLoading;
     if (error || isIdleMembersError) {
         isErrorOrIsLoading = (
-            <span className={classNames.statusMessage}>
+            <span className={styles.statusMessage}>
                 Something went wrong, please contact admin!
             </span>
         );
     } else if (isTaskLoading || isIdleMemberLoading) {
         isErrorOrIsLoading = (
-            <span className={classNames.statusMessage}>Loading...</span>
+            <span className={styles.statusMessage}>Loading...</span>
         );
     }
 
@@ -66,7 +66,7 @@ const AvailabilityPanel: FC = () => {
         <Layout>
             <Head title="Availability Panel" />
             <div>
-                <div className={classNames.heading}>Availability Panel</div>
+                <div className={styles.heading}>Availability Panel</div>
                 {isErrorOrIsLoading}
                 {!isErrorOrIsLoading && (
                     <DragDropContextWrapper

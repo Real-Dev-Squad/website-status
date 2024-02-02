@@ -1,4 +1,4 @@
-import classNames from '@/components/availability-panel/drag-drop-context/styles.module.scss';
+import styles from '@/components/availability-panel/drag-drop-context/styles.module.scss';
 import { FC, useContext } from 'react';
 import {
     Draggable,
@@ -61,7 +61,7 @@ const DraggableComponent: FC<draggableProps> = ({
                         provided.draggableProps.style,
                         draggableIds.includes(draggableId)
                     )}
-                    className={classNames.memberCard}
+                    className={styles.memberCard}
                 >
                     {title.length ? (
                         <div>{title}</div>

@@ -1,7 +1,7 @@
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task, { CardTaskDetails } from '@/interfaces/task.type';
 import { useState } from 'react';
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
@@ -60,7 +60,7 @@ const TaskStatusEditMode = ({
     const defaultStatus = task.status.toUpperCase().split(' ').join('_');
 
     return (
-        <div className={classNames.taskSection}>
+        <div className={styles.taskSection}>
             <label>
                 Status:
                 <select

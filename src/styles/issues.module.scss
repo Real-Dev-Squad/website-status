@@ -1,13 +1,8 @@
-$link-text: #2563eb;
-$link-bg: #dbeafe;
-$border-color: #d9d9d9;
-$color-blue: #041187;
-$color-white: #ffffff;
-$color-disabled: #e5e7eb;
+@import '../styles/variables.scss';
 
 @mixin issues-button {
-    background-color: $color-blue;
-    color: $color-white;
+    background-color: $theme-primary-alt;
+    color: $white;
     display: block;
     padding: 0.6rem 0.8rem;
     font-size: 0.875rem;
@@ -17,13 +12,13 @@ $color-disabled: #e5e7eb;
     cursor: pointer;
 
     &:disabled {
-        background-color: #f5f5f4;
-        color: #57534e;
+        background-color: lighten($lighter-gray, 10%);
+        color: darken($grayish-brown, 10%);
         cursor: default;
     }
 
     &:not(:disabled):hover {
-        background-color: darken($color-blue, 10%);
+        background-color: darken($theme-primary-alt, 10%);
     }
 }
 
@@ -51,7 +46,7 @@ $color-disabled: #e5e7eb;
     font-size: 0.875rem;
     border-radius: 0.25rem;
     border: none;
-    background-color: $color-disabled;
+    background-color: lighten($lighter-gray, 5%);
 }
 
 .issuesSearchSubmitButton {

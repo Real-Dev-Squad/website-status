@@ -1,15 +1,11 @@
-$light-black: rgba(0, 0, 0, 0.778);
-$white: #fff;
-$theme-blue-light: #2e1da3;
-$theme-blue: #1d1283;
-$off-white: #f0f0f0;
+@import '../../styles/variables.scss';
 
 .list-item {
     cursor: pointer;
 
     &:hover {
         text-decoration: underline;
-        color: $theme-blue;
+        color: $theme-primary;
     }
 }
 
@@ -25,7 +21,7 @@ $off-white: #f0f0f0;
     min-height: 100vh;
 
     .container-back {
-        background-color: $light-black;
+        background-color: rgba($black, 0.6);
         position: absolute;
         top: 0;
         left: 0;
@@ -87,7 +83,7 @@ $off-white: #f0f0f0;
     }
 
     .container-close {
-        background-color: $theme-blue-light;
+        background-color: $theme-primary-light;
         color: $white;
         font-size: 1.2rem;
         border: none;
@@ -96,7 +92,7 @@ $off-white: #f0f0f0;
         cursor: pointer;
 
         &:hover {
-            background-color: $theme-blue;
+            background-color: $theme-primary;
             color: $white;
         }
     }

@@ -1,6 +1,6 @@
-import { FC, useState, useEffect, ChangeEvent } from 'react';
+import { FC, useState, useEffect } from 'react';
 import IssueList from '../../components/issues/IssueList';
-import classNames from '@/styles/issues.module.scss';
+import styles from '@/styles/issues.module.scss';
 import Layout from '@/components/Layout';
 import Head from '@/components/head';
 import {
@@ -75,7 +75,7 @@ const Issues: FC = () => {
     return (
         <Layout>
             <Head title="Issues" />
-            <div className={classNames.container}>
+            <div className={styles.container}>
                 <SearchField
                     onSearchTextSubmitted={fetchIssues}
                     loading={isLoading}

@@ -7,7 +7,7 @@ import {
 import { useGetTasksDependencyDetailsQuery } from '@/app/services/taskDetailsApi';
 import DependencyListItem from './DependencyListItem';
 
-import classNames from '../task-details.module.scss';
+import styles from '../task-details.module.scss';
 
 const DependencyList: React.FC<DependencyListProps> = ({
     taskDependencyIds,
@@ -35,7 +35,7 @@ const DependencyList: React.FC<DependencyListProps> = ({
     if (dependencyData && dependencyData.length) {
         return (
             <ol
-                className={classNames['task_dependency_list_container']}
+                className={styles['task_dependency_list_container']}
                 data-testid="dependency-list"
             >
                 {dependencyData.map((task: DependencyItem, index: number) => (

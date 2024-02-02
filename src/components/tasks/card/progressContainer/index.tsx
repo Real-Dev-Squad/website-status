@@ -10,7 +10,7 @@ import { useGetUserQuery } from '@/app/services/userApi';
 import ProgressText from './ProgressText';
 import Progressbar from './ProgressBar';
 import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
 
 const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
@@ -104,7 +104,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
 
     return (
         <>
-            <div className={classNames.progressContainerUpdated}>
+            <div className={styles.progressContainerUpdated}>
                 <Progressbar
                     progress={isProgressMade}
                     progressValue={progressValue}

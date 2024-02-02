@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useState } from 'react';
-import classNames from '@/components/tasks/SuggestionBox/suggestion.module.scss';
+import styles from '@/components/tasks/SuggestionBox/suggestion.module.scss';
 import { GithubInfo } from '@/interfaces/suggestionBox.type';
 import { userDataType } from '@/interfaces/user.type';
 import { Loader } from '../card/Loader';
@@ -83,13 +83,13 @@ const Suggestions = forwardRef<HTMLInputElement, SuggestionsProps>(
         }, [suggestedUsers.length]);
 
         return (
-            <div className={classNames.suggestionDiv}>
+            <div className={styles.suggestionDiv}>
                 <input
                     data-testid="assignee-input"
                     ref={ref}
                     value={assigneeName}
                     placeholder={placeholderText}
-                    className={classNames.suggestionsInput}
+                    className={styles.suggestionsInput}
                     onChange={(e) => handleAssignment(e)}
                     onKeyDown={handelKeyboardInput}
                     tabIndex={0}

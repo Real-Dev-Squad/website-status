@@ -1,8 +1,8 @@
-import classNames from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/tasks/card/card.module.scss';
 
 export const SmallSpinner = () => (
     <div
-        className={`${classNames.smallSpinner} ${classNames.selfAlignEnd}`}
+        className={`${styles.smallSpinner} ${styles.selfAlignEnd}`}
         data-testid="small-spinner"
     ></div>
 );

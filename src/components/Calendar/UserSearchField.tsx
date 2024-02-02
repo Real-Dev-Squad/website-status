@@ -2,26 +2,13 @@ import { useState, useEffect, ChangeEvent, useRef } from 'react';
 import classNames from './UserSearchField.module.scss';
 import { useGetAllUsersQuery } from '@/app/services/usersApi';
 import { logs } from '@/constants/calendar';
+import { userDataType } from '@/interfaces/user.type';
+import { useOutsideAlerter } from '@/hooks/useOutsideAlerter';
 
 type SearchFieldProps = {
-    onSearchTextSubmitted: (user: any, data: any) => void;
+    onSearchTextSubmitted: (user: userDataType | undefined, data: any) => void;
     loading: boolean;
 };
-
-function useOutsideAlerter(ref: any, handleOutsideClick: any) {
-    useEffect(() => {
-        function handleClickOutside(event: any) {
-            if (ref.current && !ref.current.contains(event.target)) {
-                handleOutsideClick();
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [ref]);
-}
 
 const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     const handleOutsideClick = () => {
@@ -39,23 +26,23 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
         e.preventDefault();
         setDisplayList([]);
         const user = usersList.find(
-            (user: any) => user.username === searchText
+            (user: userDataType) => user.username === searchText
         );
         onSearchTextSubmitted(user, data);
     };
 
-    const { data: userData, isError, isLoading } = useGetAllUsersQuery({});
-    const [usersList, setUsersList] = useState([]);
-    const [displayList, setDisplayList]: any = useState([]);
+    const { data: userData, isError, isLoading } = useGetAllUsersQuery();
+    const [usersList, setUsersList] = useState<userDataType[]>([]);
+    const [displayList, setDisplayList] = useState<userDataType[]>([]);
     const [data, setData] = useState([]);
 
     useEffect(() => {
         if (userData?.users) {
-            const users: any = userData.users;
-            const filteredUsers = users.filter(
-                (user: any) => !user.incompleteUserDetails
+            const users: userDataType[] = userData.users;
+            const filteredUsers: userDataType[] = users.filter(
+                (user: userDataType) => !user.incompleteUserDetails
             );
-            const logData = filteredUsers.map((user: any) => {
+            const logData: any = filteredUsers.map((user: userDataType) => {
                 const log = logs[Math.floor(Math.random() * 4)];
                 return {
                     data: log,
@@ -68,7 +55,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
     }, [isLoading, userData]);
 
     const isValidUsername = () => {
-        const usernames = usersList.map((user: any) => user.username);
+        const usernames = usersList.map((user: userDataType) => user.username);
         if (usernames.includes(searchText)) {
             return true;
         }
@@ -81,8 +68,8 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
             return;
         }
         setDisplayList(
-            usersList.filter((item: any) => {
-                return item.username
+            usersList.filter((user: userDataType) => {
+                return user.username
                     ?.toLowerCase()
                     .includes(searchText.toLowerCase());
             })
@@ -100,6 +87,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
         >
             <input
                 placeholder="Enter username"
+                type="text"
                 value={searchText}
                 onChange={onSearchTextChanged}
                 className={classNames.userSearchInput}
@@ -108,12 +96,12 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
                 }}
             />
             <ul className={classNames.suggestions}>
-                {displayList.map((user: any) => (
+                {displayList.map((user: userDataType) => (
                     <li
                         key={user.id}
                         className={classNames.suggestion}
                         onClick={() => {
-                            setSearchText(user.username);
+                            setSearchText(user.username || '');
                             setDisplayList([]);
                         }}
                     >
