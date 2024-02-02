@@ -31,7 +31,7 @@ export const usersApi = api.injectEndpoints({
             query: ({ size = 5 }) => `/users?size=${size}`,
             providesTags: ['Users'],
         }),
-        getAllUsers: build.query<UsersResponse, any>({
+        getAllUsers: build.query<UsersResponse, void>({
             query: () => '/users',
             providesTags: ['Users'],
         }),

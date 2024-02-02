@@ -34,7 +34,10 @@ export const getDatesInRange = (startDate: Date, endDate: Date) => {
     return dates;
 };
 
-export const processData = (itemId: string, data: []): [object, object] => {
+export const processData = (
+    itemId: string | null,
+    data: []
+): [object, object] => {
     if (!itemId) {
         return [{}, {}];
     } else {

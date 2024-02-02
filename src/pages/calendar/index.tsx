@@ -10,7 +10,7 @@ import { MONTHS } from '@/constants/calendar';
 const UserStatusCalendar: FC = () => {
     const [selectedDate, onDateChange] = useState<Date>(new Date());
     const [selectedUser, setSelectedUser]: any = useState(null);
-    const [processedData, setProcessedData] = useState(
+    const [processedData, setProcessedData] = useState<any>(
         processData(selectedUser ? selectedUser.id : null, [])
     );
 

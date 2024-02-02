@@ -31,7 +31,7 @@ const SearchField = ({ onSearchTextSubmitted, loading }: SearchFieldProps) => {
         onSearchTextSubmitted(user, data);
     };
 
-    const { data: userData, isError, isLoading } = useGetAllUsersQuery({});
+    const { data: userData, isError, isLoading } = useGetAllUsersQuery();
     const [usersList, setUsersList] = useState<userDataType[]>([]);
     const [displayList, setDisplayList] = useState<userDataType[]>([]);
     const [data, setData] = useState([]);
