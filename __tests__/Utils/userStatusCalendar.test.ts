@@ -30,4 +30,59 @@ test.skip('getStartOfDay returns today’s date with start of the day for an inv
     expect(result.getTime()).toEqual(todayStart.getTime());
 });
 
+test('getDatesInRange returns an array of unix time of the start of each day between the date range.', () => {
+    const startDate = new Date(2022, 11, 25);
+    const endDate = new Date(2022, 11, 28);
+    const result = getDatesInRange(startDate, endDate);
+    expect(result).toEqual([
+        new Date(2022, 11, 25, 0, 0, 0).getTime(),
+        new Date(2022, 11, 26, 0, 0, 0).getTime(),
+        new Date(2022, 11, 27, 0, 0, 0).getTime(),
+        new Date(2022, 11, 28, 0, 0, 0).getTime(),
+    ]);
+});
 
+test('getDatesInRange handles a single day range and has one element in the array.', () => {
+    const startDate = new Date(2022, 11, 25);
+    const endDate = new Date(2022, 11, 25);
+    const result = getDatesInRange(startDate, endDate);
+    expect(result).toEqual([new Date(2022, 11, 25, 0, 0, 0).getTime()]);
+});
+
+test('getDatesInRange handles a day with one day range and has two unix timestamps in the array.', () => {
+    const startDate = new Date(2022, 11, 25, 12, 0, 0);
+    const endDate = new Date(2022, 11, 26, 12, 0, 0);
+    const result = getDatesInRange(startDate, endDate);
+    expect(result).toEqual([
+        new Date(2022, 11, 25, 0, 0, 0).getTime(),
+        new Date(2022, 11, 26, 0, 0, 0).getTime(),
+    ]);
+});
+
+test('getDatesInRange handles dates with middle of the time, it returns an array with unix timestamps of dates between range including edge dates.', () => {
+    const startDate = new Date(2022, 11, 25, 12, 0, 0);
+    const endDate = new Date(2022, 11, 27, 12, 0, 0);
+    const result = getDatesInRange(startDate, endDate);
+    expect(result).toEqual([
+        new Date(2022, 11, 25, 0, 0, 0).getTime(),
+        new Date(2022, 11, 26, 0, 0, 0).getTime(),
+        new Date(2022, 11, 27, 0, 0, 0).getTime(),
+    ]);
+});
+
+test('getDatesInRange handles invalid range and should return an empty array.', () => {
+    const startDate = new Date(2022, 11, 25);
+    const endDate = new Date(2022, 11, 23);
+    const result = getDatesInRange(startDate, endDate);
+    expect(result).toEqual([]);
+});
+
+test('Empty Item ID: Should return an empty object', () => {
+    const result = processData('', []);
+    expect(result).toEqual({});
+});
+
+test('Item ID Present, No Matching Log for ID: Should return an empty object', () => {
+    const result = processData('456', []);
+    expect(result).toEqual({});
+});
