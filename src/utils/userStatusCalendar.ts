@@ -24,7 +24,11 @@ export const getDatesInRange = (startDate: Date, endDate: Date) => {
     const date = getStartOfDay(startDate);
     const dates = [];
 
-    if (!startDate || !endDate) return [];
+    if (
+        !(startDate instanceof Date && !isNaN(startDate.getTime())) ||
+        !(endDate instanceof Date && !isNaN(endDate.getTime()))
+    )
+        return [];
 
     while (date <= getStartOfDay(endDate)) {
         dates.push(getStartOfDay(date).getTime());
