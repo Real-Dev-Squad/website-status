@@ -31,7 +31,7 @@ test('getStartOfDay returns today’s date with start of the day for an invalid 
     expect(result.getTime()).toEqual(todayStart.getTime());
 });
 
-// tests for getDatesInRange 
+// tests for getDatesInRange
 test('getDatesInRange returns an array of unix time of the start of each day between the date range.', () => {
     const startDate = new Date(2022, 11, 25);
     const endDate = new Date(2022, 11, 28);
@@ -81,23 +81,22 @@ test('getDatesInRange handles invalid range and should return an empty array.', 
 
 // tests for processData Utils
 test('processData returns empty objects for null itemId', () => {
-  const result = processData(null, []);
-  expect(result).toEqual([{}, {}]);
+    const result = processData(null, []);
+    expect(result).toEqual([{}, {}]);
 });
 
 test('processData returns empty objects for itemId with no matching log', () => {
-  const result = processData('nonexistentUserId', []);
-  expect(result).toEqual([{}, {}]);
+    const result = processData('nonexistentUserId', []);
+    expect(result).toEqual([{}, {}]);
 });
 
 test('processData returns empty objects for log with no data', () => {
-  const logWithNoData = [
-    {
-      userId: 'user1',
-      data: [],
-    },
-  ];
-  const result = processData('user1', logWithNoData);
-  expect(result).toEqual([{}, {}]);
+    const logWithNoData = [
+        {
+            userId: 'user1',
+            data: [],
+        },
+    ];
+    const result = processData('user1', logWithNoData);
+    expect(result).toEqual([{}, {}]);
 });
-
