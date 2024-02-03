@@ -23,7 +23,7 @@ test('getStartOfDay returns the start of the day for a date with end of the day 
     expect(result).toEqual(new Date(2022, 11, 25, 0, 0, 0));
 });
 
-test.skip('getStartOfDay returns today’s date with start of the day for an invalid date input', () => {
+test('getStartOfDay returns today’s date with start of the day for an invalid date input', () => {
     const invalidDate = new Date('invalid');
     const result = getStartOfDay(invalidDate);
     const d = new Date();
