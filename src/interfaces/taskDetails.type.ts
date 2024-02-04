@@ -3,6 +3,7 @@ import task from './task.type';
 export type taskDetailsDataType = {
     message?: string;
     taskData?: task;
+    allExtensionRequests: [];
 };
 
 export type ButtonProps = {
@@ -29,6 +30,7 @@ export type DependencyListProps = {
 export type TaskDetailsProps = {
     detailType: string;
     value?: string;
+    url?: string | null;
 };
 export type DependencyItem =
     | PromiseFulfilledResult<{

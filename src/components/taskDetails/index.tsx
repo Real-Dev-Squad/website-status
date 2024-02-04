@@ -6,6 +6,7 @@ import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import styles from './task-details.module.scss';
 import { useRouter } from 'next/router';
 import {
+    useGetExtensionRequestDetailsQuery,
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
@@ -30,6 +31,7 @@ import DevFeature from '../DevFeature';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
+import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
@@ -79,7 +81,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
-
+    const { data: extensionRequests } =
+        useGetExtensionRequestDetailsQuery(taskID);
+    const isExtensionRequestPending = Boolean(
+        extensionRequests?.allExtensionRequests.length
+    );
     const taskDependencyIds: string[] = !isFetching
         ? data?.taskData?.dependsOn || []
         : [];
@@ -215,6 +221,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     function getEndsOn(timestamp: number | undefined) {
         return timestamp ? convertTimeStamp(timestamp) : 'TBD';
+    }
+
+    function getExtensionRequestLink(
+        taskId: string,
+        isExtensionRequestPending?: boolean
+    ) {
+        return isExtensionRequestPending
+            ? `${TASK_EXTENSION_REQUEST_URL}?taskId=${taskId}`
+            : null;
     }
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
@@ -430,11 +445,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetailsData?.startedOn
                                     )}
                                 />
-
                                 <Details
                                     detailType={'Ends On'}
                                     value={getEndsOn(taskDetailsData?.endsOn)}
+                                    url={getExtensionRequestLink(
+                                        taskDetailsData.id,
+                                        isExtensionRequestPending
+                                    )}
                                 />
+
                                 <DevFeature>
                                     {isEditing && (
                                         <>
