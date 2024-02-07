@@ -1,11 +1,11 @@
-import { FC, useState } from 'react';
-import Head from '@/components/head';
+import { SearchField } from '@/components/Calendar/UserSearchField';
 import Layout from '@/components/Layout';
+import Head from '@/components/head';
+import { MONTHS } from '@/constants/calendar';
+import { processData } from '@/utils/userStatusCalendar';
+import { FC, useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { SearchField } from '@/components/Calendar/UserSearchField';
-import { processData } from '@/utils/userStatusCalendar';
-import { MONTHS } from '@/constants/calendar';
 
 const UserStatusCalendar: FC = () => {
     const [selectedDate, onDateChange] = useState<Date>(new Date());
@@ -83,7 +83,7 @@ const UserStatusCalendar: FC = () => {
                     loading={loading}
                 />
                 {selectedUser && (
-                    <div className="calendar">
+                    <div className="calendar" data-testid="react-calendar">
                         <Calendar
                             onChange={onDateChange as any}
                             className="calendar-div"
