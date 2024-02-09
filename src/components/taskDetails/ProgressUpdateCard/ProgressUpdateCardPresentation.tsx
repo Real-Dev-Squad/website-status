@@ -71,7 +71,7 @@ export default function ProgressUpdateCardPresentation({
     );
 
     return (
-        <div className="progress-update-card">
+        <div className={styles['progress-update-card']}>
             <Tooltip
                 isVisible={isTooltipVisible}
                 textToShow={tooltipString}

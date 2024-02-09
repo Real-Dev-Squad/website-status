@@ -52,9 +52,7 @@ export default memo(function ProgressUpdateCard({
             id: `blockers-${data.id}`,
             label: 'Blockers:',
             body: data.blockers,
-            trimmedBody:
-                readMoreFormatter(data.blockers, charactersToShow) +
-                'kfldk fkld fkdlkf dkfldk flkdlfkld fkdlfkld fkdlfkldkfldkf dkflkd lfdfkdl kdfk kdfkld fkdlf kldkkf  kfldk fkld fkdlkf dkfldk flkdlfkld fkdlfkld fkdlfkldkfldkf dkflkd lfdfkdl kdfk kdfkld fkdlf kldkkf ',
+            trimmedBody: readMoreFormatter(data.blockers, charactersToShow),
             shouldReadMoreButtonShow: data.blockers.length > charactersToShow,
             isReadMoreEnabled: false,
         },
