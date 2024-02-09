@@ -95,6 +95,7 @@ export default function LatestProgressUpdateCardPresentation({
                     <Tooltip
                         isVisible={isTooltipVisible}
                         textToShow={tooltipText}
+                        tooltipPosition={{ top: '-42px', right: '-4rem' }}
                     />
                 </div>
             </div>
