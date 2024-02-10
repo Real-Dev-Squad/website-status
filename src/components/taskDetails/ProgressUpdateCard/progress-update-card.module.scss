@@ -70,19 +70,19 @@
 }
 
 .show {
-    height: 140px;
+    height: 120px;
     overflow-y: auto;
     transition: height 1s;
     transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
 }
 
 .shrinked {
-    height: 55px;
+    height: 58px;
     transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
 }
 
 .expand {
-    height: 200px;
+    height: 178px;
     transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
 }
 
@@ -112,7 +112,7 @@
 
     &:nth-child(3) {
         .progress-update-card__info-body {
-            padding-bottom: 8px;
+            // padding-bottom: 8px;
             margin-left: 1rem;
             @media (width<=425px) {
                 margin-left: 0;
