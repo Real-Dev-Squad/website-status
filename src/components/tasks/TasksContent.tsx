@@ -25,6 +25,7 @@ import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
+import TaskSearchDev from './TaskSearchDev/TaskSearch';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
@@ -144,16 +145,27 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
 
     return (
         <div className={styles.tasksContainer}>
-            <TaskSearch
-                dev={dev}
-                onSelect={(selectedTab: Tab) =>
-                    searchNewTasks(selectedTab, queryAssignees, queryTitle)
-                }
-                inputValue={inputValue}
-                activeTab={selectedTab}
-                onInputChange={(value) => searchInputHandler(value)}
-                onClickSearchButton={searchButtonHandler}
-            />
+            {dev ? (
+                <TaskSearchDev
+                    onSelect={(selectedTab: Tab) =>
+                        searchNewTasks(selectedTab, queryAssignees, queryTitle)
+                    }
+                    inputValue={inputValue}
+                    activeTab={selectedTab}
+                    onInputChange={(value) => searchInputHandler(value)}
+                    onClickSearchButton={searchButtonHandler}
+                />
+            ) : (
+                <TaskSearch
+                    onSelect={(selectedTab: Tab) =>
+                        searchNewTasks(selectedTab, queryAssignees, queryTitle)
+                    }
+                    inputValue={inputValue}
+                    activeTab={selectedTab}
+                    onInputChange={(value) => searchInputHandler(value)}
+                    onClickSearchButton={searchButtonHandler}
+                />
+            )}
             {dev !== true ? (
                 <>
                     <div

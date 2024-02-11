@@ -5,8 +5,8 @@ import FilterModal from './FilterModal';
 import useDebounce from '@/hooks/useDebounce';
 import generateSuggestions from '@/utils/generateSuggestions';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
-import Options from '../TaskSearch/Suggestion/Options';
-import RenderPills from '../TaskSearch/Suggestion/Pill';
+import Options from './Suggestion/Options';
+import RenderPills from './Suggestion/Pill';
 import convertStringToOptions from '@/utils/convertStringToOptions';
 import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
 import findCoordinates from '@/helperFunctions/findCoordinates';
@@ -28,16 +28,14 @@ type TaskSearchProps = {
     activeTab?: Tab;
     onInputChange: (value: string) => void;
     onClickSearchButton: (param?: string) => void;
-    dev?: boolean;
 };
 
-const TaskSearch = ({
+const TaskSearchDev = ({
     onSelect,
     inputValue,
     activeTab,
     onInputChange,
     onClickSearchButton,
-    dev,
 }: TaskSearchProps) => {
     const [modalOpen, setModalOpen] = useState(false);
     const userInputRef = useRef<HTMLInputElement>(null);
@@ -57,11 +55,9 @@ const TaskSearch = ({
         useState<SuggestionCoordinates>(initialSuggestionCoordinates);
 
     const searchButtonHandler = () => {
-        if (dev && selectedPill === false) {
+        if (selectedPill === false) {
             setSuggestions([]);
             onClickSearchButton(convertSearchOptionsToQuery(selectedOptions));
-        } else {
-            onClickSearchButton();
         }
     };
 
@@ -70,7 +66,7 @@ const TaskSearch = ({
         setModalOpen(!modalOpen);
     };
     useEffect(() => {
-        dev && setSelectedOptions(convertStringToOptions(inputValue));
+        setSelectedOptions(convertStringToOptions(inputValue));
     }, [inputValue]);
 
     const toggleInputFocus = (inFocus = true) => {
@@ -124,14 +120,11 @@ const TaskSearch = ({
                     onSuggestionSelected();
                 } else if (
                     newPillValue.length === 0 &&
-                    typedInput.length === 0 &&
-                    dev
+                    typedInput.length === 0
                 ) {
                     setActiveSuggestionIndex(-1);
                     setSuggestionModal(false);
                     setSuggestions([]);
-                    searchButtonHandler();
-                } else if (inputValue.length > 0 && !dev) {
                     searchButtonHandler();
                 }
                 break;
@@ -258,7 +251,6 @@ const TaskSearch = ({
                     Filter
                     {modalOpen && (
                         <FilterModal
-                            dev={dev}
                             tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}
@@ -267,94 +259,73 @@ const TaskSearch = ({
                     )}
                 </div>
 
-                {dev ? (
+                <div id="search-bar-div" className={styles['search-bar-div']}>
                     <div
-                        id="search-bar-div"
-                        className={styles['search-bar-div']}
+                        data-testid="pill-input-wrapper"
+                        style={{ position: 'relative' }}
+                        className={styles['pill-input-wrapper']}
+                        onClick={handleClickOutside}
                     >
-                        <div
-                            data-testid="pill-input-wrapper"
-                            style={{ position: 'relative' }}
-                            className={styles['pill-input-wrapper']}
-                            onClick={handleClickOutside}
-                        >
-                            {selectedOptions.map((value, key) => (
-                                <RenderPills
-                                    idx={key}
-                                    key={key}
-                                    newPillValue={newPillValue}
-                                    option={value}
-                                    removePill={removePill}
-                                    selectedPill={selectedPill}
-                                    pillToBeRemoved={pillToBeRemoved}
-                                    handleKeyPress={handleKeyPress}
-                                    setSelectedPill={setSelectedPill}
-                                    setNewPillValue={setNewPillValue}
-                                />
-                            ))}
+                        {selectedOptions.map((value, key) => (
+                            <RenderPills
+                                idx={key}
+                                key={key}
+                                newPillValue={newPillValue}
+                                option={value}
+                                removePill={removePill}
+                                selectedPill={selectedPill}
+                                pillToBeRemoved={pillToBeRemoved}
+                                handleKeyPress={handleKeyPress}
+                                setSelectedPill={setSelectedPill}
+                                setNewPillValue={setNewPillValue}
+                            />
+                        ))}
 
-                            {selectedPill === false && (
-                                <div
-                                    style={{
-                                        width: `${typedInput.length * 1.3}%`,
+                        {selectedPill === false && (
+                            <div
+                                style={{
+                                    width: `${typedInput.length * 1.3}%`,
+                                }}
+                                className={styles['search-input-parent']}
+                            >
+                                <input
+                                    ref={userInputRef}
+                                    onClick={() => setActiveSuggestionIndex(-1)}
+                                    onBlur={() => setSuggestionModal(false)}
+                                    className={`task-search-input ${
+                                        styles['search-input-dev']
+                                    } ${
+                                        pillToBeRemoved !== -1
+                                            ? styles['remove-caret']
+                                            : ''
+                                    }`}
+                                    data-testid="search-input"
+                                    type="text"
+                                    value={typedInput}
+                                    placeholder="Eg: status:done assignee:joy title:New Feature"
+                                    onChange={(e) => {
+                                        pillToBeRemoved !== -1 &&
+                                            setPillToBeRemoved(-1);
+                                        setTypedInput(e.target.value);
                                     }}
-                                    className={styles['search-input-parent']}
-                                >
-                                    <input
-                                        ref={userInputRef}
-                                        onClick={() =>
-                                            setActiveSuggestionIndex(-1)
-                                        }
-                                        onBlur={() => setSuggestionModal(false)}
-                                        className={`task-search-input ${
-                                            styles['search-input-dev']
-                                        } ${
-                                            pillToBeRemoved !== -1
-                                                ? styles['remove-caret']
-                                                : ''
-                                        }`}
-                                        data-testid="search-input"
-                                        type="text"
-                                        value={typedInput}
-                                        placeholder="Eg: status:done assignee:joy title:New Feature"
-                                        onChange={(e) => {
-                                            pillToBeRemoved !== -1 &&
-                                                setPillToBeRemoved(-1);
-                                            setTypedInput(e.target.value);
-                                        }}
-                                        onKeyDown={handleKeyPress}
-                                        spellCheck="false"
-                                    />
-                                </div>
-                            )}
-                        </div>
-
-                        {dev &&
-                            suggestionModal &&
-                            (typedInput ||
-                                (selectedPill !== false && newPillValue)) && (
-                                <Options
-                                    style={suggestionCoordinates}
-                                    suggestions={suggestions}
-                                    activeSuggestionIndex={
-                                        activeSuggestionIndex
-                                    }
-                                    onSuggestionSelected={onSuggestionSelected}
+                                    onKeyDown={handleKeyPress}
+                                    spellCheck="false"
                                 />
-                            )}
+                            </div>
+                        )}
                     </div>
-                ) : (
-                    <input
-                        className={styles['search-input']}
-                        data-testid="search-input"
-                        type="text"
-                        placeholder="Eg: status:in-progress assignee:sunny-s Build a feature"
-                        value={inputValue}
-                        onChange={(e) => onInputChange(e.target.value)}
-                        onKeyDown={handleKeyPress}
-                        spellCheck="false"
-                    />
-                )}
+
+                    {suggestionModal &&
+                        (typedInput ||
+                            (selectedPill !== false && newPillValue)) && (
+                            <Options
+                                style={suggestionCoordinates}
+                                suggestions={suggestions}
+                                activeSuggestionIndex={activeSuggestionIndex}
+                                onSuggestionSelected={onSuggestionSelected}
+                            />
+                        )}
+                </div>
             </div>
             <div className={styles['search-button-container']}>
                 <button
@@ -369,4 +340,4 @@ const TaskSearch = ({
     );
 };
 
-export default TaskSearch;
+export default TaskSearchDev;
