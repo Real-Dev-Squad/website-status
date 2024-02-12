@@ -1,28 +1,11 @@
-import React, { MouseEvent } from 'react';
-import styles from './latest-progress-update-card.module.scss';
+import React from 'react';
 import { FaRegClock } from 'react-icons/fa6';
+import {
+    LatestProgressUpdateCardPresentationProps,
+    ProgressUpdateDataToShow,
+} from './progressUpdateCard.types';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
-
-type LatestProgressUpdateCardPresentationProps = {
-    dataToShowState: ProgressUpdateDataToShow[];
-    isTooltipVisible: boolean;
-    tooltipText: string;
-    onMoreOrLessButtonClick: (
-        e: MouseEvent<HTMLElement>,
-        clickedOnData: ProgressUpdateDataToShow
-    ) => void;
-    onHoverOnDate: (e: MouseEvent<HTMLElement>) => void;
-    onMouseOutOnDate: (e: MouseEvent<HTMLElement>) => void;
-    dateInAgoFormat: string;
-};
-type ProgressUpdateDataToShow = {
-    id: string;
-    label: string;
-    body: string;
-    trimmedBody: string;
-    shouldReadMoreButtonShow: boolean;
-    isReadMoreEnabled: boolean;
-};
+import styles from './latest-progress-update-card.module.scss';
 
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
@@ -95,7 +78,7 @@ export default function LatestProgressUpdateCardPresentation({
                     <Tooltip
                         isVisible={isTooltipVisible}
                         textToShow={tooltipText}
-                        tooltipPosition={{ top: '-42px', right: '-4rem' }}
+                        tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
                     />
                 </div>
             </div>

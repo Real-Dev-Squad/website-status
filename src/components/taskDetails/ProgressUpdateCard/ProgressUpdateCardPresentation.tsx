@@ -118,7 +118,13 @@ export default function ProgressUpdateCardPresentation({
                     } ${isExpanded ? styles.show : styles.hidden}`}
                     data-testid="progress-update-card-expand-content"
                 >
-                    {progressInfoMapping}
+                    <div
+                        className={
+                            styles['progress-update-card__progress-updates']
+                        }
+                    >
+                        {progressInfoMapping}
+                    </div>
                 </div>
             </div>
         </div>
