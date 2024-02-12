@@ -2,13 +2,20 @@ import moment from 'moment';
 import { MouseEvent } from 'react';
 import { Provider } from 'react-redux';
 import { fireEvent, screen } from '@testing-library/react';
-import { store } from '@/app/store';
-import { renderWithRouter } from '@/test_utils/createMockRouter';
-import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
-import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCardPresentation';
-import { readMoreFormatter } from '@/utils/common';
 
-let initialProps: any; //change type
+import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { readMoreFormatter } from '@/utils/common';
+import { store } from '@/app/store';
+
+import {
+    ProgressUpdateCardPresentationProps,
+    ProgressUpdateDataToShow,
+} from '@/components/taskDetails/ProgressUpdateCard/progressUpdateCard.types';
+
+import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCardPresentation';
+
+let initialProps: ProgressUpdateCardPresentationProps;
 const titleToShow = mockGetTaskProgress.data[1].completed;
 const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
 const fullDate = momentDate.format('DD-MM-YY');
@@ -143,7 +150,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         expect(date).toHaveTextContent(dateInAgoFormat);
     });
     it('should render the tooltip when isToolisTooltipVisible is true', () => {
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             isTooltipVisible: true,
         };
@@ -158,7 +165,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         expect(tooltip).toHaveClass('tooltip fade-in');
     });
     it('should not render the tooltip when isToolisTooltipVisible is false', () => {
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             isTooltipVisible: false,
         };
@@ -174,7 +181,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should have respective classes when element is expanded', () => {
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             isExpanded: true,
         };
@@ -196,7 +203,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should not have respective classes when element is not expanded', () => {
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             isExpanded: false,
         };
@@ -261,7 +268,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should trigger the onMoreOrLessButtonClick function when user clicks on the button and button exists for long content length', () => {
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             dataToShowState: dataToShowStateWithLongContent,
         };
@@ -284,7 +291,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should render the trimmed progress updates  accordingly', () => {
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             dataToShowState: dataToShowStateWithLongContent,
         };
@@ -298,7 +305,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
             'progress-update-card-info-body'
         );
         const trimmedBodyArray: string[] = dataToShowStateWithLongContent.map(
-            (data: any) => data.trimmedBody
+            (data: ProgressUpdateDataToShow) => data.trimmedBody
         );
         allProgressUpdatesBody.forEach((body, idx) => {
             expect(body).toHaveTextContent(trimmedBodyArray[idx] + 'More');
@@ -309,7 +316,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         dataToShowStateWithLongContent.forEach((progressUpdate) => {
             progressUpdate.isReadMoreEnabled = true;
         });
-        const props = {
+        const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
             dataToShowState: dataToShowStateWithLongContent,
         };
@@ -323,7 +330,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
             'progress-update-card-info-body'
         );
         const bodyArray: string[] = dataToShowStateWithLongContent.map(
-            (data: any) => data.body //add type
+            (data: ProgressUpdateDataToShow) => data.body
         );
         allProgressUpdatesBody.forEach((body, idx) => {
             expect(body).toHaveTextContent(bodyArray[idx] + 'Less');
