@@ -2,31 +2,10 @@ import React, { MouseEvent } from 'react';
 import { FaAngleRight, FaRegClock } from 'react-icons/fa6';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './progress-update-card.module.scss';
-
-type ProgressUpdateCardPresentationProps = {
-    titleToShow: string;
-    onHoverOnDate: (event: MouseEvent<HTMLElement>) => void;
-    onMouseOutOnDate: (event: MouseEvent<HTMLElement>) => void;
-    dateInAgoFormat: string;
-    isTooltipVisible: boolean;
-    tooltipString: string;
-    dataToShowState: ProgressUpdateDataToShow[];
-    onMoreOrLessButtonClick: (
-        e: MouseEvent<HTMLElement>,
-        clickedOnData: ProgressUpdateDataToShow
-    ) => void;
-    onCardClick: (event: MouseEvent<HTMLElement>) => void;
-    isExpanded: boolean;
-};
-
-type ProgressUpdateDataToShow = {
-    id: string;
-    label: string;
-    body: string;
-    trimmedBody: string;
-    shouldReadMoreButtonShow: boolean;
-    isReadMoreEnabled: boolean;
-};
+import {
+    ProgressUpdateCardPresentationProps,
+    ProgressUpdateDataToShow,
+} from './progressUpdateCard.types';
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,
