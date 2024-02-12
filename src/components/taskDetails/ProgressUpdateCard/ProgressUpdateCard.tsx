@@ -1,21 +1,11 @@
 import moment from 'moment';
 import React, { MouseEvent, memo, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
-import { ProgressDetailsData } from '@/types/standup.type';
 import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCardPresentation';
-
-type ProgressUpdateCardProps = {
-    data: ProgressDetailsData;
-};
-
-type ProgressUpdateDataToShow = {
-    id: string;
-    label: string;
-    body: string;
-    trimmedBody: string;
-    shouldReadMoreButtonShow: boolean;
-    isReadMoreEnabled: boolean;
-};
+import {
+    ProgressUpdateCardProps,
+    ProgressUpdateDataToShow,
+} from './progressUpdateCard.types';
 
 export default memo(function ProgressUpdateCard({
     data,
@@ -30,7 +20,7 @@ export default memo(function ProgressUpdateCard({
     const time = momentDate.format('hh:mmA');
     const tooltipString = `Updated at ${fullDate}, ${time}`;
     const [isExpanded, setIsExpanded] = useState(false);
-    console.log('changed ', isExpanded);
+
     const dataToShow = [
         {
             id: `completed-${data.id}`,

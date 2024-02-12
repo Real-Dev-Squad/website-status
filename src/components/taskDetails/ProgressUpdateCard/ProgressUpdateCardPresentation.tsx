@@ -116,7 +116,13 @@ export default function ProgressUpdateCardPresentation({
                         styles['progress-update-card__expand-content']
                     } ${isExpanded ? styles.show : styles.hidden}`}
                 >
-                    {progressInfoMapping}
+                    <div
+                        className={
+                            styles['progress-update-card__progress-updates']
+                        }
+                    >
+                        {progressInfoMapping}
+                    </div>
                 </div>
             </div>
         </div>
