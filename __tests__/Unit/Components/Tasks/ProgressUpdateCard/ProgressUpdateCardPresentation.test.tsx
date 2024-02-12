@@ -121,7 +121,7 @@ beforeEach(() => {
         onCardClick: mockedOnCardClick,
     };
 });
-describe.only('ProgressUpdateCardPresentation Component', () => {
+describe('ProgressUpdateCardPresentation Component', () => {
     it('should render completed section string as title in card', () => {
         renderWithRouter(
             <Provider store={store()}>
