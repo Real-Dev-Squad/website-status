@@ -50,7 +50,7 @@ export default function ProgressUpdateCardPresentation({
                     {datum.label}
                 </span>
                 <span
-                    data-testid="info-body"
+                    data-testid="progress-update-card-info-body"
                     className={styles['progress-update-card__info-body']}
                 >
                     {datum.isReadMoreEnabled ? datum.body : datum.trimmedBody}
@@ -81,6 +81,7 @@ export default function ProgressUpdateCardPresentation({
                 className={`${styles['progress-update-card__container']} ${
                     isExpanded ? styles.expand : styles.shrinked
                 }`}
+                data-testid="progress-update-card-container"
                 onClick={onCardClick}
             >
                 <div className={styles['progress-update-card__main']}>
@@ -93,13 +94,13 @@ export default function ProgressUpdateCardPresentation({
                         }
                         onMouseOver={onHoverOnDate}
                         onMouseOut={onMouseOutOnDate}
+                        data-testid="progress-update-card-date"
                     >
                         <FaRegClock />
                         <span
                             className={
                                 styles['progress-update-card__date-text']
                             }
-                            data-testid="progress-update-card-date"
                         >
                             {dateInAgoFormat}
                         </span>
@@ -115,6 +116,7 @@ export default function ProgressUpdateCardPresentation({
                     className={`${
                         styles['progress-update-card__expand-content']
                     } ${isExpanded ? styles.show : styles.hidden}`}
+                    data-testid="progress-update-card-expand-content"
                 >
                     {progressInfoMapping}
                 </div>

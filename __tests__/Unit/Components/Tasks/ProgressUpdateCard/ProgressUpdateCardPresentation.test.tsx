@@ -1,0 +1,332 @@
+import moment from 'moment';
+import { MouseEvent } from 'react';
+import { Provider } from 'react-redux';
+import { fireEvent, screen } from '@testing-library/react';
+import { store } from '@/app/store';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
+import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
+import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCardPresentation';
+import { readMoreFormatter } from '@/utils/common';
+
+let initialProps: any; //change type
+const titleToShow = mockGetTaskProgress.data[1].completed;
+const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
+const fullDate = momentDate.format('DD-MM-YY');
+const time = momentDate.format('hh:mmA');
+const tooltipString = `Updated at ${fullDate}, ${time}`;
+const dateInAgoFormat = moment(
+    mockGetTaskProgress.data[1]?.createdAt
+).fromNow();
+let mockedOnHoverOnDate: jest.Mock<void, [MouseEvent<HTMLElement>]>;
+let mockedOnMoreOrLessButtonClick: jest.Mock<
+    void,
+    [React.MouseEvent<HTMLElement>]
+>;
+let mockedOnMouseOutOnDate: jest.Mock<void, [MouseEvent<HTMLElement>]>;
+let mockedOnCardClick: jest.Mock<void, [MouseEvent<HTMLElement>]>;
+const charactersToShow = 70;
+const dataToShowState = [
+    {
+        id: `completed-${mockGetTaskProgress.data[1].id}`,
+        label: 'Completed:',
+        body: mockGetTaskProgress.data[1].completed,
+        trimmedBody: readMoreFormatter(
+            mockGetTaskProgress.data[1].completed,
+            charactersToShow
+        ),
+        shouldReadMoreButtonShow:
+            mockGetTaskProgress.data[1].completed.length > charactersToShow,
+        isReadMoreEnabled: false,
+    },
+    {
+        id: `planned-${mockGetTaskProgress.data[1].id}`,
+        label: 'Planned:',
+        body: mockGetTaskProgress.data[1].planned,
+        trimmedBody: readMoreFormatter(
+            mockGetTaskProgress.data[1].planned,
+            charactersToShow
+        ),
+        shouldReadMoreButtonShow:
+            mockGetTaskProgress.data[1].planned.length > charactersToShow,
+        isReadMoreEnabled: false,
+    },
+    {
+        id: `blockers-${mockGetTaskProgress.data[1].id}`,
+        label: 'Blockers:',
+        body: mockGetTaskProgress.data[1].blockers,
+        trimmedBody: readMoreFormatter(
+            mockGetTaskProgress.data[1].blockers,
+            charactersToShow
+        ),
+        shouldReadMoreButtonShow:
+            mockGetTaskProgress.data[1].blockers.length > charactersToShow,
+        isReadMoreEnabled: false,
+    },
+];
+
+const dataToShowStateWithLongContent = [
+    {
+        id: `completed-${mockGetTaskProgress.data[3].id}`,
+        label: 'Completed:',
+        body: mockGetTaskProgress.data[3].completed,
+        trimmedBody: readMoreFormatter(
+            mockGetTaskProgress.data[3].completed,
+            charactersToShow
+        ),
+        shouldReadMoreButtonShow:
+            mockGetTaskProgress.data[3].completed.length > charactersToShow,
+        isReadMoreEnabled: false,
+    },
+    {
+        id: `planned-${mockGetTaskProgress.data[3].id}`,
+        label: 'Planned:',
+        body: mockGetTaskProgress.data[3].planned,
+        trimmedBody: readMoreFormatter(
+            mockGetTaskProgress.data[3].planned,
+            charactersToShow
+        ),
+        shouldReadMoreButtonShow:
+            mockGetTaskProgress.data[3].planned.length > charactersToShow,
+        isReadMoreEnabled: false,
+    },
+    {
+        id: `blockers-${mockGetTaskProgress.data[3].id}`,
+        label: 'Blockers:',
+        body: mockGetTaskProgress.data[3].blockers,
+        trimmedBody: readMoreFormatter(
+            mockGetTaskProgress.data[3].blockers,
+            charactersToShow
+        ),
+        shouldReadMoreButtonShow:
+            mockGetTaskProgress.data[3].blockers.length > charactersToShow,
+        isReadMoreEnabled: false,
+    },
+];
+beforeEach(() => {
+    mockedOnHoverOnDate = jest.fn<void, [MouseEvent<HTMLElement>]>();
+    mockedOnMoreOrLessButtonClick =
+        jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+    mockedOnMouseOutOnDate = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+    mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+    initialProps = {
+        titleToShow: titleToShow,
+        isExpanded: false,
+        dateInAgoFormat: dateInAgoFormat,
+        isTooltipVisible: false,
+        tooltipString: tooltipString,
+        dataToShowState: dataToShowState, //left
+        onHoverOnDate: mockedOnHoverOnDate,
+        onMoreOrLessButtonClick: mockedOnMoreOrLessButtonClick,
+        onMouseOutOnDate: mockedOnMouseOutOnDate,
+        onCardClick: mockedOnCardClick,
+    };
+});
+describe.only('ProgressUpdateCardPresentation Component', () => {
+    it('should render completed section string as title in card', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+        const cardTitle = screen.getByRole('heading');
+        expect(cardTitle).toHaveTextContent(
+            mockGetTaskProgress.data[1].completed
+        );
+    });
+    it('should render date with ago format', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+        const date = screen.getByTestId('progress-update-card-date');
+        expect(date).toHaveTextContent(dateInAgoFormat);
+    });
+    it('should render the tooltip when isToolisTooltipVisible is true', () => {
+        const props = {
+            ...initialProps,
+            isTooltipVisible: true,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const tooltip = screen.getByTestId('tooltip');
+        expect(tooltip).toHaveTextContent(tooltipString);
+        expect(tooltip).toHaveClass('tooltip fade-in');
+    });
+    it('should not render the tooltip when isToolisTooltipVisible is false', () => {
+        const props = {
+            ...initialProps,
+            isTooltipVisible: false,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const tooltip = screen.getByTestId('tooltip');
+        expect(tooltip).toHaveTextContent(tooltipString);
+        expect(tooltip).toHaveClass('tooltip fade-out');
+    });
+
+    it('should have respective classes when element is expanded', () => {
+        const props = {
+            ...initialProps,
+            isExpanded: true,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const progressUpdateCardContainer = screen.getByTestId(
+            'progress-update-card-container'
+        );
+        const progressUpdateCardExpandContent = screen.getByTestId(
+            'progress-update-card-expand-content'
+        );
+
+        expect(progressUpdateCardContainer).toHaveClass('expand');
+        expect(progressUpdateCardExpandContent).toHaveClass('show');
+    });
+
+    it('should not have respective classes when element is not expanded', () => {
+        const props = {
+            ...initialProps,
+            isExpanded: false,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const progressUpdateCardContainer = screen.getByTestId(
+            'progress-update-card-container'
+        );
+        const progressUpdateCardExpandContent = screen.getByTestId(
+            'progress-update-card-expand-content'
+        );
+
+        expect(progressUpdateCardContainer).not.toHaveClass('expand');
+        expect(progressUpdateCardExpandContent).not.toHaveClass('show');
+    });
+
+    it('should onCardClick function when user click on card', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+
+        const progressUpdateCardContainer = screen.getByTestId(
+            'progress-update-card-container'
+        );
+
+        fireEvent.click(progressUpdateCardContainer);
+        expect(initialProps.onCardClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should mouseOver and mouseOut function when user hovers and mouse outs the date component', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+
+        const date = screen.getByTestId('progress-update-card-date');
+        fireEvent.mouseOver(date);
+        expect(initialProps.onHoverOnDate).toHaveBeenCalledTimes(1);
+
+        fireEvent.mouseOut(date);
+        expect(initialProps.onMouseOutOnDate).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not render the more or less button if content length is small', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+
+        const moreOrLessButtons = screen.queryAllByRole('button');
+        moreOrLessButtons.forEach((button) => {
+            expect(button).not.toBeInTheDocument();
+        });
+    });
+
+    it('should trigger the onMoreOrLessButtonClick function when user clicks on the button and button exists for long content length', () => {
+        const props = {
+            ...initialProps,
+            dataToShowState: dataToShowStateWithLongContent,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const moreOrLessButtons = screen.getAllByRole('button');
+
+        moreOrLessButtons.forEach((button) => {
+            expect(button).toBeInTheDocument();
+            expect(button).toHaveTextContent('More');
+        });
+
+        fireEvent.click(moreOrLessButtons[0]);
+
+        expect(initialProps.onMoreOrLessButtonClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render the trimmed progress updates  accordingly', () => {
+        const props = {
+            ...initialProps,
+            dataToShowState: dataToShowStateWithLongContent,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const allProgressUpdatesBody = screen.getAllByTestId(
+            'progress-update-card-info-body'
+        );
+        const trimmedBodyArray: string[] = dataToShowStateWithLongContent.map(
+            (data: any) => data.trimmedBody
+        );
+        allProgressUpdatesBody.forEach((body, idx) => {
+            expect(body).toHaveTextContent(trimmedBodyArray[idx] + 'More');
+        });
+    });
+
+    it('should render the full body of the progress updates with a less button', () => {
+        dataToShowStateWithLongContent.forEach((progressUpdate) => {
+            progressUpdate.isReadMoreEnabled = true;
+        });
+        const props = {
+            ...initialProps,
+            dataToShowState: dataToShowStateWithLongContent,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const allProgressUpdatesBody = screen.getAllByTestId(
+            'progress-update-card-info-body'
+        );
+        const bodyArray: string[] = dataToShowStateWithLongContent.map(
+            (data: any) => data.body //add type
+        );
+        allProgressUpdatesBody.forEach((body, idx) => {
+            expect(body).toHaveTextContent(bodyArray[idx] + 'Less');
+        });
+    });
+});
