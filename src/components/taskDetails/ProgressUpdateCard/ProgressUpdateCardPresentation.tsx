@@ -71,6 +71,7 @@ export default function ProgressUpdateCardPresentation({
                         className={
                             styles['progress-update-card__date-container']
                         }
+                        onClick={(event) => event.stopPropagation()}
                         onMouseOver={onHoverOnDate}
                         onMouseOut={onMouseOutOnDate}
                         data-testid="progress-update-card-date"

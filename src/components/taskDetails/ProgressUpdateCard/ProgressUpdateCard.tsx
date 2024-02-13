@@ -14,7 +14,7 @@ export default memo(function ProgressUpdateCard({
     const dateInAgoFormat = momentDate.fromNow();
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
-    const [titleToShow, setTitleToShow] = useState(readMoreTitle);
+    const titleToShow = readMoreTitle;
     const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
