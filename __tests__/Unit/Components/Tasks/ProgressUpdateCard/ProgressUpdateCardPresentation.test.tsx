@@ -109,26 +109,28 @@ const dataToShowStateWithLongContent = [
         isReadMoreEnabled: false,
     },
 ];
-beforeEach(() => {
-    mockedOnHoverOnDate = jest.fn<void, [MouseEvent<HTMLElement>]>();
-    mockedOnMoreOrLessButtonClick =
-        jest.fn<void, [React.MouseEvent<HTMLElement>]>();
-    mockedOnMouseOutOnDate = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
-    mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
-    initialProps = {
-        titleToShow: titleToShow,
-        isExpanded: false,
-        dateInAgoFormat: dateInAgoFormat,
-        isTooltipVisible: false,
-        tooltipString: tooltipString,
-        dataToShowState: dataToShowState, //left
-        onHoverOnDate: mockedOnHoverOnDate,
-        onMoreOrLessButtonClick: mockedOnMoreOrLessButtonClick,
-        onMouseOutOnDate: mockedOnMouseOutOnDate,
-        onCardClick: mockedOnCardClick,
-    };
-});
+
 describe('ProgressUpdateCardPresentation Component', () => {
+    beforeEach(() => {
+        mockedOnHoverOnDate = jest.fn<void, [MouseEvent<HTMLElement>]>();
+        mockedOnMoreOrLessButtonClick =
+            jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+        mockedOnMouseOutOnDate =
+            jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+        mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
+        initialProps = {
+            titleToShow: titleToShow,
+            isExpanded: false,
+            dateInAgoFormat: dateInAgoFormat,
+            isTooltipVisible: false,
+            tooltipString: tooltipString,
+            dataToShowState: dataToShowState, //left
+            onHoverOnDate: mockedOnHoverOnDate,
+            onMoreOrLessButtonClick: mockedOnMoreOrLessButtonClick,
+            onMouseOutOnDate: mockedOnMouseOutOnDate,
+            onCardClick: mockedOnCardClick,
+        };
+    });
     it('should render completed section string as title in card', () => {
         renderWithRouter(
             <Provider store={store()}>
