@@ -24,8 +24,8 @@
         border-radius: 10px;
         .progress-update-card__progress-updates {
             scrollbar-width: thin;
-            overflow-y: scroll;
-            height: 7.5rem;
+            overflow-y: auto;
+            height: 100%;
             ::-webkit-scrollbar {
                 width: 10px;
             }
@@ -77,7 +77,7 @@
 }
 
 .show {
-    height: 7.5rem;
+    height: 7.8rem;
     overflow-y: auto;
     transition: height 1s;
     transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
@@ -89,7 +89,7 @@
 }
 
 .expand {
-    height: 11.2rem;
+    height: 11.5rem;
     transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
 }
 
