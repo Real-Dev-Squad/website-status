@@ -35,7 +35,7 @@
     .progress-update-card__title {
         font-weight: 500;
         font-size: 1rem;
-        width: 82%;
+        flex-grow: 2;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
