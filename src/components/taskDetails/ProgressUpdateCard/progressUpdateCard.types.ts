@@ -5,10 +5,12 @@ export type ProgressUpdateCardProps = {
     data: ProgressDetailsData;
 };
 
+type MouseEventType = (event: MouseEvent<HTMLElement>) => void;
+
 export type ProgressUpdateCardPresentationProps = {
     titleToShow: string;
-    onHoverOnDate: (event: MouseEvent<HTMLElement>) => void;
-    onMouseOutOnDate: (event: MouseEvent<HTMLElement>) => void;
+    onHoverOnDate: MouseEventType;
+    onMouseOutOnDate: MouseEventType;
     dateInAgoFormat: string;
     isTooltipVisible: boolean;
     tooltipString: string;
@@ -17,7 +19,7 @@ export type ProgressUpdateCardPresentationProps = {
         e: MouseEvent<HTMLElement>,
         clickedOnData: ProgressUpdateDataToShow
     ) => void;
-    onCardClick: (event: MouseEvent<HTMLElement>) => void;
+    onCardClick: MouseEventType;
     isExpanded: boolean;
 };
 
@@ -29,8 +31,8 @@ export type LatestProgressUpdateCardPresentationProps = {
         e: MouseEvent<HTMLElement>,
         clickedOnData: ProgressUpdateDataToShow
     ) => void;
-    onHoverOnDate: (e: MouseEvent<HTMLElement>) => void;
-    onMouseOutOnDate: (e: MouseEvent<HTMLElement>) => void;
+    onHoverOnDate: MouseEventType;
+    onMouseOutOnDate: MouseEventType;
     dateInAgoFormat: string;
 };
 
