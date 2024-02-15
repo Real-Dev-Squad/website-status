@@ -1,20 +1,45 @@
 @import '../../../styles/variables';
 
 .progress-update-card {
+    position: relative;
+}
+.progress-update-card__container {
     background-color: $white;
-    margin-bottom: 5px;
-    padding: 5px 10px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: space-between;
-    border-radius: 10px;
     cursor: pointer;
+    margin-bottom: 5px;
+    position: relative;
+    border-radius: 10px;
+
+    .progress-update-card__main {
+        padding: 5px 10px;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 10px;
+    }
+
+    .progress-update-card__expand-content {
+        overflow: hidden;
+        border-radius: 10px;
+        .progress-update-card__progress-updates {
+            scrollbar-width: thin;
+            overflow-y: auto;
+            height: 100%;
+            ::-webkit-scrollbar {
+                width: 10px;
+            }
+        }
+    }
 
     .progress-update-card__title {
-        font-weight: 500;
+        font-weight: 600;
         font-size: 1rem;
-        width: 82%;
+        flex-grow: 2;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
         @media (width<= 1024px) {
             flex: 2;
         }
@@ -41,5 +66,80 @@
         .progress-update-card__date-text {
             font-size: 0.934rem;
         }
+    }
+}
+
+.hidden {
+    height: 0px;
+    overflow-y: hidden;
+    transition: height 1s;
+    transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
+}
+
+.show {
+    height: 7.8rem;
+    overflow-y: auto;
+    transition: height 1s;
+    transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
+}
+
+.shrinked {
+    height: 3.62rem;
+    transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
+}
+
+.expand {
+    height: 11.5rem;
+    transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
+}
+
+.progress-update-card__info-container {
+    font-size: 1rem;
+    display: flex;
+    gap: 1rem;
+    padding: 10px 1rem;
+    border-top: 1px solid $lighter-gray;
+
+    @media (width<=425px) {
+        flex-direction: column;
+    }
+
+    .progress-update-card__info-title {
+        font-weight: 700;
+    }
+
+    &:nth-child(2) {
+        .progress-update-card__info-body {
+            margin-left: 1.2rem;
+            @media (width<=425px) {
+                margin-left: 0;
+            }
+        }
+    }
+
+    &:nth-child(3) {
+        .progress-update-card__info-body {
+            margin-left: 1rem;
+            @media (width<=425px) {
+                margin-left: 0;
+            }
+        }
+    }
+
+    .progress-update-card__more-less-button {
+        all: unset;
+        color: $theme-cerise-red;
+        cursor: pointer;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+
+    .progress-update-card__date-container {
+        position: relative;
+        display: flex;
+        gap: 5px;
+        z-index: 0;
+        cursor: pointer;
+        font-size: 0.934rem;
     }
 }
