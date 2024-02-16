@@ -105,7 +105,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     return (
         <>
             <div className={styles.progressContainerUpdated}>
-                {/* progress bar should be visible to all but should only be updatable by user and super user. */}
                 <Progressbar
                     progress={isProgressMade}
                     progressValue={progressValue}

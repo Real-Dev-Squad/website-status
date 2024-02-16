@@ -365,7 +365,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
-                                    {/* Bring this live remove from dev feature and make the progress bar visible to every user. */}
                                     <ProgressContainer
                                         content={taskDetailsData}
                                     />
