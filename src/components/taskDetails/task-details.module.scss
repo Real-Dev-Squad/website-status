@@ -152,11 +152,14 @@
     .detailsContainer {
         flex-direction: column;
     }
+    .sub_details_grid_container {
+        gap: 1rem;
+    }
 }
 
 @media only screen and (max-width: 520px) {
     .sub_details_container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr .2fr;
     }
 
     .parentContainer {
