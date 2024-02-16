@@ -25,7 +25,7 @@ const ProgressDetails: FC<Props> = ({ data }) => {
     return (
         <>
             {isDev ? (
-                <ProgressUpdateCard data={data} openDetails={openDetails} />
+                <ProgressUpdateCard data={data} />
             ) : (
                 <li
                     onClick={openDetails}
