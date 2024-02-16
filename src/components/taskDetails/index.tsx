@@ -365,13 +365,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
-                                    <DevFeature>
-                                        {isUserAuthorized && (
-                                            <ProgressContainer
-                                                content={taskDetailsData}
-                                            />
-                                        )}
-                                    </DevFeature>
+                                    {/* Bring this live remove from dev feature and make the progress bar visible to every user. */}
+                                    <ProgressContainer
+                                        content={taskDetailsData}
+                                    />
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />

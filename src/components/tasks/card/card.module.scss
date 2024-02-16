@@ -142,7 +142,7 @@
 }
 
 .progressContainerUpdated {
-    width: 12rem;
+    width: 18rem;
     display: flex;
     align-items: center;
 }
@@ -176,7 +176,6 @@
     cursor: pointer;
     color: lighten($dark-grayish-red, 50%);
     font-weight: 700;
-    padding-left: 2rem;
     user-select: none;
     opacity: 0.5;
     background: transparent;

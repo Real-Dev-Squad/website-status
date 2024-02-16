@@ -16,7 +16,7 @@ const Progressbar: FC<ProgressBarProps> = ({
 }) => {
     const router = useRouter();
     const { dev } = router.query;
-    if (progress && dev === 'true') {
+    if (progress) {
         return (
             <>
                 <ProgressSlider

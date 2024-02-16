@@ -82,7 +82,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
             content.assignee === userData?.username ||
             !!userData?.roles.super_user
         ) {
-            setIsProgressMade(true);
+            setIsProgressMade((prev) => !prev);
         } else {
             toast(ERROR, 'You cannot update progress');
         }
@@ -105,6 +105,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     return (
         <>
             <div className={styles.progressContainerUpdated}>
+                {/* progress bar should be visible to all but should only be updatable by user and super user. */}
                 <Progressbar
                     progress={isProgressMade}
                     progressValue={progressValue}
@@ -115,8 +116,8 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                     endsOn={String(content.endsOn)}
                     isLoading={checkingLoading}
                 />
+                {showUpdateButton()}
             </div>
-            {dev === 'true' && showUpdateButton()}
         </>
     );
 };
