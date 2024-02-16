@@ -150,7 +150,15 @@
 
 @media only screen and (max-width: 750px) {
     .detailsContainer {
-        flex-direction: column;
+        flex-direction: row;
+    }
+    .detailsContainer span {
+        font-size: small;
+        font-weight: normal;
+    }
+    .sub_details_grid_container {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 5px;
     }
 }
 
