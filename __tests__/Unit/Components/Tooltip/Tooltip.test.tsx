@@ -5,17 +5,28 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { fireEvent, screen } from '@testing-library/react';
 
 describe.only('Tooltip Component', () => {
-    it('should render the component with the passed data', () => {
+    it('should render the tooltip on hover', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Tooltip content="This is tooltip">
-                    <div data-testid="content">This is great</div>
+                    <div>This is great</div>
                 </Tooltip>
             </Provider>
         );
         const content = screen.getByTestId('content');
         fireEvent.mouseOver(content);
-        const tooltip = screen.getByTestId('tooltip');
-        expect(tooltip).toHaveTextContent('This is tooltip');
+        const classList = screen.getByTestId('tooltip').classList;
+        expect(classList).toContain('fade-in');
+    });
+    it('should not render the tooltip on hover', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <Tooltip content="This is tooltip">
+                    <div>This is great</div>
+                </Tooltip>
+            </Provider>
+        );
+        const classList = screen.getByTestId('tooltip').classList;
+        expect(classList).toContain('fade-out');
     });
 });
