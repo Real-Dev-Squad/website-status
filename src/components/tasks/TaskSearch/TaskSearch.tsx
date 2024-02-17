@@ -2,6 +2,15 @@ import { useState } from 'react';
 import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import FilterModal from './FilterModal';
+import useDebounce from '@/hooks/useDebounce';
+import generateSuggestions from '@/utils/generateSuggestions';
+import { TaskSearchOption } from '@/interfaces/searchOptions.type';
+import Options from './Suggestion/Options';
+import RenderPills from './Suggestion/Pill';
+import convertStringToOptions from '@/utils/convertStringToOptions';
+import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
+import findCoordinates from '@/helperFunctions/findCoordinates';
+import { LuChevronDown } from 'react-icons/lu';
 
 interface SuggestionCoordinates {
     left: number | null;
@@ -56,7 +65,8 @@ const TaskSearch = ({
             <div id="filter-container" className={styles['filter-container']}>
                 <div className={styles['filter-button']} onClick={handleModal}>
                     <p>Filter</p>
-                    <div className={styles['filter-chevron']}></div>
+                    <LuChevronDown className={styles['filter-chevron']} />
+                    {/* <div className={styles['filter-chevron']}></div> */}
                     {modalOpen && (
                         <FilterModal
                             dev={false}
