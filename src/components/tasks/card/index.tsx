@@ -199,7 +199,7 @@ const Card: FC<CardProps> = ({
                         handelDateChange(e, type);
                     }}
                     value={dateTimes}
-                    data-testid="date"
+                    data-testid={type + 'Input'}
                 />
             );
         }
@@ -510,7 +510,9 @@ const Card: FC<CardProps> = ({
                         taskId={cardDetails.id}
                     >
                         <span
-                            className={styles.cardTitleText}
+                            className={`${styles.cardTitleText} ${
+                                isTaskOverdue() && styles.overdueTaskTitle
+                            }`}
                             contentEditable={isEditable}
                             onKeyDown={(e) => handleChange(e, 'title')}
                             role="button"
@@ -547,7 +549,7 @@ const Card: FC<CardProps> = ({
                     <div className={styles.dateSection} data-testid="startedOn">
                         <span className={styles.cardSpecialFont}>
                             {cardDetails.status === AVAILABLE
-                                ? 'Not started'
+                                ? 'Not started:'
                                 : 'Started on:'}
                         </span>
                         <span className={styles.completionDate}>
@@ -616,7 +618,7 @@ const Card: FC<CardProps> = ({
                     isDevMode={isDevMode}
                 />
             ) : (
-                <div className={styles.statusContainer} style={{}}>
+                <div className={styles.statusContainer}>
                     <p
                         data-testid="task-status"
                         className={`${styles.statusText} ${
