@@ -22,7 +22,7 @@
     position: relative;
 }
 
-// Remove when feature flag is removed from tabs refactor
+// Remove when feature flag is removed from https://github.com/Real-Dev-Squad/website-status/pull/1136
 .linkSeparator {
     &::after {
         content: '';
