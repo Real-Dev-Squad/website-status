@@ -9,11 +9,8 @@ import styles from './latest-progress-update-card.module.scss';
 
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
-    isTooltipVisible,
     tooltipText,
     onMoreOrLessButtonClick,
-    onHoverOnDate,
-    onMouseOutOnDate,
     dateInAgoFormat,
 }: LatestProgressUpdateCardPresentationProps) {
     const progressInfoMapping = dataToShowState.map(
@@ -65,21 +62,21 @@ export default function LatestProgressUpdateCardPresentation({
                     className={
                         styles['latest-progress-update-card__date-container']
                     }
-                    onMouseOver={onHoverOnDate}
-                    onMouseOut={onMouseOutOnDate}
                 >
-                    <FaRegClock />
-                    <span
-                        className={styles['progress-update-card__date-text']}
-                        data-testid="latest-progress-update-card-date"
-                    >
-                        {dateInAgoFormat}
-                    </span>
                     <Tooltip
-                        isVisible={isTooltipVisible}
-                        textToShow={tooltipText}
+                        content={tooltipText}
                         tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
-                    />
+                    >
+                        <FaRegClock />
+                        <span
+                            className={
+                                styles['progress-update-card__date-text']
+                            }
+                            data-testid="latest-progress-update-card-date"
+                        >
+                            {dateInAgoFormat}
+                        </span>
+                    </Tooltip>
                 </div>
             </div>
         </div>
