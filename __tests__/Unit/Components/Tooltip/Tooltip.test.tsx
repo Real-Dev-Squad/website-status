@@ -9,7 +9,7 @@ describe.only('Tooltip Component', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Tooltip content="This is tooltip">
-                    <div>This is great</div>
+                    <div data-testid="content">This is great</div>
                 </Tooltip>
             </Provider>
         );
