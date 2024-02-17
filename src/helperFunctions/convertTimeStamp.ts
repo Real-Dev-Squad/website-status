@@ -1,7 +1,7 @@
 const convertTimeStamp = (timeStamp: number): string => {
     const dateTime = new Date(timeStamp * 1000);
     const options: Intl.DateTimeFormatOptions = {
-        month: 'long',
+        month: 'short',
         day: 'numeric',
         year: 'numeric',
         hour: 'numeric',
