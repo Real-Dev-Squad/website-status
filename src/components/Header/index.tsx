@@ -56,8 +56,10 @@ export const Header = () => {
     const dev = !!query.dev;
     const queryState = query.state;
 
-    const headerOptions = [...headerCategories];
-    dev && headerOptions.push(...devHeaderCategories);
+    const headerOptions = [
+        ...headerCategories,
+        ...(dev ? devHeaderCategories : []),
+    ];
 
     return (
         <div className={styles.header}>
