@@ -122,12 +122,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
             titleToShow: titleToShow,
             isExpanded: false,
             dateInAgoFormat: dateInAgoFormat,
-            isTooltipVisible: false,
             tooltipString: tooltipString,
             dataToShowState: dataToShowState, //left
-            onHoverOnDate: mockedOnHoverOnDate,
             onMoreOrLessButtonClick: mockedOnMoreOrLessButtonClick,
-            onMouseOutOnDate: mockedOnMouseOutOnDate,
             onCardClick: mockedOnCardClick,
         };
     });
@@ -151,25 +148,10 @@ describe('ProgressUpdateCardPresentation Component', () => {
         const date = screen.getByTestId('progress-update-card-date');
         expect(date).toHaveTextContent(dateInAgoFormat);
     });
-    it('should render the tooltip when isToolisTooltipVisible is true', () => {
-        const props: ProgressUpdateCardPresentationProps = {
-            ...initialProps,
-            isTooltipVisible: true,
-        };
-        renderWithRouter(
-            <Provider store={store()}>
-                <ProgressUpdateCardPresentation {...props} />
-            </Provider>
-        );
 
-        const tooltip = screen.getByTestId('tooltip');
-        expect(tooltip).toHaveTextContent(tooltipString);
-        expect(tooltip).toHaveClass('tooltip fade-in');
-    });
     it('should not render the tooltip when isToolisTooltipVisible is false', () => {
         const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
-            isTooltipVisible: false,
         };
         renderWithRouter(
             <Provider store={store()}>
@@ -239,21 +221,6 @@ describe('ProgressUpdateCardPresentation Component', () => {
 
         fireEvent.click(progressUpdateCardContainer);
         expect(initialProps.onCardClick).toHaveBeenCalledTimes(1);
-    });
-
-    it('should mouseOver and mouseOut function when user hovers and mouse outs the date component', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <ProgressUpdateCardPresentation {...initialProps} />
-            </Provider>
-        );
-
-        const date = screen.getByTestId('progress-update-card-date');
-        fireEvent.mouseOver(date);
-        expect(initialProps.onHoverOnDate).toHaveBeenCalledTimes(1);
-
-        fireEvent.mouseOut(date);
-        expect(initialProps.onMouseOutOnDate).toHaveBeenCalledTimes(1);
     });
 
     it('should not render the more or less button if content length is small', () => {
