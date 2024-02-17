@@ -41,16 +41,17 @@ const TaskSearchDev = ({
     const userInputRef = useRef<HTMLInputElement>(null);
     const [typedInput, setTypedInput] = useState('');
     const defferedUserInput: string = useDebounce(typedInput, 300);
-    const [newPillValue, setNewPillValue] = useState<string>('');
-    const defferedPillValue = useDebounce(newPillValue, 300);
 
     const [selectedFilters, setSelectedFilters] = useState<
         Array<TaskSearchOption>
     >(convertStringToOptions(inputValue));
+    const [onEditSelectedFilterValue, setOnEditSelectedFilterValue] =
+        useState<string>('');
     const [onEditSelectedFilterIndex, setOnEditSelectedFilterIndex] =
         useState<false | number>(false);
     const [onRemoveSelectedFilterIndex, setOnRemoveSelectedFilterIndex] =
         useState(-1);
+    const defferedPillValue = useDebounce(onEditSelectedFilterValue, 300);
 
     const [filterSuggestionDropdownOpen, setFilterSuggestionDropdownOpen] =
         useState(false);
@@ -88,7 +89,7 @@ const TaskSearchDev = ({
             case 'Backspace':
                 if (
                     onEditSelectedFilterIndex !== false &&
-                    newPillValue.length === 1
+                    onEditSelectedFilterValue.length === 1
                 ) {
                     const newOptions = selectedFilters.filter(
                         (_, idx) => idx !== onEditSelectedFilterIndex
@@ -139,12 +140,12 @@ const TaskSearchDev = ({
                     onSuggestionSelected();
                 } else if (
                     onEditSelectedFilterIndex !== false &&
-                    newPillValue.length > 0 &&
+                    onEditSelectedFilterValue.length > 0 &&
                     activeFilterSuggestionDropdownIndex !== -1
                 ) {
                     onSuggestionSelected();
                 } else if (
-                    newPillValue.length === 0 &&
+                    onEditSelectedFilterValue.length === 0 &&
                     typedInput.length === 0
                 ) {
                     setActiveFilterSuggestionDropdownIndex(-1);
@@ -178,7 +179,7 @@ const TaskSearchDev = ({
             (_, index) => index !== idx
         );
         setSelectedFilters(updatedOptions);
-        setNewPillValue('');
+        setOnEditSelectedFilterValue('');
         toggleInputFocus();
     };
 
@@ -211,7 +212,7 @@ const TaskSearchDev = ({
         ) {
             setOnEditSelectedFilterIndex(false);
         } else if (target && target.className.includes('pill-input-wrapper')) {
-            setNewPillValue('');
+            setOnEditSelectedFilterValue('');
             setOnRemoveSelectedFilterIndex(-1);
             toggleInputFocus();
         }
@@ -221,7 +222,7 @@ const TaskSearchDev = ({
             toggleInputFocus();
             setFilterSuggestionDropdownOpen(true);
             setOnRemoveSelectedFilterIndex(-1);
-            setNewPillValue('');
+            setOnEditSelectedFilterValue('');
         } else setFilterSuggestionDropdownOpen(false);
     }, [onEditSelectedFilterIndex]);
 
@@ -240,7 +241,7 @@ const TaskSearchDev = ({
             userInput = defferedUserInput;
         } else if (
             onEditSelectedFilterIndex !== false &&
-            newPillValue === defferedPillValue
+            onEditSelectedFilterValue === defferedPillValue
         ) {
             userInput = defferedPillValue;
         } else {
@@ -301,14 +302,14 @@ const TaskSearchDev = ({
                             <RenderPills
                                 idx={key}
                                 key={key}
-                                newPillValue={newPillValue}
+                                newPillValue={onEditSelectedFilterValue}
                                 option={value}
                                 removePill={removePill}
                                 selectedPill={onEditSelectedFilterIndex}
                                 pillToBeRemoved={onRemoveSelectedFilterIndex}
                                 handleKeyPress={handleKeyPress}
                                 setSelectedPill={setOnEditSelectedFilterIndex}
-                                setNewPillValue={setNewPillValue}
+                                setNewPillValue={setOnEditSelectedFilterValue}
                             />
                         ))}
 
@@ -355,7 +356,7 @@ const TaskSearchDev = ({
                     {filterSuggestionDropdownOpen &&
                         (typedInput ||
                             (onEditSelectedFilterIndex !== false &&
-                                newPillValue)) && (
+                                onEditSelectedFilterValue)) && (
                             <Options
                                 style={suggestionCoordinates}
                                 suggestions={filterSuggestions}
