@@ -24,12 +24,10 @@ const tooltipString = `Updated at ${fullDate}, ${time}`;
 const dateInAgoFormat = moment(
     mockGetTaskProgress.data[1]?.createdAt
 ).fromNow();
-let mockedOnHoverOnDate: jest.Mock<void, [MouseEvent<HTMLElement>]>;
 let mockedOnMoreOrLessButtonClick: jest.Mock<
     void,
     [React.MouseEvent<HTMLElement>]
 >;
-let mockedOnMouseOutOnDate: jest.Mock<void, [MouseEvent<HTMLElement>]>;
 let mockedOnCardClick: jest.Mock<void, [MouseEvent<HTMLElement>]>;
 const charactersToShow = 70;
 const dataToShowState = [
@@ -112,10 +110,7 @@ const dataToShowStateWithLongContent = [
 
 describe('ProgressUpdateCardPresentation Component', () => {
     beforeEach(() => {
-        mockedOnHoverOnDate = jest.fn<void, [MouseEvent<HTMLElement>]>();
         mockedOnMoreOrLessButtonClick =
-            jest.fn<void, [React.MouseEvent<HTMLElement>]>();
-        mockedOnMouseOutOnDate =
             jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         initialProps = {

@@ -67,14 +67,16 @@ export default function LatestProgressUpdateCardPresentation({
                         content={tooltipText}
                         tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
                     >
-                        <FaRegClock />
-                        <span
-                            className={
-                                styles['progress-update-card__date-text']
-                            }
-                            data-testid="latest-progress-update-card-date"
-                        >
-                            {dateInAgoFormat}
+                        <span className={styles['date-clock-container']}>
+                            <FaRegClock />
+                            <span
+                                className={
+                                    styles['progress-update-card__date-text']
+                                }
+                                data-testid="latest-progress-update-card-date"
+                            >
+                                {dateInAgoFormat}
+                            </span>
                         </span>
                     </Tooltip>
                 </div>
