@@ -209,7 +209,6 @@ const Card: FC<CardProps> = ({
                     className={styles.cardStrongFont}
                     role="button"
                     tabIndex={0}
-                    data-testid={type}
                 >
                     {formattedDate}
                     <span className={styles.formattedDate}>
@@ -545,19 +544,14 @@ const Card: FC<CardProps> = ({
                             status={editedTaskDetails.savingDate}
                         />
                     </div>
-                    <div className={styles.dateSection}>
+                    <div className={styles.dateSection} data-testid="startedOn">
                         <span className={styles.cardSpecialFont}>
                             {cardDetails.status === AVAILABLE
                                 ? 'Not started'
                                 : 'Started on:'}
                         </span>
-                        <span
-                            className={styles.completionDate}
-                            data-testid="startedOn"
-                        >
-                            {cardDetails.status === AVAILABLE
-                                ? 'Not started'
-                                : !cardDetails.startedOn
+                        <span className={styles.completionDate}>
+                            {!cardDetails.startedOn
                                 ? 'N/A'
                                 : renderDate(
                                       localStartedOn,
