@@ -1,4 +1,6 @@
-export const headerCategories = [
+import { HeaderCategory } from '@/types/header';
+
+export const headerCategories: HeaderCategory[] = [
     {
         title: 'Tasks',
         refURL: '/tasks',
@@ -33,7 +35,7 @@ export const headerCategories = [
     },
 ];
 
-export const devHeaderCategories = [
+export const devHeaderCategories: HeaderCategory[] = [
     {
         title: 'Standup',
         refURL: '/standup?dev=true',
