@@ -8,18 +8,21 @@ type TooltipProps = {
 };
 
 const Tooltip = ({ children, content, tooltipPosition }: TooltipProps) => {
-    const [isMouseHovering, setIsMouseHovering] = useState(false);
-    const toggle = () => {
-        setIsMouseHovering((prev) => !prev);
+    const [currClass, setCurrClass] = useState('fade-out');
+    const toggleClass = () => {
+        if (currClass === 'fade-out') {
+            setCurrClass('fade-in');
+        } else {
+            setCurrClass('fade-out');
+        }
     };
 
     return (
-        <span onMouseOver={toggle} onMouseOut={toggle}>
+        <span onMouseOver={toggleClass} onMouseOut={toggleClass}>
             {children}
             <span
                 data-testid="tooltip"
-                className={`${styles['tooltip']}
-        ${isMouseHovering ? styles['fade-in'] : styles['fade-out']}`}
+                className={`${styles['tooltip']} ${styles[currClass]} `}
                 style={{ ...tooltipPosition }}
             >
                 {content}

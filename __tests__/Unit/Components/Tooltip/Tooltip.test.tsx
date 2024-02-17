@@ -18,7 +18,7 @@ describe.only('Tooltip Component', () => {
         const classList = screen.getByTestId('tooltip').classList;
         expect(classList).toContain('fade-in');
     });
-    it('should not render the tooltip on hover', async () => {
+    it('should not render the tooltip on hover', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Tooltip content="This is tooltip">
