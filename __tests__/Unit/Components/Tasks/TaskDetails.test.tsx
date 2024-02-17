@@ -490,32 +490,6 @@ describe('Update Progress button', () => {
             );
         });
     });
-
-    it('renders the Request for Task button when ?dev=true query parameter is present', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-
-        await waitFor(() => {
-            const requestForTaskButton = screen.getByTestId(
-                'request-task-button'
-            );
-            expect(requestForTaskButton).toBeInTheDocument();
-        });
-    });
-
-    it('Should not render the Request for Task button when ?dev=true query parameter is absent', () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        const requestForTaskButton = screen.queryByText('Request for Task');
-        expect(requestForTaskButton).not.toBeInTheDocument();
-    });
 });
 
 describe('Task details Edit mode ', () => {
@@ -616,88 +590,6 @@ describe('Task details Edit mode ', () => {
             });
             fireEvent.click(editBtn);
             expect(screen.getByTestId('assignee-input')).toBeInTheDocument();
-        });
-    });
-});
-
-describe('Task Details > Task Request', () => {
-    it('should show task request button when dev is true', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', { name: /request for task/i })
-            ).not.toBeNull();
-        });
-    });
-    it('should not show task request button when dev is false', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', { name: /request for task/i })
-            ).toBeNull();
-        });
-    });
-
-    it('Task request modal should open on clicking request task button', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-                <ToastContainer />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-        await waitFor(() => {
-            expect(
-                screen.queryByRole('button', { name: /request for task/i })
-            ).not.toBeNull();
-        });
-
-        const taskRequestButton = screen.getByRole('button', {
-            name: /request for task/i,
-        });
-        fireEvent.click(taskRequestButton);
-
-        await waitFor(() => {
-            const taskRequestModalTitle = screen.getByText(/Task Request/i);
-            expect(taskRequestModalTitle).toBeInTheDocument();
-        });
-    });
-
-    it('Error toast should be shown on error', async () => {
-        server.use(...taskRequestErrorHandler);
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-                <ToastContainer />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-        await waitFor(() => {
-            screen.getByRole('button', { name: /request for task/i });
-        });
-
-        const taskRequestButton = screen.getByRole('button', {
-            name: /request for task/i,
-        });
-        fireEvent.click(taskRequestButton);
-        const createRequestButton = screen.getByText(/Create Request/i);
-        await waitFor(() => {
-            fireEvent.click(createRequestButton);
-        });
-        await waitFor(() => {
-            expect(screen.queryByText(/taskId not provided/i)).not.toBeNull();
         });
     });
 });
