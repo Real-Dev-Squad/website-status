@@ -29,6 +29,15 @@
     }
 }
 
+.underline {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: $theme-pink;
+}
+
 // Hide | for the last elements
 .header a:last-child {
     .link::after {

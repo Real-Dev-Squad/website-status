@@ -7,6 +7,7 @@ import {
     devHeaderCategories,
     headerCategories,
 } from '@/constants/header-categories';
+import { motion } from 'framer-motion';
 
 export const HeaderLink: FC<HeaderLinkProps> = ({ title, link, isActive }) => {
     const linkClasses = `${styles.link} ${isActive ? styles.active : ''}`;
@@ -15,6 +16,12 @@ export const HeaderLink: FC<HeaderLinkProps> = ({ title, link, isActive }) => {
         <Link href={link} passHref>
             <button type="button" tabIndex={0} className={linkClasses}>
                 {title}
+                {isActive && (
+                    <motion.div
+                        layoutId="tabsUnderline"
+                        className={styles.underline}
+                    ></motion.div>
+                )}
             </button>
         </Link>
     );
