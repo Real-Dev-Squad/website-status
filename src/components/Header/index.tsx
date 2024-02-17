@@ -3,11 +3,11 @@ import styles from './Header.module.scss';
 import Link from 'next/link';
 import { HeaderLinkProps } from '@/interfaces/HeaderItem.type';
 import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
 import {
     devHeaderCategories,
     headerCategories,
 } from '@/constants/header-categories';
-import { motion } from 'framer-motion';
 
 export const HeaderLink: FC<HeaderLinkProps> = ({
     title,
