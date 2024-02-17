@@ -55,7 +55,8 @@ const TaskSearch = ({
         <div className={styles['task-search-container']}>
             <div id="filter-container" className={styles['filter-container']}>
                 <div className={styles['filter-button']} onClick={handleModal}>
-                    Filter
+                    <p>Filter</p>
+                    <div className={styles['filter-chevron']}></div>
                     {modalOpen && (
                         <FilterModal
                             dev={false}

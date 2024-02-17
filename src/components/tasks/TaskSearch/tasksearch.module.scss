@@ -53,17 +53,17 @@
     align-items: center;
     padding-left: 5px;
 
-    &:after {
-        content: '';
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 5px solid $black;
-        margin-left: 0.5rem;
-    }
-
     @media (max-width: 768px) {
         width: 6rem;
     }
+}
+
+.filter-chevron {
+    content: '';
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid $black;
+    margin-left: 0.5rem;
 }
 
 .search-bar-div {
@@ -216,9 +216,9 @@
 }
 
 .filter-modal {
-    position: relative;
-    top: 11.5rem;
-    left: -2.8rem;
+    position: absolute;
+    top: 1.75rem;
+    left: -0.1rem;
     min-width: 15rem;
     background-color: $white;
     border-radius: $radius;
@@ -228,13 +228,6 @@
     justify-content: space-between;
     align-items: center;
     z-index: 3;
-    @media (max-width: 768px) {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
-    }
 }
 .filter-modal-dev {
     top: 13.5rem;
