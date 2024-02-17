@@ -28,35 +28,24 @@ export const Header = () => {
     const dev = !!query.dev;
     const queryState = query.state;
 
+    const headerOptions = [...headerCategories];
+    dev && headerOptions.push(...devHeaderCategories);
+
     return (
         <div className={styles.header}>
-            {headerCategories.map(
-                ({ title, refURL, pathName, state }, index) => (
-                    <HeaderLink
-                        key={index}
-                        title={title}
-                        link={refURL}
-                        isActive={
-                            router.pathname === pathName &&
-                            (router.pathname === '/pull-requests'
-                                ? queryState === state
-                                : true)
-                        }
-                    />
-                )
-            )}
-
-            {dev &&
-                devHeaderCategories.map(
-                    ({ title, refURL, pathName }, index) => (
-                        <HeaderLink
-                            key={index}
-                            title={title}
-                            link={refURL}
-                            isActive={router.pathname === pathName}
-                        />
-                    )
-                )}
+            {headerOptions.map(({ title, refURL, pathName, state }, index) => (
+                <HeaderLink
+                    key={index}
+                    title={title}
+                    link={refURL}
+                    isActive={
+                        router.pathname === pathName &&
+                        (router.pathname === '/pull-requests'
+                            ? queryState === state
+                            : true)
+                    }
+                />
+            ))}
         </div>
     );
 };
