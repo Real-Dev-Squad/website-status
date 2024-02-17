@@ -25,7 +25,7 @@ import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
-import TaskSearchDev from './TaskSearchDev/TaskSearch';
+import TaskSearchDev from './TaskSearchDev/TaskSearchDev';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
-import FilterModal from './FilterModal';
+import FilterDropdown from './FilterDropdown';
 import useDebounce from '@/hooks/useDebounce';
 import generateSuggestions from '@/utils/generateSuggestions';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
@@ -250,7 +250,7 @@ const TaskSearchDev = ({
                 <div className={styles['filter-button']} onClick={handleModal}>
                     Filter
                     {modalOpen && (
-                        <FilterModal
+                        <FilterDropdown
                             tabs={TABS as Tab[]}
                             onSelect={onSelect}
                             activeTab={activeTab}

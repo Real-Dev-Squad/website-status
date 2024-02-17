@@ -14,7 +14,7 @@ type FilterModalProps = {
     onClose: () => void;
 };
 
-const FilterModal = ({
+const FilterDropdown = ({
     tabs,
     onSelect,
     activeTab,
@@ -71,4 +71,4 @@ const FilterModal = ({
     );
 };
 
-export default FilterModal;
+export default FilterDropdown;
