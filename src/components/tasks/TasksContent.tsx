@@ -147,12 +147,11 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         <div className={styles.tasksContainer}>
             {dev ? (
                 <TaskSearchDev
-                    onSelect={(selectedTab: Tab) =>
+                    onFilterDropdownSelect={(selectedTab: Tab) =>
                         searchNewTasks(selectedTab, queryAssignees, queryTitle)
                     }
+                    filterDropdownActiveTab={selectedTab}
                     inputValue={inputValue}
-                    activeTab={selectedTab}
-                    onInputChange={(value) => searchInputHandler(value)}
                     onClickSearchButton={searchButtonHandler}
                 />
             ) : (

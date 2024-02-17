@@ -23,50 +23,60 @@ const initialSuggestionCoordinates: SuggestionCoordinates = {
 };
 
 type TaskSearchProps = {
-    onSelect: (tab: Tab) => void;
+    onFilterDropdownSelect: (tab: Tab) => void;
+    filterDropdownActiveTab?: Tab;
     inputValue: string;
-    activeTab?: Tab;
-    onInputChange: (value: string) => void;
     onClickSearchButton: (param?: string) => void;
 };
 
 const TaskSearchDev = ({
-    onSelect,
+    onFilterDropdownSelect,
+    filterDropdownActiveTab,
     inputValue,
-    activeTab,
-    onInputChange,
     onClickSearchButton,
 }: TaskSearchProps) => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [filterDropdownModelOpen, setFilterDropdownModelOpen] =
+        useState(false);
+
     const userInputRef = useRef<HTMLInputElement>(null);
     const [typedInput, setTypedInput] = useState('');
-    const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
-    const [selectedOptions, setSelectedOptions] = useState<
-        Array<TaskSearchOption>
-    >(convertStringToOptions(inputValue));
-    const [suggestions, setSuggestions] = useState<Array<TaskSearchOption>>([]);
-    const [suggestionModal, setSuggestionModal] = useState(false);
     const defferedUserInput: string = useDebounce(typedInput, 300);
-    const [selectedPill, setSelectedPill] = useState<false | number>(false);
     const [newPillValue, setNewPillValue] = useState<string>('');
     const defferedPillValue = useDebounce(newPillValue, 300);
-    const [pillToBeRemoved, setPillToBeRemoved] = useState(-1);
+
+    const [selectedFilters, setSelectedFilters] = useState<
+        Array<TaskSearchOption>
+    >(convertStringToOptions(inputValue));
+    const [onEditSelectedFilterIndex, setOnEditSelectedFilterIndex] =
+        useState<false | number>(false);
+    const [onRemoveSelectedFilterIndex, setOnRemoveSelectedFilterIndex] =
+        useState(-1);
+
+    const [filterSuggestionDropdownOpen, setFilterSuggestionDropdownOpen] =
+        useState(false);
+    const [filterSuggestions, setFilterSuggestions] = useState<
+        Array<TaskSearchOption>
+    >([]);
+    const [
+        activeFilterSuggestionDropdownIndex,
+        setActiveFilterSuggestionDropdownIndex,
+    ] = useState(-1);
     const [suggestionCoordinates, setSuggestionCoordinates] =
         useState<SuggestionCoordinates>(initialSuggestionCoordinates);
 
     const searchButtonHandler = () => {
-        if (selectedPill === false) {
-            setSuggestions([]);
-            onClickSearchButton(convertSearchOptionsToQuery(selectedOptions));
+        if (onEditSelectedFilterIndex === false) {
+            setFilterSuggestions([]);
+            onClickSearchButton(convertSearchOptionsToQuery(selectedFilters));
         }
     };
 
     const handleModal = () => {
-        !modalOpen && setSuggestionModal(false);
-        setModalOpen(!modalOpen);
+        !filterDropdownModelOpen && setFilterSuggestionDropdownOpen(false);
+        setFilterDropdownModelOpen(!filterDropdownModelOpen);
     };
     useEffect(() => {
-        setSelectedOptions(convertStringToOptions(inputValue));
+        setSelectedFilters(convertStringToOptions(inputValue));
     }, [inputValue]);
 
     const toggleInputFocus = (inFocus = true) => {
@@ -76,62 +86,78 @@ const TaskSearchDev = ({
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         switch (event.key) {
             case 'Backspace':
-                if (selectedPill !== false && newPillValue.length === 1) {
-                    const newOptions = selectedOptions.filter(
-                        (_, idx) => idx !== selectedPill
+                if (
+                    onEditSelectedFilterIndex !== false &&
+                    newPillValue.length === 1
+                ) {
+                    const newOptions = selectedFilters.filter(
+                        (_, idx) => idx !== onEditSelectedFilterIndex
                     );
-                    setSelectedOptions(newOptions);
-                    setSelectedPill(false);
-                } else if (typedInput.length === 0 && selectedPill === false) {
-                    if (pillToBeRemoved === -1) {
-                        setPillToBeRemoved(selectedOptions.length - 1);
-                    } else {
-                        const newOptions = selectedOptions.filter(
-                            (_, idx) => idx !== pillToBeRemoved
+                    setSelectedFilters(newOptions);
+                    setOnEditSelectedFilterIndex(false);
+                } else if (
+                    typedInput.length === 0 &&
+                    onEditSelectedFilterIndex === false
+                ) {
+                    if (onRemoveSelectedFilterIndex === -1) {
+                        setOnRemoveSelectedFilterIndex(
+                            selectedFilters.length - 1
                         );
-                        setSelectedOptions(newOptions);
-                        setSelectedPill(false);
-                        setPillToBeRemoved(-1);
+                    } else {
+                        const newOptions = selectedFilters.filter(
+                            (_, idx) => idx !== onRemoveSelectedFilterIndex
+                        );
+                        setSelectedFilters(newOptions);
+                        setOnEditSelectedFilterIndex(false);
+                        setOnRemoveSelectedFilterIndex(-1);
                     }
                 }
 
                 break;
 
             case 'ArrowUp':
-                if (activeSuggestionIndex > -1) {
-                    setActiveSuggestionIndex(activeSuggestionIndex - 1);
+                if (activeFilterSuggestionDropdownIndex > -1) {
+                    setActiveFilterSuggestionDropdownIndex(
+                        activeFilterSuggestionDropdownIndex - 1
+                    );
                     event.preventDefault();
                 }
                 break;
             case 'ArrowDown':
-                if (suggestions.length - 1 > activeSuggestionIndex) {
-                    setActiveSuggestionIndex(activeSuggestionIndex + 1);
+                if (
+                    filterSuggestions.length - 1 >
+                    activeFilterSuggestionDropdownIndex
+                ) {
+                    setActiveFilterSuggestionDropdownIndex(
+                        activeFilterSuggestionDropdownIndex + 1
+                    );
                     event.preventDefault();
                 }
                 break;
             case 'Enter': {
-                if (activeSuggestionIndex > -1) {
+                if (activeFilterSuggestionDropdownIndex > -1) {
                     onSuggestionSelected();
                 } else if (
-                    selectedPill !== false &&
+                    onEditSelectedFilterIndex !== false &&
                     newPillValue.length > 0 &&
-                    activeSuggestionIndex !== -1
+                    activeFilterSuggestionDropdownIndex !== -1
                 ) {
                     onSuggestionSelected();
                 } else if (
                     newPillValue.length === 0 &&
                     typedInput.length === 0
                 ) {
-                    setActiveSuggestionIndex(-1);
-                    setSuggestionModal(false);
-                    setSuggestions([]);
+                    setActiveFilterSuggestionDropdownIndex(-1);
+                    setFilterSuggestionDropdownOpen(false);
+                    setFilterSuggestions([]);
                     searchButtonHandler();
                 }
                 break;
             }
             case 'Escape':
-                setSuggestionModal(false);
-                selectedPill !== false && setSelectedPill(false);
+                setFilterSuggestionDropdownOpen(false);
+                onEditSelectedFilterIndex !== false &&
+                    setOnEditSelectedFilterIndex(false);
                 break;
             default:
                 break;
@@ -144,33 +170,35 @@ const TaskSearchDev = ({
     useEffect(onResizeHandler, [
         defferedPillValue,
         defferedUserInput,
-        suggestionModal,
+        filterSuggestionDropdownOpen,
     ]);
     const removePill = (idx: number) => {
-        setSuggestionModal(false);
-        const updatedOptions = selectedOptions.filter(
+        setFilterSuggestionDropdownOpen(false);
+        const updatedOptions = selectedFilters.filter(
             (_, index) => index !== idx
         );
-        setSelectedOptions(updatedOptions);
+        setSelectedFilters(updatedOptions);
         setNewPillValue('');
         toggleInputFocus();
     };
 
-    const onSuggestionSelected = (idx = activeSuggestionIndex) => {
-        if (selectedPill === false) {
-            const optionDetails = suggestions[idx];
+    const onSuggestionSelected = (
+        idx = activeFilterSuggestionDropdownIndex
+    ) => {
+        if (onEditSelectedFilterIndex === false) {
+            const optionDetails = filterSuggestions[idx];
             if (optionDetails) {
-                setSelectedOptions([...selectedOptions, optionDetails]);
+                setSelectedFilters([...selectedFilters, optionDetails]);
                 setTypedInput('');
             }
         } else {
-            const newOptions = selectedOptions;
-            newOptions[selectedPill] = suggestions[idx];
-            setSelectedOptions(newOptions);
-            setSelectedPill(false);
+            const newOptions = selectedFilters;
+            newOptions[onEditSelectedFilterIndex] = filterSuggestions[idx];
+            setSelectedFilters(newOptions);
+            setOnEditSelectedFilterIndex(false);
         }
-        setActiveSuggestionIndex(-1);
-        setSuggestionModal(false);
+        setActiveFilterSuggestionDropdownIndex(-1);
+        setFilterSuggestionDropdownOpen(false);
         toggleInputFocus(true);
     };
 
@@ -179,36 +207,39 @@ const TaskSearchDev = ({
         if (
             target &&
             target.className.includes('pill-input-wrapper') &&
-            selectedPill !== false
+            onEditSelectedFilterIndex !== false
         ) {
-            setSelectedPill(false);
+            setOnEditSelectedFilterIndex(false);
         } else if (target && target.className.includes('pill-input-wrapper')) {
             setNewPillValue('');
-            setPillToBeRemoved(-1);
+            setOnRemoveSelectedFilterIndex(-1);
             toggleInputFocus();
         }
     };
     useEffect(() => {
-        if (selectedPill === false) {
+        if (onEditSelectedFilterIndex === false) {
             toggleInputFocus();
-            setSuggestionModal(true);
-            setPillToBeRemoved(-1);
+            setFilterSuggestionDropdownOpen(true);
+            setOnRemoveSelectedFilterIndex(-1);
             setNewPillValue('');
-        } else setSuggestionModal(false);
-    }, [selectedPill]);
+        } else setFilterSuggestionDropdownOpen(false);
+    }, [onEditSelectedFilterIndex]);
 
     useEffect(() => {
-        !suggestionModal &&
+        !filterSuggestionDropdownOpen &&
             setSuggestionCoordinates(initialSuggestionCoordinates);
-    }, [suggestionModal]);
+    }, [filterSuggestionDropdownOpen]);
 
     useEffect(() => {
-        let updatedOptions = suggestionModal;
+        let updatedOptions = filterSuggestionDropdownOpen;
         let userInput;
-        if (selectedPill === false && typedInput === defferedUserInput) {
+        if (
+            onEditSelectedFilterIndex === false &&
+            typedInput === defferedUserInput
+        ) {
             userInput = defferedUserInput;
         } else if (
-            selectedPill !== false &&
+            onEditSelectedFilterIndex !== false &&
             newPillValue === defferedPillValue
         ) {
             userInput = defferedPillValue;
@@ -227,18 +258,18 @@ const TaskSearchDev = ({
         if (userInput.length > 2) {
             const result = generateSuggestions(
                 userInput,
-                selectedOptions,
+                selectedFilters,
                 key,
-                selectedPill
+                onEditSelectedFilterIndex
             );
             updatedOptions = true;
-            result.length > 0 && setActiveSuggestionIndex(0);
-            setSuggestions(result);
+            result.length > 0 && setActiveFilterSuggestionDropdownIndex(0);
+            setFilterSuggestions(result);
         } else {
             updatedOptions = false;
-            setSuggestions([]);
+            setFilterSuggestions([]);
         }
-        setSuggestionModal(updatedOptions);
+        setFilterSuggestionDropdownOpen(updatedOptions);
     }, [defferedUserInput, defferedPillValue]);
 
     useEffect(() => {
@@ -249,11 +280,11 @@ const TaskSearchDev = ({
             <div id="filter-container" className={styles['filter-container']}>
                 <div className={styles['filter-button']} onClick={handleModal}>
                     Filter
-                    {modalOpen && (
+                    {filterDropdownModelOpen && (
                         <FilterDropdown
                             tabs={TABS as Tab[]}
-                            onSelect={onSelect}
-                            activeTab={activeTab}
+                            onSelect={onFilterDropdownSelect}
+                            activeTab={filterDropdownActiveTab}
                             onClose={handleModal}
                         />
                     )}
@@ -266,22 +297,22 @@ const TaskSearchDev = ({
                         className={styles['pill-input-wrapper']}
                         onClick={handleClickOutside}
                     >
-                        {selectedOptions.map((value, key) => (
+                        {selectedFilters.map((value, key) => (
                             <RenderPills
                                 idx={key}
                                 key={key}
                                 newPillValue={newPillValue}
                                 option={value}
                                 removePill={removePill}
-                                selectedPill={selectedPill}
-                                pillToBeRemoved={pillToBeRemoved}
+                                selectedPill={onEditSelectedFilterIndex}
+                                pillToBeRemoved={onRemoveSelectedFilterIndex}
                                 handleKeyPress={handleKeyPress}
-                                setSelectedPill={setSelectedPill}
+                                setSelectedPill={setOnEditSelectedFilterIndex}
                                 setNewPillValue={setNewPillValue}
                             />
                         ))}
 
-                        {selectedPill === false && (
+                        {onEditSelectedFilterIndex === false && (
                             <div
                                 style={{
                                     width: `${typedInput.length * 1.3}%`,
@@ -290,12 +321,18 @@ const TaskSearchDev = ({
                             >
                                 <input
                                     ref={userInputRef}
-                                    onClick={() => setActiveSuggestionIndex(-1)}
-                                    onBlur={() => setSuggestionModal(false)}
+                                    onClick={() =>
+                                        setActiveFilterSuggestionDropdownIndex(
+                                            -1
+                                        )
+                                    }
+                                    onBlur={() =>
+                                        setFilterSuggestionDropdownOpen(false)
+                                    }
                                     className={`task-search-input ${
                                         styles['search-input-dev']
                                     } ${
-                                        pillToBeRemoved !== -1
+                                        onRemoveSelectedFilterIndex !== -1
                                             ? styles['remove-caret']
                                             : ''
                                     }`}
@@ -304,8 +341,8 @@ const TaskSearchDev = ({
                                     value={typedInput}
                                     placeholder="Eg: status:done assignee:joy title:New Feature"
                                     onChange={(e) => {
-                                        pillToBeRemoved !== -1 &&
-                                            setPillToBeRemoved(-1);
+                                        onRemoveSelectedFilterIndex !== -1 &&
+                                            setOnRemoveSelectedFilterIndex(-1);
                                         setTypedInput(e.target.value);
                                     }}
                                     onKeyDown={handleKeyPress}
@@ -315,13 +352,16 @@ const TaskSearchDev = ({
                         )}
                     </div>
 
-                    {suggestionModal &&
+                    {filterSuggestionDropdownOpen &&
                         (typedInput ||
-                            (selectedPill !== false && newPillValue)) && (
+                            (onEditSelectedFilterIndex !== false &&
+                                newPillValue)) && (
                             <Options
                                 style={suggestionCoordinates}
-                                suggestions={suggestions}
-                                activeSuggestionIndex={activeSuggestionIndex}
+                                suggestions={filterSuggestions}
+                                activeSuggestionIndex={
+                                    activeFilterSuggestionDropdownIndex
+                                }
                                 onSuggestionSelected={onSuggestionSelected}
                             />
                         )}
