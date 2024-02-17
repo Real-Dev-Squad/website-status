@@ -532,7 +532,7 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-        const spanElement = screen.getByTestId('started-on');
+        const spanElement = screen.getByTestId('startedOn');
         expect(spanElement).toHaveTextContent('Not started');
     });
 
@@ -547,8 +547,10 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-        const spanElement = screen.getByTestId('started-on');
-        expect(spanElement).toHaveTextContent('Started 3 years ago'); // Mocked date from moment
+        const spanElement = screen.getByTestId('startedOn');
+        expect(spanElement).toHaveTextContent(
+            'Started: Apr 19, 2021 (3 years ago)'
+        ); // Mocked date from moment
     });
     it('Should show the status of the task', () => {
         renderWithRouter(
