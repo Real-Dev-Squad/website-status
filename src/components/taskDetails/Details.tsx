@@ -34,15 +34,17 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                     <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
                 )}
             </span>
-            <DevFeature>
-                <span>
-                    {detailType === 'Ends On' && url && (
-                        <Link href={url} data-testid="extension-request-icon">
-                            <FaReceipt color="green" />
-                        </Link>
-                    )}
-                </span>
-            </DevFeature>
+            <span>
+                {detailType === 'Ends On' && url && (
+                    <Link
+                        href={url}
+                        target="_blank"
+                        data-testid="extension-request-icon"
+                    >
+                        <FaReceipt color="green" />
+                    </Link>
+                )}
+            </span>
         </div>
     );
 };
