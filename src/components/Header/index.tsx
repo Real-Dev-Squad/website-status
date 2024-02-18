@@ -22,7 +22,7 @@ export const HeaderLink: FC<HeaderLinkProps> = ({
     }`;
 
     return (
-        <Link href={link} passHref>
+        <Link href={link}>
             <button
                 type="button"
                 tabIndex={0}
