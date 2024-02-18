@@ -6,15 +6,12 @@ type TooltipProps = {
     content: React.ReactNode;
     tooltipPosition?: React.CSSProperties;
 };
+type CurrClass = 'fade-in' | 'fade-out';
 
 const Tooltip = ({ children, content, tooltipPosition }: TooltipProps) => {
-    const [currClass, setCurrClass] = useState('fade-out');
+    const [currClass, setCurrClass] = useState<CurrClass>('fade-out');
     const toggleClass = () => {
-        if (currClass === 'fade-out') {
-            setCurrClass('fade-in');
-        } else {
-            setCurrClass('fade-out');
-        }
+        setCurrClass((prev) => (prev === 'fade-out' ? 'fade-in' : 'fade-out'));
     };
 
     return (
