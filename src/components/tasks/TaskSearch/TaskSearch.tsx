@@ -65,7 +65,13 @@ const TaskSearch = ({
             <div id="filter-container" className={styles['filter-container']}>
                 <div className={styles['filter-button']} onClick={handleModal}>
                     <p>Filter</p>
-                    <LuChevronDown className={styles['filter-chevron']} />
+                    <LuChevronDown
+                        className={` ${
+                            modalOpen
+                                ? styles['filter-chevron-open']
+                                : styles['filter-chevron']
+                        }`}
+                    />
                     {modalOpen && (
                         <FilterModal
                             dev={false}

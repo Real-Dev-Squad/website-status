@@ -59,6 +59,10 @@
     height: 1rem;
 }
 
+.filter-chevron-open {
+    transform: rotate(180deg);
+}
+
 .search-bar-div {
     width: 43vw;
     flex: 1;
@@ -211,7 +215,7 @@
 .filter-modal {
     position: absolute;
     top: 38px;
-    left: 0rem;
+    left: 0;
     min-width: 15rem;
     background-color: $white;
     border-radius: $radius;
