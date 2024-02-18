@@ -44,4 +44,9 @@ export const devHeaderCategories = [
         refURL: '/availability-panel?dev=true',
         pathName: '/availability-panel',
     },
+    {
+        title: 'Status Calendar',
+        refURL: '/calendar?dev=true',
+        pathName: '/calendar',
+    },
 ];

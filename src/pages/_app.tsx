@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import 'react-toastify/dist/ReactToastify.css';
 import '@/styles/index.scss';
+import '@/styles/calendar.scss';
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === 'ON') {
     require('../../__mocks__/index');
