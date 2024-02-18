@@ -3,34 +3,34 @@ import { HeaderCategory } from '@/types/header';
 export const headerCategories: HeaderCategory[] = [
     {
         title: 'Tasks',
-        refURL: '/tasks',
+        link: '/tasks',
         pathName: '/tasks',
     },
     {
         title: 'Issues',
-        refURL: '/issues',
+        link: '/issues',
         pathName: '/issues',
     },
     {
         title: 'Mine',
-        refURL: '/mine',
+        link: '/mine',
         pathName: '/mine',
     },
     {
         title: 'Open PRs',
-        refURL: '/pull-requests?state=open',
+        link: '/pull-requests?state=open',
         pathName: '/pull-requests',
         state: 'open',
     },
     {
         title: 'Stale PRs',
-        refURL: '/pull-requests?state=stale',
+        link: '/pull-requests?state=stale',
         pathName: '/pull-requests',
         state: 'stale',
     },
     {
         title: 'Idle Users',
-        refURL: '/idle-users',
+        link: '/idle-users',
         pathName: '/idle-users',
     },
 ];
@@ -38,17 +38,17 @@ export const headerCategories: HeaderCategory[] = [
 export const devHeaderCategories: HeaderCategory[] = [
     {
         title: 'Standup',
-        refURL: '/standup?dev=true',
+        link: '/standup?dev=true',
         pathName: '/standup',
     },
     {
         title: 'Availability Panel',
-        refURL: '/availability-panel?dev=true',
+        link: '/availability-panel?dev=true',
         pathName: '/availability-panel',
     },
     {
         title: 'Status Calendar',
-        refURL: '/calendar?dev=true',
+        link: '/calendar?dev=true',
         pathName: '/calendar',
     },
 ];

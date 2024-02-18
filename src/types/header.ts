@@ -1,6 +1,6 @@
 export type HeaderCategory = {
     title: string;
-    refURL: string;
+    link: string;
     pathName: string;
     state?: string;
 };

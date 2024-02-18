@@ -63,11 +63,11 @@ export const Header = () => {
 
     return (
         <div className={styles.header}>
-            {headerOptions.map(({ title, refURL, pathName, state }, index) => (
+            {headerOptions.map(({ title, link, pathName, state }, index) => (
                 <HeaderLink
                     key={index}
                     title={title}
-                    link={refURL}
+                    link={link}
                     isActive={
                         router.pathname === pathName &&
                         (router.pathname === '/pull-requests'
