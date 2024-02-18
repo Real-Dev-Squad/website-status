@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import TaskSearch from '@/components/tasks/TaskSearch/TaskSearch';
 import { Tab } from '@/interfaces/task.type';
-import TaskSearchDev from '@/components/tasks/TaskSearchDev/TaskSearch';
+import TaskSearchDev from '@/components/tasks/TaskSearchDev/TaskSearchDev';
 
 jest.mock('@/utils/getChangedStatusName', () => ({
     getChangedStatusName: jest.fn((tab) => tab),
@@ -126,14 +126,12 @@ describe('TaskSearch', () => {
 
     test('calls onSelect when the any one filter button is clicked and dev is true', () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -167,14 +165,12 @@ describe('TaskSearch', () => {
 
     test('Should not display status:all in search bar in dev mode', () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -216,9 +212,8 @@ describe('Multi select task search in dev mode', () => {
     test('renders search input with empty string if dev mode is enabled', () => {
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -229,14 +224,12 @@ describe('Multi select task search in dev mode', () => {
 
     test('should contain pill based on query param', async () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -248,9 +241,8 @@ describe('Multi select task search in dev mode', () => {
     test('search button should be clickable even if search input is empty', () => {
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -265,9 +257,8 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -285,14 +276,12 @@ describe('Multi select task search in dev mode', () => {
 
     test('Blocked Button Selected then Search Bar Display status:blocked in dev', async () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -315,9 +304,8 @@ describe('Multi select task search in dev mode', () => {
     test('should generate suggestion once clicked on option pill', async () => {
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -337,9 +325,8 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -352,9 +339,8 @@ describe('Multi select task search in dev mode', () => {
     test('should discard changes and set focus back to input if escape is pressed', async () => {
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -371,9 +357,8 @@ describe('Multi select task search in dev mode', () => {
     test('should take 2 backspaces to remove a pill, if pressed in an empty input field', async () => {
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -390,9 +375,8 @@ describe('Multi select task search in dev mode', () => {
     test('should delete the pill if entire value of its is cleared', async () => {
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -407,9 +391,8 @@ describe('Multi select task search in dev mode', () => {
     test('should be able to traverse between options through arrow keys', async () => {
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -431,9 +414,8 @@ describe('Multi select task search in dev mode', () => {
     test('should be able to select options using ENTER key', async () => {
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -455,9 +437,8 @@ describe('Multi select task search in dev mode', () => {
     test('should fetch tasks if ENTER is pressed', async () => {
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -472,9 +453,8 @@ describe('Multi select task search in dev mode', () => {
     it('should remove pill from UI if clicked on delete button', () => {
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:blocked"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -489,9 +469,8 @@ describe('Multi select task search in dev mode', () => {
     test('should discard changes made in pill and set focus back to input if clicked outside of pill', async () => {
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:in-progress"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -513,9 +492,8 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:in-progress"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -540,9 +518,8 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
         render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -562,9 +539,8 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
             <TaskSearchDev
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:in-progress"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
