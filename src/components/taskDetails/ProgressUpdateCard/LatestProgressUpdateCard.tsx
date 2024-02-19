@@ -22,7 +22,6 @@ export default function LatestProgressUpdateCard({
 }: LatestProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
-    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
     const tooltipText = `Updated at ${fullDate}, ${time}`;
@@ -58,14 +57,6 @@ export default function LatestProgressUpdateCard({
     const [dataToShowState, setDataToShowState] =
         useState<ProgressUpdateDataToShow[]>(dataToShow);
 
-    function onHoverOnDate(e: MouseEvent<HTMLElement>) {
-        setIsTooltipVisible(true);
-    }
-
-    function onMouseOutOnDate(e: MouseEvent<HTMLElement>) {
-        setIsTooltipVisible(false);
-    }
-
     function onMoreOrLessButtonClick(
         e: MouseEvent<HTMLElement>,
         clickedOnData: ProgressUpdateDataToShow
@@ -85,11 +76,8 @@ export default function LatestProgressUpdateCard({
     return (
         <LatestProgressUpdateCardPresentation
             dataToShowState={dataToShowState}
-            isTooltipVisible={isTooltipVisible}
             tooltipText={tooltipText}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}
-            onHoverOnDate={onHoverOnDate}
-            onMouseOutOnDate={onMouseOutOnDate}
             dateInAgoFormat={dateInAgoFormat}
         />
     );

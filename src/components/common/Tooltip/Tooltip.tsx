@@ -1,29 +1,31 @@
+import { useState } from 'react';
 import styles from './tooltip.module.scss';
 
 type TooltipProps = {
-    isVisible: boolean;
-    textToShow: string;
-    tooltipPosition: {
-        top?: string;
-        right?: string;
-        bottom?: string;
-        left?: string;
-    };
+    children: React.ReactNode;
+    content: React.ReactNode;
+    tooltipPosition?: React.CSSProperties;
 };
+type CurrClass = 'fade-in' | 'fade-out';
 
-export default function Tooltip({
-    isVisible,
-    textToShow,
-    tooltipPosition,
-}: TooltipProps) {
+const Tooltip = ({ children, content, tooltipPosition }: TooltipProps) => {
+    const [currClass, setCurrClass] = useState<CurrClass>('fade-out');
+    const toggleClass = () => {
+        setCurrClass((prev) => (prev === 'fade-out' ? 'fade-in' : 'fade-out'));
+    };
+
     return (
-        <span
-            data-testid="tooltip"
-            className={`${styles['tooltip']}
-               ${isVisible ? styles['fade-in'] : styles['fade-out']}`}
-            style={{ ...tooltipPosition }}
-        >
-            {textToShow}
+        <span onMouseOver={toggleClass} onMouseOut={toggleClass}>
+            {children}
+            <span
+                data-testid="tooltip"
+                className={`${styles['tooltip']} ${styles[currClass]} `}
+                style={{ ...tooltipPosition }}
+            >
+                {content}
+            </span>
         </span>
     );
-}
+};
+
+export default Tooltip;

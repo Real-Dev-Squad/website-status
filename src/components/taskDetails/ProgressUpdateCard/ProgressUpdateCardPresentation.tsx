@@ -1,4 +1,4 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { FaAngleRight, FaRegClock } from 'react-icons/fa6';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './progress-update-card.module.scss';
@@ -9,10 +9,7 @@ import {
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,
-    onHoverOnDate,
-    onMouseOutOnDate,
     dateInAgoFormat,
-    isTooltipVisible,
     tooltipString,
     dataToShowState,
     onMoreOrLessButtonClick,
@@ -51,11 +48,6 @@ export default function ProgressUpdateCardPresentation({
 
     return (
         <div className={styles['progress-update-card']}>
-            <Tooltip
-                isVisible={isTooltipVisible}
-                textToShow={tooltipString}
-                tooltipPosition={{ top: '-25px', right: '-2rem' }}
-            />
             <div
                 className={`${styles['progress-update-card__container']} ${
                     isExpanded ? styles.expand : styles.shrinked
@@ -67,24 +59,27 @@ export default function ProgressUpdateCardPresentation({
                     <h3 className={styles['progress-update-card__title']}>
                         {titleToShow}
                     </h3>
-                    <span
-                        className={
-                            styles['progress-update-card__date-container']
-                        }
-                        onClick={(event) => event.stopPropagation()}
-                        onMouseOver={onHoverOnDate}
-                        onMouseOut={onMouseOutOnDate}
-                        data-testid="progress-update-card-date"
+                    <Tooltip
+                        tooltipPosition={{ top: '-25px', right: '-2rem' }}
+                        content={tooltipString}
                     >
-                        <FaRegClock />
                         <span
                             className={
-                                styles['progress-update-card__date-text']
+                                styles['progress-update-card__date-container']
                             }
+                            onClick={(event) => event.stopPropagation()}
+                            data-testid="progress-update-card-date"
                         >
-                            {dateInAgoFormat}
+                            <FaRegClock />
+                            <span
+                                className={
+                                    styles['progress-update-card__date-text']
+                                }
+                            >
+                                {dateInAgoFormat}
+                            </span>
                         </span>
-                    </span>
+                    </Tooltip>
                     <FaAngleRight
                         style={{
                             transform: isExpanded ? 'rotate(90deg)' : 'none',
