@@ -238,10 +238,7 @@ describe('TaskDetails Page', () => {
                     value={'4/19/2021, 12:00:10 AM'}
                     url={details.extension_request_url}
                 />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+            </Provider>
         );
 
         await waitFor(() => {
