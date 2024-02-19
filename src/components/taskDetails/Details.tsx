@@ -38,7 +38,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
             <span
                 className={styles.detailValue}
                 style={{ color: color ?? 'black' }}
-                title={getHumanReadableDate(value)}
+                title={getHumanReadableDate(value ?? '')}
             >
                 {isGitHubLink && value ? (
                     <a
