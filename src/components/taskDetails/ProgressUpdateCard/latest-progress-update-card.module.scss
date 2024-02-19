@@ -1,5 +1,10 @@
 @import '../../../styles/variables';
 
+.date-clock-container {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
 .latest-progress-update-card {
     background-color: $white;
     border-radius: 10px;
