@@ -12,12 +12,33 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
 
+    const getHumanReadableDate = (timestamp: string): string => {
+        const timeDiff = new Date(timestamp).getTime() - new Date().getTime();
+        const days = Math.abs(Math.floor(timeDiff / (1000 * 60 * 60 * 24)));
+
+        if (timeDiff < 0) {
+            return `${days} days ago`;
+        } else if (timeDiff > 0) {
+            return `${days} days`;
+        } else {
+            return 'Today';
+        }
+    };
+
     return (
         <div className={styles.detailsContainer}>
-            <span className={styles.detailType}>{detailType}:</span>
+            <span className={styles.detailType}>
+                {detailType === 'Started On'
+                    ? 'Started'
+                    : detailType === 'Ends On'
+                    ? 'Ended'
+                    : detailType}
+                :
+            </span>
             <span
                 className={styles.detailValue}
                 style={{ color: color ?? 'black' }}
+                title={getHumanReadableDate(value)}
             >
                 {isGitHubLink && value ? (
                     <a
