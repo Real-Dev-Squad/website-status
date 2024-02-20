@@ -38,6 +38,7 @@ import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
 import { useRouter } from 'next/router';
+import handleStatusTextColor from '@/utils/handleStatusTextColor';
 
 const Card: FC<CardProps> = ({
     content,
@@ -46,7 +47,6 @@ const Card: FC<CardProps> = ({
 }) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
-    const statusRedList = [BLOCKED];
     const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE, DONE];
 
     const cardDetails = content;
@@ -96,20 +96,9 @@ const Card: FC<CardProps> = ({
 
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
-    function getStartedAgo() {
-        if (cardDetails.startedOn === undefined) {
-            return 'N/A';
-        } else {
-            const localStartedOn = new Date(
-                parseInt(cardDetails.startedOn, 10) * 1000
-            );
-            const fromNowStartedOn = moment(localStartedOn).fromNow();
-            return fromNowStartedOn;
-        }
-    }
-
+    const localStartedOn = new Date(parseInt(cardDetails.startedOn, 10) * 1000);
     const localEndsOn = new Date(cardDetails.endsOn * 1000);
-    const fromNowEndsOn = moment(localEndsOn).fromNow();
+
     const iconHeight = '25';
     const iconWidth = '25';
 
@@ -199,24 +188,34 @@ const Card: FC<CardProps> = ({
         }
     }
 
-    function renderDate(fromNowEndsOn: string, isEditable: boolean) {
+    function renderDate(date: Date, isEditable: boolean, type: any) {
+        const formattedDate = moment(date).format('MMM D, YYYY');
         if (isEditable) {
             return (
                 <input
                     type="date"
                     onChange={(e) => {
                         setDateTimes(e.target.value);
-                        handelDateChange(e, 'endsOn');
+                        handelDateChange(e, type);
                     }}
                     value={dateTimes}
-                    data-testid="date"
+                    data-testid={type + 'Input'}
                 />
             );
         }
         return (
-            <span className={styles.cardStrongFont} role="button" tabIndex={0}>
-                {!cardDetails.endsOn ? 'TBD' : fromNowEndsOn}
-            </span>
+            <>
+                <span
+                    className={styles.cardStrongFont}
+                    role="button"
+                    tabIndex={0}
+                >
+                    {formattedDate}
+                    <span className={styles.formattedDate}>
+                        {''} ({moment(date).fromNow()})
+                    </span>
+                </span>
+            </>
         );
     }
 
@@ -511,7 +510,9 @@ const Card: FC<CardProps> = ({
                         taskId={cardDetails.id}
                     >
                         <span
-                            className={styles.cardTitleText}
+                            className={`${styles.cardTitleText} ${
+                                isTaskOverdue() && styles.overdueTaskTitle
+                            }`}
                             contentEditable={isEditable}
                             onKeyDown={(e) => handleChange(e, 'title')}
                             role="button"
@@ -527,70 +528,51 @@ const Card: FC<CardProps> = ({
                     <ProgressContainer content={content} />
                 </div>
             </div>
-            <div className={styles.taskStatusAndDateContainer}>
+            <div>
                 <div className={styles.dateInfo}>
                     <div className={styles.dateSection}>
                         <p className={styles.cardSpecialFont}>
-                            Estimated completion
+                            Estimated completion:
                         </p>
-                        <p className={styles.completionDate}>
-                            {renderDate(fromNowEndsOn, isEditable)}
+                        <p
+                            className={styles.completionDate}
+                            data-testid="endsOn"
+                        >
+                            {!cardDetails.endsOn
+                                ? 'TBD'
+                                : renderDate(localEndsOn, isEditable, 'endsOn')}
                         </p>
                         <StatusIndicator
                             status={editedTaskDetails.savingDate}
                         />
                     </div>
-                    <span
-                        className={styles.cardSpecialFont}
-                        contentEditable={isEditable}
-                        onKeyDown={(e) => handleChange(e, 'startedOn')}
-                        role="button"
-                        tabIndex={0}
-                        data-testid="started-on"
-                    >
-                        {cardDetails.status === AVAILABLE
-                            ? 'Not started'
-                            : `Started ${getStartedAgo()}`}
-                    </span>
-                </div>
-                {/* EDIT task status */}
-                <div className={styles.taskStatusEditMode}>
-                    {isEditable ? (
-                        <TaskStatusEditMode
-                            task={editedTaskDetails}
-                            setEditedTaskDetails={setEditedTaskDetails}
-                            isDevMode={isDevMode}
+                    <div className={styles.dateSection} data-testid="startedOn">
+                        <span className={styles.cardSpecialFont}>
+                            {cardDetails.status === AVAILABLE
+                                ? 'Not started:'
+                                : 'Started on:'}
+                        </span>
+                        <span className={styles.completionDate}>
+                            {!cardDetails.startedOn
+                                ? 'N/A'
+                                : renderDate(
+                                      localStartedOn,
+                                      isEditable,
+                                      'startedOn'
+                                  )}
+                        </span>
+                        <StatusIndicator
+                            status={editedTaskDetails.savingDate}
                         />
-                    ) : (
-                        <div className={styles.statusContainer} style={{}}>
-                            <p className={styles.cardSpecialFont}>Status:</p>
-                            <p
-                                data-testid="task-status"
-                                className={styles.statusText}
-                            >
-                                {TASK_STATUS_MAPING[
-                                    cardDetails.status as keyof typeof TASK_STATUS_MAPING
-                                ] ||
-                                    cardDetails.status ||
-                                    'NA'}
-                            </p>
-                        </div>
-                    )}
+                    </div>
                 </div>
             </div>
 
             <div className={styles.contributor}>
                 <p className={styles.cardSpecialFont}>
-                    {cardDetails.assignee ? 'Assigned to' : 'Assign to'}
+                    {cardDetails.assignee ? 'Assigned to:' : 'Assign to:'}
                 </p>
-                <span className={styles.contributorImage}>
-                    <Image
-                        src={assigneeProfileImageURL}
-                        alt={cardDetails.assignee || DUMMY_NAME}
-                        width={30}
-                        height={30}
-                    />
-                </span>
+
                 {isEditable
                     ? isUserAuthorized && (
                           <div
@@ -611,32 +593,77 @@ const Card: FC<CardProps> = ({
                           </div>
                       )
                     : editedTaskDetails.assignee && (
-                          <p className={styles.cardStrongFont}>
-                              {editedTaskDetails.assignee}
+                          <p className={styles.contributorDiv}>
+                              <span className={styles.contributor}>
+                                  <Image
+                                      src={assigneeProfileImageURL}
+                                      alt={cardDetails.assignee || DUMMY_NAME}
+                                      width={25}
+                                      height={25}
+                                  />
+                              </span>
+                              <span className={styles.cardStrongFont}>
+                                  {editedTaskDetails.assignee}
+                              </span>
                           </p>
                       )}
                 {showAssignButton() && <AssigneeButton />}
             </div>
 
-            <div className={styles.cardItems}>
-                <div
-                    className={`${styles.taskTagLevelWrapper} ${
-                        isEditable && styles.editMode
-                    }`}
-                >
-                    <TaskLevelMap
-                        taskTagLevel={taskTagLevel}
-                        shouldEdit={isEditable}
-                        itemId={cardDetails.id}
-                        deleteTaskTagLevel={deleteTaskTagLevel}
-                    />
-                    {isEditable && isUserAuthorized && (
-                        <TaskLevelEdit
-                            taskTagLevel={taskTagLevel}
-                            itemId={cardDetails.id}
-                        />
-                    )}
+            {/* EDIT task status */}
+            {isEditable ? (
+                <TaskStatusEditMode
+                    task={editedTaskDetails}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                    isDevMode={isDevMode}
+                />
+            ) : (
+                <div className={styles.statusContainer}>
+                    <p
+                        data-testid="task-status"
+                        className={`${styles.statusText} ${
+                            styles[
+                                `statusText${handleStatusTextColor(
+                                    cardDetails.status
+                                )}`
+                            ]
+                        } `}
+                    >
+                        <p
+                            className={`${styles.statusTextIndicator} ${
+                                styles[
+                                    `statusTextIndicator${handleStatusTextColor(
+                                        cardDetails.status
+                                    )}`
+                                ]
+                            } `}
+                        ></p>
+                        {TASK_STATUS_MAPING[
+                            cardDetails.status as keyof typeof TASK_STATUS_MAPING
+                        ] ||
+                            cardDetails.status ||
+                            'NA'}
+                    </p>
                 </div>
+            )}
+
+            <div
+                className={`${styles.taskTagLevelWrapper} ${
+                    isEditable && styles.editMode
+                }`}
+            >
+                <TaskLevelMap
+                    taskTagLevel={taskTagLevel}
+                    shouldEdit={isEditable}
+                    itemId={cardDetails.id}
+                    deleteTaskTagLevel={deleteTaskTagLevel}
+                />
+                {isEditable && isUserAuthorized && (
+                    <TaskLevelEdit
+                        taskTagLevel={taskTagLevel}
+                        itemId={cardDetails.id}
+                    />
+                )}
             </div>
 
             {cardDetails.status !== COMPLETED && isIssueClosed() && (

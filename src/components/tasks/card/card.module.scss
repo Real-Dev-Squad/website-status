@@ -22,7 +22,6 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    margin-bottom: 2rem;
     margin-bottom: 25px;
     justify-content: space-between;
     border: 1px solid $lighter-gray;
@@ -36,6 +35,7 @@
     @media (max-width: 448px) {
         justify-content: center;
     }
+    box-shadow: rgba(0, 0, 0, 0.15) 3px 3px 5px 2px;
 }
 .card_updated {
     border-radius: 10px;
@@ -54,7 +54,7 @@
 }
 
 .dateInfo {
-    margin-top: 0.8rem;
+    // margin-top: 0.8rem;
 }
 
 .cardTitle {
@@ -73,45 +73,66 @@
     }
 }
 
+.cardTitle:hover {
+    text-decoration: underline;
+    transition: ease-in 3s;
+}
 .cardTitleText {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
     white-space: pre-wrap;
-
+    color: $black;
+    font-weight: 500;
     @media (max-width: 368px) {
         -webkit-line-clamp: 2;
     }
+    letter-spacing: 0.5px;
 }
 
 .cardSpecialFont {
     font-size: 1.1rem;
-    font-weight: 500;
-    color: #aeaeae;
+    font-weight: 300;
+    color: #57534e;
 }
 
 .cardStatusFont {
     font-size: 1.3rem;
     font-weight: 500;
 }
+
 .contributor {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-top: 0.8rem;
+    gap: 0.5rem;
+    margin-top: 0.1rem;
     flex-wrap: wrap;
-
     .card__top__button {
         margin-top: 0;
     }
 }
+
+.contributorDiv {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-wrap: wrap;
+    .card__top__button {
+        margin-top: 0;
+    }
+}
+
 .completionDate {
     padding-left: 0.5rem;
     @media (max-width: 448px) {
         padding-left: 0;
         margin: 0.25rem 0 0.5rem;
     }
+}
+
+.formattedDate {
+    color: #6f6c6b;
 }
 
 .contributorImage {
@@ -121,16 +142,17 @@
 }
 
 .cardStrongFont {
-    font-size: 1.3rem;
-    font-weight: 500;
-    border-radius: 5px;
-    width: 7rem;
-    height: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 400;
 }
 
 .overdueTask {
-    border: solid red 2px;
-    background-color: lighten($light-red-2, 3%);
+    border: solid #fca5a5 1px;
+    background-color: $light-red-2;
+}
+
+.overdueTaskTitle {
+    color: rgb(140, 28, 28);
 }
 
 .progressContainer {
@@ -139,6 +161,7 @@
     flex-direction: column;
     align-items: center;
     padding-top: 0.5rem;
+    border: none;
 }
 
 .progressContainerUpdated {
@@ -150,8 +173,7 @@
 .progressIndicator {
     width: 100%;
     height: 0.6rem;
-    background-color: $white;
-    border: 2px solid $black;
+    background-color: #e2d7d2;
     border-radius: 1rem;
     max-width: 9rem;
 }
@@ -201,7 +223,7 @@
 }
 
 .progressRed {
-    background-color: $red;
+    background-color: $coral-red;
 }
 
 .progressYellow {
@@ -210,15 +232,6 @@
 .editButton {
     text-align: left;
     cursor: pointer;
-}
-
-.taskStatusAndDateContainer {
-    display: flex;
-    justify-content: space-between;
-}
-
-.taskStatusEditMode {
-    margin-top: 0.8rem;
 }
 
 .taskTagLevelWrapper {
@@ -234,7 +247,6 @@
 
 .taskTagLevelContainer {
     display: flex;
-    gap: 0.25rem;
 }
 
 .taskTagLevel {
@@ -435,8 +447,41 @@
     align-items: center;
 }
 
+.statusTextIndicator {
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+}
+.statusTextIndicatorOrange {
+    background: orange;
+}
+.statusTextIndicatorRed {
+    background: red;
+}
+.statusTextIndicatorGreen {
+    background: green;
+}
+
 .statusText {
-    margin-left: 0.5rem;
+    margin: 0;
+    padding: 0 10px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.statusTextOrange {
+    background-color: lighten(orange, 40%);
+    border: solid 1px orange;
+}
+.statusTextRed {
+    background-color: lighten(red, 40%);
+    border: solid 1px red;
+}
+.statusTextGreen {
+    background-color: lighten(green, 40%);
+    border: solid 1px green;
 }
 
 .assigneeSuggestionInput {

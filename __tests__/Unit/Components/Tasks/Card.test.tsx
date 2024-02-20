@@ -106,7 +106,7 @@ describe('Task card', () => {
             </Provider>
         );
 
-        expect(getByText('a day ago')).toBeInTheDocument();
+        expect(getByText('2 days ago')).toBeInTheDocument();
 
         // With updated props
         props = {
@@ -268,7 +268,7 @@ describe('Task card', () => {
         expect(closeTaskBtn).toBeInTheDocument();
 
         const dummyNameImage = screen.getByAltText('Dummy Name');
-        const assignToText = screen.getByText('Assign to');
+        const assignToText = screen.getByText('Assign to:');
 
         expect(dummyNameImage).toBeInTheDocument();
         expect(assignToText).toBeInTheDocument();
@@ -315,9 +315,9 @@ describe('Task card', () => {
             </Provider>
         );
 
-        const assignedToText = screen.getByText('Assigned to');
+        const assignedToText = screen.getByText('Assigned to:');
         expect(assignedToText).toBeInTheDocument();
-        const assignToText = screen.queryByText('Assign to');
+        const assignToText = screen.queryByText('Assign to:');
         expect(assignToText).not.toBeInTheDocument();
     });
 
@@ -335,9 +335,9 @@ describe('Task card', () => {
             </Provider>
         );
 
-        const assignedToText = screen.queryByText('Assigned to');
+        const assignedToText = screen.queryByText('Assigned to:');
         expect(assignedToText).not.toBeInTheDocument();
-        const assignToText = screen.getByText('Assign to');
+        const assignToText = screen.getByText('Assign to:');
         expect(assignToText).toBeInTheDocument();
     });
 
@@ -487,7 +487,7 @@ describe('Task card', () => {
         const editButton = getByTestId('edit-button');
         fireEvent.click(editButton);
 
-        const dateInput = screen.getByTestId('date');
+        const dateInput = screen.getByTestId('endsOnInput');
         fireEvent.change(dateInput, { target: { value: '2023-08-25' } });
 
         jest.runAllTimers();
@@ -532,8 +532,10 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-        const spanElement = screen.getByTestId('started-on');
-        expect(spanElement).toHaveTextContent('Not started');
+        const spanElement = screen.getByTestId('startedOn');
+        expect(spanElement).toHaveTextContent(
+            'Not started:Apr 19, 2021 (3 years ago)'
+        );
     });
 
     it('renders "Started" with a specific date if status is not AVAILABLE', () => {
@@ -547,8 +549,10 @@ describe('Task card', () => {
             </Provider>,
             {}
         );
-        const spanElement = screen.getByTestId('started-on');
-        expect(spanElement).toHaveTextContent('Started 3 years ago'); // Mocked date from moment
+        const spanElement = screen.getByTestId('startedOn');
+        expect(spanElement).toHaveTextContent(
+            'Started on:Apr 19, 2021 (3 years ago)'
+        ); // Mocked date from moment
     });
     it('Should show the status of the task', () => {
         renderWithRouter(
