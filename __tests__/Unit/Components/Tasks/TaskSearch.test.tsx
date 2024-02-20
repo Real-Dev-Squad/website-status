@@ -291,7 +291,7 @@ describe('Multi select task search in dev mode', () => {
         );
     });
 
-    test('Blocked Button Selected then Search Bar Display status:blocked in dev', async () => {
+    test('BACKLOG Button Selected then Search Bar Display status:backlog in dev', async () => {
         const onSelect = jest.fn();
         const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
@@ -300,7 +300,7 @@ describe('Multi select task search in dev mode', () => {
             <TaskSearch
                 dev={true}
                 onSelect={onSelect}
-                inputValue="status:blocked"
+                inputValue="status:backlog"
                 onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
@@ -308,14 +308,14 @@ describe('Multi select task search in dev mode', () => {
 
         const filterButton = screen.getByText('Filter');
         fireEvent.click(filterButton);
-        const blockedButton = screen.getByRole('button', { name: /blocked/i });
-        fireEvent.click(blockedButton);
-        expect(onSelect).toHaveBeenCalledWith('BLOCKED');
+        const backlogButton = screen.getByRole('button', { name: /backlog/i });
+        fireEvent.click(backlogButton);
+        expect(onSelect).toHaveBeenCalledWith('BACKLOG');
         await waitFor(
             () => {
                 const pillContent = getByTestId('pill-content');
                 expect(pillContent).toBeInTheDocument();
-                expect(pillContent).toHaveTextContent('status:blocked');
+                expect(pillContent).toHaveTextContent('status:backlog');
             },
             { timeout: 1000 }
         );
