@@ -1,61 +1,84 @@
 import moment from 'moment';
-import React, { MouseEvent, useState } from 'react';
+import React, { MouseEvent, memo, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
-import { ProgressDetailsData } from '@/types/standup.type';
 import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCardPresentation';
+import {
+    ProgressUpdateCardProps,
+    ProgressUpdateDataToShow,
+} from './progressUpdateCard.types';
 
-type ProgressUpdateCardProps = {
-    data: ProgressDetailsData;
-    openDetails: (event: MouseEvent<HTMLElement>) => void;
-};
-
-export default function ProgressUpdateCard({
+export default memo(function ProgressUpdateCard({
     data,
-    openDetails,
 }: ProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
-    const titleLength = data?.completed?.length;
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
-    const [titleToShow, setTitleToShow] = useState(readMoreTitle);
-    const [isTitleWrapped, setIsTitleWrapped] = useState(true);
-    const isLengthMoreThanCharactersToShow: boolean =
-        titleLength > charactersToShow;
-    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
+    const titleToShow = readMoreTitle;
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
     const tooltipString = `Updated at ${fullDate}, ${time}`;
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    function onHoverOnDate(e: MouseEvent<HTMLElement>) {
-        setIsTooltipVisible(true);
+    const dataToShow = [
+        {
+            id: `completed-${data.id}`,
+            label: 'Completed:',
+            body: data.completed,
+            trimmedBody: readMoreFormatter(data.completed, charactersToShow),
+            shouldReadMoreButtonShow: data.completed.length > charactersToShow,
+            isReadMoreEnabled: false,
+        },
+        {
+            id: `planned-${data.id}`,
+            label: 'Planned:',
+            body: data.planned,
+            trimmedBody: readMoreFormatter(data.planned, charactersToShow),
+            shouldReadMoreButtonShow: data.planned.length > charactersToShow,
+            isReadMoreEnabled: false,
+        },
+        {
+            id: `blockers-${data.id}`,
+            label: 'Blockers:',
+            body: data.blockers,
+            trimmedBody: readMoreFormatter(data.blockers, charactersToShow),
+            shouldReadMoreButtonShow: data.blockers.length > charactersToShow,
+            isReadMoreEnabled: false,
+        },
+    ];
+
+    const [dataToShowState, setDataToShowState] =
+        useState<ProgressUpdateDataToShow[]>(dataToShow);
+
+    function onMoreOrLessButtonClick(
+        e: MouseEvent<HTMLElement>,
+        clickedOnData: ProgressUpdateDataToShow
+    ) {
+        e.stopPropagation();
+        setDataToShowState((prevState) => {
+            const newPrevState = prevState.map((datum) => {
+                if (datum.id === clickedOnData.id) {
+                    datum.isReadMoreEnabled = !datum.isReadMoreEnabled;
+                }
+                return datum;
+            });
+
+            return newPrevState;
+        });
     }
 
-    function onMouseOutOnDate(e: MouseEvent<HTMLElement>) {
-        setIsTooltipVisible(false);
-    }
-
-    function onMoreButtonClick(e: MouseEvent<HTMLElement>) {
-        if (isTitleWrapped) {
-            setTitleToShow(data.completed);
-            setIsTitleWrapped((prevState) => !prevState);
-            return;
-        }
-
-        setTitleToShow(readMoreTitle);
-        setIsTitleWrapped((prevState) => !prevState);
+    function onCardClick() {
+        setIsExpanded((prev) => !prev);
     }
     return (
         <ProgressUpdateCardPresentation
+            dataToShowState={dataToShowState}
             titleToShow={titleToShow}
-            isTitleWrapped={isTitleWrapped}
-            isMoreButtonVisible={isLengthMoreThanCharactersToShow}
-            onMoreButtonClick={onMoreButtonClick}
-            onHoverOnDate={onHoverOnDate}
-            onMouseOutOnDate={onMouseOutOnDate}
+            onMoreOrLessButtonClick={onMoreOrLessButtonClick}
             dateInAgoFormat={dateInAgoFormat}
-            isTooltipVisible={isTooltipVisible}
             tooltipString={tooltipString}
+            isExpanded={isExpanded}
+            onCardClick={onCardClick}
         />
     );
-}
+});
