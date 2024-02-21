@@ -5,6 +5,7 @@ import {
     screen,
     waitFor,
     queryAllByText,
+    act,
 } from '@testing-library/react';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
@@ -23,6 +24,7 @@ import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-req
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import DevFeature from '@/components/DevFeature';
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -640,5 +642,87 @@ describe('TaskDependency', () => {
             fireEvent.click(taskElement);
             expect(navigateToTask).toHaveBeenCalledWith(task.id);
         });
+    });
+});
+
+describe('Details component', () => {
+    it('Renders the detail type and value correctly', () => {
+        render(<Details detailType="Assignee" value="John Doe" />);
+        const detailType = screen.getByText('Assignee:');
+        const detailValue = screen.getByText('John Doe');
+        expect(detailType).toBeInTheDocument();
+        expect(detailValue).toBeInTheDocument();
+    });
+
+    it('Renders a GitHub link correctly', () => {
+        const githubIssueUrl = 'https://github.com/example/repo/issues/123';
+        render(<Details detailType="Link" value={githubIssueUrl} />);
+        const link = screen.getByRole('link', { name: /Open GitHub Issue/i });
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('href', githubIssueUrl);
+    });
+
+    it('Does not display tooltip on hover when timestamp is not provided', async () => {
+        render(<Details detailType="Started On" value="N/A" />);
+        const detailValue = screen.getByText('Started:');
+        fireEvent.mouseOver(detailValue);
+        const tooltip = screen.queryByText('N/A', { selector: '.tooltip' });
+        expect(tooltip).not.toBeInTheDocument();
+    });
+
+    it('Renders an extension request icon for Ends On with URL', () => {
+        const url = 'https://example.com';
+        render(<Details detailType="Ends On" url={url} />);
+        const extensionRequestIcon = screen.getByTestId(
+            'extension-request-icon'
+        );
+        expect(extensionRequestIcon).toBeInTheDocument();
+        expect(extensionRequestIcon).toHaveAttribute('href', url);
+    });
+
+    it('Does not render an extension request icon for Ends On without URL', () => {
+        render(<Details detailType="Ends On" />);
+        const extensionRequestIcon = screen.queryByTestId(
+            'extension-request-icon'
+        );
+        expect(extensionRequestIcon).not.toBeInTheDocument();
+    });
+
+    it('Renders a tooltip for timestamps', async () => {
+        const task = {
+            id: 'L1SDW6O835o0EI8ZmvRc',
+            startedOn: '1707869428.523', // Assuming this is the value received
+        };
+
+        render(<Details detailType="Started On" value={task.startedOn} />);
+
+        try {
+            // Find the span element containing the detail type
+            const detailTypeElement = screen.getByText((text) =>
+                /^Started\s*:/i.test(text)
+            ); // Updated regex
+
+            // Extract the detail type using regular expressions
+            const detailType = detailTypeElement.textContent
+                ?.match(/^Started\s*:\s*(.+)$/i)?.[1]
+                .trim(); // Updated regex
+
+            console.log('Extracted detail type:', detailType);
+
+            // Ensure the extracted detail type matches "Started On"
+            expect(detailType).toBe('Started On');
+
+            // Trigger mouseover event on the detail type element to show the tooltip
+            fireEvent.mouseOver(detailTypeElement);
+
+            // Find the tooltip element and ensure its content is not "Invalid date"
+            const tooltip = await screen.findByTestId('tooltip');
+            expect(tooltip.textContent).not.toBe('Invalid date');
+            expect(tooltip.textContent).toBeTruthy();
+        } catch (error) {
+            // Log any errors encountered during test execution
+            console.error('Error occurred during tooltip rendering:', error);
+            throw error; // Rethrow the error to fail the test
+        }
     });
 });

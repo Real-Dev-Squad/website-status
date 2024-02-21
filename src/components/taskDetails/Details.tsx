@@ -18,18 +18,8 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
     };
 
-    const getTooltipText = (
-        timestamp: string | number | undefined,
-        detailType: string
-    ) => {
-        if (!timestamp) return 'N/A';
-        const prefix =
-            detailType === 'Started On'
-                ? 'Started'
-                : detailType === 'Ends On'
-                ? 'Ended'
-                : '';
-        return `${prefix}: ${moment(timestamp).format('LLLL')}`;
+    const getTooltipText = (timestamp: string | number | undefined) => {
+        return timestamp ? moment(timestamp).format('LLLL') : 'N/A';
     };
 
     const isPastDate = (timestamp: string | number | undefined) => {
@@ -37,10 +27,18 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     };
 
     const getHumanReadableTime = (timestamp: string | number | undefined) => {
-        return timestamp
-            ? (isPastDate(timestamp) ? 'Started ' : 'Ends ') +
-                  getRelativeTime(timestamp)
-            : 'N/A';
+        if (!timestamp) return 'N/A';
+
+        const now = moment();
+        const futureTimestamp = moment(timestamp);
+
+        if (futureTimestamp.isAfter(now)) {
+            const yearsDiff = futureTimestamp.diff(now, 'years');
+            return `in ${yearsDiff} years`;
+        } else {
+            const duration = moment.duration(now.diff(futureTimestamp));
+            return `${duration.humanize()} ago`;
+        }
     };
 
     const isTimeDetail =
@@ -60,7 +58,12 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         <div className={styles.detailsContainer}>
             <span className={styles.detailType}>
                 {/* Conditional rendering for labels */}
-                {detailType}:
+                {detailType === 'Started On'
+                    ? 'Started'
+                    : detailType === 'Ends On'
+                    ? 'Ended'
+                    : detailType}
+                :
             </span>
             <span
                 className={styles.detailValue}
@@ -81,11 +84,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                     <>{renderedValue}</>
                 ) : (
                     <Tooltip
-                        content={
-                            isTimeDetail
-                                ? getTooltipText(value, detailType)
-                                : value
-                        }
+                        content={isTimeDetail ? getTooltipText(value) : value}
                     >
                         {/* Display the value */}
                         {isTimeDetail
