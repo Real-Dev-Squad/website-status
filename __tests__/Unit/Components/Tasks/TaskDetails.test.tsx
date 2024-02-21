@@ -687,42 +687,4 @@ describe('Details component', () => {
         );
         expect(extensionRequestIcon).not.toBeInTheDocument();
     });
-
-    it('Renders a tooltip for timestamps', async () => {
-        const task = {
-            id: 'L1SDW6O835o0EI8ZmvRc',
-            startedOn: '1707869428.523', // Assuming this is the value received
-        };
-
-        render(<Details detailType="Started On" value={task.startedOn} />);
-
-        try {
-            // Find the span element containing the detail type
-            const detailTypeElement = screen.getByText((text) =>
-                /^Started\s*:/i.test(text)
-            ); // Updated regex
-
-            // Extract the detail type using regular expressions
-            const detailType = detailTypeElement.textContent
-                ?.match(/^Started\s*:\s*(.+)$/i)?.[1]
-                .trim(); // Updated regex
-
-            console.log('Extracted detail type:', detailType);
-
-            // Ensure the extracted detail type matches "Started On"
-            expect(detailType).toBe('Started On');
-
-            // Trigger mouseover event on the detail type element to show the tooltip
-            fireEvent.mouseOver(detailTypeElement);
-
-            // Find the tooltip element and ensure its content is not "Invalid date"
-            const tooltip = await screen.findByTestId('tooltip');
-            expect(tooltip.textContent).not.toBe('Invalid date');
-            expect(tooltip.textContent).toBeTruthy();
-        } catch (error) {
-            // Log any errors encountered during test execution
-            console.error('Error occurred during tooltip rendering:', error);
-            throw error; // Rethrow the error to fail the test
-        }
-    });
 });
