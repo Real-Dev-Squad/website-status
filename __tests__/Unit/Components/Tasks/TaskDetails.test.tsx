@@ -687,4 +687,22 @@ describe('Details component', () => {
         );
         expect(extensionRequestIcon).not.toBeInTheDocument();
     });
+    it('Renders a tooltip for timestamps', async () => {
+        const task = {
+            id: 'L1SDW6O835o0EI8ZmvRc',
+            startedOn: '1707869428.523',
+        };
+        render(<Details detailType="Started On" value={task.startedOn} />);
+        try {
+            const detailTypeElement = screen.getByText('Started:');
+            expect(detailTypeElement).toBeInTheDocument();
+            fireEvent.mouseOver(detailTypeElement);
+            const tooltip = await screen.findByTestId('tooltip');
+            expect(tooltip).toBeInTheDocument();
+            expect(tooltip.textContent).toBeTruthy();
+        } catch (error) {
+            console.error('Error occurred during tooltip rendering:', error);
+            throw error;
+        }
+    });
 });
