@@ -54,6 +54,8 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         detailType === 'Priority' ||
         detailType === 'Status';
 
+    const renderedValue = value ?? 'N/A';
+
     return (
         <div className={styles.detailsContainer}>
             <span className={styles.detailType}>
@@ -75,10 +77,8 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                     >
                         {isGitHubLink ? `${extractRepoName(value)}` : value}
                     </a>
-                ) : isAssigneeOrReporter ? (
-                    <>{value}</>
-                ) : isTypeOrPriorityOrStatus ? (
-                    <>{value}</>
+                ) : isAssigneeOrReporter || isTypeOrPriorityOrStatus ? (
+                    <>{renderedValue}</>
                 ) : (
                     <Tooltip
                         content={
@@ -88,7 +88,9 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                         }
                     >
                         {/* Display the value */}
-                        {isTimeDetail ? getHumanReadableTime(value) : value}
+                        {isTimeDetail
+                            ? getHumanReadableTime(value)
+                            : renderedValue}
                     </Tooltip>
                 )}
             </span>
