@@ -301,17 +301,14 @@ describe('Multi select task search in dev mode', () => {
         );
     });
 
-    test('BACKLOG Button Selected then Search Bar Display status:backlog in dev', async () => {
+    test('Backlog Button Selected then Search Bar Display status:backlog in dev', async () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         const { getByTestId } = render(
-            <TaskSearch
-                dev={true}
-                onSelect={onSelect}
+            <TaskSearchDev
+                onFilterDropdownSelect={onSelect}
                 inputValue="status:backlog"
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -330,7 +327,6 @@ describe('Multi select task search in dev mode', () => {
             { timeout: 1000 }
         );
     });
-
 
     test('should generate suggestion once clicked on option pill', async () => {
         const { getByTestId } = render(
