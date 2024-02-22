@@ -110,10 +110,8 @@ const dataToShowStateWithLongContent = [
 
 describe('ProgressUpdateCardPresentation Component', () => {
     beforeEach(() => {
-        mockedOnMoreOrLessButtonClick = jest.fn<
-            void,
-            [React.MouseEvent<HTMLElement>]
-        >();
+        mockedOnMoreOrLessButtonClick =
+            jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         initialProps = {
             titleToShow: titleToShow,
