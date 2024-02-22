@@ -14,6 +14,7 @@ import {
 import useUserData from '@/hooks/useUserData';
 import {
     ButtonProps,
+    EndsOnDetailsProps,
     TextAreaProps,
     taskDetailsDataType,
 } from '@/interfaces/taskDetails.type';
@@ -59,6 +60,31 @@ export function Textarea(props: TextAreaProps) {
             data-testid={testId}
             placeholder={placeholder}
         />
+    );
+}
+
+export function EndsOnDetails({
+    endsOnDate,
+    extensionRequestURL,
+}: EndsOnDetailsProps) {
+    return (
+        <Details
+            detailType={'Ends On'}
+            isUpperCase={true}
+            additionalChild={
+                extensionRequestURL && (
+                    <Link
+                        href={extensionRequestURL}
+                        target="_blank"
+                        data-testid="extension-request-icon"
+                    >
+                        <FaReceipt color="green" />
+                    </Link>
+                )
+            }
+        >
+            <span>{endsOnDate}</span>
+        </Details>
     );
 }
 
@@ -452,31 +478,18 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 >
                                     {getStartedOn(taskDetailsData?.startedOn)}
                                 </Details>
-                                <Details
-                                    detailType={'Ends On'}
-                                    isUpperCase={true}
-                                    additionalChild={
-                                        extensionRequestURL && (
-                                            <Link
-                                                href={extensionRequestURL}
-                                                target="_blank"
-                                                data-testid="extension-request-icon"
-                                            >
-                                                <FaReceipt color="green" />
-                                            </Link>
-                                        )
-                                    }
-                                >
-                                    <span>
-                                        {getEndsOn(taskDetailsData?.endsOn)}
-                                    </span>
-                                </Details>
+                                <EndsOnDetails
+                                    endsOnDate={getEndsOn(
+                                        taskDetailsData?.endsOn
+                                    )}
+                                    extensionRequestURL={extensionRequestURL}
+                                />
 
                                 <DevFeature>
                                     {isEditing && (
                                         <>
                                             <label htmlFor="endsOnTaskDetails">
-                                                Ends On:
+                                                New Ends On:
                                             </label>
                                             <input
                                                 id="endsOnTaskDetails"

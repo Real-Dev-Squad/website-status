@@ -19,6 +19,11 @@ export type TextAreaProps = {
     placeholder: string;
 };
 
+export type EndsOnDetailsProps = {
+    endsOnDate: string;
+    extensionRequestURL?: string | null;
+};
+
 export type TaskDependencyProps = {
     taskDependencyIds: string[];
     isEditing?: boolean;

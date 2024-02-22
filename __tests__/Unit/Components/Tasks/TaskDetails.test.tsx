@@ -1,5 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
+import TaskDetails, {
+    Button,
+    EndsOnDetails,
+    Textarea,
+} from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
@@ -15,9 +19,6 @@ import Details from '@/components/taskDetails/Details';
 import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
-import DevFeature from '@/components/DevFeature';
-import Link from 'next/link';
-import { FaReceipt } from 'react-icons/fa6';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -220,9 +221,7 @@ describe('TaskDetails Page', () => {
     it('Renders Task Ends-on Date', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details detailType={'EndsOn'}>
-                    {'4/19/2021, 12:00:10 AM'}
-                </Details>
+                <EndsOnDetails endsOnDate="4/19/2021, 12:00:10 AM" />
             </Provider>
         );
         await waitFor(() => {
@@ -233,20 +232,10 @@ describe('TaskDetails Page', () => {
     it('Renders Extension Request icon', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={'Ends On'}
-                    additionalChild={
-                        <Link
-                            href={details.extension_request_url}
-                            target="_blank"
-                            data-testid="extension-request-icon"
-                        >
-                            <FaReceipt color="green" />
-                        </Link>
-                    }
-                >
-                    {'4/19/2021, 12:00:10 AM'}
-                </Details>
+                <EndsOnDetails
+                    endsOnDate="4/19/2021, 12:00:10 AM"
+                    extensionRequestURL={details.extension_request_url}
+                />
             </Provider>
         );
 
@@ -263,9 +252,7 @@ describe('TaskDetails Page', () => {
     it('Does not Renders Extension Request icon when url not available', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details detailType={'Ends On'}>
-                    {'4/19/2021, 12:00:10 AM'}
-                </Details>
+                <EndsOnDetails endsOnDate="4/19/2021, 12:00:10 AM" />
             </Provider>,
             {
                 query: { dev: 'true' },
