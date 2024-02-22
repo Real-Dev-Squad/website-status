@@ -250,6 +250,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     };
 
+    const taskIssueLink = taskDetailsData?.github?.issue?.html_url;
     const extensionRequestURL = getExtensionRequestLink(
         taskDetailsData.id,
         isExtensionRequestPending
@@ -380,23 +381,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     >
                                         <a
                                             className={styles.gitLink}
-                                            href={
-                                                taskDetailsData?.github?.issue
-                                                    ?.html_url
-                                            }
+                                            href={taskIssueLink}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             aria-label="Open GitHub Issue"
-                                            title={
-                                                taskDetailsData?.github?.issue
-                                                    ?.html_url
-                                            }
+                                            title={taskIssueLink}
                                         >
-                                            {taskDetailsData?.github?.issue
-                                                ?.html_url
+                                            {taskIssueLink
                                                 ? `${extractRepoName(
-                                                      taskDetailsData?.github
-                                                          ?.issue?.html_url
+                                                      taskIssueLink
                                                   )}
                                             `
                                                 : 'N/A'}
