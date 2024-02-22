@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import setColor from './taskPriorityColors';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 

@@ -29,7 +29,7 @@ import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
 import extractRepoName from '@/utils/extractRepoName';
-import setTaskPriorityColor from './taskPriorityColors';
+import taskPriorityColors from './taskPriorityColors';
 import Link from 'next/link';
 import { FaReceipt } from 'react-icons/fa6';
 
@@ -229,11 +229,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         isExtensionRequestPending
     );
 
-    const taskPriorityColor = undefined;
-    // taskDetailsData?.priority
-    //     ? setTaskPriorityColor(taskDetailsData?.priority)
-    //     : undefined;
-
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -312,7 +307,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     <Details
                                         detailType={'Priority'}
                                         isUpperCase={true}
-                                        color={taskPriorityColor}
+                                        color={
+                                            taskPriorityColors[
+                                                taskDetailsData?.priority
+                                            ]
+                                        }
                                     >
                                         {taskDetailsData?.priority}
                                     </Details>
