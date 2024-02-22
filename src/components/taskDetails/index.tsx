@@ -33,7 +33,7 @@ import task from '@/interfaces/task.type';
 
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
-import taskPriorityColors from './taskPriorityColors';
+import { TASK_PRIORITY_COLORS } from '@/constants/tasks';
 
 import styles from './task-details.module.scss';
 import { FaReceipt } from 'react-icons/fa6';
@@ -339,7 +339,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Priority'}
                                         isUpperCase={true}
                                         color={
-                                            taskPriorityColors[
+                                            TASK_PRIORITY_COLORS[
                                                 taskDetailsData?.priority
                                             ]
                                         }

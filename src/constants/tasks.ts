@@ -18,3 +18,9 @@ export const TASK_REQUEST_TYPES = {
     CREATION: 'CREATION',
     ASSIGNMENT: 'ASSIGNMENT',
 };
+
+export const TASK_PRIORITY_COLORS: Record<string, string> = {
+    HIGH: '#D82E2F',
+    MEDIUM: '#F4BE2C',
+    LOW: '#1FAA59',
+};
