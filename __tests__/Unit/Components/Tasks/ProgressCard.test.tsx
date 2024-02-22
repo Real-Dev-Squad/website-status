@@ -19,7 +19,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('ProgressCard Component', () => {
-    it('shuld render the ProgressCard', async () => {
+    it('should render the ProgressCard', async () => {
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressCard taskProgress={mockGetTaskProgress.data} />
@@ -55,12 +55,18 @@ describe('ProgressCard Component', () => {
             </Provider>
         );
         const progressArr = container.querySelectorAll(
-            '[data-testid="progress-item"]'
+            '[data-testid="tooltip"]'
         );
-        expect(progressArr[0]).toHaveTextContent('Wednesday, 31 May 2023');
 
-        expect(progressArr[1]).toHaveTextContent('Wednesday, 31 May 2023');
-        expect(progressArr[2]).toHaveTextContent('Sunday, 28 May 2023');
+        expect(progressArr[0]).toHaveTextContent(
+            'Updated at 31-05-23, 12:20PM'
+        );
+        expect(progressArr[1]).toHaveTextContent(
+            'Updated at 31-05-23, 12:20PM'
+        );
+        expect(progressArr[2]).toHaveTextContent(
+            'Updated at 29-05-23, 03:38AM'
+        );
     });
     it('should render the progress enteries in dscending order after Dsc btn click  ', async () => {
         const { container, getByRole } = renderWithRouter(
@@ -72,10 +78,16 @@ describe('ProgressCard Component', () => {
         const btn = getByRole('button', { name: 'Dsc' });
         fireEvent.click(btn);
         const progressArr = container.querySelectorAll(
-            '[data-testid="progress-item"]'
+            '[data-testid="tooltip"]'
         );
-        expect(progressArr[2]).toHaveTextContent('Wednesday, 31 May 2023');
-        expect(progressArr[1]).toHaveTextContent('Sunday, 28 May 2023');
-        expect(progressArr[0]).toHaveTextContent('Saturday, 27 May 2023');
+        expect(progressArr[0]).toHaveTextContent(
+            'Updated at 27-05-23, 11:07AM'
+        );
+        expect(progressArr[1]).toHaveTextContent(
+            'Updated at 29-05-23, 03:38AM'
+        );
+        expect(progressArr[2]).toHaveTextContent(
+            'Updated at 31-05-23, 12:20PM'
+        );
     });
 });
