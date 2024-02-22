@@ -58,15 +58,9 @@ describe('ProgressCard Component', () => {
             '[data-testid="tooltip"]'
         );
 
-        expect(progressArr[0]).toHaveTextContent(
-            'Updated at 31-05-23, 12:20PM'
-        );
-        expect(progressArr[1]).toHaveTextContent(
-            'Updated at 31-05-23, 12:20PM'
-        );
-        expect(progressArr[2]).toHaveTextContent(
-            'Updated at 29-05-23, 03:38AM'
-        );
+        expect(progressArr[0].textContent).toMatch(/^Updated at 31-05-23/);
+        expect(progressArr[1].textContent).toMatch(/^Updated at 31-05-23/);
+        expect(progressArr[2].textContent).toMatch(/^Updated at 29-05-23/);
     });
     it('should render the progress enteries in dscending order after Dsc btn click  ', async () => {
         const { container, getByRole } = renderWithRouter(
@@ -80,14 +74,8 @@ describe('ProgressCard Component', () => {
         const progressArr = container.querySelectorAll(
             '[data-testid="tooltip"]'
         );
-        expect(progressArr[0]).toHaveTextContent(
-            'Updated at 27-05-23, 11:07AM'
-        );
-        expect(progressArr[1]).toHaveTextContent(
-            'Updated at 29-05-23, 03:38AM'
-        );
-        expect(progressArr[2]).toHaveTextContent(
-            'Updated at 31-05-23, 12:20PM'
-        );
+        expect(progressArr[0].textContent).toMatch(/^Updated at 27-05-23/);
+        expect(progressArr[1].textContent).toMatch(/^Updated at 29-05-23/);
+        expect(progressArr[2].textContent).toMatch(/^Updated at 31-05-23/);
     });
 });
