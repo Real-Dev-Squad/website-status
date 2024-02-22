@@ -85,6 +85,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                 ) : (
                     <Tooltip
                         content={isTimeDetail ? getTooltipText(value) : value}
+                        tooltipPosition={{ top: '-3.6rem', right: '-4.5rem' }}
                     >
                         {/* Display the value */}
                         {isTimeDetail
