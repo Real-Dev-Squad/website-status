@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, ReactNode } from 'react';
 import task from './task.type';
 export type taskDetailsDataType = {
     message?: string;
@@ -29,8 +29,10 @@ export type DependencyListProps = {
 };
 export type TaskDetailsProps = {
     detailType: string;
-    value?: string;
-    url?: string | null;
+    children?: ReactNode;
+    additionalChild?: ReactNode;
+    color?: string;
+    isUpperCase?: boolean;
 };
 export type DependencyItem =
     | PromiseFulfilledResult<{

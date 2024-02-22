@@ -2,49 +2,27 @@ import React, { FC } from 'react';
 import setColor from './taskPriorityColors';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
-import extractRepoName from '@/utils/extractRepoName';
-import Link from 'next/link';
-import { FaReceipt } from 'react-icons/fa6';
-import DevFeature from '../DevFeature';
 
-const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
-    const color = value ? setColor?.[value] : undefined;
-    const isGitHubLink = detailType === 'Link';
-    const gitHubIssueLink = isGitHubLink ? value : undefined;
-
+const Details: FC<TaskDetailsProps> = ({
+    detailType,
+    children,
+    additionalChild,
+    color,
+    isUpperCase = false,
+}) => {
     return (
         <div className={styles.detailsContainer}>
             <span className={styles.detailType}>{detailType}:</span>
             <span
                 className={styles.detailValue}
-                style={{ color: color ?? 'black' }}
+                style={{
+                    color: color ?? 'black',
+                    textTransform: isUpperCase ? 'uppercase' : 'none',
+                }}
             >
-                {isGitHubLink && value ? (
-                    <a
-                        className={styles.gitLink}
-                        href={gitHubIssueLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open GitHub Issue"
-                        title={value}
-                    >
-                        {isGitHubLink ? `${extractRepoName(value)}` : value}
-                    </a>
-                ) : (
-                    <>{isGitHubLink ? 'N/A' : value ?? 'N/A'}</>
-                )}
+                {children}
             </span>
-            <span>
-                {detailType === 'Ends On' && url && (
-                    <Link
-                        href={url}
-                        target="_blank"
-                        data-testid="extension-request-icon"
-                    >
-                        <FaReceipt color="green" />
-                    </Link>
-                )}
-            </span>
+            {additionalChild && <span>{additionalChild}</span>}
         </div>
     );
 };
