@@ -20,7 +20,7 @@ const Details: FC<TaskDetailsProps> = ({
                     textTransform: isUpperCase ? 'uppercase' : 'none',
                 }}
             >
-                {children}
+                {children ?? 'N/A'}
             </span>
             {additionalChild && <span>{additionalChild}</span>}
         </div>
