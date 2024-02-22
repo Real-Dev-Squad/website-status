@@ -1,37 +1,41 @@
 import React, { ChangeEvent, FC, useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 import TaskContainer from './TaskContainer';
 import Details from './Details';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import styles from './task-details.module.scss';
-import { useRouter } from 'next/router';
+import Layout from '@/components/Layout';
+import TaskDependency from '@/components/taskDetails/taskDependency';
+import Progress from '../ProgressCard';
+import ProgressContainer from '../tasks/card/progressContainer';
+import DevFeature from '../DevFeature';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
+
 import {
     useGetExtensionRequestDetailsQuery,
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import useUserData from '@/hooks/useUserData';
+import extractRepoName from '@/utils/extractRepoName';
+
 import {
     ButtonProps,
     EndsOnDetailsProps,
     TextAreaProps,
     taskDetailsDataType,
 } from '@/interfaces/taskDetails.type';
-import Layout from '@/components/Layout';
-import TaskDependency from '@/components/taskDetails/taskDependency';
-import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
-import Progress from '../ProgressCard';
-import ProgressContainer from '../tasks/card/progressContainer';
-import DevFeature from '../DevFeature';
-import Suggestions from '../tasks/SuggestionBox/Suggestions';
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
+
+import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
-import extractRepoName from '@/utils/extractRepoName';
 import taskPriorityColors from './taskPriorityColors';
-import Link from 'next/link';
+
+import styles from './task-details.module.scss';
 import { FaReceipt } from 'react-icons/fa6';
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
