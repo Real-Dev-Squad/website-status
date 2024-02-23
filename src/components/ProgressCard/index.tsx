@@ -1,10 +1,9 @@
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import TaskContainer from '../taskDetails/TaskContainer';
 import { ProgressDetailsData } from '@/types/standup.type';
-import ProgressDetails from '../taskDetails/ProgressDetails';
 import styles from '@/components/ProgressCard/ProgressCard.module.scss';
 import LatestProgressUpdateCard from '../taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
+import ProgressUpdateCard from '../taskDetails/ProgressUpdateCard/ProgressUpdateCard';
 
 type SortedProgressType = { data: ProgressDetailsData[]; order: number };
 
@@ -12,7 +11,6 @@ type Props = { taskProgress: ProgressDetailsData[] };
 
 export default function ProgressCard({ taskProgress }: Props) {
     const [sortedProgress, setSortedProgress] = useState<SortedProgressType>();
-    const isDev = useRouter().query?.dev === 'true';
     const sortedProgressLength = sortedProgress?.data?.length;
 
     const reverseSortingOrder = () => {
@@ -44,7 +42,7 @@ export default function ProgressCard({ taskProgress }: Props) {
     }, [taskProgress]);
 
     const cardsToShow = sortedProgress?.data?.map((progress, idx) => {
-        if (idx === 0 && sortedProgress?.order === 1 && isDev) {
+        if (idx === 0 && sortedProgress?.order === 1) {
             return (
                 <LatestProgressUpdateCard key={progress.id} data={progress} />
             );
@@ -53,15 +51,14 @@ export default function ProgressCard({ taskProgress }: Props) {
         if (
             sortedProgressLength &&
             idx === sortedProgressLength - 1 &&
-            sortedProgress?.order === 0 &&
-            isDev
+            sortedProgress?.order === 0
         ) {
             return (
                 <LatestProgressUpdateCard key={progress.id} data={progress} />
             );
         }
 
-        return <ProgressDetails key={progress.id} data={progress} />;
+        return <ProgressUpdateCard key={progress.id} data={progress} />;
     });
 
     return (
