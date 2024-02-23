@@ -73,7 +73,7 @@ describe('Issues Action Form Component', () => {
         expect(assignee).toBeInTheDocument();
         expect(endsOn).toBeInTheDocument();
         expect(status).toBeInTheDocument();
-        expect(options).toHaveLength(14);
+        expect(options).toHaveLength(15);
     });
 
     test('changes the state when value is entered', () => {
