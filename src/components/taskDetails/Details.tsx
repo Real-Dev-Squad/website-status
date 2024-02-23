@@ -6,7 +6,7 @@ const Details: FC<TaskDetailsProps> = ({
     detailType,
     children,
     additionalChild,
-    color,
+    color = 'black',
     isUpperCase = false,
 }) => {
     return (
@@ -15,7 +15,7 @@ const Details: FC<TaskDetailsProps> = ({
             <span
                 className={styles.detailValue}
                 style={{
-                    color: color ?? 'black',
+                    color: color,
                     textTransform: isUpperCase ? 'uppercase' : 'none',
                 }}
             >
