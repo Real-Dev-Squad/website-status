@@ -1,5 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
+import TaskDetails, {
+    Button,
+    EndsOnDetails,
+    Textarea,
+} from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
 import { tasks } from '../../../../__mocks__/db/tasks';
@@ -15,7 +19,6 @@ import Details from '@/components/taskDetails/Details';
 import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
-import DevFeature from '@/components/DevFeature';
 
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
@@ -153,7 +156,7 @@ describe('TaskDetails Page', () => {
     it('Renders N/A when link is empty or undefined', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details detailType={'Link'} value={undefined} />
+                <Details detailType={'Link'}>{undefined}</Details>
             </Provider>
         );
         await waitFor(() => {
@@ -194,10 +197,9 @@ describe('TaskDetails Page', () => {
     it('Renders Task Started-on Date', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={'StartedOn'}
-                    value={'3/30/2021, 12:00:00 AM'}
-                />
+                <Details detailType={'StartedOn'}>
+                    {'3/30/2021, 12:00:00 AM'}
+                </Details>
             </Provider>
         );
         await waitFor(() => {
@@ -208,7 +210,7 @@ describe('TaskDetails Page', () => {
     it('Renders N/A when started on is undefined', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details detailType={'StartedOn'} value={undefined} />
+                <Details detailType={'StartedOn'}>{undefined}</Details>
             </Provider>
         );
         await waitFor(() => {
@@ -219,10 +221,7 @@ describe('TaskDetails Page', () => {
     it('Renders Task Ends-on Date', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={'EndsOn'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                />
+                <EndsOnDetails endsOnDate="4/19/2021, 12:00:10 AM" />
             </Provider>
         );
         await waitFor(() => {
@@ -233,10 +232,9 @@ describe('TaskDetails Page', () => {
     it('Renders Extension Request icon', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={'Ends On'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                    url={details.extension_request_url}
+                <EndsOnDetails
+                    endsOnDate="4/19/2021, 12:00:10 AM"
+                    extensionRequestURL={details.extension_request_url}
                 />
             </Provider>
         );
@@ -251,14 +249,10 @@ describe('TaskDetails Page', () => {
         });
     });
 
-    it('Doesnot Renders Extension Request icon when url not available', async () => {
+    it('Does not Renders Extension Request icon when url not available', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={'Ends On'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                    url={null}
-                />
+                <EndsOnDetails endsOnDate="4/19/2021, 12:00:10 AM" />
             </Provider>,
             {
                 query: { dev: 'true' },

@@ -1,33 +1,42 @@
 import React, { ChangeEvent, FC, useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+
 import TaskContainer from './TaskContainer';
 import Details from './Details';
-import { toast, ToastTypes } from '@/helperFunctions/toast';
-import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import styles from './task-details.module.scss';
-import { useRouter } from 'next/router';
+import Layout from '@/components/Layout';
+import TaskDependency from '@/components/taskDetails/taskDependency';
+import Progress from '../ProgressCard';
+import ProgressContainer from '../tasks/card/progressContainer';
+import DevFeature from '../DevFeature';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
+
 import {
     useGetExtensionRequestDetailsQuery,
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import useUserData from '@/hooks/useUserData';
+import extractRepoName from '@/utils/extractRepoName';
+
 import {
     ButtonProps,
+    EndsOnDetailsProps,
     TextAreaProps,
     taskDetailsDataType,
 } from '@/interfaces/taskDetails.type';
-import Layout from '@/components/Layout';
-import TaskDependency from '@/components/taskDetails/taskDependency';
-import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
-import Progress from '../ProgressCard';
-import ProgressContainer from '../tasks/card/progressContainer';
-import DevFeature from '../DevFeature';
-import Suggestions from '../tasks/SuggestionBox/Suggestions';
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import task from '@/interfaces/task.type';
+
+import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
+import { TASK_PRIORITY_COLORS } from '@/constants/tasks';
+
+import styles from './task-details.module.scss';
+import { FaReceipt } from 'react-icons/fa6';
 
 const taskStatus = Object.entries(BACKEND_TASK_STATUS);
 
@@ -55,6 +64,31 @@ export function Textarea(props: TextAreaProps) {
             data-testid={testId}
             placeholder={placeholder}
         />
+    );
+}
+
+export function EndsOnDetails({
+    endsOnDate,
+    extensionRequestURL,
+}: EndsOnDetailsProps) {
+    return (
+        <Details
+            detailType={'Ends On'}
+            isUpperCase={true}
+            additionalChild={
+                extensionRequestURL && (
+                    <Link
+                        href={extensionRequestURL}
+                        target="_blank"
+                        data-testid="extension-request-icon"
+                    >
+                        <FaReceipt color="green" />
+                    </Link>
+                )
+            }
+        >
+            <span>{endsOnDate}</span>
+        </Details>
     );
 }
 
@@ -220,6 +254,12 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
     };
 
+    const taskIssueLink = taskDetailsData?.github?.issue?.html_url;
+    const extensionRequestURL = getExtensionRequestLink(
+        taskDetailsData.id,
+        isExtensionRequestPending
+    );
+
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -291,12 +331,21 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 >
                                     <Details
                                         detailType={'Type'}
-                                        value={taskDetailsData?.type}
-                                    />
+                                        isUpperCase={true}
+                                    >
+                                        {taskDetailsData?.type}
+                                    </Details>
                                     <Details
                                         detailType={'Priority'}
-                                        value={taskDetailsData?.priority}
-                                    />
+                                        isUpperCase={true}
+                                        color={
+                                            TASK_PRIORITY_COLORS[
+                                                taskDetailsData?.priority
+                                            ]
+                                        }
+                                    >
+                                        {taskDetailsData?.priority}
+                                    </Details>
                                     <DevFeature>
                                         {isEditing && (
                                             <label>
@@ -326,15 +375,30 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     </DevFeature>
                                     <Details
                                         detailType={'Status'}
-                                        value={taskDetailsData?.status}
-                                    />
+                                        isUpperCase={true}
+                                    >
+                                        {taskDetailsData?.status}
+                                    </Details>
                                     <Details
                                         detailType={'Link'}
-                                        value={
-                                            taskDetailsData?.github?.issue
-                                                ?.html_url
-                                        }
-                                    />
+                                        isUpperCase={true}
+                                    >
+                                        <a
+                                            className={styles.gitLink}
+                                            href={taskIssueLink}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="Open GitHub Issue"
+                                            title={taskIssueLink}
+                                        >
+                                            {taskIssueLink
+                                                ? `${extractRepoName(
+                                                      taskIssueLink
+                                                  )}
+                                            `
+                                                : 'N/A'}
+                                        </a>
+                                    </Details>
                                     <DevFeature>
                                         {isUserAuthorized && (
                                             <ProgressContainer
@@ -367,16 +431,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 title="Participants"
                                 hasImg={true}
                             >
-                                <Details
-                                    detailType={'Assignee'}
-                                    value={
-                                        taskDetailsData?.type === 'feature'
-                                            ? taskDetailsData?.assignee
-                                            : taskDetailsData?.participants?.join(
-                                                  ' , '
-                                              )
-                                    }
-                                />
+                                <Details detailType={'Assignee'}>
+                                    {taskDetailsData?.type === 'feature'
+                                        ? taskDetailsData?.assignee
+                                        : taskDetailsData?.participants?.join(
+                                              ' , '
+                                          )}
+                                </Details>
                                 <DevFeature>
                                     {isEditing && isUserAuthorized && (
                                         <div
@@ -399,10 +460,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         </div>
                                     )}
                                 </DevFeature>
-                                <Details
-                                    detailType={'Reporter'}
-                                    value={'Ankush'}
-                                />
+                                <Details detailType={'Reporter'}>
+                                    {'Ankush'}
+                                </Details>
                             </TaskContainer>
                             <TaskContainer
                                 src="/calendar-icon.png"
@@ -411,24 +471,22 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <Details
                                     detailType={'Started On'}
-                                    value={getStartedOn(
-                                        taskDetailsData?.startedOn
+                                    isUpperCase={true}
+                                >
+                                    {getStartedOn(taskDetailsData?.startedOn)}
+                                </Details>
+                                <EndsOnDetails
+                                    endsOnDate={getEndsOn(
+                                        taskDetailsData?.endsOn
                                     )}
-                                />
-                                <Details
-                                    detailType={'Ends On'}
-                                    value={getEndsOn(taskDetailsData?.endsOn)}
-                                    url={getExtensionRequestLink(
-                                        taskDetailsData.id,
-                                        isExtensionRequestPending
-                                    )}
+                                    extensionRequestURL={extensionRequestURL}
                                 />
 
                                 <DevFeature>
                                     {isEditing && (
                                         <>
                                             <label htmlFor="endsOnTaskDetails">
-                                                Ends On:
+                                                New Ends On:
                                             </label>
                                             <input
                                                 id="endsOnTaskDetails"
