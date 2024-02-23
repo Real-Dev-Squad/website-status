@@ -5,14 +5,16 @@ import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
 import Link from 'next/link';
 import { FaReceipt } from 'react-icons/fa6';
-import DevFeature from '../DevFeature';
 import moment from 'moment';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
+import { useRouter } from 'next/router';
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true' ? true : false;
 
     const getRelativeTime = (timestamp: string | number | undefined) => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
@@ -33,38 +35,33 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         const futureTimestamp = moment(timestamp);
 
         if (futureTimestamp.isAfter(now)) {
-            const yearsDiff = futureTimestamp.diff(now, 'years');
-            return `in ${yearsDiff} years`;
+            return `in ${moment
+                .duration(futureTimestamp.diff(now))
+                .humanize()}`;
         } else {
-            const duration = moment.duration(now.diff(futureTimestamp));
-            return `${duration.humanize()} ago`;
+            return `${moment
+                .duration(now.diff(futureTimestamp))
+                .humanize()} ago`;
         }
     };
 
     const isTimeDetail =
         detailType === 'Started On' || detailType === 'Ends On';
 
-    const isAssigneeOrReporter =
-        detailType === 'Assignee' || detailType === 'Reporter';
-
-    const isTypeOrPriorityOrStatus =
-        detailType === 'Type' ||
-        detailType === 'Priority' ||
-        detailType === 'Status';
-
     const renderedValue = value ?? 'N/A';
+    const formattedDetailType = isDevMode
+        ? detailType === 'Started On'
+            ? 'Started'
+            : detailType === 'Ends On'
+            ? 'Ended'
+            : detailType
+        : detailType;
+
+    const shouldRenderTooltip = isTimeDetail && isDevMode;
 
     return (
         <div className={styles.detailsContainer}>
-            <span className={styles.detailType}>
-                {/* Conditional rendering for labels */}
-                {detailType === 'Started On'
-                    ? 'Started'
-                    : detailType === 'Ends On'
-                    ? 'Ended'
-                    : detailType}
-                :
-            </span>
+            <span className={styles.detailType}>{formattedDetailType}:</span>
             <span
                 className={styles.detailValue}
                 style={{ color: color ?? 'black' }}
@@ -80,18 +77,15 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                     >
                         {isGitHubLink ? `${extractRepoName(value)}` : value}
                     </a>
-                ) : isAssigneeOrReporter || isTypeOrPriorityOrStatus ? (
-                    <>{renderedValue}</>
-                ) : (
+                ) : shouldRenderTooltip ? (
                     <Tooltip
-                        content={isTimeDetail ? getTooltipText(value) : value}
+                        content={getTooltipText(value)}
                         tooltipPosition={{ top: '-3.6rem', right: '-4.5rem' }}
                     >
-                        {/* Display the value */}
-                        {isTimeDetail
-                            ? getHumanReadableTime(value)
-                            : renderedValue}
+                        {getHumanReadableTime(value)}
                     </Tooltip>
+                ) : (
+                    renderedValue
                 )}
             </span>
             <span>

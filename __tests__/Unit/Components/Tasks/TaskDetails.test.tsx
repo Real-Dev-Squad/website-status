@@ -25,7 +25,7 @@ import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import DevFeature from '@/components/DevFeature';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-
+import { Router, useRouter } from 'next/router';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -55,6 +55,7 @@ jest.mock('@/hooks/useUserData', () => {
         isSuccess: true,
     });
 });
+
 const mockNavigateToUpdateProgressPage = jest.fn();
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
@@ -206,7 +207,7 @@ describe('TaskDetails Page', () => {
     });
 
     it('Renders N/A when link is empty or undefined', async () => {
-        const { queryByText } = render(
+        const { queryByText } = renderWithRouter(
             <Details detailType={'Link'} value={undefined} /> // Pass undefined instead of null
         );
         await waitFor(() => {
@@ -457,8 +458,7 @@ describe('Update Progress button', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            { push: mockNavigateToUpdateProgressPage }
+            </Provider>
         );
 
         await waitFor(() => {
@@ -645,9 +645,20 @@ describe('TaskDependency', () => {
     });
 });
 
+jest.mock('next/router', () => ({
+    useRouter() {
+        return {
+            query: {
+                dev: 'true',
+            },
+            push: mockNavigateToUpdateProgressPage,
+        };
+    },
+}));
+
 describe('Details component', () => {
     it('Renders the detail type and value correctly', () => {
-        render(<Details detailType="Assignee" value="John Doe" />);
+        renderWithRouter(<Details detailType="Assignee" value="John Doe" />);
         const detailType = screen.getByText('Assignee:');
         const detailValue = screen.getByText('John Doe');
         expect(detailType).toBeInTheDocument();
@@ -656,7 +667,7 @@ describe('Details component', () => {
 
     it('Renders a GitHub link correctly', () => {
         const githubIssueUrl = 'https://github.com/example/repo/issues/123';
-        render(<Details detailType="Link" value={githubIssueUrl} />);
+        renderWithRouter(<Details detailType="Link" value={githubIssueUrl} />);
         const link = screen.getByRole('link', { name: /Open GitHub Issue/i });
         expect(link).toBeInTheDocument();
         expect(link).toHaveAttribute('href', githubIssueUrl);
@@ -672,7 +683,7 @@ describe('Details component', () => {
 
     it('Renders an extension request icon for Ends On with URL', () => {
         const url = 'https://example.com';
-        render(<Details detailType="Ends On" url={url} />);
+        renderWithRouter(<Details detailType="Ends On" url={url} />);
         const extensionRequestIcon = screen.getByTestId(
             'extension-request-icon'
         );
@@ -681,7 +692,7 @@ describe('Details component', () => {
     });
 
     it('Does not render an extension request icon for Ends On without URL', () => {
-        render(<Details detailType="Ends On" />);
+        renderWithRouter(<Details detailType="Ends On" />);
         const extensionRequestIcon = screen.queryByTestId(
             'extension-request-icon'
         );
@@ -692,7 +703,9 @@ describe('Details component', () => {
             id: 'L1SDW6O835o0EI8ZmvRc',
             startedOn: '1707869428.523',
         };
-        render(<Details detailType="Started On" value={task.startedOn} />);
+        renderWithRouter(
+            <Details detailType="Started On" value={task.startedOn} />
+        );
         try {
             const detailTypeElement = screen.getByText('Started:');
             expect(detailTypeElement).toBeInTheDocument();
