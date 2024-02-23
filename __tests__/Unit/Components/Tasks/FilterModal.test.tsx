@@ -187,51 +187,51 @@ describe('FilterModal', () => {
         expect(unassignedButton).not.toHaveClass('status-button-active');
     });
 
-    test('render the filter model having BLOCKED tab with correct title and buttons when dev is true', () => {
+    test('render the filter model having BACKLOG tab with correct title and buttons when dev is true', () => {
         render(
             <FilterModal
                 dev={true}
-                tabs={[Tab.UNASSIGNED, Tab.BLOCKED]}
+                tabs={[Tab.UNASSIGNED, Tab.BACKLOG]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.BLOCKED}
+                activeTab={Tab.BACKLOG}
                 onClose={mockOnClose}
             />
         );
 
-        const blockedButton = screen.getByText(/blocked/i);
-        expect(blockedButton).toBeInTheDocument();
+        const backlogButton = screen.getByText(/backlog/i);
+        expect(backlogButton).toBeInTheDocument();
     });
 
-    test('onSelect Function Gets Called When the Blocked Status button is Clicked when dev is true', () => {
+    test('onSelect Function Gets Called When the Backlog Status button is Clicked when dev is true', () => {
         render(
             <FilterModal
                 dev={true}
-                tabs={[Tab.BLOCKED, Tab.IN_PROGRESS]}
+                tabs={[Tab.BACKLOG, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.BLOCKED}
+                activeTab={Tab.BACKLOG}
                 onClose={mockOnClose}
             />
         );
 
-        const blockedButton = screen.getByRole('button', { name: 'BLOCKED' });
-        fireEvent.click(blockedButton);
+        const backlogButton = screen.getByRole('button', { name: 'BACKLOG' });
+        fireEvent.click(backlogButton);
 
-        expect(mockOnSelect).toHaveBeenCalledWith(Tab.BLOCKED);
+        expect(mockOnSelect).toHaveBeenCalledWith(Tab.BACKLOG);
     });
 
-    test('Selection of the Blocked Button when dev is true', () => {
+    test('Selection of the Backlog Button when dev is true', () => {
         render(
             <FilterModal
                 dev={true}
-                tabs={[Tab.BLOCKED, Tab.DONE]}
+                tabs={[Tab.BACKLOG, Tab.DONE]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.BLOCKED}
+                activeTab={Tab.BACKLOG}
                 onClose={mockOnClose}
             />
         );
 
-        const blockedButton = screen.getByText(/blocked/i);
-        expect(blockedButton).toHaveClass('status-button-active');
+        const backlogButton = screen.getByText(/backlog/i);
+        expect(backlogButton).toHaveClass('status-button-active');
 
         const doneButton = screen.getByText(/done/i);
         expect(doneButton).not.toHaveClass('status-button-active');
