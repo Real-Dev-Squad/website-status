@@ -301,6 +301,33 @@ describe('Multi select task search in dev mode', () => {
         );
     });
 
+    test('Backlog Button Selected then Search Bar Display status:backlog in dev', async () => {
+        const onSelect = jest.fn();
+        const onClickSearchButton = jest.fn();
+
+        const { getByTestId } = render(
+            <TaskSearchDev
+                onFilterDropdownSelect={onSelect}
+                inputValue="status:backlog"
+                onClickSearchButton={onClickSearchButton}
+            />
+        );
+
+        const filterButton = screen.getByText('Filter');
+        fireEvent.click(filterButton);
+        const backlogButton = screen.getByRole('button', { name: /backlog/i });
+        fireEvent.click(backlogButton);
+        expect(onSelect).toHaveBeenCalledWith('BACKLOG');
+        await waitFor(
+            () => {
+                const pillContent = getByTestId('pill-content');
+                expect(pillContent).toBeInTheDocument();
+                expect(pillContent).toHaveTextContent('status:backlog');
+            },
+            { timeout: 1000 }
+        );
+    });
+
     test('should generate suggestion once clicked on option pill', async () => {
         const { getByTestId } = render(
             <TaskSearchDev
