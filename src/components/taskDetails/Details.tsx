@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
+import moment from 'moment';
+import Link from 'next/link';
+import { FaReceipt } from 'react-icons/fa6';
+import Tooltip from '@/components/common/Tooltip/Tooltip';
+import { useRouter } from 'next/router';
 import setColor from './taskPriorityColors';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 import extractRepoName from '@/utils/extractRepoName';
-import Link from 'next/link';
-import { FaReceipt } from 'react-icons/fa6';
-import moment from 'moment';
-import Tooltip from '@/components/common/Tooltip/Tooltip';
-import { useRouter } from 'next/router';
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
