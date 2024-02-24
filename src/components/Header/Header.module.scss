@@ -4,13 +4,15 @@
     padding-top: 0.6rem;
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
     align-items: center;
     border-bottom: 1px solid var(--toastify-text-color-light);
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
 .link {
-    padding: 0.6rem;
+    width: max-content;
+    padding: 0.6rem 0.7rem;
     text-decoration: none;
     font-weight: 700;
     color: $theme-primary-alt;
@@ -18,7 +20,10 @@
     background: none;
     border: none;
     position: relative;
+}
 
+// Remove when feature flag is removed from https://github.com/Real-Dev-Squad/website-status/pull/1136
+.linkSeparator {
     &::after {
         content: '';
         position: absolute;
@@ -29,13 +34,39 @@
     }
 }
 
-// Hide | for the last elements
 .header a:last-child {
     .link::after {
         display: none;
     }
 }
+// Remove upto this
+
+.tabUnderline {
+    position: absolute;
+    width: 80%;
+    height: 2px;
+    bottom: 0px;
+    left: 10%;
+    right: 0;
+    background: $theme-pink;
+    border-radius: 2px;
+}
+
+.tabPill {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    background: $dark-blue-transparent;
+    border-radius: 5px;
+}
 
 .active {
     color: $theme-pink;
+}
+
+@media (max-width: 767px) {
+    .header {
+        justify-content: flex-start;
+    }
 }
