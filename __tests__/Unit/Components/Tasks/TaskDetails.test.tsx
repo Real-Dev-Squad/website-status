@@ -201,7 +201,9 @@ describe('TaskDetails Page', () => {
             </Provider>
         );
         await waitFor(() => {
-            const dateElements = queryAllByText('3/30/2024, 11:20:00 AM');
+            const dateElements = screen.queryAllByText(
+                '3/30/2024, 11:20:00 AM'
+            );
             expect(dateElements.length).toBeGreaterThan(0);
         });
     });
