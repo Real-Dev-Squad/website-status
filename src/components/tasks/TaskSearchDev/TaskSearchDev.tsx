@@ -3,13 +3,13 @@ import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import FilterDropdown from './FilterDropdown';
 import useDebounce from '@/hooks/useDebounce';
-import generateSuggestions from '@/utils/generateSuggestions';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import Options from './Suggestion/Options';
 import RenderPills from './Suggestion/Pill';
 import convertStringToOptions from '@/utils/convertStringToOptions';
 import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
 import findCoordinates from '@/helperFunctions/findCoordinates';
+import { useFilterSuggestion } from './useFilterSuggestion';
 
 interface SuggestionCoordinates {
     left: number | null;
@@ -53,11 +53,6 @@ const TaskSearchDev = ({
         useState(-1);
     const defferedPillValue = useDebounce(onEditSelectedFilterValue, 300);
 
-    const [filterSuggestionDropdownOpen, setFilterSuggestionDropdownOpen] =
-        useState(false);
-    const [filterSuggestions, setFilterSuggestions] = useState<
-        Array<TaskSearchOption>
-    >([]);
     const [
         activeFilterSuggestionDropdownIndex,
         setActiveFilterSuggestionDropdownIndex,
@@ -67,13 +62,20 @@ const TaskSearchDev = ({
 
     const searchButtonHandler = () => {
         if (onEditSelectedFilterIndex === false) {
-            setFilterSuggestions([]);
             onClickSearchButton(convertSearchOptionsToQuery(selectedFilters));
         }
     };
 
+    const { filterSuggestions } = useFilterSuggestion({
+        typedInput,
+        defferedPillValue,
+        defferedUserInput,
+        onEditSelectedFilterIndex,
+        onEditSelectedFilterValue,
+        selectedFilters,
+    });
+
     const handleModal = () => {
-        !filterDropdownModelOpen && setFilterSuggestionDropdownOpen(false);
         setFilterDropdownModelOpen(!filterDropdownModelOpen);
     };
     useEffect(() => {
@@ -149,14 +151,11 @@ const TaskSearchDev = ({
                     typedInput.length === 0
                 ) {
                     setActiveFilterSuggestionDropdownIndex(-1);
-                    setFilterSuggestionDropdownOpen(false);
-                    setFilterSuggestions([]);
                     searchButtonHandler();
                 }
                 break;
             }
             case 'Escape':
-                setFilterSuggestionDropdownOpen(false);
                 onEditSelectedFilterIndex !== false &&
                     setOnEditSelectedFilterIndex(false);
                 break;
@@ -171,10 +170,9 @@ const TaskSearchDev = ({
     useEffect(onResizeHandler, [
         defferedPillValue,
         defferedUserInput,
-        filterSuggestionDropdownOpen,
+        filterSuggestions.length,
     ]);
     const removePill = (idx: number) => {
-        setFilterSuggestionDropdownOpen(false);
         const updatedOptions = selectedFilters.filter(
             (_, index) => index !== idx
         );
@@ -191,15 +189,21 @@ const TaskSearchDev = ({
             if (optionDetails) {
                 setSelectedFilters([...selectedFilters, optionDetails]);
                 setTypedInput('');
+                onClickSearchButton(
+                    convertSearchOptionsToQuery([
+                        ...selectedFilters,
+                        optionDetails,
+                    ])
+                );
             }
         } else {
             const newOptions = selectedFilters;
             newOptions[onEditSelectedFilterIndex] = filterSuggestions[idx];
             setSelectedFilters(newOptions);
             setOnEditSelectedFilterIndex(false);
+            onClickSearchButton(convertSearchOptionsToQuery(newOptions));
         }
         setActiveFilterSuggestionDropdownIndex(-1);
-        setFilterSuggestionDropdownOpen(false);
         toggleInputFocus(true);
     };
 
@@ -220,58 +224,15 @@ const TaskSearchDev = ({
     useEffect(() => {
         if (onEditSelectedFilterIndex === false) {
             toggleInputFocus();
-            setFilterSuggestionDropdownOpen(true);
             setOnRemoveSelectedFilterIndex(-1);
             setOnEditSelectedFilterValue('');
-        } else setFilterSuggestionDropdownOpen(false);
+        }
     }, [onEditSelectedFilterIndex]);
 
     useEffect(() => {
-        !filterSuggestionDropdownOpen &&
+        filterSuggestions.length === 0 &&
             setSuggestionCoordinates(initialSuggestionCoordinates);
-    }, [filterSuggestionDropdownOpen]);
-
-    useEffect(() => {
-        let updatedOptions = filterSuggestionDropdownOpen;
-        let userInput;
-        if (
-            onEditSelectedFilterIndex === false &&
-            typedInput === defferedUserInput
-        ) {
-            userInput = defferedUserInput;
-        } else if (
-            onEditSelectedFilterIndex !== false &&
-            onEditSelectedFilterValue === defferedPillValue
-        ) {
-            userInput = defferedPillValue;
-        } else {
-            return;
-        }
-        userInput = userInput.trimStart();
-        let key = '';
-        if (userInput.includes(':')) {
-            const [potentialKey, ...values] = userInput.split(':');
-            if (potentialKey.length > 0) {
-                key = potentialKey.trim();
-                userInput = values.join(':').trimStart();
-            }
-        }
-        if (userInput.length > 2) {
-            const result = generateSuggestions(
-                userInput,
-                selectedFilters,
-                key,
-                onEditSelectedFilterIndex
-            );
-            updatedOptions = true;
-            result.length > 0 && setActiveFilterSuggestionDropdownIndex(0);
-            setFilterSuggestions(result);
-        } else {
-            updatedOptions = false;
-            setFilterSuggestions([]);
-        }
-        setFilterSuggestionDropdownOpen(updatedOptions);
-    }, [defferedUserInput, defferedPillValue]);
+    }, [filterSuggestions.length]);
 
     useEffect(() => {
         window.addEventListener('resize', onResizeHandler);
@@ -327,9 +288,6 @@ const TaskSearchDev = ({
                                             -1
                                         )
                                     }
-                                    onBlur={() =>
-                                        setFilterSuggestionDropdownOpen(false)
-                                    }
                                     className={`task-search-input ${
                                         styles['search-input-dev']
                                     } ${
@@ -353,7 +311,7 @@ const TaskSearchDev = ({
                         )}
                     </div>
 
-                    {filterSuggestionDropdownOpen &&
+                    {filterSuggestions.length > 0 &&
                         (typedInput ||
                             (onEditSelectedFilterIndex !== false &&
                                 onEditSelectedFilterValue)) && (
@@ -367,15 +325,6 @@ const TaskSearchDev = ({
                             />
                         )}
                 </div>
-            </div>
-            <div className={styles['search-button-container']}>
-                <button
-                    className={styles['search-button']}
-                    data-testid="search-button"
-                    onClick={searchButtonHandler}
-                >
-                    Search
-                </button>
             </div>
         </div>
     );
