@@ -38,11 +38,8 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
             return `in ${moment
                 .duration(futureTimestamp.diff(now))
                 .humanize()}`;
-        } else {
-            return `${moment
-                .duration(now.diff(futureTimestamp))
-                .humanize()} ago`;
         }
+        return `${moment.duration(now.diff(futureTimestamp)).humanize()} ago`;
     };
 
     const isTimeDetail =
