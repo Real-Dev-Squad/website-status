@@ -25,6 +25,9 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
      * Get relative time from the provided timestamp.
      * @param {string | number | undefined} timestamp - The timestamp.
      * @returns {string} - The relative time.
+     * @example
+     * // Example input: '11/01/2000, 14:12:00'
+     * // Example output: '21 years ago'
      */
     const getRelativeTime = (
         timestamp: string | number | undefined
@@ -36,6 +39,9 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
      * Get tooltip text from the provided timestamp.
      * @param {string | number | undefined} timestamp - The timestamp.
      * @returns {string} - The tooltip text.
+     * @example
+     * // Example input: '11/01/2000, 14:12:00'
+     * // Example output: 'Tuesday, November 1, 2000 2:12 PM'
      */
     const getTooltipText = (timestamp: string | number | undefined): string => {
         return timestamp ? moment(timestamp).format('LLLL') : 'N/A';
