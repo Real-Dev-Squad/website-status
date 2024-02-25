@@ -9,6 +9,11 @@ import moment from 'moment';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import { useRouter } from 'next/router';
 
+/**
+ * Functional component to render task details.
+ * @param {TaskDetailsProps} props - The props for the component.
+ * @returns {JSX.Element} - The JSX representation of the component.
+ */
 const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
@@ -16,19 +21,43 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
 
-    const getRelativeTime = (timestamp: string | number | undefined) => {
+    /**
+     * Get relative time from the provided timestamp.
+     * @param {string | number | undefined} timestamp - The timestamp.
+     * @returns {string} - The relative time.
+     */
+    const getRelativeTime = (
+        timestamp: string | number | undefined
+    ): string => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
     };
 
-    const getTooltipText = (timestamp: string | number | undefined) => {
+    /**
+     * Get tooltip text from the provided timestamp.
+     * @param {string | number | undefined} timestamp - The timestamp.
+     * @returns {string} - The tooltip text.
+     */
+    const getTooltipText = (timestamp: string | number | undefined): string => {
         return timestamp ? moment(timestamp).format('LLLL') : 'N/A';
     };
 
-    const isPastDate = (timestamp: string | number | undefined) => {
+    /**
+     * Check if the provided timestamp is in the past compared to the current time.
+     * @param {string | number | undefined} timestamp - The timestamp.
+     * @returns {boolean} - Returns true if the timestamp is in the past, otherwise false.
+     */
+    const isPastDate = (timestamp: string | number | undefined): boolean => {
         return timestamp ? moment(timestamp).isBefore(moment()) : false;
     };
 
-    const getHumanReadableTime = (timestamp: string | number | undefined) => {
+    /**
+     * Get human-readable time format from the provided timestamp.
+     * @param {string | number | undefined} timestamp - The timestamp.
+     * @returns {string} - The human-readable time format.
+     */
+    const getHumanReadableTime = (
+        timestamp: string | number | undefined
+    ): string => {
         if (!timestamp) return 'N/A';
 
         const now = moment();
