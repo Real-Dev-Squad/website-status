@@ -9,11 +9,6 @@ import moment from 'moment';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import { useRouter } from 'next/router';
 
-/**
- * Functional component to render task details.
- * @param {TaskDetailsProps} props - The props for the component.
- * @returns {JSX.Element} - The JSX representation of the component.
- */
 const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
@@ -21,45 +16,23 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
 
-    /**
-     * Get relative time from the provided timestamp.
-     * @param {string | number | undefined} timestamp - The timestamp.
-     * @returns {string} - The relative time.
-     * @example
-     * // Example input: '11/01/2000, 14:12:00'
-     * // Example output: '21 years ago'
-     */
     const getRelativeTime = (
         timestamp: string | number | undefined
     ): string => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
     };
 
-    /**
-     * Get tooltip text from the provided timestamp.
-     * @param {string | number | undefined} timestamp - The timestamp.
-     * @returns {string} - The tooltip text.
-     * @example
-     * // Example input: '11/01/2000, 14:12:00'
-     * // Example output: 'Tuesday, November 1, 2000 2:12 PM'
-     */
     const getTooltipText = (timestamp: string | number | undefined): string => {
         return timestamp ? moment(timestamp).format('LLLL') : 'N/A';
     };
 
-    /**
-     * Check if the provided timestamp is in the past compared to the current time.
-     * @param {string | number | undefined} timestamp - The timestamp.
-     * @returns {boolean} - Returns true if the timestamp is in the past, otherwise false.
-     */
     const isPastDate = (timestamp: string | number | undefined): boolean => {
         return timestamp ? moment(timestamp).isBefore(moment()) : false;
     };
-
     /**
      * Get human-readable time format from the provided timestamp.
      * @param {string | number | undefined} timestamp - The timestamp.
-     * @returns {string} - The human-readable time format.
+     * @returns {string} - The human-readable time format, for example: instead of displaying a timestamp like "2024-02-20T14:30:00", a human-readable format would present it as "February 20, 2024, 2:30 PM
      */
     const getHumanReadableTime = (
         timestamp: string | number | undefined
