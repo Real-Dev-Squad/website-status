@@ -358,12 +358,10 @@ test('should not update the title and description with the same values', async (
     fireEvent.change(textareaElement, {
         target: { name: 'title', value: 'test 1 for drag and drop' },
     });
-    await waitFor(async () => {
-        const saveButton = await screen.findByRole('button', {
-            name: 'Save',
-        });
-        fireEvent.click(saveButton);
+    const saveButton = await screen.findByRole('button', {
+        name: 'Save',
     });
+    fireEvent.click(saveButton);
     expect(screen.queryByText(/Successfully saved/i)).toBeNull();
 });
 
