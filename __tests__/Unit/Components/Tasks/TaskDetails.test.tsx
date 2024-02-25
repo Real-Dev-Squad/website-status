@@ -355,9 +355,14 @@ test('should not update the title and description with the same values', async (
     const editButton = await screen.findByRole('button', { name: 'Edit' });
     fireEvent.click(editButton);
     const textareaElement = await screen.findByTestId('title-textarea');
+
+    fireEvent.change(textareaElement, {
+        target: { name: 'title', value: 'Updated title' },
+    });
     fireEvent.change(textareaElement, {
         target: { name: 'title', value: 'test 1 for drag and drop' },
     });
+
     const saveButton = await screen.findByRole('button', {
         name: 'Save',
     });
