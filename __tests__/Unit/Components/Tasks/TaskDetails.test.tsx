@@ -210,17 +210,11 @@ describe('TaskDetails Page', () => {
 
     it('Renders N/A when link is empty or undefined', async () => {
         const { queryByText } = renderWithRouter(
-            <Details detailType={'Link'} value={undefined} /> // Pass undefined instead of null
+            <Details detailType={'Link'} value={undefined} />
         );
         await waitFor(() => {
             const element = queryByText(/N\/A/i);
-            // Check if the element is not null before asserting its presence
-            if (element) {
-                expect(element).toBeInTheDocument();
-            } else {
-                // If the element is null, fail the test with a message
-                throw new Error('Element with text "N/A" not found');
-            }
+            expect(element).toBeInTheDocument();
         });
     });
 
@@ -236,13 +230,13 @@ describe('TaskDetails Page', () => {
     });
 });
 it('Renders Task Ends-on Date', async () => {
-    const { queryAllByText } = renderWithRouter(
+    const { getAllByText } = renderWithRouter(
         <Provider store={store()}>
             <Details detailType={'EndsOn'} value={'4/19/2021, 12:00:10 AM'} />
         </Provider>
     );
     await waitFor(() => {
-        const dateElements = queryAllByText('4/19/2021, 12:00:10 AM');
+        const dateElements = getAllByText('4/19/2021, 12:00:10 AM');
         expect(dateElements.length).toBeGreaterThan(0);
     });
 });
