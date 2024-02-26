@@ -697,6 +697,7 @@ describe('Details component', () => {
         );
         expect(extensionRequestIcon).not.toBeInTheDocument();
     });
+
     it('Renders a tooltip for timestamps', async () => {
         const task = {
             id: 'L1SDW6O835o0EI8ZmvRc',
