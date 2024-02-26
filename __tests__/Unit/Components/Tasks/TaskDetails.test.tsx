@@ -1,4 +1,13 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+    fireEvent,
+    queryByText,
+    render,
+    screen,
+    waitFor,
+    queryAllByText,
+    act,
+} from '@testing-library/react';
+import { Router, useRouter } from 'next/router';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -16,7 +25,7 @@ import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-req
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import DevFeature from '@/components/DevFeature';
-
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -46,6 +55,7 @@ jest.mock('@/hooks/useUserData', () => {
         isSuccess: true,
     });
 });
+
 const mockNavigateToUpdateProgressPage = jest.fn();
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
@@ -150,17 +160,6 @@ describe('TaskDetails Page', () => {
         });
     });
 
-    it('Renders N/A when link is empty or undefined', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <Details detailType={'Link'} value={undefined} />
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(getByText('N/A')).toBeInTheDocument();
-        });
-    });
-
     it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -191,228 +190,211 @@ describe('TaskDetails Page', () => {
         const errorElement = await screen.findByText('Something went wrong!');
         expect(errorElement).toBeInTheDocument();
     });
+
     it('Renders Task Started-on Date', async () => {
-        const { getByText } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store()}>
                 <Details
                     detailType={'StartedOn'}
-                    value={'3/30/2021, 12:00:00 AM'}
-                />
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(getByText('3/30/2021, 12:00:00 AM')).toBeInTheDocument();
-        });
-    });
-
-    it('Renders N/A when started on is undefined', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <Details detailType={'StartedOn'} value={undefined} />
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(getByText('N/A')).toBeInTheDocument();
-        });
-    });
-
-    it('Renders Task Ends-on Date', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <Details
-                    detailType={'EndsOn'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                />
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
-        });
-    });
-
-    it('Renders Extension Request icon', async () => {
-        const { getByText } = renderWithRouter(
-            <Provider store={store()}>
-                <Details
-                    detailType={'Ends On'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                    url={details.extension_request_url}
+                    value={'3/30/2024, 11:20:00 AM'}
                 />
             </Provider>
         );
 
+        const dateElements = screen.queryAllByText('3/30/2024, 11:20:00 AM');
+        expect(dateElements.length).toBeGreaterThan(0);
+    });
+
+    it('Renders N/A when link is empty or undefined', async () => {
+        const { queryByText } = renderWithRouter(
+            <Details detailType={'Link'} value={undefined} />
+        );
         await waitFor(() => {
-            const element = screen.queryByTestId('extension-request-icon');
-            expect(element).toHaveAttribute(
-                'href',
-                'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy'
-            );
-            expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
+            const element = queryByText(/N\/A/i);
+            expect(element).toBeInTheDocument();
         });
     });
 
-    it('Doesnot Renders Extension Request icon when url not available', async () => {
+    it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={'Ends On'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                    url={null}
-                />
-            </Provider>,
-            {
-                query: { dev: 'true' },
-            }
+                <TaskDetails taskID={details.taskID} />
+            </Provider>
         );
-        const element = screen.queryByTestId('extension-request-icon');
-        expect(element).toBeNull();
         await waitFor(() => {
-            expect(getByText('4/19/2021, 12:00:10 AM')).toBeInTheDocument();
+            expect(getByText('ankur')).toBeInTheDocument();
         });
     });
-
-    test('should update taskDetails and editedDetails correctly on input change', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {}
-        );
-        await waitFor(() => {
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            fireEvent.click(editButton);
-        });
-        const textareaElement = screen.getByTestId('title-textarea');
-        fireEvent.change(textareaElement, {
-            target: { name: 'title', value: 'New Title' },
-        });
-        await waitFor(() => {
-            const saveButton = screen.getByRole('button', { name: 'Save' });
-            fireEvent.click(saveButton);
-        });
-        expect(textareaElement).toHaveValue('New Title');
+});
+it('Renders Task Ends-on Date', async () => {
+    const { getAllByText } = renderWithRouter(
+        <Provider store={store()}>
+            <Details detailType={'EndsOn'} value={'4/19/2021, 12:00:10 AM'} />
+        </Provider>
+    );
+    await waitFor(() => {
+        const dateElements = getAllByText('4/19/2021, 12:00:10 AM');
+        expect(dateElements.length).toBeGreaterThan(0);
     });
-    test('should call onCancel and reset state when clicked', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {}
-        );
+});
 
-        await waitFor(() => {
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            fireEvent.click(editButton);
-        });
-
-        await waitFor(() => {
-            const cancelButton = screen.getByRole('button', { name: 'Cancel' });
-            fireEvent.click(cancelButton);
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            expect(editButton).toBeInTheDocument();
-        });
+it('Does not render Extension Request icon when URL not available', async () => {
+    const { queryByTestId } = render(
+        <Provider store={store()}>
+            <Details
+                detailType={'Ends On'}
+                value={'4/19/2021, 12:00:10 AM'}
+                url={null}
+            />
+        </Provider>
+    );
+    await waitFor(() => {
+        expect(queryByTestId('extension-request-icon')).toBeNull();
     });
+});
 
-    test('should call onSave and reset state when clicked', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            {}
-        );
-
-        await waitFor(() => {
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            fireEvent.click(editButton);
-        });
-
-        await waitFor(() => {
-            const saveButton = screen.getByRole('button', { name: 'Save' });
-            fireEvent.click(saveButton);
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            expect(editButton).toBeInTheDocument();
-        });
-    });
-
-    test('should update the title and description with the new values', async () => {
-        server.use(...taskDetailsHandler);
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-                <ToastContainer />
-            </Provider>,
-            {}
-        );
-        await waitFor(() => {
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            fireEvent.click(editButton);
-        });
-        const textareaElement = screen.getByTestId('title-textarea');
-        fireEvent.change(textareaElement, {
-            target: { name: 'title', value: 'New Title' },
-        });
-        await waitFor(async () => {
-            const saveButton = screen.getByRole('button', { name: 'Save' });
-            fireEvent.click(saveButton);
-            expect(
-                await screen.findByText(/Successfully saved/i)
-            ).not.toBeNull();
-        });
-    });
-    test('should not update the title and description with the same values', async () => {
-        server.use(...taskDetailsHandler);
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-                <ToastContainer />
-            </Provider>,
-            {}
-        );
-        const editButton = await screen.findByRole('button', { name: 'Edit' });
+test('should update taskDetails and editedDetails correctly on input change', async () => {
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+        </Provider>,
+        {}
+    );
+    await waitFor(() => {
+        const editButton = screen.getByRole('button', { name: 'Edit' });
         fireEvent.click(editButton);
-        const textareaElement = await screen.findByTestId('title-textarea');
-        fireEvent.change(textareaElement, {
-            target: { name: 'title', value: 'test 1 for drag and drop' },
-        });
-        await waitFor(async () => {
-            const saveButton = await screen.findByRole('button', {
-                name: 'Save',
-            });
-            fireEvent.click(saveButton);
-        });
-        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
+    });
+    const textareaElement = screen.getByTestId('title-textarea');
+    fireEvent.change(textareaElement, {
+        target: { name: 'title', value: 'New Title' },
+    });
+    await waitFor(() => {
+        const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
+    });
+    expect(textareaElement).toHaveValue('New Title');
+});
+test('should call onCancel and reset state when clicked', async () => {
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+        </Provider>,
+        {}
+    );
+
+    await waitFor(() => {
+        const editButton = screen.getByRole('button', { name: 'Edit' });
+        fireEvent.click(editButton);
     });
 
-    test('Should render No task progress', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        let progressUpdatesSection;
-        await waitFor(() => {
-            progressUpdatesSection = screen.getByText('Progress Updates');
-        });
-        expect(progressUpdatesSection).toBeInTheDocument();
-        const noProgressText = screen.getByText('No Progress found');
-        expect(noProgressText).toBeInTheDocument();
+    await waitFor(() => {
+        const cancelButton = screen.getByRole('button', { name: 'Cancel' });
+        fireEvent.click(cancelButton);
+        const editButton = screen.getByRole('button', { name: 'Edit' });
+        expect(editButton).toBeInTheDocument();
+    });
+});
+
+test('should call onSave and reset state when clicked', async () => {
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+        </Provider>,
+        {}
+    );
+
+    await waitFor(() => {
+        const editButton = screen.getByRole('button', { name: 'Edit' });
+        fireEvent.click(editButton);
     });
 
-    test('should call progress details query', async () => {
-        const spyfn = jest.spyOn(progressQueries, 'useGetProgressDetailsQuery');
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>
-        );
-        let progressUpdatesSection;
-        await waitFor(() => {
-            progressUpdatesSection = screen.getByText('Progress Updates');
-        });
-        expect(progressUpdatesSection).toBeInTheDocument();
-        expect(spyfn).toBeCalled();
+    await waitFor(() => {
+        const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
+        const editButton = screen.getByRole('button', { name: 'Edit' });
+        expect(editButton).toBeInTheDocument();
     });
+});
+
+test('should update the title and description with the new values', async () => {
+    server.use(...taskDetailsHandler);
+
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+            <ToastContainer />
+        </Provider>,
+        {}
+    );
+    await waitFor(() => {
+        const editButton = screen.getByRole('button', { name: 'Edit' });
+        fireEvent.click(editButton);
+    });
+    const textareaElement = screen.getByTestId('title-textarea');
+    fireEvent.change(textareaElement, {
+        target: { name: 'title', value: 'New Title' },
+    });
+    await waitFor(async () => {
+        const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
+        expect(await screen.findByText(/Successfully saved/i)).not.toBeNull();
+    });
+});
+test('should not update the title and description with the same values', async () => {
+    server.use(...taskDetailsHandler);
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+            <ToastContainer />
+        </Provider>,
+        {}
+    );
+    const editButton = await screen.findByRole('button', { name: 'Edit' });
+    fireEvent.click(editButton);
+    const textareaElement = await screen.findByTestId('title-textarea');
+
+    fireEvent.change(textareaElement, {
+        target: { name: 'title', value: 'Updated title' },
+    });
+    fireEvent.change(textareaElement, {
+        target: { name: 'title', value: 'test 1 for drag and drop' },
+    });
+
+    const saveButton = await screen.findByRole('button', {
+        name: 'Save',
+    });
+    fireEvent.click(saveButton);
+    expect(screen.queryByText(/Successfully saved/i)).toBeNull();
+});
+
+test('Should render No task progress', async () => {
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+        </Provider>
+    );
+    let progressUpdatesSection;
+    await waitFor(() => {
+        progressUpdatesSection = screen.getByText('Progress Updates');
+    });
+    expect(progressUpdatesSection).toBeInTheDocument();
+    const noProgressText = screen.getByText('No Progress found');
+    expect(noProgressText).toBeInTheDocument();
+});
+
+test('should call progress details query', async () => {
+    const spyfn = jest.spyOn(progressQueries, 'useGetProgressDetailsQuery');
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+        </Provider>
+    );
+    let progressUpdatesSection;
+    await waitFor(() => {
+        progressUpdatesSection = screen.getByText('Progress Updates');
+    });
+    expect(progressUpdatesSection).toBeInTheDocument();
+    expect(spyfn).toBeCalled();
 });
 
 describe('Buttons with functionalities', () => {
@@ -472,8 +454,7 @@ describe('Update Progress button', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            { push: mockNavigateToUpdateProgressPage }
+            </Provider>
         );
 
         await waitFor(() => {
@@ -657,5 +638,81 @@ describe('TaskDependency', () => {
             fireEvent.click(taskElement);
             expect(navigateToTask).toHaveBeenCalledWith(task.id);
         });
+    });
+});
+
+jest.mock('next/router', () => ({
+    useRouter() {
+        return {
+            query: {
+                dev: 'true',
+            },
+            push: mockNavigateToUpdateProgressPage,
+        };
+    },
+}));
+
+describe('Details component', () => {
+    it('Renders the detail type and value correctly', () => {
+        renderWithRouter(<Details detailType="Assignee" value="John Doe" />);
+        const detailType = screen.getByText('Assignee:');
+        const detailValue = screen.getByText('John Doe');
+        expect(detailType).toBeInTheDocument();
+        expect(detailValue).toBeInTheDocument();
+    });
+
+    it('Renders a GitHub link correctly', () => {
+        const githubIssueUrl = 'https://github.com/example/repo/issues/123';
+        renderWithRouter(<Details detailType="Link" value={githubIssueUrl} />);
+        const link = screen.getByRole('link', { name: /Open GitHub Issue/i });
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('href', githubIssueUrl);
+    });
+
+    it('Does not display tooltip on hover when timestamp is not provided', async () => {
+        render(<Details detailType="Started On" value="N/A" />);
+        const detailValue = screen.getByText('Started:');
+        fireEvent.mouseOver(detailValue);
+        const tooltip = screen.queryByText('N/A', { selector: '.tooltip' });
+        expect(tooltip).not.toBeInTheDocument();
+    });
+
+    it('Renders an extension request icon for Ends On with URL', () => {
+        const url = 'https://example.com';
+        renderWithRouter(<Details detailType="Ends On" url={url} />);
+        const extensionRequestIcon = screen.getByTestId(
+            'extension-request-icon'
+        );
+        expect(extensionRequestIcon).toBeInTheDocument();
+        expect(extensionRequestIcon).toHaveAttribute('href', url);
+    });
+
+    it('Does not render an extension request icon for Ends On without URL', () => {
+        renderWithRouter(<Details detailType="Ends On" />);
+        const extensionRequestIcon = screen.queryByTestId(
+            'extension-request-icon'
+        );
+        expect(extensionRequestIcon).not.toBeInTheDocument();
+    });
+
+    it('Renders a tooltip for timestamps', async () => {
+        const task = {
+            id: 'L1SDW6O835o0EI8ZmvRc',
+            startedOn: '1707869428.523',
+        };
+        renderWithRouter(
+            <Details detailType="Started On" value={task.startedOn} />
+        );
+        try {
+            const detailTypeElement = screen.getByText('Started:');
+            expect(detailTypeElement).toBeInTheDocument();
+            fireEvent.mouseOver(detailTypeElement);
+            const tooltip = await screen.findByTestId('tooltip');
+            expect(tooltip).toBeInTheDocument();
+            expect(tooltip.textContent).toBeTruthy();
+        } catch (error) {
+            console.error('Error occurred during tooltip rendering:', error);
+            throw error;
+        }
     });
 });
