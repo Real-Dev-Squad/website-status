@@ -4,6 +4,7 @@ export const EMPTY_TASKS_DATA = {
     ASSIGNED: [],
     AVAILABLE: [],
     UNASSIGNED: [],
+    BACKLOG: [],
     BLOCKED: [],
     NEEDS_REVIEW: [],
     IN_REVIEW: [],

@@ -15,7 +15,6 @@ export default memo(function ProgressUpdateCard({
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
     const titleToShow = readMoreTitle;
-    const [isTooltipVisible, setIsTooltipVisible] = useState(false);
     const fullDate = momentDate.format('DD-MM-YY');
     const time = momentDate.format('hh:mmA');
     const tooltipString = `Updated at ${fullDate}, ${time}`;
@@ -51,14 +50,6 @@ export default memo(function ProgressUpdateCard({
     const [dataToShowState, setDataToShowState] =
         useState<ProgressUpdateDataToShow[]>(dataToShow);
 
-    function onHoverOnDate(e: MouseEvent<HTMLElement>) {
-        setIsTooltipVisible(true);
-    }
-
-    function onMouseOutOnDate(e: MouseEvent<HTMLElement>) {
-        setIsTooltipVisible(false);
-    }
-
     function onMoreOrLessButtonClick(
         e: MouseEvent<HTMLElement>,
         clickedOnData: ProgressUpdateDataToShow
@@ -76,7 +67,7 @@ export default memo(function ProgressUpdateCard({
         });
     }
 
-    function onCardClick(e: MouseEvent<HTMLElement>) {
+    function onCardClick() {
         setIsExpanded((prev) => !prev);
     }
     return (
@@ -84,10 +75,7 @@ export default memo(function ProgressUpdateCard({
             dataToShowState={dataToShowState}
             titleToShow={titleToShow}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}
-            onHoverOnDate={onHoverOnDate}
-            onMouseOutOnDate={onMouseOutOnDate}
             dateInAgoFormat={dateInAgoFormat}
-            isTooltipVisible={isTooltipVisible}
             tooltipString={tooltipString}
             isExpanded={isExpanded}
             onCardClick={onCardClick}

@@ -1,6 +1,7 @@
 export const AVAILABLE = 'AVAILABLE';
 export const ASSIGNED = 'ASSIGNED';
 export const IN_PROGRESS = 'IN_PROGRESS';
+export const BACKLOG = 'BACKLOG';
 export const BLOCKED = 'BLOCKED';
 export const SMOKE_TESTING = 'SMOKE_TESTING';
 export const COMPLETED = 'COMPLETED';
@@ -19,6 +20,7 @@ const UN_ASSIGNED = 'AVAILABLE';
 export const STATUS_ORDER = [
     ASSIGNED,
     COMPLETED,
+    BACKLOG,
     BLOCKED,
     AVAILABLE,
     IN_PROGRESS,
@@ -38,6 +40,7 @@ export const BACKEND_TASK_STATUS = {
     UN_ASSIGNED,
     ASSIGNED,
     IN_PROGRESS,
+    BACKLOG,
     BLOCKED,
     COMPLETED,
     NEEDS_REVIEW,
