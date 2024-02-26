@@ -62,7 +62,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
             : detailType
         : detailType;
 
-    const shouldRenderTooltip = isTimeDetail && isDevMode;
+    const shouldRenderTooltip = isDevMode && isTimeDetail;
 
     return (
         <div className={styles.detailsContainer}>
