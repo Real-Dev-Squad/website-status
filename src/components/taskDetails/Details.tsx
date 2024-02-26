@@ -9,7 +9,6 @@ import extractRepoName from '@/utils/extractRepoName';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
 
-// Define type alias for string | number | undefined
 type StringNumberOrUndefined = string | number | undefined;
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {

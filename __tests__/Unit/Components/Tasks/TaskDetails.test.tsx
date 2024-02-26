@@ -7,6 +7,7 @@ import {
     queryAllByText,
     act,
 } from '@testing-library/react';
+import { Router, useRouter } from 'next/router';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -25,7 +26,6 @@ import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import DevFeature from '@/components/DevFeature';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
-import { Router, useRouter } from 'next/router';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -192,7 +192,7 @@ describe('TaskDetails Page', () => {
     });
 
     it('Renders Task Started-on Date', async () => {
-        const { queryAllByText } = renderWithRouter(
+        renderWithRouter(
             <Provider store={store()}>
                 <Details
                     detailType={'StartedOn'}
@@ -200,12 +200,9 @@ describe('TaskDetails Page', () => {
                 />
             </Provider>
         );
-        await waitFor(() => {
-            const dateElements = screen.queryAllByText(
-                '3/30/2024, 11:20:00 AM'
-            );
-            expect(dateElements.length).toBeGreaterThan(0);
-        });
+
+        const dateElements = screen.queryAllByText('3/30/2024, 11:20:00 AM');
+        expect(dateElements.length).toBeGreaterThan(0);
     });
 
     it('Renders N/A when link is empty or undefined', async () => {
