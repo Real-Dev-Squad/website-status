@@ -1,16 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 import { LuChevronDown } from 'react-icons/lu';
 import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import FilterModal from './FilterModal';
-import useDebounce from '@/hooks/useDebounce';
-import generateSuggestions from '@/utils/generateSuggestions';
-import { TaskSearchOption } from '@/interfaces/searchOptions.type';
-import Options from './Suggestion/Options';
-import RenderPills from './Suggestion/Pill';
-import convertStringToOptions from '@/utils/convertStringToOptions';
-import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
-import findCoordinates from '@/helperFunctions/findCoordinates';
 
 interface SuggestionCoordinates {
     left: number | null;
