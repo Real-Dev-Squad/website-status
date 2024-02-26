@@ -1,13 +1,16 @@
 import React, { FC } from 'react';
-import setColor from './taskPriorityColors';
-import styles from './task-details.module.scss';
-import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
-import extractRepoName from '@/utils/extractRepoName';
+import moment from 'moment';
 import Link from 'next/link';
 import { FaReceipt } from 'react-icons/fa6';
-import moment from 'moment';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import { useRouter } from 'next/router';
+import setColor from './taskPriorityColors';
+import extractRepoName from '@/utils/extractRepoName';
+import styles from './task-details.module.scss';
+import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
+
+// Define type alias for string | number | undefined
+type StringNumberOrUndefined = string | number | undefined;
 
 const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
@@ -16,17 +19,15 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
 
-    const getRelativeTime = (
-        timestamp: string | number | undefined
-    ): string => {
+    const getRelativeTime = (timestamp: StringNumberOrUndefined): string => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
     };
 
-    const getTooltipText = (timestamp: string | number | undefined): string => {
+    const getTooltipText = (timestamp: StringNumberOrUndefined): string => {
         return timestamp ? moment(timestamp).format('LLLL') : 'N/A';
     };
 
-    const isPastDate = (timestamp: string | number | undefined): boolean => {
+    const isPastDate = (timestamp: StringNumberOrUndefined): boolean => {
         return timestamp ? moment(timestamp).isBefore(moment()) : false;
     };
     /**
@@ -35,7 +36,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
      * @returns {string} - The human-readable time format, for example: instead of displaying a timestamp like "2024-02-20T14:30:00", a human-readable format would present it as "February 20, 2024, 2:30 PM
      */
     const getHumanReadableTime = (
-        timestamp: string | number | undefined
+        timestamp: StringNumberOrUndefined
     ): string => {
         if (!timestamp) return 'N/A';
 
