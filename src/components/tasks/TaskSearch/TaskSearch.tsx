@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { LuChevronDown } from 'react-icons/lu';
 import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
 import FilterModal from './FilterModal';
@@ -55,7 +56,14 @@ const TaskSearch = ({
         <div className={styles['task-search-container']}>
             <div id="filter-container" className={styles['filter-container']}>
                 <div className={styles['filter-button']} onClick={handleModal}>
-                    Filter
+                    <p>Filter</p>
+                    <LuChevronDown
+                        className={` ${
+                            modalOpen
+                                ? styles['filter-chevron-open']
+                                : styles['filter-chevron']
+                        }`}
+                    />
                     {modalOpen && (
                         <FilterModal
                             dev={false}
