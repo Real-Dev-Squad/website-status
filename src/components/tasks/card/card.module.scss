@@ -136,9 +136,10 @@
 .progressContainer {
     width: 12rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     padding-top: 0.5rem;
+    gap: 0.5rem;
 }
 
 .progressContainerUpdated {

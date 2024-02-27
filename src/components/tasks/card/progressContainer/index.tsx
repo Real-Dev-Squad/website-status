@@ -14,9 +14,6 @@ import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
 
 const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
-    const router = useRouter();
-    const { dev } = router.query;
-
     const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(
         content.percentCompleted
