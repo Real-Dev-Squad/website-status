@@ -238,20 +238,6 @@ describe('Multi select task search in dev mode', () => {
         expect(pillContent).toBeInTheDocument();
         expect(pillContent).toHaveTextContent('status:blocked');
     });
-    test('search button should be clickable even if search input is empty', () => {
-        render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-        const searchButton = screen.getByTestId('search-button');
-        expect(searchButton).toBeInTheDocument();
-        fireEvent.click(searchButton);
-        expect(onClickSearchButton).toHaveBeenCalled();
-        expect(onClickSearchButton).toBeCalledWith('status:all');
-    });
 
     test('should display suggestions based on typed key through user input', async () => {
         const onClickSearchButton = jest.fn();

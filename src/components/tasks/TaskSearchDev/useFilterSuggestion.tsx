@@ -8,6 +8,8 @@ type Props = {
     onEditSelectedFilterValue: string;
     defferedPillValue: string;
     selectedFilters: Array<TaskSearchOption>;
+    activeFilterSuggestionDropdownIndex: number;
+    setActiveFilterSuggestionDropdownIndex: (index: number) => void;
 };
 export const useFilterSuggestion = ({
     typedInput,
@@ -16,6 +18,8 @@ export const useFilterSuggestion = ({
     onEditSelectedFilterValue,
     defferedPillValue,
     selectedFilters,
+    activeFilterSuggestionDropdownIndex,
+    setActiveFilterSuggestionDropdownIndex,
 }: Props) => {
     const filterSuggestions = getFilterSuggestions();
 
@@ -52,6 +56,13 @@ export const useFilterSuggestion = ({
                 key,
                 onEditSelectedFilterIndex
             );
+
+            if (
+                result.length > 0 &&
+                activeFilterSuggestionDropdownIndex === -1
+            ) {
+                setActiveFilterSuggestionDropdownIndex(0);
+            }
 
             return result;
         }
