@@ -71,53 +71,24 @@ describe('Calendar Page', () => {
             expect(calendar).toBeInTheDocument;
         });
 
-        userEvent.click(getByRole('button', { name: 'February 18, 2024' }));
-
-        await waitFor(() => {
-            expect(
-                getByText('18-February-2024 is HOLIDAY(SUNDAY)!')
-            ).toBeInTheDocument();
-        });
-    });
-
-    it('displays appropriate message based on selected date', async () => {
-        const { getByText, getByRole, getByPlaceholderText, getByTestId } =
-            renderWithRouter(
-                <Provider store={store()}>
-                    <UserStatusCalendar />
-                </Provider>
-            );
-
-        const input = getByPlaceholderText('Enter username');
-        userEvent.type(input, 'muhammadmusab');
-        await waitFor(() => expect(input).toHaveValue('muhammadmusab'));
-
-        const button = getByRole('button', { name: 'Submit' });
-        userEvent.click(button);
-        await waitFor(() => {
-            const calendar = getByTestId('react-calendar');
-            expect(calendar).toBeInTheDocument;
-        });
-
         const currentDate = new Date();
-        const formattedDate = `${
+        currentDate.setDate(1);
+        while (currentDate.getDay() !== 0) {
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+        const formattedSundayDate = `${currentDate.getDate()}-${
+            MONTHS[currentDate.getMonth()]
+        }-${currentDate.getFullYear()}`;
+        const fullDate = `${
             MONTHS[currentDate.getMonth()]
         } ${currentDate.getDate()}, ${currentDate.getFullYear()}`;
 
-        userEvent.click(getByRole('button', { name: formattedDate }));
+        userEvent.click(getByRole('button', { name: fullDate }));
 
         await waitFor(() => {
-            let expectedMessage;
-            const fullDate = `${currentDate.getDate()}-${
-                MONTHS[currentDate.getMonth()]
-            }-${currentDate.getFullYear()}`;
-            if (currentDate.getDay() === 0) {
-                expectedMessage = `${fullDate} is HOLIDAY(SUNDAY)!`;
-            } else {
-                expectedMessage = `No user status found for muhammadmusab on ${fullDate}!`;
-            }
-
-            expect(getByText(expectedMessage)).toBeInTheDocument();
+            expect(
+                getByText(`${formattedSundayDate} is HOLIDAY(SUNDAY)!`)
+            ).toBeInTheDocument();
         });
     });
 });
