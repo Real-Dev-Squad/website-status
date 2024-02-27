@@ -4,8 +4,8 @@
   "description": "Shows a status of the ongoing projects being done",
   "main": "index.js",
   "scripts": {
-    "run-command:dev-server": "next dev -p 4000",
-    "run-command:reverse-ssl": "local-ssl-proxy --source 443 --target 4000",
+    "run-command:dev-server": "next dev -p 3000",
+    "run-command:reverse-ssl": "local-ssl-proxy --source 443 --target 3000",
     "dev": "run-p run-command:*",
     "build:staging": "cp .env.development .env.local && next build",
     "build": "next build",
