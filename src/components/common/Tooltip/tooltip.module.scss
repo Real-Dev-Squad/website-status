@@ -3,9 +3,7 @@
 .tooltip {
     position: absolute;
     width: 17rem;
-    top: -40px;
-    left: -60px;
-    right: 0;
+    // position - top, bottom, right, left will come from props for reusability
     background-color: $theme-primary;
     border: 1px solid $theme-primary;
     padding: 6px 10px;

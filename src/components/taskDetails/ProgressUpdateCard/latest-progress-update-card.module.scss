@@ -1,5 +1,10 @@
 @import '../../../styles/variables';
 
+.date-clock-container {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
 .latest-progress-update-card {
     background-color: $white;
     border-radius: 10px;
@@ -11,7 +16,6 @@
         gap: 1rem;
         padding: 10px 1rem;
         border-bottom: 1px solid $lighter-gray;
-
         &:last-child {
             border-bottom: none;
         }
@@ -25,7 +29,10 @@
         .latest-progress-update-card__info-title {
             font-weight: 700;
         }
-
+        .latest-progress-update-card__info-body {
+            word-break: break-word;
+            text-align: left;
+        }
         &:nth-child(2) {
             .latest-progress-update-card__info-body {
                 margin-left: 1.2rem;

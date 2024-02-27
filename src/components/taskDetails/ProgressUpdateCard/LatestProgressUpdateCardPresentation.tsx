@@ -1,36 +1,16 @@
-import React, { MouseEvent } from 'react';
-import styles from './latest-progress-update-card.module.scss';
+import React from 'react';
 import { FaRegClock } from 'react-icons/fa6';
+import {
+    LatestProgressUpdateCardPresentationProps,
+    ProgressUpdateDataToShow,
+} from './progressUpdateCard.types';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
-
-type LatestProgressUpdateCardPresentationProps = {
-    dataToShowState: ProgressUpdateDataToShow[];
-    isTooltipVisible: boolean;
-    tooltipText: string;
-    onMoreOrLessButtonClick: (
-        e: MouseEvent<HTMLElement>,
-        clickedOnData: ProgressUpdateDataToShow
-    ) => void;
-    onHoverOnDate: (e: MouseEvent<HTMLElement>) => void;
-    onMouseOutOnDate: (e: MouseEvent<HTMLElement>) => void;
-    dateInAgoFormat: string;
-};
-type ProgressUpdateDataToShow = {
-    id: string;
-    label: string;
-    body: string;
-    trimmedBody: string;
-    shouldReadMoreButtonShow: boolean;
-    isReadMoreEnabled: boolean;
-};
+import styles from './latest-progress-update-card.module.scss';
 
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
-    isTooltipVisible,
     tooltipText,
     onMoreOrLessButtonClick,
-    onHoverOnDate,
-    onMouseOutOnDate,
     dateInAgoFormat,
 }: LatestProgressUpdateCardPresentationProps) {
     const progressInfoMapping = dataToShowState.map(
@@ -82,20 +62,23 @@ export default function LatestProgressUpdateCardPresentation({
                     className={
                         styles['latest-progress-update-card__date-container']
                     }
-                    onMouseOver={onHoverOnDate}
-                    onMouseOut={onMouseOutOnDate}
                 >
-                    <FaRegClock />
-                    <span
-                        className={styles['progress-update-card__date-text']}
-                        data-testid="latest-progress-update-card-date"
-                    >
-                        {dateInAgoFormat}
-                    </span>
                     <Tooltip
-                        isVisible={isTooltipVisible}
-                        textToShow={tooltipText}
-                    />
+                        content={tooltipText}
+                        tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
+                    >
+                        <span className={styles['date-clock-container']}>
+                            <FaRegClock />
+                            <span
+                                className={
+                                    styles['progress-update-card__date-text']
+                                }
+                                data-testid="latest-progress-update-card-date"
+                            >
+                                {dateInAgoFormat}
+                            </span>
+                        </span>
+                    </Tooltip>
                 </div>
             </div>
         </div>

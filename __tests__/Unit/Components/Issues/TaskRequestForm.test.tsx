@@ -5,9 +5,17 @@ import { TASK_REQUESTS_DETAILS_URL } from '@/constants/url';
 
 describe('TaskRequestForm Component', () => {
     const date = new Date();
-    const today = date.toISOString().split('T')[0];
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const today = `${year}-${month}-${day}`;
+
     date.setDate(date.getDate() + 7);
-    const sevenDaysFromToday = date.toISOString().split('T')[0];
+    const futureYear = date.getFullYear().toString();
+    const futureMonth = (date.getMonth() + 1).toString().padStart(2, '0');
+    const futureDay = date.getDate().toString().padStart(2, '0');
+    const sevenDaysFromToday = `${futureYear}-${futureMonth}-${futureDay}`;
+
     test('renders form with default values', () => {
         const createTaskRequestMock = jest.fn();
         render(<TaskRequestForm createTaskRequest={createTaskRequestMock} />);

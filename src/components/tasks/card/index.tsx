@@ -20,6 +20,7 @@ import {
     AVAILABLE,
     DONE,
     BLOCKED,
+    BACKLOG,
 } from '@/constants/task-status';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -47,7 +48,13 @@ const Card: FC<CardProps> = ({
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
     const statusRedList = [BLOCKED];
-    const statusNotOverDueList = [COMPLETED, VERIFIED, AVAILABLE, DONE];
+    const statusNotOverDueList = [
+        COMPLETED,
+        VERIFIED,
+        AVAILABLE,
+        DONE,
+        BACKLOG,
+    ];
 
     const cardDetails = content;
 
