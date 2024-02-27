@@ -527,7 +527,7 @@ const Card: FC<CardProps> = ({
                     <ProgressIndicator
                         percentCompleted={content.percentCompleted}
                         startedOn={content.startedOn}
-                        endsOn={content.endsOn}
+                        endsOn={content.endsOn.toString()}
                     ></ProgressIndicator>
                     <div>{content.percentCompleted}%</div>
                 </div>
