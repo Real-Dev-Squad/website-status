@@ -52,7 +52,7 @@ describe('Calendar Page', () => {
         });
     });
 
-    it('displays holiday message on clicking a Sunday', async () => {
+    it('displays holiday message clicking on a Sunday', async () => {
         const { getByText, getByRole, getByPlaceholderText, getByTestId } =
             renderWithRouter(
                 <Provider store={store()}>
