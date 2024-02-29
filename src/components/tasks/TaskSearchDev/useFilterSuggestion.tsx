@@ -1,3 +1,4 @@
+import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import generateSuggestions from '@/utils/generateSuggestions';
 
@@ -21,7 +22,22 @@ export const useFilterSuggestion = ({
     activeFilterSuggestionDropdownIndex,
     setActiveFilterSuggestionDropdownIndex,
 }: Props) => {
-    const filterSuggestions = getFilterSuggestions();
+    const { data: searchedUsers } = useGetUsersByUsernameQuery(
+        {
+            searchString: defferedUserInput,
+        },
+        {
+            skip: defferedUserInput.length < 3,
+        }
+    );
+    const assigneeSuggestions =
+        searchedUsers?.users?.map((user) => ({
+            assignee: user.username || user.github_display_name,
+        })) || [];
+    const filterSuggestions = [
+        ...assigneeSuggestions,
+        ...getFilterSuggestions(),
+    ];
 
     function getFilterSuggestions() {
         let userInput;

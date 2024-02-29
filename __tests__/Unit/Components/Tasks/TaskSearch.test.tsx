@@ -2,6 +2,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import TaskSearch from '@/components/tasks/TaskSearch/TaskSearch';
 import { Tab } from '@/interfaces/task.type';
 import TaskSearchDev from '@/components/tasks/TaskSearchDev/TaskSearchDev';
+import { Provider } from 'react-redux';
+import { store } from '@/app/store';
 
 jest.mock('@/utils/getChangedStatusName', () => ({
     getChangedStatusName: jest.fn((tab) => tab),
@@ -129,11 +131,13 @@ describe('TaskSearch', () => {
         const onClickSearchButton = jest.fn();
 
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const filterButton = screen.getByText('Filter');
         fireEvent.click(filterButton);
@@ -168,11 +172,13 @@ describe('TaskSearch', () => {
         const onClickSearchButton = jest.fn();
 
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const filterButton = screen.getByText('Filter');
@@ -211,11 +217,13 @@ describe('Multi select task search in dev mode', () => {
     const onClickSearchButton = jest.fn();
     test('renders search input with empty string if dev mode is enabled', () => {
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const searchInput = screen.getByTestId('search-input');
         expect(searchInput).toBeInTheDocument();
@@ -227,11 +235,13 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
 
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const pillContent = getByTestId('pill-content');
@@ -242,11 +252,13 @@ describe('Multi select task search in dev mode', () => {
     test('should display suggestions based on typed key through user input', async () => {
         const onClickSearchButton = jest.fn();
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const searchInput = screen.getByTestId('search-input');
         fireEvent.change(searchInput, { target: { value: 'status:blocked' } });
@@ -265,11 +277,13 @@ describe('Multi select task search in dev mode', () => {
         const onClickSearchButton = jest.fn();
 
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const filterButton = screen.getByText('Filter');
@@ -289,11 +303,13 @@ describe('Multi select task search in dev mode', () => {
 
     test('should generate suggestion once clicked on option pill', async () => {
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const pillContent = getByTestId('pill-content');
@@ -310,11 +326,13 @@ describe('Multi select task search in dev mode', () => {
     test('should set focus back to input if clicked in surrounding of it', async () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const searchInput = screen.getByTestId('search-input');
         expect(searchInput).toBeInTheDocument();
@@ -324,11 +342,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should discard changes and set focus back to input if escape is pressed', async () => {
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const pillContent = getByTestId('pill-content');
@@ -342,11 +362,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should take 2 backspaces to remove a pill, if pressed in an empty input field', async () => {
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const searchInput = screen.getByTestId('search-input');
@@ -360,11 +382,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should delete the pill if entire value of its is cleared', async () => {
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const pillContent = getByTestId('pill-content');
         fireEvent.click(pillContent);
@@ -376,11 +400,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should be able to traverse between options through arrow keys', async () => {
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const searchInput = screen.getByTestId('search-input');
@@ -399,11 +425,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should be able to select options using ENTER key', async () => {
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const searchInput = screen.getByTestId('search-input');
@@ -422,11 +450,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should fetch tasks if ENTER is pressed', async () => {
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const searchInput = screen.getByTestId('search-input');
@@ -438,11 +468,13 @@ describe('Multi select task search in dev mode', () => {
     });
     it('should remove pill from UI if clicked on delete button', () => {
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:blocked"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:blocked"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const deleteButton = screen.getByTestId('delete-pill-button');
@@ -454,11 +486,13 @@ describe('Multi select task search in dev mode', () => {
     });
     test('should discard changes made in pill and set focus back to input if clicked outside of pill', async () => {
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:in-progress"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:in-progress"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
 
         const pillContent = getByTestId('pill-content');
@@ -477,11 +511,13 @@ describe('Multi select task search in dev mode', () => {
     test('should be able to update pill value through keyboard', async () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:in-progress"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:in-progress"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const pillContent = getByTestId('pill-content');
         fireEvent.click(pillContent);
@@ -503,11 +539,13 @@ describe('Multi select task search in dev mode', () => {
     test('should display suggestions even if white space is present at the end', async () => {
         const onClickSearchButton = jest.fn();
         render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue=""
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue=""
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const searchInput = screen.getByTestId('search-input');
         fireEvent.change(searchInput, { target: { value: ' status:in ' } });
@@ -524,11 +562,13 @@ describe('Multi select task search in dev mode', () => {
     test('should be able to close suggestions if input is out of focus', async () => {
         const onClickSearchButton = jest.fn();
         const { getByTestId } = render(
-            <TaskSearchDev
-                onFilterDropdownSelect={onSelect}
-                inputValue="status:in-progress"
-                onClickSearchButton={onClickSearchButton}
-            />
+            <Provider store={store()}>
+                <TaskSearchDev
+                    onFilterDropdownSelect={onSelect}
+                    inputValue="status:in-progress"
+                    onClickSearchButton={onClickSearchButton}
+                />
+            </Provider>
         );
         const searchInput = getByTestId('search-input');
         fireEvent.change(searchInput, {
