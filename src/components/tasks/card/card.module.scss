@@ -136,15 +136,21 @@
 .progressContainer {
     width: 12rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 0.5rem;
     align-items: center;
     padding-top: 0.5rem;
 }
 
 .progressContainerUpdated {
-    width: 12rem;
     display: flex;
     align-items: center;
+}
+
+@media screen and (max-width: 1128px) {
+    .progressContainerUpdated {
+        flex-direction: column;
+    }
 }
 
 .progressIndicator {
@@ -176,7 +182,6 @@
     cursor: pointer;
     color: lighten($dark-grayish-red, 50%);
     font-weight: 700;
-    padding-left: 2rem;
     user-select: none;
     opacity: 0.5;
     background: transparent;
