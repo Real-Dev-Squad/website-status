@@ -108,9 +108,9 @@ describe('TaskStatusEditMode', () => {
             statusSelect.querySelectorAll('option')
         ).map((option) => [option.value, option.textContent]);
 
-        const allTaskStatus = Object.entries(BACKEND_TASK_STATUS).map(
-            ([name, status]) => [status, beautifyStatus(name)]
-        );
+        const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
+            .map(([name, status]) => [status, beautifyStatus(name)])
+            .filter(([status]) => status !== 'BACKLOG');
 
         expect(allOptions).toEqual(allTaskStatus);
     });

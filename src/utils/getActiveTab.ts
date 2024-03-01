@@ -10,6 +10,8 @@ export const getActiveTab = (section?: string): Tab => {
             return Tab.AVAILABLE;
         case 'unassigned':
             return Tab.UNASSIGNED;
+        case 'backlog':
+            return Tab.BACKLOG;
         case 'blocked':
             return Tab.BLOCKED;
         case 'needs-review':
