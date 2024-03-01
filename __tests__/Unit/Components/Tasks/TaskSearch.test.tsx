@@ -9,6 +9,14 @@ jest.mock('@/utils/getChangedStatusName', () => ({
     getChangedStatusName: jest.fn((tab) => tab),
 }));
 
+jest.mock('@/app/services/usersApi', () => ({
+    useGetUsersByUsernameQuery: jest.fn(() => ({
+        data: {
+            users: [],
+        },
+    })),
+}));
+
 describe('TaskSearch', () => {
     test('renders the search input', () => {
         const onSelect = jest.fn();
