@@ -21,7 +21,7 @@ import {
 } from '@/utils/taskQueryParams';
 
 import useIntersection from '@/hooks/useIntersection';
-import TaskSearchDev from './TaskSearchDev/TaskSearchDev';
+import TaskSearchDev from './TaskSearch/TaskSearch';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();

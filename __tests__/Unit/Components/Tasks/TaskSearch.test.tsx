@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import TaskSearch from '@/components/tasks/TaskSearchDev/TaskSearchDev';
-import TaskSearchDev from '@/components/tasks/TaskSearchDev/TaskSearchDev';
+import TaskSearch from '@/components/tasks/TaskSearch/TaskSearch';
+import TaskSearchDev from '@/components/tasks/TaskSearch/TaskSearch';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 

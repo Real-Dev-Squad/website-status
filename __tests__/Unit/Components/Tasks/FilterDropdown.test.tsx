@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Tab } from '@/interfaces/task.type';
-import FilterDropdown from '@/components/tasks/TaskSearchDev/FilterDropdown';
+import FilterDropdown from '@/components/tasks/TaskSearch/FilterDropdown';
 
 const mockOnSelect = jest.fn();
 const mockOnClose = jest.fn();

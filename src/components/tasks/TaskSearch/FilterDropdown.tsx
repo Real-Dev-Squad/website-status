@@ -1,9 +1,5 @@
 import styles from './tasksearch.module.scss';
-import {
-    Tab,
-    depreciatedTaskStatus,
-    newTaskStatus,
-} from '@/interfaces/task.type';
+import { Tab, depreciatedTaskStatus } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import { useEffect } from 'react';
 

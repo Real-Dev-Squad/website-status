@@ -29,7 +29,7 @@ type TaskSearchProps = {
     onClickSearchButton: (param?: string) => void;
 };
 
-const TaskSearchDev = ({
+const TaskSearch = ({
     onFilterDropdownSelect,
     filterDropdownActiveTab,
     inputValue,
@@ -332,4 +332,4 @@ const TaskSearchDev = ({
     );
 };
 
-export default TaskSearchDev;
+export default TaskSearch;
