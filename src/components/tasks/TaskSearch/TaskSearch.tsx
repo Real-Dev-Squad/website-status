@@ -115,6 +115,9 @@ const TaskSearch = ({
                         setSelectedFilters(newOptions);
                         setOnEditSelectedFilterIndex(false);
                         setOnRemoveSelectedFilterIndex(-1);
+                        onClickSearchButton(
+                            convertSearchOptionsToQuery(newOptions)
+                        );
                     }
                 }
 
@@ -181,6 +184,7 @@ const TaskSearch = ({
         setSelectedFilters(updatedOptions);
         setOnEditSelectedFilterValue('');
         toggleInputFocus();
+        onClickSearchButton(convertSearchOptionsToQuery(updatedOptions));
     };
 
     const onSuggestionSelected = (
