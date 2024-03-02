@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import TaskSearch from '@/components/tasks/TaskSearch/TaskSearch';
-import { Tab } from '@/interfaces/task.type';
+import TaskSearch from '@/components/tasks/TaskSearchDev/TaskSearchDev';
 import TaskSearchDev from '@/components/tasks/TaskSearchDev/TaskSearchDev';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -18,54 +17,14 @@ jest.mock('@/app/services/usersApi', () => ({
 }));
 
 describe('TaskSearch', () => {
-    test('renders the search input', () => {
-        const onSelect = jest.fn();
-        const onInputChange = jest.fn();
-        const onClickSearchButton = jest.fn();
-
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue=""
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-
-        const searchInput = screen.getByTestId('search-input');
-        expect(searchInput).toBeInTheDocument();
-    });
-
-    test('calls onClickSearchButton when Search button is clicked', () => {
-        const onSelect = jest.fn();
-        const onInputChange = jest.fn();
-        const onClickSearchButton = jest.fn();
-
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue=""
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-        const searchInput = screen.getByTestId('search-input');
-        fireEvent.change(searchInput, { target: { value: 'is:active' } });
-        const searchButton = screen.getByText('Search');
-        fireEvent.click(searchButton);
-        expect(onClickSearchButton).toHaveBeenCalledTimes(1);
-    });
-
     test('opens the filter modal when the Filter button is clicked', () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         render(
             <TaskSearch
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
@@ -76,65 +35,25 @@ describe('TaskSearch', () => {
         expect(modalTitle).toBeInTheDocument();
     });
 
-    test('calls onInputChange when the search input value changes', () => {
-        const onSelect = jest.fn();
-        const onInputChange = jest.fn();
-        const onClickSearchButton = jest.fn();
-
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue=""
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-
-        const searchInput = screen.getByTestId('search-input');
-        fireEvent.change(searchInput, { target: { value: 'is:merged' } });
-        expect(onInputChange).toHaveBeenCalledWith('is:merged');
-    });
-
-    test('calls onInputChange when the search input value changes when dev is true', () => {
-        const onSelect = jest.fn();
-        const onInputChange = jest.fn();
-        const onClickSearchButton = jest.fn();
-
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue=""
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-
-        const searchInput = screen.getByTestId('search-input');
-        fireEvent.change(searchInput, { target: { value: 'is:done' } });
-        expect(onInputChange).toHaveBeenCalledWith('is:done');
-    });
-
     test('calls onSelect when the any one filter button is clicked', () => {
         const onSelect = jest.fn();
-        const onInputChange = jest.fn();
         const onClickSearchButton = jest.fn();
 
         render(
             <TaskSearch
-                onSelect={onSelect}
+                onFilterDropdownSelect={onSelect}
                 inputValue=""
-                onInputChange={onInputChange}
                 onClickSearchButton={onClickSearchButton}
             />
         );
         const filterButton = screen.getByText('Filter');
         fireEvent.click(filterButton);
-        const assignedButton = screen.getByText(/assigned/i);
+        const assignedButton = screen.getByText('ASSIGNED');
         fireEvent.click(assignedButton);
         expect(onSelect).toHaveBeenCalledWith('ASSIGNED');
     });
 
-    test('calls onSelect when the any one filter button is clicked and dev is true', () => {
+    test('calls onSelect when the any one filter button is clicked', () => {
         const onSelect = jest.fn();
         const onClickSearchButton = jest.fn();
 
@@ -154,28 +73,7 @@ describe('TaskSearch', () => {
         expect(onSelect).toHaveBeenCalledWith('UNASSIGNED');
     });
 
-    test('calls onClickSearchButton when enter key is pressed', () => {
-        const onSelect = jest.fn();
-        const onInputChange = jest.fn();
-        const onClickSearchButton = jest.fn();
-
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue="status:assigned"
-                activeTab={Tab.ASSIGNED}
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-
-        const searchInput = screen.getByTestId('search-input');
-        fireEvent.change(searchInput, { target: { value: 'is:merged' } });
-        fireEvent.keyDown(searchInput, { key: 'Enter', code: 'Enter' });
-        expect(onClickSearchButton).toBeCalled();
-    });
-
-    test('Should not display status:all in search bar in dev mode', () => {
+    test('Should not display status:all in search bar', () => {
         const onSelect = jest.fn();
         const onClickSearchButton = jest.fn();
 
@@ -195,27 +93,6 @@ describe('TaskSearch', () => {
         fireEvent.click(blockedButton);
         expect(onSelect).toHaveBeenCalledWith('ALL');
         expect(screen.queryByText('status:all')).not.toBeInTheDocument();
-    });
-    test('Should display status:all in search bar', () => {
-        const onSelect = jest.fn();
-        const onInputChange = jest.fn();
-        const onClickSearchButton = jest.fn();
-
-        render(
-            <TaskSearch
-                onSelect={onSelect}
-                inputValue="status:all"
-                onInputChange={onInputChange}
-                onClickSearchButton={onClickSearchButton}
-            />
-        );
-
-        const filterButton = screen.getByText('Filter');
-        fireEvent.click(filterButton);
-        const blockedButton = screen.getByRole('button', { name: /all/i });
-        fireEvent.click(blockedButton);
-        expect(onSelect).toHaveBeenCalledWith('ALL');
-        expect(screen.getByDisplayValue('status:all')).toBeInTheDocument();
     });
 });
 

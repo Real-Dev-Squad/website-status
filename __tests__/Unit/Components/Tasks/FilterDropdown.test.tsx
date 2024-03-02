@@ -1,15 +1,15 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Tab } from '@/interfaces/task.type';
-import FilterModal from '@/components/tasks/TaskSearch/FilterModal';
+import FilterDropdown from '@/components/tasks/TaskSearchDev/FilterDropdown';
 
 const mockOnSelect = jest.fn();
 const mockOnClose = jest.fn();
 
-describe('FilterModal', () => {
+describe('FilterDropdown', () => {
     test('renders the modal with correct title and buttons', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.ASSIGNED}
@@ -32,7 +32,7 @@ describe('FilterModal', () => {
 
     test('renders the modal having overdue tab with correct title and buttons', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.OVERDUE}
@@ -56,10 +56,9 @@ describe('FilterModal', () => {
         expect(overdueButton).toBeInTheDocument();
     });
 
-    test('renders the modal with correct title and buttons when dev is true', () => {
+    test('renders the modal with correct title and buttons', () => {
         render(
-            <FilterModal
-                dev={true}
+            <FilterDropdown
                 tabs={[Tab.UNASSIGNED, Tab.DONE]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.UNASSIGNED}
@@ -82,7 +81,7 @@ describe('FilterModal', () => {
 
     test('calls onSelect and onClose when a status button is clicked', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.ASSIGNED}
@@ -98,7 +97,7 @@ describe('FilterModal', () => {
 
     test('calls onClose when the close button is clicked', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.ASSIGNED}
@@ -113,12 +112,11 @@ describe('FilterModal', () => {
     });
     test('calls onClose when clicked on outside', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.ASSIGNED}
                 onClose={mockOnClose}
-                dev={true}
             />
         );
 
@@ -138,12 +136,11 @@ describe('FilterModal', () => {
     });
     test('calls onClose when escape button is clicked', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.ASSIGNED}
                 onClose={mockOnClose}
-                dev={true}
             />
         );
 
@@ -154,7 +151,7 @@ describe('FilterModal', () => {
 
     test('renders the modal with correct active tab', () => {
         render(
-            <FilterModal
+            <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.ASSIGNED}
@@ -169,10 +166,9 @@ describe('FilterModal', () => {
         expect(inProgressButton).not.toHaveClass('status-button-active');
     });
 
-    test('renders the modal with correct active tab when dev is true', () => {
+    test('renders the modal with correct active tab', () => {
         render(
-            <FilterModal
-                dev={true}
+            <FilterDropdown
                 tabs={[Tab.UNASSIGNED, Tab.DONE]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.DONE}
@@ -187,10 +183,9 @@ describe('FilterModal', () => {
         expect(unassignedButton).not.toHaveClass('status-button-active');
     });
 
-    test('render the filter model having BACKLOG tab with correct title and buttons when dev is true', () => {
+    test('render the filter model having BACKLOG tab with correct title and buttons', () => {
         render(
-            <FilterModal
-                dev={true}
+            <FilterDropdown
                 tabs={[Tab.UNASSIGNED, Tab.BACKLOG]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.BACKLOG}
@@ -202,10 +197,9 @@ describe('FilterModal', () => {
         expect(backlogButton).toBeInTheDocument();
     });
 
-    test('onSelect Function Gets Called When the Backlog Status button is Clicked when dev is true', () => {
+    test('onSelect Function Gets Called When the Backlog Status button is Clicked', () => {
         render(
-            <FilterModal
-                dev={true}
+            <FilterDropdown
                 tabs={[Tab.BACKLOG, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.BACKLOG}
@@ -219,10 +213,9 @@ describe('FilterModal', () => {
         expect(mockOnSelect).toHaveBeenCalledWith(Tab.BACKLOG);
     });
 
-    test('Selection of the Backlog Button when dev is true', () => {
+    test('Selection of the Backlog Button', () => {
         render(
-            <FilterModal
-                dev={true}
+            <FilterDropdown
                 tabs={[Tab.BACKLOG, Tab.DONE]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.BACKLOG}
