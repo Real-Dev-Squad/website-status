@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Options from '@/components/tasks/TaskSearchDev/Suggestion/Options';
+import Options from '@/components/tasks/TaskSearch/Suggestion/Options';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 
 describe('Option component', () => {
