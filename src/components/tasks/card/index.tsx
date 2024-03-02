@@ -34,7 +34,7 @@ import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import useUserData from '@/hooks/useUserData';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
-import ProgressContainer from './progressContainer';
+import ProgressIndicator from './progressContainer/ProgressIndicator';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
@@ -531,7 +531,12 @@ const Card: FC<CardProps> = ({
 
                 {/* progress bar */}
                 <div className={styles.progressContainer}>
-                    <ProgressContainer content={content} />
+                    <ProgressIndicator
+                        percentCompleted={content.percentCompleted}
+                        startedOn={content.startedOn}
+                        endsOn={content.endsOn?.toString()}
+                    ></ProgressIndicator>
+                    <div>{content.percentCompleted}%</div>
                 </div>
             </div>
             <div className={styles.taskStatusAndDateContainer}>
