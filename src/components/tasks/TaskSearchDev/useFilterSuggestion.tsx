@@ -30,16 +30,29 @@ export const useFilterSuggestion = ({
             skip: defferedUserInput.length < 3,
         }
     );
-    const assigneeSuggestions =
-        searchedUsers?.users?.map((user) => ({
-            assignee: user.username || user.github_display_name,
-        })) || [];
+
     const filterSuggestions = [
-        ...assigneeSuggestions,
-        ...getFilterSuggestions(),
+        ...getLocalSuggestions(),
+        ...getAssigneeSuggestions(),
     ];
 
-    function getFilterSuggestions() {
+    function getAssigneeSuggestions() {
+        const result =
+            searchedUsers?.users
+                ?.filter(
+                    (user) =>
+                        !selectedFilters.some(
+                            (selected) => selected.assignee === user.username
+                        )
+                )
+                .map((user) => ({
+                    assignee: user.username || user.github_display_name,
+                })) || [];
+
+        return result;
+    }
+
+    function getLocalSuggestions() {
         let userInput;
         if (
             onEditSelectedFilterIndex === false &&
