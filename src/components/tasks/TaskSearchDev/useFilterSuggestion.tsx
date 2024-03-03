@@ -22,12 +22,14 @@ export const useFilterSuggestion = ({
     activeFilterSuggestionDropdownIndex,
     setActiveFilterSuggestionDropdownIndex,
 }: Props) => {
+    const { key: typedKey, value: typedValue } = getUserInput();
     const { data: searchedUsers } = useGetUsersByUsernameQuery(
         {
-            searchString: defferedUserInput,
+            searchString: typedValue,
         },
         {
-            skip: defferedUserInput.length < 3,
+            // skip if typed key is not ['', 'assignee'] or if typed value is less than 3
+            skip: typedValue.length < 3 || !['', 'assignee'].includes(typedKey),
         }
     );
 
@@ -35,6 +37,47 @@ export const useFilterSuggestion = ({
         ...getLocalSuggestions(),
         ...getAssigneeSuggestions(),
     ];
+
+    function getUserInput() {
+        let userInput;
+        if (
+            onEditSelectedFilterIndex === false &&
+            typedInput === defferedUserInput
+        ) {
+            userInput = defferedUserInput;
+        } else if (
+            onEditSelectedFilterIndex !== false &&
+            onEditSelectedFilterValue === defferedPillValue
+        ) {
+            userInput = defferedPillValue;
+        } else {
+            return {
+                key: '',
+                value: '',
+            };
+        }
+
+        userInput = userInput.trimStart();
+        let key = '';
+
+        if (userInput.includes(':')) {
+            const [potentialKey, ...values] = userInput.split(':');
+            if (potentialKey.length > 0) {
+                key = potentialKey.trim();
+                userInput = values.join(':').trimStart();
+            }
+
+            return {
+                key,
+                value: userInput,
+            };
+        }
+
+        return {
+            key: '',
+            value: userInput,
+        };
+    }
 
     function getAssigneeSuggestions() {
         const result =
@@ -53,36 +96,11 @@ export const useFilterSuggestion = ({
     }
 
     function getLocalSuggestions() {
-        let userInput;
-        if (
-            onEditSelectedFilterIndex === false &&
-            typedInput === defferedUserInput
-        ) {
-            userInput = defferedUserInput;
-        } else if (
-            onEditSelectedFilterIndex !== false &&
-            onEditSelectedFilterValue === defferedPillValue
-        ) {
-            userInput = defferedPillValue;
-        } else {
-            return [];
-        }
-
-        userInput = userInput.trimStart();
-        let key = '';
-
-        if (userInput.includes(':')) {
-            const [potentialKey, ...values] = userInput.split(':');
-            if (potentialKey.length > 0) {
-                key = potentialKey.trim();
-                userInput = values.join(':').trimStart();
-            }
-        }
-        if (userInput.length > 2) {
+        if (typedValue.length > 2) {
             const result = generateSuggestions(
-                userInput,
+                typedValue,
                 selectedFilters,
-                key,
+                typedKey,
                 onEditSelectedFilterIndex
             );
 
