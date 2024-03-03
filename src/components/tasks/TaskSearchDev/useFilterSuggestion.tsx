@@ -23,7 +23,7 @@ export const useFilterSuggestion = ({
     setActiveFilterSuggestionDropdownIndex,
 }: Props) => {
     const { key: typedKey, value: typedValue } = getUserInput();
-    const { data: searchedUsers } = useGetUsersByUsernameQuery(
+    const { data: userSearchResponse } = useGetUsersByUsernameQuery(
         {
             searchString: typedValue,
         },
@@ -80,18 +80,25 @@ export const useFilterSuggestion = ({
     }
 
     function getAssigneeSuggestions() {
-        const result =
-            searchedUsers?.users
-                ?.filter(
-                    (user) =>
-                        !selectedFilters.some(
-                            (selected) => selected.assignee === user.username
-                        )
-                )
-                .map((user) => ({
-                    assignee: user.username || user.github_display_name,
-                })) || [];
+        const serializedUserSuggestion =
+            userSearchResponse?.users?.map((user) => ({
+                assignee: user.username || user.github_display_name,
+            })) || [];
 
+        function removeSelectedUsersFromSuggestions(
+            suggestions: { assignee: string }[]
+        ) {
+            return suggestions.filter((suggestion) => {
+                // Return false if the suggestion is in selectedFilters
+                return !selectedFilters.some(
+                    (filter) => filter.assignee === suggestion.assignee
+                );
+            });
+        }
+
+        const result = removeSelectedUsersFromSuggestions(
+            serializedUserSuggestion
+        );
         return result;
     }
 
