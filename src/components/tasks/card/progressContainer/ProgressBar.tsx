@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { useRouter } from 'next/router';
 import { ProgressBarProps } from '@/interfaces/task.type';
 import ProgressSlider from './ProgressSlider';
 import ProgressIndicator from './ProgressIndicator';
@@ -14,9 +13,7 @@ const Progressbar: FC<ProgressBarProps> = ({
     endsOn,
     isLoading,
 }) => {
-    const router = useRouter();
-    const { dev } = router.query;
-    if (progress && dev === 'true') {
+    if (progress) {
         return (
             <>
                 <ProgressSlider

@@ -335,13 +335,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
-                                    <DevFeature>
-                                        {isUserAuthorized && (
-                                            <ProgressContainer
-                                                content={taskDetailsData}
-                                            />
-                                        )}
-                                    </DevFeature>
+                                    <ProgressContainer
+                                        content={taskDetailsData}
+                                    />
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />

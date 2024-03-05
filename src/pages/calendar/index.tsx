@@ -83,7 +83,7 @@ const UserStatusCalendar: FC = () => {
                     loading={loading}
                 />
                 {selectedUser && (
-                    <div className="calendar">
+                    <div className="calendar" data-testid="react-calendar">
                         <Calendar
                             onChange={onDateChange as any}
                             className="calendar-div"

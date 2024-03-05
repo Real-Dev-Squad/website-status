@@ -40,31 +40,17 @@ export default function generateSuggestions(
 
     for (const field of SEARCH_OPTIONS) {
         const includeFieldInSuggestion = typedKey ? typedKey === field : true; // True, if typedKey matches field, if present, else True all the time
-        const matchedOptions = updatedOptions.find((option) => {
-            if (field === 'assignee') {
-                return option['assignee'] === userInput; // If assignee is the key, check for its value, as assignee can be multiple
-            } else {
-                return option[field]; // Otherwise check if the field is present
-            }
-        });
-        if (matchedOptions || !includeFieldInSuggestion) {
-            continue;
-        } else {
-            if (field === 'title') {
-                const value = {
-                    [field]: typedValue.trim(),
-                };
-                suggestions.push(value);
-            } else if (field === 'assignee') {
-                const value = {
-                    [field]: typedValue.trim(),
-                };
-                value[field] = value[field].replace(/ /g, '-').toLowerCase();
-                suggestions.push(value);
-            } else if (field === 'status') {
-                const result = matchStatus(typedValue);
-                if (result) suggestions = [...suggestions, ...result];
-            }
+        const matchedOptions = updatedOptions.find((option) => option[field]); // Otherwise check if the field is present
+        if (matchedOptions || !includeFieldInSuggestion) continue;
+
+        if (field === 'title') {
+            const value = {
+                [field]: typedValue.trim(),
+            };
+            suggestions.push(value);
+        } else if (field === 'status') {
+            const result = matchStatus(typedValue);
+            if (result) suggestions = [...suggestions, ...result];
         }
     }
     return suggestions;
