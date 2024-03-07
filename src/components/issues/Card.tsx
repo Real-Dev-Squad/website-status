@@ -15,6 +15,7 @@ import { TaskData, TaskRequestData } from '@/components/issues/constants';
 import { DEFAULT_TASK_PRIORITY } from '@/constants/constants';
 import TaskManagementModal from './TaskManagementModal';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
+import { isMarkDownInTCREnabled } from '@/constants/FeatureFlags';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
@@ -105,7 +106,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
             description: data.description,
-            markdown_enabled: true,
+            markdownEnabled: isMarkDownInTCREnabled,
         };
         if (!requestData.description) delete requestData.description;
         try {
