@@ -105,6 +105,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
             description: data.description,
+            markdown_enabled: true,
         };
         if (!requestData.description) delete requestData.description;
         try {

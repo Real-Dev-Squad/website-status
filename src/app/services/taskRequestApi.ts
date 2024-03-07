@@ -9,6 +9,7 @@ type AddOrUpdateMutationQuery = {
     description: string | undefined;
     proposedStartDate: number | string;
     proposedDeadline: number | string;
+    markdown_enabled: boolean;
 };
 
 type AddOrUpdateMutationQueryRes = {

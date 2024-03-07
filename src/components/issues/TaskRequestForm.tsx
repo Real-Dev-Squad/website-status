@@ -1,10 +1,12 @@
-import { FC, MouseEvent, useReducer, useState } from 'react';
+import { ChangeEvent, FC, MouseEvent, useReducer, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
 import { reducerAction } from '@/types/ProgressUpdates';
 import { Loader } from '../tasks/card/Loader';
 import { getDateRelativeToToday } from '@/utils/time';
 import Image from 'next/image';
 import { TASK_REQUESTS_DETAILS_URL } from '@/constants/url';
+import MarkDownEditor from '@/components/MarkDownEditor/MarkDownEditor';
+import { isMarkDownInTCREnabled } from '@/constants/FeatureFlags';
 
 type ActionFormReducer = {
     startedOn: number | string;
@@ -104,6 +106,13 @@ const TaskRequestForm: FC<ActionFormProps> = ({
         setIsLoading(false);
     };
 
+    const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        dispatch({
+            type: 'description',
+            value: e.target.value,
+        });
+    };
+
     if (requestId) {
         return <TaskRequestSuccessMessage requestId={requestId} />;
     }
@@ -161,18 +170,26 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                     >
                         Description:
                     </label>
-                    <textarea
-                        name="description"
-                        id="description"
-                        placeholder="Why do you want this task?"
-                        className={`${styles.assign} ${styles.description_box}`}
-                        onChange={(e) =>
-                            dispatch({
-                                type: 'description',
-                                value: e.target.value,
-                            })
-                        }
-                    />
+                    {isMarkDownInTCREnabled ? (
+                        <MarkDownEditor
+                            onChange={onChange}
+                            editorClassName={`${styles.assign} ${styles.description_box}`}
+                            previewClassName={`${styles.description_box_markdown}`}
+                        />
+                    ) : (
+                        <textarea
+                            name="description"
+                            id="description"
+                            placeholder="Why do you want this task?"
+                            className={`${styles.assign} ${styles.description_box}`}
+                            onChange={(e) =>
+                                dispatch({
+                                    type: 'description',
+                                    value: e.target.value,
+                                })
+                            }
+                        />
+                    )}
                 </div>
             </div>
             {isLoading && <Loader />}
