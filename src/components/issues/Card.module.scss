@@ -125,11 +125,13 @@
     padding: 0.625rem;
     border-width: 1px;
     border: 1px solid $dark-blue-transparent;
+    width: 100%;
 }
 
 .description_box_markdown {
     background-color: $dark-blue-transparent;
     border-radius: 2px;
+    display: block;
     min-height: 5rem;
     height: 6rem;
     font: inherit;
@@ -141,8 +143,7 @@
     padding: 0.625rem;
     border-width: 1px;
     border: 1px solid $dark-blue-transparent;
-    overflow: auto;
-    width: 65%;
+    width: 100%;
     color: black;
     overflow: auto;
     h1 {
