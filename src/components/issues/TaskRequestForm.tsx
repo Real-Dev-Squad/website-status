@@ -173,6 +173,7 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                     {isMarkDownInTCREnabled ? (
                         <MarkDownEditor
                             onChange={onChange}
+                            buttonClassName={styles.card__top__button}
                             editorClassName={`${styles.assign} ${styles.description_box}`}
                             previewClassName={`${styles.description_box_markdown}`}
                         />

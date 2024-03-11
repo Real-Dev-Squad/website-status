@@ -6,6 +6,7 @@ interface MarkDownEditorProps {
     onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     editorClassName?: string;
     previewClassName?: string;
+    buttonClassName?: string;
 }
 
 // This is a markdown editor with preview functionality
@@ -13,6 +14,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
     onChange,
     editorClassName,
     previewClassName,
+    buttonClassName,
 }) => {
     const [markdown, setMarkdown] = useState('');
     const [mode, setMode] = useState<'description' | 'preview'>('description');
@@ -32,7 +34,11 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
     return (
         <div className="markdown-editor">
             <div className="pane-tabs">
-                <button type="button" onClick={() => handleClick()}>
+                <button
+                    className={buttonClassName ?? ''}
+                    type="button"
+                    onClick={() => handleClick()}
+                >
                     {getActivePaneLabel()}
                 </button>
             </div>
@@ -43,7 +49,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
                             name="description"
                             id="description"
                             placeholder="Why do you want this task?"
-                            className={editorClassName}
+                            className={editorClassName ?? ''}
                             value={markdown}
                             onChange={(e) => {
                                 if (onChange) {
@@ -56,7 +62,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
                 )}
                 {mode === 'preview' && (
                     <div>
-                        <Markdown className={previewClassName}>
+                        <Markdown className={previewClassName ?? ''}>
                             {markdown}
                         </Markdown>
                     </div>
@@ -70,6 +76,7 @@ MarkDownEditor.propTypes = {
     onChange: PropTypes.func,
     editorClassName: PropTypes.string,
     previewClassName: PropTypes.string,
+    buttonClassName: PropTypes.string,
 };
 
 export default MarkDownEditor;
