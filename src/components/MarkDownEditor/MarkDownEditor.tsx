@@ -26,7 +26,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
     };
 
     const getActivePaneLabel = () => {
-        return mode === 'preview' ? 'Description' : 'Preview';
+        return mode === 'preview' ? 'Edit' : 'Preview';
     };
 
     return (
