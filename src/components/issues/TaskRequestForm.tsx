@@ -6,7 +6,6 @@ import { getDateRelativeToToday } from '@/utils/time';
 import Image from 'next/image';
 import { TASK_REQUESTS_DETAILS_URL } from '@/constants/url';
 import MarkDownEditor from '@/components/MarkDownEditor/MarkDownEditor';
-import { isMarkDownInTCREnabled } from '@/constants/FeatureFlags';
 
 type ActionFormReducer = {
     startedOn: number | string;
@@ -18,6 +17,7 @@ type ActionFormProps = {
     requestId?: string;
     taskId?: string;
     createTaskRequest?: (data: ActionFormReducer) => Promise<void>;
+    isMarkDownInTCREnabled: boolean;
 };
 
 type TaskRequestSuccessMessage = {
@@ -95,6 +95,7 @@ const TaskRequestForm: FC<ActionFormProps> = ({
     requestId,
     createTaskRequest,
     taskId,
+    isMarkDownInTCREnabled,
 }) => {
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [isLoading, setIsLoading] = useState(false);

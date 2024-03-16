@@ -17,11 +17,13 @@ describe('TaskRequestForm Component', () => {
     const sevenDaysFromToday = `${futureYear}-${futureMonth}-${futureDay}`;
 
     test('renders markdown editor with feature flag on', () => {
-        jest.mock('@/constants/FeatureFlags', () => ({
-            isMarkDownInTCREnabled: true,
-        }));
         const createTaskRequestMock = jest.fn();
-        render(<TaskRequestForm createTaskRequest={createTaskRequestMock} />);
+        render(
+            <TaskRequestForm
+                createTaskRequest={createTaskRequestMock}
+                isMarkDownInTCREnabled={true}
+            />
+        );
         const previewButton = screen.getByRole('button', {
             name: /Preview/i,
         });

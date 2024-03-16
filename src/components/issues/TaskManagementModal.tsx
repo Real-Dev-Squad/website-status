@@ -6,6 +6,7 @@ import TaskRequestForm from './TaskRequestForm';
 import ActionForm from './ActionForm';
 import { TaskData, TaskRequestData } from '@/components/issues/constants';
 import Image from 'next/image';
+import { isMarkDownInTCREnabled } from '@/constants/FeatureFlags';
 
 type TaskManagementProps = {
     isUserAuthorized?: boolean;
@@ -90,6 +91,7 @@ const TaskManagementModal: FC<TaskManagementProps> = ({
                         requestId={requestId}
                         taskId={taskId}
                         createTaskRequest={handleCreateTaskRequest}
+                        isMarkDownInTCREnabled={isMarkDownInTCREnabled}
                     />
                 )}
                 {selectedTab === REQUEST_TABS.TASK_CREATION && (
