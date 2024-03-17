@@ -16,6 +16,33 @@ describe('TaskRequestForm Component', () => {
     const futureDay = date.getDate().toString().padStart(2, '0');
     const sevenDaysFromToday = `${futureYear}-${futureMonth}-${futureDay}`;
 
+    test('renders markdown editor with feature flag on', () => {
+        const createTaskRequestMock = jest.fn();
+        render(
+            <TaskRequestForm
+                createTaskRequest={createTaskRequestMock}
+                isMarkDownInTCREnabled={true}
+            />
+        );
+        const previewButton = screen.getByRole('button', {
+            name: /Preview/i,
+        });
+        expect(previewButton).toBeInTheDocument();
+        fireEvent.click(previewButton);
+        const editButton = screen.getByRole('button', {
+            name: /Edit/i,
+        });
+        expect(editButton).toBeInTheDocument();
+        fireEvent.click(previewButton);
+        const descriptionTextarea = screen.getByLabelText(
+            /Description:/i
+        ) as HTMLTextAreaElement;
+        fireEvent.change(descriptionTextarea, {
+            target: { value: 'Test description' },
+        });
+        expect(descriptionTextarea.value).toBe('Test description');
+    });
+
     test('renders form with default values', () => {
         const createTaskRequestMock = jest.fn();
         render(<TaskRequestForm createTaskRequest={createTaskRequestMock} />);
