@@ -17,7 +17,7 @@ type ActionFormProps = {
     requestId?: string;
     taskId?: string;
     createTaskRequest?: (data: ActionFormReducer) => Promise<void>;
-    isMarkDownInTCREnabled: boolean;
+    isMarkDownInTCREnabled?: boolean;
 };
 
 type TaskRequestSuccessMessage = {

@@ -33,6 +33,14 @@ describe('TaskRequestForm Component', () => {
             name: /Edit/i,
         });
         expect(editButton).toBeInTheDocument();
+        fireEvent.click(previewButton);
+        const descriptionTextarea = screen.getByLabelText(
+            /Description:/i
+        ) as HTMLTextAreaElement;
+        fireEvent.change(descriptionTextarea, {
+            target: { value: 'Test description' },
+        });
+        expect(descriptionTextarea.value).toBe('Test description');
     });
 
     test('renders form with default values', () => {
