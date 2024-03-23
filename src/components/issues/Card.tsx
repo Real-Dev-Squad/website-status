@@ -15,10 +15,11 @@ import { TaskData, TaskRequestData } from '@/components/issues/constants';
 import { DEFAULT_TASK_PRIORITY } from '@/constants/constants';
 import TaskManagementModal from './TaskManagementModal';
 import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
-import { isMarkDownInTCREnabled } from '@/constants/FeatureFlags';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
+    const router = useRouter();
+    const { dev } = router.query;
     const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
@@ -106,7 +107,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
             description: data.description,
-            markdownEnabled: isMarkDownInTCREnabled,
+            markdownEnabled: dev === 'true',
         };
         if (!requestData.description) delete requestData.description;
         try {
