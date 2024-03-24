@@ -1,6 +1,6 @@
-import Markdown from 'markdown-to-jsx';
 import PropTypes from 'prop-types';
 import { ChangeEvent, useState } from 'react';
+import Markdown from 'markdown-to-jsx';
 
 interface MarkDownEditorProps {
     onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -18,7 +18,6 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
 }) => {
     const [markdown, setMarkdown] = useState('');
     const [mode, setMode] = useState<'description' | 'preview'>('description');
-
     const handleClick = () => {
         if (mode == 'preview') {
             setMode('description');
@@ -61,10 +60,8 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
                     </div>
                 )}
                 {mode === 'preview' && (
-                    <div>
-                        <Markdown className={previewClassName ?? ''}>
-                            {markdown}
-                        </Markdown>
+                    <div className={previewClassName ?? ''}>
+                        <Markdown>{markdown}</Markdown>
                     </div>
                 )}
             </div>
