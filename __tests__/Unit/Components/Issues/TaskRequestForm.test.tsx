@@ -16,7 +16,7 @@ describe('TaskRequestForm Component', () => {
     const futureDay = date.getDate().toString().padStart(2, '0');
     const sevenDaysFromToday = `${futureYear}-${futureMonth}-${futureDay}`;
 
-    test('renders markdown editor with feature flag on', () => {
+    test('renders markdown editor with feature flag on', async () => {
         const createTaskRequestMock = jest.fn();
         render(
             <TaskRequestForm
@@ -45,6 +45,25 @@ describe('TaskRequestForm Component', () => {
         const headingElement = screen.getByRole('heading', { level: 2 });
         expect(headingElement).toBeInTheDocument();
         expect(headingElement).toHaveTextContent('Heading');
+        const submitButton = screen.getByRole('button', {
+            name: /Create Request/i,
+        });
+        const startDateInput = screen.getByLabelText(
+            /Start date:/i
+        ) as HTMLInputElement;
+        const endDateInput = screen.getByLabelText(
+            /End date:/i
+        ) as HTMLInputElement;
+        fireEvent.change(startDateInput, { target: { value: '2023-10-17' } });
+        fireEvent.change(endDateInput, { target: { value: '2023-10-24' } });
+        fireEvent.click(submitButton);
+        await waitFor(() => {
+            expect(createTaskRequestMock).toHaveBeenCalledWith({
+                description: '## Heading',
+                endsOn: 1698105600000,
+                startedOn: 1697500800000,
+            });
+        });
     });
 
     test('renders form with default values', () => {
