@@ -38,9 +38,13 @@ describe('TaskRequestForm Component', () => {
             /Description:/i
         ) as HTMLTextAreaElement;
         fireEvent.change(descriptionTextarea, {
-            target: { value: 'Test description' },
+            target: { value: '## Heading' },
         });
-        expect(descriptionTextarea.value).toBe('Test description');
+        expect(descriptionTextarea.value).toBe('## Heading');
+        fireEvent.click(previewButton);
+        const headingElement = screen.getByRole('heading', { level: 2 });
+        expect(headingElement).toBeInTheDocument();
+        expect(headingElement).toHaveTextContent('Heading');
     });
 
     test('renders form with default values', () => {
