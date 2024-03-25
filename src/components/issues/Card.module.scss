@@ -125,6 +125,55 @@
     padding: 0.625rem;
     border-width: 1px;
     border: 1px solid $dark-blue-transparent;
+    width: 100%;
+}
+
+.description_box_markdown {
+    background-color: $dark-blue-transparent;
+    border-radius: 2px;
+    display: block;
+    min-height: 5rem;
+    height: 6rem;
+    font: inherit;
+    font-size: 0.8rem;
+    border: none;
+    resize: none;
+    border-radius: 4px;
+    line-height: 1.25rem;
+    padding: 0.625rem;
+    border-width: 1px;
+    border: 1px solid $dark-blue-transparent;
+    width: 100%;
+    color: black;
+    overflow: auto;
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    img {
+        max-width: 100%;
+        border: 1px solid $grayish-brown;
+        border-radius: 0.5rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid $grayish-brown;
+        border-radius: 0.5rem;
+
+        th,
+        td {
+            border: 1px solid $grayish-brown;
+            padding: 0.5rem;
+        }
+    }
+
+    code,
+    pre {
+        font-family: consolas, monospace;
+        white-space: normal;
+    }
 }
 
 .description_box::placeholder {
