@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import styles from '@/components/issues/Card.module.scss';
 import { REQUEST_TABS } from './constants';
-import { useRouter } from 'next/router';
 import Modal from '../Modal';
 import TaskRequestForm from './TaskRequestForm';
 import ActionForm from './ActionForm';
@@ -33,8 +32,6 @@ const TaskManagementModal: FC<TaskManagementProps> = ({
     handleCreateTask,
     handleUpdateTask,
 }) => {
-    const router = useRouter();
-    const { dev } = router.query;
     const defaultTaskConversionTab = isUserAuthorized
         ? REQUEST_TABS.TASK_CREATION
         : REQUEST_TABS.CREATION_REQUEST;
@@ -93,7 +90,7 @@ const TaskManagementModal: FC<TaskManagementProps> = ({
                         requestId={requestId}
                         taskId={taskId}
                         createTaskRequest={handleCreateTaskRequest}
-                        isMarkDownInTCREnabled={dev === 'true'}
+                        isMarkDownInTCREnabled={true}
                     />
                 )}
                 {selectedTab === REQUEST_TABS.TASK_CREATION && (
