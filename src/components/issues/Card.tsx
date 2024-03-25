@@ -99,7 +99,17 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     };
 
     const handleCreateTaskRequest = async (data: TaskRequestData) => {
-        const requestData = {
+        interface RequestData {
+            externalIssueUrl: string;
+            externalIssueHtmlUrl: string;
+            userId: string | undefined;
+            requestType: string;
+            proposedStartDate: string | number;
+            proposedDeadline: string | number;
+            description: string | undefined;
+            markdownEnabled?: boolean; // Optional property
+        }
+        const requestData: RequestData = {
             externalIssueUrl: issue.url,
             externalIssueHtmlUrl: issue.html_url,
             userId: userData?.id,
@@ -107,8 +117,8 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
             description: data.description,
-            markdownEnabled: dev === 'true',
         };
+        if (dev === 'true') requestData.markdownEnabled = true;
         if (!requestData.description) delete requestData.description;
         try {
             const response = await addOrUpdateTaskRequest(requestData).unwrap();
