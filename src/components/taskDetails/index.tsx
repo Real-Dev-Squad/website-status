@@ -198,7 +198,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         isExtensionRequestPending?: boolean
     ) {
         return isExtensionRequestPending
-            ? `${TASK_EXTENSION_REQUEST_URL}?taskId=${taskId}`
+            ? `${TASK_EXTENSION_REQUEST_URL}&q=taskId%3A${taskId}%2Cstatus%3APENDING`
             : null;
     }
 
