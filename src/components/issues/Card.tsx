@@ -18,6 +18,8 @@ import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
+    const router = useRouter();
+    const { dev } = router.query;
     const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
@@ -97,7 +99,17 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     };
 
     const handleCreateTaskRequest = async (data: TaskRequestData) => {
-        const requestData = {
+        interface RequestData {
+            externalIssueUrl: string;
+            externalIssueHtmlUrl: string;
+            userId: string | undefined;
+            requestType: string;
+            proposedStartDate: string | number;
+            proposedDeadline: string | number;
+            description: string | undefined;
+            markdownEnabled?: boolean; // Optional property
+        }
+        const requestData: RequestData = {
             externalIssueUrl: issue.url,
             externalIssueHtmlUrl: issue.html_url,
             userId: userData?.id,
@@ -106,6 +118,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedDeadline: data.endsOn,
             description: data.description,
         };
+        if (dev === 'true') requestData.markdownEnabled = true;
         if (!requestData.description) delete requestData.description;
         try {
             const response = await addOrUpdateTaskRequest(requestData).unwrap();
