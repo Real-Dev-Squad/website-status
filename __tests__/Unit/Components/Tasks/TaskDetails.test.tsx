@@ -529,32 +529,6 @@ describe('Task details Edit mode ', () => {
         });
     });
 
-    test('Should set new status on click at any option', async () => {
-        server.use(...taskDetailsHandler);
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            { query: { dev: 'true' } }
-        );
-        await waitFor(() => {
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            fireEvent.click(editButton);
-        });
-        const opt = screen.getByRole('option', { name: /COMPLETED/i });
-        fireEvent.click(opt);
-
-        await waitFor(async () => {
-            const saveButton = await screen.findByRole('button', {
-                name: 'Save',
-            });
-            fireEvent.click(saveButton);
-        });
-        expect(screen.findByText(/COMPLETED/i)).not.toBeNull();
-
-        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
-    });
-
     test('Should render assignee dropdown', async () => {
         renderWithRouter(
             <Provider store={store()}>

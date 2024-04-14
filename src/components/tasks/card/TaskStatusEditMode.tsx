@@ -1,15 +1,18 @@
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
-import task, { CardTaskDetails } from '@/interfaces/task.type';
+import task, {
+    CardTaskDetails,
+    taskStatusUpdateHandleProp,
+} from '@/interfaces/task.type';
 import { useState } from 'react';
 import styles from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
+import TaskDropDown from '../TaskDropDown';
 
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
-    isDevMode: boolean;
+    isDevMode?: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -20,27 +23,27 @@ const TaskStatusEditMode = ({
     setEditedTaskDetails,
     isDevMode,
 }: Props) => {
-    const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) =>
-            !(isDevMode && key === 'COMPLETED') &&
-            !(!isDevMode && key === 'BACKLOG')
-    );
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
     const onChangeUpdateTaskStatus = ({
-        target: { value },
-    }: React.ChangeEvent<HTMLSelectElement>) => {
+        newStatus,
+        newProgress,
+    }: taskStatusUpdateHandleProp) => {
         setSaveStatus(PENDING);
+        const payload: { status: string; percentCompleted?: number } = {
+            status: newStatus,
+        };
+        if (newProgress !== undefined) {
+            payload.percentCompleted = newProgress;
+        }
         setEditedTaskDetails((prev: CardTaskDetails) => ({
             ...prev,
-            status: value,
+            ...payload,
         }));
         const response = updateTask({
             id: task.id,
-            task: {
-                status: value,
-            },
+            task: payload,
         });
 
         response
@@ -58,25 +61,14 @@ const TaskStatusEditMode = ({
             });
     };
 
-    // TODO: remove this after fixing the card beautify status
-    const defaultStatus = task.status.toUpperCase().split(' ').join('_');
-
     return (
         <div className={styles.taskSection}>
-            <label>
-                Status:
-                <select
-                    name="status"
-                    onChange={onChangeUpdateTaskStatus}
-                    defaultValue={defaultStatus}
-                >
-                    {taskStatus.map(([name, status]) => (
-                        <option key={status} value={status}>
-                            {beautifyStatus(name)}
-                        </option>
-                    ))}
-                </select>
-            </label>
+            <TaskDropDown
+                isDevMode={isDevMode}
+                oldStatus={task.status}
+                oldProgress={task.percentCompleted}
+                onChange={onChangeUpdateTaskStatus}
+            />
             <StatusIndicator status={saveStatus} />
         </div>
     );

@@ -151,3 +151,8 @@ export type CardTaskDetails = task & {
 
 export const depreciatedTaskStatus = ['AVAILABLE', 'COMPLETED'];
 export const newTaskStatus = ['UNASSIGNED', 'DONE'];
+
+export type taskStatusUpdateHandleProp = {
+    newStatus: string;
+    newProgress?: number;
+};
