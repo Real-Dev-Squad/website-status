@@ -50,9 +50,9 @@ const ProgressForm = ({ questions }: formProps) => {
         const data = {
             type: 'task',
             taskId: router.query.id,
-            completed: state.progress,
-            planned: state.plan,
-            blockers: state.blockers,
+            completed: state.progress.trim(),
+            planned: state.plan.trim(),
+            blockers: state.blockers.trim(),
         };
         saveProgress(data)
             .unwrap()
