@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { beautifyStatus } from './card/TaskStatusEditMode';
 
-import {
-    CHANGE_TO_0_PROGRESS,
-    CHANGE_TO_100_PROGRESS,
-} from '@/constants/constants';
+import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import TaskDropDownModel from './TaskDropDownModel';
 import { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 
@@ -81,12 +78,12 @@ export default function TaskDropDown({
             const msg = `The progress of current task is ${oldProgress}%. `;
             if (shouldTaskProgressBe100(ev.target.value)) {
                 setStatusAndProgress((prev) => ({ ...prev, newProgress: 100 }));
-                setMessage(msg + CHANGE_TO_100_PROGRESS);
+                setMessage(msg + MSG_ON_100_PROGRESS);
                 return;
             }
             if (shouldTaskProgressBe0(ev.target.value)) {
                 setStatusAndProgress((prev) => ({ ...prev, newProgress: 0 }));
-                setMessage(msg + CHANGE_TO_0_PROGRESS);
+                setMessage(msg + MSG_ON_0_PROGRESS);
                 return;
             }
         }

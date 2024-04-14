@@ -38,7 +38,7 @@ export const STATUSES = [
     'completed',
     'done',
 ];
-export const CHANGE_TO_100_PROGRESS =
+export const MSG_ON_100_PROGRESS =
     'Proceeding further will make task progress 100%.';
-export const CHANGE_TO_0_PROGRESS =
+export const MSG_ON_0_PROGRESS =
     'Proceeding further will make task progress 0%.';

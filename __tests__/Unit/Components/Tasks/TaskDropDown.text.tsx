@@ -1,9 +1,6 @@
 import TaskDropDown from '@/components/tasks/TaskDropDown';
 import TaskDropDownModel from '@/components/tasks/TaskDropDownModel';
-import {
-    CHANGE_TO_0_PROGRESS,
-    CHANGE_TO_100_PROGRESS,
-} from '@/constants/constants';
+import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { fireEvent, render, screen } from '@testing-library/react';
 
@@ -26,7 +23,7 @@ describe('TaskDropDown', () => {
             />
         );
 
-        const msg = `The progress of current task is ${oldProgress}%. ${CHANGE_TO_100_PROGRESS}`;
+        const msg = `The progress of current task is ${oldProgress}%. ${MSG_ON_100_PROGRESS}`;
         fireEvent.change(screen.getByTestId('task-status'), {
             target: { value: BACKEND_TASK_STATUS.NEEDS_REVIEW },
         });
@@ -48,7 +45,7 @@ describe('TaskDropDown', () => {
             />
         );
 
-        const msg = `The progress of current task is ${oldProgress}%. ${CHANGE_TO_0_PROGRESS}`;
+        const msg = `The progress of current task is ${oldProgress}%. ${MSG_ON_0_PROGRESS}`;
         fireEvent.change(screen.getByTestId('task-status'), {
             target: { value: BACKEND_TASK_STATUS.IN_PROGRESS },
         });
