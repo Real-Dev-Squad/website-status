@@ -6,7 +6,6 @@ import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
 import { TASKS_URL } from '../../constants/url';
 import useUserData from '@/hooks/useUserData';
-import { useRouter } from 'next/router';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 import { FEATURE } from '@/constants/task-type';
@@ -18,8 +17,6 @@ import { useAddOrUpdateMutation } from '@/app/services/taskRequestApi';
 const { SUCCESS, ERROR } = ToastTypes;
 
 const Card: FC<IssueCardProps> = ({ issue }) => {
-    const router = useRouter();
-    const { dev } = router.query;
     const date = new Date(issue.created_at).toDateString();
     const [taskExists, setTaskExists] = useState(issue.taskExists ?? false);
     const [isLoading, setIsLoading] = useState(false);
@@ -117,8 +114,8 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
             description: data.description,
+            markdownEnabled: true,
         };
-        if (dev === 'true') requestData.markdownEnabled = true;
         if (!requestData.description) delete requestData.description;
         try {
             const response = await addOrUpdateTaskRequest(requestData).unwrap();
