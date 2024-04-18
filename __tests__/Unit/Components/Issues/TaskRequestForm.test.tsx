@@ -16,14 +16,9 @@ describe('TaskRequestForm Component', () => {
     const futureDay = date.getDate().toString().padStart(2, '0');
     const sevenDaysFromToday = `${futureYear}-${futureMonth}-${futureDay}`;
 
-    test('renders markdown editor with feature flag on', async () => {
+    test('renders markdown editor', async () => {
         const createTaskRequestMock = jest.fn();
-        render(
-            <TaskRequestForm
-                createTaskRequest={createTaskRequestMock}
-                isMarkDownInTCREnabled={true}
-            />
-        );
+        render(<TaskRequestForm createTaskRequest={createTaskRequestMock} />);
         const previewButton = screen.getByRole('button', {
             name: /Preview/i,
         });
