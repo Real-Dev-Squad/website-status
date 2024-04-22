@@ -17,7 +17,6 @@ type ActionFormProps = {
     requestId?: string;
     taskId?: string;
     createTaskRequest?: (data: ActionFormReducer) => Promise<void>;
-    isMarkDownInTCREnabled?: boolean;
 };
 
 type TaskRequestSuccessMessage = {
@@ -95,7 +94,6 @@ const TaskRequestForm: FC<ActionFormProps> = ({
     requestId,
     createTaskRequest,
     taskId,
-    isMarkDownInTCREnabled,
 }) => {
     const [state, dispatch] = useReducer(reducer, initialState, undefined);
     const [isLoading, setIsLoading] = useState(false);
@@ -171,27 +169,12 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                     >
                         Description:
                     </label>
-                    {isMarkDownInTCREnabled ? (
-                        <MarkDownEditor
-                            onChange={onChange}
-                            buttonClassName={styles.card__top__button}
-                            editorClassName={`${styles.assign} ${styles.description_box}`}
-                            previewClassName={`${styles.description_box_markdown}`}
-                        />
-                    ) : (
-                        <textarea
-                            name="description"
-                            id="description"
-                            placeholder="Why do you want this task?"
-                            className={`${styles.assign} ${styles.description_box}`}
-                            onChange={(e) =>
-                                dispatch({
-                                    type: 'description',
-                                    value: e.target.value,
-                                })
-                            }
-                        />
-                    )}
+                    <MarkDownEditor
+                        onChange={onChange}
+                        buttonClassName={styles.card__top__button}
+                        editorClassName={`${styles.assign} ${styles.description_box}`}
+                        previewClassName={`${styles.description_box_markdown}`}
+                    />
                 </div>
             </div>
             {isLoading && <Loader />}
