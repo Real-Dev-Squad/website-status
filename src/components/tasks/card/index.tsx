@@ -21,6 +21,7 @@ import {
     DONE,
     BLOCKED,
     BACKLOG,
+    BACKEND_TASK_STATUS,
 } from '@/constants/task-status';
 import moment from 'moment';
 import { Loader } from './Loader';
@@ -530,14 +531,19 @@ const Card: FC<CardProps> = ({
                 )}
 
                 {/* progress bar */}
-                <div className={styles.progressContainer}>
-                    <ProgressIndicator
-                        percentCompleted={content.percentCompleted}
-                        startedOn={content.startedOn}
-                        endsOn={content.endsOn?.toString()}
-                    ></ProgressIndicator>
-                    <div>{content.percentCompleted}%</div>
-                </div>
+
+                {(cardDetails.status === BACKEND_TASK_STATUS.IN_PROGRESS ||
+                    !isDevMode) && (
+                    <div className={styles.progressContainer}>
+                        <ProgressIndicator
+                            percentCompleted={content.percentCompleted}
+                            startedOn={content.startedOn}
+                            endsOn={content.endsOn?.toString()}
+                        />
+
+                        <div>{content.percentCompleted}%</div>
+                    </div>
+                )}
             </div>
             <div className={styles.taskStatusAndDateContainer}>
                 <div className={styles.dateInfo}>

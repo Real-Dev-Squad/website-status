@@ -64,7 +64,8 @@ type Props = {
 };
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-
+    const { dev } = router.query;
+    const isDevMode = dev === 'true';
     const { isUserAuthorized } = useUserData();
 
     const [newEndOnDate, setNewEndOnDate] = useState('');
@@ -337,9 +338,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 ?.html_url
                                         }
                                     />
-                                    <ProgressContainer
-                                        content={taskDetailsData}
-                                    />
+                                    {(taskDetailsData?.status ===
+                                        BACKEND_TASK_STATUS.IN_PROGRESS ||
+                                        !isDevMode) && (
+                                        <ProgressContainer
+                                            content={taskDetailsData}
+                                        />
+                                    )}
                                 </div>
                             </TaskContainer>
                             <Progress taskProgress={taskProgress} />
