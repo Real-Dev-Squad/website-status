@@ -14,3 +14,9 @@ const TaskDetailsPage = () => {
     return <TaskDetails url={TASK_DETAILS_URL} taskID={id} />;
 };
 export default TaskDetailsPage;
+
+export function getServerSideProps(context: { params: string }) {
+    return {
+        props: { params: context.params },
+    };
+}
