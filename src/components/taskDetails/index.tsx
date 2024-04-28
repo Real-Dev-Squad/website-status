@@ -25,11 +25,10 @@ import Progress from '../ProgressCard';
 import ProgressContainer from '../tasks/card/progressContainer';
 import DevFeature from '../DevFeature';
 import Suggestions from '../tasks/SuggestionBox/Suggestions';
-import { BACKEND_TASK_STATUS } from '@/constants/task-status';
-import task from '@/interfaces/task.type';
+import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
-
-const taskStatus = Object.entries(BACKEND_TASK_STATUS);
+import TaskDropDown from '../tasks/TaskDropDown';
+import { beautifyStatus } from '../tasks/card/TaskStatusEditMode';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -105,12 +104,20 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         setShowSuggestion(false);
         setEditedTaskDetails((prev) => ({ ...prev, assignee: userName }));
     };
-    const handleTaskStatusUpdate = (
-        ev: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-        const newStatus: string = ev.target.value;
-
-        setEditedTaskDetails((prev) => ({ ...prev, status: newStatus }));
+    const handleTaskStatusUpdate = ({
+        newStatus,
+        newProgress,
+    }: taskStatusUpdateHandleProp) => {
+        const payload: { status: string; percentCompleted?: number } = {
+            status: newStatus,
+        };
+        if (newProgress !== undefined) {
+            payload.percentCompleted = newProgress;
+        }
+        setEditedTaskDetails((prev) => ({
+            ...prev,
+            ...payload,
+        }));
     };
 
     useEffect(() => {
@@ -301,34 +308,25 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                     <DevFeature>
                                         {isEditing && (
-                                            <label>
-                                                Status:
-                                                <select
-                                                    name="status"
-                                                    onChange={
-                                                        handleTaskStatusUpdate
-                                                    }
-                                                    value={
-                                                        editedTaskDetails?.status
-                                                    }
-                                                >
-                                                    {taskStatus.map(
-                                                        ([name, status]) => (
-                                                            <option
-                                                                key={status}
-                                                                value={status}
-                                                            >
-                                                                {name}
-                                                            </option>
-                                                        )
-                                                    )}
-                                                </select>
-                                            </label>
+                                            <TaskDropDown
+                                                isDevMode={true}
+                                                onChange={
+                                                    handleTaskStatusUpdate
+                                                }
+                                                oldStatus={
+                                                    taskDetailsData?.status
+                                                }
+                                                oldProgress={
+                                                    taskDetailsData?.percentCompleted
+                                                }
+                                            />
                                         )}
                                     </DevFeature>
                                     <Details
                                         detailType={'Status'}
-                                        value={taskDetailsData?.status}
+                                        value={beautifyStatus(
+                                            taskDetailsData?.status
+                                        )}
                                     />
                                     <Details
                                         detailType={'Link'}
@@ -339,6 +337,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                     <ProgressContainer
                                         content={taskDetailsData}
+                                        key={taskDetailsData?.percentCompleted}
                                     />
                                 </div>
                             </TaskContainer>
