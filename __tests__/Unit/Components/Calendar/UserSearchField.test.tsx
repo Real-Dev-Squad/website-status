@@ -193,6 +193,6 @@ describe('SearchField component', () => {
         await waitFor(() => expect(input).toHaveValue(''));
 
         const noSuggestions = screen.queryAllByRole('listitem');
-        expect(noSuggestions.length).toEqual(0);
+        expect(noSuggestions).toEqual([]);
     });
 });
