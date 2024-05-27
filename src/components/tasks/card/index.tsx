@@ -530,14 +530,18 @@ const Card: FC<CardProps> = ({
                 )}
 
                 {/* progress bar */}
-                <div className={styles.progressContainer}>
-                    <ProgressIndicator
-                        percentCompleted={editedTaskDetails.percentCompleted}
-                        startedOn={editedTaskDetails.startedOn}
-                        endsOn={editedTaskDetails.endsOn?.toString()}
-                    />
-                    <div>{editedTaskDetails.percentCompleted}%</div>
-                </div>
+                {content.status === 'IN_PROGRESS' && (
+                    <div className={styles.progressContainer}>
+                        <ProgressIndicator
+                            percentCompleted={
+                                editedTaskDetails.percentCompleted
+                            }
+                            startedOn={editedTaskDetails.startedOn}
+                            endsOn={editedTaskDetails.endsOn?.toString()}
+                        />
+                        <div>{editedTaskDetails.percentCompleted}%</div>
+                    </div>
+                )}
             </div>
             <div className={styles.taskStatusAndDateContainer}>
                 <div className={styles.dateInfo}>

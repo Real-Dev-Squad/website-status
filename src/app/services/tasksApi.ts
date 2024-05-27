@@ -20,6 +20,7 @@ export const tasksApi = api.injectEndpoints({
                 prevTasks,
                 assignee,
                 title,
+                dev,
             }) => {
                 const baseQuery = `/tasks?size=${size}&dev=true`;
 
@@ -35,7 +36,9 @@ export const tasksApi = api.injectEndpoints({
                 if (title) {
                     url += `&title=${title}`;
                 }
-
+                if (dev) {
+                    url += '&userFeatureFlag=true';
+                }
                 if (nextTasks) {
                     url = nextTasks;
                 }
