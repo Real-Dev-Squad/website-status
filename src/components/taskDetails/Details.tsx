@@ -3,7 +3,6 @@ import moment from 'moment';
 import Link from 'next/link';
 import { FaReceipt } from 'react-icons/fa6';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
-import { useRouter } from 'next/router';
 import setColor from './taskPriorityColors';
 import extractRepoName from '@/utils/extractRepoName';
 import styles from './task-details.module.scss';
@@ -15,8 +14,6 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
-    const router = useRouter();
-    const isDevMode = router.query.dev === 'true' ? true : false;
 
     const getRelativeTime = (timestamp: StringNumberOrUndefined): string => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
@@ -29,6 +26,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const isPastDate = (timestamp: StringNumberOrUndefined): boolean => {
         return timestamp ? moment(timestamp).isBefore(moment()) : false;
     };
+
     /**
      * Get human-readable time format from the provided timestamp.
      * @param {string | number | undefined} timestamp - The timestamp.
@@ -53,16 +51,14 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     const isTimeDetail =
         detailType === 'Started On' || detailType === 'Ends On';
 
-    const renderedValue = value ?? 'N/A';
-    const formattedDetailType = isDevMode
-        ? detailType === 'Started On'
+    const formattedDetailType =
+        detailType === 'Started On'
             ? 'Started'
             : detailType === 'Ends On'
             ? 'Ended'
-            : detailType
-        : detailType;
+            : detailType;
 
-    const shouldRenderTooltip = isDevMode && isTimeDetail;
+    const renderedValue = value ?? 'N/A';
 
     return (
         <div className={styles.detailsContainer}>
@@ -82,7 +78,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                     >
                         {isGitHubLink ? `${extractRepoName(value)}` : value}
                     </a>
-                ) : shouldRenderTooltip ? (
+                ) : isTimeDetail ? (
                     <Tooltip
                         content={getTooltipText(value)}
                         tooltipPosition={{ top: '-3.6rem', right: '-4.5rem' }}
