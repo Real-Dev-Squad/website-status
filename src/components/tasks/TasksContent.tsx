@@ -24,7 +24,6 @@ import {
 import { Select } from '../Select';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
-import TaskSearch from './TaskSearch/TaskSearch';
 import TaskSearchDev from './TaskSearchDev/TaskSearchDev';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
@@ -146,70 +145,14 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
 
     return (
         <div className={styles.tasksContainer}>
-            {dev ? (
-                <TaskSearchDev
-                    onFilterDropdownSelect={(selectedTab: Tab) =>
-                        searchNewTasks(selectedTab, queryAssignees, queryTitle)
-                    }
-                    filterDropdownActiveTab={selectedTab}
-                    inputValue={inputValue}
-                    onClickSearchButton={searchButtonHandler}
-                />
-            ) : (
-                <TaskSearch
-                    onSelect={(selectedTab: Tab) =>
-                        searchNewTasks(selectedTab, queryAssignees, queryTitle)
-                    }
-                    inputValue={inputValue}
-                    activeTab={selectedTab}
-                    onInputChange={(value) => searchInputHandler(value)}
-                    onClickSearchButton={searchButtonHandler}
-                />
-            )}
-            {dev !== true ? (
-                <>
-                    <div
-                        className={styles['status-tabs-container']}
-                        data-testid="status-tabs-container"
-                    >
-                        <TabSection
-                            dev={dev}
-                            onSelect={(status: Tab) =>
-                                searchNewTasks(
-                                    status,
-                                    queryAssignees,
-                                    queryTitle
-                                )
-                            }
-                            activeTab={selectedTab}
-                        />
-                    </div>
-                    <div
-                        className={styles['status-select-container']}
-                        data-testid="status-select-container"
-                    >
-                        <Select
-                            dev={dev}
-                            value={{
-                                label: getChangedStatusName(selectedTab),
-                                value: selectedTab,
-                            }}
-                            onChange={(selectedTaskStatus) => {
-                                if (selectedTaskStatus) {
-                                    searchNewTasks(
-                                        selectedTaskStatus.value as Tab,
-                                        queryAssignees,
-                                        queryTitle
-                                    );
-                                }
-                            }}
-                            options={taskSelectOptions}
-                        />
-                    </div>
-                </>
-            ) : (
-                <></>
-            )}
+            <TaskSearchDev
+                onFilterDropdownSelect={(selectedTab: Tab) =>
+                    searchNewTasks(selectedTab, queryAssignees, queryTitle)
+                }
+                filterDropdownActiveTab={selectedTab}
+                inputValue={inputValue}
+                onClickSearchButton={searchButtonHandler}
+            />
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />
