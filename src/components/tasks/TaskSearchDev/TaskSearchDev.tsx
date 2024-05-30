@@ -190,6 +190,8 @@ const TaskSearchDev = ({
     const onSuggestionSelected = (
         idx = activeFilterSuggestionDropdownIndex
     ) => {
+        if (!filterSuggestions?.[idx]) return;
+
         if (onEditSelectedFilterIndex === false) {
             const optionDetails = filterSuggestions[idx];
             if (optionDetails) {
