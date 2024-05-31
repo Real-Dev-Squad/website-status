@@ -21,7 +21,7 @@ import {
 } from '@/utils/taskQueryParams';
 
 import useIntersection from '@/hooks/useIntersection';
-import TaskSearchDev from './TaskSearchDev/TaskSearchDev';
+import TaskSearch from './TaskSearch/TaskSearch';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
@@ -133,7 +133,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
 
     return (
         <div className={styles.tasksContainer}>
-            <TaskSearchDev
+            <TaskSearch
                 onFilterDropdownSelect={(selectedTab: Tab) =>
                     searchNewTasks(selectedTab, queryAssignees, queryTitle)
                 }
