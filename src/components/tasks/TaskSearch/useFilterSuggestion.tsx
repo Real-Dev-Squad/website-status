@@ -5,7 +5,7 @@ import generateSuggestions from '@/utils/generateSuggestions';
 type Props = {
     typedInput: string;
     defferedUserInput: string;
-    onEditSelectedFilterIndex: false | number;
+    onEditSelectedFilterIndex: number;
     onEditSelectedFilterValue: string;
     defferedPillValue: string;
     selectedFilters: Array<TaskSearchOption>;
@@ -41,12 +41,12 @@ export const useFilterSuggestion = ({
     function getUserInput() {
         let userInput;
         if (
-            onEditSelectedFilterIndex === false &&
+            onEditSelectedFilterIndex === -1 &&
             typedInput === defferedUserInput
         ) {
             userInput = defferedUserInput;
         } else if (
-            onEditSelectedFilterIndex !== false &&
+            onEditSelectedFilterIndex !== -1 &&
             onEditSelectedFilterValue === defferedPillValue
         ) {
             userInput = defferedPillValue;

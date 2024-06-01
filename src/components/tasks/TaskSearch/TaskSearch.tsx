@@ -5,7 +5,7 @@ import FilterDropdown from './FilterDropdown';
 import useDebounce from '@/hooks/useDebounce';
 import { TaskSearchOption } from '@/interfaces/searchOptions.type';
 import Options from './Suggestion/Options';
-import RenderPills from './Suggestion/Pill';
+import Pills from './Suggestion/Pill';
 import convertStringToOptions from '@/utils/convertStringToOptions';
 import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
 import findCoordinates from '@/helperFunctions/findCoordinates';
@@ -48,7 +48,7 @@ const TaskSearch = ({
     const [onEditSelectedFilterValue, setOnEditSelectedFilterValue] =
         useState<string>('');
     const [onEditSelectedFilterIndex, setOnEditSelectedFilterIndex] =
-        useState<false | number>(false);
+        useState<number>(-1);
     const [onRemoveSelectedFilterIndex, setOnRemoveSelectedFilterIndex] =
         useState(-1);
     const defferedPillValue = useDebounce(onEditSelectedFilterValue, 300);
@@ -61,7 +61,7 @@ const TaskSearch = ({
         useState<SuggestionCoordinates>(initialSuggestionCoordinates);
 
     const searchButtonHandler = () => {
-        if (onEditSelectedFilterIndex === false) {
+        if (onEditSelectedFilterIndex === -1) {
             onClickSearchButton(convertSearchOptionsToQuery(selectedFilters));
         }
     };
@@ -92,17 +92,17 @@ const TaskSearch = ({
         switch (event.key) {
             case 'Backspace':
                 if (
-                    onEditSelectedFilterIndex !== false &&
+                    onEditSelectedFilterIndex !== -1 &&
                     onEditSelectedFilterValue.length === 1
                 ) {
                     const newOptions = selectedFilters.filter(
                         (_, idx) => idx !== onEditSelectedFilterIndex
                     );
                     setSelectedFilters(newOptions);
-                    setOnEditSelectedFilterIndex(false);
+                    setOnEditSelectedFilterIndex(-1);
                 } else if (
                     typedInput.length === 0 &&
-                    onEditSelectedFilterIndex === false
+                    onEditSelectedFilterIndex === -1
                 ) {
                     if (onRemoveSelectedFilterIndex === -1) {
                         setOnRemoveSelectedFilterIndex(
@@ -113,7 +113,7 @@ const TaskSearch = ({
                             (_, idx) => idx !== onRemoveSelectedFilterIndex
                         );
                         setSelectedFilters(newOptions);
-                        setOnEditSelectedFilterIndex(false);
+                        setOnEditSelectedFilterIndex(-1);
                         onClickSearchButton(
                             convertSearchOptionsToQuery(newOptions)
                         );
@@ -146,7 +146,7 @@ const TaskSearch = ({
                 if (activeFilterSuggestionDropdownIndex > -1) {
                     onSuggestionSelected();
                 } else if (
-                    onEditSelectedFilterIndex !== false &&
+                    onEditSelectedFilterIndex !== -1 &&
                     onEditSelectedFilterValue.length > 0 &&
                     activeFilterSuggestionDropdownIndex !== -1
                 ) {
@@ -161,8 +161,8 @@ const TaskSearch = ({
                 break;
             }
             case 'Escape':
-                onEditSelectedFilterIndex !== false &&
-                    setOnEditSelectedFilterIndex(false);
+                onEditSelectedFilterIndex !== -1 &&
+                    setOnEditSelectedFilterIndex(-1);
                 break;
             default:
                 break;
@@ -192,7 +192,7 @@ const TaskSearch = ({
     ) => {
         if (!filterSuggestions?.[idx]) return;
 
-        if (onEditSelectedFilterIndex === false) {
+        if (onEditSelectedFilterIndex === -1) {
             const optionDetails = filterSuggestions[idx];
             if (optionDetails) {
                 setSelectedFilters([...selectedFilters, optionDetails]);
@@ -208,7 +208,7 @@ const TaskSearch = ({
             const newOptions = selectedFilters;
             newOptions[onEditSelectedFilterIndex] = filterSuggestions[idx];
             setSelectedFilters(newOptions);
-            setOnEditSelectedFilterIndex(false);
+            setOnEditSelectedFilterIndex(-1);
             onClickSearchButton(convertSearchOptionsToQuery(newOptions));
         }
         setActiveFilterSuggestionDropdownIndex(-1);
@@ -220,9 +220,9 @@ const TaskSearch = ({
         if (
             target &&
             target.className.includes('pill-input-wrapper') &&
-            onEditSelectedFilterIndex !== false
+            onEditSelectedFilterIndex !== -1
         ) {
-            setOnEditSelectedFilterIndex(false);
+            setOnEditSelectedFilterIndex(-1);
         } else if (target && target.className.includes('pill-input-wrapper')) {
             setOnEditSelectedFilterValue('');
             setOnRemoveSelectedFilterIndex(-1);
@@ -230,7 +230,7 @@ const TaskSearch = ({
         }
     };
     useEffect(() => {
-        if (onEditSelectedFilterIndex === false) {
+        if (onEditSelectedFilterIndex === -1) {
             toggleInputFocus();
             setOnRemoveSelectedFilterIndex(-1);
             setOnEditSelectedFilterValue('');
@@ -244,6 +244,7 @@ const TaskSearch = ({
 
     useEffect(() => {
         window.addEventListener('resize', onResizeHandler);
+        return () => window.removeEventListener('resize', onResizeHandler);
     }, []);
     return (
         <div className={styles['task-search-container']}>
@@ -268,7 +269,7 @@ const TaskSearch = ({
                         onClick={handleClickOutside}
                     >
                         {selectedFilters.map((value, key) => (
-                            <RenderPills
+                            <Pills
                                 idx={key}
                                 key={key}
                                 newPillValue={onEditSelectedFilterValue}
@@ -282,7 +283,7 @@ const TaskSearch = ({
                             />
                         ))}
 
-                        {onEditSelectedFilterIndex === false && (
+                        {onEditSelectedFilterIndex === -1 && (
                             <div
                                 style={{
                                     width: `${typedInput.length * 1.3}%`,
@@ -321,7 +322,7 @@ const TaskSearch = ({
 
                     {filterSuggestions.length > 0 &&
                         (typedInput ||
-                            (onEditSelectedFilterIndex !== false &&
+                            (onEditSelectedFilterIndex !== -1 &&
                                 onEditSelectedFilterValue)) && (
                             <Options
                                 style={suggestionCoordinates}
