@@ -177,7 +177,12 @@ describe('TaskStatusEditMode', () => {
 
 describe('test beautifyStatus function', () => {
     it('test usage', () => {
-        const output = beautifyStatus('I_N');
-        expect(output).toEqual('I N');
+        const output = beautifyStatus('IN_PROGRESS');
+        expect(output).toEqual('In Progress');
+    });
+
+    it('returns DONE when completed is passed and dev mode is one', () => {
+        const res = beautifyStatus('COMPLETED', true);
+        expect(res).toEqual('Done');
     });
 });

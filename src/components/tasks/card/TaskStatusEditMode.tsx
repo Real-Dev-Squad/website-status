@@ -8,6 +8,7 @@ import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
+import { TASK_STATUS_MAPING } from '@/constants/constants';
 
 type Props = {
     task: task;
@@ -16,8 +17,18 @@ type Props = {
 };
 
 // TODO: remove this after fixing the card beautify status
-const beautifyStatus = (status: string) => status.split('_').join(' ');
+const beautifyStatus = (status: string, isDevMode?: boolean) => {
+    let beautifiedStatus = status;
+    if (beautifiedStatus === 'COMPLETED' && isDevMode) {
+        beautifiedStatus = 'DONE';
+    }
 
+    return (
+        TASK_STATUS_MAPING[
+            beautifiedStatus as keyof typeof TASK_STATUS_MAPING
+        ] || status
+    );
+};
 const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,

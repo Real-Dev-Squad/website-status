@@ -120,6 +120,24 @@ describe('TaskDropDown', () => {
         const msgTag = screen.queryByTestId('msg');
         expect(msgTag).toBeNull();
     });
+    it('should show text Done as selected option when a task with completed status is passed down.', () => {
+        const oldProgress = 100;
+        const oldStatus = BACKEND_TASK_STATUS.COMPLETED;
+
+        render(
+            <TaskDropDown
+                isDevMode={true}
+                oldProgress={oldProgress}
+                oldStatus={oldStatus}
+                onChange={onChange}
+            />
+        );
+        const option: HTMLOptionElement = screen.getByTestId(
+            'task-status-DONE'
+        ) as HTMLOptionElement;
+        expect(option.selected).toBeTruthy();
+    });
+
     it('should not show any model info on change of status from in progress to blocked', () => {
         const oldProgress = 70;
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;

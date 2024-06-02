@@ -63,6 +63,8 @@ type Props = {
 };
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { dev } = router.query;
+    const isDevMode = dev === 'true';
 
     const { isUserAuthorized } = useUserData();
 
@@ -325,7 +327,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     <Details
                                         detailType={'Status'}
                                         value={beautifyStatus(
-                                            taskDetailsData?.status
+                                            taskDetailsData?.status,
+                                            isDevMode
                                         )}
                                     />
                                     <Details
