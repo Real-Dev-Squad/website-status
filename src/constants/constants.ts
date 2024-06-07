@@ -23,6 +23,13 @@ export const TASK_STATUS_MAPING = {
     APPROVED: 'Approved',
     IN_REVIEW: 'In Review',
     NEEDS_REVIEW: 'Needs Review',
+    DONE: 'Done',
+    RELEASED: 'Released',
+    SMOKE_TESTING: 'Smoke Testing',
+    SANITY_CHECK: 'Sanity Check',
+    REGRESSION_CHECK: 'Regression Check',
+    UN_ASSIGNED: 'Un Assigned',
+    BACKLOG: 'Backlog',
 };
 export const SEARCH_OPTIONS = ['title', 'assignee', 'status'];
 export const STATUSES = [

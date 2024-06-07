@@ -7,13 +7,13 @@ import { CardProps } from '@/interfaces/task.type';
 import { ALT_KEY } from '@/constants/key';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import TaskLevelEdit from './TaskTagEdit';
-import { TaskStatusEditMode } from './TaskStatusEditMode';
+import { TaskStatusEditMode, beautifyStatus } from './TaskStatusEditMode';
 import { updateTaskDetails } from '@/interfaces/task.type';
 import {
     DUMMY_NAME,
     DUMMY_PROFILE as placeholderImageURL,
 } from '@/constants/display-sections';
-import { MAX_SEARCH_RESULTS, TASK_STATUS_MAPING } from '@/constants/constants';
+import { MAX_SEARCH_RESULTS } from '@/constants/constants';
 import {
     COMPLETED,
     VERIFIED,
@@ -584,11 +584,7 @@ const Card: FC<CardProps> = ({
                                 data-testid="task-status"
                                 className={styles.statusText}
                             >
-                                {TASK_STATUS_MAPING[
-                                    cardDetails.status as keyof typeof TASK_STATUS_MAPING
-                                ] ||
-                                    cardDetails.status ||
-                                    'NA'}
+                                {beautifyStatus(cardDetails.status, isDevMode)}
                             </p>
                         </div>
                     )}
