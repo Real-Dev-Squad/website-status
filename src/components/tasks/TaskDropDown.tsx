@@ -24,6 +24,9 @@ export default function TaskDropDown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
+    if (isDevMode && oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
+        BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
+    }
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
         ([key]) =>
             !(isDevMode && key === 'COMPLETED') &&
@@ -110,8 +113,12 @@ export default function TaskDropDown({
                     value={newStatus}
                 >
                     {taskStatus.map(([name, status]) => (
-                        <option key={status} value={status}>
-                            {beautifyStatus(name)}
+                        <option
+                            data-testid={`task-status-${name}`}
+                            key={status}
+                            value={status}
+                        >
+                            {beautifyStatus(name, isDevMode)}
                         </option>
                     ))}
                 </select>
