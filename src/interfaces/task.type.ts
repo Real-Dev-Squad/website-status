@@ -6,6 +6,7 @@ type task = {
     type: string;
     links?: string[];
     endsOn: number;
+    createdAt: string;
     startedOn: string;
     createdBy: string;
     assignee?: string;
