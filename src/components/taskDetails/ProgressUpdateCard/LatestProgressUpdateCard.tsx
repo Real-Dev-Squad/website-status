@@ -22,9 +22,8 @@ export default function LatestProgressUpdateCard({
 }: LatestProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
-    const fullDate = momentDate.format('DD-MM-YY');
-    const time = momentDate.format('hh:mmA');
-    const tooltipText = `Updated at ${fullDate}, ${time}`;
+    const fullDate = momentDate.format('dddd, MMMM DD, YYYY, hh:mm A [GMT] Z');
+    const tooltipText = `Updated at ${fullDate}`;
     const charactersToShow = 70;
 
     const dataToShow = [
