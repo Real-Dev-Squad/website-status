@@ -58,10 +58,10 @@ describe('ProgressUpdateCard Component', () => {
         );
 
         const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
-        const fullDate = momentDate.format('DD-MM-YY');
-        const time = momentDate.format('hh:mmA');
-
-        const tooltipString = `Updated at ${fullDate}, ${time}`;
+        const fullDate = momentDate.format(
+            'dddd, MMMM DD, YYYY, hh:mm A [GMT] Z'
+        );
+        const tooltipString = `Updated at ${fullDate}`;
         const dateElement = screen.getByTestId('progress-update-card-date');
 
         fireEvent.mouseOver(dateElement);

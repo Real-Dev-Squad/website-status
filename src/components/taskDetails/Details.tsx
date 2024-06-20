@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import moment from 'moment';
-import Link from 'next/link';
 import { FaReceipt } from 'react-icons/fa6';
+import Link from 'next/link';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import setColor from './taskPriorityColors';
 import extractRepoName from '@/utils/extractRepoName';
@@ -19,33 +19,38 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
     };
 
-    const getTooltipText = (timestamp: StringNumberOrUndefined): string => {
-        return timestamp ? moment(timestamp).format('LLLL') : 'N/A';
-    };
-
-    const isPastDate = (timestamp: StringNumberOrUndefined): boolean => {
-        return timestamp ? moment(timestamp).isBefore(moment()) : false;
-    };
-
-    /**
-     * Get human-readable time format from the provided timestamp.
-     * @param {string | number | undefined} timestamp - The timestamp.
-     * @returns {string} - The human-readable time format, for example: instead of displaying a timestamp like "2024-02-20T14:30:00", a human-readable format would present it as "February 20, 2024, 2:30 PM
-     */
-    const getHumanReadableTime = (
-        timestamp: StringNumberOrUndefined
-    ): string => {
+    const formatDate = (timestamp: StringNumberOrUndefined): string => {
         if (!timestamp) return 'N/A';
 
-        const now = moment();
-        const futureTimestamp = moment(timestamp);
+        let milliseconds: number;
 
-        if (futureTimestamp.isAfter(now)) {
-            return `in ${moment
-                .duration(futureTimestamp.diff(now))
-                .humanize()}`;
+        if (typeof timestamp === 'string') {
+            // Parse the timestamp string to Date object
+            const dateObj = new Date(timestamp);
+
+            // Check if parsing was successful
+            if (!isNaN(dateObj.getTime())) {
+                milliseconds = dateObj.getTime();
+            } else {
+                console.error('Invalid timestamp format:', timestamp);
+                return 'Invalid Date';
+            }
+        } else {
+            milliseconds = (timestamp as number) * 1000;
         }
-        return `${moment.duration(now.diff(futureTimestamp)).humanize()} ago`;
+
+        // Format the date as desired
+        const formattedDate = moment(milliseconds).format(
+            'dddd, MMM D, YYYY, h:mm A [GMT] Z'
+        );
+
+        return formattedDate;
+    };
+
+    const [tooltipActive, setTooltipActive] = useState(false);
+
+    const toggleTooltip = () => {
+        setTooltipActive((prev) => !prev);
     };
 
     const isTimeDetail =
@@ -80,10 +85,12 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                     </a>
                 ) : isTimeDetail ? (
                     <Tooltip
-                        content={getTooltipText(value)}
+                        content={formatDate(value)}
                         tooltipPosition={{ top: '-3.6rem', right: '-4.5rem' }}
                     >
-                        {getHumanReadableTime(value)}
+                        {tooltipActive
+                            ? formatDate(value)
+                            : getRelativeTime(value)}
                     </Tooltip>
                 ) : (
                     renderedValue
