@@ -1,14 +1,13 @@
 import { ElementRef } from 'react';
 import styles from '@/styles/tasks.module.scss';
 import { useGetAllTasksQuery } from '@/app/services/tasksApi';
-import { TABS, Tab, TabTasksData } from '@/interfaces/task.type';
+import { Tab, TabTasksData } from '@/interfaces/task.type';
 import { useState, useEffect, useRef } from 'react';
 import {
     NO_TASKS_FOUND_MESSAGE,
     TASKS_FETCH_ERROR_MESSAGE,
 } from '../../constants/messages';
 import { EMPTY_TASKS_DATA } from '@/constants/tasks';
-import { TabSection } from './TabSection';
 
 import TaskList from './TaskList/TaskList';
 import { useRouter } from 'next/router';
@@ -21,11 +20,8 @@ import {
     getQueryParamTitle,
 } from '@/utils/taskQueryParams';
 
-import { Select } from '../Select';
-import { getChangedStatusName } from '@/utils/getChangedStatusName';
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearch from './TaskSearch/TaskSearch';
-import TaskSearchDev from './TaskSearchDev/TaskSearchDev';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
@@ -80,10 +76,6 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         setNextTasks('');
     };
 
-    const searchInputHandler = (value: string) => {
-        setInputValue(value);
-    };
-
     const searchButtonHandler = (searchString?: string) => {
         const { status, assignees, title } = extractQueryParams(
             searchString || inputValue
@@ -135,81 +127,20 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         earlyReturn: loadedTasks[selectedTab].length === 0,
     });
 
-    const taskSelectOptions = TABS.map((item) => ({
-        label: getChangedStatusName(item),
-        value: item,
-    }));
-
     if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 
     return (
         <div className={styles.tasksContainer}>
-            {dev ? (
-                <TaskSearchDev
-                    onFilterDropdownSelect={(selectedTab: Tab) =>
-                        searchNewTasks(selectedTab, queryAssignees, queryTitle)
-                    }
-                    filterDropdownActiveTab={selectedTab}
-                    inputValue={inputValue}
-                    onClickSearchButton={searchButtonHandler}
-                />
-            ) : (
-                <TaskSearch
-                    onSelect={(selectedTab: Tab) =>
-                        searchNewTasks(selectedTab, queryAssignees, queryTitle)
-                    }
-                    inputValue={inputValue}
-                    activeTab={selectedTab}
-                    onInputChange={(value) => searchInputHandler(value)}
-                    onClickSearchButton={searchButtonHandler}
-                />
-            )}
-            {dev !== true ? (
-                <>
-                    <div
-                        className={styles['status-tabs-container']}
-                        data-testid="status-tabs-container"
-                    >
-                        <TabSection
-                            dev={dev}
-                            onSelect={(status: Tab) =>
-                                searchNewTasks(
-                                    status,
-                                    queryAssignees,
-                                    queryTitle
-                                )
-                            }
-                            activeTab={selectedTab}
-                        />
-                    </div>
-                    <div
-                        className={styles['status-select-container']}
-                        data-testid="status-select-container"
-                    >
-                        <Select
-                            dev={dev}
-                            value={{
-                                label: getChangedStatusName(selectedTab),
-                                value: selectedTab,
-                            }}
-                            onChange={(selectedTaskStatus) => {
-                                if (selectedTaskStatus) {
-                                    searchNewTasks(
-                                        selectedTaskStatus.value as Tab,
-                                        queryAssignees,
-                                        queryTitle
-                                    );
-                                }
-                            }}
-                            options={taskSelectOptions}
-                        />
-                    </div>
-                </>
-            ) : (
-                <></>
-            )}
+            <TaskSearch
+                onFilterDropdownSelect={(selectedTab: Tab) =>
+                    searchNewTasks(selectedTab, queryAssignees, queryTitle)
+                }
+                filterDropdownActiveTab={selectedTab}
+                inputValue={inputValue}
+                onClickSearchButton={searchButtonHandler}
+            />
             <div>
                 {loadedTasks[selectedTab] && loadedTasks[selectedTab].length ? (
                     <TaskList tasks={loadedTasks[selectedTab]} />

@@ -1,8 +1,15 @@
-import { useState } from 'react';
-import { LuChevronDown } from 'react-icons/lu';
+import { useEffect, useState, useRef } from 'react';
 import styles from './tasksearch.module.scss';
 import { TABS, Tab } from '@/interfaces/task.type';
-import FilterModal from './FilterModal';
+import FilterDropdown from './FilterDropdown';
+import useDebounce from '@/hooks/useDebounce';
+import { TaskSearchOption } from '@/interfaces/searchOptions.type';
+import Options from './Suggestion/Options';
+import Pills from './Suggestion/Pill';
+import convertStringToOptions from '@/utils/convertStringToOptions';
+import convertSearchOptionsToQuery from '@/utils/convertSearchOptionsToQuery';
+import findCoordinates from '@/helperFunctions/findCoordinates';
+import { useFilterSuggestion } from './useFilterSuggestion';
 
 interface SuggestionCoordinates {
     left: number | null;
@@ -16,84 +23,317 @@ const initialSuggestionCoordinates: SuggestionCoordinates = {
 };
 
 type TaskSearchProps = {
-    onSelect: (tab: Tab) => void;
+    onFilterDropdownSelect: (tab: Tab) => void;
+    filterDropdownActiveTab?: Tab;
     inputValue: string;
-    activeTab?: Tab;
-    onInputChange: (value: string) => void;
     onClickSearchButton: (param?: string) => void;
 };
 
 const TaskSearch = ({
-    onSelect,
+    onFilterDropdownSelect,
+    filterDropdownActiveTab,
     inputValue,
-    activeTab,
-    onInputChange,
     onClickSearchButton,
 }: TaskSearchProps) => {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [filterDropdownModelOpen, setFilterDropdownModelOpen] =
+        useState(false);
+
+    const userInputRef = useRef<HTMLInputElement>(null);
+    const [typedInput, setTypedInput] = useState('');
+    const defferedUserInput: string = useDebounce(typedInput, 300);
+
+    const [selectedFilters, setSelectedFilters] = useState<
+        Array<TaskSearchOption>
+    >(convertStringToOptions(inputValue));
+    const [onEditSelectedFilterValue, setOnEditSelectedFilterValue] =
+        useState<string>('');
+    const [onEditSelectedFilterIndex, setOnEditSelectedFilterIndex] =
+        useState<number>(-1);
+    const [onRemoveSelectedFilterIndex, setOnRemoveSelectedFilterIndex] =
+        useState(-1);
+    const defferedPillValue = useDebounce(onEditSelectedFilterValue, 300);
+
+    const [
+        activeFilterSuggestionDropdownIndex,
+        setActiveFilterSuggestionDropdownIndex,
+    ] = useState(-1);
+    const [suggestionCoordinates, setSuggestionCoordinates] =
+        useState<SuggestionCoordinates>(initialSuggestionCoordinates);
 
     const searchButtonHandler = () => {
-        onClickSearchButton();
+        if (onEditSelectedFilterIndex === -1) {
+            onClickSearchButton(convertSearchOptionsToQuery(selectedFilters));
+        }
     };
+
+    const { filterSuggestions } = useFilterSuggestion({
+        typedInput,
+        defferedPillValue,
+        defferedUserInput,
+        onEditSelectedFilterIndex,
+        onEditSelectedFilterValue,
+        selectedFilters,
+        activeFilterSuggestionDropdownIndex,
+        setActiveFilterSuggestionDropdownIndex,
+    });
 
     const handleModal = () => {
-        setModalOpen(!modalOpen);
+        setFilterDropdownModelOpen(!filterDropdownModelOpen);
     };
+    useEffect(() => {
+        setSelectedFilters(convertStringToOptions(inputValue));
+    }, [inputValue]);
 
+    const toggleInputFocus = (inFocus = true) => {
+        inFocus && userInputRef.current?.focus();
+        !inFocus && userInputRef.current?.blur();
+    };
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         switch (event.key) {
-            case 'Enter':
-                if (inputValue.length > 0) {
+            case 'Backspace':
+                if (
+                    onEditSelectedFilterIndex !== -1 &&
+                    onEditSelectedFilterValue.length === 1
+                ) {
+                    const newOptions = selectedFilters.filter(
+                        (_, idx) => idx !== onEditSelectedFilterIndex
+                    );
+                    setSelectedFilters(newOptions);
+                    setOnEditSelectedFilterIndex(-1);
+                } else if (
+                    typedInput.length === 0 &&
+                    onEditSelectedFilterIndex === -1
+                ) {
+                    if (onRemoveSelectedFilterIndex === -1) {
+                        setOnRemoveSelectedFilterIndex(
+                            selectedFilters.length - 1
+                        );
+                    } else {
+                        const newOptions = selectedFilters.filter(
+                            (_, idx) => idx !== onRemoveSelectedFilterIndex
+                        );
+                        setSelectedFilters(newOptions);
+                        setOnEditSelectedFilterIndex(-1);
+                        onClickSearchButton(
+                            convertSearchOptionsToQuery(newOptions)
+                        );
+                        setOnRemoveSelectedFilterIndex(-1);
+                    }
+                }
+
+                break;
+
+            case 'ArrowUp':
+                if (activeFilterSuggestionDropdownIndex > -1) {
+                    setActiveFilterSuggestionDropdownIndex(
+                        activeFilterSuggestionDropdownIndex - 1
+                    );
+                    event.preventDefault();
+                }
+                break;
+            case 'ArrowDown':
+                if (
+                    filterSuggestions.length - 1 >
+                    activeFilterSuggestionDropdownIndex
+                ) {
+                    setActiveFilterSuggestionDropdownIndex(
+                        activeFilterSuggestionDropdownIndex + 1
+                    );
+                    event.preventDefault();
+                }
+                break;
+            case 'Enter': {
+                if (activeFilterSuggestionDropdownIndex > -1) {
+                    onSuggestionSelected();
+                } else if (
+                    onEditSelectedFilterIndex !== -1 &&
+                    onEditSelectedFilterValue.length > 0 &&
+                    activeFilterSuggestionDropdownIndex !== -1
+                ) {
+                    onSuggestionSelected();
+                } else if (
+                    onEditSelectedFilterValue.length === 0 &&
+                    typedInput.length === 0
+                ) {
+                    setActiveFilterSuggestionDropdownIndex(-1);
                     searchButtonHandler();
                 }
+                break;
+            }
+            case 'Escape':
+                onEditSelectedFilterIndex !== -1 &&
+                    setOnEditSelectedFilterIndex(-1);
                 break;
             default:
                 break;
         }
     };
 
+    const onResizeHandler = () => {
+        setSuggestionCoordinates(findCoordinates());
+    };
+    useEffect(onResizeHandler, [
+        defferedPillValue,
+        defferedUserInput,
+        filterSuggestions.length,
+    ]);
+    const removePill = (idx: number) => {
+        const updatedOptions = selectedFilters.filter(
+            (_, index) => index !== idx
+        );
+        setSelectedFilters(updatedOptions);
+        setOnEditSelectedFilterValue('');
+        toggleInputFocus();
+        onClickSearchButton(convertSearchOptionsToQuery(updatedOptions));
+    };
+
+    const onSuggestionSelected = (
+        idx = activeFilterSuggestionDropdownIndex
+    ) => {
+        if (!filterSuggestions?.[idx]) return;
+
+        if (onEditSelectedFilterIndex === -1) {
+            const optionDetails = filterSuggestions[idx];
+            if (optionDetails) {
+                setSelectedFilters([...selectedFilters, optionDetails]);
+                setTypedInput('');
+                onClickSearchButton(
+                    convertSearchOptionsToQuery([
+                        ...selectedFilters,
+                        optionDetails,
+                    ])
+                );
+            }
+        } else {
+            const newOptions = selectedFilters;
+            newOptions[onEditSelectedFilterIndex] = filterSuggestions[idx];
+            setSelectedFilters(newOptions);
+            setOnEditSelectedFilterIndex(-1);
+            onClickSearchButton(convertSearchOptionsToQuery(newOptions));
+        }
+        setActiveFilterSuggestionDropdownIndex(-1);
+        toggleInputFocus(true);
+    };
+
+    const handleClickOutside = (event: React.MouseEvent<HTMLInputElement>) => {
+        const target = event.target as HTMLElement;
+        if (
+            target &&
+            target.className.includes('pill-input-wrapper') &&
+            onEditSelectedFilterIndex !== -1
+        ) {
+            setOnEditSelectedFilterIndex(-1);
+        } else if (target && target.className.includes('pill-input-wrapper')) {
+            setOnEditSelectedFilterValue('');
+            setOnRemoveSelectedFilterIndex(-1);
+            toggleInputFocus();
+        }
+    };
+    useEffect(() => {
+        if (onEditSelectedFilterIndex === -1) {
+            toggleInputFocus();
+            setOnRemoveSelectedFilterIndex(-1);
+            setOnEditSelectedFilterValue('');
+        }
+    }, [onEditSelectedFilterIndex]);
+
+    useEffect(() => {
+        filterSuggestions.length === 0 &&
+            setSuggestionCoordinates(initialSuggestionCoordinates);
+    }, [filterSuggestions.length]);
+
+    useEffect(() => {
+        window.addEventListener('resize', onResizeHandler);
+        return () => window.removeEventListener('resize', onResizeHandler);
+    }, []);
     return (
         <div className={styles['task-search-container']}>
             <div id="filter-container" className={styles['filter-container']}>
                 <div className={styles['filter-button']} onClick={handleModal}>
-                    <p>Filter</p>
-                    <LuChevronDown
-                        className={` ${
-                            modalOpen
-                                ? styles['filter-chevron-open']
-                                : styles['filter-chevron']
-                        }`}
-                    />
-                    {modalOpen && (
-                        <FilterModal
-                            dev={false}
+                    Filter
+                    {filterDropdownModelOpen && (
+                        <FilterDropdown
                             tabs={TABS as Tab[]}
-                            onSelect={onSelect}
-                            activeTab={activeTab}
+                            onSelect={onFilterDropdownSelect}
+                            activeTab={filterDropdownActiveTab}
                             onClose={handleModal}
                         />
                     )}
                 </div>
 
-                <input
-                    className={styles['search-input']}
-                    data-testid="search-input"
-                    type="text"
-                    placeholder="Eg: status:in-progress assignee:sunny-s Build a feature"
-                    value={inputValue}
-                    onKeyDown={handleKeyPress}
-                    onChange={(e) => onInputChange(e.target.value)}
-                    spellCheck="false"
-                />
-            </div>
-            <div className={styles['search-button-container']}>
-                <button
-                    className={styles['search-button']}
-                    data-testid="search-button"
-                    onClick={searchButtonHandler}
-                >
-                    Search
-                </button>
+                <div id="search-bar-div" className={styles['search-bar-div']}>
+                    <div
+                        data-testid="pill-input-wrapper"
+                        style={{ position: 'relative' }}
+                        className={styles['pill-input-wrapper']}
+                        onClick={handleClickOutside}
+                    >
+                        {selectedFilters.map((value, key) => (
+                            <Pills
+                                idx={key}
+                                key={key}
+                                newPillValue={onEditSelectedFilterValue}
+                                option={value}
+                                removePill={removePill}
+                                selectedPill={onEditSelectedFilterIndex}
+                                pillToBeRemoved={onRemoveSelectedFilterIndex}
+                                handleKeyPress={handleKeyPress}
+                                setSelectedPill={setOnEditSelectedFilterIndex}
+                                setNewPillValue={setOnEditSelectedFilterValue}
+                            />
+                        ))}
+
+                        {onEditSelectedFilterIndex === -1 && (
+                            <div
+                                style={{
+                                    width: `${typedInput.length * 1.3}%`,
+                                }}
+                                className={styles['search-input-parent']}
+                            >
+                                <input
+                                    ref={userInputRef}
+                                    onClick={() =>
+                                        setActiveFilterSuggestionDropdownIndex(
+                                            -1
+                                        )
+                                    }
+                                    className={`task-search-input ${
+                                        styles['search-input-dev']
+                                    } ${
+                                        onRemoveSelectedFilterIndex !== -1
+                                            ? styles['remove-caret']
+                                            : ''
+                                    }`}
+                                    data-testid="search-input"
+                                    type="text"
+                                    value={typedInput}
+                                    placeholder="Eg: status:done assignee:joy title:New Feature"
+                                    onChange={(e) => {
+                                        onRemoveSelectedFilterIndex !== -1 &&
+                                            setOnRemoveSelectedFilterIndex(-1);
+                                        setTypedInput(e.target.value);
+                                    }}
+                                    onKeyDown={handleKeyPress}
+                                    spellCheck="false"
+                                />
+                            </div>
+                        )}
+                    </div>
+
+                    {filterSuggestions.length > 0 &&
+                        (typedInput ||
+                            (onEditSelectedFilterIndex !== -1 &&
+                                onEditSelectedFilterValue)) && (
+                            <Options
+                                style={suggestionCoordinates}
+                                suggestions={filterSuggestions}
+                                activeSuggestionIndex={
+                                    activeFilterSuggestionDropdownIndex
+                                }
+                                onSuggestionSelected={onSuggestionSelected}
+                            />
+                        )}
+                </div>
             </div>
         </div>
     );

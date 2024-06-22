@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import RenderPills, {
     PillProps,
-} from '@/components/tasks/TaskSearchDev/Suggestion/Pill';
+} from '@/components/tasks/TaskSearch/Suggestion/Pill';
 
 describe('RenderPills', () => {
     const setNewPillValue = jest.fn();

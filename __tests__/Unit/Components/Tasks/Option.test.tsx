@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Option from '@/components/tasks/TaskSearchDev/Suggestion/Option';
+import Option from '@/components/tasks/TaskSearch/Suggestion/Option';
 
 describe('Option component', () => {
     const mockOnClickHandler = jest.fn();
