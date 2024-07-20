@@ -178,7 +178,9 @@ const TaskRequestForm: FC<ActionFormProps> = ({
                 </div>
             </div>
             {isLoading && <Loader />}
-            <div className={styles.form_container}>
+            <div
+                className={`${styles.form_container} ${styles.request_spacing}`}
+            >
                 <button
                     className={styles.card__top__button}
                     type="submit"

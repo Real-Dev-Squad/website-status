@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { ChangeEvent, useState } from 'react';
 import Markdown from 'markdown-to-jsx';
+import styles from '@/components/issues/Card.module.scss';
 
 interface MarkDownEditorProps {
     onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -41,7 +42,7 @@ const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
                     {getActivePaneLabel()}
                 </button>
             </div>
-            <div className="markdown-editor">
+            <div className={styles.markdown__spacing}>
                 {mode === 'description' && (
                     <div className="description-box">
                         <textarea

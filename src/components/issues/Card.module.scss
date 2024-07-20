@@ -78,13 +78,16 @@
     flex-direction: column;
     gap: 1rem;
 }
+.request_spacing {
+    margin-top: 1rem;
+}
 .modalCloseIcon {
     appearance: none;
     background-color: transparent;
     border: none;
     position: absolute;
-    right: -24px;
-    top: -18px;
+    right: 10px;
+    top: 10px;
     cursor: pointer;
 }
 .trackMessage {
@@ -267,10 +270,6 @@
 .card__top__button {
     @include styles.issues-button;
     min-width: 9rem;
-
-    @media (max-width: 48rem) {
-        margin-top: 1rem;
-    }
 }
 
 .card__issue_created__by,
@@ -286,6 +285,10 @@
             text-decoration: underline;
         }
     }
+}
+
+.markdown__spacing {
+    margin-top: 0.5rem;
 }
 
 .card__link {
