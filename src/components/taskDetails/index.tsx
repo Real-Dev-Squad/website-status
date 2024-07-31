@@ -359,50 +359,28 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 hasImg={true}
                             >
                                 <div className={styles.detailsWithInput}>
-                                    <label className={styles.detailType}>
+                                    <label
+                                        htmlFor="assigneeInput"
+                                        className={styles.detailType}
+                                    >
                                         Assignee:
                                     </label>
                                     <div className={styles.inputContainer}>
                                         {isEditing && isUserAuthorized ? (
-                                            <>
-                                                <input
-                                                    type="text"
-                                                    name="assignee"
-                                                    value={assigneeName}
-                                                    onChange={handleAssignment}
-                                                    ref={inputRef}
-                                                    className={
-                                                        styles.inputField
-                                                    }
-                                                    data-testid="assignee-input"
-                                                />
-                                                {showSuggestion && (
-                                                    <div
-                                                        className={
-                                                            styles.assigneeSuggestionInput
-                                                        }
-                                                    >
-                                                        <Suggestions
-                                                            assigneeName={
-                                                                assigneeName
-                                                            }
-                                                            showSuggestion={
-                                                                showSuggestion
-                                                            }
-                                                            handleClick={
-                                                                handleAssigneSelect
-                                                            }
-                                                            handleAssignment={
-                                                                handleAssignment
-                                                            }
-                                                            setShowSuggestion={
-                                                                setShowSuggestion
-                                                            }
-                                                            ref={inputRef}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </>
+                                            <Suggestions
+                                                handleClick={
+                                                    handleAssigneSelect
+                                                }
+                                                assigneeName={assigneeName}
+                                                showSuggestion={showSuggestion}
+                                                handleAssignment={
+                                                    handleAssignment
+                                                }
+                                                setShowSuggestion={
+                                                    setShowSuggestion
+                                                }
+                                                ref={inputRef}
+                                            />
                                         ) : (
                                             <span
                                                 className={styles.detailValue}

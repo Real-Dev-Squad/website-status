@@ -536,7 +536,7 @@ describe('Task details Edit mode ', () => {
             const editBtn = screen.getByRole('button', { name: /Edit/i });
             fireEvent.click(editBtn);
         });
-        await waitFor(() => {
+        waitFor(() => {
             expect(screen.getByTestId('assignee-input')).toBeInTheDocument();
         });
     });
