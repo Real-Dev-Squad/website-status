@@ -358,7 +358,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 title="Participants"
                                 hasImg={true}
                             >
-                                <div className={styles.detailsWithInput}>
+                                <div className={styles.inputContainer}>
                                     <label
                                         htmlFor="assigneeInput"
                                         className={styles.detailType}
@@ -391,7 +391,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         )}
                                     </div>
                                 </div>
-                                <div className={styles.detailsWithInput}>
+                                <div className={styles.inputContainer}>
                                     <label className={styles.detailType}>
                                         Reporter:
                                     </label>
@@ -411,7 +411,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         taskDetailsData?.startedOn
                                     )}
                                 />
-                                <div className={styles.detailsWithInput}>
+                                <div className={styles.inputContainer}>
                                     <Details
                                         detailType={'Ends On'}
                                         value={getEndsOn(
