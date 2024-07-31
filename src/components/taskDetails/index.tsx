@@ -201,6 +201,17 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         return timestamp ? convertTimeStamp(timestamp) : 'TBD';
     }
 
+    function getExtensionRequestLink(
+        taskId: string,
+        isExtensionRequestPending?: boolean
+    ) {
+        return isExtensionRequestPending
+            ? `${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
+                  `taskId:${taskId},status:PENDING`
+              )}`
+            : null;
+    }
+
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
     const { data: progressData } = useGetProgressDetailsQuery({
@@ -427,6 +438,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Ends On'}
                                         value={getEndsOn(
                                             taskDetailsData?.endsOn
+                                        )}
+                                        url={getExtensionRequestLink(
+                                            taskDetailsData.id,
+                                            isExtensionRequestPending
                                         )}
                                     />
                                     {isEditing && isUserAuthorized && (
