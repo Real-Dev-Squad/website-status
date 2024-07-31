@@ -41,6 +41,7 @@ export function Button(props: ButtonProps) {
         </button>
     );
 }
+
 export function Textarea(props: TextAreaProps) {
     const { name, value, onChange, testId, placeholder } = props;
 
@@ -60,11 +61,10 @@ type Props = {
     url?: string;
     taskID: string;
 };
+
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-
     const { isUserAuthorized } = useUserData();
-
     const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
@@ -96,6 +96,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         setShowSuggestion(Boolean(e.target.value));
+        setEditedTaskDetails((prev) => ({ ...prev, assignee: e.target.value }));
     };
     const handleAssigneSelect = async (userName: string) => {
         inputRef.current?.focus();
@@ -125,6 +126,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                 ...data?.taskData,
                 id: taskID,
             } as task);
+            setAssigneeName(data?.taskData?.assignee || '');
         }
     }, [data]);
 
@@ -197,17 +199,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     function getEndsOn(timestamp: number | undefined) {
         return timestamp ? convertTimeStamp(timestamp) : 'TBD';
-    }
-
-    function getExtensionRequestLink(
-        taskId: string,
-        isExtensionRequestPending?: boolean
-    ) {
-        return isExtensionRequestPending
-            ? `${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
-                  `taskId:${taskId},status:PENDING`
-              )}`
-            : null;
     }
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
@@ -358,43 +349,67 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <div className={styles.detailsWithInput}>
                                     <label className={styles.detailType}>
-                                        Assignee
+                                        Assignee:
                                     </label>
-                                    {isEditing && isUserAuthorized ? (
-                                        <input
-                                            type="text"
-                                            name="assignee"
-                                            value={assigneeName}
-                                            onChange={handleAssignment}
-                                            ref={inputRef}
-                                            className={styles.inputField}
-                                        />
-                                    ) : (
-                                        <span className={styles.detailValue}>
-                                            {taskDetailsData?.assignee}
-                                        </span>
-                                    )}
-                                </div>
-                                {isEditing && isUserAuthorized && (
-                                    <div
-                                        className={`${styles.assigneeSuggestionInput} ${styles.assignedToSection}`}
-                                    >
-                                        <Suggestions
-                                            assigneeName={assigneeName}
-                                            showSuggestion={showSuggestion}
-                                            handleClick={handleAssigneSelect}
-                                            handleAssignment={handleAssignment}
-                                            setShowSuggestion={
-                                                setShowSuggestion
-                                            }
-                                            ref={inputRef}
-                                        />
+                                    <div className={styles.inputContainer}>
+                                        {isEditing && isUserAuthorized ? (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    name="assignee"
+                                                    value={assigneeName}
+                                                    onChange={handleAssignment}
+                                                    ref={inputRef}
+                                                    className={
+                                                        styles.inputField
+                                                    }
+                                                    data-testid="assignee-input"
+                                                />
+                                                {showSuggestion && (
+                                                    <div
+                                                        className={
+                                                            styles.assigneeSuggestionInput
+                                                        }
+                                                    >
+                                                        <Suggestions
+                                                            assigneeName={
+                                                                assigneeName
+                                                            }
+                                                            showSuggestion={
+                                                                showSuggestion
+                                                            }
+                                                            handleClick={
+                                                                handleAssigneSelect
+                                                            }
+                                                            handleAssignment={
+                                                                handleAssignment
+                                                            }
+                                                            setShowSuggestion={
+                                                                setShowSuggestion
+                                                            }
+                                                            ref={inputRef}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <span
+                                                className={styles.detailValue}
+                                            >
+                                                {assigneeName ||
+                                                    taskDetailsData?.assignee}
+                                            </span>
+                                        )}
                                     </div>
-                                )}
-                                <Details
-                                    detailType={'Reporter'}
-                                    value={'Ankush'}
-                                />
+                                </div>
+                                <div className={styles.detailsWithInput}>
+                                    <label className={styles.detailType}>
+                                        Reporter:
+                                    </label>
+                                    <span className={styles.detailValue}>
+                                        Ankush
+                                    </span>
+                                </div>
                             </TaskContainer>
                             <TaskContainer
                                 src="/calendar-icon.png"
@@ -429,17 +444,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         />
                                     )}
                                 </div>
-                                {isEditing && isUserAuthorized && (
-                                    <a
-                                        ref={getExtensionRequestLink(
-                                            taskDetailsData.id,
-                                            isExtensionRequestPending
-                                        )}
-                                        className={styles.extensionLink}
-                                    >
-                                        Request Extension
-                                    </a>
-                                )}
                             </TaskContainer>
                             <TaskContainer
                                 hasImg={false}
