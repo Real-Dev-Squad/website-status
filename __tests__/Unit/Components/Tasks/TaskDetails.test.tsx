@@ -47,7 +47,7 @@ jest.mock('@/hooks/useUserData', () => {
         data: {
             roles: {
                 admin: true,
-                super_user: true,
+                super_user: false,
             },
         },
         isUserAuthorized: true,
