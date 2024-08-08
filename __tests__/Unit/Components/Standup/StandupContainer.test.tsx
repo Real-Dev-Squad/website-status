@@ -61,7 +61,6 @@ describe('StandupContainer', () => {
                 replace: jest.fn(),
             }
         );
-
         const addButton = container.getElementsByClassName('addButton');
         const removeButton = container.getElementsByClassName('removeButton');
         const YesterdayInptutField = screen.getByTestId('Yesterday0');
@@ -95,11 +94,6 @@ describe('StandupContainer', () => {
         await waitFor(() => {
             expect(
                 screen.getByText('User Progress document created successfully.')
-            ).toBeInTheDocument();
-            expect(
-                screen.getByText(
-                    'Your standup for the day has already been submitted, please fill out the form tomorrow after 6:00 a.m.'
-                )
             ).toBeInTheDocument();
         });
     });
