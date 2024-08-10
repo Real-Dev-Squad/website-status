@@ -307,7 +307,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Priority'}
                                         value={taskDetailsData?.priority}
                                     />
-                                    {isEditing && (
+                                    {isEditing ? (
                                         <TaskDropDown
                                             onChange={handleTaskStatusUpdate}
                                             oldStatus={taskDetailsData?.status}
@@ -315,13 +315,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                                 taskDetailsData?.percentCompleted
                                             }
                                         />
+                                    ) : (
+                                        <Details
+                                            detailType={'Status'}
+                                            value={beautifyStatus(
+                                                taskDetailsData?.status
+                                            )}
+                                        />
                                     )}
-                                    <Details
-                                        detailType={'Status'}
-                                        value={beautifyStatus(
-                                            taskDetailsData?.status
-                                        )}
-                                    />
                                     <Details
                                         detailType={'Link'}
                                         value={
