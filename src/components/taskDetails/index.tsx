@@ -307,7 +307,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         detailType={'Priority'}
                                         value={taskDetailsData?.priority}
                                     />
-
                                     {isEditing ? (
                                         <TaskDropDown
                                             onChange={handleTaskStatusUpdate}
@@ -317,12 +316,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             }
                                         />
                                     ) : (
-                                    <Details
-                                        detailType={'Status'}
-                                        value={beautifyStatus(
-                                            taskDetailsData?.status
-                                        )}
-                                    />
+                                        <Details
+                                            detailType={'Status'}
+                                            value={beautifyStatus(
+                                                taskDetailsData?.status
+                                            )}
+                                        />
+                                    )}
                                     <Details
                                         detailType={'Link'}
                                         value={
@@ -336,7 +336,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     />
                                 </div>
                             </TaskContainer>
-
                             <Progress taskProgress={taskProgress} />
                             <>
                                 <TaskContainer
