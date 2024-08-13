@@ -464,4 +464,3 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 };
 
 export default TaskDetails;
-
