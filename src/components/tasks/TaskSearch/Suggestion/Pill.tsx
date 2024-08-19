@@ -11,7 +11,7 @@ export interface PillProps {
     removePill: (idx: number) => void;
     selectedPill: false | number;
     pillToBeRemoved: number;
-    setSelectedPill: (key: number | false) => void;
+    setSelectedPill: (key: number) => void;
 }
 
 export default function RenderPills({
