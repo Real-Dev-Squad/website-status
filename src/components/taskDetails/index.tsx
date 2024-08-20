@@ -67,6 +67,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { isUserAuthorized } = useUserData();
     const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
+
+    const { dev } = router.query;
+
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
     const { data: extensionRequests } =
@@ -314,12 +317,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                             oldProgress={
                                                 taskDetailsData?.percentCompleted
                                             }
+                                            isDevMode={dev === 'true'}
                                         />
                                     ) : (
                                         <Details
                                             detailType={'Status'}
                                             value={beautifyStatus(
-                                                taskDetailsData?.status
+                                                taskDetailsData?.status,
+                                                dev === 'true'
                                             )}
                                         />
                                     )}
