@@ -1,26 +1,18 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSaveProgressMutation } from '@/app/services/progressesApi';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import styles from '@/components/standup/standupContainer.module.scss';
 import SectionComponent from './SectionComponent';
 
-const intialSection = [
-    { title: 'Yesterday', inputs: [''] },
-    { title: 'Today', inputs: [''] },
-    { title: 'Blocker', inputs: [''] },
-];
-
-interface setIsFormVisibleProps {
-    setIsFormVisible: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FormInputComponent: FC<setIsFormVisibleProps> = ({
-    setIsFormVisible,
-}) => {
+const FormInputComponent = () => {
     const router = useRouter();
-    const [sections, setSections] = useState(intialSection);
-    const [addStandup] = useSaveProgressMutation();
+    const [sections, setSections] = useState([
+        { title: 'Yesterday', inputs: [''] },
+        { title: 'Today', inputs: [''] },
+        { title: 'Blocker', inputs: [''] },
+    ]);
+    const [addStandup, { isLoading }] = useSaveProgressMutation();
     const { SUCCESS, ERROR } = ToastTypes;
 
     const handleAddField = (sectionIndex: number) => {
@@ -60,11 +52,10 @@ const FormInputComponent: FC<setIsFormVisibleProps> = ({
         e.preventDefault();
         const newData = {
             type: 'user',
-            completed: sections[0].inputs.join('.'),
-            planned: sections[1].inputs.join('. '),
-            blockers: sections[2].inputs.join('. '),
+            completed: sections[0].inputs.join(' ').trim(),
+            planned: sections[1].inputs.join(' ').trim(),
+            blockers: sections[2].inputs.join(' ').trim(),
         };
-        setIsFormVisible(false);
         await addStandup(newData)
             .unwrap()
             .then((data) => {
@@ -100,7 +91,7 @@ const FormInputComponent: FC<setIsFormVisibleProps> = ({
             ))}
             <button
                 type="submit"
-                disabled={!isFormValid()}
+                disabled={!isFormValid() || isLoading}
                 className={`${styles.submitButton}`}
             >
                 Submit
