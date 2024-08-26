@@ -30,6 +30,7 @@ const details = {
     taskID: '6KhcLU3yr45dzjQIVm0J',
     extension_request_url:
         'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy',
+    completedTaskID: '12345',
 };
 
 const server = setupServer(...handlers);
@@ -223,6 +224,33 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('ankur')).toBeInTheDocument();
         });
+    });
+    it('Renders Task status Done when task status is Completed, when dev flag is on', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.completedTaskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(getByText('Done')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task status Done as selected when task status is Completed, when dev flag is on in edit mode', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.completedTaskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+        const option: HTMLOptionElement = screen.getByTestId(
+            'task-status-DONE'
+        ) as HTMLOptionElement;
+        expect(option.selected).toBeTruthy();
     });
 });
 it('Renders Task Ends-on Date', async () => {
