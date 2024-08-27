@@ -19,8 +19,8 @@ const taskDetailsHandler = [
                     title: 'test 1 for drag and drop',
                     status: 'COMPLETED',
                     assignee: 'ankur',
-                    links: ['null'],
-                    dependsOn: ['null'],
+                    links: [],
+                    dependsOn: [],
                     percentCompleted: 0,
                     type: 'feature',
                     priority: 'high',
@@ -32,9 +32,10 @@ const taskDetailsHandler = [
                     },
                     github: {
                         issue: {
-                            html_url:'https://github.com/sample-org/sample-repo/issues/000'
-                        }
-                    }
+                            html_url:
+                                'https://github.com/sample-org/sample-repo/issues/000',
+                        },
+                    },
                 },
             })
         );
@@ -69,9 +70,10 @@ const taskDetailsHandler = [
                     },
                     github: {
                         issue: {
-                            html_url:'https://github.com/sample-org/sample-repo/issues/000'
-                        }
-                    }
+                            html_url:
+                                'https://github.com/sample-org/sample-repo/issues/000',
+                        },
+                    },
                 },
             })
         );
