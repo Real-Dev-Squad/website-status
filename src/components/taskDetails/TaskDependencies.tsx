@@ -1,3 +1,4 @@
+// src/components/taskDetails/TaskDependencies.tsx
 import React from 'react';
 import TaskDependency from '@/components/taskDetails/taskDependency';
 import styles from './task-details.module.scss';

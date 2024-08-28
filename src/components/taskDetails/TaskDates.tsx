@@ -2,12 +2,13 @@ import React from 'react';
 import Details from './Details';
 import styles from './task-details.module.scss';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 
 interface TaskDatesProps {
     isEditing: boolean;
     isUserAuthorized: boolean;
     startedOn: string;
-    endsOn: string;
+    endsOn: number;
     newEndOnDate: string;
     setNewEndOnDate: (date: string) => void;
     handleBlurOfEndsOn: () => void;
@@ -37,13 +38,16 @@ const TaskDates: React.FC<TaskDatesProps> = ({
             : null;
     };
 
+    // Convert endsOn to a readable string format before displaying
+    const formattedEndsOn = endsOn ? convertTimeStamp(endsOn) : 'TBD';
+
     return (
         <div>
             <Details detailType={'Started On'} value={startedOn} />
             <div className={styles.inputContainer}>
                 <Details
                     detailType={'Ends On'}
-                    value={endsOn}
+                    value={formattedEndsOn} // Display the formatted date
                     url={getExtensionRequestLink(
                         taskId,
                         isExtensionRequestPending

@@ -1,3 +1,4 @@
+// src/components/taskDetails/TaskDescription.tsx
 import React from 'react';
 import { Textarea } from './index';
 import styles from './task-details.module.scss';
@@ -21,10 +22,12 @@ const TaskDescription: React.FC<TaskDescriptionProps> = ({
                     value={purpose}
                     onChange={handleChange}
                     testId="purpose-textarea"
-                    placeholder=""
+                    placeholder="Enter task description"
                 />
             ) : (
-                <p>{purpose || 'No description available'}</p>
+                <p className={styles.taskDescription}>
+                    {purpose || 'No description available'}
+                </p>
             )}
         </div>
     );

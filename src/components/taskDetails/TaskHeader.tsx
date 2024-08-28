@@ -9,6 +9,7 @@ interface TaskHeaderProps {
     onCancel: () => void;
     title: string;
     handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    isUserAuthorized: boolean;
 }
 
 const TaskHeader: React.FC<TaskHeaderProps> = ({
@@ -18,6 +19,7 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
     onCancel,
     title,
     handleChange,
+    isUserAuthorized,
 }) => {
     return (
         <div className={styles.titleContainer}>
@@ -27,20 +29,22 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
                     value={title}
                     onChange={handleChange}
                     testId="title-textarea"
-                    placeholder=""
+                    placeholder="Enter task title"
                 />
             ) : (
                 <span data-testid="task-title" className={styles.taskTitle}>
                     {title}
                 </span>
             )}
-            {!isEditing ? (
+            {!isEditing && isUserAuthorized && (
                 <Button
                     buttonName="Edit"
                     clickHandler={setIsEditing}
                     value={true}
+                    className={styles.editButton}
                 />
-            ) : (
+            )}
+            {isEditing && (
                 <div className={styles.editMode}>
                     <Button buttonName="Cancel" clickHandler={onCancel} />
                     <Button buttonName="Save" clickHandler={onSave} />

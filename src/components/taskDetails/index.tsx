@@ -9,16 +9,7 @@ import {
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
 import useUserData from '@/hooks/useUserData';
-import {
-    ButtonProps,
-    TextAreaProps,
-    taskDetailsDataType,
-} from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
-import { ProgressDetailsData } from '@/types/standup.type';
-import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
-import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
 import TaskHeader from './TaskHeader';
 import TaskDescription from './TaskDescription';
 import TaskDetailsSection from './TaskDetailsSection';
@@ -27,10 +18,14 @@ import TaskDates from './TaskDates';
 import TaskDependencies from './TaskDependencies';
 import TaskProgress from './TaskProgress';
 import TaskContainer from './TaskContainer';
-import Details from './Details';
-import TaskDropDown from '../tasks/TaskDropDown';
-import Suggestions from '../tasks/SuggestionBox/Suggestions';
-
+import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
+import { ProgressDetailsData } from '@/types/standup.type';
+import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import {
+    taskDetailsDataType,
+    ButtonProps,
+    TextAreaProps,
+} from '@/interfaces/taskDetails.type';
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
     return (
@@ -98,13 +93,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         setShowSuggestion(Boolean(e.target.value));
-        setEditedTaskDetails((prev) => ({ ...prev, assignee: e.target.value }));
+        setEditedTaskDetails((prev: any) => ({
+            ...prev,
+            assignee: e.target.value,
+        }));
     };
     const handleAssigneSelect = async (userName: string) => {
         inputRef.current?.focus();
         setAssigneeName(userName);
         setShowSuggestion(false);
-        setEditedTaskDetails((prev) => ({ ...prev, assignee: userName }));
+        setEditedTaskDetails((prev: any) => ({ ...prev, assignee: userName }));
     };
     const handleTaskStatusUpdate = ({
         newStatus,
@@ -116,7 +114,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
-        setEditedTaskDetails((prev) => ({
+        setEditedTaskDetails((prev: any) => ({
             ...prev,
             ...payload,
         }));
@@ -178,7 +176,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     ) {
         const { name, value } = event.target;
 
-        setEditedTaskDetails((prevState) => ({
+        setEditedTaskDetails((prevState: any) => ({
             ...prevState!,
             ...(prevState
                 ? { [name]: name === 'dependsOn' ? [value] : value }
@@ -214,7 +212,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
 
         if (endsOn > 0) {
-            setEditedTaskDetails((prev) => ({
+            setEditedTaskDetails((prev: any) => ({
                 ...prev,
                 endsOn,
             }));
@@ -233,6 +231,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         onCancel={onCancel}
                         title={editedTaskDetails?.title}
                         handleChange={handleChange}
+                        isUserAuthorized={isUserAuthorized}
                     />
 
                     <section className={styles.detailsContainer}>
@@ -254,9 +253,13 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                         editedTaskDetails?.github?.issue
                                             ?.html_url || ''
                                     }
+                                    percentCompleted={
+                                        editedTaskDetails?.percentCompleted
+                                    }
                                     handleTaskStatusUpdate={
                                         handleTaskStatusUpdate
                                     }
+                                    taskDetailsData={taskDetailsData}
                                 />
                             </TaskContainer>
                             <TaskProgress taskProgress={taskProgress} />
@@ -299,7 +302,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     startedOn={getStartedOn(
                                         taskDetailsData?.startedOn
                                     )}
-                                    endsOn={getEndsOn(taskDetailsData?.endsOn)}
+                                    endsOn={taskDetailsData?.endsOn || 0}
                                     newEndOnDate={newEndOnDate}
                                     setNewEndOnDate={setNewEndOnDate}
                                     handleBlurOfEndsOn={handleBlurOfEndsOn}
