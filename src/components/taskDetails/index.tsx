@@ -1,6 +1,4 @@
 import React, { ChangeEvent, FC, useState, useEffect, useRef } from 'react';
-import TaskContainer from './TaskContainer';
-import Details from './Details';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import styles from './task-details.module.scss';
@@ -10,7 +8,6 @@ import {
     useGetTaskDetailsQuery,
     useUpdateTaskDetailsMutation,
 } from '@/app/services/taskDetailsApi';
-
 import useUserData from '@/hooks/useUserData';
 import {
     ButtonProps,
@@ -18,16 +15,21 @@ import {
     taskDetailsDataType,
 } from '@/interfaces/taskDetails.type';
 import Layout from '@/components/Layout';
-import TaskDependency from '@/components/taskDetails/taskDependency';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import { ProgressDetailsData } from '@/types/standup.type';
-import Progress from '../ProgressCard';
-import ProgressContainer from '../tasks/card/progressContainer';
-import Suggestions from '../tasks/SuggestionBox/Suggestions';
 import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
+import TaskHeader from './TaskHeader';
+import TaskDescription from './TaskDescription';
+import TaskDetailsSection from './TaskDetailsSection';
+import TaskParticipants from './TaskParticipants';
+import TaskDates from './TaskDates';
+import TaskDependencies from './TaskDependencies';
+import TaskProgress from './TaskProgress';
+import TaskContainer from './TaskContainer';
+import Details from './Details';
 import TaskDropDown from '../tasks/TaskDropDown';
-import { beautifyStatus } from '../tasks/card/TaskStatusEditMode';
+import Suggestions from '../tasks/SuggestionBox/Suggestions';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
@@ -201,17 +203,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         return timestamp ? convertTimeStamp(timestamp) : 'TBD';
     }
 
-    function getExtensionRequestLink(
-        taskId: string,
-        isExtensionRequestPending?: boolean
-    ) {
-        return isExtensionRequestPending
-            ? `${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
-                  `taskId:${taskId},status:PENDING`
-              )}`
-            : null;
-    }
-
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
     const { data: progressData } = useGetProgressDetailsQuery({
@@ -235,122 +226,50 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             {renderLoadingComponent()}
             {shouldRenderParentContainer() && (
                 <div className={styles.parentContainer}>
-                    <div className={styles.titleContainer}>
-                        {isEditing ? (
-                            <Textarea
-                                name="title"
-                                value={editedTaskDetails?.title}
-                                onChange={handleChange}
-                                testId="title-textarea"
-                                placeholder=""
-                            />
-                        ) : (
-                            <span
-                                data-testid="task-title"
-                                className={styles.taskTitle}
-                            >
-                                {taskDetailsData?.title}
-                            </span>
-                        )}
-                        {!isEditing ? (
-                            isUserAuthorized && (
-                                <Button
-                                    buttonName="Edit"
-                                    clickHandler={setIsEditing}
-                                    value={true}
-                                />
-                            )
-                        ) : (
-                            <div className={styles.editMode}>
-                                <Button
-                                    buttonName="Cancel"
-                                    clickHandler={onCancel}
-                                />
-                                <Button
-                                    buttonName="Save"
-                                    clickHandler={onSave}
-                                />
-                            </div>
-                        )}
-                    </div>
+                    <TaskHeader
+                        isEditing={isEditing}
+                        setIsEditing={setIsEditing}
+                        onSave={onSave}
+                        onCancel={onCancel}
+                        title={editedTaskDetails?.title}
+                        handleChange={handleChange}
+                    />
 
                     <section className={styles.detailsContainer}>
                         <section className={styles.leftContainer}>
                             <TaskContainer title="Description" hasImg={false}>
-                                {isEditing ? (
-                                    <Textarea
-                                        name="purpose"
-                                        value={editedTaskDetails?.purpose}
-                                        onChange={handleChange}
-                                        testId="purpose-textarea"
-                                        placeholder=""
-                                    />
-                                ) : (
-                                    <p>
-                                        {!taskDetailsData?.purpose
-                                            ? 'No description available'
-                                            : taskDetailsData?.purpose}
-                                    </p>
-                                )}
+                                <TaskDescription
+                                    isEditing={isEditing}
+                                    purpose={editedTaskDetails?.purpose}
+                                    handleChange={handleChange}
+                                />
                             </TaskContainer>
                             <TaskContainer title="Details" hasImg={false}>
-                                <div
-                                    className={
-                                        styles['sub_details_grid_container']
+                                <TaskDetailsSection
+                                    isEditing={isEditing}
+                                    type={editedTaskDetails?.type}
+                                    priority={editedTaskDetails?.priority}
+                                    status={editedTaskDetails?.status}
+                                    link={
+                                        editedTaskDetails?.github?.issue
+                                            ?.html_url || ''
                                     }
-                                >
-                                    <Details
-                                        detailType={'Type'}
-                                        value={taskDetailsData?.type}
-                                    />
-                                    <Details
-                                        detailType={'Priority'}
-                                        value={taskDetailsData?.priority}
-                                    />
-                                    {isEditing ? (
-                                        <TaskDropDown
-                                            onChange={handleTaskStatusUpdate}
-                                            oldStatus={taskDetailsData?.status}
-                                            oldProgress={
-                                                taskDetailsData?.percentCompleted
-                                            }
-                                        />
-                                    ) : (
-                                        <Details
-                                            detailType={'Status'}
-                                            value={beautifyStatus(
-                                                taskDetailsData?.status
-                                            )}
-                                        />
-                                    )}
-                                    <Details
-                                        detailType={'Link'}
-                                        value={
-                                            taskDetailsData?.github?.issue
-                                                ?.html_url
-                                        }
-                                    />
-                                    <ProgressContainer
-                                        content={taskDetailsData}
-                                        key={taskDetailsData?.percentCompleted}
-                                    />
-                                </div>
+                                    handleTaskStatusUpdate={
+                                        handleTaskStatusUpdate
+                                    }
+                                />
                             </TaskContainer>
-                            <Progress taskProgress={taskProgress} />
-                            <>
-                                <TaskContainer
-                                    title="Task Dependencies"
-                                    hasImg={false}
-                                >
-                                    <TaskDependency
-                                        taskDependencyIds={taskDependencyIds}
-                                        isEditing={isEditing}
-                                        setEditedTaskDetails={
-                                            setEditedTaskDetails
-                                        }
-                                    />
-                                </TaskContainer>
-                            </>
+                            <TaskProgress taskProgress={taskProgress} />
+                            <TaskContainer
+                                title="Task Dependencies"
+                                hasImg={false}
+                            >
+                                <TaskDependencies
+                                    isEditing={isEditing}
+                                    taskDependencyIds={taskDependencyIds}
+                                    setEditedTaskDetails={setEditedTaskDetails}
+                                />
+                            </TaskContainer>
                         </section>
 
                         <section className={styles.rightContainer}>
@@ -359,85 +278,36 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 title="Participants"
                                 hasImg={true}
                             >
-                                <div className={styles.inputContainer}>
-                                    <label
-                                        htmlFor="assigneeInput"
-                                        className={styles.detailType}
-                                    >
-                                        Assignee:
-                                    </label>
-                                    <div className={styles.inputContainer}>
-                                        {isEditing && isUserAuthorized ? (
-                                            <Suggestions
-                                                handleClick={
-                                                    handleAssigneSelect
-                                                }
-                                                assigneeName={assigneeName}
-                                                showSuggestion={showSuggestion}
-                                                handleAssignment={
-                                                    handleAssignment
-                                                }
-                                                setShowSuggestion={
-                                                    setShowSuggestion
-                                                }
-                                                ref={inputRef}
-                                            />
-                                        ) : (
-                                            <span
-                                                className={styles.detailValue}
-                                            >
-                                                {assigneeName ||
-                                                    taskDetailsData?.assignee}
-                                            </span>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className={styles.inputContainer}>
-                                    <label className={styles.detailType}>
-                                        Reporter:
-                                    </label>
-                                    <span className={styles.detailValue}>
-                                        Ankush
-                                    </span>
-                                </div>
+                                <TaskParticipants
+                                    isEditing={isEditing}
+                                    isUserAuthorized={isUserAuthorized}
+                                    assigneeName={assigneeName}
+                                    showSuggestion={showSuggestion}
+                                    handleAssignment={handleAssignment}
+                                    handleAssigneSelect={handleAssigneSelect}
+                                    setShowSuggestion={setShowSuggestion}
+                                />
                             </TaskContainer>
                             <TaskContainer
                                 src="/calendar-icon.png"
                                 title="Dates"
                                 hasImg={true}
                             >
-                                <Details
-                                    detailType={'Started On'}
-                                    value={getStartedOn(
+                                <TaskDates
+                                    isEditing={isEditing}
+                                    isUserAuthorized={isUserAuthorized}
+                                    startedOn={getStartedOn(
                                         taskDetailsData?.startedOn
                                     )}
+                                    endsOn={getEndsOn(taskDetailsData?.endsOn)}
+                                    newEndOnDate={newEndOnDate}
+                                    setNewEndOnDate={setNewEndOnDate}
+                                    handleBlurOfEndsOn={handleBlurOfEndsOn}
+                                    isExtensionRequestPending={
+                                        isExtensionRequestPending
+                                    }
+                                    taskId={taskDetailsData.id}
                                 />
-                                <div className={styles.inputContainer}>
-                                    <Details
-                                        detailType={'Ends On'}
-                                        value={getEndsOn(
-                                            taskDetailsData?.endsOn
-                                        )}
-                                        url={getExtensionRequestLink(
-                                            taskDetailsData.id,
-                                            isExtensionRequestPending
-                                        )}
-                                    />
-                                    {isEditing && isUserAuthorized && (
-                                        <input
-                                            id="endsOnTaskDetails"
-                                            type="date"
-                                            name="endsOn"
-                                            onChange={(e) =>
-                                                setNewEndOnDate(e.target.value)
-                                            }
-                                            onBlur={handleBlurOfEndsOn}
-                                            value={newEndOnDate}
-                                            data-testid="endsOnTaskDetails"
-                                            className={styles.inputField}
-                                        />
-                                    )}
-                                </div>
                             </TaskContainer>
                             <TaskContainer
                                 hasImg={false}
