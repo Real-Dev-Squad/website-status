@@ -24,7 +24,7 @@ const TaskParticipants: React.FC<TaskParticipantsProps> = ({
     const inputRef = useRef<HTMLInputElement>(null);
 
     return (
-        <div>
+        <>
             <div className={styles.inputContainer}>
                 <label htmlFor="assigneeInput" className={styles.detailType}>
                     Assignee:
@@ -50,7 +50,7 @@ const TaskParticipants: React.FC<TaskParticipantsProps> = ({
                 <label className={styles.detailType}>Reporter:</label>
                 <span className={styles.detailValue}>Ankush</span>
             </div>
-        </div>
+        </>
     );
 };
 

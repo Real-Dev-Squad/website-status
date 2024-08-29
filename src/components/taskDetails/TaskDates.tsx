@@ -41,8 +41,10 @@ const TaskDates: React.FC<TaskDatesProps> = ({
     const formattedEndsOn = endsOn ? convertTimeStamp(endsOn) : 'TBD';
 
     return (
-        <div>
-            <Details detailType={'Started On'} value={startedOn} />
+        <>
+            <div className={styles.inputContainer}>
+                <Details detailType={'Started On'} value={startedOn} />
+            </div>
             <div className={styles.inputContainer}>
                 <Details
                     detailType={'Ends On'}
@@ -65,7 +67,7 @@ const TaskDates: React.FC<TaskDatesProps> = ({
                     />
                 )}
             </div>
-        </div>
+        </>
     );
 };
 
