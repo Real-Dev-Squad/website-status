@@ -13,7 +13,7 @@ interface TaskDetailsSectionProps {
     link: string;
     percentCompleted: number;
     handleTaskStatusUpdate: (props: taskStatusUpdateHandleProp) => void;
-    taskDetailsData: task; // Include this to pass the entire task object
+    taskDetailsData: task;
 }
 
 const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
@@ -24,7 +24,7 @@ const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     link,
     percentCompleted,
     handleTaskStatusUpdate,
-    taskDetailsData, // Pass the entire task object
+    taskDetailsData,
 }) => {
     return (
         <div className={styles['sub_details_grid_container']}>
@@ -37,15 +37,13 @@ const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
                     oldProgress={percentCompleted}
                 />
             ) : (
-                <>
-                    <Details detailType={'Status'} value={status} />
-                    <ProgressContainer
-                        content={taskDetailsData}
-                        key={percentCompleted}
-                    />
-                </>
+                <Details detailType={'Status'} value={status} />
             )}
             <Details detailType={'Link'} value={link} />
+            <ProgressContainer
+                content={taskDetailsData}
+                key={percentCompleted}
+            />
         </div>
     );
 };

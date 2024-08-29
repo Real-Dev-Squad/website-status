@@ -38,7 +38,6 @@ const TaskDates: React.FC<TaskDatesProps> = ({
             : null;
     };
 
-    // Convert endsOn to a readable string format before displaying
     const formattedEndsOn = endsOn ? convertTimeStamp(endsOn) : 'TBD';
 
     return (
@@ -47,7 +46,7 @@ const TaskDates: React.FC<TaskDatesProps> = ({
             <div className={styles.inputContainer}>
                 <Details
                     detailType={'Ends On'}
-                    value={formattedEndsOn} // Display the formatted date
+                    value={formattedEndsOn}
                     url={getExtensionRequestLink(
                         taskId,
                         isExtensionRequestPending

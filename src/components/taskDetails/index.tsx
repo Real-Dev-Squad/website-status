@@ -26,6 +26,7 @@ import {
     ButtonProps,
     TextAreaProps,
 } from '@/interfaces/taskDetails.type';
+
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value } = props;
     return (
