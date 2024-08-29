@@ -22,7 +22,7 @@ const renderTaskHeader = (isEditing = false) => {
 };
 
 describe('TaskHeader Component', () => {
-    it('renders the task title correctly when not editing', () => {
+    it('should renders the task title correctly when not editing', () => {
         renderTaskHeader(false);
         expect(screen.getByText('Test Title')).toBeInTheDocument();
         expect(
@@ -30,7 +30,7 @@ describe('TaskHeader Component', () => {
         ).toBeInTheDocument();
     });
 
-    it('renders textarea for title when in editing mode', () => {
+    it('should renders textarea for title when in editing mode', () => {
         renderTaskHeader(true);
         expect(screen.getByTestId('title-textarea')).toBeInTheDocument();
         expect(
@@ -41,19 +41,19 @@ describe('TaskHeader Component', () => {
         ).toBeInTheDocument();
     });
 
-    it('calls setIsEditing with true when Edit button is clicked', () => {
+    it('should calls setIsEditing with true when Edit button is clicked', () => {
         renderTaskHeader(false);
         fireEvent.click(screen.getByRole('button', { name: 'Edit' }));
         expect(mockSetIsEditing).toHaveBeenCalledWith(true);
     });
 
-    it('calls onSave when Save button is clicked', () => {
+    it('should calls onSave when Save button is clicked', () => {
         renderTaskHeader(true);
         fireEvent.click(screen.getByRole('button', { name: 'Save' }));
         expect(mockOnSave).toHaveBeenCalled();
     });
 
-    it('calls onCancel when Cancel button is clicked', () => {
+    it('should calls onCancel when Cancel button is clicked', () => {
         renderTaskHeader(true);
         fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
         expect(mockOnCancel).toHaveBeenCalled();
