@@ -1,4 +1,3 @@
-// src/components/taskDetails/TaskDescription.tsx
 import React from 'react';
 import { Textarea } from './index';
 import styles from './task-details.module.scss';
