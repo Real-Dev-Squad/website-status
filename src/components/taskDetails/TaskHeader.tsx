@@ -12,7 +12,7 @@ interface TaskHeaderProps {
     isUserAuthorized: boolean;
 }
 
-const TaskHeader: React.FC<TaskHeaderProps> = ({
+export const TaskHeader: React.FC<TaskHeaderProps> = ({
     isEditing,
     setIsEditing,
     onSave,
@@ -54,4 +54,4 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
     );
 };
 
-export default React.memo(TaskHeader);
+export default TaskHeader;

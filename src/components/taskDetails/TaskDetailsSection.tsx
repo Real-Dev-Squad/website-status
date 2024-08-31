@@ -16,7 +16,7 @@ interface TaskDetailsSectionProps {
     taskDetailsData: task;
 }
 
-const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
+export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     isEditing,
     type,
     priority,
@@ -48,4 +48,4 @@ const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     );
 };
 
-export default React.memo(TaskDetailsSection);
+export default TaskDetailsSection;

@@ -8,7 +8,7 @@ interface TaskDescriptionProps {
     handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const TaskDescription: React.FC<TaskDescriptionProps> = ({
+export const TaskDescription: React.FC<TaskDescriptionProps> = ({
     isEditing,
     purpose,
     handleChange,
@@ -32,4 +32,4 @@ const TaskDescription: React.FC<TaskDescriptionProps> = ({
     );
 };
 
-export default React.memo(TaskDescription);
+export default TaskDescription;
