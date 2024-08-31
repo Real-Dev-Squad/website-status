@@ -23,4 +23,4 @@ const TaskDependencies: React.FC<TaskDependenciesProps> = ({
     );
 };
 
-export default React.memo(TaskDependencies);
+export default TaskDependencies;
