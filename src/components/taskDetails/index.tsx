@@ -94,7 +94,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         setShowSuggestion(Boolean(e.target.value));
-        setEditedTaskDetails((prev: any) => ({
+        setEditedTaskDetails((prev) => ({
             ...prev,
             assignee: e.target.value,
         }));
@@ -103,7 +103,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         inputRef.current?.focus();
         setAssigneeName(userName);
         setShowSuggestion(false);
-        setEditedTaskDetails((prev: any) => ({ ...prev, assignee: userName }));
+        setEditedTaskDetails((prev) => ({ ...prev, assignee: userName }));
     };
     const handleTaskStatusUpdate = ({
         newStatus,
@@ -115,7 +115,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
-        setEditedTaskDetails((prev: any) => ({
+        setEditedTaskDetails((prev) => ({
             ...prev,
             ...payload,
         }));
@@ -177,7 +177,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     ) {
         const { name, value } = event.target;
 
-        setEditedTaskDetails((prevState: any) => ({
+        setEditedTaskDetails((prevState) => ({
             ...prevState!,
             ...(prevState
                 ? { [name]: name === 'dependsOn' ? [value] : value }
@@ -213,7 +213,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
 
         if (endsOn > 0) {
-            setEditedTaskDetails((prev: any) => ({
+            setEditedTaskDetails((prev) => ({
                 ...prev,
                 endsOn,
             }));
