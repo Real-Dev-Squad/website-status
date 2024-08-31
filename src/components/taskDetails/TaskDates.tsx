@@ -27,33 +27,26 @@ const TaskDates: React.FC<TaskDatesProps> = ({
     isExtensionRequestPending,
     taskId,
 }) => {
-    const getExtensionRequestLink = (
-        taskId: string,
-        isExtensionRequestPending?: boolean
-    ) => {
-        return isExtensionRequestPending
-            ? `${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
-                  `taskId:${taskId},status:PENDING`
-              )}`
-            : null;
-    };
-
     const formattedEndsOn = endsOn ? convertTimeStamp(endsOn) : 'TBD';
 
     return (
         <>
             <div className={styles.inputContainer}>
-                <Details detailType={'Started On'} value={startedOn} />
+                <Details detailType="Started On" value={startedOn} />
             </div>
             <div className={styles.inputContainer}>
-                <Details
-                    detailType={'Ends On'}
-                    value={formattedEndsOn}
-                    url={getExtensionRequestLink(
-                        taskId,
-                        isExtensionRequestPending
-                    )}
-                />
+                {isExtensionRequestPending && (
+                    <Details
+                        detailType="Ends On"
+                        value={formattedEndsOn}
+                        url={`${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
+                            `taskId:${taskId},status:PENDING`
+                        )}`}
+                    />
+                )}
+                {!isExtensionRequestPending && (
+                    <Details detailType="Ends On" value={formattedEndsOn} />
+                )}
                 {isEditing && isUserAuthorized && (
                     <input
                         id="endsOnTaskDetails"
