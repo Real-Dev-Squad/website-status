@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { setupServer } from 'msw/node';
 import { failedPostStandup } from '../../../../__mocks__/handlers/standup.handler';
 import handlers from '../../../../__mocks__/handlers';
+import { cleanup } from '@testing-library/react';
 
 const server = setupServer(...handlers);
 
@@ -15,6 +16,9 @@ describe('FormComponent', () => {
         server.listen();
     });
     afterEach(() => {
+        cleanup();
+        jest.clearAllMocks();
+        jest.resetModules();
         server.resetHandlers();
     });
     afterAll(() => {
@@ -24,11 +28,7 @@ describe('FormComponent', () => {
     test('should be able to submit the standup form', async () => {
         const { container } = renderWithRouter(
             <Provider store={store()}>
-                <FormInputComponent
-                    setIsFormVisible={() => {
-                        true;
-                    }}
-                />
+                <FormInputComponent />
                 <ToastContainer />
             </Provider>,
             {
@@ -75,11 +75,7 @@ describe('FormComponent', () => {
         server.use(failedPostStandup);
         const { container } = renderWithRouter(
             <Provider store={store()}>
-                <FormInputComponent
-                    setIsFormVisible={() => {
-                        true;
-                    }}
-                />
+                <FormInputComponent />
                 <ToastContainer />
             </Provider>,
             {
@@ -118,5 +114,36 @@ describe('FormComponent', () => {
                 )
             ).toBeInTheDocument()
         );
+    });
+    test('should disable the submit button after first click', async () => {
+        const { container } = renderWithRouter(
+            <Provider store={store()}>
+                <FormInputComponent />
+                <ToastContainer />
+            </Provider>,
+            {
+                asPath: '/standup',
+                replace: jest.fn(),
+            }
+        );
+
+        const YesterdayInptutField = screen.getByTestId('Yesterday0');
+        fireEvent.change(YesterdayInptutField, {
+            target: { value: 'Working on a backend Go project1' },
+        });
+
+        const todayInputField = screen.getByTestId('Today0');
+        fireEvent.change(todayInputField, {
+            target: { value: 'Working on a live-site project' },
+        });
+
+        const BlockerInputField = screen.getByTestId('Blocker0');
+        fireEvent.change(BlockerInputField, {
+            target: { value: 'None' },
+        });
+        const submitButton = container.getElementsByClassName('submitButton');
+        expect(submitButton[0]).not.toBeDisabled();
+        fireEvent.submit(screen.getByRole('form'));
+        expect(submitButton[0]).toBeDisabled();
     });
 });

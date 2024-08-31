@@ -22,24 +22,23 @@ export const useFilterSuggestion = ({
     activeFilterSuggestionDropdownIndex,
     setActiveFilterSuggestionDropdownIndex,
 }: Props) => {
-    const { data: searchedUsers } = useGetUsersByUsernameQuery(
+    const { key: typedKey, value: typedValue } = getUserInput();
+    const { data: userSearchResponse } = useGetUsersByUsernameQuery(
         {
-            searchString: defferedUserInput,
+            searchString: typedValue,
         },
         {
-            skip: defferedUserInput.length < 3,
+            // skip if typed key is not ['', 'assignee'] or if typed value is less than 3
+            skip: typedValue.length < 3 || !['', 'assignee'].includes(typedKey),
         }
     );
-    const assigneeSuggestions =
-        searchedUsers?.users?.map((user) => ({
-            assignee: user.username || user.github_display_name,
-        })) || [];
+
     const filterSuggestions = [
-        ...assigneeSuggestions,
-        ...getFilterSuggestions(),
+        ...getLocalSuggestions(),
+        ...getAssigneeSuggestions(),
     ];
 
-    function getFilterSuggestions() {
+    function getUserInput() {
         let userInput;
         if (
             onEditSelectedFilterIndex === false &&
@@ -52,7 +51,10 @@ export const useFilterSuggestion = ({
         ) {
             userInput = defferedPillValue;
         } else {
-            return [];
+            return {
+                key: '',
+                value: '',
+            };
         }
 
         userInput = userInput.trimStart();
@@ -64,12 +66,48 @@ export const useFilterSuggestion = ({
                 key = potentialKey.trim();
                 userInput = values.join(':').trimStart();
             }
-        }
-        if (userInput.length > 2) {
-            const result = generateSuggestions(
-                userInput,
-                selectedFilters,
+
+            return {
                 key,
+                value: userInput,
+            };
+        }
+
+        return {
+            key: '',
+            value: userInput,
+        };
+    }
+
+    function getAssigneeSuggestions() {
+        const serializedUserSuggestion =
+            userSearchResponse?.users?.map((user) => ({
+                assignee: user.username || user.github_display_name,
+            })) || [];
+
+        function removeSelectedUsersFromSuggestions(
+            suggestions: { assignee: string }[]
+        ) {
+            return suggestions.filter((suggestion) => {
+                // Return false if the suggestion is in selectedFilters
+                return !selectedFilters.some(
+                    (filter) => filter.assignee === suggestion.assignee
+                );
+            });
+        }
+
+        const result = removeSelectedUsersFromSuggestions(
+            serializedUserSuggestion
+        );
+        return result;
+    }
+
+    function getLocalSuggestions() {
+        if (typedValue.length > 2) {
+            const result = generateSuggestions(
+                typedValue,
+                selectedFilters,
+                typedKey,
                 onEditSelectedFilterIndex
             );
 

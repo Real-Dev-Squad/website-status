@@ -6,7 +6,6 @@ import fetch from '@/helperFunctions/fetch';
 import { IssueCardProps } from '@/interfaces/issueProps.type';
 import { TASKS_URL } from '../../constants/url';
 import useUserData from '@/hooks/useUserData';
-import { useRouter } from 'next/router';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { TASK_REQUEST_TYPES } from '@/constants/tasks';
 import { FEATURE } from '@/constants/task-type';
@@ -97,7 +96,17 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
     };
 
     const handleCreateTaskRequest = async (data: TaskRequestData) => {
-        const requestData = {
+        interface RequestData {
+            externalIssueUrl: string;
+            externalIssueHtmlUrl: string;
+            userId: string | undefined;
+            requestType: string;
+            proposedStartDate: string | number;
+            proposedDeadline: string | number;
+            description: string | undefined;
+            markdownEnabled?: boolean; // Optional property
+        }
+        const requestData: RequestData = {
             externalIssueUrl: issue.url,
             externalIssueHtmlUrl: issue.html_url,
             userId: userData?.id,
@@ -105,6 +114,7 @@ const Card: FC<IssueCardProps> = ({ issue }) => {
             proposedStartDate: data.startedOn,
             proposedDeadline: data.endsOn,
             description: data.description,
+            markdownEnabled: true,
         };
         if (!requestData.description) delete requestData.description;
         try {

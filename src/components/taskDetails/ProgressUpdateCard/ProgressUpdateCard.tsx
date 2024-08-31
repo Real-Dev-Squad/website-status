@@ -15,9 +15,9 @@ export default memo(function ProgressUpdateCard({
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
     const titleToShow = readMoreTitle;
-    const fullDate = momentDate.format('DD-MM-YY');
-    const time = momentDate.format('hh:mmA');
-    const tooltipString = `Updated at ${fullDate}, ${time}`;
+    const fullDate = momentDate.format('dddd, MMMM DD, YYYY, hh:mm A [GMT] Z');
+
+    const tooltipString = `Updated at ${fullDate}`;
     const [isExpanded, setIsExpanded] = useState(false);
 
     const dataToShow = [

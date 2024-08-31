@@ -54,6 +54,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         assignee: apiQueryAssignees,
         title: queryTitle,
         nextTasks,
+        dev,
     });
 
     const fetchMoreTasks = () => {

@@ -170,3 +170,26 @@
         flex-wrap: wrap;
     }
 }
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.inputField {
+    width: auto;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+}
+
+.assigneeSuggestionInput {
+    position: relative;
+}
+
+.extensionLink {
+    margin-top: 0.5rem;
+    display: block;
+    color: $theme-primary;
+}
