@@ -54,4 +54,4 @@ const TaskHeader: React.FC<TaskHeaderProps> = ({
     );
 };
 
-export default React.memo(TaskHeader);
+export default TaskHeader;

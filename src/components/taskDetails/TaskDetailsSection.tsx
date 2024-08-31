@@ -48,4 +48,4 @@ const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     );
 };
 
-export default React.memo(TaskDetailsSection);
+export default TaskDetailsSection;

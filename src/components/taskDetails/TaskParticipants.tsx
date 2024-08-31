@@ -54,4 +54,4 @@ const TaskParticipants: React.FC<TaskParticipantsProps> = ({
     );
 };
 
-export default React.memo(TaskParticipants);
+export default TaskParticipants;

@@ -32,4 +32,4 @@ const TaskDescription: React.FC<TaskDescriptionProps> = ({
     );
 };
 
-export default React.memo(TaskDescription);
+export default TaskDescription;

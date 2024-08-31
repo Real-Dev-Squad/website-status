@@ -14,4 +14,4 @@ const TaskProgress: React.FC<TaskProgressProps> = ({ taskProgress }) => {
     );
 };
 
-export default React.memo(TaskProgress);
+export default TaskProgress;

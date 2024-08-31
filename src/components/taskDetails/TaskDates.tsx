@@ -71,4 +71,4 @@ const TaskDates: React.FC<TaskDatesProps> = ({
     );
 };
 
-export default React.memo(TaskDates);
+export default TaskDates;
