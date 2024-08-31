@@ -12,7 +12,7 @@ interface TaskParticipantsProps {
     setShowSuggestion: (show: boolean) => void;
 }
 
-const TaskParticipants: React.FC<TaskParticipantsProps> = ({
+export const TaskParticipants: React.FC<TaskParticipantsProps> = ({
     isEditing,
     isUserAuthorized,
     assigneeName,

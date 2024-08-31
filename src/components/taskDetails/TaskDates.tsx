@@ -16,7 +16,7 @@ interface TaskDatesProps {
     taskId: string;
 }
 
-const TaskDates: React.FC<TaskDatesProps> = ({
+export const TaskDates: React.FC<TaskDatesProps> = ({
     isEditing,
     isUserAuthorized,
     startedOn,

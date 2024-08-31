@@ -6,7 +6,7 @@ interface TaskProgressProps {
     taskProgress: ProgressDetailsData[];
 }
 
-const TaskProgress: React.FC<TaskProgressProps> = ({ taskProgress }) => {
+export const TaskProgress: React.FC<TaskProgressProps> = ({ taskProgress }) => {
     return (
         <div>
             <Progress taskProgress={taskProgress} />

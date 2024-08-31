@@ -7,7 +7,7 @@ interface TaskDependenciesProps {
     setEditedTaskDetails: (taskDetails: any) => void;
 }
 
-const TaskDependencies: React.FC<TaskDependenciesProps> = ({
+export const TaskDependencies: React.FC<TaskDependenciesProps> = ({
     isEditing,
     taskDependencyIds,
     setEditedTaskDetails,

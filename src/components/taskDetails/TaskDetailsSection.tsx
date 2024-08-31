@@ -16,7 +16,7 @@ interface TaskDetailsSectionProps {
     taskDetailsData: task;
 }
 
-const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
+export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     isEditing,
     type,
     priority,

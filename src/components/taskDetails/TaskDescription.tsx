@@ -8,7 +8,7 @@ interface TaskDescriptionProps {
     handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const TaskDescription: React.FC<TaskDescriptionProps> = ({
+export const TaskDescription: React.FC<TaskDescriptionProps> = ({
     isEditing,
     purpose,
     handleChange,
