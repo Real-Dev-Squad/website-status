@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import TaskDetailsSection from '@/components/taskDetails/TaskDetailsSection';
+import { TaskDetailsSection } from '@/components/taskDetails/TaskDetailsSection';
 import '@testing-library/jest-dom/extend-expect';
 import { TASK } from '../../../../__mocks__/db/tasks';
 import { useRouter } from 'next/router';

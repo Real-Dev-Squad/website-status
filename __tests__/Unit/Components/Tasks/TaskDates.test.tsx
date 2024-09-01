@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import TaskDates from '@/components/taskDetails/TaskDates';
+import { TaskDates } from '@/components/taskDetails/TaskDates';
 
 const mockSetNewEndOnDate = jest.fn();
 const mockHandleBlurOfEndsOn = jest.fn();

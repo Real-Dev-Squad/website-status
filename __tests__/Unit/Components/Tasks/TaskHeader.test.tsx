@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import TaskHeader from '@/components/taskDetails/TaskHeader';
+import { TaskHeader } from '@/components/taskDetails/TaskHeader';
 import { ButtonProps } from '@/interfaces/taskDetails.type';
 
 const mockSetIsEditing = jest.fn();

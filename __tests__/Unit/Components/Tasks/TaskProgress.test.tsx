@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import TaskProgress from '@/components/taskDetails/TaskProgress';
+import { TaskProgress } from '@/components/taskDetails/TaskProgress';
 import { ProgressDetailsData } from '@/types/standup.type';
 
 const taskProgress: ProgressDetailsData[] = [

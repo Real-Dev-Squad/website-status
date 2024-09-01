@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import TaskDescription from '@/components/taskDetails/TaskDescription';
+import { TaskDescription } from '@/components/taskDetails/TaskDescription';
 
 const mockHandleChange = jest.fn();
 

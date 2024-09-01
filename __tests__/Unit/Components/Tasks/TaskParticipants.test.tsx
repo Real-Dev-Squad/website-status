@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import TaskParticipants from '@/components/taskDetails/TaskParticipants';
+import { TaskParticipants } from '@/components/taskDetails/TaskParticipants';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 
