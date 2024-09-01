@@ -15,12 +15,12 @@ import { TaskDescription } from './TaskDescription';
 import { TaskDetailsSection } from './TaskDetailsSection';
 import { TaskParticipants } from './TaskParticipants';
 import { TaskDates } from './TaskDates';
-import { TaskDependencies } from './TaskDependencies';
-import { TaskProgress } from './TaskProgress';
 import TaskContainer from './TaskContainer';
 import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 import { ProgressDetailsData } from '@/types/standup.type';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
+import Progress from '../ProgressCard';
+import TaskDependency from '@/components/taskDetails/taskDependency';
 import {
     taskDetailsDataType,
     ButtonProps,
@@ -263,14 +263,16 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     taskDetailsData={taskDetailsData}
                                 />
                             </TaskContainer>
-                            <TaskProgress taskProgress={taskProgress} />
+                            <TaskContainer title="Task Progress" hasImg={false}>
+                                <Progress taskProgress={taskProgress} />
+                            </TaskContainer>
                             <TaskContainer
                                 title="Task Dependencies"
                                 hasImg={false}
                             >
-                                <TaskDependencies
-                                    isEditing={isEditing}
+                                <TaskDependency
                                     taskDependencyIds={taskDependencyIds}
+                                    isEditing={isEditing}
                                     setEditedTaskDetails={setEditedTaskDetails}
                                 />
                             </TaskContainer>
