@@ -22,5 +22,3 @@ export const TaskDependencies: React.FC<TaskDependenciesProps> = ({
         </div>
     );
 };
-
-export default TaskDependencies;

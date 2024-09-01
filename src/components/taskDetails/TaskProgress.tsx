@@ -13,5 +13,3 @@ export const TaskProgress: React.FC<TaskProgressProps> = ({ taskProgress }) => {
         </div>
     );
 };
-
-export default TaskProgress;

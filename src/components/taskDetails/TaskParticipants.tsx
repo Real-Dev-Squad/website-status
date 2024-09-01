@@ -53,5 +53,3 @@ export const TaskParticipants: React.FC<TaskParticipantsProps> = ({
         </>
     );
 };
-
-export default TaskParticipants;
