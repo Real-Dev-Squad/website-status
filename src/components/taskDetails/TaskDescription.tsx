@@ -31,5 +31,3 @@ export const TaskDescription: React.FC<TaskDescriptionProps> = ({
         </div>
     );
 };
-
-export default TaskDescription;

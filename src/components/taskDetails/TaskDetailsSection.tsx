@@ -47,5 +47,3 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
         </div>
     );
 };
-
-export default TaskDetailsSection;

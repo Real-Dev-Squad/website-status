@@ -63,5 +63,3 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
         </>
     );
 };
-
-export default TaskDates;

@@ -53,5 +53,3 @@ export const TaskHeader: React.FC<TaskHeaderProps> = ({
         </div>
     );
 };
-
-export default TaskHeader;
