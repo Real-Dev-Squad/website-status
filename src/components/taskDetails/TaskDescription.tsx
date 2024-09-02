@@ -13,21 +13,21 @@ export const TaskDescription: React.FC<TaskDescriptionProps> = ({
     purpose,
     handleChange,
 }) => {
+    if (isEditing) {
+        return (
+            <Textarea
+                name="purpose"
+                value={purpose}
+                onChange={handleChange}
+                testId="purpose-textarea"
+                placeholder="Enter task description"
+            />
+        );
+    }
+
     return (
-        <div>
-            {isEditing ? (
-                <Textarea
-                    name="purpose"
-                    value={purpose}
-                    onChange={handleChange}
-                    testId="purpose-textarea"
-                    placeholder="Enter task description"
-                />
-            ) : (
-                <p className={styles.taskDescription}>
-                    {purpose || 'No description available'}
-                </p>
-            )}
-        </div>
+        <p className={styles.taskDescription}>
+            {purpose || 'No description available'}
+        </p>
     );
 };

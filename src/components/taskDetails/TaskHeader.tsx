@@ -21,9 +21,9 @@ export const TaskHeader: React.FC<TaskHeaderProps> = ({
     handleChange,
     isUserAuthorized,
 }) => {
-    return (
-        <div className={styles.titleContainer}>
-            {isEditing ? (
+    if (isEditing) {
+        return (
+            <div className={styles.titleContainer}>
                 <Textarea
                     name="title"
                     value={title}
@@ -31,24 +31,26 @@ export const TaskHeader: React.FC<TaskHeaderProps> = ({
                     testId="title-textarea"
                     placeholder="Enter task title"
                 />
-            ) : (
-                <span data-testid="task-title" className={styles.taskTitle}>
-                    {title}
-                </span>
-            )}
-            {!isEditing && isUserAuthorized && (
+                <div className={styles.editMode}>
+                    <Button buttonName="Cancel" clickHandler={onCancel} />
+                    <Button buttonName="Save" clickHandler={onSave} />
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className={styles.titleContainer}>
+            <span data-testid="task-title" className={styles.taskTitle}>
+                {title}
+            </span>
+            {isUserAuthorized && (
                 <Button
                     buttonName="Edit"
                     clickHandler={setIsEditing}
                     value={true}
                     className={styles.editButton}
                 />
-            )}
-            {isEditing && (
-                <div className={styles.editMode}>
-                    <Button buttonName="Cancel" clickHandler={onCancel} />
-                    <Button buttonName="Save" clickHandler={onSave} />
-                </div>
             )}
         </div>
     );
