@@ -263,7 +263,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     taskDetailsData={taskDetailsData}
                                 />
                             </TaskContainer>
-                            <TaskContainer title="Task Progress" hasImg={false}>
+                            <TaskContainer title="" hasImg={false}>
                                 <Progress taskProgress={taskProgress} />
                             </TaskContainer>
                             <TaskContainer
