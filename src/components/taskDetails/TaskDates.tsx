@@ -32,12 +32,15 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
     return (
         <>
             <div className={styles.inputContainer}>
-                <Details detailType="Started On" value={startedOn} />
+                <Details
+                    detailType="startedOn"
+                    value={'3/30/2024, 11:20:00 AM'}
+                />
             </div>
             <div className={styles.inputContainer}>
                 {isExtensionRequestPending && (
                     <Details
-                        detailType="Ends On"
+                        detailType="endsOn"
                         value={formattedEndsOn}
                         url={`${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
                             `taskId:${taskId},status:PENDING`
@@ -45,7 +48,7 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
                     />
                 )}
                 {!isExtensionRequestPending && (
-                    <Details detailType="Ends On" value={formattedEndsOn} />
+                    <Details detailType="endsOn" value={formattedEndsOn} />
                 )}
                 {isEditing && isUserAuthorized && (
                     <input

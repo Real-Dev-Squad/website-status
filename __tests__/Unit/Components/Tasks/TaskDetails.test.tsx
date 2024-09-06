@@ -194,13 +194,15 @@ describe('TaskDetails Page', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Details
-                    detailType={'StartedOn'}
+                    detailType={'startedOn'}
                     value={'3/30/2024, 11:20:00 AM'}
                 />
             </Provider>
         );
 
-        const dateElements = screen.queryAllByText('3/30/2024, 11:20:00 AM');
+        const dateElements = screen.queryAllByText(
+            'Saturday, Mar 30, 2024, 11:20 AM GMT +05:30'
+        );
         expect(dateElements.length).toBeGreaterThan(0);
     });
 
@@ -228,11 +230,13 @@ describe('TaskDetails Page', () => {
 it('Renders Task Ends-on Date', async () => {
     const { getAllByText } = renderWithRouter(
         <Provider store={store()}>
-            <Details detailType={'EndsOn'} value={'4/19/2021, 12:00:10 AM'} />
+            <Details detailType={'endsOn'} value={'4/19/2021, 12:00:10 AM'} />
         </Provider>
     );
     await waitFor(() => {
-        const dateElements = getAllByText('4/19/2021, 12:00:10 AM');
+        const dateElements = getAllByText(
+            'Monday, Apr 19, 2021, 12:00 AM GMT +05:30'
+        );
         expect(dateElements.length).toBeGreaterThan(0);
     });
 });
@@ -241,7 +245,7 @@ it('Does not render Extension Request icon when URL not available', async () => 
     const { queryByTestId } = render(
         <Provider store={store()}>
             <Details
-                detailType={'Ends On'}
+                detailType={'endsOn'}
                 value={'4/19/2021, 12:00:10 AM'}
                 url={null}
             />
@@ -638,7 +642,7 @@ describe('Details component', () => {
     });
 
     it('Does not display tooltip on hover when timestamp is not provided', async () => {
-        render(<Details detailType="Started On" value="N/A" />);
+        render(<Details detailType="startedOn" value="N/A" />);
         const detailValue = screen.getByText('Started:');
         fireEvent.mouseOver(detailValue);
         const tooltip = screen.queryByText('N/A', { selector: '.tooltip' });
@@ -647,7 +651,7 @@ describe('Details component', () => {
 
     it('Renders an extension request icon for Ends On with URL', () => {
         const url = 'https://example.com';
-        renderWithRouter(<Details detailType="Ends On" url={url} />);
+        renderWithRouter(<Details detailType="endsOn" url={url} />);
         const extensionRequestIcon = screen.getByTestId(
             'extension-request-icon'
         );
@@ -656,7 +660,7 @@ describe('Details component', () => {
     });
 
     it('Does not render an extension request icon for Ends On without URL', () => {
-        renderWithRouter(<Details detailType="Ends On" />);
+        renderWithRouter(<Details detailType="endsOn" />);
         const extensionRequestIcon = screen.queryByTestId(
             'extension-request-icon'
         );
@@ -669,7 +673,7 @@ describe('Details component', () => {
             startedOn: '1707869428.523',
         };
         renderWithRouter(
-            <Details detailType="Started On" value={task.startedOn} />
+            <Details detailType="startedOn" value={task.startedOn} />
         );
         try {
             const detailTypeElement = screen.getByText('Started:');

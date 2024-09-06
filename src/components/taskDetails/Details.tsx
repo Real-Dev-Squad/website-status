@@ -53,13 +53,12 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         setTooltipActive((prev) => !prev);
     };
 
-    const isTimeDetail =
-        detailType === 'Started On' || detailType === 'Ends On';
+    const isTimeDetail = detailType === 'startedOn' || detailType === 'endsOn';
 
     const formattedDetailType =
-        detailType === 'Started On'
+        detailType === 'startedOn'
             ? 'Started'
-            : detailType === 'Ends On'
+            : detailType === 'endsOn'
             ? 'Ended'
             : detailType;
 
@@ -97,7 +96,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                 )}
             </span>
             <span>
-                {detailType === 'Ends On' && url && (
+                {detailType === 'endsOn' && url && (
                     <Link
                         href={url}
                         target="_blank"
