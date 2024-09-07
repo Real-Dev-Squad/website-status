@@ -10,6 +10,7 @@ export type ButtonProps = {
     buttonName: string;
     clickHandler: (value: boolean) => void;
     value?: boolean;
+    className?: string;
 };
 export type TextAreaProps = {
     name: string;
