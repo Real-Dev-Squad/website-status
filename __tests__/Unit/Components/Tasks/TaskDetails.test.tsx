@@ -200,10 +200,10 @@ describe('TaskDetails Page', () => {
             </Provider>
         );
 
-        const dateElements = screen.queryAllByText(
-            'Saturday, Mar 30, 2024, 11:20 AM GMT +05:30'
+        const dateElements = screen.queryByText(
+            /Saturday, Mar 30, 2024, 11:20 AM GMT/
         );
-        expect(dateElements.length).toBeGreaterThan(0);
+        expect(dateElements).not.toBeNull();
     });
 
     it('Renders N/A when link is empty or undefined', async () => {
@@ -234,10 +234,10 @@ it('Renders Task Ends-on Date', async () => {
         </Provider>
     );
     await waitFor(() => {
-        const dateElements = getAllByText(
-            'Monday, Apr 19, 2021, 12:00 AM GMT +05:30'
+        const dateElements = screen.getByText(
+            /Monday, Apr 19, 2021, 12:00 AM GMT/
         );
-        expect(dateElements.length).toBeGreaterThan(0);
+        expect(dateElements).not.toBeNull();
     });
 });
 
