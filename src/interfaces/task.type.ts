@@ -150,7 +150,7 @@ export type CardTaskDetails = task & {
     savingText: string;
 };
 
-export const depreciatedTaskStatus = ['AVAILABLE', 'COMPLETED'];
+export const depreciatedTaskStatus = ['AVAILABLE'];
 export const newTaskStatus = ['UNASSIGNED', 'DONE'];
 
 export type taskStatusUpdateHandleProp = {

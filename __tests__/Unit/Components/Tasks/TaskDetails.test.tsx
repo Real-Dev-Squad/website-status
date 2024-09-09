@@ -1,13 +1,4 @@
-import {
-    fireEvent,
-    queryByText,
-    render,
-    screen,
-    waitFor,
-    queryAllByText,
-    act,
-} from '@testing-library/react';
-import { Router, useRouter } from 'next/router';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import TaskDetails, { Button, Textarea } from '@/components/taskDetails';
 import TaskContainer from '@/components/taskDetails/TaskContainer';
 import task from '@/interfaces/task.type';
@@ -21,15 +12,14 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
 import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
-import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-request.handler';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
-import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
     extension_request_url:
         'https://dashboard.realdevsquad.com/extension-requests?order=asc&q=taskId%3AzlwjJzKbGpqCoCTZMZQy',
+    completedTaskID: '12345',
 };
 
 const server = setupServer(...handlers);
@@ -223,6 +213,33 @@ describe('TaskDetails Page', () => {
         await waitFor(() => {
             expect(getByText('ankur')).toBeInTheDocument();
         });
+    });
+    it('Renders Task status Done when task status is Completed, when dev flag is on', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.completedTaskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            expect(getByText('Done')).toBeInTheDocument();
+        });
+    });
+    it('Renders Task status Done as selected when task status is Completed, when dev flag is on in edit mode', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.completedTaskID} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+        await waitFor(() => {
+            const editButton = screen.getByRole('button', { name: 'Edit' });
+            fireEvent.click(editButton);
+        });
+        const option: HTMLOptionElement = screen.getByTestId(
+            'task-status-DONE'
+        ) as HTMLOptionElement;
+        expect(option.selected).toBeTruthy();
     });
 });
 it('Renders Task Ends-on Date', async () => {
