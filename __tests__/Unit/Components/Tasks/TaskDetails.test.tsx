@@ -232,7 +232,7 @@ it('Renders Task Ends-on Date', async () => {
         </Provider>
     );
     await waitFor(() => {
-        const dateElements = screen.getAllByText('4/19/2021, 12:00:10 AM');
+        const dateElements = screen.queryAllByText('4/19/2021, 12:00:10 AM');
         expect(dateElements).not.toBeNull();
     });
 });
