@@ -7,6 +7,7 @@ import setColor from './taskPriorityColors';
 import extractRepoName from '@/utils/extractRepoName';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
+import { STARTED_ON, ENDS_ON } from '@/constants/constants';
 
 type StringNumberOrUndefined = string | number | undefined;
 
@@ -53,12 +54,12 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
         setTooltipActive((prev) => !prev);
     };
 
-    const isTimeDetail = detailType === 'startedOn' || detailType === 'endsOn';
+    const isTimeDetail = detailType === STARTED_ON || detailType === ENDS_ON;
 
     const formattedDetailType =
-        detailType === 'startedOn'
+        detailType === STARTED_ON
             ? 'Started'
-            : detailType === 'endsOn'
+            : detailType === ENDS_ON
             ? 'Ended'
             : detailType;
 
@@ -96,7 +97,7 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
                 )}
             </span>
             <span>
-                {detailType === 'endsOn' && url && (
+                {detailType === ENDS_ON && url && (
                     <Link
                         href={url}
                         target="_blank"

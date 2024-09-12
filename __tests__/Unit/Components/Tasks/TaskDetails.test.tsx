@@ -25,6 +25,7 @@ import { taskRequestErrorHandler } from '../../../../__mocks__/handlers/task-req
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
+import { STARTED_ON, ENDS_ON } from '@/constants/constants';
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -194,7 +195,7 @@ describe('TaskDetails Page', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Details
-                    detailType={'startedOn'}
+                    detailType={STARTED_ON}
                     value={'3/30/2024, 11:20:00 AM'}
                 />
             </Provider>
@@ -230,7 +231,7 @@ describe('TaskDetails Page', () => {
 it('Renders Task Ends-on Date', async () => {
     const { getAllByText } = renderWithRouter(
         <Provider store={store()}>
-            <Details detailType={'endsOn'} value={'4/19/2021, 12:00:10 AM'} />
+            <Details detailType={ENDS_ON} value={'4/19/2021, 12:00:10 AM'} />
         </Provider>
     );
     await waitFor(() => {
@@ -245,7 +246,7 @@ it('Does not render Extension Request icon when URL not available', async () => 
     const { queryByTestId } = render(
         <Provider store={store()}>
             <Details
-                detailType={'endsOn'}
+                detailType={ENDS_ON}
                 value={'4/19/2021, 12:00:10 AM'}
                 url={null}
             />
@@ -642,7 +643,7 @@ describe('Details component', () => {
     });
 
     it('Does not display tooltip on hover when timestamp is not provided', async () => {
-        render(<Details detailType="startedOn" value="N/A" />);
+        render(<Details detailType={STARTED_ON} value="N/A" />);
         const detailValue = screen.getByText('Started:');
         fireEvent.mouseOver(detailValue);
         const tooltip = screen.queryByText('N/A', { selector: '.tooltip' });
@@ -651,7 +652,7 @@ describe('Details component', () => {
 
     it('Renders an extension request icon for Ends On with URL', () => {
         const url = 'https://example.com';
-        renderWithRouter(<Details detailType="endsOn" url={url} />);
+        renderWithRouter(<Details detailType={ENDS_ON} url={url} />);
         const extensionRequestIcon = screen.getByTestId(
             'extension-request-icon'
         );
@@ -660,7 +661,7 @@ describe('Details component', () => {
     });
 
     it('Does not render an extension request icon for Ends On without URL', () => {
-        renderWithRouter(<Details detailType="endsOn" />);
+        renderWithRouter(<Details detailType={ENDS_ON} />);
         const extensionRequestIcon = screen.queryByTestId(
             'extension-request-icon'
         );
@@ -673,7 +674,7 @@ describe('Details component', () => {
             startedOn: '1707869428.523',
         };
         renderWithRouter(
-            <Details detailType="startedOn" value={task.startedOn} />
+            <Details detailType={STARTED_ON} value={task.startedOn} />
         );
         try {
             const detailTypeElement = screen.getByText('Started:');
