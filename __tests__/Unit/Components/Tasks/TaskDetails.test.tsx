@@ -192,19 +192,18 @@ describe('TaskDetails Page', () => {
     });
 
     it('Renders Task Started-on Date', async () => {
+        const localFakeDate = '2024-03-30T05:50:00Z'; // UTC time for GMT +05:30
         renderWithRouter(
             <Provider store={store()}>
-                <Details
-                    detailType={STARTED_ON}
-                    value={'3/30/2024, 11:20:00 AM'}
-                />
+                <Details detailType={STARTED_ON} value={localFakeDate} />
             </Provider>
         );
-
-        const dateElements = screen.queryByText(
-            /Saturday, Mar 30, 2024, 11:20 AM GMT/
-        );
-        expect(dateElements).not.toBeNull();
+        await waitFor(() => {
+            const dateElements = screen.queryByText(
+                'Saturday, Mar 30, 2024, 11:20 AM GMT +05:30'
+            );
+            expect(dateElements).not.toBeNull();
+        });
     });
 
     it('Renders N/A when link is empty or undefined', async () => {
@@ -229,14 +228,15 @@ describe('TaskDetails Page', () => {
     });
 });
 it('Renders Task Ends-on Date', async () => {
+    const localFakeDate = '2021-04-18T18:30:00Z'; // UTC time equivalent to GMT +05:30
     const { getAllByText } = renderWithRouter(
         <Provider store={store()}>
-            <Details detailType={ENDS_ON} value={'4/19/2021, 12:00:10 AM'} />
+            <Details detailType={ENDS_ON} value={localFakeDate} />
         </Provider>
     );
     await waitFor(() => {
         const dateElements = screen.getByText(
-            /Monday, Apr 19, 2021, 12:00 AM GMT/
+            'Monday, Apr 19, 2021, 12:00 AM GMT +05:30'
         );
         expect(dateElements).not.toBeNull();
     });
