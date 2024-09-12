@@ -195,7 +195,7 @@ describe('TaskDetails Page', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Details
-                    detailType={'StartedOn'}
+                    detailType={STARTED_ON}
                     value={'3/30/2024, 11:20:00 AM'}
                 />
             </Provider>
@@ -214,20 +214,6 @@ describe('TaskDetails Page', () => {
             expect(element).toBeInTheDocument();
         });
     });
-    it('Renders Task Ends-on Date', async () => {
-        const { getAllByText } = renderWithRouter(
-            <Provider store={store()}>
-                <Details
-                    detailType={'EndsOn'}
-                    value={'4/19/2021, 12:00:10 AM'}
-                />
-            </Provider>
-        );
-        await waitFor(() => {
-            const dateElements = getAllByText('4/19/2021, 12:00:10 AM');
-            expect(dateElements.length).toBeGreaterThan(0);
-        });
-    });
     it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -239,7 +225,17 @@ describe('TaskDetails Page', () => {
         });
     });
 });
-
+it('Renders Task Ends-on Date', async () => {
+    const { getAllByText } = renderWithRouter(
+        <Provider store={store()}>
+            <Details detailType={ENDS_ON} value={'4/19/2021, 12:00:10 AM'} />
+        </Provider>
+    );
+    await waitFor(() => {
+        const dateElements = getAllByText('4/19/2021, 12:00:10 AM');
+        expect(dateElements.length).toBeGreaterThan(0);
+    });
+});
 it('Does not render Extension Request icon when URL not available', async () => {
     const { queryByTestId } = render(
         <Provider store={store()}>
