@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import moment from 'moment';
 import { FaReceipt } from 'react-icons/fa6';
 import Link from 'next/link';
@@ -7,13 +7,32 @@ import setColor from './taskPriorityColors';
 import extractRepoName from '@/utils/extractRepoName';
 import styles from './task-details.module.scss';
 import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
+import useUserData from '@/hooks/useUserData';
 
 type StringNumberOrUndefined = string | number | undefined;
 
-const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
+const Details: FC<TaskDetailsProps> = (props) => {
+    const { detailType, value, url, isEditing, setEditedTaskDetails } = props;
     const color = value ? setColor?.[value] : undefined;
     const isGitHubLink = detailType === 'Link';
     const gitHubIssueLink = isGitHubLink ? value : undefined;
+    const [newEndOnDate, setNewEndOnDate] = useState('');
+    const { isUserAuthorized } = useUserData();
+
+    useEffect(() => {
+        if (!isEditing) setNewEndOnDate('');
+    }, [isEditing]);
+
+    const handleBlurOfEndsOn = () => {
+        const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
+
+        if (endsOn > 0) {
+            setEditedTaskDetails?.((prev) => ({
+                ...prev,
+                endsOn,
+            }));
+        }
+    };
 
     const getRelativeTime = (timestamp: StringNumberOrUndefined): string => {
         return timestamp ? moment(timestamp).fromNow() : 'N/A';
@@ -68,34 +87,53 @@ const Details: FC<TaskDetailsProps> = ({ detailType, value, url }) => {
     return (
         <div className={styles.detailsContainer}>
             <span className={styles.detailType}>{formattedDetailType}:</span>
-            <span
-                className={styles.detailValue}
-                style={{ color: color ?? 'black' }}
-            >
-                {isGitHubLink && value ? (
-                    <a
-                        className={styles.gitLink}
-                        href={gitHubIssueLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open GitHub Issue"
-                        title={value}
-                    >
-                        {isGitHubLink ? `${extractRepoName(value)}` : value}
-                    </a>
-                ) : isTimeDetail ? (
-                    <Tooltip
-                        content={formatDate(value)}
-                        tooltipPosition={{ top: '-3.6rem', right: '-4.5rem' }}
-                    >
-                        {tooltipActive
-                            ? formatDate(value)
-                            : getRelativeTime(value)}
-                    </Tooltip>
-                ) : (
-                    renderedValue
-                )}
-            </span>
+            {isEditing && isUserAuthorized ? (
+                <input
+                    id="endsOnTaskDetails"
+                    type="date"
+                    name="endsOn"
+                    onChange={(e) => setNewEndOnDate(e.target.value)}
+                    onBlur={handleBlurOfEndsOn}
+                    value={
+                        newEndOnDate ||
+                        new Date(value as string).toLocaleDateString('en-CA')
+                    }
+                    data-testid="endsOnTaskDetails"
+                    className={styles.inputField}
+                />
+            ) : (
+                <span
+                    className={styles.detailValue}
+                    style={{ color: color ?? 'black' }}
+                >
+                    {isGitHubLink && value ? (
+                        <a
+                            className={styles.gitLink}
+                            href={gitHubIssueLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Open GitHub Issue"
+                            title={value}
+                        >
+                            {isGitHubLink ? `${extractRepoName(value)}` : value}
+                        </a>
+                    ) : isTimeDetail ? (
+                        <Tooltip
+                            content={formatDate(value)}
+                            tooltipPosition={{
+                                top: '-3.6rem',
+                                right: '-4.5rem',
+                            }}
+                        >
+                            {tooltipActive
+                                ? formatDate(value)
+                                : getRelativeTime(value)}
+                        </Tooltip>
+                    ) : (
+                        renderedValue
+                    )}
+                </span>
+            )}
             <span>
                 {detailType === 'Ends On' && url && (
                     <Link

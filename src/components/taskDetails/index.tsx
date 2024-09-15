@@ -28,12 +28,13 @@ import {
 } from '@/interfaces/taskDetails.type';
 
 export function Button(props: ButtonProps) {
-    const { buttonName, clickHandler, value } = props;
+    const { buttonName, clickHandler, value, disabled } = props;
     return (
         <button
             type="button"
             className={styles['button']}
             onClick={() => clickHandler(value ?? true)}
+            disabled={disabled}
         >
             {buttonName}
         </button>
@@ -63,8 +64,8 @@ type Props = {
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
     const { isUserAuthorized } = useUserData();
-    const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
     const { data: extensionRequests } =
@@ -136,11 +137,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function onCancel() {
         setIsEditing(false);
         setEditedTaskDetails(taskDetailsData);
-        setNewEndOnDate('');
     }
     async function onSave() {
-        setIsEditing(false);
-        setNewEndOnDate('');
         const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
         for (const key in editedTaskDetails) {
             if (
@@ -163,13 +161,18 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             return;
         }
 
+        setLoading(true);
         await updateTaskDetails({
             editedDetails: updatedFields,
             taskID,
         })
             .unwrap()
             .then(() => toast(SUCCESS, 'Successfully saved'))
-            .catch((error) => toast(ERROR, error.data.message));
+            .catch((error) => toast(ERROR, error.data.message))
+            .finally(() => {
+                setIsEditing(false);
+                setLoading(false);
+            });
     }
 
     function handleChange(
@@ -209,17 +212,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     });
     const taskProgress: ProgressDetailsData[] = progressData?.data || [];
 
-    const handleBlurOfEndsOn = () => {
-        const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
-
-        if (endsOn > 0) {
-            setEditedTaskDetails((prev) => ({
-                ...prev,
-                endsOn,
-            }));
-        }
-    };
-
     return (
         <Layout hideHeader={true}>
             {renderLoadingComponent()}
@@ -233,6 +225,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         title={editedTaskDetails?.title}
                         handleChange={handleChange}
                         isUserAuthorized={isUserAuthorized}
+                        loading={loading}
                     />
 
                     <section className={styles.detailsContainer}>
@@ -299,14 +292,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <TaskDates
                                     isEditing={isEditing}
-                                    isUserAuthorized={isUserAuthorized}
                                     startedOn={getStartedOn(
                                         taskDetailsData?.startedOn
                                     )}
                                     endsOn={taskDetailsData?.endsOn || 0}
-                                    newEndOnDate={newEndOnDate}
-                                    setNewEndOnDate={setNewEndOnDate}
-                                    handleBlurOfEndsOn={handleBlurOfEndsOn}
+                                    setEditedTaskDetails={setEditedTaskDetails}
                                     isExtensionRequestPending={
                                         isExtensionRequestPending
                                     }
