@@ -33,10 +33,7 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
     return (
         <>
             <div className={styles.inputContainer}>
-                <Details
-                    detailType={STARTED_ON}
-                    value={'3/30/2024, 11:20:00 AM'}
-                />
+                <Details detailType={STARTED_ON} value={startedOn} />
             </div>
             <div className={styles.inputContainer}>
                 {isExtensionRequestPending && (
