@@ -2,6 +2,7 @@ import React from 'react';
 import Details from './Details';
 import styles from './task-details.module.scss';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
+import { STARTED_ON, ENDS_ON } from '@/constants/constants';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 
 interface TaskDatesProps {
@@ -32,12 +33,12 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
     return (
         <>
             <div className={styles.inputContainer}>
-                <Details detailType="Started On" value={startedOn} />
+                <Details detailType={STARTED_ON} value={startedOn} />
             </div>
             <div className={styles.inputContainer}>
                 {isExtensionRequestPending && (
                     <Details
-                        detailType="Ends On"
+                        detailType={ENDS_ON}
                         value={formattedEndsOn}
                         url={`${TASK_EXTENSION_REQUEST_URL}?&q=${encodeURIComponent(
                             `taskId:${taskId},status:PENDING`
@@ -45,7 +46,7 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
                     />
                 )}
                 {!isExtensionRequestPending && (
-                    <Details detailType="Ends On" value={formattedEndsOn} />
+                    <Details detailType={ENDS_ON} value={formattedEndsOn} />
                 )}
                 {isEditing && isUserAuthorized && (
                     <input
