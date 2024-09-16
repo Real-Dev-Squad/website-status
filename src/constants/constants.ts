@@ -49,3 +49,5 @@ export const MSG_ON_100_PROGRESS =
     'Proceeding further will make task progress 100%.';
 export const MSG_ON_0_PROGRESS =
     'Proceeding further will make task progress 0%.';
+export const STARTED_ON = 'STARTED_ON';
+export const ENDS_ON = 'ENDS_ON';
