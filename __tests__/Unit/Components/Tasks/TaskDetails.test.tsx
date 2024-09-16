@@ -305,13 +305,27 @@ test('should call onSave and reset state when clicked', async () => {
     await waitFor(() => {
         const editButton = screen.getByRole('button', { name: 'Edit' });
         fireEvent.click(editButton);
+        const input = screen.getByTestId(
+            'endsOnTaskDetails'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: '2024-04-15' } });
+        fireEvent.blur(input);
+        expect(input.value).toBe('2024-04-15');
+        const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
     });
 
     await waitFor(() => {
-        const saveButton = screen.getByRole('button', { name: 'Save' });
-        fireEvent.click(saveButton);
-        const editButton = screen.getByRole('button', { name: 'Edit' });
-        expect(editButton).toBeInTheDocument();
+        expect(
+            screen.getByRole('button', { name: 'Saving...' })
+        ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+        const editButtonAfterSave = screen.getByRole('button', {
+            name: 'Edit',
+        });
+        expect(editButtonAfterSave).toBeInTheDocument();
     });
 });
 
@@ -333,10 +347,10 @@ test('should update the title and description with the new values', async () => 
     fireEvent.change(textareaElement, {
         target: { name: 'title', value: 'New Title' },
     });
-    await waitFor(async () => {
+    waitFor(() => {
         const saveButton = screen.getByRole('button', { name: 'Save' });
         fireEvent.click(saveButton);
-        expect(await screen.findByText(/Successfully saved/i)).not.toBeNull();
+        expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
     });
 });
 test('should not update the title and description with the same values', async () => {
