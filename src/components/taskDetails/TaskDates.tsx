@@ -2,6 +2,7 @@ import React from 'react';
 import Details from './Details';
 import styles from './task-details.module.scss';
 import { TASK_EXTENSION_REQUEST_URL } from '@/constants/url';
+import { STARTED_ON, ENDS_ON } from '@/constants/constants';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import task from '@/interfaces/task.type';
 
@@ -32,11 +33,11 @@ export const TaskDates: React.FC<TaskDatesProps> = ({
     return (
         <>
             <div className={styles.inputContainer}>
-                <Details detailType="Started On" value={startedOn} />
+                <Details detailType={STARTED_ON} value={startedOn} />
             </div>
             <div className={styles.inputContainer}>
                 <Details
-                    detailType="Ends On"
+                    detailType={ENDS_ON}
                     value={formattedEndsOn}
                     url={url}
                     isEditing={isEditing}
