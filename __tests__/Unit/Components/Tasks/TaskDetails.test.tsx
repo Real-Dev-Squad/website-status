@@ -14,6 +14,9 @@ import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
 import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
+import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
+import { STARTED_ON, ENDS_ON } from '@/constants/constants';
+
 const details = {
     url: 'https://realdevsquad.com/tasks/6KhcLU3yr45dzjQIVm0J/details',
     taskID: '6KhcLU3yr45dzjQIVm0J',
@@ -184,14 +187,14 @@ describe('TaskDetails Page', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <Details
-                    detailType={'StartedOn'}
+                    detailType={STARTED_ON}
                     value={'3/30/2024, 11:20:00 AM'}
                 />
             </Provider>
         );
 
         const dateElements = screen.queryAllByText('3/30/2024, 11:20:00 AM');
-        expect(dateElements.length).toBeGreaterThan(0);
+        expect(dateElements).not.toBeNull();
     });
 
     it('Renders N/A when link is empty or undefined', async () => {
@@ -203,7 +206,6 @@ describe('TaskDetails Page', () => {
             expect(element).toBeInTheDocument();
         });
     });
-
     it('Renders Task Assignee', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
@@ -243,22 +245,21 @@ describe('TaskDetails Page', () => {
     });
 });
 it('Renders Task Ends-on Date', async () => {
-    const { getAllByText } = renderWithRouter(
+    renderWithRouter(
         <Provider store={store()}>
-            <Details detailType={'EndsOn'} value={'4/19/2021, 12:00:10 AM'} />
+            <Details detailType={ENDS_ON} value={'4/19/2021, 12:00:10 AM'} />
         </Provider>
     );
     await waitFor(() => {
-        const dateElements = getAllByText('4/19/2021, 12:00:10 AM');
-        expect(dateElements.length).toBeGreaterThan(0);
+        const dateElements = screen.queryAllByText('4/19/2021, 12:00:10 AM');
+        expect(dateElements).not.toBeNull();
     });
 });
-
 it('Does not render Extension Request icon when URL not available', async () => {
     const { queryByTestId } = render(
         <Provider store={store()}>
             <Details
-                detailType={'Ends On'}
+                detailType={ENDS_ON}
                 value={'4/19/2021, 12:00:10 AM'}
                 url={null}
             />
@@ -655,7 +656,7 @@ describe('Details component', () => {
     });
 
     it('Does not display tooltip on hover when timestamp is not provided', async () => {
-        render(<Details detailType="Started On" value="N/A" />);
+        render(<Details detailType={STARTED_ON} value="N/A" />);
         const detailValue = screen.getByText('Started:');
         fireEvent.mouseOver(detailValue);
         const tooltip = screen.queryByText('N/A', { selector: '.tooltip' });
@@ -664,7 +665,7 @@ describe('Details component', () => {
 
     it('Renders an extension request icon for Ends On with URL', () => {
         const url = 'https://example.com';
-        renderWithRouter(<Details detailType="Ends On" url={url} />);
+        renderWithRouter(<Details detailType={ENDS_ON} url={url} />);
         const extensionRequestIcon = screen.getByTestId(
             'extension-request-icon'
         );
@@ -673,7 +674,7 @@ describe('Details component', () => {
     });
 
     it('Does not render an extension request icon for Ends On without URL', () => {
-        renderWithRouter(<Details detailType="Ends On" />);
+        renderWithRouter(<Details detailType={ENDS_ON} />);
         const extensionRequestIcon = screen.queryByTestId(
             'extension-request-icon'
         );
@@ -686,7 +687,7 @@ describe('Details component', () => {
             startedOn: '1707869428.523',
         };
         renderWithRouter(
-            <Details detailType="Started On" value={task.startedOn} />
+            <Details detailType={STARTED_ON} value={task.startedOn} />
         );
         try {
             const detailTypeElement = screen.getByText('Started:');
