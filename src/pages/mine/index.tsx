@@ -1,42 +1,89 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Head from '@/components/head';
 import Layout from '@/components/Layout';
-import Card from '@/components/tasks/card';
 import styles from '@/styles/tasks.module.scss';
-import task from '@/interfaces/task.type';
+import task, { Tab } from '@/interfaces/task.type';
 import { LOGIN_URL } from '@/constants/url';
 import { NO_TASKS_FOUND_MESSAGE } from '@/constants/messages';
 import useAuthenticated from '@/hooks/useAuthenticated';
 import { useGetMineTasksQuery } from '@/app/services/tasksApi';
 import { Loader } from '@/components/tasks/card/Loader';
-
-function CardList({ tasks }: { tasks: task[] }) {
-    return (
-        <>
-            {tasks.map((item) => (
-                <Card
-                    content={item}
-                    key={item.id}
-                    shouldEdit={false}
-                    onContentChange={undefined}
-                />
-            ))}
-        </>
-    );
-}
+import TaskSearch from '@/components/tasks/TaskSearch/TaskSearch';
+import { extractQueryParams } from '@/utils/taskQueryParams';
+import { getActiveTab } from '@/utils/getActiveTab';
+import TaskList from '@/components/tasks/TaskList/TaskList';
+import getInputValueFromTaskField from '@/utils/getInputValueFromTaskField';
+import getFilteredTasks from '@/utils/getFilteredTasks';
 
 const Content = () => {
+    const [filteredTasks, setFilteredTasks] = useState<task[] | undefined>();
+    const [assignees, setAssignees] = useState<string[]>([]);
+    const [selectedTab, setSelectedTab] = useState<Tab>(Tab.ALL);
+    const [title, setTitle] = useState<string>('');
+
+    const inputValue = getInputValueFromTaskField(
+        selectedTab,
+        assignees,
+        title
+    );
+
     const { data: tasks, error, isLoading } = useGetMineTasksQuery();
+
+    const getQueryParams = (searchString: string) => {
+        return extractQueryParams(searchString);
+    };
+
+    const searchTasks = (searchString?: string) => {
+        let activeTab = Tab.ALL;
+        let activeTitle = '';
+        let activeAssignees: string[] = [];
+
+        if (searchString && tasks) {
+            const { status, assignees, title } = getQueryParams(searchString);
+            activeTab = getActiveTab(status);
+            activeTitle = title;
+            activeAssignees = assignees;
+            setFilteredTasks(
+                getFilteredTasks(tasks, activeTab, assignees, title)
+            );
+        }
+
+        setSelectedTab(activeTab);
+        setTitle(activeTitle);
+        setAssignees(activeAssignees);
+    };
+
+    const filterTabHandler = (selectedTab: Tab) => {
+        searchTasks(getInputValueFromTaskField(selectedTab, assignees, title));
+    };
+
+    useEffect(() => {
+        setFilteredTasks(tasks);
+    }, [tasks]);
 
     if (isLoading) return <p>Loading...</p>;
     if (error) return <p>Something went wrong! Please contact admin</p>;
-    if (tasks?.length)
-        return (
-            <div className={styles.mineTasksContainer}>
-                <CardList tasks={tasks} />
-            </div>
-        );
-    return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    if (!tasks || tasks.length === 0) {
+        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    }
+
+    return (
+        <div className={styles.tasksContainer}>
+            <TaskSearch
+                onFilterDropdownSelect={(selectedTab: Tab) => {
+                    filterTabHandler(selectedTab);
+                }}
+                filterDropdownActiveTab={selectedTab}
+                inputValue={inputValue}
+                onClickSearchButton={searchTasks}
+            />
+            {!filteredTasks || filteredTasks.length === 0 ? (
+                <p>{NO_TASKS_FOUND_MESSAGE}</p>
+            ) : (
+                <TaskList tasks={filteredTasks} />
+            )}
+        </div>
+    );
 };
 
 const Mine: FC = () => {
