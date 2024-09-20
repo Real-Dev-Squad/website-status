@@ -6,11 +6,58 @@ import Tooltip from '@/components/common/Tooltip/Tooltip';
 import setColor from './taskPriorityColors';
 import extractRepoName from '@/utils/extractRepoName';
 import styles from './task-details.module.scss';
-import { TaskDetailsProps } from '@/interfaces/taskDetails.type';
+import {
+    DetailsContentProps,
+    TaskDetailsProps,
+} from '@/interfaces/taskDetails.type';
 import useUserData from '@/hooks/useUserData';
 import { STARTED_ON, ENDS_ON } from '@/constants/constants';
 
 type StringNumberOrUndefined = string | number | undefined;
+
+const DetailsContent: FC<DetailsContentProps> = ({
+    color,
+    isGitHubLink,
+    value,
+    gitHubIssueLink,
+    isTimeDetail,
+    formatDate,
+    tooltipActive,
+    renderedValue,
+    getRelativeTime,
+}) => {
+    return (
+        <span
+            className={styles.detailValue}
+            style={{ color: color ?? 'black' }}
+        >
+            {isGitHubLink && value ? (
+                <a
+                    className={styles.gitLink}
+                    href={gitHubIssueLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open GitHub Issue"
+                    title={value}
+                >
+                    {isGitHubLink ? `${extractRepoName(value)}` : value}
+                </a>
+            ) : isTimeDetail ? (
+                <Tooltip
+                    content={formatDate(value)}
+                    tooltipPosition={{
+                        top: '-3.6rem',
+                        right: '-4.5rem',
+                    }}
+                >
+                    {tooltipActive ? formatDate(value) : getRelativeTime(value)}
+                </Tooltip>
+            ) : (
+                renderedValue
+            )}
+        </span>
+    );
+};
 
 const Details: FC<TaskDetailsProps> = (props) => {
     const { detailType, value, url, isEditing, setEditedTaskDetails } = props;
@@ -101,37 +148,17 @@ const Details: FC<TaskDetailsProps> = (props) => {
                     className={styles.inputField}
                 />
             ) : (
-                <span
-                    className={styles.detailValue}
-                    style={{ color: color ?? 'black' }}
-                >
-                    {isGitHubLink && value ? (
-                        <a
-                            className={styles.gitLink}
-                            href={gitHubIssueLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Open GitHub Issue"
-                            title={value}
-                        >
-                            {isGitHubLink ? `${extractRepoName(value)}` : value}
-                        </a>
-                    ) : isTimeDetail ? (
-                        <Tooltip
-                            content={formatDate(value)}
-                            tooltipPosition={{
-                                top: '-3.6rem',
-                                right: '-4.5rem',
-                            }}
-                        >
-                            {tooltipActive
-                                ? formatDate(value)
-                                : getRelativeTime(value)}
-                        </Tooltip>
-                    ) : (
-                        renderedValue
-                    )}
-                </span>
+                <DetailsContent
+                    color={color}
+                    isGitHubLink={isGitHubLink}
+                    value={value}
+                    gitHubIssueLink={gitHubIssueLink}
+                    isTimeDetail={isTimeDetail}
+                    formatDate={formatDate}
+                    tooltipActive={tooltipActive}
+                    renderedValue={renderedValue}
+                    getRelativeTime={getRelativeTime}
+                />
             )}
             <span>
                 {detailType === ENDS_ON && url && (

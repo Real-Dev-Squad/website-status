@@ -36,6 +36,17 @@ export type TaskDetailsProps = {
     isEditing?: boolean;
     setEditedTaskDetails?: React.Dispatch<React.SetStateAction<task>>;
 };
+export type DetailsContentProps = {
+    color: string | undefined;
+    isGitHubLink: boolean;
+    value: string | undefined;
+    gitHubIssueLink: string | undefined;
+    isTimeDetail: boolean;
+    formatDate: (timestamp: string | number | undefined) => string;
+    tooltipActive: boolean;
+    renderedValue: string;
+    getRelativeTime: (timestamp: string | number | undefined) => string;
+};
 export type DependencyItem =
     | PromiseFulfilledResult<{
           title: string | undefined;
