@@ -57,6 +57,8 @@ jest.mock('@/hooks/useUserData', () => {
 });
 
 const mockNavigateToUpdateProgressPage = jest.fn();
+const mockHandleEditedTaskDetails = jest.fn();
+
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
@@ -695,5 +697,31 @@ describe('Details component', () => {
             console.error('Error occurred during tooltip rendering:', error);
             throw error;
         }
+    });
+
+    it('Renders an input with prefilled data provided, when isEditing is true', () => {
+        const task = {
+            id: 'L1SDW6O835o0EI8ZmvRc',
+            endedOn: 1700000000,
+        };
+        const formattedEndsOn = convertTimeStamp(task.endedOn);
+        const expectedDate = new Date(formattedEndsOn).toLocaleDateString(
+            'en-CA'
+        );
+
+        renderWithRouter(
+            <Details
+                detailType={ENDS_ON}
+                value={formattedEndsOn}
+                isEditing
+                setEditedTaskDetails={mockHandleEditedTaskDetails}
+            />
+        );
+
+        const input = screen.getByTestId(
+            'endsOnTaskDetails'
+        ) as HTMLInputElement;
+
+        expect(input.defaultValue).toBe(expectedDate);
     });
 });

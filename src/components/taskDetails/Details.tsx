@@ -89,7 +89,7 @@ const Details: FC<TaskDetailsProps> = (props) => {
             <span className={styles.detailType}>{formattedDetailType}:</span>
             {isEditing && isUserAuthorized ? (
                 <input
-                    id="endsOnTaskDetails"
+                    data-testid="endsOnTaskDetails"
                     type="date"
                     name="endsOn"
                     onChange={(e) => setNewEndOnDate(e.target.value)}
@@ -98,7 +98,6 @@ const Details: FC<TaskDetailsProps> = (props) => {
                         newEndOnDate ||
                         new Date(value as string).toLocaleDateString('en-CA')
                     }
-                    data-testid="endsOnTaskDetails"
                     className={styles.inputField}
                 />
             ) : (
