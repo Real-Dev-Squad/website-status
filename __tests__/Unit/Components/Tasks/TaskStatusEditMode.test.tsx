@@ -110,7 +110,7 @@ describe('TaskStatusEditMode', () => {
 
         const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
             .map(([name, status]) => [status, beautifyStatus(name)])
-            .filter(([status]) => status !== 'BACKLOG');
+            .filter(([status]) => status !== 'BACKLOG' && status !== 'DONE');
 
         expect(allOptions).toEqual(allTaskStatus);
     });
