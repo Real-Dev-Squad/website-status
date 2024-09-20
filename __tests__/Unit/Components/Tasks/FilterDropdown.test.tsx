@@ -1,14 +1,15 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { Tab } from '@/interfaces/task.type';
 import FilterDropdown from '@/components/tasks/TaskSearch/FilterDropdown';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 const mockOnSelect = jest.fn();
 const mockOnClose = jest.fn();
 
 describe('FilterDropdown', () => {
     test('renders the modal with correct title and buttons', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -31,7 +32,7 @@ describe('FilterDropdown', () => {
     });
 
     test('renders the modal having overdue tab with correct title and buttons', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS, Tab.OVERDUE]}
                 onSelect={mockOnSelect}
@@ -57,9 +58,9 @@ describe('FilterDropdown', () => {
     });
 
     test('renders the modal with correct title and buttons', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
-                tabs={[Tab.UNASSIGNED, Tab.DONE]}
+                tabs={[Tab.UNASSIGNED, Tab.COMPLETED]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.UNASSIGNED}
                 onClose={mockOnClose}
@@ -75,12 +76,12 @@ describe('FilterDropdown', () => {
         const unassignedButton = screen.getByText(/unassigned/i);
         expect(unassignedButton).toBeInTheDocument();
 
-        const doneButton = screen.getByText(/done/i);
-        expect(doneButton).toBeInTheDocument();
+        const completedButton = screen.getByText(/completed/i);
+        expect(completedButton).toBeInTheDocument();
     });
 
     test('calls onSelect and onClose when a status button is clicked', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -96,7 +97,7 @@ describe('FilterDropdown', () => {
     });
 
     test('calls onClose when the close button is clicked', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -111,7 +112,7 @@ describe('FilterDropdown', () => {
         expect(mockOnClose).toBeCalled();
     });
     test('calls onClose when clicked on outside', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -135,7 +136,7 @@ describe('FilterDropdown', () => {
         expect(mockOnClose).toBeCalled();
     });
     test('calls onClose when escape button is clicked', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -150,7 +151,7 @@ describe('FilterDropdown', () => {
     });
 
     test('renders the modal with correct active tab', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.ASSIGNED, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -167,24 +168,24 @@ describe('FilterDropdown', () => {
     });
 
     test('renders the modal with correct active tab', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
-                tabs={[Tab.UNASSIGNED, Tab.DONE]}
+                tabs={[Tab.UNASSIGNED, Tab.COMPLETED]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.DONE}
+                activeTab={Tab.COMPLETED}
                 onClose={mockOnClose}
             />
         );
 
-        const doneButton = screen.getByText(/done/i);
-        expect(doneButton).toHaveClass('status-button-active');
+        const completedButton = screen.getByText(/completed/i);
+        expect(completedButton).toHaveClass('status-button-active');
 
         const unassignedButton = screen.getByText(/unassigned/i);
         expect(unassignedButton).not.toHaveClass('status-button-active');
     });
 
     test('render the filter model having BACKLOG tab with correct title and buttons', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.UNASSIGNED, Tab.BACKLOG]}
                 onSelect={mockOnSelect}
@@ -198,7 +199,7 @@ describe('FilterDropdown', () => {
     });
 
     test('onSelect Function Gets Called When the Backlog Status button is Clicked', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
                 tabs={[Tab.BACKLOG, Tab.IN_PROGRESS]}
                 onSelect={mockOnSelect}
@@ -214,9 +215,9 @@ describe('FilterDropdown', () => {
     });
 
     test('Selection of the Backlog Button', () => {
-        render(
+        renderWithRouter(
             <FilterDropdown
-                tabs={[Tab.BACKLOG, Tab.DONE]}
+                tabs={[Tab.BACKLOG, Tab.COMPLETED]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.BACKLOG}
                 onClose={mockOnClose}
@@ -226,7 +227,42 @@ describe('FilterDropdown', () => {
         const backlogButton = screen.getByText(/backlog/i);
         expect(backlogButton).toHaveClass('status-button-active');
 
-        const doneButton = screen.getByText(/done/i);
-        expect(doneButton).not.toHaveClass('status-button-active');
+        const completedButton = screen.getByText(/completed/i);
+        expect(completedButton).not.toHaveClass('status-button-active');
+    });
+
+    it('Renders Task tab Done, when dev flag is on', async () => {
+        renderWithRouter(
+            <FilterDropdown
+                tabs={[Tab.BACKLOG, Tab.COMPLETED, Tab.DONE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.DONE}
+                onClose={mockOnClose}
+            />,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        const doneButton = screen.queryByText(/done/i);
+        const completedButton = screen.queryByText(/completed/i);
+
+        expect(doneButton).toBeInTheDocument();
+        expect(completedButton).toBeNull();
+    });
+    it('Renders Task status Completed, when dev flag is not on', async () => {
+        renderWithRouter(
+            <FilterDropdown
+                tabs={[Tab.BACKLOG, Tab.COMPLETED, Tab.DONE]}
+                onSelect={mockOnSelect}
+                activeTab={Tab.COMPLETED}
+                onClose={mockOnClose}
+            />
+        );
+        const doneButton = screen.queryByText(/done/i);
+        const completedButton = screen.queryByText(/completed/i);
+
+        expect(completedButton).toBeInTheDocument();
+        expect(doneButton).toBeNull();
     });
 });

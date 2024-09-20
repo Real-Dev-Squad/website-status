@@ -1,17 +1,16 @@
 import Tabs from '@/components/Tabs';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import {
     Tab,
     TABS,
     depreciatedTaskStatus,
     newTaskStatus,
 } from '@/interfaces/task.type';
-import { COMPLETED, DONE, AVAILABLE, UNASSIGNED } from '@/constants/constants';
+import { AVAILABLE, UNASSIGNED } from '@/constants/constants';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 function changeName(name: string) {
-    if (name === COMPLETED) {
-        return DONE;
-    } else if (name === AVAILABLE) {
+    if (name === AVAILABLE) {
         return UNASSIGNED;
     } else {
         return name.split('_').join(' ');
@@ -22,7 +21,7 @@ describe('Tabs Component', () => {
     const onSelectMock = jest.fn();
 
     it('should render all the buttons', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 tabs={TABS}
                 activeTab={Tab.ASSIGNED}
@@ -38,7 +37,7 @@ describe('Tabs Component', () => {
     });
 
     it('should render all the buttons when dev is true', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 dev={true}
                 tabs={TABS}
@@ -53,7 +52,7 @@ describe('Tabs Component', () => {
     });
 
     it('check if selectTab() is called with right key', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 tabs={TABS}
                 activeTab={Tab.ASSIGNED}
@@ -66,7 +65,7 @@ describe('Tabs Component', () => {
     });
 
     it('check if selectTab() is called with right key when dev is true', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 dev={true}
                 tabs={TABS}
@@ -82,19 +81,19 @@ describe('Tabs Component', () => {
     });
 
     it('Check if correct button is selected', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 tabs={TABS}
                 activeTab={Tab.COMPLETED}
                 onSelect={onSelectMock}
             />
         );
-        const completedBtn = screen.getByRole('button', { name: /DONE/i });
+        const completedBtn = screen.getByRole('button', { name: /COMPLETED/i });
         expect(completedBtn).toHaveClass('active');
     });
 
     it('Check if correct button is selected when dev is true', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 dev={true}
                 tabs={TABS}
@@ -109,7 +108,7 @@ describe('Tabs Component', () => {
     });
 
     it('should render all tabs passed with correct text', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 tabs={TABS}
                 activeTab={Tab.ASSIGNED}
@@ -126,7 +125,7 @@ describe('Tabs Component', () => {
     });
 
     it('should render all tabs passed with correct text when dev is true', () => {
-        render(
+        renderWithRouter(
             <Tabs
                 dev={true}
                 tabs={TABS}
