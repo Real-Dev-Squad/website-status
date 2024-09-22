@@ -40,15 +40,15 @@ describe('Unit | Util | Get Filtered Tasks', () => {
     const tasks = [...TASK_HAVING_TITLE_DONE, ...VERIFIED_TASK];
 
     test('should return an empty list', () => {
-        expect(getFilteredTasks([], Tab.ALL, [], '')).toStrictEqual([]);
+        expect(getFilteredTasks([], Tab.ALL, '')).toStrictEqual([]);
     });
 
     test('should return all tasks', () => {
-        expect(getFilteredTasks(tasks, Tab.ALL, [], '')).toStrictEqual(tasks);
+        expect(getFilteredTasks(tasks, Tab.ALL, '')).toStrictEqual(tasks);
     });
 
     test('should return all tasks with verified status', () => {
-        expect(getFilteredTasks(tasks, Tab.VERIFIED, [], '')).toStrictEqual(
+        expect(getFilteredTasks(tasks, Tab.VERIFIED, '')).toStrictEqual(
             VERIFIED_TASK
         );
     });
@@ -58,15 +58,14 @@ describe('Unit | Util | Get Filtered Tasks', () => {
             getFilteredTasks(
                 tasks,
                 Tab.VERIFIED,
-                [],
                 'Testing and Determinsitic State'
             )
         ).toStrictEqual(VERIFIED_TASK);
     });
 
-    test('should return all tasks with title `DONE` and assignee `shmbajaj`', () => {
-        expect(
-            getFilteredTasks(tasks, Tab.ALL, ['shmbajaj'], DONE)
-        ).toStrictEqual(TASK_HAVING_TITLE_DONE);
+    test('should return all tasks with title `DONE`', () => {
+        expect(getFilteredTasks(tasks, Tab.ALL, DONE)).toStrictEqual(
+            TASK_HAVING_TITLE_DONE
+        );
     });
 });

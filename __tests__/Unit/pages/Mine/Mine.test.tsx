@@ -43,23 +43,39 @@ describe('Mine Page', () => {
         );
     });
 
-    it('should render filter dropdown', async () => {
+    it('should render old UI component for mine tasks when dev is disabled', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
-            { route: '/mine' }
+            { route: '/mine', query: { dev: 'false' } }
+        );
+        await waitFor(() =>
+            expect(
+                getByText(
+                    /Collapse non-interesting tasks or PRs in member details page/i
+                )
+            ).toBeInTheDocument()
+        );
+    });
+
+    it('should render filter dropdown when dev is enabled', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Mine />
+            </Provider>,
+            { route: '/mine', query: { dev: 'true' } }
         );
 
         await waitFor(() => expect(getByText(/Filter/i)).toBeInTheDocument());
     });
 
-    it('should render search input', async () => {
+    it('should render search input when dev is enabled', async () => {
         const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
-            { route: '/mine' }
+            { route: '/mine', query: { dev: 'true' } }
         );
 
         await waitFor(() =>
@@ -67,12 +83,12 @@ describe('Mine Page', () => {
         );
     });
 
-    it('should render mine tasks', async () => {
+    it('should render new UI component for mine tasks when dev is enabled', async () => {
         const { getAllByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
-            { route: '/mine' }
+            { route: '/mine', query: { dev: 'true' } }
         );
 
         await waitFor(() =>
@@ -82,12 +98,12 @@ describe('Mine Page', () => {
         );
     });
 
-    it('should filter tasks based on search input', async () => {
+    it('should filter tasks based on search input when dev is enabled', async () => {
         const { findByText, getAllByText, findByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
-            { route: '/mine' }
+            { route: '/mine', query: { dev: 'true' } }
         );
 
         const searchInput = await findByTestId('search-input');
@@ -100,12 +116,12 @@ describe('Mine Page', () => {
         });
     });
 
-    it('should filter tasks based on filter dropdown select', async () => {
+    it('should filter tasks based on filter dropdown select when dev is enabled', async () => {
         const { findByText, getAllByText } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
-            { route: '/mine' }
+            { route: '/mine', query: { dev: 'true' } }
         );
 
         const dropdown = await findByText('Filter');
