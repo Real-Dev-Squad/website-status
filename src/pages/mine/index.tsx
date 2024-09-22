@@ -14,18 +14,15 @@ import { getActiveTab } from '@/utils/getActiveTab';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import getInputValueFromTaskField from '@/utils/getInputValueFromTaskField';
 import getFilteredTasks from '@/utils/getFilteredTasks';
+import Card from '@/components/tasks/card';
+import { useRouter } from 'next/router';
 
-const Content = () => {
+const ContentDev = () => {
     const [filteredTasks, setFilteredTasks] = useState<task[] | undefined>();
-    const [assignees, setAssignees] = useState<string[]>([]);
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.ALL);
     const [title, setTitle] = useState<string>('');
 
-    const inputValue = getInputValueFromTaskField(
-        selectedTab,
-        assignees,
-        title
-    );
+    const inputValue = getInputValueFromTaskField(selectedTab, title);
 
     const { data: tasks, error, isLoading } = useGetMineTasksQuery();
 
@@ -36,25 +33,20 @@ const Content = () => {
     const searchTasks = (searchString?: string) => {
         let activeTab = Tab.ALL;
         let activeTitle = '';
-        let activeAssignees: string[] = [];
 
         if (searchString && tasks) {
-            const { status, assignees, title } = getQueryParams(searchString);
+            const { status, title } = getQueryParams(searchString);
             activeTab = getActiveTab(status);
             activeTitle = title;
-            activeAssignees = assignees;
-            setFilteredTasks(
-                getFilteredTasks(tasks, activeTab, assignees, title)
-            );
+            setFilteredTasks(getFilteredTasks(tasks, activeTab, title));
         }
 
         setSelectedTab(activeTab);
         setTitle(activeTitle);
-        setAssignees(activeAssignees);
     };
 
     const filterTabHandler = (selectedTab: Tab) => {
-        searchTasks(getInputValueFromTaskField(selectedTab, assignees, title));
+        searchTasks(getInputValueFromTaskField(selectedTab, title));
     };
 
     useEffect(() => {
@@ -86,8 +78,39 @@ const Content = () => {
     );
 };
 
+function CardList({ tasks }: { tasks: task[] }) {
+    return (
+        <>
+            {tasks.map((item) => (
+                <Card
+                    content={item}
+                    key={item.id}
+                    shouldEdit={false}
+                    onContentChange={undefined}
+                />
+            ))}
+        </>
+    );
+}
+
+const Content = () => {
+    const { data: tasks, error, isLoading } = useGetMineTasksQuery();
+
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Something went wrong! Please contact admin</p>;
+    if (tasks?.length)
+        return (
+            <div className={styles.mineTasksContainer}>
+                <CardList tasks={tasks} />
+            </div>
+        );
+    return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+};
+
 const Mine: FC = () => {
     const { isLoading: isAuthenticating, isLoggedIn } = useAuthenticated();
+    const router = useRouter();
+    const dev = router.query.dev === 'true' ? true : false;
 
     return (
         <Layout>
@@ -96,7 +119,11 @@ const Mine: FC = () => {
                 {isAuthenticating ? (
                     <Loader />
                 ) : isLoggedIn ? (
-                    <Content />
+                    dev ? (
+                        <ContentDev />
+                    ) : (
+                        <Content />
+                    )
                 ) : (
                     <div>
                         <p>You are not Authorized</p>
