@@ -77,10 +77,10 @@ describe('TaskDetailsSection Component', () => {
             </Provider>
         );
         const dropdown = screen.getByRole('combobox');
-        fireEvent.change(dropdown, { target: { value: 'DONE' } });
+        fireEvent.change(dropdown, { target: { value: 'IN_PROGRESS' } });
 
         expect(mockHandleTaskStatusUpdate).toHaveBeenCalledWith({
-            newStatus: 'DONE',
+            newStatus: 'IN_PROGRESS',
         });
     });
 

@@ -1,6 +1,7 @@
 import styles from './tasksearch.module.scss';
 import { Tab, depreciatedTaskStatus } from '@/interfaces/task.type';
 import { getChangedStatusName } from '@/utils/getChangedStatusName';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 type FilterModalProps = {
@@ -24,6 +25,9 @@ const FilterDropdown = ({
         return () => document.removeEventListener('keydown', onKeyDownHandler);
     }, []);
 
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true';
+
     return (
         <>
             <div
@@ -43,7 +47,12 @@ const FilterDropdown = ({
                 <div className={styles['status-filter']}>
                     {tabs
                         .filter(
-                            (tab: Tab) => !depreciatedTaskStatus.includes(tab)
+                            (tab: Tab) =>
+                                !depreciatedTaskStatus.includes(tab) &&
+                                !(
+                                    (isDevMode && tab === 'COMPLETED') ||
+                                    (!isDevMode && tab === 'DONE')
+                                )
                         )
                         .map((tab) => (
                             <button
