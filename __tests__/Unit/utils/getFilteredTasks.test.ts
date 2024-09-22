@@ -1,9 +1,14 @@
 import { DONE, VERIFIED } from '@/constants/task-status';
-import { Tab } from '@/interfaces/task.type';
+import task, { Tab } from '@/interfaces/task.type';
 import getFilteredTasks from '@/utils/getFilteredTasks';
 
-describe('Unit | Util | Get Filtered Tasks', () => {
-    const TASK = {
+let TASK: task;
+let VERIFIED_TASKS: task[];
+let TASKS_HAVING_TITLE_DONE: task[];
+let ALL_TASKS: task[];
+
+beforeAll(() => {
+    TASK = {
         id: 'firestoreDocumentId123',
         lossRate: {
             dinero: 10,
@@ -28,44 +33,47 @@ describe('Unit | Util | Get Filtered Tasks', () => {
         createdBy: 'shmbajaj',
         priority: 'TBD',
     };
-    const VERIFIED_TASK = [
+    VERIFIED_TASKS = [
         { ...TASK, status: VERIFIED, id: TASK.id + 2 },
         { ...TASK, status: VERIFIED, id: TASK.id + 3 },
     ];
-
-    const TASK_HAVING_TITLE_DONE = [
+    TASKS_HAVING_TITLE_DONE = [
         { ...TASK, id: TASK.id + 1, title: DONE },
         { ...TASK, title: DONE, status: DONE, id: TASK.id + 4 },
     ];
-    const tasks = [...TASK_HAVING_TITLE_DONE, ...VERIFIED_TASK];
+    ALL_TASKS = [...TASKS_HAVING_TITLE_DONE, ...VERIFIED_TASKS];
+});
 
+describe('Unit | Util | Get Filtered Tasks', () => {
     test('should return an empty list', () => {
         expect(getFilteredTasks([], Tab.ALL, '')).toStrictEqual([]);
     });
 
     test('should return all tasks', () => {
-        expect(getFilteredTasks(tasks, Tab.ALL, '')).toStrictEqual(tasks);
+        expect(getFilteredTasks(ALL_TASKS, Tab.ALL, '')).toStrictEqual(
+            ALL_TASKS
+        );
     });
 
     test('should return all tasks with verified status', () => {
-        expect(getFilteredTasks(tasks, Tab.VERIFIED, '')).toStrictEqual(
-            VERIFIED_TASK
+        expect(getFilteredTasks(ALL_TASKS, Tab.VERIFIED, '')).toStrictEqual(
+            VERIFIED_TASKS
         );
     });
 
     test('should return all tasks with `verified` status and title `Testing and Determinsitic State`', () => {
         expect(
             getFilteredTasks(
-                tasks,
+                ALL_TASKS,
                 Tab.VERIFIED,
                 'Testing and Determinsitic State'
             )
-        ).toStrictEqual(VERIFIED_TASK);
+        ).toStrictEqual(VERIFIED_TASKS);
     });
 
     test('should return all tasks with title `DONE`', () => {
-        expect(getFilteredTasks(tasks, Tab.ALL, DONE)).toStrictEqual(
-            TASK_HAVING_TITLE_DONE
+        expect(getFilteredTasks(ALL_TASKS, Tab.ALL, DONE)).toStrictEqual(
+            TASKS_HAVING_TITLE_DONE
         );
     });
 });
