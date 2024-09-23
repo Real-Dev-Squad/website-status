@@ -9,7 +9,7 @@ import task from '@/interfaces/task.type';
 interface TaskDatesProps {
     isEditing: boolean;
     startedOn: string;
-    endsOn: number;
+    endsOn: number | null;
     isExtensionRequestPending: boolean;
     taskId: string;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<task>>;
