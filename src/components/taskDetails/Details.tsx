@@ -72,13 +72,18 @@ const Details: FC<TaskDetailsProps> = (props) => {
     }, [isEditing]);
 
     const handleBlurOfEndsOn = () => {
-        const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
+        const isDateValid = !isNaN(new Date(`${newEndOnDate}`).getTime());
+        const endsOn = isDateValid
+            ? new Date(`${newEndOnDate}`).getTime() / 1000
+            : null;
 
-        if (endsOn > 0) {
+        if (endsOn && endsOn > 0) {
             setEditedTaskDetails?.((prev) => ({
                 ...prev,
                 endsOn,
             }));
+        } else {
+            console.error('Invalid date provided', newEndOnDate);
         }
     };
 
