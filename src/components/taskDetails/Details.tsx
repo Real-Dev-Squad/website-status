@@ -26,12 +26,14 @@ const DetailsContent: FC<DetailsContentProps> = ({
     renderedValue,
     getRelativeTime,
 }) => {
+    const displayValue = renderedValue || value;
+
     return (
         <span
             className={styles.detailValue}
             style={{ color: color ?? 'black' }}
         >
-            {isGitHubLink && value ? (
+            {isGitHubLink && value && gitHubIssueLink ? (
                 <a
                     className={styles.gitLink}
                     href={gitHubIssueLink}
@@ -40,9 +42,9 @@ const DetailsContent: FC<DetailsContentProps> = ({
                     aria-label="Open GitHub Issue"
                     title={value}
                 >
-                    {isGitHubLink ? `${extractRepoName(value)}` : value}
+                    {extractRepoName(value)}
                 </a>
-            ) : isTimeDetail ? (
+            ) : isTimeDetail && value ? (
                 <Tooltip
                     content={formatDate(value)}
                     tooltipPosition={{
@@ -53,7 +55,7 @@ const DetailsContent: FC<DetailsContentProps> = ({
                     {tooltipActive ? formatDate(value) : getRelativeTime(value)}
                 </Tooltip>
             ) : (
-                renderedValue
+                displayValue
             )}
         </span>
     );
