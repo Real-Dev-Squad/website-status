@@ -68,8 +68,8 @@ const Details: FC<TaskDetailsProps> = (props) => {
     const { isUserAuthorized } = useUserData();
 
     useEffect(() => {
-        if (!isEditing && newEndOnDate !== '') setNewEndOnDate('');
-    }, [isEditing, newEndOnDate]);
+        if (!isEditing) setNewEndOnDate('');
+    }, [isEditing]);
 
     const handleBlurOfEndsOn = () => {
         const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
