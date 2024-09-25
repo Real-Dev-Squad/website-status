@@ -43,6 +43,18 @@ describe('Mine Page', () => {
         );
     });
 
+    it('should render no tasks found state when dev is enabled', async () => {
+        const { getByText } = renderWithRouter(
+            <Provider store={store()}>
+                <Mine />
+            </Provider>,
+            { route: '/mine', query: { dev: 'true' } }
+        );
+        await waitFor(() =>
+            expect(getByText(/no tasks found/i)).toBeInTheDocument()
+        );
+    });
+
     it('should render shimmer cards', async () => {
         const { getAllByTestId } = renderWithRouter(
             <Provider store={store()}>
