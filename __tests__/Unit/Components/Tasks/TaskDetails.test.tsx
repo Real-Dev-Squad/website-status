@@ -367,11 +367,12 @@ test('should update the title and description with the new values', async () => 
     fireEvent.change(textareaElement, {
         target: { name: 'title', value: 'New Title' },
     });
-    waitFor(() => {
-        const saveButton = screen.getByRole('button', { name: 'Save' });
-        fireEvent.click(saveButton);
-        expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+
+    const saveButton = await screen.findByRole('button', {
+        name: 'Save',
     });
+    fireEvent.click(saveButton);
+    expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
 });
 test('should not update the title and description with the same values', async () => {
     server.use(...taskDetailsHandler);
