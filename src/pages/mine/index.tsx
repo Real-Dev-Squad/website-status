@@ -27,27 +27,14 @@ const ContentDev = () => {
 
     const { data: tasks, error, isLoading } = useGetMineTasksQuery();
 
-    const getQueryParams = (searchString: string) => {
-        return extractQueryParams(searchString);
-    };
-
     const searchTasks = (searchString?: string) => {
-        let activeTab = Tab.ALL;
-        let activeTitle = '';
-
         if (searchString && tasks) {
-            const { status, title } = getQueryParams(searchString);
-            activeTab = getActiveTab(status);
-            activeTitle = title;
-            setFilteredTasks(getFilteredTasks(tasks, activeTab, title));
+            const { status, title } = extractQueryParams(searchString);
+            const tab = getActiveTab(status);
+            setFilteredTasks(getFilteredTasks(tasks, tab, title));
+            setSelectedTab(tab);
+            setTitle(title);
         }
-
-        setSelectedTab(activeTab);
-        setTitle(activeTitle);
-    };
-
-    const filterTabHandler = (selectedTab: Tab) => {
-        searchTasks(getInputValueFromTaskField(selectedTab, title));
     };
 
     useEffect(() => {
@@ -64,15 +51,14 @@ const ContentDev = () => {
         );
 
     if (error) return <p>Something went wrong! Please contact admin</p>;
-    if (!tasks || tasks.length === 0) {
-        return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
-    }
+    if (!tasks) return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
+    if (tasks.length === 0) return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
 
     return (
         <div className={styles.tasksContainer}>
             <TaskSearch
                 onFilterDropdownSelect={(selectedTab: Tab) => {
-                    filterTabHandler(selectedTab);
+                    searchTasks(getInputValueFromTaskField(selectedTab, title));
                 }}
                 filterDropdownActiveTab={selectedTab}
                 inputValue={inputValue}
