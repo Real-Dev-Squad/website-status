@@ -73,8 +73,16 @@ const Details: FC<TaskDetailsProps> = (props) => {
         if (!isEditing) setNewEndOnDate('');
     }, [isEditing]);
 
+    const isValidDate = (dateString: string) => {
+        // Validating the "YYYY-MM-DD" format strictly
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        return (
+            dateRegex.test(dateString) && !isNaN(new Date(dateString).getTime())
+        );
+    };
+
     const handleBlurOfEndsOn = () => {
-        const isDateValid = !isNaN(new Date(`${newEndOnDate}`).getTime());
+        const isDateValid = isValidDate(newEndOnDate);
         const endsOn = isDateValid
             ? new Date(`${newEndOnDate}`).getTime() / 1000
             : null;
