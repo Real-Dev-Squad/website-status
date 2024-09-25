@@ -20,6 +20,10 @@ jest.mock('@/hooks/useUserData', () => {
 const mockHandleEditedTaskDetails = jest.fn();
 
 describe('TaskDates Component', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render input field for End On date when in editing mode', () => {
         render(
             <Provider store={store()}>
@@ -84,7 +88,7 @@ describe('TaskDates Component', () => {
                 <TaskDates
                     isEditing={true}
                     startedOn="2024-03-30T11:20:00Z"
-                    endsOn={1700000000}
+                    endsOn={null}
                     setEditedTaskDetails={mockHandleEditedTaskDetails}
                     isExtensionRequestPending={false}
                     taskId="1"
