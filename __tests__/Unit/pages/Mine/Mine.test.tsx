@@ -43,6 +43,21 @@ describe('Mine Page', () => {
         );
     });
 
+    it('should render shimmer cards', async () => {
+        const { getAllByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <Mine />
+            </Provider>,
+            { route: '/mine', query: { dev: 'true' } }
+        );
+
+        await waitFor(() =>
+            expect(
+                getAllByTestId(/shimmer-card/i).length
+            ).toBeGreaterThanOrEqual(1)
+        );
+    });
+
     it('should render old UI component for mine tasks when dev is disabled', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>

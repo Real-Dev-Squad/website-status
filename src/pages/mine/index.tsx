@@ -16,6 +16,7 @@ import getInputValueFromTaskField from '@/utils/getInputValueFromTaskField';
 import getFilteredTasks from '@/utils/getFilteredTasks';
 import Card from '@/components/tasks/card';
 import { useRouter } from 'next/router';
+import CardShimmer from '@/components/Loaders/cardShimmer';
 
 const ContentDev = () => {
     const [filteredTasks, setFilteredTasks] = useState<task[] | undefined>();
@@ -53,7 +54,15 @@ const ContentDev = () => {
         setFilteredTasks(tasks);
     }, [tasks]);
 
-    if (isLoading) return <p>Loading...</p>;
+    if (isLoading)
+        return (
+            <div className={styles.tasksContainer}>
+                {[...Array(5)].map((n: number, index) => (
+                    <CardShimmer key={index} />
+                ))}
+            </div>
+        );
+
     if (error) return <p>Something went wrong! Please contact admin</p>;
     if (!tasks || tasks.length === 0) {
         return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
