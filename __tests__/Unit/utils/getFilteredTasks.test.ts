@@ -1,38 +1,13 @@
 import { DONE, VERIFIED } from '@/constants/task-status';
 import task, { Tab } from '@/interfaces/task.type';
 import getFilteredTasks from '@/utils/getFilteredTasks';
+import { TASK } from '../../../fixture/task';
 
-let TASK: task;
 let VERIFIED_TASKS: task[];
 let TASKS_HAVING_TITLE_DONE: task[];
 let ALL_TASKS: task[];
 
 beforeAll(() => {
-    TASK = {
-        id: 'firestoreDocumentId123',
-        lossRate: {
-            dinero: 10,
-            neelam: 5,
-        },
-        links: ['https://realdevsquad.com/learn-site'],
-        completionAward: {
-            dinero: 110,
-            neelam: 10,
-        },
-        dependsOn: [],
-        assignee: 'shmbajaj',
-        startedOn: '1618790400',
-        isNoteworthy: true,
-        title: 'Testing and Determinsitic State',
-        purpose: 'string',
-        percentCompleted: 0,
-        endsOn: 1618790400,
-        status: 'progress',
-        featureUrl: 'progress',
-        type: 'feature',
-        createdBy: 'shmbajaj',
-        priority: 'TBD',
-    };
     VERIFIED_TASKS = [
         { ...TASK, status: VERIFIED, id: TASK.id + 2 },
         { ...TASK, status: VERIFIED, id: TASK.id + 3 },
