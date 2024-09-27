@@ -13,6 +13,10 @@ import { useSaveProgressMutation } from '@/app/services/progressesApi';
 import { useRouter } from 'next/router';
 import Spinner from '../reusables/Spinner';
 
+interface ExtendedFormProps extends formProps {
+    onUpdateSuccess?: () => void;
+}
+
 const initialState = {
     progress: '',
     plan: '',
@@ -34,19 +38,19 @@ const reducer = (state: progressStates, action: reducerAction) => {
     }
 };
 
-const ProgressForm = ({ questions }: formProps) => {
+const ProgressForm = ({ questions, onUpdateSuccess }: ExtendedFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [state, dispatch] = useReducer(reducer, initialState);
     const manager = [state.progress, state.plan, state.blockers];
     const [saveProgress] = useSaveProgressMutation();
     const router = useRouter();
-
     const isButtonEnabled =
         state.progress && state.plan && state.blockers && !isLoading;
 
-    const handleSubmit = (e: MouseEvent) => {
-        setIsLoading(true);
+    const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
+        setIsLoading(true);
+
         const data = {
             type: 'task',
             taskId: router.query.id,
@@ -54,17 +58,20 @@ const ProgressForm = ({ questions }: formProps) => {
             planned: state.plan.trim(),
             blockers: state.blockers.trim(),
         };
-        saveProgress(data)
-            .unwrap()
-            .then(() => {
-                toast(SUCCESS, 'Task Progress saved successfully');
-                setIsLoading(false);
+
+        try {
+            await saveProgress(data).unwrap();
+            toast(SUCCESS, 'Task Progress saved successfully');
+            if (onUpdateSuccess) {
+                onUpdateSuccess();
+            } else {
                 router.push(`/tasks/${router.query.id}`);
-            })
-            .catch((error) => {
-                toast(ERROR, error.data.message);
-                setIsLoading(false);
-            });
+            }
+        } catch (error: any) {
+            toast(ERROR, error.data?.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -78,12 +85,13 @@ const ProgressForm = ({ questions }: formProps) => {
                     onChange={dispatch}
                 />
             ))}
+
             <button
-                className={styles.button}
-                onClick={(e) => handleSubmit(e)}
+                className={styles.buttonUpdated}
+                onClick={handleSubmit}
                 disabled={!isButtonEnabled}
                 type="submit"
-                data-testid="submit"
+                data-testid="submit-dev"
             >
                 {isLoading ? <Spinner /> : 'Submit'}
             </button>

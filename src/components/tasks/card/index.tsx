@@ -47,6 +47,7 @@ const Card: FC<CardProps> = ({
 }) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true' ? true : false;
+
     const statusRedList = [BLOCKED];
     const statusNotOverDueList = [
         COMPLETED,
@@ -73,7 +74,7 @@ const Card: FC<CardProps> = ({
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const { isUserAuthorized } = useUserData();
+    const { data, isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
 
@@ -266,7 +267,7 @@ const Card: FC<CardProps> = ({
         setIsEditMode(true);
     };
     const isEditable = shouldEdit && isUserAuthorized && isEditMode;
-
+    const isSelfTask = editedTaskDetails.assignee === data?.username;
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
         return getDateInString(new Date(closedAt ?? Date.now()));
@@ -543,7 +544,13 @@ const Card: FC<CardProps> = ({
                     </div>
                 )}
             </div>
-            <div className={styles.taskStatusAndDateContainer}>
+            <div
+                className={
+                    isDevMode
+                        ? styles.taskStatusDateAndPurposeContainer
+                        : styles.taskStatusAndDateContainer
+                }
+            >
                 <div className={styles.dateInfo}>
                     <div className={styles.dateSection}>
                         <p className={styles.cardSpecialFont}>
@@ -568,26 +575,6 @@ const Card: FC<CardProps> = ({
                             ? 'Not started'
                             : `Started ${getStartedAgo()}`}
                     </span>
-                </div>
-                {/* EDIT task status */}
-                <div className={styles.taskStatusEditMode}>
-                    {isEditable ? (
-                        <TaskStatusEditMode
-                            task={editedTaskDetails}
-                            setEditedTaskDetails={setEditedTaskDetails}
-                            isDevMode={isDevMode}
-                        />
-                    ) : (
-                        <div className={styles.statusContainer} style={{}}>
-                            <p className={styles.cardSpecialFont}>Status:</p>
-                            <p
-                                data-testid="task-status"
-                                className={styles.statusText}
-                            >
-                                {beautifyStatus(cardDetails.status, isDevMode)}
-                            </p>
-                        </div>
-                    )}
                 </div>
             </div>
 
@@ -628,6 +615,27 @@ const Card: FC<CardProps> = ({
                           </p>
                       )}
                 {showAssignButton() && <AssigneeButton />}
+            </div>
+
+            <div className={styles.taskStatusEditMode}>
+                {isDevMode && (isEditable || isSelfTask) ? (
+                    <TaskStatusEditMode
+                        task={editedTaskDetails}
+                        setEditedTaskDetails={setEditedTaskDetails}
+                        isDevMode={isDevMode}
+                        isSelfTask={isSelfTask}
+                    />
+                ) : (
+                    <div className={styles.statusContainer}>
+                        <p className={styles.cardSpecialFont}>Status:</p>
+                        <p
+                            data-testid="task-status"
+                            className={styles.statusText}
+                        >
+                            {beautifyStatus(cardDetails.status)}
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className={styles.cardItems}>

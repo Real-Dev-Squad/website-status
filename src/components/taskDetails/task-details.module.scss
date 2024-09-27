@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+$base-unit: 4px;
 
 .parentContainer {
     margin: 2rem 4rem 0;
@@ -35,6 +36,12 @@
     &:hover {
         background-color: $theme-primary;
         color: $white;
+    }
+
+    &:disabled {
+        background-color: $light-gray;
+        color: $black;
+        cursor: not-allowed;
     }
 }
 
@@ -145,6 +152,7 @@
     max-height: 5rem;
     overflow-y: scroll;
     padding: 4px 0 4px 0;
+
     div {
         padding: 2px 0 2px 0;
     }
@@ -182,6 +190,7 @@
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 0.25rem;
+    margin-top: -10px;
 }
 
 .assigneeSuggestionInput {
@@ -192,4 +201,65 @@
     margin-top: 0.5rem;
     display: block;
     color: $theme-primary;
+}
+
+.hr {
+    color: #d4d3d3;
+    margin-block: 2rem;
+    position: relative; /* This ensures the absolute positioning of ::after is relative to this element */
+    display: block;
+    border: none; /* Remove default hr border */
+    border-top: 1px solid #d4d3d3; /* Create a custom hr line */
+    text-align: center; /* Helps center the text */
+
+    &::after {
+        display: inline-block;
+        content: 'And';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 0 10px;
+        color: black;
+    }
+}
+
+.dateUpdated {
+    font-size: $base-unit * 4;
+    color: #7e7f80;
+    line-height: 24px;
+    font-weight: lighter;
+}
+
+.formHeading {
+    font-size: $base-unit * 6;
+    margin-block: $base-unit;
+}
+
+.updateProgress {
+    font-size: $base-unit * 3.5;
+    color: $theme-primary-alt;
+}
+
+.taskUpdateModal {
+    position: relative;
+    min-width: fit-content;
+    max-width: 796px;
+    width: 80vw;
+    padding: 1rem;
+}
+
+.closeButton {
+    position: absolute;
+    top: 0.125rem;
+    right: 0.625rem;
+    cursor: pointer;
+    padding: 0.25rem 0.625rem;
+    color: $gray;
+    border: none;
+    background-color: transparent;
+    &:hover {
+        color: $black;
+    }
 }

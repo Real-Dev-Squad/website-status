@@ -179,4 +179,144 @@ describe('ProgressContainer', () => {
             expect(screen.queryByText('UPDATE')).not.toBeInTheDocument();
         });
     });
+    test('should show completion modal when progress is 100% and dev flag is true', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 100 } });
+
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+
+        await waitFor(
+            () => {
+                expect(screen.getByTestId('modal-overlay')).toBeInTheDocument();
+                expect(screen.getByTestId('modal-box')).toBeInTheDocument();
+                expect(
+                    screen.getByText('Congratulations !')
+                ).toBeInTheDocument();
+            },
+            {
+                timeout: 3000,
+            }
+        );
+    });
+
+    test('should not show completion modal when progress is 100% but dev flag is false', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'false' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 100 } });
+        expect(screen.getByText('100%')).toBeInTheDocument();
+
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('completion-modal')
+            ).not.toBeInTheDocument();
+        });
+    });
+
+    test('should not show completion modal when dev flag is true but progress is less than 100%', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 90 } });
+        expect(screen.getByText('90%')).toBeInTheDocument();
+
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('completion-modal')
+            ).not.toBeInTheDocument();
+        });
+    });
+    test('should not show completion modal when dev flag is false and progress is less than 100%', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'false' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 90 } });
+        expect(screen.getByText('90%')).toBeInTheDocument();
+
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('completion-modal')
+            ).not.toBeInTheDocument();
+        });
+    });
 });

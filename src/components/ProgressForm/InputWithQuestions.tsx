@@ -8,12 +8,16 @@ const InputWithQuestions = ({
     onChange,
 }: inputPropsTypes) => {
     return (
-        <div className={styles.inputComponent}>
-            <label className={styles.label} htmlFor={name} aria-label={name}>
+        <div className={styles.inputComponentUpdated}>
+            <label
+                className={styles.labelUpdated}
+                htmlFor={name}
+                aria-label={name}
+            >
                 {question}
             </label>
             <textarea
-                className={styles.input}
+                className={styles.inputUpdated}
                 value={value}
                 onChange={(e) =>
                     onChange({ type: name, value: e.target.value })

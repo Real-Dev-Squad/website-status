@@ -1,9 +1,10 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render, fireEvent, waitFor } from '@testing-library/react';
 import NavBar from '../../../../src/components/navBar/index';
 import * as authHooks from '@/hooks/useAuthenticated';
 import { renderWithProviders } from '@/test-utils/renderWithProvider';
 import { setupServer } from 'msw/node';
+import { rest } from 'msw';
 import handlers from '../../../../__mocks__/handlers';
 
 const server = setupServer(...handlers);
@@ -15,11 +16,36 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('Navbar', () => {
-    test('user whether loggedIn or not', async () => {
+    test('shows skeleton loader first, then displays user info if logged in', async () => {
         renderWithProviders(<NavBar />);
-        const navbar = await screen.findByTestId('navbar');
-        expect(navbar).toBeInTheDocument();
-        expect(screen.getByText('Sign In With Github'));
+        const loadingSkeleton = screen.getByTestId('loading-skeleton');
+        expect(loadingSkeleton).toBeInTheDocument();
+
+        await waitFor(() => {
+            const userGreet = screen.getByText(/Hello, Mahima/i);
+            expect(userGreet).toBeInTheDocument();
+        });
+    });
+
+    test('shows "Sign In With Github" button when not logged in', async () => {
+        server.use(
+            rest.get(
+                `${process.env.NEXT_PUBLIC_BASE_URL}/users?profile=true`,
+                (_, res, ctx) => {
+                    return res(
+                        ctx.status(401),
+                        ctx.json({ error: 'Not Authenticated' })
+                    );
+                }
+            )
+        );
+        renderWithProviders(<NavBar />);
+        await waitFor(() => {
+            const signInButton = screen.getByRole('button', {
+                name: /Sign In With Github/i,
+            });
+            expect(signInButton).toBeInTheDocument();
+        });
     });
 
     test('renders the hamburger icon', async () => {

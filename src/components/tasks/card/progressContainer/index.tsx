@@ -9,18 +9,24 @@ import useUserData from '@/hooks/useUserData';
 import { useGetUserQuery } from '@/app/services/userApi';
 import ProgressText from './ProgressText';
 import Progressbar from './ProgressBar';
+import { CompletionModal } from '@/components/Modal/CompletionModal';
 import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
 import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
 
-const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
+const ProgressContainer: FC<ProgressContainerProps> = ({
+    content,
+    readOnly = false,
+}) => {
     const router = useRouter();
     const { dev } = router.query;
+    const isDev = dev === 'true';
 
     const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(
         content.percentCompleted
     );
+    const [showCompletionModal, setShowCompletionModal] = useState(false);
 
     const { isUserAuthorized } = useUserData();
     const { data: userData } = useGetUserQuery();
@@ -34,26 +40,26 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
 
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const handleSliderChangeComplete = (
+    const handleSliderChangeComplete = async (
         id: string,
         percentCompleted: number
     ) => {
         const taskData = {
             percentCompleted: percentCompleted,
         };
-        if (isUserAuthorized) {
-            updateTask({
-                task: taskData,
-                id: id,
-            })
-                .unwrap()
-                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
-                .catch(() => toast(ERROR, ERROR_MESSAGE));
-        } else {
-            updateSelfTask({ task: taskData, id: id })
-                .unwrap()
-                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
-                .catch(() => toast(ERROR, ERROR_MESSAGE));
+
+        try {
+            const updateResponse = await (isUserAuthorized
+                ? updateTask({ task: taskData, id: id })
+                : updateSelfTask({ task: taskData, id: id })
+            ).unwrap();
+
+            toast(SUCCESS, PROGRESS_SUCCESSFUL);
+            if (percentCompleted === 100 && isDev) {
+                setShowCompletionModal(true);
+            }
+        } catch (error) {
+            toast(ERROR, ERROR_MESSAGE);
         }
     };
 
@@ -88,10 +94,15 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
         }
     };
 
+    const closeCompletionModal = () => {
+        setShowCompletionModal(false);
+    };
+
     const showUpdateButton = () => {
         if (
-            content.assignee === userData?.username ||
-            !!userData?.roles.super_user
+            !readOnly &&
+            (content.assignee === userData?.username ||
+                !!userData?.roles.super_user)
         ) {
             return (
                 <ProgressText
@@ -100,13 +111,14 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                 />
             );
         }
+        return null;
     };
 
     return (
         <>
             <div className={styles.progressContainerUpdated}>
                 <Progressbar
-                    progress={isProgressMade}
+                    progress={!readOnly && isProgressMade}
                     progressValue={progressValue}
                     percentCompleted={content.percentCompleted}
                     handleProgressChange={handleProgressChange}
@@ -114,9 +126,17 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                     startedOn={content.startedOn}
                     endsOn={String(content.endsOn)}
                     isLoading={checkingLoading}
+                    readOnly={readOnly}
                 />
                 {showUpdateButton()}
             </div>
+
+            {isDev && (
+                <CompletionModal
+                    isOpen={showCompletionModal}
+                    onClose={closeCompletionModal}
+                />
+            )}
         </>
     );
 };

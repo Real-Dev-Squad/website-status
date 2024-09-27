@@ -12,7 +12,8 @@ const ProgressText: FC<handleProgressTextProps> = ({
     }
     return (
         <button
-            className={styles.changeProgressText}
+            data-testid="progress-update-text-dev"
+            className={styles.changeProgressTextUpdated}
             onClick={() => handleProgressUpdate()}
         >
             UPDATE

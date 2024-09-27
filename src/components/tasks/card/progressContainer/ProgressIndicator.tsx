@@ -15,7 +15,7 @@ const ProgressIndicator: FC<ProgressIndicatorProps> = ({
         endsOn
     );
     return (
-        <div className={styles.progressIndicator}>
+        <div className={styles.slider}>
             <div
                 className={`
                 ${progressColor}

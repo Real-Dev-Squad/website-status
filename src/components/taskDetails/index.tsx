@@ -21,19 +21,22 @@ import { ProgressDetailsData } from '@/types/standup.type';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import Progress from '../ProgressCard';
 import TaskDependency from '@/components/taskDetails/taskDependency';
+import { TaskDetailsShimmer } from '@/components/Loaders/taskDetailsShimmer';
 import {
     taskDetailsDataType,
     ButtonProps,
     TextAreaProps,
 } from '@/interfaces/taskDetails.type';
+import TaskUpdateModal from './TaskUpdateModal';
 
 export function Button(props: ButtonProps) {
-    const { buttonName, clickHandler, value } = props;
+    const { buttonName, clickHandler, value, disabled } = props;
     return (
         <button
             type="button"
             className={styles['button']}
             onClick={() => clickHandler(value ?? true)}
+            disabled={disabled}
         >
             {buttonName}
         </button>
@@ -62,13 +65,22 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const isDev = router.query.dev === 'true';
+
     const { isUserAuthorized } = useUserData();
-    const [newEndOnDate, setNewEndOnDate] = useState('');
     const [isEditing, setIsEditing] = useState<boolean>(false);
-    const { data, isError, isLoading, isFetching } =
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const { data, isError, isLoading, isFetching, refetch } =
         useGetTaskDetailsQuery(taskID);
     const { data: extensionRequests } =
         useGetExtensionRequestDetailsQuery(taskID);
+    const { data: progressData, refetch: refetchProgress } =
+        useGetProgressDetailsQuery({
+            taskId: taskID,
+            dev: isDev,
+        });
+
     const isExtensionRequestPending = Boolean(
         extensionRequests?.allExtensionRequests.length
     );
@@ -91,6 +103,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     );
     const inputRef = useRef<HTMLInputElement>(null);
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         setShowSuggestion(Boolean(e.target.value));
@@ -99,12 +112,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             assignee: e.target.value,
         }));
     };
+
     const handleAssigneSelect = async (userName: string) => {
         inputRef.current?.focus();
         setAssigneeName(userName);
         setShowSuggestion(false);
         setEditedTaskDetails((prev) => ({ ...prev, assignee: userName }));
     };
+
     const handleTaskStatusUpdate = ({
         newStatus,
         newProgress,
@@ -119,6 +134,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             ...prev,
             ...payload,
         }));
+    };
+
+    const handleProgressUpdate = async () => {
+        await Promise.all([refetch(), refetchProgress()]);
     };
 
     useEffect(() => {
@@ -136,11 +155,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     function onCancel() {
         setIsEditing(false);
         setEditedTaskDetails(taskDetailsData);
-        setNewEndOnDate('');
     }
     async function onSave() {
-        setIsEditing(false);
-        setNewEndOnDate('');
         const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
         for (const key in editedTaskDetails) {
             if (
@@ -163,20 +179,30 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             return;
         }
 
-        await updateTaskDetails({
-            editedDetails: updatedFields,
-            taskID,
-        })
-            .unwrap()
-            .then(() => toast(SUCCESS, 'Successfully saved'))
-            .catch((error) => toast(ERROR, error.data.message));
+        setLoading(true);
+        try {
+            await updateTaskDetails({
+                editedDetails: updatedFields,
+                taskID,
+            }).unwrap();
+            toast(SUCCESS, 'Successfully saved');
+        } catch (error) {
+            const errorMessage =
+                error && typeof error === 'object' && 'data' in error
+                    ? (error.data as { message?: string }).message ||
+                      'An error occurred while saving'
+                    : 'An error occurred while saving';
+            toast(ERROR, errorMessage);
+        } finally {
+            setLoading(false);
+            setIsEditing(false);
+        }
     }
 
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const { name, value } = event.target;
-
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
             ...(prevState
@@ -187,7 +213,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     function renderLoadingComponent() {
         if (isLoading) {
-            return <p className={styles.textCenter}>Loading...</p>;
+            if (isDev) {
+                return (
+                    <div className={styles.parentContainer}>
+                        {<TaskDetailsShimmer />}
+                    </div>
+                );
+            } else {
+                return <p className={styles.textCenter}>Loading...</p>;
+            }
         }
         if (isError) {
             return <p className={styles.textCenter}>Something went wrong!</p>;
@@ -198,27 +232,9 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         return timestamp ? convertTimeStamp(parseInt(timestamp, 10)) : 'N/A';
     }
 
-    function getEndsOn(timestamp: number | undefined) {
-        return timestamp ? convertTimeStamp(timestamp) : 'TBD';
-    }
-
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
-    const { data: progressData } = useGetProgressDetailsQuery({
-        taskId: taskID,
-    });
     const taskProgress: ProgressDetailsData[] = progressData?.data || [];
-
-    const handleBlurOfEndsOn = () => {
-        const endsOn = new Date(`${newEndOnDate}`).getTime() / 1000;
-
-        if (endsOn > 0) {
-            setEditedTaskDetails((prev) => ({
-                ...prev,
-                endsOn,
-            }));
-        }
-    };
 
     return (
         <Layout hideHeader={true}>
@@ -233,6 +249,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                         title={editedTaskDetails?.title}
                         handleChange={handleChange}
                         isUserAuthorized={isUserAuthorized}
+                        loading={loading}
                     />
 
                     <section className={styles.detailsContainer}>
@@ -299,14 +316,11 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <TaskDates
                                     isEditing={isEditing}
-                                    isUserAuthorized={isUserAuthorized}
                                     startedOn={getStartedOn(
                                         taskDetailsData?.startedOn
                                     )}
                                     endsOn={taskDetailsData?.endsOn || 0}
-                                    newEndOnDate={newEndOnDate}
-                                    setNewEndOnDate={setNewEndOnDate}
-                                    handleBlurOfEndsOn={handleBlurOfEndsOn}
+                                    setEditedTaskDetails={setEditedTaskDetails}
                                     isExtensionRequestPending={
                                         isExtensionRequestPending
                                     }
@@ -317,14 +331,18 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 hasImg={false}
                                 title="Update Progress"
                             >
+                                <TaskUpdateModal
+                                    isOpen={isOpen}
+                                    styles={styles}
+                                    taskDetailsData={taskDetailsData}
+                                    editedTaskDetails={editedTaskDetails}
+                                    setIsOpen={setIsOpen}
+                                    onUpdateSuccess={handleProgressUpdate}
+                                />
                                 <button
-                                    data-testid="update-progress-button"
+                                    data-testid="update-progress-button-dev"
                                     className={styles.button}
-                                    onClick={() =>
-                                        router.push(
-                                            `/progress/${taskID}?dev=true`
-                                        )
-                                    }
+                                    onClick={() => setIsOpen(true)}
                                 >
                                     Update Progress
                                 </button>

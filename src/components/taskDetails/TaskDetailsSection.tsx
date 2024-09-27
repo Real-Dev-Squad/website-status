@@ -29,32 +29,33 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     taskDetailsData,
 }) => {
     const router = useRouter();
-
     const { dev } = router.query;
     const isDevMode = dev === 'true';
+
     return (
         <div className={styles['sub_details_grid_container']}>
             <Details detailType={'Type'} value={type} />
             <Details detailType={'Priority'} value={priority} />
+
             {isEditing ? (
                 <TaskDropDown
                     onChange={handleTaskStatusUpdate}
                     oldStatus={status}
                     oldProgress={percentCompleted}
-                    isDevMode={isDevMode}
                     key={status}
+                    isDevMode={isDevMode}
                 />
             ) : (
-                <Details
-                    detailType={'Status'}
-                    value={beautifyStatus(status, isDevMode)}
-                />
+                <Details detailType={'Status'} value={beautifyStatus(status)} />
             )}
             <Details detailType={'Link'} value={link} />
-            <ProgressContainer
-                content={taskDetailsData}
-                key={percentCompleted}
-            />
+            <div className={styles.progressWrapper}>
+                <ProgressContainer
+                    content={taskDetailsData}
+                    readOnly={true}
+                    key={percentCompleted}
+                />
+            </div>
         </div>
     );
 };
