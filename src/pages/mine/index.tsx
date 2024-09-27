@@ -18,6 +18,22 @@ import Card from '@/components/tasks/card';
 import { useRouter } from 'next/router';
 import CardShimmer from '@/components/Loaders/cardShimmer';
 
+export const searchTasks = (
+    setFilteredTasks: (tasks: task[]) => void,
+    setSelectedTab: (tab: Tab) => void,
+    setTitle: (title: string) => void,
+    searchString?: string,
+    tasks?: task[]
+) => {
+    if (searchString && tasks) {
+        const { status, title } = extractQueryParams(searchString);
+        const tab = getActiveTab(status);
+        setFilteredTasks(getFilteredTasks(tasks, tab, title));
+        setSelectedTab(tab);
+        setTitle(title);
+    }
+};
+
 const ContentDev = () => {
     const [filteredTasks, setFilteredTasks] = useState<task[] | undefined>();
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.ALL);
@@ -27,14 +43,14 @@ const ContentDev = () => {
 
     const { data: tasks, error, isLoading } = useGetMineTasksQuery();
 
-    const searchTasks = (searchString?: string) => {
-        if (searchString && tasks) {
-            const { status, title } = extractQueryParams(searchString);
-            const tab = getActiveTab(status);
-            setFilteredTasks(getFilteredTasks(tasks, tab, title));
-            setSelectedTab(tab);
-            setTitle(title);
-        }
+    const searchButtonHandler = (searchString?: string) => {
+        searchTasks(
+            setFilteredTasks,
+            setSelectedTab,
+            setTitle,
+            searchString,
+            tasks
+        );
     };
 
     useEffect(() => {
@@ -58,11 +74,13 @@ const ContentDev = () => {
         <div className={styles.tasksContainer}>
             <TaskSearch
                 onFilterDropdownSelect={(selectedTab: Tab) => {
-                    searchTasks(getInputValueFromTaskField(selectedTab, title));
+                    searchButtonHandler(
+                        getInputValueFromTaskField(selectedTab, title)
+                    );
                 }}
                 filterDropdownActiveTab={selectedTab}
                 inputValue={inputValue}
-                onClickSearchButton={searchTasks}
+                onClickSearchButton={searchButtonHandler}
             />
             {!filteredTasks || filteredTasks.length === 0 ? (
                 <p>{NO_TASKS_FOUND_MESSAGE}</p>
