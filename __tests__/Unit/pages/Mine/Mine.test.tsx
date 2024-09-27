@@ -1,5 +1,5 @@
 import { waitFor } from '@testing-library/react';
-import Mine from '@/pages/mine';
+import Mine, { searchTasks } from '@/pages/mine';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
@@ -10,6 +10,10 @@ import {
     mineTasksNoDataFoundHandler,
 } from '../../../../__mocks__/handlers/tasks.handler';
 import userEvent from '@testing-library/user-event';
+import * as taskQueryParams from '@/utils/taskQueryParams';
+import * as getActiveTabModule from '@/utils/getActiveTab';
+import * as getFilteredTasksModule from '@/utils/getFilteredTasks';
+import task from '@/interfaces/task.type';
 
 const server = setupServer(...handlers);
 
@@ -28,6 +32,38 @@ describe('Mine Page', () => {
             { route: '/mine' }
         );
         expect(getByText(/loading/i)).toBeInTheDocument();
+    });
+
+    it('should call searchTasks', () => {
+        const setFilteredTasks = jest.fn();
+        const setSelectedTab = jest.fn();
+        const setTitle = jest.fn();
+        const extractQueryParams = jest.spyOn(
+            taskQueryParams,
+            'extractQueryParams'
+        );
+        const getActiveTab = jest.spyOn(getActiveTabModule, 'getActiveTab');
+        const getFilteredTasks = jest.spyOn(getFilteredTasksModule, 'default');
+        const searchString = 'status:VERIFIED';
+        const tasks: task[] = [];
+
+        searchTasks(
+            setFilteredTasks,
+            setSelectedTab,
+            setTitle,
+            searchString,
+            tasks
+        );
+
+        expect(extractQueryParams).toHaveBeenCalled();
+        expect(getActiveTab).toHaveBeenCalled();
+        expect(getFilteredTasks).toHaveBeenCalled();
+
+        expect(setFilteredTasks).toHaveBeenCalled();
+        expect(setSelectedTab).toHaveBeenCalled();
+        expect(setTitle).toHaveBeenCalled();
+
+        jest.restoreAllMocks();
     });
 
     it('should render no tasks found state', async () => {
