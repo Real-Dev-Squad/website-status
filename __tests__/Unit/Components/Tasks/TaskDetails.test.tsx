@@ -12,7 +12,10 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
 import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
-import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
+import {
+    failedToUpdateTaskDetails,
+    taskDetailsHandler,
+} from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import { STARTED_ON, ENDS_ON } from '@/constants/constants';
@@ -338,6 +341,51 @@ test('should call onSave and reset state when clicked', async () => {
     await waitFor(() => {
         expect(
             screen.getByRole('button', { name: 'Saving...' })
+        ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+        const editButtonAfterSave = screen.getByRole('button', {
+            name: 'Edit',
+        });
+        expect(editButtonAfterSave).toBeInTheDocument();
+    });
+});
+
+test('should call onSave and show error toast when save fails', async () => {
+    server.use(failedToUpdateTaskDetails);
+
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+            <ToastContainer />
+        </Provider>,
+        {}
+    );
+
+    await waitFor(() => {
+        const editButton = screen.getByRole('button', { name: 'Edit' });
+        fireEvent.click(editButton);
+    });
+
+    const input = screen.getByTestId('endsOnTaskDetails') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: '2024-04-15' } });
+    fireEvent.blur(input);
+
+    expect(input.value).toBe('2024-04-15');
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => {
+        expect(
+            screen.getByRole('button', { name: 'Saving...' })
+        ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+        expect(
+            screen.getByText(/Failed to update the task details/i)
         ).toBeInTheDocument();
     });
 

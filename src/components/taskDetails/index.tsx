@@ -201,10 +201,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         return timestamp ? convertTimeStamp(parseInt(timestamp, 10)) : 'N/A';
     }
 
-    function getEndsOn(timestamp: number | undefined) {
-        return timestamp ? convertTimeStamp(timestamp) : 'TBD';
-    }
-
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
     const { data: progressData } = useGetProgressDetailsQuery({
