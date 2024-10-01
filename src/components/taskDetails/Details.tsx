@@ -12,6 +12,7 @@ import {
 } from '@/interfaces/taskDetails.type';
 import useUserData from '@/hooks/useUserData';
 import { STARTED_ON, ENDS_ON } from '@/constants/constants';
+import { isValidDate } from '@/utils/isValidDate';
 
 type StringNumberOrUndefined = string | number | undefined;
 
@@ -28,12 +29,12 @@ const DetailsContent: FC<DetailsContentProps> = ({
 }) => {
     const displayValue = renderedValue || value;
 
-    return (
-        <span
-            className={styles.detailValue}
-            style={{ color: color ?? 'black' }}
-        >
-            {isGitHubLink && value && gitHubIssueLink ? (
+    if (isGitHubLink && value && gitHubIssueLink) {
+        return (
+            <span
+                className={styles.detailValue}
+                style={{ color: color ?? 'black' }}
+            >
                 <a
                     className={styles.gitLink}
                     href={gitHubIssueLink}
@@ -44,7 +45,16 @@ const DetailsContent: FC<DetailsContentProps> = ({
                 >
                     {extractRepoName(value)}
                 </a>
-            ) : isTimeDetail && value ? (
+            </span>
+        );
+    }
+
+    if (isTimeDetail && value) {
+        return (
+            <span
+                className={styles.detailValue}
+                style={{ color: color ?? 'black' }}
+            >
                 <Tooltip
                     content={formatDate(value)}
                     tooltipPosition={{
@@ -54,9 +64,16 @@ const DetailsContent: FC<DetailsContentProps> = ({
                 >
                     {tooltipActive ? formatDate(value) : getRelativeTime(value)}
                 </Tooltip>
-            ) : (
-                displayValue
-            )}
+            </span>
+        );
+    }
+
+    return (
+        <span
+            className={styles.detailValue}
+            style={{ color: color ?? 'black' }}
+        >
+            {displayValue}
         </span>
     );
 };
@@ -73,15 +90,7 @@ const Details: FC<TaskDetailsProps> = (props) => {
         if (!isEditing) setNewEndOnDate('');
     }, [isEditing]);
 
-    const isValidDate = (dateString: string) => {
-        // Validating the "YYYY-MM-DD" format strictly
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-        return (
-            dateRegex.test(dateString) && !isNaN(new Date(dateString).getTime())
-        );
-    };
-
-    const handleBlurOfEndsOn = () => {
+    const handleEndsOnBlur = () => {
         const isDateValid = isValidDate(newEndOnDate);
         const endsOn = isDateValid
             ? new Date(`${newEndOnDate}`).getTime() / 1000
@@ -155,7 +164,7 @@ const Details: FC<TaskDetailsProps> = (props) => {
                     type="date"
                     name="endsOn"
                     onChange={(e) => setNewEndOnDate(e.target.value)}
-                    onBlur={handleBlurOfEndsOn}
+                    onBlur={handleEndsOnBlur}
                     value={
                         newEndOnDate ||
                         new Date(value as string).toLocaleDateString('en-CA')
