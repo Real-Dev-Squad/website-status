@@ -1,8 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { TaskDates } from '@/components/taskDetails/TaskDates';
 import { store } from '@/app/store';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 jest.mock('@/hooks/useUserData', () => {
     return () => ({
@@ -25,7 +26,7 @@ describe('TaskDates Component', () => {
     });
 
     it('should render input field for End On date when in editing mode', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={true}
@@ -47,7 +48,7 @@ describe('TaskDates Component', () => {
     });
 
     it('should not render input field for End On date when not in editing mode', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={false}
@@ -65,7 +66,7 @@ describe('TaskDates Component', () => {
     });
 
     it('should display an extension icon, when isExtensionRequestPending is true', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={true}
@@ -83,7 +84,7 @@ describe('TaskDates Component', () => {
     });
 
     it('should not update the input value if invalid date is entered', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={true}
@@ -105,7 +106,7 @@ describe('TaskDates Component', () => {
     });
 
     it('should render correctly with admin role', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={true}
@@ -136,7 +137,7 @@ describe('TaskDates Component', () => {
             });
         });
 
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={true}
@@ -154,7 +155,7 @@ describe('TaskDates Component', () => {
     });
 
     it('should render the correct date when endsOn is null', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
                     isEditing={true}

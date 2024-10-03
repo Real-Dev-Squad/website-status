@@ -92,6 +92,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     );
     const inputRef = useRef<HTMLInputElement>(null);
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+    const isDevFlagEnabled = router.query.dev === 'true';
+
     const handleAssignment = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAssigneeName(e.target.value);
         setShowSuggestion(Boolean(e.target.value));
@@ -139,6 +141,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         setEditedTaskDetails(taskDetailsData);
     }
     async function onSave() {
+        !isDevFlagEnabled && setIsEditing(false);
         const updatedFields: Partial<taskDetailsDataType['taskData']> = {};
         for (const key in editedTaskDetails) {
             if (
@@ -161,7 +164,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             return;
         }
 
-        setLoading(true);
+        isDevFlagEnabled && setLoading(true);
         await updateTaskDetails({
             editedDetails: updatedFields,
             taskID,
@@ -170,8 +173,8 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             .then(() => toast(SUCCESS, 'Successfully saved'))
             .catch((error) => toast(ERROR, error.data.message))
             .finally(() => {
-                setIsEditing(false);
-                setLoading(false);
+                isDevFlagEnabled && setIsEditing(false);
+                isDevFlagEnabled && setLoading(false);
             });
     }
 

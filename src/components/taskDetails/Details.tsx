@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import moment from 'moment';
 import { FaReceipt } from 'react-icons/fa6';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import setColor from './taskPriorityColors';
 import extractRepoName from '@/utils/extractRepoName';
@@ -85,6 +86,8 @@ const Details: FC<TaskDetailsProps> = (props) => {
     const gitHubIssueLink = isGitHubLink ? value : undefined;
     const [newEndOnDate, setNewEndOnDate] = useState('');
     const { isUserAuthorized } = useUserData();
+    const router = useRouter();
+    const isDevFlagEnabled = router.query.dev === 'true';
 
     useEffect(() => {
         if (!isEditing) setNewEndOnDate('');
@@ -154,6 +157,9 @@ const Details: FC<TaskDetailsProps> = (props) => {
             : detailType;
 
     const renderedValue = value ?? 'N/A';
+    const dateValue =
+        newEndOnDate || new Date(value as string).toLocaleDateString('en-CA');
+    const finalDateValue = isDevFlagEnabled ? dateValue : newEndOnDate;
 
     return (
         <div className={styles.detailsContainer}>
@@ -165,10 +171,7 @@ const Details: FC<TaskDetailsProps> = (props) => {
                     name="endsOn"
                     onChange={(e) => setNewEndOnDate(e.target.value)}
                     onBlur={handleEndsOnBlur}
-                    value={
-                        newEndOnDate ||
-                        new Date(value as string).toLocaleDateString('en-CA')
-                    }
+                    value={finalDateValue}
                     className={styles.inputField}
                 />
             ) : (
