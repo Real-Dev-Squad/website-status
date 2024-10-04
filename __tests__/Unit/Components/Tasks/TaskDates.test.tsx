@@ -105,7 +105,7 @@ describe('TaskDates Component', () => {
         expect(input.value).toBe('');
     });
 
-    it('should render correctly with admin role', () => {
+    it('should render input element correctly with admin role', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDates
@@ -123,7 +123,7 @@ describe('TaskDates Component', () => {
         expect(input).toBeInTheDocument();
     });
 
-    it('should render correctly with non-admin role', () => {
+    it('should render input element correctly with non-admin role', () => {
         jest.mock('@/hooks/useUserData', () => {
             return () => ({
                 data: {
