@@ -1,3 +1,4 @@
+import { TASKS_URL } from '@/constants/url';
 import { rest } from 'msw';
 const URL = process.env.NEXT_PUBLIC_BASE_URL;
 
@@ -135,4 +136,18 @@ const failedTaskDependencyDetails = rest.get(
     }
 );
 
-export { taskDetailsHandler, failedTaskDependencyDetails };
+const failedToUpdateTaskDetails = rest.patch(
+    `${TASKS_URL}/6KhcLU3yr45dzjQIVm0J`,
+    (req, res, ctx) => {
+        return res(
+            ctx.status(500),
+            ctx.json({ message: 'Failed to update the task details' })
+        );
+    }
+);
+
+export {
+    taskDetailsHandler,
+    failedTaskDependencyDetails,
+    failedToUpdateTaskDetails,
+};

@@ -10,6 +10,7 @@ interface TaskHeaderProps {
     title: string;
     handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     isUserAuthorized: boolean;
+    loading?: boolean;
 }
 
 export const TaskHeader: React.FC<TaskHeaderProps> = ({
@@ -20,6 +21,7 @@ export const TaskHeader: React.FC<TaskHeaderProps> = ({
     title,
     handleChange,
     isUserAuthorized,
+    loading,
 }) => {
     if (isEditing) {
         return (
@@ -33,7 +35,11 @@ export const TaskHeader: React.FC<TaskHeaderProps> = ({
                 />
                 <div className={styles.editMode}>
                     <Button buttonName="Cancel" clickHandler={onCancel} />
-                    <Button buttonName="Save" clickHandler={onSave} />
+                    <Button
+                        buttonName={loading ? 'Saving...' : 'Save'}
+                        disabled={loading}
+                        clickHandler={onSave}
+                    />
                 </div>
             </div>
         );

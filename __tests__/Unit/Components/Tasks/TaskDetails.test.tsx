@@ -12,7 +12,10 @@ import { ButtonProps, TextAreaProps } from '@/interfaces/taskDetails.type';
 import { ToastContainer } from 'react-toastify';
 import * as progressQueries from '@/app/services/progressesApi';
 import Details from '@/components/taskDetails/Details';
-import { taskDetailsHandler } from '../../../../__mocks__/handlers/task-details.handler';
+import {
+    failedToUpdateTaskDetails,
+    taskDetailsHandler,
+} from '../../../../__mocks__/handlers/task-details.handler';
 import { superUserSelfHandler } from '../../../../__mocks__/handlers/self.handler';
 import convertTimeStamp from '@/helperFunctions/convertTimeStamp';
 import { STARTED_ON, ENDS_ON } from '@/constants/constants';
@@ -49,6 +52,8 @@ jest.mock('@/hooks/useUserData', () => {
 });
 
 const mockNavigateToUpdateProgressPage = jest.fn();
+const mockHandleEditedTaskDetails = jest.fn();
+
 describe('TaskDetails Page', () => {
     it('Should render title', async () => {
         const { getByText } = renderWithRouter(
@@ -323,13 +328,72 @@ test('should call onSave and reset state when clicked', async () => {
     await waitFor(() => {
         const editButton = screen.getByRole('button', { name: 'Edit' });
         fireEvent.click(editButton);
+        const input = screen.getByTestId(
+            'endsOnTaskDetails'
+        ) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: '2024-04-15' } });
+        fireEvent.blur(input);
+        expect(input.value).toBe('2024-04-15');
+        const saveButton = screen.getByRole('button', { name: 'Save' });
+        fireEvent.click(saveButton);
     });
 
     await waitFor(() => {
-        const saveButton = screen.getByRole('button', { name: 'Save' });
-        fireEvent.click(saveButton);
+        expect(
+            screen.getByRole('button', { name: 'Saving...' })
+        ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+        const editButtonAfterSave = screen.getByRole('button', {
+            name: 'Edit',
+        });
+        expect(editButtonAfterSave).toBeInTheDocument();
+    });
+});
+
+test('should call onSave and show error toast when save fails', async () => {
+    server.use(failedToUpdateTaskDetails);
+
+    renderWithRouter(
+        <Provider store={store()}>
+            <TaskDetails taskID={details.taskID} />
+            <ToastContainer />
+        </Provider>,
+        {}
+    );
+
+    await waitFor(() => {
         const editButton = screen.getByRole('button', { name: 'Edit' });
-        expect(editButton).toBeInTheDocument();
+        fireEvent.click(editButton);
+    });
+
+    const input = screen.getByTestId('endsOnTaskDetails') as HTMLInputElement;
+    fireEvent.change(input, { target: { value: '2024-04-15' } });
+    fireEvent.blur(input);
+
+    expect(input.value).toBe('2024-04-15');
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    fireEvent.click(saveButton);
+
+    await waitFor(() => {
+        expect(
+            screen.getByRole('button', { name: 'Saving...' })
+        ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+        expect(
+            screen.getByText(/Failed to update the task details/i)
+        ).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+        const editButtonAfterSave = screen.getByRole('button', {
+            name: 'Edit',
+        });
+        expect(editButtonAfterSave).toBeInTheDocument();
     });
 });
 
@@ -351,11 +415,12 @@ test('should update the title and description with the new values', async () => 
     fireEvent.change(textareaElement, {
         target: { name: 'title', value: 'New Title' },
     });
-    await waitFor(async () => {
-        const saveButton = screen.getByRole('button', { name: 'Save' });
-        fireEvent.click(saveButton);
-        expect(await screen.findByText(/Successfully saved/i)).not.toBeNull();
+
+    const saveButton = await screen.findByRole('button', {
+        name: 'Save',
     });
+    fireEvent.click(saveButton);
+    expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
 });
 test('should not update the title and description with the same values', async () => {
     server.use(...taskDetailsHandler);
@@ -700,5 +765,31 @@ describe('Details component', () => {
             console.error('Error occurred during tooltip rendering:', error);
             throw error;
         }
+    });
+
+    it('Renders an input with prefilled data provided, when isEditing is true', () => {
+        const task = {
+            id: 'L1SDW6O835o0EI8ZmvRc',
+            endedOn: 1700000000,
+        };
+        const formattedEndsOn = convertTimeStamp(task.endedOn);
+        const expectedDate = new Date(formattedEndsOn).toLocaleDateString(
+            'en-CA'
+        );
+
+        renderWithRouter(
+            <Details
+                detailType={ENDS_ON}
+                value={formattedEndsOn}
+                isEditing
+                setEditedTaskDetails={mockHandleEditedTaskDetails}
+            />
+        );
+
+        const input = screen.getByTestId(
+            'endsOnTaskDetails'
+        ) as HTMLInputElement;
+
+        expect(input.defaultValue).toBe(expectedDate);
     });
 });
