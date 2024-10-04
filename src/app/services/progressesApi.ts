@@ -3,7 +3,7 @@ import { progressDetails } from '@/types/standup.type';
 
 type queryParamsType = {
     userId?: string;
-    taskId?: string;
+    taskId?: string | string[];
 };
 
 export const progressesApi = api.injectEndpoints({
