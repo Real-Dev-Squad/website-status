@@ -83,7 +83,10 @@ const NavBar = () => {
             </div>
             <div className={styles.userProfile}>
                 {isProfileLoading ? (
-                    <div className={styles.skeletonContainer}>
+                    <div
+                        data-testid="loading-skeleton"
+                        className={styles.skeletonContainer}
+                    >
                         <div className={styles.skeletonGreetMsg}></div>
                         <div className={styles.skeletonProfilePic}></div>
                     </div>
