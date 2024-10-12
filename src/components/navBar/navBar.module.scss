@@ -78,6 +78,40 @@ $thickness: 3px;
         color: $white;
         font-weight: 600;
     }
+    .skeletonContainer {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        padding: ($offset + $thickness) + 7;
+    }
+
+    .skeletonGreetMsg {
+        width: 100px;
+        height: 20px;
+        background-color: lighten($theme-primary, 20%);
+        border-radius: 4px;
+        animation: skeleton-loading 1.2s infinite ease-in-out;
+    }
+
+    .skeletonProfilePic {
+        width: 32px;
+        height: 32px;
+        background-color: lighten($theme-primary, 20%);
+        border-radius: 50%;
+        animation: skeleton-loading 1.2s infinite ease-in-out;
+    }
+
+    @keyframes skeleton-loading {
+        0% {
+            background-color: lighten($theme-primary, 20%);
+        }
+        50% {
+            background-color: lighten($theme-primary, 30%);
+        }
+        100% {
+            background-color: lighten($theme-primary, 20%);
+        }
+    }
 
     .hamburgerIcon {
         display: none;

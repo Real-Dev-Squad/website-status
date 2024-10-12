@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -20,11 +20,16 @@ import useAuthenticated from '@/hooks/useAuthenticated';
 
 const NavBar = () => {
     const { isLoggedIn } = useAuthenticated();
+    const [isProfileLoading, setIsProfileLoading] = useState(true);
 
     const [toggleDropdown, setToggleDropdown] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
-    const { data: userData } = useUserData();
+    const { data: userData, isLoading } = useUserData();
+
+    useEffect(() => {
+        setIsProfileLoading(isLoading);
+    }, [isLoading]);
 
     return (
         <nav data-testid="navbar" className={styles.navBar}>
@@ -77,7 +82,15 @@ const NavBar = () => {
                 </ul>
             </div>
             <div className={styles.userProfile}>
-                {!isLoggedIn ? (
+                {isProfileLoading ? (
+                    <div
+                        data-testid="loading-skeleton"
+                        className={styles.skeletonContainer}
+                    >
+                        <div className={styles.skeletonGreetMsg}></div>
+                        <div className={styles.skeletonProfilePic}></div>
+                    </div>
+                ) : !isLoggedIn ? (
                     <Link href={LOGIN_URL}>
                         <button className={styles.signInLink}>
                             Sign In With Github
