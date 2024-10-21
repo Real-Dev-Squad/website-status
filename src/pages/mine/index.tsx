@@ -14,8 +14,6 @@ import { getActiveTab } from '@/utils/getActiveTab';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import getInputValueFromTaskField from '@/utils/getInputValueFromTaskField';
 import getFilteredTasks from '@/utils/getFilteredTasks';
-import Card from '@/components/tasks/card';
-import { useRouter } from 'next/router';
 import CardShimmer from '@/components/Loaders/cardShimmer';
 
 export const searchTasks = (
@@ -91,39 +89,8 @@ const ContentDev = () => {
     );
 };
 
-function CardList({ tasks }: { tasks: task[] }) {
-    return (
-        <>
-            {tasks.map((item) => (
-                <Card
-                    content={item}
-                    key={item.id}
-                    shouldEdit={false}
-                    onContentChange={undefined}
-                />
-            ))}
-        </>
-    );
-}
-
-const Content = () => {
-    const { data: tasks, error, isLoading } = useGetMineTasksQuery();
-
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Something went wrong! Please contact admin</p>;
-    if (tasks?.length)
-        return (
-            <div className={styles.mineTasksContainer}>
-                <CardList tasks={tasks} />
-            </div>
-        );
-    return <p>{NO_TASKS_FOUND_MESSAGE}</p>;
-};
-
 const Mine: FC = () => {
     const { isLoading: isAuthenticating, isLoggedIn } = useAuthenticated();
-    const router = useRouter();
-    const dev = router.query.dev === 'true' ? true : false;
 
     return (
         <Layout>
@@ -132,11 +99,7 @@ const Mine: FC = () => {
                 {isAuthenticating ? (
                     <Loader />
                 ) : isLoggedIn ? (
-                    dev ? (
-                        <ContentDev />
-                    ) : (
-                        <Content />
-                    )
+                    <ContentDev />
                 ) : (
                     <div>
                         <p>You are not Authorized</p>
