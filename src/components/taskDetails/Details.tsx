@@ -86,7 +86,6 @@ const Details: FC<TaskDetailsProps> = (props) => {
     const gitHubIssueLink = isGitHubLink ? value : undefined;
     const [newEndOnDate, setNewEndOnDate] = useState('');
     const { isUserAuthorized } = useUserData();
-    const router = useRouter();
 
     useEffect(() => {
         if (!isEditing) setNewEndOnDate('');
