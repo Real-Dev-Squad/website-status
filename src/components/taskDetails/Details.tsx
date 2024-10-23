@@ -86,8 +86,6 @@ const Details: FC<TaskDetailsProps> = (props) => {
     const gitHubIssueLink = isGitHubLink ? value : undefined;
     const [newEndOnDate, setNewEndOnDate] = useState('');
     const { isUserAuthorized } = useUserData();
-    const router = useRouter();
-    const isDevFlagEnabled = router.query.dev === 'true';
 
     useEffect(() => {
         if (!isEditing) setNewEndOnDate('');
@@ -159,7 +157,6 @@ const Details: FC<TaskDetailsProps> = (props) => {
     const renderedValue = value ?? 'N/A';
     const dateValue =
         newEndOnDate || new Date(value as string).toLocaleDateString('en-CA');
-    const finalDateValue = isDevFlagEnabled ? dateValue : newEndOnDate;
 
     return (
         <div className={styles.detailsContainer}>
@@ -171,7 +168,7 @@ const Details: FC<TaskDetailsProps> = (props) => {
                     name="endsOn"
                     onChange={(e) => setNewEndOnDate(e.target.value)}
                     onBlur={handleEndsOnBlur}
-                    value={finalDateValue}
+                    value={dateValue}
                     className={styles.inputField}
                 />
             ) : (
