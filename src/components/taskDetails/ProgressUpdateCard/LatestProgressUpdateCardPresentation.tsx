@@ -6,8 +6,10 @@ import {
 } from './progressUpdateCard.types';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './latest-progress-update-card.module.scss';
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 
 export default function LatestProgressUpdateCardPresentation({
+    username,
     dataToShowState,
     tooltipText,
     onMoreOrLessButtonClick,
@@ -79,6 +81,14 @@ export default function LatestProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
+                    <span>
+                        by &nbsp;
+                        <a
+                            href={`${USER_MANAGEMENT_URL}/?username=${username}`}
+                        >
+                            {username}
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>

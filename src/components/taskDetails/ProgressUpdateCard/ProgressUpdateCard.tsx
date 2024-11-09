@@ -6,12 +6,19 @@ import {
     ProgressUpdateCardProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
+import { useGetAllUserByUserIdQuery } from '@/app/services/usersApi';
 
 export default memo(function ProgressUpdateCard({
     data,
 }: ProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
+    const userId = data?.userId;
+    const { data: userData } = useGetAllUserByUserIdQuery({
+        searchString: userId,
+    });
+
+    const username = userData?.user?.username;
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
     const titleToShow = readMoreTitle;
@@ -72,6 +79,7 @@ export default memo(function ProgressUpdateCard({
     }
     return (
         <ProgressUpdateCardPresentation
+            username={username ?? ''}
             dataToShowState={dataToShowState}
             titleToShow={titleToShow}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}

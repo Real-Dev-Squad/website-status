@@ -6,8 +6,10 @@ import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 
 export default function ProgressUpdateCardPresentation({
+    username,
     titleToShow,
     dateInAgoFormat,
     tooltipString,
@@ -59,6 +61,7 @@ export default function ProgressUpdateCardPresentation({
                     <h3 className={styles['progress-update-card__title']}>
                         {titleToShow}
                     </h3>
+
                     <Tooltip
                         tooltipPosition={{ top: '-25px', right: '-2rem' }}
                         content={tooltipString}
@@ -86,6 +89,14 @@ export default function ProgressUpdateCardPresentation({
                             transition: 'transform 1s',
                         }}
                     />
+                    <span>
+                        by &nbsp;
+                        <a
+                            href={`${USER_MANAGEMENT_URL}/?username=${username}`}
+                        >
+                            {username}
+                        </a>
+                    </span>
                 </div>
                 <div
                     className={`${

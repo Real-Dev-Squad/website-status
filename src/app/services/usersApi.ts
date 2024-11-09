@@ -15,6 +15,10 @@ type UsernameQueryArgs = {
     searchString?: string;
     size?: number;
 };
+type UserResponse = {
+    message: string;
+    user: userDataType;
+};
 
 export const usersApi = api.injectEndpoints({
     endpoints: (build) => ({
@@ -39,6 +43,10 @@ export const usersApi = api.injectEndpoints({
             query: ({ searchString }) => `/users?search=${searchString}`,
             providesTags: ['Users'],
         }),
+        getAllUserByUserId: build.query<UserResponse, UsernameQueryArgs>({
+            query: ({ searchString }) => `/users/userId/${searchString}`,
+            providesTags: ['Users'],
+        }),
     }),
 });
 
@@ -48,4 +56,5 @@ export const {
     useGetUsersQuery,
     useGetAllUsersByUsernameQuery,
     useGetAllUsersQuery,
+    useGetAllUserByUserIdQuery,
 } = usersApi;

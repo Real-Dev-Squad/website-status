@@ -3,6 +3,7 @@ import React, { MouseEvent, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
 import { ProgressDetailsData } from '@/types/standup.type';
 import LatestProgressUpdateCardPresentation from './LatestProgressUpdateCardPresentation';
+import { useGetAllUserByUserIdQuery } from '@/app/services/usersApi';
 
 type LatestProgressUpdateCardProps = {
     data: ProgressDetailsData;
@@ -21,11 +22,16 @@ export default function LatestProgressUpdateCard({
     data,
 }: LatestProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
+    const userId = data?.userId;
+    const { data: userData } = useGetAllUserByUserIdQuery({
+        searchString: userId,
+    });
+
+    const username = userData?.user?.username;
     const dateInAgoFormat = momentDate.fromNow();
     const fullDate = momentDate.format('dddd, MMMM DD, YYYY, hh:mm A [GMT] Z');
     const tooltipText = `Updated at ${fullDate}`;
     const charactersToShow = 70;
-
     const dataToShow = [
         {
             id: `completed-${data.id}`,
@@ -55,7 +61,6 @@ export default function LatestProgressUpdateCard({
 
     const [dataToShowState, setDataToShowState] =
         useState<ProgressUpdateDataToShow[]>(dataToShow);
-
     function onMoreOrLessButtonClick(
         e: MouseEvent<HTMLElement>,
         clickedOnData: ProgressUpdateDataToShow
@@ -74,6 +79,7 @@ export default function LatestProgressUpdateCard({
 
     return (
         <LatestProgressUpdateCardPresentation
+            username={username ?? ''}
             dataToShowState={dataToShowState}
             tooltipText={tooltipText}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}
