@@ -6,7 +6,7 @@ import {
     ProgressUpdateCardProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
-import { useGetAllUserByUserIdQuery } from '@/app/services/usersApi';
+import { useGetUserDetailsByIdQuery } from '@/app/services/usersApi';
 
 export default memo(function ProgressUpdateCard({
     data,
@@ -14,7 +14,7 @@ export default memo(function ProgressUpdateCard({
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
     const userId = data?.userId;
-    const { data: userData } = useGetAllUserByUserIdQuery({
+    const { data: userData } = useGetUserDetailsByIdQuery({
         searchString: userId,
     });
 

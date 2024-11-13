@@ -14,6 +14,21 @@ beforeEach(() => {
 });
 
 describe('ProgressUpdateCard Component', () => {
+    it('should check if the onCardClick function is called when user click on card', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCard data={mockGetTaskProgress.data[2]} />
+            </Provider>
+        );
+        const progressUpdateCardContainer = screen.getByTestId(
+            'progress-update-card-container'
+        );
+        fireEvent.click(progressUpdateCardContainer);
+        expect(progressUpdateCardContainer).toHaveClass(
+            'progress-update-card__container expand'
+        );
+    });
+
     it('should render completed section string as title in card', () => {
         renderWithRouter(
             <Provider store={store()}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaRegClock } from 'react-icons/fa6';
 import {
     LatestProgressUpdateCardPresentationProps,
@@ -15,6 +16,8 @@ export default function LatestProgressUpdateCardPresentation({
     onMoreOrLessButtonClick,
     dateInAgoFormat,
 }: LatestProgressUpdateCardPresentationProps) {
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -67,7 +70,11 @@ export default function LatestProgressUpdateCardPresentation({
                 >
                     <Tooltip
                         content={tooltipText}
-                        tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
+                        tooltipPosition={
+                            isDevMode
+                                ? { top: '-3.8rem', right: '3rem' }
+                                : { top: '-2.6rem', right: '-4rem' }
+                        }
                     >
                         <span className={styles['date-clock-container']}>
                             <FaRegClock />
@@ -81,14 +88,21 @@ export default function LatestProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
-                    <span>
-                        by &nbsp;
-                        <a
-                            href={`${USER_MANAGEMENT_URL}/?username=${username}`}
+                    {isDevMode && (
+                        <span
+                            data-testid="latest-progress-update-card-username"
+                            className={
+                                styles['latest-progress-update-card-username']
+                            }
                         >
-                            {username}
-                        </a>
-                    </span>
+                            by &nbsp;
+                            <a
+                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                            >
+                                {username}
+                            </a>
+                        </span>
+                    )}
                 </div>
             </div>
         </div>

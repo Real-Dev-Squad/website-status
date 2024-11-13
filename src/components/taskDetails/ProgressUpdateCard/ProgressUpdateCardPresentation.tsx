@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaAngleRight, FaRegClock } from 'react-icons/fa6';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './progress-update-card.module.scss';
@@ -18,6 +19,9 @@ export default function ProgressUpdateCardPresentation({
     onCardClick,
     isExpanded,
 }: ProgressUpdateCardPresentationProps) {
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true';
+
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -36,6 +40,7 @@ export default function ProgressUpdateCardPresentation({
                     {datum.shouldReadMoreButtonShow && (
                         <button
                             onClick={(e) => onMoreOrLessButtonClick(e, datum)}
+                            data-testid="progress-update-more-less-button"
                             className={
                                 styles['progress-update-card__more-less-button']
                             }
@@ -63,7 +68,11 @@ export default function ProgressUpdateCardPresentation({
                     </h3>
 
                     <Tooltip
-                        tooltipPosition={{ top: '-25px', right: '-2rem' }}
+                        tooltipPosition={
+                            isDevMode
+                                ? { top: '-2.4rem', right: '4rem' }
+                                : { top: '-25px', right: '-2rem' }
+                        }
                         content={tooltipString}
                     >
                         <span
@@ -83,21 +92,29 @@ export default function ProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
+
+                    {isDevMode && (
+                        <span
+                            data-testid="progress-update-card-username"
+                            onClick={(event) => event.stopPropagation()}
+                        >
+                            by &nbsp;
+                            <a
+                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                            >
+                                {username}
+                            </a>
+                        </span>
+                    )}
                     <FaAngleRight
+                        data-testid="progress-update-card-angle-icon"
                         style={{
                             transform: isExpanded ? 'rotate(90deg)' : 'none',
                             transition: 'transform 1s',
                         }}
                     />
-                    <span>
-                        by &nbsp;
-                        <a
-                            href={`${USER_MANAGEMENT_URL}/?username=${username}`}
-                        >
-                            {username}
-                        </a>
-                    </span>
                 </div>
+
                 <div
                     className={`${
                         styles['progress-update-card__expand-content']

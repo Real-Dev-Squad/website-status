@@ -3,7 +3,7 @@ import React, { MouseEvent, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
 import { ProgressDetailsData } from '@/types/standup.type';
 import LatestProgressUpdateCardPresentation from './LatestProgressUpdateCardPresentation';
-import { useGetAllUserByUserIdQuery } from '@/app/services/usersApi';
+import { useGetUserDetailsByIdQuery } from '@/app/services/usersApi';
 
 type LatestProgressUpdateCardProps = {
     data: ProgressDetailsData;
@@ -23,7 +23,7 @@ export default function LatestProgressUpdateCard({
 }: LatestProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const userId = data?.userId;
-    const { data: userData } = useGetAllUserByUserIdQuery({
+    const { data: userData } = useGetUserDetailsByIdQuery({
         searchString: userId,
     });
 
