@@ -44,7 +44,7 @@ export const usersApi = api.injectEndpoints({
             providesTags: ['Users'],
         }),
         getUserDetailsById: build.query<UserResponse, UsernameQueryArgs>({
-            query: ({ searchString }) => `/users/userId/${searchString}`,
+            query: ({ searchString }) => `/users?id=${searchString}`,
             providesTags: ['Users'],
         }),
     }),
