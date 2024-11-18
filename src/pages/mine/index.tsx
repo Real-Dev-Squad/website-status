@@ -32,7 +32,7 @@ export const searchTasks = (
     }
 };
 
-const ContentDev = () => {
+const Content = () => {
     const [filteredTasks, setFilteredTasks] = useState<task[] | undefined>();
     const [selectedTab, setSelectedTab] = useState<Tab>(Tab.ALL);
     const [title, setTitle] = useState<string>('');
@@ -99,7 +99,7 @@ const Mine: FC = () => {
                 {isAuthenticating ? (
                     <Loader />
                 ) : isLoggedIn ? (
-                    <ContentDev />
+                    <Content />
                 ) : (
                     <div>
                         <p>You are not Authorized</p>
