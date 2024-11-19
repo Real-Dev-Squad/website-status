@@ -89,7 +89,7 @@ describe('Mine Page', () => {
 
         await waitFor(() =>
             expect(
-                getAllByTestId(/shimmer-card/i).length
+                getAllByTestId(/task-shimmer-card/i).length
             ).toBeGreaterThanOrEqual(1)
         );
     });

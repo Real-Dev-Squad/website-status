@@ -14,7 +14,7 @@ import { getActiveTab } from '@/utils/getActiveTab';
 import TaskList from '@/components/tasks/TaskList/TaskList';
 import getInputValueFromTaskField from '@/utils/getInputValueFromTaskField';
 import getFilteredTasks from '@/utils/getFilteredTasks';
-import CardShimmer from '@/components/Loaders/cardShimmer';
+import TaskCardShimmer from '@/components/Loaders/taskCardShimmer';
 
 export const searchTasks = (
     setFilteredTasks: (tasks: task[]) => void,
@@ -57,9 +57,9 @@ const Content = () => {
 
     if (isLoading)
         return (
-            <div className={styles.tasksContainer}>
+            <div className={styles.mineTasksContainer}>
                 {[...Array(5)].map((n: number, index) => (
-                    <CardShimmer key={index} />
+                    <TaskCardShimmer key={index} />
                 ))}
             </div>
         );
