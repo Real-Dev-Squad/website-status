@@ -8,9 +8,10 @@ import {
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './latest-progress-update-card.module.scss';
 import { USER_MANAGEMENT_URL } from '@/constants/url';
-
+import { DEFAULT_AVATAR } from '@/constants/url';
 export default function LatestProgressUpdateCardPresentation({
     username,
+    profileImageUrl,
     dataToShowState,
     tooltipText,
     onMoreOrLessButtonClick,
@@ -90,15 +91,35 @@ export default function LatestProgressUpdateCardPresentation({
                     </Tooltip>
                     {isDevMode && (
                         <span
-                            data-testid="latest-progress-update-card-username"
+                            data-testid="latest-progress-update-card-user-info-container"
                             className={
-                                styles['latest-progress-update-card-username']
+                                styles[
+                                    'latest-progress-update-card__user-info-container'
+                                ]
                             }
                         >
-                            by &nbsp;
+                            by
                             <a
                                 href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                className={
+                                    styles[
+                                        'latest-progress-update-card__user-info-link'
+                                    ]
+                                }
                             >
+                                <img
+                                    src={
+                                        profileImageUrl == ''
+                                            ? DEFAULT_AVATAR
+                                            : profileImageUrl
+                                    }
+                                    alt={'Avatar'}
+                                    className={
+                                        styles[
+                                            'latest-progress-update-card__profile-picture'
+                                        ]
+                                    }
+                                />
                                 {username}
                             </a>
                         </span>

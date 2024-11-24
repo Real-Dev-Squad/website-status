@@ -26,8 +26,9 @@ export default function LatestProgressUpdateCard({
     const { data: userData } = useGetUserDetailsByIdQuery({
         searchString: userId,
     });
+    const username = userData?.user?.username ?? '';
+    const profileImageUrl = userData?.user?.picture?.url ?? '';
 
-    const username = userData?.user?.username;
     const dateInAgoFormat = momentDate.fromNow();
     const fullDate = momentDate.format('dddd, MMMM DD, YYYY, hh:mm A [GMT] Z');
     const tooltipText = `Updated at ${fullDate}`;
@@ -79,7 +80,8 @@ export default function LatestProgressUpdateCard({
 
     return (
         <LatestProgressUpdateCardPresentation
-            username={username ?? ''}
+            username={username}
+            profileImageUrl={profileImageUrl}
             dataToShowState={dataToShowState}
             tooltipText={tooltipText}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}

@@ -17,8 +17,9 @@ export default memo(function ProgressUpdateCard({
     const { data: userData } = useGetUserDetailsByIdQuery({
         searchString: userId,
     });
+    const username = userData?.user?.username ?? '';
+    const profileImageUrl = userData?.user?.picture?.url ?? '';
 
-    const username = userData?.user?.username;
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
     const titleToShow = readMoreTitle;
@@ -79,7 +80,8 @@ export default memo(function ProgressUpdateCard({
     }
     return (
         <ProgressUpdateCardPresentation
-            username={username ?? ''}
+            username={username}
+            profileImageUrl={profileImageUrl}
             dataToShowState={dataToShowState}
             titleToShow={titleToShow}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}

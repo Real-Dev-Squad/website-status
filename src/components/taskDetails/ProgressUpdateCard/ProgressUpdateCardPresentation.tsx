@@ -7,10 +7,11 @@ import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
-import { USER_MANAGEMENT_URL } from '@/constants/url';
+import { DEFAULT_AVATAR, USER_MANAGEMENT_URL } from '@/constants/url';
 
 export default function ProgressUpdateCardPresentation({
     username,
+    profileImageUrl,
     titleToShow,
     dateInAgoFormat,
     tooltipString,
@@ -66,53 +67,88 @@ export default function ProgressUpdateCardPresentation({
                     <h3 className={styles['progress-update-card__title']}>
                         {titleToShow}
                     </h3>
-
-                    <Tooltip
-                        tooltipPosition={
-                            isDevMode
-                                ? { top: '-2.4rem', right: '4rem' }
-                                : { top: '-25px', right: '-2rem' }
+                    <div
+                        className={
+                            styles['progress-update-card__details-container']
                         }
-                        content={tooltipString}
                     >
-                        <span
-                            className={
-                                styles['progress-update-card__date-container']
+                        <Tooltip
+                            tooltipPosition={
+                                isDevMode
+                                    ? { top: '-2.4rem', right: '4rem' }
+                                    : { top: '-25px', right: '-2rem' }
                             }
-                            onClick={(event) => event.stopPropagation()}
-                            data-testid="progress-update-card-date"
+                            content={tooltipString}
                         >
-                            <FaRegClock />
                             <span
                                 className={
-                                    styles['progress-update-card__date-text']
+                                    styles[
+                                        'progress-update-card__date-container'
+                                    ]
                                 }
+                                onClick={(event) => event.stopPropagation()}
+                                data-testid="progress-update-card-date"
                             >
-                                {dateInAgoFormat}
+                                <FaRegClock />
+                                <span
+                                    className={
+                                        styles[
+                                            'progress-update-card__date-text'
+                                        ]
+                                    }
+                                >
+                                    {dateInAgoFormat}
+                                </span>
                             </span>
-                        </span>
-                    </Tooltip>
+                        </Tooltip>
 
-                    {isDevMode && (
-                        <span
-                            data-testid="progress-update-card-username"
-                            onClick={(event) => event.stopPropagation()}
-                        >
-                            by &nbsp;
-                            <a
-                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                        {isDevMode && (
+                            <span
+                                data-testid="progress-update-card-user-info-container"
+                                className={
+                                    styles[
+                                        'progress-update-card__user-info-container'
+                                    ]
+                                }
+                                onClick={(event) => event.stopPropagation()}
                             >
-                                {username}
-                            </a>
-                        </span>
-                    )}
-                    <FaAngleRight
-                        data-testid="progress-update-card-angle-icon"
-                        style={{
-                            transform: isExpanded ? 'rotate(90deg)' : 'none',
-                            transition: 'transform 1s',
-                        }}
-                    />
+                                by
+                                <a
+                                    href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                    className={
+                                        styles[
+                                            'progress-update-card__user-info-link'
+                                        ]
+                                    }
+                                >
+                                    <img
+                                        src={
+                                            profileImageUrl == ''
+                                                ? DEFAULT_AVATAR
+                                                : profileImageUrl
+                                        }
+                                        alt={'Avatar'}
+                                        data-testid="progress-update-card-profile-picture"
+                                        className={
+                                            styles[
+                                                'progress-update-card__profile-picture'
+                                            ]
+                                        }
+                                    />{' '}
+                                    {username}
+                                </a>
+                            </span>
+                        )}
+                        <FaAngleRight
+                            data-testid="progress-update-card-angle-icon"
+                            style={{
+                                transform: isExpanded
+                                    ? 'rotate(90deg)'
+                                    : 'none',
+                                transition: 'transform 1s',
+                            }}
+                        />
+                    </div>
                 </div>
 
                 <div

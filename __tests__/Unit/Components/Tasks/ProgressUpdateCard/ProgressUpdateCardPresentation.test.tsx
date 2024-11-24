@@ -7,7 +7,7 @@ import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { readMoreFormatter } from '@/utils/common';
 import { store } from '@/app/store';
-import { USER_MANAGEMENT_URL } from '@/constants/url';
+import { DEFAULT_AVATAR, USER_MANAGEMENT_URL } from '@/constants/url';
 
 import {
     ProgressUpdateCardPresentationProps,
@@ -19,6 +19,7 @@ import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpd
 let initialProps: ProgressUpdateCardPresentationProps;
 const titleToShow = mockGetTaskProgress.data[1].completed;
 const username = 'mock-user-name';
+const profileImageUrl = 'random-profile-pic-url';
 const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
 const fullDate = momentDate.format('DD-MM-YY');
 const time = momentDate.format('hh:mmA');
@@ -120,6 +121,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         initialProps = {
             username: username,
+            profileImageUrl: profileImageUrl,
             titleToShow: titleToShow,
             isExpanded: false,
             dateInAgoFormat: dateInAgoFormat,
@@ -222,7 +224,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         expect(date).toHaveTextContent(dateInAgoFormat);
     });
 
-    it('should render the name of the updater', () => {
+    it('should render the name and profile picture of the updater', () => {
         (useRouter as jest.Mock).mockReturnValue({
             query: { dev: 'true' },
         });
@@ -235,10 +237,37 @@ describe('ProgressUpdateCardPresentation Component', () => {
             </Provider>
         );
         const usernameElement = screen.getByTestId(
-            'progress-update-card-username'
+            'progress-update-card-user-info-container'
         );
         expect(usernameElement).toBeInTheDocument();
         expect(usernameElement.textContent).toContain('mock-user-name');
+        const profileImageUrlElement = screen.getByTestId(
+            'progress-update-card-profile-picture'
+        );
+
+        expect(profileImageUrlElement).toBeInTheDocument();
+        expect(profileImageUrlElement).toHaveAttribute('src', profileImageUrl);
+        expect(profileImageUrlElement).toHaveAttribute('alt', 'Avatar');
+    });
+    it('should display the default avatar if profile url is empty', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
+        const props: ProgressUpdateCardPresentationProps = {
+            ...initialProps,
+            profileImageUrl: '',
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+        const profileImageUrlElement = screen.getByTestId(
+            'progress-update-card-profile-picture'
+        );
+
+        expect(profileImageUrlElement).toBeInTheDocument();
+        expect(profileImageUrlElement).toHaveAttribute('src', DEFAULT_AVATAR);
     });
     it('should render the updater name as a link with the correct href', () => {
         (useRouter as jest.Mock).mockReturnValue({
@@ -254,7 +283,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
 
         const linkElement = screen
-            .getByTestId('progress-update-card-username')
+            .getByTestId('progress-update-card-user-info-container')
             .querySelector('a');
         expect(linkElement).toBeInTheDocument();
         expect(linkElement).toHaveAttribute(
@@ -263,7 +292,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
         expect(linkElement?.textContent).toContain(username);
     });
-    it('should prevent event propagation when clicking on the username link', () => {
+    it('should prevent event propagation when clicking on the user info container', () => {
         (useRouter as jest.Mock).mockReturnValue({
             query: { dev: 'true' },
         });
@@ -274,16 +303,18 @@ describe('ProgressUpdateCardPresentation Component', () => {
             </Provider>
         );
 
-        const usernameLink = screen.getByRole('link', { name: username });
+        const userInfoContainer = screen.getByTestId(
+            'progress-update-card-user-info-container'
+        );
 
         const stopPropagationMock = jest.fn();
 
-        usernameLink.addEventListener(
+        userInfoContainer.addEventListener(
             'click',
             (event) => (event.stopPropagation = stopPropagationMock)
         );
 
-        fireEvent.click(usernameLink);
+        fireEvent.click(userInfoContainer);
         expect(stopPropagationMock).toHaveBeenCalled();
     });
 
