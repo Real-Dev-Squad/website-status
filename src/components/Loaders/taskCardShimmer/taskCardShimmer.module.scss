@@ -19,12 +19,42 @@
 
     .title {
         min-height: 25px;
+        width: 60%;
+    }
+
+    .estimated {
+        min-height: 25px;
+        width: 40%;
+    }
+
+    .started {
+        min-height: 25px;
+        width: 20%;
+    }
+
+    .status {
+        min-width: 25px;
+        width: 20%;
+    }
+
+    .assignee {
+        min-height: 25px;
+        width: 30%;
     }
 }
 
 @keyframes fullView {
     100% {
         width: 100%;
+    }
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+
+    & > * {
+        border-radius: 8px;
     }
 }
 
