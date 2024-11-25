@@ -40,7 +40,7 @@ const ProgressForm = ({ questions }: formProps) => {
     const manager = [state.progress, state.plan, state.blockers];
     const [saveProgress] = useSaveProgressMutation();
     const router = useRouter();
-
+    const isDev = router.query.dev === 'true';
     const isButtonEnabled =
         state.progress && state.plan && state.blockers && !isLoading;
 
@@ -67,6 +67,7 @@ const ProgressForm = ({ questions }: formProps) => {
             });
     };
 
+
     return (
         <form className={styles.form}>
             {questions.map((question, index) => (
@@ -78,15 +79,27 @@ const ProgressForm = ({ questions }: formProps) => {
                     onChange={dispatch}
                 />
             ))}
-            <button
-                className={styles.button}
-                onClick={(e) => handleSubmit(e)}
-                disabled={!isButtonEnabled}
-                type="submit"
-                data-testid="submit"
-            >
-                {isLoading ? <Spinner /> : 'Submit'}
-            </button>
+            {
+                isDev ?
+                    <button
+                        className={styles.buttonUpdated}
+                        onClick={(e) => handleSubmit(e)}
+                        disabled={!isButtonEnabled}
+                        type="submit"
+                        data-testid="submit-dev"
+                    >
+                        {isLoading ? <Spinner /> : 'Submit'}
+                    </button> :
+                    <button
+                        className={styles.button}
+                        onClick={(e) => handleSubmit(e)}
+                        disabled={!isButtonEnabled}
+                        type="submit"
+                        data-testid="submit"
+                    >
+                        {isLoading ? <Spinner /> : 'Submit'}
+                    </button>
+            }
         </form>
     );
 };

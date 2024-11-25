@@ -26,6 +26,7 @@ import {
     ButtonProps,
     TextAreaProps,
 } from '@/interfaces/taskDetails.type';
+import TaskUpdateModal from './TaskUpdateModal';
 
 export function Button(props: ButtonProps) {
     const { buttonName, clickHandler, value, disabled } = props;
@@ -63,8 +64,12 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const { query } = router;
+    const isDev = query.dev === 'true';
+
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { data, isError, isLoading, isFetching } =
         useGetTaskDetailsQuery(taskID);
@@ -145,15 +150,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             if (
                 taskDetailsData &&
                 editedTaskDetails[
-                    key as keyof taskDetailsDataType['taskData']
+                key as keyof taskDetailsDataType['taskData']
                 ] !==
-                    taskDetailsData[
-                        key as keyof taskDetailsDataType['taskData']
-                    ]
+                taskDetailsData[
+                key as keyof taskDetailsDataType['taskData']
+                ]
             ) {
                 updatedFields[key as keyof taskDetailsDataType['taskData']] =
                     editedTaskDetails[
-                        key as keyof taskDetailsDataType['taskData']
+                    key as keyof taskDetailsDataType['taskData']
                     ];
             }
         }
@@ -304,17 +309,36 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 hasImg={false}
                                 title="Update Progress"
                             >
-                                <button
-                                    data-testid="update-progress-button"
-                                    className={styles.button}
-                                    onClick={() =>
-                                        router.push(
-                                            `/progress/${taskID}?dev=true`
-                                        )
-                                    }
-                                >
-                                    Update Progress
-                                </button>
+                                <TaskUpdateModal
+                                    isOpen={isOpen}
+                                    isDev={isDev}
+                                    styles={styles}
+                                    taskDetailsData={taskDetailsData}
+                                    editedTaskDetails={editedTaskDetails}
+                                    setIsOpen={setIsOpen}
+                                />
+
+                                {isDev ?
+                                    <button
+                                        data-testid="update-progress-button-dev"
+                                        className={styles.button}
+                                        onClick={() => setIsOpen(true)}
+                                    >
+                                        Update Progress
+                                    </button>
+                                    :
+                                    <button
+                                        data-testid="update-progress-button"
+                                        className={styles.button}
+                                        onClick={() =>
+                                            router.push(
+                                                `/progress/${taskID}?dev=true`
+                                            )
+                                        }
+                                    >
+                                        Update Progress
+                                    </button>
+                                }
                             </TaskContainer>
                         </section>
                     </section>

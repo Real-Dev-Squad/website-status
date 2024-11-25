@@ -51,10 +51,11 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
                 />
             )}
             <Details detailType={'Link'} value={link} />
-            <ProgressContainer
+            {isDevMode ? null : <ProgressContainer
                 content={taskDetailsData}
                 key={percentCompleted}
             />
+            }
         </div>
     );
 };
