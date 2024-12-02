@@ -19,7 +19,7 @@ import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpd
 let initialProps: ProgressUpdateCardPresentationProps;
 const titleToShow = mockGetTaskProgress.data[1].completed;
 const username = 'mock-user-name';
-const profileImageUrl = 'random-profile-pic-url';
+const userProfileImageUrl = 'random-profile-pic-url';
 const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
 const fullDate = momentDate.format('DD-MM-YY');
 const time = momentDate.format('hh:mmA');
@@ -121,7 +121,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         initialProps = {
             username: username,
-            profileImageUrl: profileImageUrl,
+            userProfileImageUrl: userProfileImageUrl,
             titleToShow: titleToShow,
             isExpanded: false,
             dateInAgoFormat: dateInAgoFormat,
@@ -241,13 +241,16 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
         expect(usernameElement).toBeInTheDocument();
         expect(usernameElement.textContent).toContain('mock-user-name');
-        const profileImageUrlElement = screen.getByTestId(
+        const userProfileImageUrlElement = screen.getByTestId(
             'progress-update-card-profile-picture'
         );
 
-        expect(profileImageUrlElement).toBeInTheDocument();
-        expect(profileImageUrlElement).toHaveAttribute('src', profileImageUrl);
-        expect(profileImageUrlElement).toHaveAttribute('alt', 'Avatar');
+        expect(userProfileImageUrlElement).toBeInTheDocument();
+        expect(userProfileImageUrlElement).toHaveAttribute(
+            'src',
+            userProfileImageUrl
+        );
+        expect(userProfileImageUrlElement).toHaveAttribute('alt', 'Avatar');
     });
     it('should display the default avatar if profile url is empty', () => {
         (useRouter as jest.Mock).mockReturnValue({
@@ -255,19 +258,22 @@ describe('ProgressUpdateCardPresentation Component', () => {
         });
         const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
-            profileImageUrl: '',
+            userProfileImageUrl: '',
         };
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...props} />
             </Provider>
         );
-        const profileImageUrlElement = screen.getByTestId(
+        const userProfileImageUrlElement = screen.getByTestId(
             'progress-update-card-profile-picture'
         );
 
-        expect(profileImageUrlElement).toBeInTheDocument();
-        expect(profileImageUrlElement).toHaveAttribute('src', DEFAULT_AVATAR);
+        expect(userProfileImageUrlElement).toBeInTheDocument();
+        expect(userProfileImageUrlElement).toHaveAttribute(
+            'src',
+            DEFAULT_AVATAR
+        );
     });
     it('should render the updater name as a link with the correct href', () => {
         (useRouter as jest.Mock).mockReturnValue({

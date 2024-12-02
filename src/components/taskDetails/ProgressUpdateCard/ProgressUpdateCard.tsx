@@ -18,7 +18,7 @@ export default memo(function ProgressUpdateCard({
         searchString: userId,
     });
     const username = userData?.user?.username ?? '';
-    const profileImageUrl = userData?.user?.picture?.url ?? '';
+    const userProfileImageUrl = userData?.user?.picture?.url ?? '';
 
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
@@ -81,7 +81,7 @@ export default memo(function ProgressUpdateCard({
     return (
         <ProgressUpdateCardPresentation
             username={username}
-            profileImageUrl={profileImageUrl}
+            userProfileImageUrl={userProfileImageUrl}
             dataToShowState={dataToShowState}
             titleToShow={titleToShow}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}

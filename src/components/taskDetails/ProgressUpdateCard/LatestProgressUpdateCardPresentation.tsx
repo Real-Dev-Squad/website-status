@@ -11,7 +11,7 @@ import { USER_MANAGEMENT_URL } from '@/constants/url';
 import { DEFAULT_AVATAR } from '@/constants/url';
 export default function LatestProgressUpdateCardPresentation({
     username,
-    profileImageUrl,
+    userProfileImageUrl,
     dataToShowState,
     tooltipText,
     onMoreOrLessButtonClick,
@@ -109,9 +109,9 @@ export default function LatestProgressUpdateCardPresentation({
                             >
                                 <img
                                     src={
-                                        profileImageUrl == ''
+                                        userProfileImageUrl == ''
                                             ? DEFAULT_AVATAR
-                                            : profileImageUrl
+                                            : userProfileImageUrl
                                     }
                                     alt={'Avatar'}
                                     className={

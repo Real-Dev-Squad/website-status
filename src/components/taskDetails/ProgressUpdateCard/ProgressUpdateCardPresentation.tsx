@@ -11,7 +11,7 @@ import { DEFAULT_AVATAR, USER_MANAGEMENT_URL } from '@/constants/url';
 
 export default function ProgressUpdateCardPresentation({
     username,
-    profileImageUrl,
+    userProfileImageUrl,
     titleToShow,
     dateInAgoFormat,
     tooltipString,
@@ -123,9 +123,9 @@ export default function ProgressUpdateCardPresentation({
                                 >
                                     <img
                                         src={
-                                            profileImageUrl == ''
+                                            userProfileImageUrl == ''
                                                 ? DEFAULT_AVATAR
-                                                : profileImageUrl
+                                                : userProfileImageUrl
                                         }
                                         alt={'Avatar'}
                                         data-testid="progress-update-card-profile-picture"

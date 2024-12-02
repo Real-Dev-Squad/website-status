@@ -95,6 +95,7 @@
     .progress-update-card__profile-picture {
         width: 32px;
         height: 32px;
+        margin-right: 4px;
         border-radius: 50%;
         object-fit: cover;
         @media (width<=425px) {
