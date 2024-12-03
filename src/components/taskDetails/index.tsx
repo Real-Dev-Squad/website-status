@@ -71,10 +71,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const { data, isError, isLoading, isFetching } =
+    const { data, isError, isLoading, isFetching, refetch } =
         useGetTaskDetailsQuery(taskID);
     const { data: extensionRequests } =
         useGetExtensionRequestDetailsQuery(taskID);
+    const { data: progressData, refetch: refetchProgress } =
+        useGetProgressDetailsQuery({
+            taskId: taskID,
+        });
+
     const isExtensionRequestPending = Boolean(
         extensionRequests?.allExtensionRequests.length
     );
@@ -106,12 +111,14 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             assignee: e.target.value,
         }));
     };
+
     const handleAssigneSelect = async (userName: string) => {
         inputRef.current?.focus();
         setAssigneeName(userName);
         setShowSuggestion(false);
         setEditedTaskDetails((prev) => ({ ...prev, assignee: userName }));
     };
+
     const handleTaskStatusUpdate = ({
         newStatus,
         newProgress,
@@ -126,6 +133,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
             ...prev,
             ...payload,
         }));
+    };
+
+    const handleProgressUpdate = async () => {
+        await Promise.all([refetch(), refetchProgress()]);
     };
 
     useEffect(() => {
@@ -168,24 +179,29 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         }
 
         setLoading(true);
-        await updateTaskDetails({
-            editedDetails: updatedFields,
-            taskID,
-        })
-            .unwrap()
-            .then(() => toast(SUCCESS, 'Successfully saved'))
-            .catch((error) => toast(ERROR, error.data.message))
-            .finally(() => {
-                setLoading(false);
-                setIsEditing(false);
-            });
+        try {
+            await updateTaskDetails({
+                editedDetails: updatedFields,
+                taskID,
+            }).unwrap();
+            toast(SUCCESS, 'Successfully saved');
+        } catch (error) {
+            const errorMessage =
+                error && typeof error === 'object' && 'data' in error
+                    ? (error.data as { message?: string }).message ||
+                      'An error occurred while saving'
+                    : 'An error occurred while saving';
+            toast(ERROR, errorMessage);
+        } finally {
+            setLoading(false);
+            setIsEditing(false);
+        }
     }
 
     function handleChange(
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) {
         const { name, value } = event.target;
-
         setEditedTaskDetails((prevState) => ({
             ...prevState!,
             ...(prevState
@@ -209,9 +225,6 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
 
-    const { data: progressData } = useGetProgressDetailsQuery({
-        taskId: taskID,
-    });
     const taskProgress: ProgressDetailsData[] = progressData?.data || [];
 
     return (
@@ -316,6 +329,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     taskDetailsData={taskDetailsData}
                                     editedTaskDetails={editedTaskDetails}
                                     setIsOpen={setIsOpen}
+                                    onUpdateSuccess={handleProgressUpdate}
                                 />
 
                                 {isDev ? (

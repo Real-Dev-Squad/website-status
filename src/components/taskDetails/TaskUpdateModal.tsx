@@ -5,6 +5,7 @@ import getCurrentDate from '@/utils/getLatestDate';
 import { questions } from '@/constants/ProgressUpdates';
 import ProgressForm from '../ProgressForm/ProgressForm';
 import task from '@/interfaces/task.type';
+import { useRouter } from 'next/router';
 
 type Props = {
     isOpen: boolean;
@@ -15,6 +16,7 @@ type Props = {
     isDev: boolean;
     taskDetailsData: task;
     editedTaskDetails: task;
+    onUpdateSuccess: () => void;
 };
 
 function TaskUpdateModal({
@@ -24,6 +26,7 @@ function TaskUpdateModal({
     isDev,
     taskDetailsData,
     editedTaskDetails,
+    onUpdateSuccess,
 }: Props) {
     return (
         <Modal isOpen={isOpen} toggle={() => setIsOpen(false)}>
@@ -34,7 +37,13 @@ function TaskUpdateModal({
                     <h2 className={styles.dateUpdated}>
                         On {getCurrentDate()}
                     </h2>
-                    <ProgressForm questions={questions} />
+                    <ProgressForm
+                        questions={questions}
+                        onUpdateSuccess={() => {
+                            onUpdateSuccess();
+                            setIsOpen(false);
+                        }}
+                    />
                 </section>
                 <div className={styles.hr} />
                 <ProgressContainer
