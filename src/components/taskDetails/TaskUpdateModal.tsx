@@ -47,9 +47,9 @@ function TaskUpdateModal({
                 </section>
                 <div className={styles.hr} />
                 <ProgressContainer
-                    isDev={isDev}
                     content={taskDetailsData}
                     key={editedTaskDetails?.percentCompleted}
+                    readOnly={false}
                 />
             </div>
         </Modal>

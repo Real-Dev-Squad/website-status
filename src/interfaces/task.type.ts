@@ -113,7 +113,7 @@ export type CardProps = {
 
 export type ProgressContainerProps = {
     content: task;
-    isDev?: boolean;
+    readOnly: boolean;
 };
 
 export default task;
