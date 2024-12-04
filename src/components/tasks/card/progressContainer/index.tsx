@@ -13,9 +13,13 @@ import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
 import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
 
-const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
+const ProgressContainer: FC<ProgressContainerProps> = ({
+    content,
+    readOnly = false,
+}) => {
     const router = useRouter();
     const { dev } = router.query;
+    const isDev = dev === 'true';
 
     const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(
@@ -89,9 +93,12 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
     };
 
     const showUpdateButton = () => {
+        // Only show update button in modal (not readOnly) and in dev mode
         if (
-            content.assignee === userData?.username ||
-            !!userData?.roles.super_user
+            !readOnly &&
+            isDev &&
+            (content.assignee === userData?.username ||
+                !!userData?.roles.super_user)
         ) {
             return (
                 <ProgressText
@@ -100,13 +107,14 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                 />
             );
         }
+        return null;
     };
 
     return (
         <>
             <div className={styles.progressContainerUpdated}>
                 <Progressbar
-                    progress={isProgressMade}
+                    progress={!readOnly && isProgressMade}
                     progressValue={progressValue}
                     percentCompleted={content.percentCompleted}
                     handleProgressChange={handleProgressChange}
@@ -114,6 +122,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({ content }) => {
                     startedOn={content.startedOn}
                     endsOn={String(content.endsOn)}
                     isLoading={checkingLoading}
+                    readOnly={readOnly}
                 />
                 {showUpdateButton()}
             </div>

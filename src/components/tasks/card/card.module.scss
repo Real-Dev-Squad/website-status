@@ -149,9 +149,7 @@
 
 @media screen and (max-width: 1128px) {
     .progressContainerUpdated {
-        flex-direction: column;
-        justify-content: start;
-        align-items: start;
+        width: 100%;
         gap: 1rem;
     }
 }
