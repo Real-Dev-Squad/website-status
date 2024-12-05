@@ -135,4 +135,47 @@ describe('TaskUpdateModal', () => {
 
         expect(screen.getByText('On 2023-12-01')).toBeInTheDocument();
     });
+
+    it('should not render any content when modal is closed', () => {
+        render(
+            <Provider store={store()}>
+                <TaskUpdateModal {...defaultProps} isOpen={false} />
+            </Provider>
+        );
+
+        expect(screen.queryByText('Update Progress')).not.toBeInTheDocument();
+        expect(
+            screen.queryByTestId('mock-progress-container')
+        ).not.toBeInTheDocument();
+        expect(
+            screen.queryByTestId('mock-progress-form')
+        ).not.toBeInTheDocument();
+    });
+
+    it('should call onUpdateSuccess when form submits successfully', () => {
+        const mockOnUpdateSuccess = jest.fn();
+        (ProgressForm as jest.Mock).mockImplementationOnce(
+            ({ onUpdateSuccess }) => (
+                <div data-testid="mock-progress-form">
+                    <button onClick={() => onUpdateSuccess()}>
+                        Submit Form
+                    </button>
+                </div>
+            )
+        );
+
+        render(
+            <Provider store={store()}>
+                <TaskUpdateModal
+                    {...defaultProps}
+                    onUpdateSuccess={mockOnUpdateSuccess}
+                />
+            </Provider>
+        );
+
+        fireEvent.click(screen.getByText('Submit Form'));
+
+        expect(mockOnUpdateSuccess).toHaveBeenCalled();
+        expect(mockSetIsOpen).toHaveBeenCalledWith(false);
+    });
 });
