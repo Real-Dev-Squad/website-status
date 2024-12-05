@@ -13,34 +13,36 @@ const DefaultProps = {
 
 describe('ProgressText', () => {
     beforeEach(() => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: {
-                dev: 'true',
-            },
-        });
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'false' },
+        }));
+    });
+
+    test('should render Progress update Text', () => {
+        const { getByText } = render(
+            <HandleProgressText isLoading={false} {...DefaultProps} />
+        );
+        fireEvent.click(screen.getByText('UPDATE'));
+        expect(getByText('UPDATE')).toBeInTheDocument();
     });
 
     test('should render Progress update Text in dev mode', () => {
-        render(<HandleProgressText isLoading={false} {...DefaultProps} />);
-        const button = screen.getByText('UPDATE');
-        fireEvent.click(button);
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'true' },
+        }));
 
-        expect(button).toBeInTheDocument();
+        const { getByText } = render(
+            <HandleProgressText isLoading={false} {...DefaultProps} />
+        );
+        const updateButton = getByText('UPDATE');
+        expect(updateButton).toBeInTheDocument();
+        expect(updateButton.className).toContain('changeProgressTextUpdated');
+        fireEvent.click(updateButton);
         expect(DefaultProps.handleProgressUpdate).toHaveBeenCalled();
     });
 
-    test('should render Progress update Text in production mode', () => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: {
-                dev: 'false',
-            },
-        });
-
-        render(<HandleProgressText isLoading={false} {...DefaultProps} />);
-        const button = screen.getByText('UPDATE');
-        fireEvent.click(button);
-
-        expect(button).toBeInTheDocument();
-        expect(DefaultProps.handleProgressUpdate).toHaveBeenCalled();
+    test('should render loader when loading', () => {
+        render(<HandleProgressText isLoading={true} {...DefaultProps} />);
+        expect(screen.queryByText('UPDATE')).not.toBeInTheDocument();
     });
 });

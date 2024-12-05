@@ -14,35 +14,28 @@ const DEFAULT_PROPS = {
 
 describe('Progress Indicator', () => {
     beforeEach(() => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: {
-                dev: 'true',
-            },
-        });
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'false' },
+        }));
     });
 
-    test('should render the ProgressIndicator in dev mode', () => {
+    test('should render the ProgressIndicator', () => {
         const { container } = render(<ProgressIndicator {...DEFAULT_PROPS} />);
-        const sliderDiv = container.getElementsByClassName('slider');
+        const parentDiv = container.getElementsByClassName('progressIndicator');
         const childDiv = container.getElementsByClassName('progressStyle');
-
-        expect(sliderDiv.length).toBe(1);
+        expect(parentDiv.length).toBe(1);
         expect(childDiv.length).toBe(1);
     });
 
-    test('should render the ProgressIndicator in production mode', () => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: {
-                dev: 'false',
-            },
-        });
+    test('should render with dev mode', () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'true' },
+        }));
 
         const { container } = render(<ProgressIndicator {...DEFAULT_PROPS} />);
-        const progressIndicatorDiv =
-            container.getElementsByClassName('progressIndicator');
+        const parentDiv = container.getElementsByClassName('slider');
         const childDiv = container.getElementsByClassName('progressStyle');
-
-        expect(progressIndicatorDiv.length).toBe(1);
+        expect(parentDiv.length).toBe(1);
         expect(childDiv.length).toBe(1);
     });
 });

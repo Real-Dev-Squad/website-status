@@ -5,6 +5,11 @@ import ProgressSlider from '@/components/tasks/card/progressContainer/ProgressSl
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { useRouter } from 'next/router';
+
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
 
 jest.mock('next/router', () => ({
     useRouter: jest.fn().mockReturnValue({
@@ -22,7 +27,15 @@ const DEFAULT_PROPS = {
 };
 
 describe('Progress Bar', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     test('Should render Progress slider component if progress is true', () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'true' },
+        }));
+
         renderWithRouter(
             <Provider store={store()}>
                 <Progressbar
@@ -40,6 +53,10 @@ describe('Progress Bar', () => {
     });
 
     test('Should render Progress Indicator component if progress is false', () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'false' },
+        }));
+
         renderWithRouter(
             <Provider store={store()}>
                 <Progressbar
@@ -69,5 +86,25 @@ describe('Progress Bar', () => {
         expect(sliderInput).toBeInTheDocument();
         fireEvent.change(sliderInput, { target: { value: 60 } });
         expect(DEFAULT_PROPS.handleProgressChange).toHaveBeenCalled();
+    });
+
+    test('Should handle dev mode correctly', () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'true' },
+        }));
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <Progressbar
+                    {...DEFAULT_PROPS}
+                    progress={true}
+                    isLoading={false}
+                />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        const progressElement = screen.getByRole('slider');
+        expect(progressElement).toHaveClass('slider');
     });
 });

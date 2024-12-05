@@ -57,7 +57,12 @@ describe('TaskUpdateModal', () => {
         isDev: false,
         taskDetailsData: mockTaskDetails,
         editedTaskDetails: mockEditedTaskDetails,
+        onUpdateSuccess: jest.fn(),
     };
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
 
     it('should renders the modal when open', () => {
         render(
@@ -75,7 +80,8 @@ describe('TaskUpdateModal', () => {
         ).toBeInTheDocument();
         expect(screen.getByTestId('mock-progress-form')).toBeInTheDocument();
     });
-    it('should calls setIsOpen when close button is clicked', () => {
+
+    it('should call setIsOpen when close button is clicked', () => {
         render(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
@@ -88,7 +94,7 @@ describe('TaskUpdateModal', () => {
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
     });
 
-    it('should passes correct props to ProgressContainer', () => {
+    it('should pass correct props to ProgressContainer', () => {
         render(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
@@ -97,24 +103,30 @@ describe('TaskUpdateModal', () => {
 
         expect(ProgressContainer).toHaveBeenCalledWith(
             expect.objectContaining({
-                isDev: defaultProps.isDev,
                 content: defaultProps.taskDetailsData,
+                readOnly: false,
             }),
             {}
         );
     });
 
-    it(' should passes correct props to ProgressForm', () => {
+    it('should pass correct props to ProgressForm', () => {
         render(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
         );
 
-        expect(ProgressForm).toHaveBeenCalledWith(expect.any(Object), {});
+        expect(ProgressForm).toHaveBeenCalledWith(
+            expect.objectContaining({
+                questions: expect.any(Array),
+                onUpdateSuccess: expect.any(Function),
+            }),
+            {}
+        );
     });
 
-    it(' should displays the correct date from getCurrentDate', () => {
+    it('should display the correct date from getCurrentDate', () => {
         render(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />

@@ -9,16 +9,14 @@ jest.mock('next/router', () => ({
 const name = 'Test-Question';
 const func = jest.fn();
 
-describe('Input field with label', function () {
+describe('Input field with label', () => {
     beforeEach(() => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: {
-                dev: 'true',
-            },
-        });
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'false' },
+        }));
     });
 
-    it('Should render an input field with the appropriate label in dev mode', function () {
+    it('Should render a input field with appropriate label', () => {
         render(
             <InputWithQuestions
                 name={name}
@@ -31,12 +29,10 @@ describe('Input field with label', function () {
         expect(input).toBeInTheDocument();
     });
 
-    it('Should render an input field with the appropriate label in production mode', function () {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: {
-                dev: 'false',
-            },
-        });
+    it('Should render with dev mode', () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'true' },
+        }));
 
         render(
             <InputWithQuestions
