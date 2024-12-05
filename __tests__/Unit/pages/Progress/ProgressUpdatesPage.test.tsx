@@ -16,7 +16,7 @@ describe('Progress page test', function () {
         );
         const textBoxes = screen.getAllByRole('textbox');
         expect(textBoxes).toHaveLength(3);
-        const button = screen.getByTestId('submit') as HTMLButtonElement;
+        const button = screen.getByTestId('submit-dev') as HTMLButtonElement;
         expect(button).toBeInTheDocument();
         expect(button.type).toBe('submit');
     });
