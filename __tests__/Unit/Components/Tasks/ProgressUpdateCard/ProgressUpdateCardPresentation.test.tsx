@@ -2,11 +2,12 @@ import moment from 'moment';
 import { MouseEvent } from 'react';
 import { Provider } from 'react-redux';
 import { fireEvent, screen } from '@testing-library/react';
-
+import { useRouter } from 'next/router';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { readMoreFormatter } from '@/utils/common';
 import { store } from '@/app/store';
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 
 import {
     ProgressUpdateCardPresentationProps,
@@ -18,6 +19,9 @@ import ProgressUpdateCardPresentation from '@/components/taskDetails/ProgressUpd
 let initialProps: ProgressUpdateCardPresentationProps;
 const titleToShow = mockGetTaskProgress.data[1].completed;
 const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
+const username = 'mock-user-name';
+const userProfileImageUrl =
+    'https://res.cloudinary.com/realdevsquad/image/upload/v1661061375/profile/xpHe38L/ogirm51v.jpg';
 const fullDate = momentDate.format('DD-MM-YY');
 const time = momentDate.format('hh:mmA');
 const tooltipString = `Updated at ${fullDate}, ${time}`;
@@ -29,6 +33,9 @@ let mockedOnMoreOrLessButtonClick: jest.Mock<
     [React.MouseEvent<HTMLElement>]
 >;
 let mockedOnCardClick: jest.Mock<void, [MouseEvent<HTMLElement>]>;
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
 const charactersToShow = 70;
 const dataToShowState = [
     {
@@ -114,6 +121,8 @@ describe('ProgressUpdateCardPresentation Component', () => {
             jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         mockedOnCardClick = jest.fn<void, [React.MouseEvent<HTMLElement>]>();
         initialProps = {
+            username: username,
+            userProfileImageUrl: userProfileImageUrl,
             titleToShow: titleToShow,
             isExpanded: false,
             dateInAgoFormat: dateInAgoFormat,
@@ -123,7 +132,76 @@ describe('ProgressUpdateCardPresentation Component', () => {
             onCardClick: mockedOnCardClick,
         };
     });
+
+    it('should rotate the angle icon when expanded', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
+        const props = { ...initialProps, isExpanded: true };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+        const angleIcon = screen.getByTestId('progress-update-card-angle-icon');
+        expect(angleIcon).toHaveStyle('transform: rotate(90deg)');
+    });
+    it('should have respective classes on date container and date text', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+        const dateContainer = screen.getByTestId('progress-update-card-date');
+        const dateText = screen.getByText(dateInAgoFormat);
+
+        expect(dateContainer).toHaveClass(
+            'progress-update-card__date-container'
+        );
+        expect(dateText).toHaveClass('progress-update-card__date-text');
+    });
+
+    it('should not rotate the angle icon when not expanded', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
+        const props = { ...initialProps, isExpanded: false };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+        const angleIcon = screen.getByTestId('progress-update-card-angle-icon');
+        expect(angleIcon).toHaveStyle('transform: none');
+    });
+
+    it('should prevent event propagation when clicking on the date container', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+
+        const dateContainer = screen.getByTestId('progress-update-card-date');
+        const stopPropagationMock = jest.fn();
+        dateContainer.addEventListener(
+            'click',
+            (event) => (event.stopPropagation = stopPropagationMock)
+        );
+        fireEvent.click(dateContainer);
+        expect(stopPropagationMock).toHaveBeenCalled();
+    });
+
     it('should render completed section string as title in card', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -135,6 +213,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
     });
     it('should render date with ago format', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -142,6 +223,82 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
         const date = screen.getByTestId('progress-update-card-date');
         expect(date).toHaveTextContent(dateInAgoFormat);
+    });
+    it('should render the name and profile picture of the updater', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
+        const props: ProgressUpdateCardPresentationProps = {
+            ...initialProps,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+        const usernameElement = screen.getByTestId(
+            'progress-update-card-user-info-container'
+        );
+        expect(usernameElement).toBeInTheDocument();
+        expect(usernameElement.textContent).toContain('mock-user-name');
+        const userProfileImageUrlElement = screen.getByTestId(
+            'progress-update-card-profile-picture'
+        );
+
+        expect(userProfileImageUrlElement).toBeInTheDocument();
+        expect(userProfileImageUrlElement).toHaveAttribute(
+            'src',
+            userProfileImageUrl
+        );
+        expect(userProfileImageUrlElement).toHaveAttribute('alt', 'Avatar');
+    });
+    it('should render the updater name as a link with the correct href', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
+        const props: ProgressUpdateCardPresentationProps = {
+            ...initialProps,
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...props} />
+            </Provider>
+        );
+
+        const linkElement = screen
+            .getByTestId('progress-update-card-user-info-container')
+            .querySelector('a');
+        expect(linkElement).toBeInTheDocument();
+        expect(linkElement).toHaveAttribute(
+            'href',
+            `${USER_MANAGEMENT_URL}?username=${username}`
+        );
+        expect(linkElement?.textContent).toContain(username);
+    });
+    it('should prevent event propagation when clicking on the user info container', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+
+        const userInfoContainer = screen.getByTestId(
+            'progress-update-card-user-info-container'
+        );
+
+        const stopPropagationMock = jest.fn();
+
+        userInfoContainer.addEventListener(
+            'click',
+            (event) => (event.stopPropagation = stopPropagationMock)
+        );
+
+        fireEvent.click(userInfoContainer);
+        expect(stopPropagationMock).toHaveBeenCalled();
     });
 
     it('should not render the tooltip when isToolisTooltipVisible is false', () => {

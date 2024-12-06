@@ -17,6 +17,12 @@
         align-items: center;
         justify-content: space-between;
         border-radius: 10px;
+        @media (width<=425px) {
+            padding: 0 12x;
+            flex-direction: column;
+            align-items: start;
+            gap: 0;
+        }
     }
 
     .progress-update-card__expand-content {
@@ -35,6 +41,7 @@
         font-weight: 600;
         font-size: 1rem;
         flex-grow: 2;
+        margin: 8px 4px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -66,6 +73,36 @@
             font-size: 0.934rem;
         }
     }
+
+    .progress-update-card__user-info-container {
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .progress-update-card__details-container {
+        display: flex;
+        direction: row;
+        align-items: center;
+        gap: 4px;
+        margin-left: 4px;
+    }
+    .progress-update-card__user-info-link {
+        display: flex;
+        align-items: center;
+    }
+
+    .progress-update-card__profile-picture {
+        width: 32px;
+        height: 32px;
+        margin-right: 4px;
+        border-radius: 50%;
+        object-fit: cover;
+        @media (width<=425px) {
+            width: 28px;
+            height: 28px;
+        }
+    }
 }
 
 .hidden {
@@ -85,6 +122,9 @@
 .shrinked {
     height: 3.62rem;
     transition: height 1s cubic-bezier(0.78, 0.2, 0.2, 1.1);
+    @media (width<=425px) {
+        height: 5.2rem;
+    }
 }
 
 .expand {

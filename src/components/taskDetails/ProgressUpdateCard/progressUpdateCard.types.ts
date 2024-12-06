@@ -10,6 +10,8 @@ type MouseEventType = (event: MouseEvent<HTMLElement>) => void;
 export type ProgressUpdateCardPresentationProps = {
     titleToShow: string;
     dateInAgoFormat: string;
+    username: string;
+    userProfileImageUrl: string;
     tooltipString: string;
     dataToShowState: ProgressUpdateDataToShow[];
     onMoreOrLessButtonClick: (
@@ -22,6 +24,8 @@ export type ProgressUpdateCardPresentationProps = {
 
 export type LatestProgressUpdateCardPresentationProps = {
     dataToShowState: ProgressUpdateDataToShow[];
+    username: string;
+    userProfileImageUrl: string;
     tooltipText: string;
     onMoreOrLessButtonClick: (
         e: MouseEvent<HTMLElement>,

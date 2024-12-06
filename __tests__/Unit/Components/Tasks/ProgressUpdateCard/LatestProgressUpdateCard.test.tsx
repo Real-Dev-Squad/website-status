@@ -6,8 +6,45 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import LatestProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
 import { readMoreFormatter } from '@/utils/common';
+import { DEFAULT_AVATAR, USER_MANAGEMENT_URL } from '@/constants/url';
+import { useRouter } from 'next/router';
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
 
 describe('LatestProgressUpdateCard Component', () => {
+    it('should render the default avatar and username when userData is undefined', () => {
+        const mockRouter = {
+            query: { dev: 'true' },
+        };
+        (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+        const mockDataWithNoUserData = {
+            ...mockGetTaskProgress.data[2],
+            userData: undefined,
+        };
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <LatestProgressUpdateCard data={mockDataWithNoUserData} />
+            </Provider>
+        );
+        const userInfoContainer = screen.getByTestId(
+            'latest-progress-update-card-user-info-container'
+        );
+        expect(userInfoContainer).toBeInTheDocument();
+        const usernameLink = screen.getByRole('link', { name: 'Avatar' });
+        expect(usernameLink).toHaveAttribute(
+            'href',
+            `${USER_MANAGEMENT_URL}?username=`
+        );
+
+        const profilePicture = screen.getByTestId(
+            'latest-progress-update-card-profile-picture'
+        );
+        expect(profilePicture).toHaveAttribute('src', DEFAULT_AVATAR);
+    });
+
     it('should render the component with the passed data', () => {
         renderWithRouter(
             <Provider store={store()}>
