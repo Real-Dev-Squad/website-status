@@ -12,7 +12,7 @@ const ProgressUpdatesPage = () => {
         return <PageNotFound />;
     }
 
-    return <ProgressLayout />;
+    return <ProgressLayout taskId={id} />;
 };
 
 export default ProgressUpdatesPage;
