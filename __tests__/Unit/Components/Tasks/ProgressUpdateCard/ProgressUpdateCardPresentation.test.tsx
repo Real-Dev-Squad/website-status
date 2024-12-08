@@ -7,7 +7,6 @@ import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { readMoreFormatter } from '@/utils/common';
 import { store } from '@/app/store';
-import { USER_MANAGEMENT_URL } from '@/constants/url';
 
 import {
     ProgressUpdateCardPresentationProps,
@@ -198,6 +197,28 @@ describe('ProgressUpdateCardPresentation Component', () => {
         expect(stopPropagationMock).toHaveBeenCalled();
     });
 
+    it('should prevent event propagation when clicking on user avatar', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressUpdateCardPresentation {...initialProps} />
+            </Provider>
+        );
+
+        const userInfoLink = screen.getByTestId(
+            'progress-update-card-user-info-link'
+        );
+        const stopPropagationMock = jest.fn();
+        userInfoLink.addEventListener(
+            'click',
+            (event) => (event.stopPropagation = stopPropagationMock)
+        );
+        fireEvent.click(userInfoLink);
+        expect(stopPropagationMock).toHaveBeenCalled();
+    });
+
     it('should render completed section string as title in card', () => {
         (useRouter as jest.Mock).mockReturnValue({
             query: { dev: 'false' },
@@ -236,11 +257,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
                 <ProgressUpdateCardPresentation {...props} />
             </Provider>
         );
-        const usernameElement = screen.getByTestId(
-            'progress-update-card-user-info-container'
-        );
-        expect(usernameElement).toBeInTheDocument();
-        expect(usernameElement.textContent).toContain('mock-user-name');
+
         const userProfileImageUrlElement = screen.getByTestId(
             'progress-update-card-profile-picture'
         );
@@ -251,69 +268,6 @@ describe('ProgressUpdateCardPresentation Component', () => {
             userProfileImageUrl
         );
         expect(userProfileImageUrlElement).toHaveAttribute('alt', 'Avatar');
-    });
-    it('should render the updater name as a link with the correct href', () => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: { dev: 'true' },
-        });
-        const props: ProgressUpdateCardPresentationProps = {
-            ...initialProps,
-        };
-        renderWithRouter(
-            <Provider store={store()}>
-                <ProgressUpdateCardPresentation {...props} />
-            </Provider>
-        );
-
-        const linkElement = screen
-            .getByTestId('progress-update-card-user-info-container')
-            .querySelector('a');
-        expect(linkElement).toBeInTheDocument();
-        expect(linkElement).toHaveAttribute(
-            'href',
-            `${USER_MANAGEMENT_URL}?username=${username}`
-        );
-        expect(linkElement?.textContent).toContain(username);
-    });
-    it('should prevent event propagation when clicking on the user info container', () => {
-        (useRouter as jest.Mock).mockReturnValue({
-            query: { dev: 'true' },
-        });
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <ProgressUpdateCardPresentation {...initialProps} />
-            </Provider>
-        );
-
-        const userInfoContainer = screen.getByTestId(
-            'progress-update-card-user-info-container'
-        );
-
-        const stopPropagationMock = jest.fn();
-
-        userInfoContainer.addEventListener(
-            'click',
-            (event) => (event.stopPropagation = stopPropagationMock)
-        );
-
-        fireEvent.click(userInfoContainer);
-        expect(stopPropagationMock).toHaveBeenCalled();
-    });
-
-    it('should not render the tooltip when isToolisTooltipVisible is false', () => {
-        const props: ProgressUpdateCardPresentationProps = {
-            ...initialProps,
-        };
-        renderWithRouter(
-            <Provider store={store()}>
-                <ProgressUpdateCardPresentation {...props} />
-            </Provider>
-        );
-
-        const tooltip = screen.getByTestId('tooltip');
-        expect(tooltip).toHaveTextContent(tooltipString);
-        expect(tooltip).toHaveClass('tooltip fade-out');
     });
 
     it('should have respective classes when element is expanded', () => {

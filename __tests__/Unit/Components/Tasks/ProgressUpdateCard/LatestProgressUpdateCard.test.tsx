@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { fireEvent, getAllByTestId, screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
@@ -29,10 +29,6 @@ describe('LatestProgressUpdateCard Component', () => {
                 <LatestProgressUpdateCard data={mockDataWithNoUserData} />
             </Provider>
         );
-        const userInfoContainer = screen.getByTestId(
-            'latest-progress-update-card-user-info-container'
-        );
-        expect(userInfoContainer).toBeInTheDocument();
         const usernameLink = screen.getByRole('link', { name: 'Avatar' });
         expect(usernameLink).toHaveAttribute(
             'href',
@@ -83,19 +79,12 @@ describe('LatestProgressUpdateCard Component', () => {
 
         expect(date).toHaveTextContent(dateInAgoFormat);
     });
-
-    it('should render the tooltip on hover on the date and should not render on mouse out off date', () => {
+    it('should render the tooltip on hover on the date and should not render on mouse out of date', () => {
         renderWithRouter(
             <Provider store={store()}>
                 <LatestProgressUpdateCard data={mockGetTaskProgress.data[2]} />
             </Provider>
         );
-
-        const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
-        const fullDate = momentDate.format(
-            'dddd, MMMM DD, YYYY, hh:mm A [GMT] Z'
-        );
-        const tooltipString = `Updated at ${fullDate}`;
 
         const dateElement = screen.getByTestId(
             'latest-progress-update-card-date'
@@ -103,10 +92,15 @@ describe('LatestProgressUpdateCard Component', () => {
 
         fireEvent.mouseOver(dateElement);
 
-        const tooltip = screen.getByTestId('tooltip');
+        const momentDate = moment(mockGetTaskProgress.data[2].createdAt);
+        const fullDate = momentDate.format(
+            'dddd, MMMM DD, YYYY, hh:mm A [GMT] Z'
+        );
+        const tooltipString = `Updated at ${fullDate}`;
 
+        const tooltip = screen.getByText(tooltipString);
+        expect(tooltip).toBeInTheDocument();
         expect(tooltip).toHaveClass('fade-in');
-        expect(tooltip).toHaveTextContent(tooltipString);
 
         fireEvent.mouseOut(dateElement);
 

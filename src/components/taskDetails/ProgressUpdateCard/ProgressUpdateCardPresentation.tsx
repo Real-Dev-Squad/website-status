@@ -74,7 +74,7 @@ export default function ProgressUpdateCardPresentation({
                         <Tooltip
                             tooltipPosition={
                                 isDevMode
-                                    ? { top: '-2.4rem', right: '4rem' }
+                                    ? { top: '-2.8rem', right: '0rem' }
                                     : { top: '-25px', right: '-2rem' }
                             }
                             content={tooltipString}
@@ -102,16 +102,16 @@ export default function ProgressUpdateCardPresentation({
                         </Tooltip>
 
                         {isDevMode && (
-                            <span
-                                data-testid="progress-update-card-user-info-container"
-                                className={
-                                    styles[
-                                        'progress-update-card__user-info-container'
-                                    ]
+                            <Tooltip
+                                tooltipPosition={{
+                                    top: '-2.2rem',
+                                    right: '-1.7rem',
+                                    width: '10rem',
+                                }}
+                                content={
+                                    username === '' ? 'Anonymous' : username
                                 }
-                                onClick={(event) => event.stopPropagation()}
                             >
-                                by
                                 <a
                                     href={`${USER_MANAGEMENT_URL}?username=${username}`}
                                     className={
@@ -119,6 +119,8 @@ export default function ProgressUpdateCardPresentation({
                                             'progress-update-card__user-info-link'
                                         ]
                                     }
+                                    data-testid="progress-update-card-user-info-link"
+                                    onClick={(event) => event.stopPropagation()}
                                 >
                                     <img
                                         src={userProfileImageUrl}
@@ -129,10 +131,9 @@ export default function ProgressUpdateCardPresentation({
                                                 'progress-update-card__profile-picture'
                                             ]
                                         }
-                                    />{' '}
-                                    {username}
+                                    />
                                 </a>
-                            </span>
+                            </Tooltip>
                         )}
                         <FaAngleRight
                             data-testid="progress-update-card-angle-icon"

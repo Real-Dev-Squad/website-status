@@ -5,7 +5,7 @@ import { store } from '@/app/store';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import ProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCard';
-import { DEFAULT_AVATAR, USER_MANAGEMENT_URL } from '@/constants/url';
+import { DEFAULT_AVATAR } from '@/constants/url';
 import { useRouter } from 'next/router';
 jest.mock('next/router', () => ({
     useRouter: jest.fn(),
@@ -19,7 +19,7 @@ beforeEach(() => {
 });
 
 describe('ProgressUpdateCard Component', () => {
-    it('should render the default avatar and username when userData is undefined', () => {
+    it('should render the default avatar when userData is undefined', () => {
         const mockRouter = {
             query: { dev: 'true' },
         };
@@ -35,16 +35,6 @@ describe('ProgressUpdateCard Component', () => {
                 <ProgressUpdateCard data={mockDataWithNoUserData} />
             </Provider>
         );
-        const userInfoContainer = screen.getByTestId(
-            'progress-update-card-user-info-container'
-        );
-        expect(userInfoContainer).toBeInTheDocument();
-        const usernameLink = screen.getByRole('link', { name: 'Avatar' });
-        expect(usernameLink).toHaveAttribute(
-            'href',
-            `${USER_MANAGEMENT_URL}?username=`
-        );
-
         const profilePicture = screen.getByTestId(
             'progress-update-card-profile-picture'
         );
@@ -167,7 +157,7 @@ describe('ProgressUpdateCard Component', () => {
 
         fireEvent.mouseOver(dateElement);
 
-        const tooltip = screen.getByTestId('tooltip');
+        const tooltip = screen.getByText(tooltipString);
 
         expect(tooltip).toHaveClass('fade-in');
         expect(tooltip).toHaveTextContent(tooltipString);

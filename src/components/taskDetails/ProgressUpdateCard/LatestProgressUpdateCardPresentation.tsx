@@ -72,7 +72,7 @@ export default function LatestProgressUpdateCardPresentation({
                         content={tooltipText}
                         tooltipPosition={
                             isDevMode
-                                ? { top: '-3.8rem', right: '3rem' }
+                                ? { top: '-3.2rem', right: '-2rem' }
                                 : { top: '-2.6rem', right: '-4rem' }
                         }
                     >
@@ -89,15 +89,14 @@ export default function LatestProgressUpdateCardPresentation({
                         </span>
                     </Tooltip>
                     {isDevMode && (
-                        <span
-                            data-testid="latest-progress-update-card-user-info-container"
-                            className={
-                                styles[
-                                    'latest-progress-update-card__user-info-container'
-                                ]
-                            }
+                        <Tooltip
+                            content={username}
+                            tooltipPosition={{
+                                top: '-2.2rem',
+                                right: '-3.8rem',
+                                width: '10rem',
+                            }}
                         >
-                            by
                             <a
                                 href={`${USER_MANAGEMENT_URL}?username=${username}`}
                                 className={
@@ -116,9 +115,8 @@ export default function LatestProgressUpdateCardPresentation({
                                         ]
                                     }
                                 />
-                                {username}
                             </a>
-                        </span>
+                        </Tooltip>
                     )}
                 </div>
             </div>
