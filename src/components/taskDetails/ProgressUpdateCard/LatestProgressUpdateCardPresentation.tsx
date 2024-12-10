@@ -88,36 +88,48 @@ export default function LatestProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
-                    {isDevMode && (
-                        <Tooltip
-                            content={username}
-                            tooltipPosition={{
-                                top: '-2.2rem',
-                                right: '-3.8rem',
-                                width: '10rem',
-                            }}
-                        >
-                            <a
-                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                    {isDevMode &&
+                        (username === '' ? (
+                            <img
+                                src={userProfileImageUrl}
+                                alt={'Avatar'}
+                                data-testid="latest-progress-update-card-profile-picture"
                                 className={
                                     styles[
-                                        'latest-progress-update-card__user-info-link'
+                                        'latest-progress-update-card__profile-picture'
                                     ]
                                 }
+                            />
+                        ) : (
+                            <Tooltip
+                                content={username}
+                                tooltipPosition={{
+                                    top: '-2.2rem',
+                                    right: '-3.8rem',
+                                    width: '10rem',
+                                }}
                             >
-                                <img
-                                    src={userProfileImageUrl}
-                                    alt={'Avatar'}
-                                    data-testid="latest-progress-update-card-profile-picture"
+                                <a
+                                    href={`${USER_MANAGEMENT_URL}?username=${username}`}
                                     className={
                                         styles[
-                                            'latest-progress-update-card__profile-picture'
+                                            'latest-progress-update-card__user-info-link'
                                         ]
                                     }
-                                />
-                            </a>
-                        </Tooltip>
-                    )}
+                                >
+                                    <img
+                                        src={userProfileImageUrl}
+                                        alt={'Avatar'}
+                                        data-testid="latest-progress-update-card-profile-picture"
+                                        className={
+                                            styles[
+                                                'latest-progress-update-card__profile-picture'
+                                            ]
+                                        }
+                                    />
+                                </a>
+                            </Tooltip>
+                        ))}
                 </div>
             </div>
         </div>

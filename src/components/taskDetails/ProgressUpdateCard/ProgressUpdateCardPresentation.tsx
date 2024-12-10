@@ -101,40 +101,52 @@ export default function ProgressUpdateCardPresentation({
                             </span>
                         </Tooltip>
 
-                        {isDevMode && (
-                            <Tooltip
-                                tooltipPosition={{
-                                    top: '-2.2rem',
-                                    right: '-1.7rem',
-                                    width: '10rem',
-                                }}
-                                content={
-                                    username === '' ? 'Anonymous' : username
-                                }
-                            >
-                                <a
-                                    href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                        {isDevMode &&
+                            (username === '' ? (
+                                <img
+                                    src={userProfileImageUrl}
+                                    alt={'Avatar'}
+                                    data-testid="progress-update-card-profile-picture"
                                     className={
                                         styles[
-                                            'progress-update-card__user-info-link'
+                                            'progress-update-card__profile-picture'
                                         ]
                                     }
-                                    data-testid="progress-update-card-user-info-link"
-                                    onClick={(event) => event.stopPropagation()}
+                                />
+                            ) : (
+                                <Tooltip
+                                    tooltipPosition={{
+                                        top: '-2.2rem',
+                                        right: '-1.7rem',
+                                        width: '10rem',
+                                    }}
+                                    content={username}
                                 >
-                                    <img
-                                        src={userProfileImageUrl}
-                                        alt={'Avatar'}
-                                        data-testid="progress-update-card-profile-picture"
+                                    <a
+                                        href={`${USER_MANAGEMENT_URL}?username=${username}`}
                                         className={
                                             styles[
-                                                'progress-update-card__profile-picture'
+                                                'progress-update-card__user-info-link'
                                             ]
                                         }
-                                    />
-                                </a>
-                            </Tooltip>
-                        )}
+                                        data-testid="progress-update-card-user-info-link"
+                                        onClick={(event) =>
+                                            event.stopPropagation()
+                                        }
+                                    >
+                                        <img
+                                            src={userProfileImageUrl}
+                                            alt={'Avatar'}
+                                            data-testid="progress-update-card-profile-picture"
+                                            className={
+                                                styles[
+                                                    'progress-update-card__profile-picture'
+                                                ]
+                                            }
+                                        />
+                                    </a>
+                                </Tooltip>
+                            ))}
                         <FaAngleRight
                             data-testid="progress-update-card-angle-icon"
                             style={{

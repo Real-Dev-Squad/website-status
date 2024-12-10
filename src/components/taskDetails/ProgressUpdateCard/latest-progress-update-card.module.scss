@@ -54,9 +54,6 @@
         &:last-of-type {
             display: flex;
             justify-content: flex-end;
-            @media (width<=425px) {
-                justify-content: flex-start;
-            }
         }
 
         .latest-progress-update-card__more-less-button {

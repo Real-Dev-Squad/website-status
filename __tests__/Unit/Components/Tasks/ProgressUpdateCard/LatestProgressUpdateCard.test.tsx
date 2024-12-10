@@ -13,7 +13,7 @@ jest.mock('next/router', () => ({
 }));
 
 describe('LatestProgressUpdateCard Component', () => {
-    it('should render the default avatar and username when userData is undefined', () => {
+    it('should render the default avatar when userProfileImage is undefined', () => {
         const mockRouter = {
             query: { dev: 'true' },
         };
@@ -29,12 +29,6 @@ describe('LatestProgressUpdateCard Component', () => {
                 <LatestProgressUpdateCard data={mockDataWithNoUserData} />
             </Provider>
         );
-        const usernameLink = screen.getByRole('link', { name: 'Avatar' });
-        expect(usernameLink).toHaveAttribute(
-            'href',
-            `${USER_MANAGEMENT_URL}?username=`
-        );
-
         const profilePicture = screen.getByTestId(
             'latest-progress-update-card-profile-picture'
         );
