@@ -35,6 +35,7 @@
         font-weight: 600;
         font-size: 1rem;
         flex-grow: 2;
+        margin: 8px 4px;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
@@ -64,6 +65,30 @@
         }
         .progress-update-card__date-text {
             font-size: 0.934rem;
+        }
+    }
+
+    .progress-update-card__user-info-container {
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .progress-update-card__details-container {
+        display: flex;
+        direction: row;
+        align-items: center;
+    }
+
+    .progress-update-card__profile-picture {
+        width: 32px;
+        height: 32px;
+        margin: 0 4px;
+        border-radius: 50%;
+        object-fit: cover;
+        @media (width<=425px) {
+            width: 28px;
+            height: 28px;
         }
     }
 }

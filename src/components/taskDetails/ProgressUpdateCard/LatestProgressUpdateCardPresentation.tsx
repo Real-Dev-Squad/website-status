@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaRegClock } from 'react-icons/fa6';
 import {
     LatestProgressUpdateCardPresentationProps,
@@ -6,13 +7,17 @@ import {
 } from './progressUpdateCard.types';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './latest-progress-update-card.module.scss';
-
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
+    username,
+    userProfileImageUrl,
     tooltipText,
     onMoreOrLessButtonClick,
     dateInAgoFormat,
 }: LatestProgressUpdateCardPresentationProps) {
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -65,7 +70,11 @@ export default function LatestProgressUpdateCardPresentation({
                 >
                     <Tooltip
                         content={tooltipText}
-                        tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
+                        tooltipPosition={
+                            isDevMode
+                                ? { top: '-3.2rem', right: '-2rem' }
+                                : { top: '-2.6rem', right: '-4rem' }
+                        }
                     >
                         <span className={styles['date-clock-container']}>
                             <FaRegClock />
@@ -79,6 +88,48 @@ export default function LatestProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
+                    {isDevMode &&
+                        (username === '' ? (
+                            <img
+                                src={userProfileImageUrl}
+                                alt={'Avatar'}
+                                data-testid="latest-progress-update-card-profile-picture"
+                                className={
+                                    styles[
+                                        'latest-progress-update-card__profile-picture'
+                                    ]
+                                }
+                            />
+                        ) : (
+                            <Tooltip
+                                content={username}
+                                tooltipPosition={{
+                                    top: '-2.2rem',
+                                    right: '-3.8rem',
+                                    width: '10rem',
+                                }}
+                            >
+                                <a
+                                    href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                    className={
+                                        styles[
+                                            'latest-progress-update-card__user-info-link'
+                                        ]
+                                    }
+                                >
+                                    <img
+                                        src={userProfileImageUrl}
+                                        alt={'Avatar'}
+                                        data-testid="latest-progress-update-card-profile-picture"
+                                        className={
+                                            styles[
+                                                'latest-progress-update-card__profile-picture'
+                                            ]
+                                        }
+                                    />
+                                </a>
+                            </Tooltip>
+                        ))}
                 </div>
             </div>
         </div>

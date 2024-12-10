@@ -6,12 +6,14 @@ import {
     ProgressUpdateCardProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
-
+import { DEFAULT_AVATAR } from '@/constants/url';
 export default memo(function ProgressUpdateCard({
     data,
 }: ProgressUpdateCardProps) {
     const momentDate = moment(data?.createdAt);
     const dateInAgoFormat = momentDate.fromNow();
+    const username = data.userData?.username ?? '';
+    const userProfileImageUrl = data.userData?.picture?.url ?? DEFAULT_AVATAR;
     const charactersToShow = 70;
     const readMoreTitle = readMoreFormatter(data?.completed, charactersToShow);
     const titleToShow = readMoreTitle;
@@ -74,6 +76,8 @@ export default memo(function ProgressUpdateCard({
         <ProgressUpdateCardPresentation
             dataToShowState={dataToShowState}
             titleToShow={titleToShow}
+            username={username}
+            userProfileImageUrl={userProfileImageUrl}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}
             dateInAgoFormat={dateInAgoFormat}
             tooltipString={tooltipString}
