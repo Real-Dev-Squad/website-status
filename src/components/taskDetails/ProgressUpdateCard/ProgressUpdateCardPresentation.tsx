@@ -74,8 +74,8 @@ export default function ProgressUpdateCardPresentation({
                         <Tooltip
                             tooltipPosition={
                                 isDevMode
-                                    ? { top: '-2.8rem', right: '0rem' }
-                                    : { top: '-25px', right: '-2rem' }
+                                    ? { bottom: '3rem', right: '0rem' }
+                                    : { bottom: '3rem', left: '46rem' }
                             }
                             content={tooltipString}
                         >

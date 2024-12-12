@@ -72,8 +72,11 @@ export default function LatestProgressUpdateCardPresentation({
                         content={tooltipText}
                         tooltipPosition={
                             isDevMode
-                                ? { top: '-3.2rem', right: '-2rem' }
-                                : { top: '-2.6rem', right: '-4rem' }
+                                ? { bottom: '2rem', right: '-2rem' }
+                                : {
+                                      bottom: '1.4rem',
+                                      right: '-5rem',
+                                  }
                         }
                     >
                         <span className={styles['date-clock-container']}>
