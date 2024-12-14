@@ -20,10 +20,10 @@
         position: absolute;
         height: 12px;
         width: 12px;
+        bottom: 0;
         background: $theme-primary;
-        bottom: -6px;
         left: 50%;
-        transform: translateX(-50%) rotate(45deg);
+        transform: translateX(-50%) translateY(6px) rotate(45deg);
         z-index: -1;
     }
 }

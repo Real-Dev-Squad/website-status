@@ -107,8 +107,8 @@ export default function LatestProgressUpdateCardPresentation({
                             <Tooltip
                                 content={username}
                                 tooltipPosition={{
-                                    top: '-2.2rem',
-                                    right: '-3.8rem',
+                                    top: '-2.5rem',
+                                    right: '-3.7rem',
                                     width: '10rem',
                                 }}
                             >
