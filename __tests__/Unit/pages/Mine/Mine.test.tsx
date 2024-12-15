@@ -1,4 +1,4 @@
-import { waitFor } from '@testing-library/react';
+import { waitFor, within } from '@testing-library/react';
 import Mine, { searchTasks } from '@/pages/mine';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
@@ -25,13 +25,14 @@ afterAll(() => server.close());
 
 describe('Mine Page', () => {
     it('should render loading state', () => {
-        const { getByText } = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
             { route: '/mine' }
         );
-        expect(getByText(/loading/i)).toBeInTheDocument();
+        const container = getByTestId('mine-page-container');
+        expect(within(container).getByText(/loading/i)).toBeInTheDocument();
     });
 
     it('should call searchTasks', () => {
