@@ -8,6 +8,7 @@ import {
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './latest-progress-update-card.module.scss';
 import { USER_MANAGEMENT_URL } from '@/constants/url';
+import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
     username,
@@ -93,22 +94,15 @@ export default function LatestProgressUpdateCardPresentation({
                     </Tooltip>
                     {isDevMode &&
                         (username === '' ? (
-                            <img
-                                src={userProfileImageUrl}
-                                alt={'Avatar'}
-                                data-testid="latest-progress-update-card-profile-picture"
-                                className={
-                                    styles[
-                                        'latest-progress-update-card__profile-picture'
-                                    ]
-                                }
+                            <UserAvatar
+                                userProfileImageUrl={userProfileImageUrl}
                             />
                         ) : (
                             <Tooltip
                                 content={username}
                                 tooltipPosition={{
                                     top: '-2.5rem',
-                                    right: '-3.7rem',
+                                    right: '-3.9rem',
                                     width: '10rem',
                                 }}
                             >
@@ -120,14 +114,9 @@ export default function LatestProgressUpdateCardPresentation({
                                         ]
                                     }
                                 >
-                                    <img
-                                        src={userProfileImageUrl}
-                                        alt={'Avatar'}
-                                        data-testid="latest-progress-update-card-profile-picture"
-                                        className={
-                                            styles[
-                                                'latest-progress-update-card__profile-picture'
-                                            ]
+                                    <UserAvatar
+                                        userProfileImageUrl={
+                                            userProfileImageUrl
                                         }
                                     />
                                 </a>

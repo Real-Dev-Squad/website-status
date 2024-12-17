@@ -143,7 +143,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
             </Provider>
         );
         const angleIcon = screen.getByTestId('progress-update-card-angle-icon');
-        expect(angleIcon).toHaveStyle('transform: rotate(90deg)');
+        expect(angleIcon).toHaveClass(
+            'progress-update-card__angle-icon--expanded'
+        );
     });
     it('should have respective classes on date container and date text', () => {
         (useRouter as jest.Mock).mockReturnValue({
@@ -174,7 +176,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
             </Provider>
         );
         const angleIcon = screen.getByTestId('progress-update-card-angle-icon');
-        expect(angleIcon).toHaveStyle('transform: none');
+        expect(angleIcon).not.toHaveClass(
+            'progress-update-card__angle-icon--expanded'
+        );
     });
 
     it('should prevent event propagation when clicking on the date container', () => {
@@ -245,7 +249,7 @@ describe('ProgressUpdateCardPresentation Component', () => {
         const date = screen.getByTestId('progress-update-card-date');
         expect(date).toHaveTextContent(dateInAgoFormat);
     });
-    it('should render the name and profile picture of the updater', () => {
+    it('should render user Image', () => {
         (useRouter as jest.Mock).mockReturnValue({
             query: { dev: 'true' },
         });
@@ -257,17 +261,10 @@ describe('ProgressUpdateCardPresentation Component', () => {
                 <ProgressUpdateCardPresentation {...props} />
             </Provider>
         );
-
-        const userProfileImageUrlElement = screen.getByTestId(
-            'progress-update-card-profile-picture'
-        );
-
-        expect(userProfileImageUrlElement).toBeInTheDocument();
-        expect(userProfileImageUrlElement).toHaveAttribute(
-            'src',
-            userProfileImageUrl
-        );
-        expect(userProfileImageUrlElement).toHaveAttribute('alt', 'Avatar');
+        const userAvatarImage = screen.getByAltText('Avatar');
+        expect(userAvatarImage).toBeInTheDocument();
+        const imageSrc = userAvatarImage.getAttribute('src');
+        expect(imageSrc).toContain(userProfileImageUrl);
     });
 
     it('should have respective classes when element is expanded', () => {

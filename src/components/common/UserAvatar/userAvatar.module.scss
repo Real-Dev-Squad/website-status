@@ -1,0 +1,11 @@
+@import '../../../styles/variables';
+.user-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+    @media (width<=425px) {
+        width: 1.8rem;
+        height: 1.8rem;
+    }
+}

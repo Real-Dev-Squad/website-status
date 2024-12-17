@@ -8,6 +8,7 @@ import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
+import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,
@@ -21,6 +22,7 @@ export default function ProgressUpdateCardPresentation({
     isExpanded,
 }: ProgressUpdateCardPresentationProps) {
     const router = useRouter();
+    console.log(isExpanded);
     const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
@@ -103,15 +105,8 @@ export default function ProgressUpdateCardPresentation({
 
                         {isDevMode &&
                             (username === '' ? (
-                                <img
-                                    src={userProfileImageUrl}
-                                    alt={'Avatar'}
-                                    data-testid="progress-update-card-profile-picture"
-                                    className={
-                                        styles[
-                                            'progress-update-card__profile-picture'
-                                        ]
-                                    }
+                                <UserAvatar
+                                    userProfileImageUrl={userProfileImageUrl}
                                 />
                             ) : (
                                 <Tooltip
@@ -134,27 +129,26 @@ export default function ProgressUpdateCardPresentation({
                                             event.stopPropagation()
                                         }
                                     >
-                                        <img
-                                            src={userProfileImageUrl}
-                                            alt={'Avatar'}
-                                            data-testid="progress-update-card-profile-picture"
-                                            className={
-                                                styles[
-                                                    'progress-update-card__profile-picture'
-                                                ]
+                                        <UserAvatar
+                                            userProfileImageUrl={
+                                                userProfileImageUrl
                                             }
                                         />
                                     </a>
                                 </Tooltip>
                             ))}
+
                         <FaAngleRight
                             data-testid="progress-update-card-angle-icon"
-                            style={{
-                                transform: isExpanded
-                                    ? 'rotate(90deg)'
-                                    : 'none',
-                                transition: 'transform 1s',
-                            }}
+                            className={`${
+                                styles['progress-update-card__angle-icon']
+                            } ${
+                                isExpanded
+                                    ? styles[
+                                          'progress-update-card__angle-icon--expanded'
+                                      ]
+                                    : ''
+                            }`}
                         />
                     </div>
                 </div>

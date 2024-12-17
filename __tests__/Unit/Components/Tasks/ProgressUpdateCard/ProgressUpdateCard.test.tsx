@@ -7,6 +7,7 @@ import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import ProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCard';
 import { DEFAULT_AVATAR } from '@/constants/url';
 import { useRouter } from 'next/router';
+
 jest.mock('next/router', () => ({
     useRouter: jest.fn(),
 }));
@@ -35,10 +36,10 @@ describe('ProgressUpdateCard Component', () => {
                 <ProgressUpdateCard data={mockDataWithNoUserData} />
             </Provider>
         );
-        const profilePicture = screen.getByTestId(
-            'progress-update-card-profile-picture'
-        );
-        expect(profilePicture).toHaveAttribute('src', DEFAULT_AVATAR);
+        const userAvatarImage = screen.getByAltText('Avatar');
+        expect(userAvatarImage).toBeInTheDocument();
+        const imageSrc = userAvatarImage.getAttribute('src');
+        expect(imageSrc).toContain(DEFAULT_AVATAR);
     });
 
     it('should toggle the expanded state when the card is clicked', () => {
@@ -52,14 +53,9 @@ describe('ProgressUpdateCard Component', () => {
             'progress-update-card-container'
         );
 
-        // Initial state
         expect(progressUpdateCardContainer).not.toHaveClass('expand');
-
-        // Click to expand
         fireEvent.click(progressUpdateCardContainer);
         expect(progressUpdateCardContainer).toHaveClass('expand');
-
-        // Click to collapse
         fireEvent.click(progressUpdateCardContainer);
         expect(progressUpdateCardContainer).not.toHaveClass('expand');
     });

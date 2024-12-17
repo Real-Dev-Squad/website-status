@@ -6,7 +6,7 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import LatestProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
 import { readMoreFormatter } from '@/utils/common';
-import { DEFAULT_AVATAR, USER_MANAGEMENT_URL } from '@/constants/url';
+import { DEFAULT_AVATAR } from '@/constants/url';
 import { useRouter } from 'next/router';
 jest.mock('next/router', () => ({
     useRouter: jest.fn(),
@@ -29,10 +29,10 @@ describe('LatestProgressUpdateCard Component', () => {
                 <LatestProgressUpdateCard data={mockDataWithNoUserData} />
             </Provider>
         );
-        const profilePicture = screen.getByTestId(
-            'latest-progress-update-card-profile-picture'
-        );
-        expect(profilePicture).toHaveAttribute('src', DEFAULT_AVATAR);
+        const userAvatarImage = screen.getByAltText('Avatar');
+        expect(userAvatarImage).toBeInTheDocument();
+        const imageSrc = userAvatarImage.getAttribute('src');
+        expect(imageSrc).toContain(DEFAULT_AVATAR);
     });
 
     it('should render the component with the passed data', () => {

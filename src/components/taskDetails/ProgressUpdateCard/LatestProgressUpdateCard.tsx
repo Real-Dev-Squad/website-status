@@ -25,8 +25,15 @@ export default function LatestProgressUpdateCard({
     const fullDate = momentDate.format('dddd, MMMM DD, YYYY, hh:mm A [GMT] Z');
     const tooltipText = `Updated at ${fullDate}`;
     const charactersToShow = 70;
-    const username = data.userData?.username ?? '';
-    const userProfileImageUrl = data.userData?.picture?.url ?? DEFAULT_AVATAR;
+    let username = '';
+    let userProfileImageUrl = DEFAULT_AVATAR;
+
+    if (data.userData) {
+        username = data.userData.username ?? '';
+        if (data.userData.picture) {
+            userProfileImageUrl = data.userData.picture.url ?? DEFAULT_AVATAR;
+        }
+    }
 
     const dataToShow = [
         {
