@@ -95,7 +95,7 @@ const Mine: FC = () => {
     return (
         <Layout>
             <Head title="Mine" />
-            <div className={styles.container}>
+            <div className={styles.container} data-testid="mine-page-container">
                 {isAuthenticating ? (
                     <Loader />
                 ) : isLoggedIn ? (

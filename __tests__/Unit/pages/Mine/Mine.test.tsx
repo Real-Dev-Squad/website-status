@@ -1,4 +1,4 @@
-import { waitFor } from '@testing-library/react';
+import { waitFor, within } from '@testing-library/react';
 import Mine, { searchTasks } from '@/pages/mine';
 import { store } from '@/app/store';
 import { Provider } from 'react-redux';
@@ -25,13 +25,14 @@ afterAll(() => server.close());
 
 describe('Mine Page', () => {
     it('should render loading state', () => {
-        const { getByText } = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <Provider store={store()}>
                 <Mine />
             </Provider>,
             { route: '/mine' }
         );
-        expect(getByText(/loading/i)).toBeInTheDocument();
+        const container = getByTestId('mine-page-container');
+        expect(within(container).getByText(/loading/i)).toBeInTheDocument();
     });
 
     it('should call searchTasks', () => {
@@ -142,13 +143,17 @@ describe('Mine Page', () => {
         );
 
         const searchInput = await findByTestId('search-input');
-        userEvent.type(searchInput, 'status:verified');
+        expect(searchInput).toBeInTheDocument();
+        await userEvent.type(searchInput, 'status:verified');
+        await waitFor(() => expect(searchInput).toHaveValue('status:verified'));
+        await waitFor(() => findByText('status: verified'));
+
         const tag = await findByText('status: verified');
+        expect(tag).toBeInTheDocument();
+
         userEvent.click(tag);
 
-        await waitFor(() => {
-            expect(getAllByText('Verified').length).toEqual(2);
-        });
+        await waitFor(() => expect(getAllByText('Verified').length).toEqual(2));
     });
 
     it('should filter tasks based on filter dropdown select', async () => {

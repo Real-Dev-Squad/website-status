@@ -11,12 +11,9 @@ const useAuthenticated = (): userDetails => {
         profilePicture: DEFAULT_AVATAR,
     });
 
-    const { data, isSuccess } = useUserData();
+    const { data, isSuccess, isLoading } = useUserData();
 
-    const [isLoading, setIsLoading] = useState(false);
     const setUserDetails = () => {
-        setIsLoading(true);
-
         if (data?.incompleteUserDetails) {
             window.open(`${SIGNUP_LINK}`, '_blank', 'noopener');
         }
@@ -25,10 +22,7 @@ const useAuthenticated = (): userDetails => {
             firstName: data?.first_name ?? '',
             profilePicture: data?.picture?.url ?? DEFAULT_AVATAR,
         });
-
         if (isSuccess) setIsLoggedIn(true);
-
-        setIsLoading(false);
     };
 
     useEffect(() => {
