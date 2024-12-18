@@ -143,13 +143,17 @@ describe('Mine Page', () => {
         );
 
         const searchInput = await findByTestId('search-input');
-        userEvent.type(searchInput, 'status:verified');
+        expect(searchInput).toBeInTheDocument();
+        await userEvent.type(searchInput, 'status:verified');
+        await waitFor(() => expect(searchInput).toHaveValue('status:verified'));
+        await waitFor(() => findByText('status: verified'));
+
         const tag = await findByText('status: verified');
+        expect(tag).toBeInTheDocument();
+
         userEvent.click(tag);
 
-        await waitFor(() => {
-            expect(getAllByText('Verified').length).toEqual(2);
-        });
+        await waitFor(() => expect(getAllByText('Verified').length).toEqual(2));
     });
 
     it('should filter tasks based on filter dropdown select', async () => {
