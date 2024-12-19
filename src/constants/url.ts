@@ -10,7 +10,7 @@ export const STATUS_URL = 'https://status.realdevsquad.com';
 export const LOGIN_URL = `https://github.com/login/oauth/authorize?client_id=23c78f66ab7964e5ef97&state=${STATUS_URL}`;
 export const MEMBERS_URL = 'https://members.realdevsquad.com';
 export const CHALLENGES_URL = `${BASE_URL}/challenges`;
-export const USER_SELF = `${BASE_URL}/users/self`;
+export const USER_SELF = `${BASE_URL}/users?profile=true`;
 export const USERS_IDLE = `${BASE_URL}/users/search?state=IDLE`;
 export const DEFAULT_AVATAR = '/Avatar.png';
 export const RDS_LOGO = '/RDSLogo.png';
