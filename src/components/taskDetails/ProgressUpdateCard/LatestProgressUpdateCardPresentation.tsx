@@ -8,7 +8,7 @@ import {
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './latest-progress-update-card.module.scss';
 import { USER_MANAGEMENT_URL } from '@/constants/url';
-import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
+import { UserAvatar } from '@/components/common/UserAvatar/UserAvatar';
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
     username,

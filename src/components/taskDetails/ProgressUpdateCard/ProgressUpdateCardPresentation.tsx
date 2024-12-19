@@ -8,7 +8,7 @@ import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
-import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
+import { UserAvatar } from '@/components/common/UserAvatar/UserAvatar';
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,

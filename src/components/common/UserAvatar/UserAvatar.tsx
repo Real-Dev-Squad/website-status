@@ -4,7 +4,7 @@ type UserAvatarProps = {
     userProfileImageUrl: string;
 };
 
-const UserAvatar = ({ userProfileImageUrl }: UserAvatarProps) => {
+export const UserAvatar = ({ userProfileImageUrl }: UserAvatarProps) => {
     return (
         <img
             src={userProfileImageUrl}
@@ -13,5 +13,3 @@ const UserAvatar = ({ userProfileImageUrl }: UserAvatarProps) => {
         />
     );
 };
-
-export default UserAvatar;
