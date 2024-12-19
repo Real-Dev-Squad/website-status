@@ -64,8 +64,6 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-    const { query } = router;
-    const isDev = query.dev === 'true';
 
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -324,35 +322,19 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                             >
                                 <TaskUpdateModal
                                     isOpen={isOpen}
-                                    isDev={isDev}
                                     styles={styles}
                                     taskDetailsData={taskDetailsData}
                                     editedTaskDetails={editedTaskDetails}
                                     setIsOpen={setIsOpen}
                                     onUpdateSuccess={handleProgressUpdate}
                                 />
-
-                                {isDev ? (
-                                    <button
-                                        data-testid="update-progress-button-dev"
-                                        className={styles.button}
-                                        onClick={() => setIsOpen(true)}
-                                    >
-                                        Update Progress
-                                    </button>
-                                ) : (
-                                    <button
-                                        data-testid="update-progress-button"
-                                        className={styles.button}
-                                        onClick={() =>
-                                            router.push(
-                                                `/progress/${taskID}?dev=true`
-                                            )
-                                        }
-                                    >
-                                        Update Progress
-                                    </button>
-                                )}
+                                <button
+                                    data-testid="update-progress-button-dev"
+                                    className={styles.button}
+                                    onClick={() => setIsOpen(true)}
+                                >
+                                    Update Progress
+                                </button>
                             </TaskContainer>
                         </section>
                     </section>
