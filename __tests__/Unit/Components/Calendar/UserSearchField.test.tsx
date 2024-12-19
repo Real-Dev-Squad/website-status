@@ -46,9 +46,10 @@ describe('SearchField component', () => {
 
         const input = screen.getByPlaceholderText('Enter username');
         userEvent.type(input, 'muhammadmusab');
+
         await waitFor(() => expect(input).toHaveValue('muhammadmusab'));
 
-        const listItems = screen.getAllByRole('listitem');
+        const listItems = await screen.findAllByRole('listitem');
         expect(listItems[0].innerHTML).toEqual('muhammadmusab');
 
         const button = screen.getByRole('button', { name: 'Submit' });
@@ -177,16 +178,16 @@ describe('SearchField component', () => {
         userEvent.type(input, 'mu');
         await waitFor(() => expect(input).toHaveValue('mu'));
 
-        const suggestionsAfterFirstTyping = await waitFor(() =>
-            screen.queryAllByRole('listitem')
+        const suggestionsAfterFirstTyping = await screen.findAllByRole(
+            'listitem'
         );
         expect(suggestionsAfterFirstTyping.length).toBeGreaterThan(0);
 
         userEvent.type(input, 'hammad');
         await waitFor(() => expect(input).toHaveValue('muhammad'));
 
-        const suggestionsAfterSecondTyping = await waitFor(() =>
-            screen.queryAllByRole('listitem')
+        const suggestionsAfterSecondTyping = await screen.findAllByRole(
+            'listitem'
         );
         expect(suggestionsAfterSecondTyping.length).toBeGreaterThan(0);
         expect(suggestionsAfterSecondTyping.length).toBeLessThan(
@@ -197,6 +198,6 @@ describe('SearchField component', () => {
         await waitFor(() => expect(input).toHaveValue(''));
 
         const noSuggestions = screen.queryAllByRole('listitem');
-        expect(noSuggestions).toEqual([]);
+        expect(noSuggestions).toHaveLength(0);
     });
 });

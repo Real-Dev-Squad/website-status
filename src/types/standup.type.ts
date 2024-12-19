@@ -1,3 +1,5 @@
+import { userDataType } from '@/interfaces/user.type';
+
 export type standupUpdateType = {
     type: string;
     completed: string;
@@ -23,7 +25,7 @@ export type ProgressDetailsData = {
     id: string;
     planned: string;
     type: string;
-    userId: string;
+    userData?: userDataType;
     taskId?: string;
 };
 

@@ -1,21 +1,29 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import { FaAngleRight, FaRegClock } from 'react-icons/fa6';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './progress-update-card.module.scss';
+import { USER_MANAGEMENT_URL } from '@/constants/url';
 import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
+import { UserAvatar } from '@/components/common/UserAvatar/UserAvatar';
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,
     dateInAgoFormat,
+    username,
+    userProfileImageUrl,
     tooltipString,
     dataToShowState,
     onMoreOrLessButtonClick,
     onCardClick,
     isExpanded,
 }: ProgressUpdateCardPresentationProps) {
+    const router = useRouter();
+    console.log(isExpanded);
+    const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -37,6 +45,7 @@ export default function ProgressUpdateCardPresentation({
                             className={
                                 styles['progress-update-card__more-less-button']
                             }
+                            data-testid="progress-update-card-read-more-completed"
                         >
                             {datum.isReadMoreEnabled ? 'Less' : 'More'}
                         </button>
@@ -59,33 +68,89 @@ export default function ProgressUpdateCardPresentation({
                     <h3 className={styles['progress-update-card__title']}>
                         {titleToShow}
                     </h3>
-                    <Tooltip
-                        tooltipPosition={{ top: '-25px', right: '-2rem' }}
-                        content={tooltipString}
+                    <div
+                        className={
+                            styles['progress-update-card__details-container']
+                        }
                     >
-                        <span
-                            className={
-                                styles['progress-update-card__date-container']
+                        <Tooltip
+                            tooltipPosition={
+                                isDevMode
+                                    ? { bottom: '2.7rem', right: '0rem' }
+                                    : { bottom: '2.7rem', right: '-3rem' }
                             }
-                            onClick={(event) => event.stopPropagation()}
-                            data-testid="progress-update-card-date"
+                            content={tooltipString}
                         >
-                            <FaRegClock />
                             <span
                                 className={
-                                    styles['progress-update-card__date-text']
+                                    styles[
+                                        'progress-update-card__date-container'
+                                    ]
                                 }
+                                onClick={(event) => event.stopPropagation()}
+                                data-testid="progress-update-card-date"
                             >
-                                {dateInAgoFormat}
+                                <FaRegClock />
+                                <span
+                                    className={
+                                        styles[
+                                            'progress-update-card__date-text'
+                                        ]
+                                    }
+                                >
+                                    {dateInAgoFormat}
+                                </span>
                             </span>
-                        </span>
-                    </Tooltip>
-                    <FaAngleRight
-                        style={{
-                            transform: isExpanded ? 'rotate(90deg)' : 'none',
-                            transition: 'transform 1s',
-                        }}
-                    />
+                        </Tooltip>
+
+                        {isDevMode &&
+                            (username === '' ? (
+                                <UserAvatar
+                                    userProfileImageUrl={userProfileImageUrl}
+                                />
+                            ) : (
+                                <Tooltip
+                                    tooltipPosition={{
+                                        top: '-2rem',
+                                        right: '-2rem',
+                                        width: '10rem',
+                                    }}
+                                    content={username}
+                                >
+                                    <a
+                                        href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                        className={
+                                            styles[
+                                                'progress-update-card__user-info-link'
+                                            ]
+                                        }
+                                        data-testid="progress-update-card-user-info-link"
+                                        onClick={(event) =>
+                                            event.stopPropagation()
+                                        }
+                                    >
+                                        <UserAvatar
+                                            userProfileImageUrl={
+                                                userProfileImageUrl
+                                            }
+                                        />
+                                    </a>
+                                </Tooltip>
+                            ))}
+
+                        <FaAngleRight
+                            data-testid="progress-update-card-angle-icon"
+                            className={`${
+                                styles['progress-update-card__angle-icon']
+                            } ${
+                                isExpanded
+                                    ? styles[
+                                          'progress-update-card__angle-icon--expanded'
+                                      ]
+                                    : ''
+                            }`}
+                        />
+                    </div>
                 </div>
                 <div
                     className={`${
