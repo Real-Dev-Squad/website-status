@@ -405,24 +405,25 @@ test('should update the title and description with the new values', async () => 
         <Provider store={store()}>
             <TaskDetails taskID={details.taskID} />
             <ToastContainer />
-        </Provider>,
-        {}
+        </Provider>
     );
-    await waitFor(() => {
-        const editButton = screen.getByRole('button', { name: 'Edit' });
-        fireEvent.click(editButton);
-    });
-    const textareaElement = screen.getByTestId('title-textarea');
+
+    const editButton = await screen.findByRole('button', { name: 'Edit' });
+    fireEvent.click(editButton);
+
+    const textareaElement = await screen.findByTestId('title-textarea');
     fireEvent.change(textareaElement, {
         target: { name: 'title', value: 'New Title' },
     });
 
-    const saveButton = await screen.findByRole('button', {
-        name: 'Save',
-    });
+    const saveButton = await screen.findByRole('button', { name: 'Save' });
     fireEvent.click(saveButton);
-    expect(screen.findByText(/Successfully saved/i)).not.toBeNull();
+
+    await waitFor(() => {
+        expect(screen.getByText(/Successfully saved/i)).toBeInTheDocument();
+    });
 });
+
 test('should not update the title and description with the same values', async () => {
     server.use(...taskDetailsHandler);
     renderWithRouter(
@@ -447,7 +448,9 @@ test('should not update the title and description with the same values', async (
         name: 'Save',
     });
     fireEvent.click(saveButton);
-    expect(screen.queryByText(/Successfully saved/i)).toBeNull();
+    await waitFor(() => {
+        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
+    });
 });
 
 test('Should render No task progress', async () => {
@@ -577,7 +580,9 @@ describe('Task details Edit mode ', () => {
             });
             fireEvent.click(saveButton);
         });
-        expect(screen.queryByText(/Successfully saved/i)).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText(/Successfully saved/i)).toBeNull();
+        });
     });
     test('Should render task progress', async () => {
         server.use(superUserSelfHandler);

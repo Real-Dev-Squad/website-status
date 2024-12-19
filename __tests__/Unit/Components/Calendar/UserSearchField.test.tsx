@@ -177,13 +177,17 @@ describe('SearchField component', () => {
         userEvent.type(input, 'mu');
         await waitFor(() => expect(input).toHaveValue('mu'));
 
-        const suggestionsAfterFirstTyping = screen.queryAllByRole('listitem');
+        const suggestionsAfterFirstTyping = await waitFor(() =>
+            screen.queryAllByRole('listitem')
+        );
         expect(suggestionsAfterFirstTyping.length).toBeGreaterThan(0);
 
         userEvent.type(input, 'hammad');
         await waitFor(() => expect(input).toHaveValue('muhammad'));
 
-        const suggestionsAfterSecondTyping = screen.queryAllByRole('listitem');
+        const suggestionsAfterSecondTyping = await waitFor(() =>
+            screen.queryAllByRole('listitem')
+        );
         expect(suggestionsAfterSecondTyping.length).toBeGreaterThan(0);
         expect(suggestionsAfterSecondTyping.length).toBeLessThan(
             suggestionsAfterFirstTyping.length
