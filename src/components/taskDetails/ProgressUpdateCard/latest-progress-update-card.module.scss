@@ -54,6 +54,7 @@
         &:last-of-type {
             display: flex;
             justify-content: flex-end;
+            margin-right: 12px;
         }
 
         .latest-progress-update-card__more-less-button {
@@ -67,7 +68,9 @@
         .latest-progress-update-card__date-container {
             position: relative;
             display: flex;
-            gap: 5px;
+            align-items: center;
+            justify-content: start;
+            gap: 4px;
             z-index: 0;
             cursor: pointer;
             font-size: 0.934rem;

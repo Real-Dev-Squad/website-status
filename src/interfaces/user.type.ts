@@ -16,7 +16,7 @@ export type userDataType = {
         archived: boolean;
         admin: boolean;
         super_user: boolean;
-        memeber: boolean;
+        member: boolean;
     };
     designation?: string;
     profileURL?: string;
