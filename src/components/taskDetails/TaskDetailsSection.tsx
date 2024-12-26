@@ -42,14 +42,11 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
                     onChange={handleTaskStatusUpdate}
                     oldStatus={status}
                     oldProgress={percentCompleted}
-                    isDevMode={isDevMode}
                     key={status}
+                    isDevMode={isDevMode}
                 />
             ) : (
-                <Details
-                    detailType={'Status'}
-                    value={beautifyStatus(status, isDevMode)}
-                />
+                <Details detailType={'Status'} value={beautifyStatus(status)} />
             )}
             <Details detailType={'Link'} value={link} />
             <div className={styles.progressWrapper}>

@@ -222,23 +222,35 @@ describe('TaskDetails Page', () => {
             expect(getByText('ankur')).toBeInTheDocument();
         });
     });
-    it('Renders Task status Done when task status is Completed, when dev flag is on', async () => {
+    it('Renders Task status Done when task status is Completed', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.completedTaskID} />
-            </Provider>,
-            { query: { dev: 'true' } }
+            </Provider>
         );
         await waitFor(() => {
             expect(getByText('Done')).toBeInTheDocument();
         });
     });
+    it('should render shimmer cards', async () => {
+        const { getAllByTestId } = renderWithRouter(
+            <Provider store={store()}>
+                <TaskDetails taskID={details.taskID} />
+            </Provider>,
+            {}
+        );
+
+        await waitFor(() =>
+            expect(
+                getAllByTestId(/task-shimmer-card/i).length
+            ).toBeGreaterThanOrEqual(1)
+        );
+    });
     it('Renders Task status Done as selected when task status is Completed, when dev flag is on in edit mode', async () => {
         renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.completedTaskID} />
-            </Provider>,
-            { query: { dev: 'true' } }
+            </Provider>
         );
         await waitFor(() => {
             const editButton = screen.getByRole('button', { name: 'Edit' });

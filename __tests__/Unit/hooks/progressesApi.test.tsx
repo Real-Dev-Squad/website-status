@@ -41,6 +41,58 @@ describe('useGetProgressDetails', () => {
         expect(nextResponse.error).toBeUndefined();
         expect(nextResponse.isSuccess).toEqual(true);
         expect(taskProgressResponse).not.toBeUndefined();
+        expect(taskProgressResponse?.data[0].userData).toBeUndefined();
+    });
+    test('Returns Task Progress with userData in response if dev is true', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetProgressDetailsQuery({
+                    taskId: 'OxYqJgf6Tyl90uci1mzs',
+                    dev: true,
+                }),
+            { wrapper: Wrapper }
+        );
+
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const taskProgressResponse = nextResponse.data;
+        expect(nextResponse.status).toEqual('fulfilled');
+        expect(nextResponse.error).toBeUndefined();
+        expect(nextResponse.isSuccess).toEqual(true);
+        expect(taskProgressResponse).not.toBeUndefined();
         expect(taskProgressResponse).toEqual(mockGetTaskProgress);
+        expect(taskProgressResponse?.data[0].userData).toEqual(
+            mockGetTaskProgress.data[0].userData
+        );
+    });
+
+    test('Returns userData undefined in the Task Progress if dev is false', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetProgressDetailsQuery({
+                    taskId: 'YttqJgf6Tyl35uci1mzs',
+                    dev: false,
+                }),
+            { wrapper: Wrapper }
+        );
+
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const taskProgressResponse = nextResponse.data;
+        expect(nextResponse.status).toEqual('fulfilled');
+        expect(nextResponse.error).toBeUndefined();
+        expect(nextResponse.isSuccess).toEqual(true);
+        expect(taskProgressResponse).not.toBeUndefined();
+        expect(taskProgressResponse?.data[1].userData).toBeUndefined();
     });
 });

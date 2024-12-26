@@ -1,0 +1,110 @@
+@import '../../../styles/variables.scss';
+
+.taskCard {
+    border: 2px solid $white;
+    box-shadow: 0px 0px 10px 0 $light-gray;
+    padding: 10px;
+    border-radius: 8px;
+    min-width: 300px;
+    min-height: 110px;
+    margin-bottom: 1rem;
+
+    & > * {
+        border-radius: 8px;
+    }
+
+    .title {
+        min-height: 25px;
+        width: 60%;
+        margin: 1.1rem 0;
+    }
+
+    .estimated {
+        min-height: 25px;
+        width: 40%;
+    }
+
+    .started {
+        min-height: 25px;
+        width: 20%;
+    }
+
+    .status {
+        min-width: 25px;
+        width: 20%;
+    }
+
+    .assignee {
+        min-height: 25px;
+        width: 30%;
+    }
+}
+
+.titleContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 80px;
+}
+
+.container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 1rem;
+    @media only screen and (max-width: 750px) {
+        flex-direction: column;
+    }
+}
+
+.taskCardLeft {
+    flex: 2 1;
+}
+
+.taskCardRight {
+    flex: 1 1;
+    width: 100%;
+}
+
+@keyframes fullView {
+    100% {
+        width: 100%;
+    }
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 10px 0;
+    & > * {
+        border-radius: 8px;
+    }
+    .dateRight {
+        margin-left: auto;
+    }
+}
+
+.rightContainer {
+    padding-bottom: 20px;
+}
+
+.animate {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(
+        to right,
+        $shimmer-lighter 4%,
+        $shimmer-darker 25%,
+        $shimmer-lighter 36%
+    );
+    background-size: 1000px 100%;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}

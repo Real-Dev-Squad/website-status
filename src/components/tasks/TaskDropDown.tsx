@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { beautifyStatus } from './card/TaskStatusEditMode';
+import styles from '@/components/tasks/card/card.module.scss';
 
 import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import TaskDropDownModel from './TaskDropDownModel';
@@ -24,13 +25,15 @@ export default function TaskDropDown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
-    if (isDevMode && oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
+
+    if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
+
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
         ([key]) =>
-            !(isDevMode && key === 'COMPLETED') &&
-            !(!isDevMode && (key === 'BACKLOG' || key === 'DONE'))
+            !(key === BACKEND_TASK_STATUS.COMPLETED) &&
+            !(!isDevMode && key === BACKEND_TASK_STATUS.BACKLOG)
     );
 
     const isCurrentTaskStatusBlock = oldStatus === BACKEND_TASK_STATUS.BLOCKED;
@@ -69,39 +72,59 @@ export default function TaskDropDown({
     };
 
     const handleChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+        const newStatusValue = ev.target.value;
+
         setStatusAndProgress((prev) => ({
             ...prev,
-            newStatus: ev.target.value,
+            newStatus: newStatusValue,
         }));
 
-        if (oldStatus === ev.target.value) {
+        if (oldStatus === newStatusValue) {
             return;
         }
-        if (isDevMode && ev.target.value !== BACKEND_TASK_STATUS.BACKLOG) {
-            const msg = `The progress of current task is ${oldProgress}%. `;
-            if (shouldTaskProgressBe100(ev.target.value)) {
-                setStatusAndProgress((prev) => ({ ...prev, newProgress: 100 }));
-                setMessage(msg + MSG_ON_100_PROGRESS);
-                return;
-            }
-            if (shouldTaskProgressBe0(ev.target.value)) {
-                setStatusAndProgress((prev) => ({ ...prev, newProgress: 0 }));
-                setMessage(msg + MSG_ON_0_PROGRESS);
-                return;
-            }
-        }
-        onChange({ newStatus: ev.target.value });
+
+        onChange({ newStatus: newStatusValue });
     };
+
     const handleProceed = () => {
-        const payload: { newStatus: string; newProgress?: number } = {
-            newStatus,
-        };
-        if (newProgress != oldProgress) {
-            payload.newProgress = newProgress;
-        }
+        const payload = { newStatus };
         onChange(payload);
         setMessage('');
     };
+    if (isDevMode) {
+        return (
+            <>
+                <label
+                    className={styles.cardPurposeAndStatusFont}
+                    data-testid="task-status-label"
+                >
+                    Status:
+                    <select
+                        className={styles.taskStatusUpdate}
+                        data-testid="task-status"
+                        name="status"
+                        onChange={handleChange}
+                        value={newStatus}
+                    >
+                        {taskStatus.map(([name, status]) => (
+                            <option
+                                data-testid={`task-status-${name}`}
+                                key={status}
+                                value={status}
+                            >
+                                {beautifyStatus(name)}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <TaskDropDownModel
+                    message={message}
+                    resetProgressAndStatus={resetProgressAndStatus}
+                    handleProceed={handleProceed}
+                />
+            </>
+        );
+    }
     return (
         <>
             <label>
@@ -118,7 +141,7 @@ export default function TaskDropDown({
                             key={status}
                             value={status}
                         >
-                            {beautifyStatus(name, isDevMode)}
+                            {beautifyStatus(name)}
                         </option>
                     ))}
                 </select>

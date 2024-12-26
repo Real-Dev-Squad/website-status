@@ -110,34 +110,11 @@ describe('TaskStatusEditMode', () => {
 
         const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
             .map(([name, status]) => [status, beautifyStatus(name)])
-            .filter(([status]) => status !== 'BACKLOG' && status !== 'DONE');
-
-        expect(allOptions).toEqual(allTaskStatus);
-    });
-
-    it('renders a list of task under feature flag', () => {
-        const mockUpdateTask = jest.fn();
-        const setEditedTaskDetails = jest.fn();
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskStatusEditMode
-                    task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
-                    isDevMode={true}
-                />
-            </Provider>
-        );
-
-        const statusSelect = screen.getByLabelText('Status:');
-
-        const allOptions = Array.from(
-            statusSelect.querySelectorAll('option')
-        ).map((option) => [option.value, option.textContent]);
-
-        const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
-            .map(([name, status]) => [status, beautifyStatus(name)])
-            .filter(([status]) => status !== BACKEND_TASK_STATUS.COMPLETED);
+            .filter(
+                ([status]) =>
+                    status !== BACKEND_TASK_STATUS.COMPLETED &&
+                    status !== BACKEND_TASK_STATUS.BACKLOG
+            );
 
         expect(allOptions).toEqual(allTaskStatus);
     });
@@ -181,8 +158,8 @@ describe('test beautifyStatus function', () => {
         expect(output).toEqual('In Progress');
     });
 
-    it('returns DONE when completed is passed and dev mode is one', () => {
-        const res = beautifyStatus('COMPLETED', true);
+    it('returns DONE when completed is passed ', () => {
+        const res = beautifyStatus(BACKEND_TASK_STATUS.COMPLETED);
         expect(res).toEqual('Done');
     });
 });

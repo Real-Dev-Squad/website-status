@@ -21,6 +21,7 @@ import { ProgressDetailsData } from '@/types/standup.type';
 import { useGetProgressDetailsQuery } from '@/app/services/progressesApi';
 import Progress from '../ProgressCard';
 import TaskDependency from '@/components/taskDetails/taskDependency';
+import { TaskDetailsShimmer } from '@/components/Loaders/taskDetailsShimmer';
 import {
     taskDetailsDataType,
     ButtonProps,
@@ -64,6 +65,7 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const isDev = router.query.dev === 'true';
 
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -76,6 +78,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { data: progressData, refetch: refetchProgress } =
         useGetProgressDetailsQuery({
             taskId: taskID,
+            dev: isDev,
         });
 
     const isExtensionRequestPending = Boolean(
@@ -210,7 +213,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     function renderLoadingComponent() {
         if (isLoading) {
-            return <p className={styles.textCenter}>Loading...</p>;
+            if (isDev) {
+                return (
+                    <div className={styles.parentContainer}>
+                        {<TaskDetailsShimmer />}
+                    </div>
+                );
+            } else {
+                return <p className={styles.textCenter}>Loading...</p>;
+            }
         }
         if (isError) {
             return <p className={styles.textCenter}>Something went wrong!</p>;

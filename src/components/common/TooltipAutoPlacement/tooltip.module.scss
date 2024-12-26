@@ -1,9 +1,13 @@
 @import '../../../styles/variables';
 
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
 .tooltip {
     position: absolute;
-    width: 18rem;
-    // position - top, bottom, right, left will come from props for reusability
+    width: 17rem;
     background-color: $theme-primary;
     border: 1px solid $theme-primary;
     padding: 6px 10px;
@@ -14,23 +18,12 @@
     font-weight: 600;
     font-size: 1rem;
     display: none;
-
-    &::before {
-        content: '';
-        position: absolute;
-        height: 0.75rem;
-        width: 0.75rem;
-        bottom: 0;
-        background: $theme-primary;
-        left: 50%;
-        transform: translateX(-50%) translateY(6px) rotate(45deg);
-        z-index: -1;
-    }
 }
 
 .fade-in {
     animation: fade-in 0.3s linear 0s 1 normal forwards;
     display: block;
+
     @keyframes fade-in {
         0% {
             opacity: 0.2;
@@ -43,6 +36,7 @@
 
 .fade-out {
     animation: fade-out 0.3s linear 0s 1 normal forwards;
+
     @keyframes fade-out {
         0% {
             opacity: 1;
@@ -53,4 +47,14 @@
             display: none;
         }
     }
+}
+
+.arrow {
+    position: absolute;
+    height: 12px;
+    width: 13px;
+    bottom: 0;
+    background: $theme-primary;
+    transform: rotate(45deg);
+    z-index: -1;
 }

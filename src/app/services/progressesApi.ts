@@ -4,6 +4,7 @@ import { progressDetails } from '@/types/standup.type';
 type queryParamsType = {
     userId?: string;
     taskId?: string;
+    dev?: boolean;
 };
 
 export const progressesApi = api.injectEndpoints({
@@ -20,10 +21,10 @@ export const progressesApi = api.injectEndpoints({
             }),
         }),
         getProgressDetails: builder.query<progressDetails, queryParamsType>({
-            query: ({ userId, taskId }: queryParamsType) => {
+            query: ({ userId, taskId, dev }: queryParamsType) => {
                 return {
                     url: '/progresses',
-                    params: { userId, taskId },
+                    params: { userId, taskId, dev },
                 };
             },
             providesTags: ['Progress_Details'],

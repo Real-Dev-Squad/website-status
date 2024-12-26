@@ -6,9 +6,12 @@ import {
 } from './progressUpdateCard.types';
 import Tooltip from '@/components/common/Tooltip/Tooltip';
 import styles from './latest-progress-update-card.module.scss';
-
+import { USER_MANAGEMENT_URL } from '@/constants/url';
+import { UserAvatar } from '@/components/common/UserAvatar/UserAvatar';
 export default function LatestProgressUpdateCardPresentation({
     dataToShowState,
+    username,
+    userProfileImageUrl,
     tooltipText,
     onMoreOrLessButtonClick,
     dateInAgoFormat,
@@ -65,7 +68,7 @@ export default function LatestProgressUpdateCardPresentation({
                 >
                     <Tooltip
                         content={tooltipText}
-                        tooltipPosition={{ top: '-2.6rem', right: '-4rem' }}
+                        tooltipPosition={{ bottom: '2rem', right: '-2rem' }}
                     >
                         <span className={styles['date-clock-container']}>
                             <FaRegClock />
@@ -79,6 +82,31 @@ export default function LatestProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
+                    {username === '' ? (
+                        <UserAvatar userProfileImageUrl={userProfileImageUrl} />
+                    ) : (
+                        <Tooltip
+                            content={username}
+                            tooltipPosition={{
+                                top: '-2.5rem',
+                                right: '-3.9rem',
+                                width: '10rem',
+                            }}
+                        >
+                            <a
+                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                className={
+                                    styles[
+                                        'latest-progress-update-card__user-info-link'
+                                    ]
+                                }
+                            >
+                                <UserAvatar
+                                    userProfileImageUrl={userProfileImageUrl}
+                                />
+                            </a>
+                        </Tooltip>
+                    )}
                 </div>
             </div>
         </div>
