@@ -4,6 +4,17 @@
     width: 64%;
 }
 
+.taskSkeletonContainer {
+    padding: 2rem 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media (max-width: 448px) {
+        padding: 2rem 1rem 0;
+    }
+}
+
 .container {
     text-align: center;
     display: flex;

@@ -22,6 +22,7 @@ import {
 
 import useIntersection from '@/hooks/useIntersection';
 import TaskSearchDev from './TaskSearch/TaskSearch';
+import TaskCardShimmer from '../Loaders/taskCardShimmer';
 
 export const TasksContent = ({ dev }: { dev?: boolean }) => {
     const router = useRouter();
@@ -126,6 +127,18 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         onLoadMore: fetchMoreTasks,
         earlyReturn: loadedTasks[selectedTab].length === 0,
     });
+
+    if (isLoading && dev)
+        return (
+            <div
+                className={styles.taskSkeletonContainer}
+                data-testid="task-skeleton-container"
+            >
+                {[...Array(5)].map((n: number, index) => (
+                    <TaskCardShimmer key={index} />
+                ))}
+            </div>
+        );
 
     if (isLoading) return <p>Loading...</p>;
 
