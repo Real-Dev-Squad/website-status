@@ -18,8 +18,8 @@
     &::before {
         content: '';
         position: absolute;
-        height: 12px;
-        width: 12px;
+        height: 0.75rem;
+        width: 0.75rem;
         bottom: 0;
         background: $theme-primary;
         left: 50%;
