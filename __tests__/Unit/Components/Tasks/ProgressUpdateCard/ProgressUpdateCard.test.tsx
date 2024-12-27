@@ -89,7 +89,7 @@ describe('ProgressUpdateCard Component', () => {
         );
 
         const readMoreButton = screen.getByTestId(
-            'progress-update-card-read-more-completed'
+            'progress-update-read-more-toggle-button'
         );
         expect(readMoreButton).toBeInTheDocument();
         expect(readMoreButton).toHaveTextContent('More');

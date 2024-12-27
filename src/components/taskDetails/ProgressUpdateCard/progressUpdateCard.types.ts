@@ -42,3 +42,13 @@ export type ProgressUpdateDataToShow = {
     shouldReadMoreButtonShow: boolean;
     isReadMoreEnabled: boolean;
 };
+
+export type ProgressUpdateCardOverviewProps = {
+    titleToShow: string;
+    dateInAgoFormat: string;
+    username: string;
+    userProfileImageUrl: string;
+    tooltipString: string;
+    isDevMode: boolean;
+    isExpanded: boolean;
+};
