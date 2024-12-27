@@ -1,14 +1,18 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import styles from './progress-update-card.module.scss';
 import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
 import ProgressUpdateCardOverview from './ProgressUpdateCardOverview';
+import ProgressUpdateCardOverview from './ProgressUpdateCardOverview';
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,
     dateInAgoFormat,
+    username,
+    userProfileImageUrl,
     username,
     userProfileImageUrl,
     tooltipString,
@@ -17,6 +21,8 @@ export default function ProgressUpdateCardPresentation({
     onCardClick,
     isExpanded,
 }: ProgressUpdateCardPresentationProps) {
+    const router = useRouter();
+    const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -38,6 +44,7 @@ export default function ProgressUpdateCardPresentation({
                             className={
                                 styles['progress-update-card__more-less-button']
                             }
+                            data-testid="progress-update-read-more-toggle-button"
                             data-testid="progress-update-read-more-toggle-button"
                         >
                             {datum.isReadMoreEnabled ? 'Less' : 'More'}
@@ -63,6 +70,7 @@ export default function ProgressUpdateCardPresentation({
                     username={username}
                     userProfileImageUrl={userProfileImageUrl}
                     tooltipString={tooltipString}
+                    isDevMode={isDevMode}
                     isExpanded={isExpanded}
                 />
                 <div

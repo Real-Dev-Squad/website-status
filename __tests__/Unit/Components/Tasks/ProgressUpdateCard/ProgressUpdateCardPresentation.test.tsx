@@ -2,6 +2,7 @@ import moment from 'moment';
 import { MouseEvent } from 'react';
 import { Provider } from 'react-redux';
 import { fireEvent, screen } from '@testing-library/react';
+import { useRouter } from 'next/router';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { readMoreFormatter } from '@/utils/common';
@@ -31,7 +32,9 @@ let mockedOnMoreOrLessButtonClick: jest.Mock<
     [React.MouseEvent<HTMLElement>]
 >;
 let mockedOnCardClick: jest.Mock<void, [MouseEvent<HTMLElement>]>;
-
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
 const charactersToShow = 70;
 const dataToShowState = [
     {
@@ -130,6 +133,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should rotate the angle icon when expanded', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         const props = { ...initialProps, isExpanded: true };
         renderWithRouter(
             <Provider store={store()}>
@@ -142,6 +148,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
     });
     it('should have respective classes on date container and date text', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -157,6 +166,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should not rotate the angle icon when not expanded', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         const props = { ...initialProps, isExpanded: false };
         renderWithRouter(
             <Provider store={store()}>
@@ -170,6 +182,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should prevent event propagation when clicking on the date container', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -187,6 +202,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should prevent event propagation when clicking on user avatar', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -206,6 +224,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
     });
 
     it('should render completed section string as title in card', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -217,6 +238,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
         );
     });
     it('should render date with ago format', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'false' },
+        });
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressUpdateCardPresentation {...initialProps} />
@@ -226,6 +250,9 @@ describe('ProgressUpdateCardPresentation Component', () => {
         expect(date).toHaveTextContent(dateInAgoFormat);
     });
     it('should render user Image', () => {
+        (useRouter as jest.Mock).mockReturnValue({
+            query: { dev: 'true' },
+        });
         const props: ProgressUpdateCardPresentationProps = {
             ...initialProps,
         };

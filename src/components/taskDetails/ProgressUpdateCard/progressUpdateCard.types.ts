@@ -12,6 +12,8 @@ export type ProgressUpdateCardPresentationProps = {
     dateInAgoFormat: string;
     username: string;
     userProfileImageUrl: string;
+    username: string;
+    userProfileImageUrl: string;
     tooltipString: string;
     dataToShowState: ProgressUpdateDataToShow[];
     onMoreOrLessButtonClick: (
@@ -49,5 +51,6 @@ export type ProgressUpdateCardOverviewProps = {
     username: string;
     userProfileImageUrl: string;
     tooltipString: string;
+    isDevMode: boolean;
     isExpanded: boolean;
 };

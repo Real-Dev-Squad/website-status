@@ -7,9 +7,18 @@ import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import LatestProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
 import { readMoreFormatter } from '@/utils/common';
 import { DEFAULT_AVATAR } from '@/constants/url';
+import { useRouter } from 'next/router';
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
 
 describe('LatestProgressUpdateCard Component', () => {
     it('should render the default avatar when userProfileImage is undefined', () => {
+        const mockRouter = {
+            query: { dev: 'true' },
+        };
+        (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
         const mockDataWithNoUserData = {
             ...mockGetTaskProgress.data[2],
             userData: undefined,

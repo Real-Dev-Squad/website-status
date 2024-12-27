@@ -12,6 +12,7 @@ export default function ProgressUpdateCardOverview({
     username,
     userProfileImageUrl,
     tooltipString,
+    isDevMode,
     isExpanded,
 }: ProgressUpdateCardOverviewProps) {
     return (
@@ -21,7 +22,11 @@ export default function ProgressUpdateCardOverview({
             </h3>
             <div className={styles['progress-update-card__details-container']}>
                 <Tooltip
-                    tooltipPosition={{ top: '-2.5rem', right: '0rem' }}
+                    tooltipPosition={
+                        isDevMode
+                            ? { top: '-2.5rem', right: '0rem' }
+                            : { top: '-2.7rem', right: '-3rem' }
+                    }
                     content={tooltipString}
                 >
                     <span
@@ -42,31 +47,34 @@ export default function ProgressUpdateCardOverview({
                     </span>
                 </Tooltip>
 
-                {username === '' ? (
-                    <UserAvatar userProfileImageUrl={userProfileImageUrl} />
-                ) : (
-                    <Tooltip
-                        tooltipPosition={{
-                            top: '-2rem',
-                            right: '-2rem',
-                            width: '10rem',
-                        }}
-                        content={username}
-                    >
-                        <a
-                            href={`${USER_MANAGEMENT_URL}?username=${username}`}
-                            className={
-                                styles['progress-update-card__user-info-link']
-                            }
-                            data-testid="progress-update-card-user-info-link"
-                            onClick={(event) => event.stopPropagation()}
+                {isDevMode &&
+                    (username === '' ? (
+                        <UserAvatar userProfileImageUrl={userProfileImageUrl} />
+                    ) : (
+                        <Tooltip
+                            tooltipPosition={{
+                                top: '-2rem',
+                                right: '-2rem',
+                                width: '10rem',
+                            }}
+                            content={username}
                         >
-                            <UserAvatar
-                                userProfileImageUrl={userProfileImageUrl}
-                            />
-                        </a>
-                    </Tooltip>
-                )}
+                            <a
+                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                className={
+                                    styles[
+                                        'progress-update-card__user-info-link'
+                                    ]
+                                }
+                                data-testid="progress-update-card-user-info-link"
+                                onClick={(event) => event.stopPropagation()}
+                            >
+                                <UserAvatar
+                                    userProfileImageUrl={userProfileImageUrl}
+                                />
+                            </a>
+                        </Tooltip>
+                    ))}
 
                 <FaAngleRight
                     data-testid="progress-update-card-angle-icon"
