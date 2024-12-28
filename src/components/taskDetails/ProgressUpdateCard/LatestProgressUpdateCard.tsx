@@ -3,7 +3,7 @@ import React, { MouseEvent, useState } from 'react';
 import { readMoreFormatter } from '@/utils/common';
 import { ProgressDetailsData } from '@/types/standup.type';
 import LatestProgressUpdateCardPresentation from './LatestProgressUpdateCardPresentation';
-
+import { DEFAULT_AVATAR } from '@/constants/url';
 type LatestProgressUpdateCardProps = {
     data: ProgressDetailsData;
 };
@@ -25,6 +25,15 @@ export default function LatestProgressUpdateCard({
     const fullDate = momentDate.format('dddd, MMMM DD, YYYY, hh:mm A [GMT] Z');
     const tooltipText = `Updated at ${fullDate}`;
     const charactersToShow = 70;
+    let username = '';
+    let userProfileImageUrl = DEFAULT_AVATAR;
+
+    if (data.userData) {
+        username = data.userData.username ?? '';
+        if (data.userData.picture) {
+            userProfileImageUrl = data.userData.picture.url ?? DEFAULT_AVATAR;
+        }
+    }
 
     const dataToShow = [
         {
@@ -75,6 +84,8 @@ export default function LatestProgressUpdateCard({
     return (
         <LatestProgressUpdateCardPresentation
             dataToShowState={dataToShowState}
+            username={username}
+            userProfileImageUrl={userProfileImageUrl}
             tooltipText={tooltipText}
             onMoreOrLessButtonClick={onMoreOrLessButtonClick}
             dateInAgoFormat={dateInAgoFormat}
