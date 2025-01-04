@@ -30,6 +30,16 @@ describe('Progress Slider', () => {
         expect(sliderInput).toBeInTheDocument();
     });
 
+    test('should render range input field and handle touch events', async () => {
+        render(
+            <ProgressSlider {...DEFAULT_PROPS} value={40} isLoading={false} />
+        );
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.touchEnd(sliderInput, { target: { value: 50 } });
+        expect(DEFAULT_PROPS.debounceSlider).toHaveBeenCalled();
+        expect(sliderInput).toBeInTheDocument();
+    });
+
     test('should render with dev mode styles when dev query is true', async () => {
         (useRouter as jest.Mock).mockImplementation(() => ({
             query: { dev: 'true' },

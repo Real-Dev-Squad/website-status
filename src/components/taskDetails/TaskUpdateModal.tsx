@@ -13,7 +13,6 @@ type Props = {
     styles: {
         readonly [key: string]: string;
     };
-    isDev: boolean;
     taskDetailsData: task;
     editedTaskDetails: task;
     onUpdateSuccess: () => void;
@@ -23,7 +22,6 @@ function TaskUpdateModal({
     isOpen,
     setIsOpen,
     styles,
-    isDev,
     taskDetailsData,
     editedTaskDetails,
     onUpdateSuccess,

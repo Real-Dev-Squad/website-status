@@ -96,7 +96,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         // Only show update button in modal (not readOnly) and in dev mode
         if (
             !readOnly &&
-            isDev &&
             (content.assignee === userData?.username ||
                 !!userData?.roles.super_user)
         ) {

@@ -21,7 +21,7 @@ describe('Progress Indicator', () => {
 
     test('should render the ProgressIndicator', () => {
         const { container } = render(<ProgressIndicator {...DEFAULT_PROPS} />);
-        const parentDiv = container.getElementsByClassName('progressIndicator');
+        const parentDiv = container.getElementsByClassName('slider');
         const childDiv = container.getElementsByClassName('progressStyle');
         expect(parentDiv.length).toBe(1);
         expect(childDiv.length).toBe(1);
