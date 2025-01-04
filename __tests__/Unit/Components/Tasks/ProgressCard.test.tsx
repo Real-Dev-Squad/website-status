@@ -7,7 +7,8 @@ import { setupServer } from 'msw/node';
 import handlers from '../../../../__mocks__/handlers';
 import { mockGetTaskProgress } from '../../../../__mocks__/db/progresses';
 import ProgressCard from '@/components/ProgressCard';
-
+import { useRouter } from 'next/router';
+import {} from '@/hooks/useIntersection';
 const server = setupServer(...handlers);
 
 const dateMay29 = moment(mockGetTaskProgress.data[0].createdAt).fromNow();
@@ -28,16 +29,121 @@ beforeAll(() => {
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+jest.mock('@/hooks/useIntersection', () => {
+    return jest.fn().mockImplementation(() => ({
+        loadingRef: { current: {} },
+        onLoadMore: jest.fn(),
+    }));
+});
+
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(),
+}));
+
 describe('ProgressCard Component', () => {
+    const mockFetchMoreProgresses = jest.fn();
+
     it('should render the ProgressCard', async () => {
+        const mockRouter = {
+            query: { dev: 'false' },
+        };
+        (useRouter as jest.Mock).mockReturnValue(mockRouter);
         renderWithRouter(
             <Provider store={store()}>
-                <ProgressCard taskProgress={mockGetTaskProgress.data} />
+                <ProgressCard
+                    taskProgress={mockGetTaskProgress.data}
+                    fetchMoreProgresses={mockFetchMoreProgresses}
+                    isFetchingProgress={false}
+                    devFlag={false}
+                />
             </Provider>
         );
         const progress = screen.getByTestId('progressCard');
         expect(progress).toBeInTheDocument();
         expect(progress).toHaveTextContent('Progress Updates');
+    });
+
+    // it('should call fetchMoreProgresses when hasFetched is true', () => {
+    //     const mockRouter = {
+    //         query: { dev: 'true' },
+    //     };
+    //     (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    //     renderWithRouter(
+    //         <Provider store={store()}>
+    //             <ProgressCard
+    //                 taskProgress={[]} // Simulate initial empty state
+    //                 fetchMoreProgresses={mockFetchMoreProgresses}
+    //                 isFetchingProgress={false}
+    //                 devFlag={true}
+    //             />
+    //         </Provider>
+    //     );
+
+    //     // Ensure fetchMoreProgresses is called
+    //     expect(mockFetchMoreProgresses).toHaveBeenCalled();
+    // });
+
+    // it('should trigger fetchMoreProgresses on intersection when devFlag is true', async () => {
+    //     const mockRouter = {
+    //         query: { dev: 'true' },
+    //     };
+    //     (useRouter as jest.Mock).mockReturnValue(mockRouter);
+    //     renderWithRouter(
+    //         <Provider store={store()}>
+    //             <ProgressCard
+    //                 taskProgress={mockGetTaskProgress.data}
+    //                 fetchMoreProgresses={mockFetchMoreProgresses}
+    //                 isFetchingProgress={false}
+    //                 devFlag={true} // Enable devFlag
+    //             />
+    //         </Provider>
+    //     );
+
+    //     // Mock the intersection trigger
+    //     const loadingRef = screen.getByText('Loading...'); // Or any suitable marker for the ref
+    //     expect(loadingRef).toBeInTheDocument();
+
+    //     // Simulate intersection (scrolling near the bottom)
+    //     mockFetchMoreProgresses.mockClear(); // Ensure it's clean before checking
+
+    //     await waitFor(() => {
+    //         expect(mockFetchMoreProgresses).toHaveBeenCalled();
+    //     });
+    // });
+
+    it('should show loading ref only when devFlag is true', () => {
+        const mockRouter = {
+            query: { dev: 'true' },
+        };
+        (useRouter as jest.Mock).mockReturnValue(mockRouter);
+        const { rerender } = renderWithRouter(
+            <Provider store={store()}>
+                <ProgressCard
+                    taskProgress={mockGetTaskProgress.data}
+                    fetchMoreProgresses={mockFetchMoreProgresses}
+                    isFetchingProgress={false}
+                    devFlag={false}
+                />
+            </Provider>
+        );
+
+        // Loading ref should not exist when devFlag is false
+        expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+
+        // Re-render with devFlag enabled
+        rerender(
+            <Provider store={store()}>
+                <ProgressCard
+                    taskProgress={mockGetTaskProgress.data}
+                    fetchMoreProgresses={mockFetchMoreProgresses}
+                    isFetchingProgress={true}
+                    devFlag={true}
+                />
+            </Provider>
+        );
+
+        // Now, loading ref should exist
+        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
     it('should render Asc/Dsc button  ', async () => {
         const { getByRole } = renderWithRouter(

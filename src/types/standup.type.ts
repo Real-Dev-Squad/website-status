@@ -28,11 +28,15 @@ export type ProgressDetailsData = {
     userData?: userDataType;
     taskId?: string;
 };
-
+type Links = {
+    prev: string | null;
+    next: string | null;
+};
 export type progressDetails = {
     data: Array<ProgressDetailsData>;
     message: string;
     count: number;
+    links?: Links;
 };
 
 type Section = {
