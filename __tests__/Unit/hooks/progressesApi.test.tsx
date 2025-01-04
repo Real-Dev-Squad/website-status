@@ -48,7 +48,7 @@ describe('useGetProgressDetails', () => {
             () =>
                 useGetProgressDetailsQuery({
                     taskId: 'OxYqJgf6Tyl90uci1mzs',
-                    isDev: true,
+                    dev: true,
                 }),
             { wrapper: Wrapper }
         );
