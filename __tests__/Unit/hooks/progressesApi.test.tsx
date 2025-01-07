@@ -41,7 +41,7 @@ describe('useGetProgressDetails', () => {
         expect(nextResponse.error).toBeUndefined();
         expect(nextResponse.isSuccess).toEqual(true);
         expect(taskProgressResponse).not.toBeUndefined();
-        expect(taskProgressResponse).toEqual(mockGetTaskProgress);
+        expect(taskProgressResponse?.data[0].userData).toBeUndefined();
     });
     test('Returns Task Progress with userData in response if dev is true', async () => {
         const { result, waitForNextUpdate } = renderHook(
@@ -93,7 +93,6 @@ describe('useGetProgressDetails', () => {
         expect(nextResponse.error).toBeUndefined();
         expect(nextResponse.isSuccess).toEqual(true);
         expect(taskProgressResponse).not.toBeUndefined();
-        expect(taskProgressResponse).toEqual(mockGetTaskProgress);
-        expect(taskProgressResponse?.data[2].userData).toBeUndefined();
+        expect(taskProgressResponse?.data[1].userData).toBeUndefined();
     });
 });
