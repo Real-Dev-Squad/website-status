@@ -30,7 +30,7 @@ describe('Navbar', () => {
     test('shows "Sign In With Github" button when not logged in', async () => {
         server.use(
             rest.get(
-                `${process.env.NEXT_PUBLIC_BASE_URL}/users/self`,
+                `${process.env.NEXT_PUBLIC_BASE_URL}/users?profile=true`,
                 (_, res, ctx) => {
                     return res(
                         ctx.status(401),
