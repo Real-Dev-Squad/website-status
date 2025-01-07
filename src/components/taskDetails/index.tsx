@@ -64,8 +64,7 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-    const { dev } = router.query;
-    const isDev = dev === 'true';
+    const isDev = router.query.dev === 'true';
 
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);

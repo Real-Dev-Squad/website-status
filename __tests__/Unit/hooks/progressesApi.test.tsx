@@ -70,4 +70,30 @@ describe('useGetProgressDetails', () => {
             mockGetTaskProgress.data[0].userData
         );
     });
+
+    test('Returns userData undefined in the Task Progress if dev is false', async () => {
+        const { result, waitForNextUpdate } = renderHook(
+            () =>
+                useGetProgressDetailsQuery({
+                    taskId: 'YttqJgf6Tyl35uci1mzs',
+                    dev: false,
+                }),
+            { wrapper: Wrapper }
+        );
+
+        const initialResponse = result.current;
+        expect(initialResponse.data).toBeUndefined();
+        expect(initialResponse.isLoading).toBe(true);
+
+        await act(() => waitForNextUpdate());
+
+        const nextResponse = result.current;
+        const taskProgressResponse = nextResponse.data;
+        expect(nextResponse.status).toEqual('fulfilled');
+        expect(nextResponse.error).toBeUndefined();
+        expect(nextResponse.isSuccess).toEqual(true);
+        expect(taskProgressResponse).not.toBeUndefined();
+        expect(taskProgressResponse).toEqual(mockGetTaskProgress);
+        expect(taskProgressResponse?.data[2].userData).toBeUndefined();
+    });
 });
