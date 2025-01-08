@@ -91,6 +91,16 @@
     color: #aeaeae;
 }
 
+.cardPurposeAndStatusFont {
+    font-size: 1.1rem;
+    color: #555;
+}
+.cardPurposeText{
+    padding: 8px;
+    color: #aeaeae;
+    font-size: 1rem;
+}
+
 .cardStatusFont {
     font-size: 1.3rem;
     font-weight: 500;
@@ -242,9 +252,13 @@
     cursor: pointer;
 }
 
-.taskStatusAndDateContainer {
-    display: flex;
-    justify-content: space-between;
+.taskStatusDateAndPurposeContainer {
+    display: grid;
+    align-items: baseline;
+    grid-template-columns: 2fr 3fr;
+    gap: 2rem;
+    grid-auto-flow: column;
+    margin-bottom: 1rem;
 }
 
 .taskStatusEditMode {

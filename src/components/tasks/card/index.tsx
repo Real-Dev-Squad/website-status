@@ -32,6 +32,7 @@ import {
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import useUserData from '@/hooks/useUserData';
+import { useGetUserQuery } from '@/app/services/userApi';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import ProgressIndicator from './progressContainer/ProgressIndicator';
@@ -75,16 +76,18 @@ const Card: FC<CardProps> = ({
 
     const { isUserAuthorized } = useUserData();
 
+    const { data: userData } = useGetUserQuery();
+
     const [showEditButton, setShowEditButton] = useState(false);
 
     const [keyLongPressed] = useKeyLongPressed();
 
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
+    const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({ // revisit
         itemId: cardDetails.id,
     });
-    const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
+    const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation(); //revisit
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
 
@@ -266,7 +269,7 @@ const Card: FC<CardProps> = ({
         setIsEditMode(true);
     };
     const isEditable = shouldEdit && isUserAuthorized && isEditMode;
-
+    const isSelfTask = editedTaskDetails.assignee === userData?.username;
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
         return getDateInString(new Date(closedAt ?? Date.now()));
@@ -543,7 +546,7 @@ const Card: FC<CardProps> = ({
                     </div>
                 )}
             </div>
-            <div className={styles.taskStatusAndDateContainer}>
+            <div className={styles.taskStatusDateAndPurposeContainer}>
                 <div className={styles.dateInfo}>
                     <div className={styles.dateSection}>
                         <p className={styles.cardSpecialFont}>
@@ -569,6 +572,15 @@ const Card: FC<CardProps> = ({
                             : `Started ${getStartedAgo()}`}
                     </span>
                 </div>
+
+                {/*card purpose*/}
+                {isSelfTask && editedTaskDetails.purpose && (
+                    <div>
+                        <b className={styles.cardPurposeAndStatusFont}>Purpose: </b>
+                        <span className={styles.cardPurposeText}>{editedTaskDetails.purpose}</span>
+                    </div>
+                )}
+
                 {/* EDIT task status */}
                 <div className={styles.taskStatusEditMode}>
                     {isEditable ? (
