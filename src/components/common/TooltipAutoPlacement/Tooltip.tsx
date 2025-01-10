@@ -58,18 +58,19 @@ const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
         whileElementsMounted: autoUpdate,
     });
 
-    const showTooltip = () => {
-        if (!refs.floating.current) return;
+    const tooltip = refs.floating.current;
 
-        const tooltip = refs.floating.current;
+    const showTooltip = () => {
+        if (!tooltip) return;
+
         tooltip.classList.remove(styles['fade-out']);
         tooltip.classList.add(styles['fade-in']);
     };
 
     const hideTooltip = () => {
-        if (refs.floating.current) {
-            refs.floating.current.classList.remove(styles['fade-in']);
-            refs.floating.current.classList.add(styles['fade-out']);
+        if (tooltip) {
+            tooltip.classList.remove(styles['fade-in']);
+            tooltip.classList.add(styles['fade-out']);
         }
     };
 
