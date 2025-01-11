@@ -64,8 +64,8 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
-    const { dev } = router.query;
-    const devFlag = dev === 'true' ? true : false;
+    const isDev = router.query.dev === 'true';
+
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -84,7 +84,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         isFetching: isFetchingProgress,
     } = useGetProgressDetailsQuery({
         taskId: taskID,
-        dev: devFlag,
+        dev: isDev,
         size: 10,
         page: page,
     });
@@ -256,7 +256,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     }
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
-    const progressDataToSend = devFlag
+    const progressDataToSend = isDev
         ? progressesDataPaginated
         : progressData?.data || [];
     const taskProgress: ProgressDetailsData[] = progressDataToSend || [];
@@ -309,7 +309,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                 taskProgress={taskProgress}
                                 fetchMoreProgresses={fetchMoreProgresses}
                                 isFetchingProgress={isFetchingProgress}
-                                devFlag={devFlag}
+                                devFlag={isDev}
                             />
                             <TaskContainer
                                 title="Task Dependencies"
