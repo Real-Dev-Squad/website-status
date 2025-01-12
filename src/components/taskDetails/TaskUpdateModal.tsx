@@ -1,11 +1,9 @@
-import React from 'react';
 import ProgressContainer from '../tasks/card/progressContainer';
 import Modal from '../Modal';
 import getCurrentDate from '@/utils/getLatestDate';
 import { questions } from '@/constants/ProgressUpdates';
 import ProgressForm from '../ProgressForm/ProgressForm';
 import task from '@/interfaces/task.type';
-import { useRouter } from 'next/router';
 
 type Props = {
     isOpen: boolean;
