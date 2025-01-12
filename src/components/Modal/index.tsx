@@ -1,6 +1,6 @@
 import React, { ReactNode, useEffect } from 'react';
 import styles from '@/components/Modal/modal.module.scss';
-
+import { RxCross2 } from 'react-icons/rx';
 interface ModalType {
     children?: ReactNode;
     isOpen: boolean;
@@ -20,7 +20,7 @@ export default function Modal(props: ModalType) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [props]);
+    }, [props.toggle]);
 
     return (
         <>
@@ -39,7 +39,7 @@ export default function Modal(props: ModalType) {
                             className={styles.closeButton}
                             onClick={props.toggle}
                         >
-                            close
+                            <RxCross2 size={20} />
                         </button>
                         {props.children}
                     </div>

@@ -39,10 +39,12 @@
     right: 10px;
     cursor: pointer;
     z-index: 999;
-    padding: 4px 25px;
+    padding: 4px 10px;
     border-radius: 3px;
+    background-color: $theme-primary-light;
+    color: $off-white;
     &:hover {
-        background: #041187;
-        color: white;
+        background-color: $theme-primary;
+        color: $white;
     }
 }
