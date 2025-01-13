@@ -5,7 +5,7 @@ import task, {
 import { useState } from 'react';
 import styles from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
-import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import { useUpdateTaskMutation, useUpdateSelfTaskMutation } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
 import { TASK_STATUS_MAPING } from '@/constants/constants';
@@ -14,6 +14,7 @@ type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
     isDevMode?: boolean;
+    isSelfTask: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -33,9 +34,11 @@ const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
     isDevMode,
+    isSelfTask
 }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
+    const [updateSelfTask] = useUpdateSelfTaskMutation();
 
     const onChangeUpdateTaskStatus = ({
         newStatus,
@@ -52,7 +55,10 @@ const TaskStatusEditMode = ({
             ...prev,
             ...payload,
         }));
-        const response = updateTask({
+        const response = isSelfTask ? updateSelfTask({
+            id: task.id,
+            task: payload,
+        }) : updateTask({
             id: task.id,
             task: payload,
         });

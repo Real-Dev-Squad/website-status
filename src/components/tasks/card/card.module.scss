@@ -265,6 +265,24 @@
     margin-top: 0.8rem;
 }
 
+.taskStatusUpdate {
+    border: 1px solid #000000b3;
+    border-radius: 4px;
+    font-size: inherit;
+    font-weight: bolder;
+    background-color: transparent;
+    color: #041187;
+    padding: 0.5rem;
+    height: 2.5rem;
+    width: 10rem;
+    transition: 250ms ease-in-out;
+}
+
+.taskStatusUpdate:hover {
+    background-color: #041187;
+    color: #ffffff;
+}
+
 .taskTagLevelWrapper {
     display: flex;
     padding-top: 0.5rem;
