@@ -3,6 +3,7 @@ import {
     isValidElement,
     ReactElement,
     ReactNode,
+    useId,
     useRef,
 } from 'react';
 import styles from './tooltip.module.scss';
@@ -21,22 +22,16 @@ type TooltipProps = {
 };
 
 /**
- * TooltipAutoPlacement is a React component that displays a tooltip with automatic
- * placement and arrow positioning. It accepts content and children as props.
- * The tooltip tries to position itself at the top by default, but can automatically
- * flip to other positions like bottom, right, or left if necessary, ensuring it stays
- * within the viewport. The tooltip becomes visible when hovering over the trigger element.
+ * TooltipAutoPlacement displays a tooltip with automatic positioning and arrow.
+ * Default position is top but can flip to bottom, right, or left based on viewport.
+ * Shows on hover with fade-in/out animations.
  *
- * Props:
- * - content: The content to be displayed inside the tooltip.
- * - children: The element over which the tooltip should appear.
- *
- * The component utilizes the `useFloating` hook to manage tooltip positioning
- * and middleware like `offset`, `flip`, `shift`, and `arrow` for enhanced placement
- * logic. It uses CSS classes 'fade-in' and 'fade-out' for showing and hiding the tooltip.
+ * @param content Content to display in tooltip
+ * @param children Element that triggers the tooltip
  */
 const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
     const arrowRef = useRef(null);
+    const tooltipId = useId();
     const {
         refs,
         floatingStyles,
@@ -48,7 +43,7 @@ const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
         middleware: [
             offset(12),
             flip({
-                fallbackPlacements: ['bottom', 'right', 'left'], // Prioritize top, then try these positions
+                fallbackPlacements: ['bottom', 'right', 'left'],
             }),
             shift(),
             arrow({
@@ -80,7 +75,6 @@ const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
         onMouseLeave: hideTooltip,
     };
 
-    // Render the trigger element with tooltip functionality
     const renderTriggerElement = () => {
         if (isValidElement(children)) {
             // If it's a React element, clone it and add the props
@@ -89,6 +83,7 @@ const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
                 className: `${children.props.className || ''} ${
                     styles['tooltip-container']
                 }`,
+                'aria-describedby': tooltipId,
                 ...tooltipEventHandlers,
             });
         }
@@ -98,6 +93,7 @@ const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
             <span
                 ref={refs.setReference}
                 className={styles['tooltip-container']}
+                aria-describedby={tooltipId}
                 {...tooltipEventHandlers}
             >
                 {children}
@@ -120,6 +116,8 @@ const TooltipAutoPlacement = ({ content, children }: TooltipProps) => {
                 style={floatingStyles}
                 className={styles.tooltip}
                 data-testid="tooltip"
+                role="tooltip"
+                id={tooltipId}
             >
                 {content}
                 <div
