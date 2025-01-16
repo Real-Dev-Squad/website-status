@@ -84,10 +84,10 @@ const Card: FC<CardProps> = ({
 
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({ // revisit
+    const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
     });
-    const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation(); //revisit
+    const [deleteTaskTagLevel] = useDeleteTaskTagLevelMutation();
     const [updateTask, { isLoading: isLoadingUpdateTaskDetails }] =
         useUpdateTaskMutation();
 
@@ -270,7 +270,9 @@ const Card: FC<CardProps> = ({
     };
     const isEditable = shouldEdit && isUserAuthorized && isEditMode;
     const isSelfTask = editedTaskDetails.assignee === userData?.username;
-    const verifiedTask = editedTaskDetails.status === VERIFIED && editedTaskDetails.percentCompleted===100;
+    const verifiedTask =
+        editedTaskDetails.status === VERIFIED &&
+        editedTaskDetails.percentCompleted === 100;
 
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
@@ -577,8 +579,12 @@ const Card: FC<CardProps> = ({
                 {/*card purpose*/}
                 {isSelfTask && editedTaskDetails.purpose && (
                     <div>
-                        <b className={styles.cardPurposeAndStatusFont}>Purpose: </b>
-                        <span className={styles.cardPurposeText}>{editedTaskDetails.purpose}</span>
+                        <b className={styles.cardPurposeAndStatusFont}>
+                            Purpose:{' '}
+                        </b>
+                        <span className={styles.cardPurposeText}>
+                            {editedTaskDetails.purpose}
+                        </span>
                     </div>
                 )}
             </div>
@@ -624,25 +630,25 @@ const Card: FC<CardProps> = ({
 
             {/* EDIT task status */}
             <div className={styles.taskStatusEditMode}>
-                    {isEditable || (!verifiedTask && isSelfTask) ? (
-                        <TaskStatusEditMode
-                            task={editedTaskDetails}
-                            setEditedTaskDetails={setEditedTaskDetails}
-                            isDevMode={isDevMode}
-                            isSelfTask={isSelfTask}
-                        />
-                    ) : (
-                        <div className={styles.statusContainer} style={{}}>
-                            <p className={styles.cardSpecialFont}>Status:</p>
-                            <p
-                                data-testid="task-status"
-                                className={styles.statusText}
-                            >
-                                {beautifyStatus(cardDetails.status, isDevMode)}
-                            </p>
-                        </div>
-                    )}
-                </div>
+                {isEditable || (!verifiedTask && isSelfTask) ? (
+                    <TaskStatusEditMode
+                        task={editedTaskDetails}
+                        setEditedTaskDetails={setEditedTaskDetails}
+                        isDevMode={isDevMode}
+                        isSelfTask={isSelfTask}
+                    />
+                ) : (
+                    <div className={styles.statusContainer} style={{}}>
+                        <p className={styles.cardSpecialFont}>Status:</p>
+                        <p
+                            data-testid="task-status"
+                            className={styles.statusText}
+                        >
+                            {beautifyStatus(cardDetails.status, isDevMode)}
+                        </p>
+                    </div>
+                )}
+            </div>
 
             <div className={styles.cardItems}>
                 <div

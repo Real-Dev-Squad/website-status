@@ -5,7 +5,10 @@ import task, {
 import { useState } from 'react';
 import styles from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
-import { useUpdateTaskMutation, useUpdateSelfTaskMutation } from '@/app/services/tasksApi';
+import {
+    useUpdateTaskMutation,
+    useUpdateSelfTaskMutation,
+} from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
 import { TASK_STATUS_MAPING } from '@/constants/constants';
@@ -34,7 +37,7 @@ const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
     isDevMode,
-    isSelfTask
+    isSelfTask,
 }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
@@ -55,13 +58,15 @@ const TaskStatusEditMode = ({
             ...prev,
             ...payload,
         }));
-        const response = isSelfTask ? updateSelfTask({
-            id: task.id,
-            task: payload,
-        }) : updateTask({
-            id: task.id,
-            task: payload,
-        });
+        const response = isSelfTask
+            ? updateSelfTask({
+                  id: task.id,
+                  task: payload,
+              })
+            : updateTask({
+                  id: task.id,
+                  task: payload,
+              });
 
         response
             .unwrap()
