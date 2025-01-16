@@ -252,6 +252,11 @@
     cursor: pointer;
 }
 
+.taskStatusAndDateContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
 .taskStatusDateAndPurposeContainer {
     display: grid;
     align-items: baseline;

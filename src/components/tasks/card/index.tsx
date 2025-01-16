@@ -550,7 +550,13 @@ const Card: FC<CardProps> = ({
                     </div>
                 )}
             </div>
-            <div className={styles.taskStatusDateAndPurposeContainer}>
+            <div
+                className={
+                    isDevMode
+                        ? styles.taskStatusDateAndPurposeContainer
+                        : styles.taskStatusAndDateContainer
+                }
+            >
                 <div className={styles.dateInfo}>
                     <div className={styles.dateSection}>
                         <p className={styles.cardSpecialFont}>
@@ -577,7 +583,7 @@ const Card: FC<CardProps> = ({
                     </span>
                 </div>
                 {/*card purpose*/}
-                {isSelfTask && editedTaskDetails.purpose && (
+                {isDevMode && isSelfTask && editedTaskDetails.purpose && (
                     <div>
                         <b className={styles.cardPurposeAndStatusFont}>
                             Purpose:{' '}
@@ -585,6 +591,34 @@ const Card: FC<CardProps> = ({
                         <span className={styles.cardPurposeText}>
                             {editedTaskDetails.purpose}
                         </span>
+                    </div>
+                )}
+
+                {/* EDIT task status */}
+                {!isDevMode && (
+                    <div className={styles.taskStatusEditMode}>
+                        {isEditable ? (
+                            <TaskStatusEditMode
+                                task={editedTaskDetails}
+                                setEditedTaskDetails={setEditedTaskDetails}
+                                isDevMode={isDevMode}
+                            />
+                        ) : (
+                            <div className={styles.statusContainer} style={{}}>
+                                <p className={styles.cardSpecialFont}>
+                                    Status:
+                                </p>
+                                <p
+                                    data-testid="task-status"
+                                    className={styles.statusText}
+                                >
+                                    {beautifyStatus(
+                                        cardDetails.status,
+                                        isDevMode
+                                    )}
+                                </p>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -629,27 +663,28 @@ const Card: FC<CardProps> = ({
             </div>
 
             {/* EDIT task status */}
-            <div className={styles.taskStatusEditMode}>
-                {isEditable || (!verifiedTask && isSelfTask) ? (
-                    <TaskStatusEditMode
-                        task={editedTaskDetails}
-                        setEditedTaskDetails={setEditedTaskDetails}
-                        isDevMode={isDevMode}
-                        isSelfTask={isSelfTask}
-                    />
-                ) : (
-                    <div className={styles.statusContainer} style={{}}>
-                        <p className={styles.cardSpecialFont}>Status:</p>
-                        <p
-                            data-testid="task-status"
-                            className={styles.statusText}
-                        >
-                            {beautifyStatus(cardDetails.status, isDevMode)}
-                        </p>
-                    </div>
-                )}
-            </div>
-
+            {isDevMode && (
+                <div className={styles.taskStatusEditMode}>
+                    {isEditable || (!verifiedTask && isSelfTask) ? (
+                        <TaskStatusEditMode
+                            task={editedTaskDetails}
+                            setEditedTaskDetails={setEditedTaskDetails}
+                            isDevMode={isDevMode}
+                            isSelfTask={isSelfTask}
+                        />
+                    ) : (
+                        <div className={styles.statusContainer} style={{}}>
+                            <p className={styles.cardSpecialFont}>Status:</p>
+                            <p
+                                data-testid="task-status"
+                                className={styles.statusText}
+                            >
+                                {beautifyStatus(cardDetails.status, isDevMode)}
+                            </p>
+                        </div>
+                    )}
+                </div>
+            )}
             <div className={styles.cardItems}>
                 <div
                     className={`${styles.taskTagLevelWrapper} ${

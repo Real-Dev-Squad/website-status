@@ -17,7 +17,7 @@ type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
     isDevMode?: boolean;
-    isSelfTask: boolean;
+    isSelfTask?: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -58,15 +58,16 @@ const TaskStatusEditMode = ({
             ...prev,
             ...payload,
         }));
-        const response = isSelfTask
-            ? updateSelfTask({
-                  id: task.id,
-                  task: payload,
-              })
-            : updateTask({
-                  id: task.id,
-                  task: payload,
-              });
+        const response =
+            isDevMode && isSelfTask
+                ? updateSelfTask({
+                      id: task.id,
+                      task: payload,
+                  })
+                : updateTask({
+                      id: task.id,
+                      task: payload,
+                  });
 
         response
             .unwrap()

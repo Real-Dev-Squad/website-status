@@ -103,12 +103,42 @@ export default function TaskDropDown({
         onChange(payload);
         setMessage('');
     };
+    if (isDevMode) {
+        return (
+            <>
+                <label className={styles.cardPurposeAndStatusFont}>
+                    Status:
+                    <select
+                        className={styles.taskStatusUpdate}
+                        data-testid="task-status"
+                        name="status"
+                        onChange={handleChange}
+                        value={newStatus}
+                    >
+                        {taskStatus.map(([name, status]) => (
+                            <option
+                                data-testid={`task-status-${name}`}
+                                key={status}
+                                value={status}
+                            >
+                                {beautifyStatus(name, isDevMode)}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <TaskDropDownModel
+                    message={message}
+                    resetProgressAndStatus={resetProgressAndStatus}
+                    handleProceed={handleProceed}
+                />
+            </>
+        );
+    }
     return (
         <>
-            <label className={styles.cardPurposeAndStatusFont}>
+            <label>
                 Status:
                 <select
-                    className={styles.taskStatusUpdate}
                     data-testid="task-status"
                     name="status"
                     onChange={handleChange}
