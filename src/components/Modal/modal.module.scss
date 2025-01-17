@@ -41,10 +41,8 @@
     z-index: 999;
     padding: 4px 10px;
     border-radius: 3px;
-    background-color: $theme-primary-light;
-    color: $off-white;
-    &:hover {
-        background-color: $theme-primary;
-        color: $white;
-    }
+    size: 25px;
+    color: $gray;
+
 }
+

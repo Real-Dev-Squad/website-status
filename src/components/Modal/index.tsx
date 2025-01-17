@@ -35,12 +35,13 @@ export default function Modal(props: ModalType) {
                         className={styles.modalBox}
                         data-testid="modal-box"
                     >
-                        <button
+                        <p
                             className={styles.closeButton}
                             onClick={props.toggle}
+                            data-testid="close-button"
                         >
-                            <RxCross2 size={20} />
-                        </button>
+                            <RxCross2 size={25} className="closeIcon" />
+                        </p>
                         {props.children}
                     </div>
                 </div>
