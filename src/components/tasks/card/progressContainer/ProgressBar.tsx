@@ -1,10 +1,8 @@
 import { FC, useState, useEffect } from 'react';
 import { ProgressBarProps } from '@/interfaces/task.type';
-import { IoMdClose } from 'react-icons/io';
-import { MdCheck } from 'react-icons/md';
-import { FaCircleCheck } from 'react-icons/fa6';
 import ProgressSlider from './ProgressSlider';
 import ProgressIndicator from './ProgressIndicator';
+import CompletionModal from '@/components/Modal/CompletionModal';
 import styles from '@/components/tasks/card/card.module.scss';
 
 interface ExtendedProgressBarProps extends ProgressBarProps {
@@ -23,11 +21,11 @@ const Progressbar: FC<ExtendedProgressBarProps> = ({
     readOnly = false,
     onStatusChange,
 }) => {
-    const [showDialog, setShowDialog] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         if (progressValue === 100 && !readOnly) {
-            setShowDialog(true);
+            setShowModal(true);
         }
     }, [progressValue, readOnly]);
 
@@ -59,43 +57,11 @@ const Progressbar: FC<ExtendedProgressBarProps> = ({
                 {progressValue}%
             </div>
 
-            {/* Completion Dialog */}
-            {showDialog && (
-                <div className={styles.dialogOverlay}>
-                    <div className={styles.dialogBox}>
-                        <FaCircleCheck className={styles.checkIcon} />
-                        <h3 style={{ fontFamily: 'cursive' }}>
-                            Congratulations!
-                        </h3>
-                        <p
-                            style={{
-                                fontWeight: 'bold',
-                                fontFamily: 'cursive',
-                            }}
-                        >
-                            You have achieved 100% completion! Would you like to
-                            update your status?
-                        </p>
-                        <div className={styles.dialogButtons}>
-                            <button
-                                className={styles.changeStatusButton}
-                                onClick={() => {
-                                    onStatusChange?.();
-                                    setShowDialog(false);
-                                }}
-                            >
-                                <MdCheck /> Change Status
-                            </button>
-                            <button
-                                className={styles.closeButton}
-                                onClick={() => setShowDialog(false)}
-                            >
-                                <IoMdClose /> Cancel
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <CompletionModal
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                onStatusChange={() => onStatusChange?.()}
+            />
         </div>
     );
 };

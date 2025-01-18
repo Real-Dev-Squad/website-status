@@ -497,7 +497,7 @@
     width: 100%;
 }
 
-.dialogOverlay {
+.ModalOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -510,7 +510,7 @@
     z-index: 1000;
 }
 
-.dialogBox {
+.ModalBox {
     background-color: white;
     padding: 1.5rem;
     border-radius: 8px;
@@ -533,7 +533,7 @@
     }
 }
 
-.dialogButtons {
+.ModalButtons {
     display: flex;
     justify-content: center; /* Changed from flex-end to center */
     gap: 1rem;
