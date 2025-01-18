@@ -97,6 +97,29 @@ describe('TaskDropDown', () => {
         expect(onChange).toHaveBeenCalledTimes(0);
         expect(screen.getByTestId('task-status')).toHaveValue(oldStatus);
     });
+
+    it('should render cardPurposeAndStatusFont for label and taskStatusUpdate for select when isDevMode is true', () => {
+        const oldProgress = 100;
+        const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
+        const TASK_STATUS_UPDATE = 'taskStatusUpdate';
+        const CARD_PURPOSE_STATUS_FONT = 'cardPurposeAndStatusFont';
+
+        render(
+            <TaskDropDown
+                isDevMode={true}
+                oldProgress={oldProgress}
+                oldStatus={oldStatus}
+                onChange={onChange}
+            />
+        );
+        expect(screen.getByTestId('task-status')).toHaveClass(
+            TASK_STATUS_UPDATE
+        );
+        expect(screen.getByTestId('task-status-label')).toHaveClass(
+            CARD_PURPOSE_STATUS_FONT
+        );
+    });
+
     it('should not show any model info on change of status from in progress to backlog', () => {
         const oldProgress = 80;
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
