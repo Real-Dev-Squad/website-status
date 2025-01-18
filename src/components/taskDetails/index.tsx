@@ -64,6 +64,7 @@ type Props = {
 
 const TaskDetails: FC<Props> = ({ taskID }) => {
     const router = useRouter();
+    const isDev = router.query.dev === 'true';
 
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -76,6 +77,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { data: progressData, refetch: refetchProgress } =
         useGetProgressDetailsQuery({
             taskId: taskID,
+            dev: isDev,
         });
 
     const isExtensionRequestPending = Boolean(
