@@ -267,10 +267,7 @@ const Card: FC<CardProps> = ({
     };
     const isEditable = shouldEdit && isUserAuthorized && isEditMode;
     const isSelfTask = editedTaskDetails.assignee === data?.username;
-    const verifiedTask =
-        editedTaskDetails.status === VERIFIED &&
-        editedTaskDetails.percentCompleted === 100;
-
+    const isVerifiedTask = editedTaskDetails.status === VERIFIED;
     const getFormattedClosedAtDate = () => {
         const closedAt = cardDetails?.github?.issue?.closedAt;
         return getDateInString(new Date(closedAt ?? Date.now()));
@@ -662,7 +659,7 @@ const Card: FC<CardProps> = ({
             {/* EDIT task status */}
             {isDevMode && (
                 <div className={styles.taskStatusEditMode}>
-                    {isEditable || (!verifiedTask && isSelfTask) ? (
+                    {isEditable || (!isVerifiedTask && isSelfTask) ? (
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
