@@ -11,7 +11,12 @@ import {
 } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
-import { TASK_STATUS_MAPING } from '@/constants/constants';
+import {
+    STATUS_UPDATE_ERROR,
+    STATUS_UPDATE_SUCCESSFUL,
+    TASK_STATUS_MAPING,
+} from '@/constants/constants';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 type Props = {
     task: task;
@@ -42,8 +47,9 @@ const TaskStatusEditMode = ({
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
     const [updateSelfTask] = useUpdateSelfTaskMutation();
+    const { SUCCESS, ERROR } = ToastTypes;
 
-    const onChangeUpdateTaskStatus = ({
+    const onChangeUpdateTaskStatus = async ({
         newStatus,
         newProgress,
     }: taskStatusUpdateHandleProp) => {
@@ -54,20 +60,29 @@ const TaskStatusEditMode = ({
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
+
+        try {
+            if (isDevMode && isSelfTask) {
+                await updateSelfTask({ id: task.id, task: payload }).unwrap();
+            }
+            toast(SUCCESS, STATUS_UPDATE_SUCCESSFUL);
+        } catch (error) {
+            const errorMessage =
+                error && typeof error === 'object' && 'data' in error
+                    ? (error.data as { message?: string }).message ||
+                      STATUS_UPDATE_ERROR
+                    : STATUS_UPDATE_ERROR;
+            toast(ERROR, errorMessage);
+        }
+
         setEditedTaskDetails((prev: CardTaskDetails) => ({
             ...prev,
             ...payload,
         }));
-        const response =
-            isDevMode && isSelfTask
-                ? updateSelfTask({
-                      id: task.id,
-                      task: payload,
-                  })
-                : updateTask({
-                      id: task.id,
-                      task: payload,
-                  });
+        const response = updateTask({
+            id: task.id,
+            task: payload,
+        });
 
         response
             .unwrap()
@@ -92,7 +107,7 @@ const TaskStatusEditMode = ({
                 oldProgress={task.percentCompleted}
                 onChange={onChangeUpdateTaskStatus}
             />
-            <StatusIndicator status={saveStatus} />
+            {!isDevMode && <StatusIndicator status={saveStatus} />}
         </div>
     );
 };
