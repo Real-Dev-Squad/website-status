@@ -276,7 +276,7 @@
     font-size: inherit;
     font-weight: bolder;
     background-color: transparent;
-    color: #041187;
+    color: $theme-primary-alt;
     padding: 0.5rem;
     height: 2.5rem;
     width: 10rem;
@@ -284,7 +284,7 @@
 }
 
 .taskStatusUpdate:hover {
-    background-color: #041187;
+    background-color: $theme-primary-alt;
     color: #ffffff;
 }
 
