@@ -32,7 +32,6 @@ import {
 import { useGetUsersByUsernameQuery } from '@/app/services/usersApi';
 import { ConditionalLinkWrapper } from './ConditionalLinkWrapper';
 import useUserData from '@/hooks/useUserData';
-import { useGetUserQuery } from '@/app/services/userApi';
 import { isTaskDetailsPageLinkEnabled } from '@/constants/FeatureFlags';
 import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import ProgressIndicator from './progressContainer/ProgressIndicator';
@@ -74,9 +73,7 @@ const Card: FC<CardProps> = ({
         userResponse?.users[0]?.picture?.url || placeholderImageURL;
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const { isUserAuthorized } = useUserData();
-
-    const { data: userData } = useGetUserQuery();
+    const { data, isUserAuthorized } = useUserData();
 
     const [showEditButton, setShowEditButton] = useState(false);
 
@@ -269,7 +266,7 @@ const Card: FC<CardProps> = ({
         setIsEditMode(true);
     };
     const isEditable = shouldEdit && isUserAuthorized && isEditMode;
-    const isSelfTask = editedTaskDetails.assignee === userData?.username;
+    const isSelfTask = editedTaskDetails.assignee === data?.username;
     const verifiedTask =
         editedTaskDetails.status === VERIFIED &&
         editedTaskDetails.percentCompleted === 100;

@@ -106,7 +106,10 @@ export default function TaskDropDown({
     if (isDevMode) {
         return (
             <>
-                <label className={styles.cardPurposeAndStatusFont}>
+                <label
+                    className={styles.cardPurposeAndStatusFont}
+                    data-testid="task-status-label"
+                >
                     Status:
                     <select
                         className={styles.taskStatusUpdate}
