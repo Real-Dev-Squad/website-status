@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -9,6 +9,7 @@ import useUserData from '@/hooks/useUserData';
 import { useGetUserQuery } from '@/app/services/userApi';
 import ProgressText from './ProgressText';
 import Progressbar from './ProgressBar';
+import CompletionModal from '@/components/Modal/CompletionModal';
 import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
 import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
@@ -25,6 +26,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     const [progressValue, setProgressValue] = useState<number>(
         content.percentCompleted
     );
+    const [showModal, setShowModal] = useState(false);
 
     const { isUserAuthorized } = useUserData();
     const { data: userData } = useGetUserQuery();
@@ -38,47 +40,51 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
 
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const handleSliderChangeComplete = (
-        id: string,
-        percentCompleted: number
-    ) => {
-        const taskData = {
-            percentCompleted: percentCompleted,
-        };
-        if (isUserAuthorized) {
-            updateTask({
-                task: taskData,
-                id: id,
-            })
-                .unwrap()
-                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
-                .catch(() => toast(ERROR, ERROR_MESSAGE));
-        } else {
-            updateSelfTask({ task: taskData, id: id })
-                .unwrap()
-                .then(() => toast(SUCCESS, PROGRESS_SUCCESSFUL))
-                .catch(() => toast(ERROR, ERROR_MESSAGE));
-        }
-    };
+    const handleSliderChangeComplete = useCallback(
+        (id: string, percentCompleted: number) => {
+            const taskData = {
+                percentCompleted: percentCompleted,
+            };
 
-    const onProgressChange = () => {
+            const updatePromise = isUserAuthorized
+                ? updateTask({ task: taskData, id: id })
+                : updateSelfTask({ task: taskData, id: id });
+
+            updatePromise
+                .unwrap()
+                .then(() => {
+                    toast(SUCCESS, PROGRESS_SUCCESSFUL);
+                    if (percentCompleted === 100 && isDev) {
+                        setShowModal(true);
+                    }
+                })
+                .catch(() => toast(ERROR, ERROR_MESSAGE));
+        },
+        [isUserAuthorized, updateTask, updateSelfTask, isDev, SUCCESS, ERROR]
+    );
+
+    const onProgressChange = useCallback(() => {
         handleSliderChangeComplete(content.id, progressValue);
         setIsProgressMade(false);
-    };
+    }, [content.id, progressValue, handleSliderChangeComplete]);
 
-    const debounceSlider = (debounceTimeOut: number) => {
-        if (debounceTimeOut) {
-            clearTimeout(debounceTimeOut);
-        }
-        setTimeout(() => {
-            onProgressChange();
-        }, 1000);
-    };
+    const debounceSlider = useCallback(
+        (debounceTimeOut: number) => {
+            if (debounceTimeOut) {
+                clearTimeout(debounceTimeOut);
+            }
+            setTimeout(() => {
+                onProgressChange();
+            }, 1000);
+        },
+        [onProgressChange]
+    );
 
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setProgressValue(Number(event.target.value));
+        const newValue = Number(event.target.value);
+        setProgressValue(newValue);
     };
 
     const handleProgressUpdate = () => {
@@ -92,8 +98,11 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         }
     };
 
+    const handleModalClose = useCallback(() => {
+        setShowModal(false);
+    }, []);
+
     const showUpdateButton = () => {
-        // Only show update button in modal (not readOnly) and in dev mode
         if (
             !readOnly &&
             (content.assignee === userData?.username ||
@@ -115,7 +124,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
                 <Progressbar
                     progress={!readOnly && isProgressMade}
                     progressValue={progressValue}
-                    percentCompleted={content.percentCompleted}
+                    percentCompleted={progressValue}
                     handleProgressChange={handleProgressChange}
                     debounceSlider={debounceSlider}
                     startedOn={content.startedOn}
@@ -125,6 +134,16 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
                 />
                 {showUpdateButton()}
             </div>
+
+            {isDev && (
+                <CompletionModal
+                    isOpen={showModal}
+                    onClose={handleModalClose}
+                    onStatusChange={() => {
+                        handleModalClose();
+                    }}
+                />
+            )}
         </>
     );
 };

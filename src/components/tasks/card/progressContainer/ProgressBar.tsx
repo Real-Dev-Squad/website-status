@@ -1,45 +1,36 @@
-import { FC, useState, useEffect } from 'react';
+import { FC } from 'react';
 import { ProgressBarProps } from '@/interfaces/task.type';
 import ProgressSlider from './ProgressSlider';
 import ProgressIndicator from './ProgressIndicator';
-import CompletionModal from '@/components/Modal/CompletionModal';
 import styles from '@/components/tasks/card/card.module.scss';
 
-interface ExtendedProgressBarProps extends ProgressBarProps {
+interface ExtendedProgressBarProps extends Omit<ProgressBarProps, 'progress'> {
+    progress: boolean;
     readOnly?: boolean;
-    onStatusChange?: () => void;
 }
 
 const Progressbar: FC<ExtendedProgressBarProps> = ({
     progress,
     progressValue,
+    percentCompleted,
     handleProgressChange,
     debounceSlider,
     startedOn,
     endsOn,
     isLoading,
     readOnly = false,
-    onStatusChange,
 }) => {
-    const [showModal, setShowModal] = useState(false);
-
-    useEffect(() => {
-        if (progressValue === 100 && !readOnly) {
-            setShowModal(true);
-        }
-    }, [progressValue, readOnly]);
-
     // If readOnly or not in progress mode, show the indicator
     if (readOnly || !progress) {
         return (
             <>
                 <ProgressIndicator
-                    percentCompleted={progressValue}
+                    percentCompleted={percentCompleted}
                     startedOn={startedOn}
                     endsOn={endsOn}
                 />
                 <div className={styles.progressPercentageCompleted}>
-                    {progressValue}%
+                    {percentCompleted}%
                 </div>
             </>
         );
@@ -56,12 +47,6 @@ const Progressbar: FC<ExtendedProgressBarProps> = ({
             <div className={styles.progressPercentageCompleted}>
                 {progressValue}%
             </div>
-
-            <CompletionModal
-                isOpen={showModal}
-                onClose={() => setShowModal(false)}
-                onStatusChange={() => onStatusChange?.()}
-            />
         </div>
     );
 };
