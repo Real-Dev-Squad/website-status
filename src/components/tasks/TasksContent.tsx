@@ -128,7 +128,7 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
         earlyReturn: loadedTasks[selectedTab].length === 0,
     });
 
-    if (isLoading && dev)
+    if (isLoading)
         return (
             <div
                 className={styles.taskSkeletonContainer}
@@ -139,8 +139,6 @@ export const TasksContent = ({ dev }: { dev?: boolean }) => {
                 ))}
             </div>
         );
-
-    if (isLoading) return <p>Loading...</p>;
 
     if (isError) return <p>{TASKS_FETCH_ERROR_MESSAGE}</p>;
 

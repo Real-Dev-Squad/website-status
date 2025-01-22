@@ -37,7 +37,7 @@ describe('Tasks', () => {
 
         render(
             <Provider store={store()}>
-                <Tasks dev={true} />
+                <Tasks />
             </Provider>
         );
         const skeletonContainer = screen.getByTestId('task-skeleton-container');
@@ -45,22 +45,6 @@ describe('Tasks', () => {
 
         const shimmerCards = screen.getAllByTestId('task-shimmer-card');
         expect(shimmerCards).toHaveLength(5);
-    });
-
-    it('should display loading state when isLoading is true', () => {
-        (useGetAllTasksQuery as jest.Mock).mockReturnValue({
-            data: { tasks: [], next: '' },
-            isError: false,
-            isLoading: true,
-            isFetching: false,
-        });
-
-        render(
-            <Provider store={store()}>
-                <Tasks />
-            </Provider>
-        );
-        expect(screen.getByText('Loading...')).toBeInTheDocument();
     });
 
     it('should render the Tasks component', () => {
