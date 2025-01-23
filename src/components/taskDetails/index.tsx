@@ -69,16 +69,48 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     const { isUserAuthorized } = useUserData();
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
+    const [progressesDataPaginated, setProgressesDataPaginated] = useState<
+        ProgressDetailsData[]
+    >([]);
     const { data, isError, isLoading, isFetching, refetch } =
         useGetTaskDetailsQuery(taskID);
     const { data: extensionRequests } =
         useGetExtensionRequestDetailsQuery(taskID);
-    const { data: progressData, refetch: refetchProgress } =
-        useGetProgressDetailsQuery({
-            taskId: taskID,
-            dev: isDev,
+    const {
+        data: progressData,
+        refetch: refetchProgress,
+        isFetching: isFetchingProgress,
+    } = useGetProgressDetailsQuery({
+        taskId: taskID,
+        dev: isDev,
+        size: 10,
+        page: page,
+    });
+
+    useEffect(() => {
+        setProgressesDataPaginated((prevProgressesDataPaginated) => {
+            if (progressData?.data) {
+                return [...prevProgressesDataPaginated, ...progressData.data];
+            }
+            return prevProgressesDataPaginated;
         });
+    }, [progressData]);
+
+    const fetchMoreProgresses = () => {
+        if (progressData?.links?.next) {
+            const nextPageUrl = progressData.links.next;
+            const urlParams = new URLSearchParams(nextPageUrl.split('?')[1]);
+            const nextPage = parseInt(urlParams.get('page') || '0', 10);
+            setPage(nextPage);
+        }
+    };
+    useEffect(() => {
+        if (page > 0) {
+            refetchProgress();
+        }
+    }, [page, refetchProgress]);
 
     const isExtensionRequestPending = Boolean(
         extensionRequests?.allExtensionRequests.length
@@ -224,8 +256,10 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
     }
 
     const shouldRenderParentContainer = () => !isLoading && !isError && data;
-
-    const taskProgress: ProgressDetailsData[] = progressData?.data || [];
+    const progressDataToSend = isDev
+        ? progressesDataPaginated
+        : progressData?.data || [];
+    const taskProgress: ProgressDetailsData[] = progressDataToSend || [];
 
     return (
         <Layout hideHeader={true}>
@@ -271,7 +305,12 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
                                     taskDetailsData={taskDetailsData}
                                 />
                             </TaskContainer>
-                            <Progress taskProgress={taskProgress} />
+                            <Progress
+                                taskProgress={taskProgress}
+                                fetchMoreProgresses={fetchMoreProgresses}
+                                isFetchingProgress={isFetchingProgress}
+                                devFlag={isDev}
+                            />
                             <TaskContainer
                                 title="Task Dependencies"
                                 hasImg={false}

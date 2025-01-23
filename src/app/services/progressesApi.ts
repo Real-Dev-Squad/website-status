@@ -5,6 +5,8 @@ type queryParamsType = {
     userId?: string;
     taskId?: string;
     dev?: boolean;
+    size?: number;
+    page?: number;
 };
 
 export const progressesApi = api.injectEndpoints({
@@ -21,10 +23,10 @@ export const progressesApi = api.injectEndpoints({
             }),
         }),
         getProgressDetails: builder.query<progressDetails, queryParamsType>({
-            query: ({ userId, taskId, dev }: queryParamsType) => {
+            query: ({ userId, taskId, dev, size, page }: queryParamsType) => {
                 return {
                     url: '/progresses',
-                    params: { userId, taskId, dev },
+                    params: { userId, taskId, dev, size, page },
                 };
             },
             providesTags: ['Progress_Details'],

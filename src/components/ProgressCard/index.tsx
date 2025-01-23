@@ -1,18 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { ElementRef, useEffect, useRef, useState } from 'react';
 import TaskContainer from '../taskDetails/TaskContainer';
 import { ProgressDetailsData } from '@/types/standup.type';
 import styles from '@/components/ProgressCard/ProgressCard.module.scss';
 import LatestProgressUpdateCard from '../taskDetails/ProgressUpdateCard/LatestProgressUpdateCard';
 import ProgressUpdateCard from '../taskDetails/ProgressUpdateCard/ProgressUpdateCard';
-
+import useIntersection from '@/hooks/useIntersection';
 type SortedProgressType = { data: ProgressDetailsData[]; order: number };
 
-type Props = { taskProgress: ProgressDetailsData[] };
+type Props = {
+    taskProgress: ProgressDetailsData[];
+    fetchMoreProgresses: () => void;
+    isFetchingProgress: boolean;
+    devFlag: boolean;
+};
 
-export default function ProgressCard({ taskProgress }: Props) {
+export default function ProgressCard({
+    taskProgress,
+    fetchMoreProgresses,
+    isFetchingProgress,
+    devFlag,
+}: Props) {
     const [sortedProgress, setSortedProgress] = useState<SortedProgressType>();
     const sortedProgressLength = sortedProgress?.data?.length;
-
+    const loadingRef = useRef<ElementRef<'div'>>(null);
+    const [hasFetched, setHasFetched] = useState(false);
+    useIntersection({
+        loadingRef,
+        onLoadMore: () => {
+            if (hasFetched) {
+                fetchMoreProgresses();
+            }
+        },
+        earlyReturn: sortedProgressLength === 0,
+    });
     const reverseSortingOrder = () => {
         if (sortedProgress && sortedProgressLength) {
             const newSortedArr: ProgressDetailsData[] = [];
@@ -38,6 +58,7 @@ export default function ProgressCard({ taskProgress }: Props) {
                     : 1;
             });
             setSortedProgress({ data: sorted, order: 1 });
+            setHasFetched(true);
         }
     }, [taskProgress]);
 
@@ -82,8 +103,15 @@ export default function ProgressCard({ taskProgress }: Props) {
         >
             {sortedProgress && sortedProgressLength ? (
                 <div>{cardsToShow}</div>
+            ) : isFetchingProgress ? (
+                ''
             ) : (
                 'No Progress found'
+            )}
+            {devFlag && (
+                <div ref={loadingRef} className={styles.loadingContainer}>
+                    {isFetchingProgress && 'Loading...'}
+                </div>
             )}
         </TaskContainer>
     );

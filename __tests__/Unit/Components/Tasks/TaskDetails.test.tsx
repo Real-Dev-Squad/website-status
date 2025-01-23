@@ -52,6 +52,13 @@ jest.mock('@/hooks/useUserData', () => {
     });
 });
 
+jest.mock('@/hooks/useIntersection', () => {
+    return jest.fn().mockImplementation(() => ({
+        loadingRef: { current: {} },
+        onLoadMore: jest.fn(),
+    }));
+});
+
 const mockNavigateToUpdateProgressPage = jest.fn();
 const mockHandleEditedTaskDetails = jest.fn();
 
@@ -464,8 +471,10 @@ test('Should render No task progress', async () => {
         progressUpdatesSection = screen.getByText('Progress Updates');
     });
     expect(progressUpdatesSection).toBeInTheDocument();
-    const noProgressText = screen.getByText('No Progress found');
-    expect(noProgressText).toBeInTheDocument();
+    await waitFor(() => {
+        const noProgressText = screen.getByText('No Progress found');
+        expect(noProgressText).toBeInTheDocument();
+    });
 });
 
 test('should call progress details query', async () => {
