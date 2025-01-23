@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { MdCheck } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck } from 'react-icons/fa6';
-import styles from '@/components/tasks/card/card.module.scss';
+import styles from '@/components/Modal/modal.module.scss';
 
 interface CompletionModalProps {
     isOpen: boolean;

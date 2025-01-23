@@ -4,15 +4,13 @@ import ProgressSlider from './ProgressSlider';
 import ProgressIndicator from './ProgressIndicator';
 import styles from '@/components/tasks/card/card.module.scss';
 
-interface ExtendedProgressBarProps extends Omit<ProgressBarProps, 'progress'> {
-    progress: boolean;
+interface ExtendedProgressBarProps extends ProgressBarProps {
     readOnly?: boolean;
 }
 
 const Progressbar: FC<ExtendedProgressBarProps> = ({
     progress,
     progressValue,
-    percentCompleted,
     handleProgressChange,
     debounceSlider,
     startedOn,
@@ -25,19 +23,20 @@ const Progressbar: FC<ExtendedProgressBarProps> = ({
         return (
             <>
                 <ProgressIndicator
-                    percentCompleted={percentCompleted}
+                    percentCompleted={progressValue}
                     startedOn={startedOn}
                     endsOn={endsOn}
                 />
                 <div className={styles.progressPercentageCompleted}>
-                    {percentCompleted}%
+                    {progressValue}%
                 </div>
             </>
         );
     }
 
+    // Show slider when in edit mode
     return (
-        <div className={styles.progressContainer}>
+        <>
             <ProgressSlider
                 value={progressValue}
                 debounceSlider={debounceSlider}
@@ -47,7 +46,7 @@ const Progressbar: FC<ExtendedProgressBarProps> = ({
             <div className={styles.progressPercentageCompleted}>
                 {progressValue}%
             </div>
-        </div>
+        </>
     );
 };
 
