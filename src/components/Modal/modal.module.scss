@@ -32,3 +32,15 @@
     border-radius: 1rem;
     animation: fadeIn ease-in-out 250ms;
 }
+
+.closeButton {
+    position: absolute;
+    top: 2%;
+    right: 10px;
+    cursor: pointer;
+    z-index: 999;
+    padding: 4px 10px;
+    border-radius: 3px;
+    size: 25px;
+    color: $gray;
+}

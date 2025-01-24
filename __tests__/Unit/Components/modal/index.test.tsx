@@ -47,4 +47,21 @@ describe('Modal Component', () => {
         fireEvent.click(modalBox);
         expect(toggleMock).not.toHaveBeenCalled();
     });
+
+    test('closes modal when close button is clicked', () => {
+        const toggleMock = jest.fn();
+        const { getByTestId } = render(
+            <Modal isOpen={true} toggle={toggleMock} />
+        );
+        const closeButton = getByTestId('close-button');
+        fireEvent.click(closeButton);
+        expect(toggleMock).toHaveBeenCalled();
+    });
+
+    test('closes modal when Escape key is pressed', () => {
+        const toggleMock = jest.fn();
+        render(<Modal isOpen={true} toggle={toggleMock} />);
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(toggleMock).toHaveBeenCalled();
+    });
 });

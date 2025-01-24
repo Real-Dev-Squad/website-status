@@ -241,6 +241,7 @@ $base-unit: 4px;
 }
 
 .taskUpdateModal {
+    position: relative;
     min-width: fit-content;
     max-width: 796px;
     width: 80vw;
