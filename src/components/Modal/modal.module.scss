@@ -37,7 +37,7 @@
     width: 100%;
 }
 
-.ModalOverlay {
+.overlayModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -50,7 +50,7 @@
     z-index: 1000;
 }
 
-.ModalBox {
+.boxModal {
     background-color: white;
     padding: 1.5rem;
     border-radius: 8px;
@@ -58,10 +58,10 @@
     max-width: 400px;
     width: 70%;
     height: 40%;
-    text-align: center; /* Center text content */
+    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center all flex items */
+    align-items: center;
 
     h3 {
         margin: 0 0 1rem;
@@ -73,11 +73,11 @@
     }
 }
 
-.ModalButtons {
+.modalButtons {
     display: flex;
-    justify-content: center; /* Changed from flex-end to center */
+    justify-content: center;
     gap: 1rem;
-    width: 100%; /* Ensure buttons container takes full width */
+    width: 100%;
 
     button {
         display: flex;

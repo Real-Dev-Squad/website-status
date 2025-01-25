@@ -18,15 +18,15 @@ const CompletionModal: FC<CompletionModalProps> = ({
     if (!isOpen) return null;
 
     return (
-        <div className={styles.ModalOverlay}>
-            <div className={styles.ModalBox}>
+        <div className={styles.overlayModal}>
+            <div className={styles.boxModal}>
                 <FaCircleCheck className={styles.checkIcon} />
                 <h3>Congratulations!</h3>
                 <p style={{ fontWeight: 'bold' }}>
                     You have achieved 100% completion! Would you like to update
                     your status?
                 </p>
-                <div className={styles.ModalButtons}>
+                <div className={styles.modalButtons}>
                     <button
                         className={styles.changeStatusButton}
                         onClick={() => {
