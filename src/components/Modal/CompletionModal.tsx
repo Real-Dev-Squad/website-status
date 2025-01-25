@@ -22,7 +22,7 @@ const CompletionModal: FC<CompletionModalProps> = ({
             <div className={styles.boxModal}>
                 <FaCircleCheck className={styles.checkIcon} />
                 <h3>Congratulations!</h3>
-                <p style={{ fontWeight: 'bold' }}>
+                <p>
                     You have achieved 100% completion! Would you like to update
                     your status?
                 </p>
