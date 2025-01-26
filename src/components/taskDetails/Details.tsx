@@ -14,6 +14,7 @@ import {
 import useUserData from '@/hooks/useUserData';
 import { STARTED_ON, ENDS_ON } from '@/constants/constants';
 import { isValidDate } from '@/utils/isValidDate';
+import TooltipAutoPlacement from '../common/TooltipAutoPlacement/Tooltip';
 
 type StringNumberOrUndefined = string | number | undefined;
 
@@ -28,6 +29,9 @@ const DetailsContent: FC<DetailsContentProps> = ({
     renderedValue,
     getRelativeTime,
 }) => {
+    const router = useRouter();
+    const { dev } = router.query;
+
     const displayValue = renderedValue || value;
 
     if (isGitHubLink && value && gitHubIssueLink) {
@@ -46,6 +50,19 @@ const DetailsContent: FC<DetailsContentProps> = ({
                 >
                     {extractRepoName(value)}
                 </a>
+            </span>
+        );
+    }
+
+    if (isTimeDetail && value && dev === 'true') {
+        return (
+            <span
+                className={styles.detailValue}
+                style={{ color: color ?? 'black' }}
+            >
+                <TooltipAutoPlacement content={formatDate(value)}>
+                    {tooltipActive ? formatDate(value) : getRelativeTime(value)}
+                </TooltipAutoPlacement>
             </span>
         );
     }
