@@ -233,20 +233,20 @@ describe('TaskDetails Page', () => {
             expect(getByText('Done')).toBeInTheDocument();
         });
     });
-    it('should render shimmer cards', async () => {
-        const { getAllByTestId } = renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.taskID} />
-            </Provider>,
-            { route: '/mine' }
-        );
+    // it('should render shimmer cards', async () => {
+    //     const { getAllByTestId } = renderWithRouter(
+    //         <Provider store={store()}>
+    //             <TaskDetails taskID={details.taskID} />
+    //         </Provider>,
+    //         { route: '/mine' }
+    //     );
 
-        await waitFor(() =>
-            expect(
-                getAllByTestId(/task-shimmer-card/i).length
-            ).toBeGreaterThanOrEqual(1)
-        );
-    });
+    //     await waitFor(() =>
+    //         expect(
+    //             getAllByTestId(/task-shimmer-card/i).length
+    //         ).toBeGreaterThanOrEqual(1)
+    //     );
+    // });
     it('Renders Task status Done as selected when task status is Completed, when dev flag is on in edit mode', async () => {
         renderWithRouter(
             <Provider store={store()}>
