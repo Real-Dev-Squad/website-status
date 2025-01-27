@@ -32,3 +32,88 @@
     border-radius: 1rem;
     animation: fadeIn ease-in-out 250ms;
 }
+.progressContainer {
+    position: relative;
+    width: 100%;
+}
+
+.overlayModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($black, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.boxModal {
+    background-color: $white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba($black, 0.1);
+    max-width: 400px;
+    width: 70%;
+    height: 40%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+        margin: 0 0 1rem;
+        font-size: 1.25rem;
+    }
+
+    p {
+        margin-bottom: 1.5rem;
+    }
+}
+
+.modalButtons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+
+    button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+
+        svg {
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.closeButton {
+    background-color: $off-white;
+    color: $gray;
+
+    &:hover {
+        background-color: $lighter-gray;
+    }
+}
+
+.changeStatusButton {
+    background-color: $royal-blue;
+    color: $white;
+
+    &:hover {
+        background-color: $green;
+    }
+}
+.checkIcon {
+    color: $green;
+    font-size: 2.5rem;
+}
