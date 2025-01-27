@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -40,45 +40,42 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
 
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const handleSliderChangeComplete = useCallback(
-        (id: string, percentCompleted: number) => {
-            const taskData = {
-                percentCompleted: percentCompleted,
-            };
+    const handleSliderChangeComplete = (
+        id: string,
+        percentCompleted: number
+    ) => {
+        const taskData = {
+            percentCompleted: percentCompleted,
+        };
 
-            const updatePromise = isUserAuthorized
-                ? updateTask({ task: taskData, id: id })
-                : updateSelfTask({ task: taskData, id: id });
+        const updatePromise = isUserAuthorized
+            ? updateTask({ task: taskData, id: id })
+            : updateSelfTask({ task: taskData, id: id });
 
-            updatePromise
-                .unwrap()
-                .then(() => {
-                    toast(SUCCESS, PROGRESS_SUCCESSFUL);
-                    if (percentCompleted === 100 && isDev) {
-                        setShowModal(true);
-                    }
-                })
-                .catch(() => toast(ERROR, ERROR_MESSAGE));
-        },
-        [isUserAuthorized, updateTask, updateSelfTask, isDev, SUCCESS, ERROR]
-    );
+        updatePromise
+            .unwrap()
+            .then(() => {
+                toast(SUCCESS, PROGRESS_SUCCESSFUL);
+                if (percentCompleted === 100 && isDev) {
+                    setShowModal(true);
+                }
+            })
+            .catch(() => toast(ERROR, ERROR_MESSAGE));
+    };
 
-    const onProgressChange = useCallback(() => {
+    const onProgressChange = () => {
         handleSliderChangeComplete(content.id, progressValue);
         setIsProgressMade(false);
-    }, [content.id, progressValue, handleSliderChangeComplete]);
+    };
 
-    const debounceSlider = useCallback(
-        (debounceTimeOut: number) => {
-            if (debounceTimeOut) {
-                clearTimeout(debounceTimeOut);
-            }
-            setTimeout(() => {
-                onProgressChange();
-            }, 1000);
-        },
-        [onProgressChange]
-    );
+    const debounceSlider = (debounceTimeOut: number) => {
+        if (debounceTimeOut) {
+            clearTimeout(debounceTimeOut);
+        }
+        setTimeout(() => {
+            onProgressChange();
+        }, 1000);
+    };
 
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -98,9 +95,9 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         }
     };
 
-    const handleModalClose = useCallback(() => {
+    const handleModalClose = () => {
         setShowModal(false);
-    }, []);
+    };
 
     const showUpdateButton = () => {
         if (
