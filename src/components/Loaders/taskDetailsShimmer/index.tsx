@@ -34,6 +34,18 @@ const TaskDetailsShimmer = () => (
                 </div>
                 <div className={`${styles.taskCard}`}>
                     <div className={`${styles.title} ${styles.animate}`} />
+                    {[...Array(3)].map((_, index) => (
+                        <div className={`${styles.flexContainer}`} key={index}>
+                            <div
+                                className={`${styles.estimated} ${styles.animate}`}
+                            />
+                        </div>
+                    ))}
+                    <div className={`${styles.flexContainer}`}>
+                        <div
+                            className={`${styles.estimated} ${styles.dateRight} ${styles.animate}`}
+                        />
+                    </div>
                     {[...Array(10)].map((_, index) => (
                         <div className={`${styles.flexContainer}`} key={index}>
                             <div
@@ -50,25 +62,24 @@ const TaskDetailsShimmer = () => (
                 {[...Array(2)].map((n: number, index) => (
                     <div className={`${styles.taskCard}`} key={index}>
                         <div className={`${styles.title} ${styles.animate}`} />
-                        <div className={`${styles.flexContainer}`}>
-                            <div
-                                className={`${styles.estimated} ${styles.animate}`}
-                            />
-                            <div
-                                className={`${styles.status} ${styles.animate}`}
-                            />
+                        <div className={`${styles.rightContainer}`}>
+                            <div className={`${styles.flexContainer}`}>
+                                <div
+                                    className={`${styles.estimated} ${styles.animate}`}
+                                />
+                                <div
+                                    className={`${styles.status} ${styles.animate}`}
+                                />
+                            </div>
+                            <div className={`${styles.flexContainer}`}>
+                                <div
+                                    className={`${styles.started} ${styles.animate}`}
+                                />
+                                <div
+                                    className={`${styles.assignee} ${styles.animate}`}
+                                />
+                            </div>
                         </div>
-                        <div className={`${styles.flexContainer}`}>
-                            <div
-                                className={`${styles.started} ${styles.animate}`}
-                            />
-                            <div
-                                className={`${styles.assignee} ${styles.animate}`}
-                            />
-                        </div>
-                        <div
-                            className={`${styles.assignee} ${styles.animate}`}
-                        />
                     </div>
                 ))}
                 <div className={`${styles.taskCard}`}>
