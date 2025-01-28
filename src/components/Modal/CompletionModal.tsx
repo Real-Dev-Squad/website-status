@@ -7,14 +7,9 @@ import styles from '@/components/Modal/modal.module.scss';
 interface CompletionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onStatusChange: () => void;
 }
 
-const CompletionModal: FC<CompletionModalProps> = ({
-    isOpen,
-    onClose,
-    onStatusChange,
-}) => {
+const CompletionModal: FC<CompletionModalProps> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
@@ -30,7 +25,6 @@ const CompletionModal: FC<CompletionModalProps> = ({
                     <button
                         className={styles.changeStatusButton}
                         onClick={() => {
-                            onStatusChange();
                             onClose();
                         }}
                     >

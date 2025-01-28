@@ -136,9 +136,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
                 <CompletionModal
                     isOpen={showModal}
                     onClose={handleModalClose}
-                    onStatusChange={() => {
-                        handleModalClose();
-                    }}
                 />
             )}
         </>
