@@ -213,11 +213,15 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
 
     function renderLoadingComponent() {
         if (isLoading) {
-            return (
-                <div className={styles.taskDetailsContainer}>
-                    {<TaskDetailsShimmer />}
-                </div>
-            );
+            if (isDev) {
+                return (
+                    <div className={styles.taskDetailsContainer}>
+                        {<TaskDetailsShimmer />}
+                    </div>
+                );
+            } else {
+                return <p className={styles.textCenter}>Loading...</p>;
+            }
         }
         if (isError) {
             return <p className={styles.textCenter}>Something went wrong!</p>;
