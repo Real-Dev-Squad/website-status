@@ -26,7 +26,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     const [progressValue, setProgressValue] = useState<number>(
         content.percentCompleted
     );
-    const [showModal, setShowModal] = useState(false);
+    const [ShowCompletionModal, setShowCompletionModal] = useState(false);
 
     const { isUserAuthorized } = useUserData();
     const { data: userData } = useGetUserQuery();
@@ -57,7 +57,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
             .then(() => {
                 toast(SUCCESS, PROGRESS_SUCCESSFUL);
                 if (percentCompleted === 100 && isDev) {
-                    setShowModal(true);
+                    setShowCompletionModal(true);
                 }
             })
             .catch(() => toast(ERROR, ERROR_MESSAGE));
@@ -80,8 +80,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        const newValue = Number(event.target.value);
-        setProgressValue(newValue);
+        setProgressValue(Number(event.target.value));
     };
 
     const handleProgressUpdate = () => {
@@ -95,8 +94,8 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         }
     };
 
-    const handleModalClose = () => {
-        setShowModal(false);
+    const closeCompletionModal = () => {
+        setShowCompletionModal(false);
     };
 
     const showUpdateButton = () => {
@@ -134,8 +133,8 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
 
             {isDev && (
                 <CompletionModal
-                    isOpen={showModal}
-                    onClose={handleModalClose}
+                    isOpen={ShowCompletionModal}
+                    onClose={closeCompletionModal}
                 />
             )}
         </>
