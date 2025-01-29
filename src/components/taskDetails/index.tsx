@@ -215,7 +215,7 @@ const TaskDetails: FC<Props> = ({ taskID }) => {
         if (isLoading) {
             if (isDev) {
                 return (
-                    <div className={styles.taskDetailsContainer}>
+                    <div className={styles.parentContainer}>
                         {<TaskDetailsShimmer />}
                     </div>
                 );
