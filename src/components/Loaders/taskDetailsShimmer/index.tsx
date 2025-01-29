@@ -1,6 +1,6 @@
 import styles from './taskDetailsShimmer.module.scss';
 
-const TaskDetailsShimmer = () => (
+export const TaskDetailsShimmer = () => (
     <>
         <div
             className={`${styles.taskCard} ${styles.titleContainer}`}
@@ -90,5 +90,3 @@ const TaskDetailsShimmer = () => (
         </div>
     </>
 );
-
-export default TaskDetailsShimmer;
