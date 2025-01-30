@@ -41,7 +41,7 @@ const DEFAULT_PROPS = {
         startedOn: '1618790400',
         isNoteworthy: true,
         title: 'test 1 for drag and drop',
-        purpose: 'string',
+        purpose: 'to test purpose',
         percentCompleted: 0,
         endsOn: 1618790400,
         status: COMPLETED,
@@ -54,9 +54,55 @@ const DEFAULT_PROPS = {
     onContentChange: jest.fn(),
 };
 
+describe("Task card, self task's purpose and status", () => {
+    it('renders the card with title and status', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(
+            screen.getByText('test 1 for drag and drop')
+        ).toBeInTheDocument();
+        expect(screen.getByText('Done')).toBeInTheDocument();
+    });
+
+    it('displays the purpose if provided', () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...DEFAULT_PROPS} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(screen.getByText('to test purpose')).toBeInTheDocument();
+    });
+
+    it('does not display the purpose if not provided', () => {
+        const PROPS_WITHOUT_PURPOSE = {
+            ...DEFAULT_PROPS,
+            content: { ...DEFAULT_PROPS.content, purpose: '' },
+        };
+        renderWithRouter(
+            <Provider store={store()}>
+                <Card {...PROPS_WITHOUT_PURPOSE} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+        expect(screen.queryByText('to test purpose')).not.toBeInTheDocument();
+    });
+});
+
 jest.mock('@/hooks/useUserData', () => {
     return () => ({
         data: {
+            username: 'ankur',
             roles: {
                 admin: true,
                 super_user: true,
