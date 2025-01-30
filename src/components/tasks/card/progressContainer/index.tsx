@@ -120,7 +120,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
                 <Progressbar
                     progress={!readOnly && isProgressMade}
                     progressValue={progressValue}
-                    percentCompleted={progressValue}
+                    percentCompleted={content.percentCompleted}
                     handleProgressChange={handleProgressChange}
                     debounceSlider={debounceSlider}
                     startedOn={content.startedOn}

@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { MdCheck } from 'react-icons/md';
 import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck } from 'react-icons/fa6';
 import styles from '@/components/Modal/modal.module.scss';
@@ -15,12 +14,11 @@ const CompletionModal: FC<CompletionModalProps> = ({ isOpen, onClose }) => {
     return (
         <div className={styles.overlayModal}>
             <div className={styles.boxModal}>
+                <IoMdClose className={styles.closeIcon} onClick={onClose} />
                 <FaCircleCheck className={styles.checkIcon} />
                 <h3>Congratulations!</h3>
-                <p>
-                    You have achieved 100% completion! Would you like to update
-                    your status?
-                </p>
+                <p>You have achieved 100% completion!</p>
+                <p>Would you like to update your status?</p>
                 <div className={styles.modalButtons}>
                     <button
                         className={styles.changeStatusButton}
@@ -28,10 +26,10 @@ const CompletionModal: FC<CompletionModalProps> = ({ isOpen, onClose }) => {
                             onClose();
                         }}
                     >
-                        <MdCheck /> Change Status
+                        Change Status
                     </button>
                     <button className={styles.closeButton} onClick={onClose}>
-                        <IoMdClose /> Cancel
+                        Close
                     </button>
                 </div>
             </div>
