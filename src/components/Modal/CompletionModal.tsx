@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import React from 'react';
+import Modal from '@/components/Modal/index';
 import { IoMdClose } from 'react-icons/io';
 import { FaCircleCheck } from 'react-icons/fa6';
 import styles from '@/components/Modal/modal.module.scss';
@@ -8,18 +9,23 @@ interface CompletionModalProps {
     onClose: () => void;
 }
 
-const CompletionModal: FC<CompletionModalProps> = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
-
+const CompletionModal: React.FC<CompletionModalProps> = ({
+    isOpen,
+    onClose,
+}) => {
     return (
-        <div className={styles.overlayModal}>
-            <div className={styles.boxModal}>
+        <Modal isOpen={isOpen} toggle={onClose}>
+            <div className={styles.modalContent}>
                 <IoMdClose className={styles.closeIcon} onClick={onClose} />
                 <FaCircleCheck className={styles.checkIcon} />
-                <h3>Congratulations!</h3>
-                <p>You have achieved 100% completion!</p>
-                <p>Would you like to update your status?</p>
-                <div className={styles.modalButtons}>
+                <h3 className={styles.title}>Congratulations!</h3>
+                <p className={styles.text}>
+                    You have achieved 100% completion!
+                </p>
+                <p className={styles.text}>
+                    Would you like to update your status?
+                </p>
+                <div className={styles.buttonContainer}>
                     <button
                         className={styles.changeStatusButton}
                         onClick={() => {
@@ -33,7 +39,7 @@ const CompletionModal: FC<CompletionModalProps> = ({ isOpen, onClose }) => {
                     </button>
                 </div>
             </div>
-        </div>
+        </Modal>
     );
 };
 
