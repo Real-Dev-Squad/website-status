@@ -557,7 +557,7 @@ describe('Task card', () => {
             </Provider>
         );
         const spanElement = screen.getByTestId('task-status');
-        expect(spanElement).toHaveTextContent('Completed');
+        expect(spanElement).toHaveTextContent('Done');
     });
 });
 

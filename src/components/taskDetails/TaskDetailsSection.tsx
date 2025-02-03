@@ -32,6 +32,7 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     const { dev } = router.query;
     const isDevMode = dev === 'true';
 
+    console.log('status: ', status);
     return (
         <div className={styles['sub_details_grid_container']}>
             <Details detailType={'Type'} value={type} />

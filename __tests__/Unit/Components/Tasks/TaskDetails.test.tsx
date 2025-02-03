@@ -222,12 +222,11 @@ describe('TaskDetails Page', () => {
             expect(getByText('ankur')).toBeInTheDocument();
         });
     });
-    it('Renders Task status Done when task status is Completed, when dev flag is on', async () => {
+    it('Renders Task status Done when task status is Completed', async () => {
         const { getByText } = renderWithRouter(
             <Provider store={store()}>
                 <TaskDetails taskID={details.completedTaskID} />
-            </Provider>,
-            { query: { dev: 'true' } }
+            </Provider>
         );
         await waitFor(() => {
             expect(getByText('Done')).toBeInTheDocument();
