@@ -181,8 +181,8 @@ describe('test beautifyStatus function', () => {
         expect(output).toEqual('In Progress');
     });
 
-    it('returns DONE when completed is passed and dev mode is one', () => {
-        const res = beautifyStatus('COMPLETED', true);
+    it('returns DONE when completed is passed ', () => {
+        const res = beautifyStatus('COMPLETED');
         expect(res).toEqual('Done');
     });
 });

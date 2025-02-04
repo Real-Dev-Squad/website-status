@@ -19,10 +19,10 @@ type Props = {
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string, isDevMode?: boolean) => {
     let beautifiedStatus = status;
-    if (beautifiedStatus === 'COMPLETED' && isDevMode) {
+    if (beautifiedStatus === 'COMPLETED') {
         beautifiedStatus = 'DONE';
     }
-
+    // console.log("new :",status);
     return (
         TASK_STATUS_MAPING[
             beautifiedStatus as keyof typeof TASK_STATUS_MAPING
