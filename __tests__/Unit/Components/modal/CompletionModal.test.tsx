@@ -13,7 +13,7 @@ describe('CompletionModal Component', () => {
             <CompletionModal isOpen={true} onClose={onCloseMock} />
         );
 
-        expect(getByText('Congratulations!')).toBeInTheDocument();
+        expect(getByText('Congratulations !')).toBeInTheDocument();
         expect(
             getByText(
                 'You have achieved 100% completion! Would you like to update your status?'
@@ -22,7 +22,7 @@ describe('CompletionModal Component', () => {
         expect(
             getByRole('button', { name: /Change Status/i })
         ).toBeInTheDocument();
-        expect(getByRole('button', { name: /Cancel/i })).toBeInTheDocument();
+        expect(getByRole('button', { name: /Close/i })).toBeInTheDocument();
     });
 
     test('does not render modal when isOpen is false', () => {
@@ -31,18 +31,18 @@ describe('CompletionModal Component', () => {
             <CompletionModal isOpen={false} onClose={onCloseMock} />
         );
 
-        expect(queryByText('Congratulations!')).toBeNull();
+        expect(queryByText('Congratulations !')).toBeNull();
     });
 
-    test('calls onClose and removes modal from DOM when Cancel button is clicked', () => {
+    test('calls onClose and removes modal from DOM when Close button is clicked', () => {
         const onCloseMock = jest.fn();
         const { getByRole, queryByText, rerender } = render(
             <CompletionModal isOpen={true} onClose={onCloseMock} />
         );
 
-        expect(queryByText('Congratulations!')).toBeInTheDocument();
+        expect(queryByText('Congratulations !')).toBeInTheDocument();
 
-        fireEvent.click(getByRole('button', { name: /Cancel/i }));
+        fireEvent.click(getByRole('button', { name: /Close/i }));
 
         expect(onCloseMock).toHaveBeenCalledTimes(1);
 
@@ -58,6 +58,35 @@ describe('CompletionModal Component', () => {
         );
 
         fireEvent.click(getByRole('button', { name: /Change Status/i }));
+        expect(onCloseMock).toHaveBeenCalledTimes(1);
+    });
+
+    test('calls onClose when close icon is clicked', () => {
+        const onCloseMock = jest.fn();
+        const { container } = render(
+            <CompletionModal isOpen={true} onClose={onCloseMock} />
+        );
+
+        const closeIcon = container.querySelector('.closeIcon');
+        if (!closeIcon) {
+            throw new Error('Close icon not found');
+        }
+
+        fireEvent.click(closeIcon);
+        expect(onCloseMock).toHaveBeenCalledTimes(1);
+    });
+    test('calls onClose when clicking outside the modal', () => {
+        const onCloseMock = jest.fn();
+        const { container } = render(
+            <CompletionModal isOpen={true} onClose={onCloseMock} />
+        );
+
+        const modalContainer = container.firstChild;
+
+        if (modalContainer) {
+            fireEvent.click(modalContainer);
+        }
+
         expect(onCloseMock).toHaveBeenCalledTimes(1);
     });
 });
