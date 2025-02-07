@@ -16,7 +16,12 @@ const CompletionModal: React.FC<CompletionModalProps> = ({
     return (
         <Modal isOpen={isOpen} toggle={onClose}>
             <div className={styles.modalContent}>
-                <IoMdClose className={styles.closeIcon} onClick={onClose} />
+                <IoMdClose
+                    className={styles.closeIcon}
+                    onClick={() => {
+                        onClose();
+                    }}
+                />
                 <FaCircleCheck className={styles.checkIcon} />
                 <h3 className={styles.title}>Congratulations !</h3>
                 <div className={styles.text}>
