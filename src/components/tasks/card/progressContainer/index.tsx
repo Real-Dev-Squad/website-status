@@ -26,7 +26,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     const [progressValue, setProgressValue] = useState<number>(
         content.percentCompleted
     );
-    const [ShowCompletionModal, setShowCompletionModal] = useState(false);
+    const [showCompletionModal, setShowCompletionModal] = useState(false);
 
     const { isUserAuthorized } = useUserData();
     const { data: userData } = useGetUserQuery();
@@ -40,7 +40,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
 
     const { SUCCESS, ERROR } = ToastTypes;
 
-    const handleSliderChangeComplete = (
+    const handleSliderChangeComplete = async (
         id: string,
         percentCompleted: number
     ) => {
@@ -48,19 +48,19 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
             percentCompleted: percentCompleted,
         };
 
-        const updatePromise = isUserAuthorized
-            ? updateTask({ task: taskData, id: id })
-            : updateSelfTask({ task: taskData, id: id });
+        try {
+            const updateResponse = await (isUserAuthorized
+                ? updateTask({ task: taskData, id: id })
+                : updateSelfTask({ task: taskData, id: id })
+            ).unwrap();
 
-        updatePromise
-            .unwrap()
-            .then(() => {
-                toast(SUCCESS, PROGRESS_SUCCESSFUL);
-                if (percentCompleted === 100 && isDev) {
-                    setShowCompletionModal(true);
-                }
-            })
-            .catch(() => toast(ERROR, ERROR_MESSAGE));
+            toast(SUCCESS, PROGRESS_SUCCESSFUL);
+            if (percentCompleted === 100 && isDev) {
+                setShowCompletionModal(true);
+            }
+        } catch (error) {
+            toast(ERROR, ERROR_MESSAGE);
+        }
     };
 
     const onProgressChange = () => {
@@ -133,7 +133,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
 
             {isDev && (
                 <CompletionModal
-                    isOpen={ShowCompletionModal}
+                    isOpen={showCompletionModal}
                     onClose={closeCompletionModal}
                 />
             )}
