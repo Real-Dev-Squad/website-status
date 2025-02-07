@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import TaskUpdateModal from '@/components/taskDetails/TaskUpdateModal';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -201,12 +201,11 @@ describe('TaskUpdateModal', () => {
             </Provider>
         );
 
-        const closeButtons = screen.getAllByTestId(
+        const closeButton = screen.getByTestId(
             'task-update-modal-close-button'
         );
 
-        expect(closeButtons.length).toBeGreaterThan(0);
-        fireEvent.click(closeButtons[0]);
+        fireEvent.click(closeButton);
         expect(setIsOpen).toHaveBeenCalledWith(false);
     });
 
@@ -223,11 +222,12 @@ describe('TaskUpdateModal', () => {
             />
         );
 
-        const closeButtons = screen.getAllByTestId(
-            'task-update-modal-close-button'
+        const closeButton = screen.getByTestId(
+            'task-update-mock-modal-close-button'
         );
-        expect(closeButtons[0]).toBeInTheDocument();
+        expect(closeButton).toBeInTheDocument();
     });
+
     it('should not show the close button when dev is false', async () => {
         useRouter.mockReturnValue({ query: { dev: 'false' } });
 
@@ -241,10 +241,9 @@ describe('TaskUpdateModal', () => {
             />
         );
 
-        await waitFor(() => {
-            expect(
-                screen.queryByTestId('task-update-modal-close-button')
-            ).not.toBeInTheDocument();
-        });
+        const closeButton = screen.queryByTestId(
+            'task-update-modal-close-button'
+        );
+        expect(closeButton).not.toBeInTheDocument();
     });
 });
