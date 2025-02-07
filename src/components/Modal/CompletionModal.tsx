@@ -32,7 +32,12 @@ const CompletionModal: React.FC<CompletionModalProps> = ({
                     >
                         Change status
                     </button>
-                    <button className={styles.closeButton} onClick={onClose}>
+                    <button
+                        className={styles.closeButton}
+                        onClick={() => {
+                            onClose();
+                        }}
+                    >
                         Close
                     </button>
                 </div>
