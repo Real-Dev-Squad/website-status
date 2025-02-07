@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import TaskUpdateModal from '@/components/taskDetails/TaskUpdateModal';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -7,13 +7,24 @@ import Modal from '@/components/Modal';
 import ProgressContainer from '@/components/tasks/card/progressContainer';
 import ProgressForm from '@/components/ProgressForm/ProgressForm';
 import getCurrentDate from '@/utils/getLatestDate';
+import { useRouter } from 'next/router';
+
+jest.mock('next/router', () => ({
+    useRouter: jest.fn(() => ({
+        query: { dev: 'false' },
+    })),
+}));
 
 jest.mock('@/components/Modal', () =>
     jest.fn(({ isOpen, toggle, children }) => (
         <div data-testid="mock-modal">
             {isOpen && (
                 <div>
-                    <button data-testid="close-modal" onClick={toggle}>
+                    <button
+                        data-testid="task-update-mock-modal-close-button"
+                        onClick={toggle}
+                        aria-label="Close"
+                    >
                         Close
                     </button>
                     {children}
@@ -88,7 +99,9 @@ describe('TaskUpdateModal', () => {
             </Provider>
         );
 
-        const closeButton = screen.getByTestId('close-modal');
+        const closeButton = screen.getByTestId(
+            'task-update-mock-modal-close-button'
+        );
         fireEvent.click(closeButton);
 
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
@@ -177,5 +190,61 @@ describe('TaskUpdateModal', () => {
 
         expect(mockOnUpdateSuccess).toHaveBeenCalled();
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('closes modal when close button is clicked', () => {
+        useRouter.mockReturnValue({ query: { dev: 'true' } });
+        const setIsOpen = jest.fn();
+        render(
+            <Provider store={store()}>
+                <TaskUpdateModal {...defaultProps} setIsOpen={setIsOpen} />
+            </Provider>
+        );
+
+        const closeButtons = screen.getAllByTestId(
+            'task-update-modal-close-button'
+        );
+
+        expect(closeButtons.length).toBeGreaterThan(0);
+        fireEvent.click(closeButtons[0]);
+        expect(setIsOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('should show the close button when dev is true', () => {
+        useRouter.mockReturnValue({ query: { dev: 'true' } });
+
+        render(
+            <TaskUpdateModal
+                isOpen={true}
+                setIsOpen={mockSetIsOpen}
+                styles={mockStyles}
+                taskDetailsData={mockTaskDetails}
+                editedTaskDetails={mockTaskDetails}
+            />
+        );
+
+        const closeButtons = screen.getAllByTestId(
+            'task-update-modal-close-button'
+        );
+        expect(closeButtons[0]).toBeInTheDocument();
+    });
+    it('should not show the close button when dev is false', async () => {
+        useRouter.mockReturnValue({ query: { dev: 'false' } });
+
+        render(
+            <TaskUpdateModal
+                isOpen={true}
+                setIsOpen={mockSetIsOpen}
+                styles={mockStyles}
+                taskDetailsData={mockTaskDetails}
+                editedTaskDetails={mockTaskDetails}
+            />
+        );
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('task-update-modal-close-button')
+            ).not.toBeInTheDocument();
+        });
     });
 });
