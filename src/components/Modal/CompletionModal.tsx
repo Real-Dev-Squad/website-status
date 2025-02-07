@@ -9,7 +9,7 @@ interface CompletionModalProps {
     onClose: () => void;
 }
 
-const CompletionModal: React.FC<CompletionModalProps> = ({
+export const CompletionModal: React.FC<CompletionModalProps> = ({
     isOpen,
     onClose,
 }) => {
@@ -50,5 +50,3 @@ const CompletionModal: React.FC<CompletionModalProps> = ({
         </Modal>
     );
 };
-
-export default CompletionModal;

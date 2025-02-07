@@ -9,7 +9,7 @@ import useUserData from '@/hooks/useUserData';
 import { useGetUserQuery } from '@/app/services/userApi';
 import ProgressText from './ProgressText';
 import Progressbar from './ProgressBar';
-import CompletionModal from '@/components/Modal/CompletionModal';
+import { CompletionModal } from '@/components/Modal/CompletionModal';
 import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
 import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
