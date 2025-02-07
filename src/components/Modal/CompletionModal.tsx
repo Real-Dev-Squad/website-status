@@ -19,10 +19,10 @@ const CompletionModal: React.FC<CompletionModalProps> = ({
                 <IoMdClose className={styles.closeIcon} onClick={onClose} />
                 <FaCircleCheck className={styles.checkIcon} />
                 <h3 className={styles.title}>Congratulations !</h3>
-                <p className={styles.text}>
+                <div className={styles.text}>
                     You have achieved 100% completion! Would you like to update
                     your status?
-                </p>
+                </div>
                 <div className={styles.buttonContainer}>
                     <button
                         className={styles.changeStatusButton}
