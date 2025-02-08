@@ -8,12 +8,7 @@ import ProgressContainer from '@/components/tasks/card/progressContainer';
 import ProgressForm from '@/components/ProgressForm/ProgressForm';
 import getCurrentDate from '@/utils/getLatestDate';
 import { useRouter } from 'next/router';
-
-jest.mock('next/router', () => ({
-    useRouter: jest.fn(() => ({
-        query: { dev: 'false' },
-    })),
-}));
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 jest.mock('@/components/Modal', () =>
     jest.fn(({ isOpen, toggle, children }) => (
@@ -76,7 +71,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should renders the modal when open', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -93,7 +88,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should call setIsOpen when close button is clicked', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -108,7 +103,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should pass correct props to ProgressContainer', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -124,7 +119,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should pass correct props to ProgressForm', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -140,7 +135,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should display the correct date from getCurrentDate', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -150,7 +145,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should not render any content when modal is closed', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} isOpen={false} />
             </Provider>
@@ -177,7 +172,7 @@ describe('TaskUpdateModal', () => {
             )
         );
 
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal
                     {...defaultProps}
@@ -193,12 +188,12 @@ describe('TaskUpdateModal', () => {
     });
 
     it('closes modal when close button is clicked', () => {
-        useRouter.mockReturnValue({ query: { dev: 'true' } });
         const setIsOpen = jest.fn();
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} setIsOpen={setIsOpen} />
-            </Provider>
+            </Provider>,
+            { query: { dev: 'true' } }
         );
 
         const closeButton = screen.getByTestId(
@@ -210,16 +205,15 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should show the close button when dev is true', () => {
-        useRouter.mockReturnValue({ query: { dev: 'true' } });
-
-        render(
+        renderWithRouter(
             <TaskUpdateModal
                 isOpen={true}
                 setIsOpen={mockSetIsOpen}
                 styles={mockStyles}
                 taskDetailsData={mockTaskDetails}
                 editedTaskDetails={mockTaskDetails}
-            />
+            />,
+            { query: { dev: 'true' } }
         );
 
         const closeButton = screen.getByTestId(
@@ -229,16 +223,15 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should not show the close button when dev is false', async () => {
-        useRouter.mockReturnValue({ query: { dev: 'false' } });
-
-        render(
+        renderWithRouter(
             <TaskUpdateModal
                 isOpen={true}
                 setIsOpen={mockSetIsOpen}
                 styles={mockStyles}
                 taskDetailsData={mockTaskDetails}
                 editedTaskDetails={mockTaskDetails}
-            />
+            />,
+            { query: { dev: 'false' } }
         );
 
         const closeButton = screen.queryByTestId(
