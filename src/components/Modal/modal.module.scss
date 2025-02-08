@@ -77,21 +77,17 @@
 
 .text {
     color: rgba($black, 0.7);
-    margin-bottom: 1rem;
     text-align: center;
     font-size: 0.938rem;
     font-weight: 500;
-    height: 2.938rem;
-    width: 17.438rem;
     line-height: 1.563rem;
-    padding-bottom: 2.813rem;
     margin-top: 0.063rem;
 }
 
 .buttonContainer {
     display: flex;
     gap: 1.5rem;
-    margin-top: 2.5rem;
+    margin-top: 2.9rem;
     @media (max-width: 480px) {
         flex-direction: row;
     }

@@ -25,9 +25,10 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
                 <FaCircleCheck className={styles.checkIcon} />
                 <h3 className={styles.title}>Congratulations !</h3>
                 <div className={styles.text}>
-                    You have achieved 100% completion! Would you like to update
-                    your status?
+                    <div>You have achieved 100% completion!</div>
+                    <div>Would you like to update your status?</div>
                 </div>
+
                 <div className={styles.buttonContainer}>
                     <button
                         className={styles.changeStatusButton}
