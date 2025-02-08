@@ -7,7 +7,6 @@ import Modal from '@/components/Modal';
 import ProgressContainer from '@/components/tasks/card/progressContainer';
 import ProgressForm from '@/components/ProgressForm/ProgressForm';
 import getCurrentDate from '@/utils/getLatestDate';
-import { useRouter } from 'next/router';
 import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 jest.mock('@/components/Modal', () =>
