@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import CompletionModal from '@/components/Modal/CompletionModal';
+import { CompletionModal } from '@/components/Modal/CompletionModal';
 
 describe('CompletionModal Component', () => {
     afterEach(() => {
@@ -15,9 +15,10 @@ describe('CompletionModal Component', () => {
 
         expect(getByText('Congratulations !')).toBeInTheDocument();
         expect(
-            getByText(
-                'You have achieved 100% completion! Would you like to update your status?'
-            )
+            getByText('You have achieved 100% completion!')
+        ).toBeInTheDocument();
+        expect(
+            getByText('Would you like to update your status?')
         ).toBeInTheDocument();
         expect(
             getByRole('button', { name: /Change Status/i })
