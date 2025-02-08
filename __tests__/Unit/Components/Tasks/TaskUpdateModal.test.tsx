@@ -223,7 +223,7 @@ describe('TaskUpdateModal', () => {
         );
 
         const closeButton = screen.getByTestId(
-            'task-update-mock-modal-close-button'
+            'task-update-modal-close-button'
         );
         expect(closeButton).toBeInTheDocument();
     });
