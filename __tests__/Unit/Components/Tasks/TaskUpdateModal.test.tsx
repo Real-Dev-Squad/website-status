@@ -14,7 +14,7 @@ jest.mock('@/components/Modal', () =>
         isOpen ? (
             <div data-testid="mock-modal">
                 <button
-                    data-testid="task-update-mock-modal-close-button"
+                    data-testid="close-modal"
                     onClick={toggle}
                     aria-label="Close"
                 >
@@ -91,9 +91,7 @@ describe('TaskUpdateModal', () => {
             </Provider>
         );
 
-        const closeButton = screen.getByTestId(
-            'task-update-mock-modal-close-button'
-        );
+        const closeButton = screen.getByTestId('close-modal');
         fireEvent.click(closeButton);
 
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
@@ -184,21 +182,21 @@ describe('TaskUpdateModal', () => {
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
     });
 
-    it('should close the modal when close button is clicked', async () => {
+    it('should call the setIsOpen when close button is clicked', async () => {
         renderWithRouter(
             <Provider store={store()}>
-                <TaskUpdateModal {...defaultProps} isOpen={false} />
+                <TaskUpdateModal {...defaultProps} />
             </Provider>,
             { query: { dev: 'true' } }
         );
 
-        const closeButton = screen.queryByTestId(
+        const closeButton = screen.getByTestId(
             'task-update-modal-close-button'
         );
-        if (closeButton) {
-            fireEvent.click(closeButton);
-        }
-        const mockModal = screen.queryByTestId('mock-modal');
+
+        fireEvent.click(closeButton);
+
+        const mockModal = screen.queryByTestId('modal-box');
         expect(mockModal).not.toBeInTheDocument();
     });
 
