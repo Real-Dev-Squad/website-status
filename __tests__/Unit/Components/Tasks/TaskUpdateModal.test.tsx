@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-    screen,
-    fireEven,
-    waitFort,
-    fireEvent,
-    waitFor,
-} from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import TaskUpdateModal from '@/components/taskDetails/TaskUpdateModal';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
