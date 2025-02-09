@@ -3,14 +3,20 @@ import { render, fireEvent } from '@testing-library/react';
 import { CompletionModal } from '@/components/Modal/CompletionModal';
 
 describe('CompletionModal Component', () => {
+    let onCloseMock: jest.Mock;
+    let defaultProps: { isOpen: boolean; onClose: jest.Mock };
+    beforeEach(() => {
+        onCloseMock = jest.fn();
+        defaultProps = { isOpen: true, onClose: onCloseMock };
+    });
+
     afterEach(() => {
         jest.clearAllMocks();
     });
 
     test('should render modal when isOpen is true', () => {
-        const onCloseMock = jest.fn();
         const { getByText, getByRole } = render(
-            <CompletionModal isOpen={true} onClose={onCloseMock} />
+            <CompletionModal {...defaultProps} />
         );
 
         expect(getByText('Congratulations !')).toBeInTheDocument();
@@ -27,61 +33,44 @@ describe('CompletionModal Component', () => {
     });
 
     test('should not render modal when isOpen is false', () => {
-        const onCloseMock = jest.fn();
         const { queryByText } = render(
-            <CompletionModal isOpen={false} onClose={onCloseMock} />
+            <CompletionModal {...defaultProps} isOpen={false} />
         );
-
         expect(queryByText('Congratulations !')).toBeNull();
     });
 
     test('should call onClose and remove modal from DOM when Close button is clicked', () => {
-        const onCloseMock = jest.fn();
         const { getByRole, queryByText, rerender } = render(
-            <CompletionModal isOpen={true} onClose={onCloseMock} />
+            <CompletionModal {...defaultProps} />
         );
 
         expect(queryByText('Congratulations !')).toBeInTheDocument();
 
         fireEvent.click(getByRole('button', { name: /Close/i }));
-
         expect(onCloseMock).toHaveBeenCalledTimes(1);
 
-        rerender(<CompletionModal isOpen={false} onClose={onCloseMock} />);
-
-        expect(queryByText('Congratulations!')).toBeNull();
+        rerender(<CompletionModal {...defaultProps} isOpen={false} />);
+        expect(queryByText('Congratulations !')).toBeNull();
     });
 
     test('should call onClose when Change Status button is clicked', () => {
-        const onCloseMock = jest.fn();
-        const { getByRole } = render(
-            <CompletionModal isOpen={true} onClose={onCloseMock} />
-        );
-
+        const { getByRole } = render(<CompletionModal {...defaultProps} />);
         fireEvent.click(getByRole('button', { name: /Change Status/i }));
         expect(onCloseMock).toHaveBeenCalledTimes(1);
     });
 
     test('should call onClose when close icon is clicked', () => {
-        const onCloseMock = jest.fn();
-        const { container } = render(
-            <CompletionModal isOpen={true} onClose={onCloseMock} />
-        );
+        const { container } = render(<CompletionModal {...defaultProps} />);
 
         const closeIcon = container.querySelector('.closeIcon');
-        if (!closeIcon) {
-            throw new Error('Close icon not found');
-        }
+        expect(closeIcon).not.toBeNull();
 
-        fireEvent.click(closeIcon);
+        fireEvent.click(closeIcon as Element);
         expect(onCloseMock).toHaveBeenCalledTimes(1);
     });
-    test('should call onClose when clicking outside the modal', () => {
-        const onCloseMock = jest.fn();
-        const { container } = render(
-            <CompletionModal isOpen={true} onClose={onCloseMock} />
-        );
 
+    test('should call onClose when clicking outside the modal', () => {
+        const { container } = render(<CompletionModal {...defaultProps} />);
         const modalContainer = container.firstChild;
 
         if (modalContainer) {
@@ -89,5 +78,18 @@ describe('CompletionModal Component', () => {
         }
 
         expect(onCloseMock).toHaveBeenCalledTimes(1);
+    });
+    test('should close the modal when close button is clicked', () => {
+        const { container, queryByTestId } = render(
+            <CompletionModal {...defaultProps} />
+        );
+
+        const closeIcon = container.querySelector('.closeIcon');
+        expect(closeIcon).not.toBeNull();
+
+        fireEvent.click(closeIcon as Element);
+        expect(onCloseMock).toHaveBeenCalledTimes(1);
+
+        expect(queryByTestId('completion-modal')).not.toBeInTheDocument();
     });
 });
