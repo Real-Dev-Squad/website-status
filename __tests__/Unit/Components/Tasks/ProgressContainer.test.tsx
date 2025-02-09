@@ -282,4 +282,35 @@ describe('ProgressContainer', () => {
             expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         });
     });
+    test.skip('should not show completion modal when dev flag is false and progress is less than 100%', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'false' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+
+        const sliderInput = screen.getByRole('slider');
+        fireEvent.change(sliderInput, { target: { value: 90 } });
+        expect(screen.getByText('90%')).toBeInTheDocument();
+
+        fireEvent.mouseDown(sliderInput);
+        fireEvent.mouseUp(sliderInput);
+
+        await waitFor(() => {
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        });
+    });
 });
