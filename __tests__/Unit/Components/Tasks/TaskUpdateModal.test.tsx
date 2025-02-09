@@ -195,6 +195,7 @@ describe('TaskUpdateModal', () => {
         );
 
         fireEvent.click(closeButton);
+        expect(mockSetIsOpen).toHaveBeenCalledWith(false);
     });
 
     it('should show the close button when dev is true', () => {
