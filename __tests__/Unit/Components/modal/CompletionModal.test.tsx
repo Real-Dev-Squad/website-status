@@ -15,9 +15,11 @@ describe('CompletionModal Component', () => {
     });
 
     test('should render modal when isOpen is true', () => {
-        const { getByText, getByRole } = render(
+        const { getByText, getByRole, getByTestId } = render(
             <CompletionModal {...defaultProps} />
         );
+
+        expect(getByTestId('modal-overlay')).toBeInTheDocument();
 
         expect(getByText('Congratulations !')).toBeInTheDocument();
         expect(
@@ -33,9 +35,10 @@ describe('CompletionModal Component', () => {
     });
 
     test('should not render modal when isOpen is false', () => {
-        const { queryByText } = render(
+        const { queryByText, queryByTestId } = render(
             <CompletionModal {...defaultProps} isOpen={false} />
         );
+        expect(queryByTestId('modal-overlay')).toBeNull();
         expect(queryByText('Congratulations !')).toBeNull();
     });
 
