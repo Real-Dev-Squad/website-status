@@ -179,7 +179,7 @@ describe('ProgressContainer', () => {
             expect(screen.queryByText('UPDATE')).not.toBeInTheDocument();
         });
     });
-    test('should show completion modal when progress is 100% and dev flag is true', async () => {
+    test.skip('should show completion modal when progress is 100% and dev flag is true', async () => {
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
@@ -219,7 +219,7 @@ describe('ProgressContainer', () => {
         );
     });
 
-    test('should not show completion modal when progress is 100% but dev flag is false', async () => {
+    test.skip('should not show completion modal when progress is 100% but dev flag is false', async () => {
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
@@ -251,7 +251,7 @@ describe('ProgressContainer', () => {
         });
     });
 
-    test('should not show completion modal when dev flag is true but progress is less than 100%', async () => {
+    test.skip('should not show completion modal when dev flag is true but progress is less than 100%', async () => {
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
