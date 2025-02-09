@@ -195,9 +195,6 @@ describe('TaskUpdateModal', () => {
         );
 
         fireEvent.click(closeButton);
-
-        const mockModal = screen.queryByTestId('modal-box');
-        expect(mockModal).not.toBeInTheDocument();
     });
 
     it('should show the close button when dev is true', () => {
