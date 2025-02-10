@@ -28,7 +28,102 @@
     background: $white;
     width: max-content;
     height: max-content;
-    padding: 1rem;
     border-radius: 1rem;
     animation: fadeIn ease-in-out 250ms;
+}
+.progressContainer {
+    position: relative;
+    width: 100%;
+}
+
+.modalContent {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    height: 21rem;
+    width: 22.5rem;
+}
+
+.closeIcon {
+    position: absolute;
+    top: 1rem;
+    right: 0.75rem;
+    width: 2.9rem;
+    height: 1.6rem;
+    cursor: pointer;
+    color: $black;
+    border: none;
+    background-color: transparent;
+
+    &:hover {
+        color: $gray;
+    }
+}
+
+.checkIcon {
+    margin-top: 1.4rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: $light-green;
+    margin-bottom: 0.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.text {
+    color: rgba($black, 0.7);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.6rem;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.9rem;
+    @media (max-width: 480px) {
+        flex-direction: row;
+    }
+}
+
+.changeStatusButton,
+.closeButton {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    width: 8.75rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 0.9rem;
+}
+
+.changeStatusButton {
+    background-color: $indigo-blue;
+    color: $white;
+
+    &:hover {
+        background-color: $dark-indigo-blue;
+    }
+}
+
+.closeButton {
+    background-color: $white;
+    color: $baltic-sea;
+    border: 2px solid rgba($gray, 0.2);
+
+    &:hover {
+        background-color: rgba($gray, 0.1);
+    }
 }
