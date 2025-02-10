@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { CompletionModal } from '@/components/Modal/CompletionModal';
 
-describe.skip('CompletionModal Component', () => {
+describe('CompletionModal Component', () => {
     let onCloseMock: jest.Mock;
     let defaultProps: { isOpen: boolean; onClose: jest.Mock };
     beforeEach(() => {
