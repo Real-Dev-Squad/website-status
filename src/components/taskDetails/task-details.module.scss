@@ -152,6 +152,7 @@ $base-unit: 4px;
     max-height: 5rem;
     overflow-y: scroll;
     padding: 4px 0 4px 0;
+
     div {
         padding: 2px 0 2px 0;
     }
@@ -223,6 +224,7 @@ $base-unit: 4px;
         color: black;
     }
 }
+
 .dateUpdated {
     font-size: $base-unit * 4;
     color: #7e7f80;
@@ -241,8 +243,23 @@ $base-unit: 4px;
 }
 
 .taskUpdateModal {
+    position: relative;
     min-width: fit-content;
     max-width: 796px;
     width: 80vw;
     padding: 1rem;
+}
+
+.closeButton {
+    position: absolute;
+    top: 0.125rem;
+    right: 0.625rem;
+    cursor: pointer;
+    padding: 0.25rem 0.625rem;
+    color: $gray;
+    border: none;
+    background-color: transparent;
+    &:hover {
+        color: $black;
+    }
 }
