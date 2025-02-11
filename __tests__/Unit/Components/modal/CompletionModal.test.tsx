@@ -15,7 +15,7 @@ describe('CompletionModal Component', () => {
     });
 
     test('should render modal when isOpen is true', () => {
-        const { getByText, getByRole, getByTestId } = render(
+        const { getByText, getByRole, getByTestId, getAllByRole } = render(
             <CompletionModal {...defaultProps} />
         );
 
@@ -29,9 +29,10 @@ describe('CompletionModal Component', () => {
             getByText('Would you like to update your status?')
         ).toBeInTheDocument();
         expect(
-            getByRole('button', { name: /Change Status/i })
+            getByRole('button', { name: /Change status/i })
         ).toBeInTheDocument();
-        expect(getByRole('button', { name: /Close/i })).toBeInTheDocument();
+        const closeButtons = getAllByRole('button', { name: /Close/i });
+        expect(closeButtons.length).toBeGreaterThan(0);
     });
 
     test('should not render modal when isOpen is false', () => {
@@ -43,13 +44,15 @@ describe('CompletionModal Component', () => {
     });
 
     test('should call onClose and remove modal from DOM when Close button is clicked', () => {
-        const { getByRole, queryByText, rerender } = render(
+        const { getAllByRole, queryByText, rerender } = render(
             <CompletionModal {...defaultProps} />
         );
 
         expect(queryByText('Congratulations !')).toBeInTheDocument();
 
-        fireEvent.click(getByRole('button', { name: /Close/i }));
+        const closeButtons = getAllByRole('button', { name: /Close/i });
+        fireEvent.click(closeButtons[closeButtons.length - 1]);
+
         expect(onCloseMock).toHaveBeenCalledTimes(1);
 
         rerender(<CompletionModal {...defaultProps} isOpen={false} />);
