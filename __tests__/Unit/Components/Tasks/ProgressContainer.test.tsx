@@ -247,9 +247,7 @@ describe('ProgressContainer', () => {
         fireEvent.mouseUp(sliderInput);
 
         await waitFor(() => {
-            expect(
-                screen.queryByTestId('completion-modal')
-            ).not.toBeInTheDocument();
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         });
     });
 
@@ -281,9 +279,7 @@ describe('ProgressContainer', () => {
         fireEvent.mouseUp(sliderInput);
 
         await waitFor(() => {
-            expect(
-                screen.queryByTestId('completion-modal')
-            ).not.toBeInTheDocument();
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         });
     });
     test('should not show completion modal when dev flag is false and progress is less than 100%', async () => {
@@ -314,9 +310,7 @@ describe('ProgressContainer', () => {
         fireEvent.mouseUp(sliderInput);
 
         await waitFor(() => {
-            expect(
-                screen.queryByTestId('completion-modal')
-            ).not.toBeInTheDocument();
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         });
     });
 });
