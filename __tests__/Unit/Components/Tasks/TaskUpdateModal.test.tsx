@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import TaskUpdateModal from '@/components/taskDetails/TaskUpdateModal';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
@@ -7,20 +7,23 @@ import Modal from '@/components/Modal';
 import ProgressContainer from '@/components/tasks/card/progressContainer';
 import ProgressForm from '@/components/ProgressForm/ProgressForm';
 import getCurrentDate from '@/utils/getLatestDate';
+import { renderWithRouter } from '@/test_utils/createMockRouter';
 
 jest.mock('@/components/Modal', () =>
-    jest.fn(({ isOpen, toggle, children }) => (
-        <div data-testid="mock-modal">
-            {isOpen && (
-                <div>
-                    <button data-testid="close-modal" onClick={toggle}>
-                        Close
-                    </button>
-                    {children}
-                </div>
-            )}
-        </div>
-    ))
+    jest.fn(({ isOpen, toggle, children }) =>
+        isOpen ? (
+            <div data-testid="mock-modal">
+                <button
+                    data-testid="close-modal"
+                    onClick={toggle}
+                    aria-label="Close"
+                >
+                    Close
+                </button>
+                {children}
+            </div>
+        ) : null
+    )
 );
 
 jest.mock('@/components/tasks/card/progressContainer', () =>
@@ -65,7 +68,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should renders the modal when open', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -82,7 +85,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should call setIsOpen when close button is clicked', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -95,7 +98,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should pass correct props to ProgressContainer', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -111,7 +114,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should pass correct props to ProgressForm', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -127,7 +130,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should display the correct date from getCurrentDate', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} />
             </Provider>
@@ -137,7 +140,7 @@ describe('TaskUpdateModal', () => {
     });
 
     it('should not render any content when modal is closed', () => {
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal {...defaultProps} isOpen={false} />
             </Provider>
@@ -164,7 +167,7 @@ describe('TaskUpdateModal', () => {
             )
         );
 
-        render(
+        renderWithRouter(
             <Provider store={store()}>
                 <TaskUpdateModal
                     {...defaultProps}
@@ -177,5 +180,43 @@ describe('TaskUpdateModal', () => {
 
         expect(mockOnUpdateSuccess).toHaveBeenCalled();
         expect(mockSetIsOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('should call the setIsOpen when close button is clicked', async () => {
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskUpdateModal {...defaultProps} />
+            </Provider>,
+            { query: { dev: 'true' } }
+        );
+
+        const closeButton = screen.getByTestId(
+            'task-update-modal-close-button'
+        );
+
+        fireEvent.click(closeButton);
+        expect(mockSetIsOpen).toHaveBeenCalledWith(false);
+    });
+
+    it('should show the close button when dev is true', () => {
+        renderWithRouter(<TaskUpdateModal {...defaultProps} />, {
+            query: { dev: 'true' },
+        });
+
+        const closeButton = screen.getByTestId(
+            'task-update-modal-close-button'
+        );
+        expect(closeButton).toBeInTheDocument();
+    });
+
+    it('should not show the close button when dev is false', async () => {
+        renderWithRouter(<TaskUpdateModal {...defaultProps} />, {
+            query: { dev: 'false' },
+        });
+
+        const closeButton = screen.queryByTestId(
+            'task-update-modal-close-button'
+        );
+        expect(closeButton).not.toBeInTheDocument();
     });
 });
