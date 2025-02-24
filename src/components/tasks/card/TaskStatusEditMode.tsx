@@ -17,9 +17,9 @@ type Props = {
 };
 
 // TODO: remove this after fixing the card beautify status
-const beautifyStatus = (status: string, isDevMode?: boolean) => {
+const beautifyStatus = (status: string) => {
     let beautifiedStatus = status;
-    if (beautifiedStatus === 'COMPLETED' && isDevMode) {
+    if (beautifiedStatus === 'COMPLETED') {
         beautifiedStatus = 'DONE';
     }
 
@@ -29,11 +29,7 @@ const beautifyStatus = (status: string, isDevMode?: boolean) => {
         ] || status
     );
 };
-const TaskStatusEditMode = ({
-    task,
-    setEditedTaskDetails,
-    isDevMode,
-}: Props) => {
+const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -75,7 +71,6 @@ const TaskStatusEditMode = ({
     return (
         <div className={styles.taskSection}>
             <TaskDropDown
-                isDevMode={isDevMode}
                 oldStatus={task.status}
                 oldProgress={task.percentCompleted}
                 onChange={onChangeUpdateTaskStatus}

@@ -575,7 +575,7 @@ const Card: FC<CardProps> = ({
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
-                            isDevMode={isDevMode}
+                            // isDevMode={isDevMode}
                         />
                     ) : (
                         <div className={styles.statusContainer} style={{}}>
@@ -584,7 +584,7 @@ const Card: FC<CardProps> = ({
                                 data-testid="task-status"
                                 className={styles.statusText}
                             >
-                                {beautifyStatus(cardDetails.status, isDevMode)}
+                                {beautifyStatus(cardDetails.status)}
                             </p>
                         </div>
                     )}

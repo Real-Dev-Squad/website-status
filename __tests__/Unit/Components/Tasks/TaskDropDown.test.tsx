@@ -126,7 +126,6 @@ describe('TaskDropDown', () => {
 
         render(
             <TaskDropDown
-                isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
