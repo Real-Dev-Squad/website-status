@@ -248,7 +248,7 @@ describe('ProgressContainer', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByRole('completion-modal')
+                screen.queryByTestId('completion-modal')
             ).not.toBeInTheDocument();
         });
     });
@@ -282,7 +282,7 @@ describe('ProgressContainer', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByRole('completion-modal')
+                screen.queryByTestId('completion-modal')
             ).not.toBeInTheDocument();
         });
     });
@@ -315,7 +315,7 @@ describe('ProgressContainer', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByRole('completion-modal')
+                screen.queryByTestId('completion-modal')
             ).not.toBeInTheDocument();
         });
     });
