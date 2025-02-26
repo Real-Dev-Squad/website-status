@@ -14,7 +14,7 @@ export const CompletionModal: React.FC<CompletionModalProps> = ({
     onClose,
 }) => {
     return (
-        <Modal isOpen={isOpen} toggle={onClose}>
+        <Modal isOpen={isOpen} toggle={onClose} data-testid="completion-modal">
             <div className={styles.modalContent}>
                 <button
                     className={styles.closeIcon}
