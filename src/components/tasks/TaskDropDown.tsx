@@ -28,7 +28,7 @@ export default function TaskDropDown({
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) => !(key === 'COMPLETED') && !(!isDevMode && key === 'BACKLOG')
+        ([key]) => !(key === 'COMPLETED')
     );
 
     const isCurrentTaskStatusBlock = oldStatus === BACKEND_TASK_STATUS.BLOCKED;

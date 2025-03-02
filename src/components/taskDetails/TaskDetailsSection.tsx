@@ -29,8 +29,6 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
     taskDetailsData,
 }) => {
     const router = useRouter();
-    const { dev } = router.query;
-    const isDevMode = dev === 'true';
 
     return (
         <div className={styles['sub_details_grid_container']}>
@@ -42,14 +40,10 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
                     onChange={handleTaskStatusUpdate}
                     oldStatus={status}
                     oldProgress={percentCompleted}
-                    isDevMode={isDevMode}
                     key={status}
                 />
             ) : (
-                <Details
-                    detailType={'Status'}
-                    value={beautifyStatus(status, isDevMode)}
-                />
+                <Details detailType={'Status'} value={beautifyStatus(status)} />
             )}
             <Details detailType={'Link'} value={link} />
             <div className={styles.progressWrapper}>

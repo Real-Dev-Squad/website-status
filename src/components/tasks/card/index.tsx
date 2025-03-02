@@ -46,7 +46,7 @@ const Card: FC<CardProps> = ({
     onContentChange = () => undefined,
 }) => {
     const router = useRouter();
-    const isDevMode = router.query.dev === 'true' ? true : false;
+
     const statusRedList = [BLOCKED];
     const statusNotOverDueList = [
         COMPLETED,
@@ -575,7 +575,6 @@ const Card: FC<CardProps> = ({
                         <TaskStatusEditMode
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
-                            // isDevMode={isDevMode}
                         />
                     ) : (
                         <div className={styles.statusContainer} style={{}}>

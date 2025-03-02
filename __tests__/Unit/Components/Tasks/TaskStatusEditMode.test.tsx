@@ -110,11 +110,8 @@ describe('TaskStatusEditMode', () => {
 
         const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
             .map(([name, status]) => [status, beautifyStatus(name)])
-            .filter(([status]) => status !== 'BACKLOG' && status !== 'DONE');
+            .filter(([status]) => status !== BACKEND_TASK_STATUS.COMPLETED);
 
-        console.log('task list:');
-        console.log(allOptions);
-        console.log(allTaskStatus);
         expect(allOptions).toEqual(allTaskStatus);
     });
 
@@ -157,8 +154,8 @@ describe('test beautifyStatus function', () => {
         expect(output).toEqual('In Progress');
     });
 
-    // it('returns DONE when completed is passed and dev mode is one', () => {
-    //     const res = beautifyStatus('COMPLETED',true);
-    //     expect(res).toEqual('Done');
-    // });
+    it('returns DONE when completed is passed ', () => {
+        const res = beautifyStatus('COMPLETED');
+        expect(res).toEqual('Done');
+    });
 });

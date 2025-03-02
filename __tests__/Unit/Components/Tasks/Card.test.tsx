@@ -565,7 +565,7 @@ describe('Task card, color based on status ', () => {
     const OVER_DUE_CLASS = 'overdueTask';
     it('Should not render card in red, if task status is COMPLETED ', () => {
         const TASK_DATA = DEFAULT_PROPS;
-        TASK_DATA.content.status = COMPLETED;
+        TASK_DATA.content.status = DONE;
         renderWithRouter(
             <Provider store={store()}>
                 <Card {...TASK_DATA} />

@@ -13,7 +13,6 @@ import { TASK_STATUS_MAPING } from '@/constants/constants';
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
-    isDevMode?: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
