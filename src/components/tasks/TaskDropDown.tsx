@@ -24,11 +24,14 @@ export default function TaskDropDown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
+
     if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key]) => !(key === 'COMPLETED')
+        ([key]) =>
+            (!isDevMode && (key === 'BACKLOG' || key === 'DONE')) ||
+            !(key === 'COMPLETED')
     );
 
     const isCurrentTaskStatusBlock = oldStatus === BACKEND_TASK_STATUS.BLOCKED;
