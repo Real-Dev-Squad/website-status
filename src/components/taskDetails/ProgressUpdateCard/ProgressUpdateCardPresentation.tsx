@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import styles from './progress-update-card.module.scss';
 import {
     ProgressUpdateCardPresentationProps,
@@ -21,8 +20,6 @@ export default function ProgressUpdateCardPresentation({
     onCardClick,
     isExpanded,
 }: ProgressUpdateCardPresentationProps) {
-    const router = useRouter();
-    const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -70,7 +67,6 @@ export default function ProgressUpdateCardPresentation({
                     username={username}
                     userProfileImageUrl={userProfileImageUrl}
                     tooltipString={tooltipString}
-                    isDevMode={isDevMode}
                     isExpanded={isExpanded}
                 />
                 <div
