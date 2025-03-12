@@ -13,6 +13,7 @@ import { TASK_STATUS_MAPING } from '@/constants/constants';
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
+    isDevMode?: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -28,7 +29,11 @@ const beautifyStatus = (status: string) => {
         ] || status
     );
 };
-const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
+const TaskStatusEditMode = ({
+    task,
+    setEditedTaskDetails,
+    isDevMode,
+}: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
@@ -70,6 +75,7 @@ const TaskStatusEditMode = ({ task, setEditedTaskDetails }: Props) => {
     return (
         <div className={styles.taskSection}>
             <TaskDropDown
+                isDevMode={isDevMode}
                 oldStatus={task.status}
                 oldProgress={task.percentCompleted}
                 onChange={onChangeUpdateTaskStatus}
