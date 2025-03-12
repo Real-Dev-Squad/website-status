@@ -110,7 +110,11 @@ describe('TaskStatusEditMode', () => {
 
         const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
             .map(([name, status]) => [status, beautifyStatus(name)])
-            .filter(([status]) => status !== BACKEND_TASK_STATUS.COMPLETED);
+            .filter(
+                ([status]) =>
+                    status !== BACKEND_TASK_STATUS.COMPLETED &&
+                    status !== BACKEND_TASK_STATUS.BACKLOG
+            );
 
         expect(allOptions).toEqual(allTaskStatus);
     });
@@ -155,7 +159,7 @@ describe('test beautifyStatus function', () => {
     });
 
     it('returns DONE when completed is passed ', () => {
-        const res = beautifyStatus('COMPLETED');
+        const res = beautifyStatus(BACKEND_TASK_STATUS.COMPLETED);
         expect(res).toEqual('Done');
     });
 });
