@@ -5,15 +5,24 @@ import task, {
 import { useState } from 'react';
 import styles from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
-import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import {
+    useUpdateTaskMutation,
+    useUpdateSelfTaskMutation,
+} from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
-import { TASK_STATUS_MAPING } from '@/constants/constants';
+import {
+    STATUS_UPDATE_ERROR,
+    STATUS_UPDATE_SUCCESSFUL,
+    TASK_STATUS_MAPING,
+} from '@/constants/constants';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
     isDevMode?: boolean;
+    isSelfTask?: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -33,11 +42,14 @@ const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
     isDevMode,
+    isSelfTask,
 }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
+    const [updateSelfTask] = useUpdateSelfTaskMutation();
+    const { SUCCESS, ERROR } = ToastTypes;
 
-    const onChangeUpdateTaskStatus = ({
+    const onChangeUpdateTaskStatus = async ({
         newStatus,
         newProgress,
     }: taskStatusUpdateHandleProp) => {
@@ -48,6 +60,21 @@ const TaskStatusEditMode = ({
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
+
+        try {
+            if (isDevMode && isSelfTask) {
+                await updateSelfTask({ id: task.id, task: payload }).unwrap();
+            }
+            toast(SUCCESS, STATUS_UPDATE_SUCCESSFUL);
+        } catch (error) {
+            const errorMessage =
+                error && typeof error === 'object' && 'data' in error
+                    ? (error.data as { message?: string }).message ||
+                      STATUS_UPDATE_ERROR
+                    : STATUS_UPDATE_ERROR;
+            toast(ERROR, errorMessage);
+        }
+
         setEditedTaskDetails((prev: CardTaskDetails) => ({
             ...prev,
             ...payload,
@@ -80,7 +107,7 @@ const TaskStatusEditMode = ({
                 oldProgress={task.percentCompleted}
                 onChange={onChangeUpdateTaskStatus}
             />
-            <StatusIndicator status={saveStatus} />
+            {!isDevMode && <StatusIndicator status={saveStatus} />}
         </div>
     );
 };

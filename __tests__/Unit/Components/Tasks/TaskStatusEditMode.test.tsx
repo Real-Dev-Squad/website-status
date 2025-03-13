@@ -19,8 +19,10 @@ const BLOCKED_TASK = {
 
 describe('TaskStatusEditMode', () => {
     let updateTaskSpy: any;
+    let updateSelfTaskSpy: any;
     beforeEach(() => {
         updateTaskSpy = jest.spyOn(tasksApi, 'useUpdateTaskMutation');
+        updateSelfTaskSpy = jest.spyOn(tasksApi, 'useUpdateSelfTaskMutation');
     });
 
     afterEach(() => {
@@ -172,6 +174,27 @@ describe('TaskStatusEditMode', () => {
         await waitFor(() => {
             expect(screen.getByTestId('error')).toBeInTheDocument();
         });
+    });
+
+    it('change task status from BLOCKED to IN_PROGRESS when  and isDevMode are true', async () => {
+        const setEditedTaskDetails = jest.fn();
+
+        renderWithRouter(
+            <Provider store={store()}>
+                <TaskStatusEditMode
+                    task={BLOCKED_TASK}
+                    setEditedTaskDetails={setEditedTaskDetails}
+                    isDevMode={true}
+                    isSelfTask={true}
+                />
+            </Provider>
+        );
+
+        const statusSelect = screen.getByLabelText('Status:');
+        expect(statusSelect).toHaveValue('BLOCKED');
+
+        fireEvent.change(statusSelect, { target: { value: 'IN_PROGRESS' } });
+        expect(statusSelect).toHaveValue('IN_PROGRESS');
     });
 });
 

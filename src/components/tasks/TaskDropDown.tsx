@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { beautifyStatus } from './card/TaskStatusEditMode';
+import styles from '@/components/tasks/card/card.module.scss';
 
 import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import TaskDropDownModel from './TaskDropDownModel';
@@ -102,6 +103,40 @@ export default function TaskDropDown({
         onChange(payload);
         setMessage('');
     };
+    if (isDevMode) {
+        return (
+            <>
+                <label
+                    className={styles.cardPurposeAndStatusFont}
+                    data-testid="task-status-label"
+                >
+                    Status:
+                    <select
+                        className={styles.taskStatusUpdate}
+                        data-testid="task-status"
+                        name="status"
+                        onChange={handleChange}
+                        value={newStatus}
+                    >
+                        {taskStatus.map(([name, status]) => (
+                            <option
+                                data-testid={`task-status-${name}`}
+                                key={status}
+                                value={status}
+                            >
+                                {beautifyStatus(name, isDevMode)}
+                            </option>
+                        ))}
+                    </select>
+                </label>
+                <TaskDropDownModel
+                    message={message}
+                    resetProgressAndStatus={resetProgressAndStatus}
+                    handleProceed={handleProceed}
+                />
+            </>
+        );
+    }
     return (
         <>
             <label>
