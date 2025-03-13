@@ -6,11 +6,6 @@ import { renderWithRouter } from '@/test_utils/createMockRouter';
 import { mockGetTaskProgress } from '../../../../../__mocks__/db/progresses';
 import ProgressUpdateCard from '@/components/taskDetails/ProgressUpdateCard/ProgressUpdateCard';
 import { DEFAULT_AVATAR } from '@/constants/url';
-import { useRouter } from 'next/router';
-
-jest.mock('next/router', () => ({
-    useRouter: jest.fn(),
-}));
 
 let mockedOpenDetailsFunction: jest.Mock<void, [React.MouseEvent<HTMLElement>]>;
 
@@ -21,11 +16,6 @@ beforeEach(() => {
 
 describe('ProgressUpdateCard Component', () => {
     it('should render the default avatar when userData is undefined', () => {
-        const mockRouter = {
-            query: { dev: 'true' },
-        };
-        (useRouter as jest.Mock).mockReturnValue(mockRouter);
-
         const mockDataWithNoUserData = {
             ...mockGetTaskProgress.data[2],
             userData: undefined,
