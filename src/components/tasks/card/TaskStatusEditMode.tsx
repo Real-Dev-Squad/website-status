@@ -59,35 +59,32 @@ const TaskStatusEditMode = ({
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
-        try {
-            if (isDevMode && isSelfTask) {
-                await updateSelfTask({ id: task.id, task: payload }).unwrap();
-            }
-            toast(SUCCESS, STATUS_UPDATE_SUCCESSFUL);
-        } catch (error) {
-            const errorMessage =
-                error && typeof error === 'object' && 'data' in error
-                    ? (error.data as { message?: string }).message ||
-                      STATUS_UPDATE_ERROR
-                    : STATUS_UPDATE_ERROR;
-            toast(ERROR, errorMessage);
+        let updatePromise;
+        if (isDevMode && isSelfTask) {
+            updatePromise = updateSelfTask({ id: task.id, task: payload });
+        } else {
+            updatePromise = updateTask({ id: task.id, task: payload });
         }
+
         setEditedTaskDetails((prev: CardTaskDetails) => ({
             ...prev,
             ...payload,
         }));
-        const response = updateTask({
-            id: task.id,
-            task: payload,
-        });
 
-        response
+        updatePromise
             .unwrap()
             .then(() => {
                 setSaveStatus(SAVED);
+                toast(SUCCESS, STATUS_UPDATE_SUCCESSFUL);
             })
-            .catch(() => {
+            .catch((error) => {
                 setSaveStatus(ERROR_STATUS);
+                const errorMessage =
+                    error && typeof error === 'object' && 'data' in error
+                        ? (error.data as { message?: string }).message ||
+                          STATUS_UPDATE_ERROR
+                        : STATUS_UPDATE_ERROR;
+                toast(ERROR, errorMessage);
             })
             .finally(() => {
                 setTimeout(() => {
