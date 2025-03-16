@@ -176,4 +176,169 @@ describe('TaskDropDown', () => {
             expect(msgTag).toHaveTextContent(msg);
         });
     });
+    describe('Dev Mode Rendering', () => {
+        it('should render with dev mode specific classes', () => {
+            render(
+                <TaskDropDown
+                    isDevMode={true}
+                    oldProgress={0}
+                    oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
+                    onChange={onChange}
+                />
+            );
+
+            const label = screen.getByTestId('task-status-label');
+            expect(label).toHaveClass('cardPurposeAndStatusFont');
+
+            const select = screen.getByTestId('task-status');
+            expect(select).toHaveClass('taskStatusUpdate');
+        });
+
+        it('should render all expected task statuses except COMPLETED in dev mode', () => {
+            render(
+                <TaskDropDown
+                    isDevMode={true}
+                    oldProgress={0}
+                    oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
+                    onChange={onChange}
+                />
+            );
+
+            expect(
+                screen.getByTestId('task-status-IN_PROGRESS')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByTestId('task-status-BLOCKED')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByTestId('task-status-NEEDS_REVIEW')
+            ).toBeInTheDocument();
+            expect(screen.getByTestId('task-status-DONE')).toBeInTheDocument();
+
+            expect(
+                screen.queryByTestId('task-status-COMPLETED')
+            ).not.toBeInTheDocument();
+        });
+
+        it('should update state and call onChange when selecting a status', () => {
+            const onChange = jest.fn();
+
+            const { getByTestId } = render(
+                <TaskDropDown
+                    oldStatus={BACKEND_TASK_STATUS.UN_ASSIGNED}
+                    oldProgress={0}
+                    onChange={onChange}
+                />
+            );
+
+            const statusSelect = getByTestId('task-status');
+
+            fireEvent.change(statusSelect, {
+                target: { value: BACKEND_TASK_STATUS.NEEDS_REVIEW },
+            });
+
+            expect(onChange).toHaveBeenCalledWith({
+                newStatus: BACKEND_TASK_STATUS.NEEDS_REVIEW,
+            });
+        });
+
+        it('should show the current status as selected', () => {
+            const currentStatus = BACKEND_TASK_STATUS.BLOCKED;
+
+            render(
+                <TaskDropDown
+                    isDevMode={true}
+                    oldProgress={0}
+                    oldStatus={currentStatus}
+                    onChange={onChange}
+                />
+            );
+
+            const select = screen.getByTestId('task-status');
+            expect(select).toHaveValue(currentStatus);
+        });
+
+        it('should handle COMPLETED status in dev mode', () => {
+            render(
+                <TaskDropDown
+                    isDevMode={true}
+                    oldProgress={100}
+                    oldStatus={BACKEND_TASK_STATUS.COMPLETED}
+                    onChange={onChange}
+                />
+            );
+
+            const option = screen.getByTestId(
+                'task-status-DONE'
+            ) as HTMLOptionElement;
+            expect(option.selected).toBeTruthy();
+        });
+    });
+
+    describe('Non-Dev Mode Rendering', () => {
+        it('should render without dev mode specific classes', () => {
+            render(
+                <TaskDropDown
+                    isDevMode={false}
+                    oldProgress={0}
+                    oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
+                    onChange={onChange}
+                />
+            );
+
+            const label = screen.getByText('Status:');
+            expect(label).toBeInTheDocument();
+
+            expect(label).not.toHaveClass('cardPurposeAndStatusFont');
+
+            const select = screen.getByTestId('task-status');
+            expect(select).not.toHaveClass('taskStatusUpdate');
+        });
+
+        it('should not display BACKLOG and DONE options in non-dev mode', () => {
+            render(
+                <TaskDropDown
+                    isDevMode={false}
+                    oldProgress={0}
+                    oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
+                    onChange={onChange}
+                />
+            );
+
+            expect(
+                screen.queryByTestId('task-status-BACKLOG')
+            ).not.toBeInTheDocument();
+            expect(
+                screen.queryByTestId('task-status-DONE')
+            ).not.toBeInTheDocument();
+
+            expect(
+                screen.getByTestId('task-status-IN_PROGRESS')
+            ).toBeInTheDocument();
+            expect(
+                screen.getByTestId('task-status-BLOCKED')
+            ).toBeInTheDocument();
+        });
+    });
+
+    describe('Status Change Handling', () => {
+        it('should not call onChange when selected status is the same as current status', () => {
+            const currentStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
+
+            render(
+                <TaskDropDown
+                    isDevMode={true}
+                    oldProgress={0}
+                    oldStatus={currentStatus}
+                    onChange={onChange}
+                />
+            );
+
+            fireEvent.change(screen.getByTestId('task-status'), {
+                target: { value: currentStatus },
+            });
+
+            expect(onChange).not.toHaveBeenCalled();
+        });
+    });
 });
