@@ -544,13 +544,7 @@ const Card: FC<CardProps> = ({
                     </div>
                 )}
             </div>
-            <div
-                className={
-                    isDevMode
-                        ? styles.taskStatusDateAndPurposeContainer
-                        : styles.taskStatusAndDateContainer
-                }
-            >
+            <div className={styles.taskStatusAndDateContainer}>
                 <div className={styles.dateInfo}>
                     <div className={styles.dateSection}>
                         <p className={styles.cardSpecialFont}>
