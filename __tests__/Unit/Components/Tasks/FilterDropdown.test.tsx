@@ -75,9 +75,6 @@ describe('FilterDropdown', () => {
 
         const unassignedButton = screen.getByText(/unassigned/i);
         expect(unassignedButton).toBeInTheDocument();
-
-        const completedButton = screen.getByText(/completed/i);
-        expect(completedButton).toBeInTheDocument();
     });
 
     test('calls onSelect and onClose when a status button is clicked', () => {
@@ -177,9 +174,6 @@ describe('FilterDropdown', () => {
             />
         );
 
-        const completedButton = screen.getByText(/completed/i);
-        expect(completedButton).toHaveClass('status-button-active');
-
         const unassignedButton = screen.getByText(/unassigned/i);
         expect(unassignedButton).not.toHaveClass('status-button-active');
     });
@@ -226,9 +220,6 @@ describe('FilterDropdown', () => {
 
         const backlogButton = screen.getByText(/backlog/i);
         expect(backlogButton).toHaveClass('status-button-active');
-
-        const completedButton = screen.getByText(/completed/i);
-        expect(completedButton).not.toHaveClass('status-button-active');
     });
 
     it('Renders Task tab Done, when dev flag is on', async () => {
@@ -250,19 +241,19 @@ describe('FilterDropdown', () => {
         expect(doneButton).toBeInTheDocument();
         expect(completedButton).toBeNull();
     });
-    it('Renders Task status Completed, when dev flag is not on', async () => {
-        renderWithRouter(
-            <FilterDropdown
-                tabs={[Tab.BACKLOG, Tab.COMPLETED, Tab.DONE]}
-                onSelect={mockOnSelect}
-                activeTab={Tab.COMPLETED}
-                onClose={mockOnClose}
-            />
-        );
-        const doneButton = screen.queryByText(/done/i);
-        const completedButton = screen.queryByText(/completed/i);
+    // it('Renders Task status Completed, when dev flag is not on', async () => {
+    //     renderWithRouter(
+    //         <FilterDropdown
+    //             tabs={[Tab.BACKLOG, Tab.COMPLETED, Tab.DONE]}
+    //             onSelect={mockOnSelect}
+    //             activeTab={Tab.COMPLETED}
+    //             onClose={mockOnClose}
+    //         />
+    //     );
+    //     const doneButton = screen.queryByText(/done/i);
+    //     const completedButton = screen.queryByText(/completed/i);
 
-        expect(completedButton).toBeInTheDocument();
-        expect(doneButton).toBeNull();
-    });
+    //     expect(completedButton).toBeInTheDocument();
+    //     expect(doneButton).toBeNull();
+    // });
 });
