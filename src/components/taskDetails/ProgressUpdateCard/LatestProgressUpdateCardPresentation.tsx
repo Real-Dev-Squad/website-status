@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { FaRegClock } from 'react-icons/fa6';
 import {
     LatestProgressUpdateCardPresentationProps,
@@ -17,8 +16,6 @@ export default function LatestProgressUpdateCardPresentation({
     onMoreOrLessButtonClick,
     dateInAgoFormat,
 }: LatestProgressUpdateCardPresentationProps) {
-    const router = useRouter();
-    const isDevMode = router.query.dev === 'true';
     const progressInfoMapping = dataToShowState.map(
         (datum: ProgressUpdateDataToShow) => (
             <div
@@ -71,14 +68,7 @@ export default function LatestProgressUpdateCardPresentation({
                 >
                     <Tooltip
                         content={tooltipText}
-                        tooltipPosition={
-                            isDevMode
-                                ? { bottom: '2rem', right: '-2rem' }
-                                : {
-                                      bottom: '1.4rem',
-                                      right: '-5rem',
-                                  }
-                        }
+                        tooltipPosition={{ bottom: '2rem', right: '-2rem' }}
                     >
                         <span className={styles['date-clock-container']}>
                             <FaRegClock />
@@ -92,36 +82,31 @@ export default function LatestProgressUpdateCardPresentation({
                             </span>
                         </span>
                     </Tooltip>
-                    {isDevMode &&
-                        (username === '' ? (
-                            <UserAvatar
-                                userProfileImageUrl={userProfileImageUrl}
-                            />
-                        ) : (
-                            <Tooltip
-                                content={username}
-                                tooltipPosition={{
-                                    top: '-2.5rem',
-                                    right: '-3.9rem',
-                                    width: '10rem',
-                                }}
+                    {username === '' ? (
+                        <UserAvatar userProfileImageUrl={userProfileImageUrl} />
+                    ) : (
+                        <Tooltip
+                            content={username}
+                            tooltipPosition={{
+                                top: '-2.5rem',
+                                right: '-3.9rem',
+                                width: '10rem',
+                            }}
+                        >
+                            <a
+                                href={`${USER_MANAGEMENT_URL}?username=${username}`}
+                                className={
+                                    styles[
+                                        'latest-progress-update-card__user-info-link'
+                                    ]
+                                }
                             >
-                                <a
-                                    href={`${USER_MANAGEMENT_URL}?username=${username}`}
-                                    className={
-                                        styles[
-                                            'latest-progress-update-card__user-info-link'
-                                        ]
-                                    }
-                                >
-                                    <UserAvatar
-                                        userProfileImageUrl={
-                                            userProfileImageUrl
-                                        }
-                                    />
-                                </a>
-                            </Tooltip>
-                        ))}
+                                <UserAvatar
+                                    userProfileImageUrl={userProfileImageUrl}
+                                />
+                            </a>
+                        </Tooltip>
+                    )}
                 </div>
             </div>
         </div>
