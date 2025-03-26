@@ -72,18 +72,44 @@ export default function TaskDropDown({
     };
 
     const handleChange = (ev: React.ChangeEvent<HTMLSelectElement>) => {
+      
+
         const newStatusValue = ev.target.value;
 
         setStatusAndProgress((prev) => ({
             ...prev,
             newStatus: newStatusValue,
+           
         }));
 
         if (oldStatus === newStatusValue) {
             return;
         }
 
-        onChange({ newStatus: newStatusValue });
+        let newProgressValue = oldProgress;
+
+        if (isDevMode && newStatusValue !== BACKEND_TASK_STATUS.BACKLOG) {
+            const msg = `The progress of current task is ${oldProgress}%. `;
+
+            if (shouldTaskProgressBe100(newStatusValue)) {
+                newProgressValue = 100;
+                setStatusAndProgress((prev) => ({ ...prev, newProgress: 100 }));
+                setMessage(msg + MSG_ON_100_PROGRESS);
+            } else if (shouldTaskProgressBe0(newStatusValue)) {
+                newProgressValue = 0;
+                setStatusAndProgress((prev) => ({ ...prev, newProgress: 0 }));
+                setMessage(msg + MSG_ON_0_PROGRESS);
+            }
+        }
+
+        if (newProgressValue !== oldProgress) {
+            onChange({
+                newStatus: newStatusValue,
+                newProgress: newProgressValue,
+            });
+        } else {
+            onChange({ newStatus: newStatusValue });
+        }
     };
 
     const handleProceed = () => {
@@ -117,11 +143,6 @@ export default function TaskDropDown({
                         ))}
                     </select>
                 </label>
-                <TaskDropDownModel
-                    message={message}
-                    resetProgressAndStatus={resetProgressAndStatus}
-                    handleProceed={handleProceed}
-                />
             </>
         );
     }
