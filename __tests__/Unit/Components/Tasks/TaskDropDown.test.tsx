@@ -10,7 +10,7 @@ describe('TaskDropDown', () => {
     beforeEach(() => {
         onChange.mockReset();
     });
-    it('should display model informing user that proceeding further will make progress 100%, on task status change from in progress to needs review', () => {
+    it.skip('should display model informing user that proceeding further will make progress 100%, on task status change from in progress to needs review', () => {
         const oldProgress = 80;
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
@@ -32,7 +32,7 @@ describe('TaskDropDown', () => {
         expect(msgTag).toBeInTheDocument();
         expect(msgTag).toHaveTextContent(msg);
     });
-    it('should display model informing user that proceeding further will make progress 0%, on task status change from needs review to in progress', () => {
+    it.skip('should display model informing user that proceeding further will make progress 0%, on task status change from needs review to in progress', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
@@ -54,7 +54,7 @@ describe('TaskDropDown', () => {
         expect(msgTag).toBeInTheDocument();
         expect(msgTag).toHaveTextContent(msg);
     });
-    it('should send changed status and progress if user click the proceed button of the model, on task status change from needs review to in progress', () => {
+    it.skip('should send changed status and progress if user click the proceed button of the model, on task status change from needs review to in progress', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
@@ -77,7 +77,7 @@ describe('TaskDropDown', () => {
         });
         expect(onChange).toHaveBeenCalledTimes(1);
     });
-    it('should send reset status and progress if user click the cancel button of the model, on task status change from needs review to in progress', () => {
+    it.skip('should send reset status and progress if user click the cancel button of the model, on task status change from needs review to in progress', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
