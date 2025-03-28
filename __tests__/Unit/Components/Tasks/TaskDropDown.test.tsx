@@ -177,7 +177,7 @@ describe('TaskDropDown', () => {
         });
     });
     describe('Dev Mode Rendering', () => {
-        it('should render with dev mode specific classes', () => {
+        it('should renders TaskDropDown with correct classes', () => {
             render(
                 <TaskDropDown
                     isDevMode={true}
@@ -276,7 +276,7 @@ describe('TaskDropDown', () => {
     });
 
     describe('Non-Dev Mode Rendering', () => {
-        it('should render without dev mode specific classes', () => {
+        it('should not render TaskDropDown', () => {
             render(
                 <TaskDropDown
                     isDevMode={false}
