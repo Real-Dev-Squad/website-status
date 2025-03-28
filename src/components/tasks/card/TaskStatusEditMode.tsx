@@ -80,12 +80,7 @@ const TaskStatusEditMode = ({
             .catch((error) => {
                 setSaveStatus(ERROR_STATUS);
                 const errorMessage =
-                    error &&
-                    typeof error === 'object' &&
-                    'data' in error &&
-                    error.data?.message
-                        ? error.data.message
-                        : STATUS_UPDATE_ERROR;
+                    error?.data?.message ?? STATUS_UPDATE_ERROR;
 
                 toast(ERROR, errorMessage);
             })
