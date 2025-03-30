@@ -177,7 +177,7 @@ describe('TaskDropDown', () => {
             expect(msgTag).toHaveTextContent(msg);
         });
     });
-    describe('Dev Mode Rendering', () => {
+    describe('Task Status Dropdown Rendering in DevMode', () => {
         it('should renders TaskDropDown with correct classes', () => {
             render(
                 <TaskDropDown
@@ -276,7 +276,7 @@ describe('TaskDropDown', () => {
         });
     });
 
-    describe('Non-Dev Mode Rendering', () => {
+    describe('Task Status Dropdown Rendering in non-DevMode', () => {
         it('should not render TaskDropDown', () => {
             render(
                 <TaskDropDown

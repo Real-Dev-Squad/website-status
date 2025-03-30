@@ -610,29 +610,15 @@ const Card: FC<CardProps> = ({
                 {showAssignButton() && <AssigneeButton />}
             </div>
 
-            {isDevMode ? (
-                <div className={styles.taskStatusEditMode}>
-                    {isEditable || isSelfTask ? (
-                        <TaskStatusEditMode
-                            task={editedTaskDetails}
-                            setEditedTaskDetails={setEditedTaskDetails}
-                            isDevMode={isDevMode}
-                            isSelfTask={isSelfTask}
-                        />
-                    ) : (
-                        <div className={styles.statusContainer}>
-                            <p className={styles.cardSpecialFont}>Status:</p>
-                            <p
-                                data-testid="task-status"
-                                className={styles.statusText}
-                            >
-                                {beautifyStatus(cardDetails.status, isDevMode)}
-                            </p>
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div className={styles.taskStatusEditMode}>
+            <div className={styles.taskStatusEditMode}>
+                {isDevMode && (isEditable || isSelfTask) ? (
+                    <TaskStatusEditMode
+                        task={editedTaskDetails}
+                        setEditedTaskDetails={setEditedTaskDetails}
+                        isDevMode={isDevMode}
+                        isSelfTask={isSelfTask}
+                    />
+                ) : (
                     <div className={styles.statusContainer}>
                         <p className={styles.cardSpecialFont}>Status:</p>
                         <p
@@ -642,8 +628,8 @@ const Card: FC<CardProps> = ({
                             {beautifyStatus(cardDetails.status, isDevMode)}
                         </p>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
 
             <div className={styles.cardItems}>
                 <div
