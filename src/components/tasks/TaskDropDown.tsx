@@ -24,9 +24,11 @@ export default function TaskDropDown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
-    if (isDevMode && oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
+
+    if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
+
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
         ([key]) =>
             !(key === BACKEND_TASK_STATUS.COMPLETED) &&

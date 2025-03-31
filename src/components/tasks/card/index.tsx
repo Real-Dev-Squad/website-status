@@ -570,6 +570,25 @@ const Card: FC<CardProps> = ({
                             : `Started ${getStartedAgo()}`}
                     </span>
                 </div>
+                {/* EDIT task status */}
+                <div className={styles.taskStatusEditMode}>
+                    {isEditable ? (
+                        <TaskStatusEditMode
+                            task={editedTaskDetails}
+                            setEditedTaskDetails={setEditedTaskDetails}
+                        />
+                    ) : (
+                        <div className={styles.statusContainer} style={{}}>
+                            <p className={styles.cardSpecialFont}>Status:</p>
+                            <p
+                                data-testid="task-status"
+                                className={styles.statusText}
+                            >
+                                {beautifyStatus(cardDetails.status)}
+                            </p>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <div className={styles.contributor}>
