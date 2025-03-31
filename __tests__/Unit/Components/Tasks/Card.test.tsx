@@ -557,15 +557,15 @@ describe('Task card', () => {
             </Provider>
         );
         const spanElement = screen.getByTestId('task-status');
-        expect(spanElement).toHaveTextContent('Completed');
+        expect(spanElement).toHaveTextContent('Done');
     });
 });
 
 describe('Task card, color based on status ', () => {
     const OVER_DUE_CLASS = 'overdueTask';
-    it('Should not render card in red, if task status is COMPLETED ', () => {
+    it('Should not render card in red, if task status is DONE ', () => {
         const TASK_DATA = DEFAULT_PROPS;
-        TASK_DATA.content.status = COMPLETED;
+        TASK_DATA.content.status = DONE;
         renderWithRouter(
             <Provider store={store()}>
                 <Card {...TASK_DATA} />

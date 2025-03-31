@@ -122,11 +122,10 @@ describe('TaskDropDown', () => {
     });
     it('should show text Done as selected option when a task with completed status is passed down.', () => {
         const oldProgress = 100;
-        const oldStatus = BACKEND_TASK_STATUS.COMPLETED;
+        const oldStatus = BACKEND_TASK_STATUS.DONE;
 
         render(
             <TaskDropDown
-                isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
