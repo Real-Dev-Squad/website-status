@@ -18,7 +18,6 @@ import {
 } from '@/constants/constants';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
-
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
