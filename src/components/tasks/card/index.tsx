@@ -46,6 +46,7 @@ const Card: FC<CardProps> = ({
     onContentChange = () => undefined,
 }) => {
     const router = useRouter();
+    const isDevMode = router.query.dev === 'true' ? true : false;
 
     const statusRedList = [BLOCKED];
     const statusNotOverDueList = [
@@ -625,7 +626,7 @@ const Card: FC<CardProps> = ({
                             data-testid="task-status"
                             className={styles.statusText}
                         >
-                            {beautifyStatus(cardDetails.status, isDevMode)}
+                            {beautifyStatus(cardDetails.status)}
                         </p>
                     </div>
                 )}
