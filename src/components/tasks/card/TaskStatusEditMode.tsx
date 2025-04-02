@@ -5,21 +5,34 @@ import task, {
 import { useState } from 'react';
 import styles from '@/components/tasks/card/card.module.scss';
 import { PENDING, SAVED, ERROR_STATUS } from '../constants';
-import { useUpdateTaskMutation } from '@/app/services/tasksApi';
+import {
+    useUpdateTaskMutation,
+    useUpdateSelfTaskMutation,
+} from '@/app/services/tasksApi';
+
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
-import { TASK_STATUS_MAPING } from '@/constants/constants';
+import {
+    STATUS_UPDATE_ERROR,
+    STATUS_UPDATE_SUCCESSFUL,
+    TASK_STATUS_MAPING,
+} from '@/constants/constants';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
     isDevMode?: boolean;
+    isSelfTask?: boolean;
 };
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => {
+
     let beautifiedStatus = status;
+    
     if (beautifiedStatus === BACKEND_TASK_STATUS.COMPLETED) {
         beautifiedStatus = 'DONE';
     }
@@ -34,11 +47,15 @@ const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
     isDevMode,
+    isSelfTask,
+    
 }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
 
-    const onChangeUpdateTaskStatus = ({
+    const [updateSelfTask] = useUpdateSelfTaskMutation();
+    const { SUCCESS, ERROR } = ToastTypes;
+    const onChangeUpdateTaskStatus = async ({
         newStatus,
         newProgress,
     }: taskStatusUpdateHandleProp) => {
@@ -49,22 +66,28 @@ const TaskStatusEditMode = ({
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
+        const updatePromise =
+            isDevMode && isSelfTask
+                ? updateSelfTask({ id: task.id, task: payload })
+                : updateTask({ id: task.id, task: payload });
+
         setEditedTaskDetails((prev: CardTaskDetails) => ({
             ...prev,
             ...payload,
         }));
-        const response = updateTask({
-            id: task.id,
-            task: payload,
-        });
 
-        response
+        updatePromise
             .unwrap()
             .then(() => {
                 setSaveStatus(SAVED);
+                toast(SUCCESS, STATUS_UPDATE_SUCCESSFUL);
             })
-            .catch(() => {
+            .catch((error) => {
                 setSaveStatus(ERROR_STATUS);
+                const errorMessage =
+                    error?.data?.message ?? STATUS_UPDATE_ERROR;
+
+                toast(ERROR, errorMessage);
             })
             .finally(() => {
                 setTimeout(() => {
@@ -81,7 +104,8 @@ const TaskStatusEditMode = ({
                 oldProgress={task.percentCompleted}
                 onChange={onChangeUpdateTaskStatus}
             />
-            <StatusIndicator status={saveStatus} />
+
+            {!isDevMode && <StatusIndicator status={saveStatus} />}
         </div>
     );
 };
