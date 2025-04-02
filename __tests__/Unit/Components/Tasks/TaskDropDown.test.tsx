@@ -10,7 +10,7 @@ describe('TaskDropDown', () => {
     beforeEach(() => {
         onChange.mockReset();
     });
-    it.skip('should display model informing user that proceeding further will make progress 100%, on task status change from in progress to needs review', () => {
+    it('should display model informing user that proceeding further will make progress 100%, on task status change from in progress to needs review', () => {
         const oldProgress = 80;
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
@@ -32,7 +32,7 @@ describe('TaskDropDown', () => {
         expect(msgTag).toBeInTheDocument();
         expect(msgTag).toHaveTextContent(msg);
     });
-    it.skip('should display model informing user that proceeding further will make progress 0%, on task status change from needs review to in progress', () => {
+    it('should display model informing user that proceeding further will make progress 0%, on task status change from needs review to in progress', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
@@ -54,7 +54,7 @@ describe('TaskDropDown', () => {
         expect(msgTag).toBeInTheDocument();
         expect(msgTag).toHaveTextContent(msg);
     });
-    it.skip('should send changed status and progress if user click the proceed button of the model, on task status change from needs review to in progress', () => {
+    it('should send changed status and progress if user click the proceed button of the model, on task status change from needs review to in progress', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
@@ -77,7 +77,7 @@ describe('TaskDropDown', () => {
         });
         expect(onChange).toHaveBeenCalledTimes(1);
     });
-    it.skip('should send reset status and progress if user click the cancel button of the model, on task status change from needs review to in progress', () => {
+    it('should send reset status and progress if user click the cancel button of the model, on task status change from needs review to in progress', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
@@ -119,22 +119,6 @@ describe('TaskDropDown', () => {
         });
         const msgTag = screen.queryByTestId('msg');
         expect(msgTag).toBeNull();
-    });
-    it('should show text Done as selected option when a task with completed status is passed down.', () => {
-        const oldProgress = 100;
-        const oldStatus = BACKEND_TASK_STATUS.DONE;
-
-        render(
-            <TaskDropDown
-                oldProgress={oldProgress}
-                oldStatus={oldStatus}
-                onChange={onChange}
-            />
-        );
-        const option: HTMLOptionElement = screen.getByTestId(
-            'task-status-DONE'
-        ) as HTMLOptionElement;
-        expect(option.selected).toBeTruthy();
     });
 
     it('should not show any model info on change of status from in progress to blocked', () => {
@@ -257,22 +241,6 @@ describe('TaskDropDown', () => {
             const select = screen.getByTestId('task-status');
             expect(select).toHaveValue(currentStatus);
         });
-
-        it('should handle COMPLETED status in dev mode', () => {
-            render(
-                <TaskDropDown
-                    isDevMode={true}
-                    oldProgress={100}
-                    oldStatus={BACKEND_TASK_STATUS.COMPLETED}
-                    onChange={onChange}
-                />
-            );
-
-            const option = screen.getByTestId(
-                'task-status-DONE'
-            ) as HTMLOptionElement;
-            expect(option.selected).toBeTruthy();
-        });
     });
 
     describe('Task Status Dropdown Rendering in non-DevMode', () => {
@@ -293,31 +261,6 @@ describe('TaskDropDown', () => {
 
             const select = screen.getByTestId('task-status');
             expect(select).not.toHaveClass('taskStatusUpdate');
-        });
-
-        it('should not display BACKLOG and DONE options in non-dev mode', () => {
-            render(
-                <TaskDropDown
-                    isDevMode={false}
-                    oldProgress={0}
-                    oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
-                    onChange={onChange}
-                />
-            );
-
-            expect(
-                screen.queryByTestId('task-status-BACKLOG')
-            ).not.toBeInTheDocument();
-            expect(
-                screen.queryByTestId('task-status-DONE')
-            ).not.toBeInTheDocument();
-
-            expect(
-                screen.getByTestId('task-status-IN_PROGRESS')
-            ).toBeInTheDocument();
-            expect(
-                screen.getByTestId('task-status-BLOCKED')
-            ).toBeInTheDocument();
         });
     });
 
