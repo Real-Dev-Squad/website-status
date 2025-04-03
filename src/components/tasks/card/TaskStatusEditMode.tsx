@@ -9,6 +9,7 @@ import { useUpdateTaskMutation } from '@/app/services/tasksApi';
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
 import { TASK_STATUS_MAPING } from '@/constants/constants';
+import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 
 type Props = {
     task: task;
@@ -17,9 +18,9 @@ type Props = {
 };
 
 // TODO: remove this after fixing the card beautify status
-const beautifyStatus = (status: string, isDevMode?: boolean) => {
+const beautifyStatus = (status: string) => {
     let beautifiedStatus = status;
-    if (beautifiedStatus === 'COMPLETED' && isDevMode) {
+    if (beautifiedStatus === BACKEND_TASK_STATUS.COMPLETED) {
         beautifiedStatus = 'DONE';
     }
 

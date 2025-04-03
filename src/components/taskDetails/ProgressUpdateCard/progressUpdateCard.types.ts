@@ -49,6 +49,5 @@ export type ProgressUpdateCardOverviewProps = {
     username: string;
     userProfileImageUrl: string;
     tooltipString: string;
-    isDevMode: boolean;
     isExpanded: boolean;
 };
