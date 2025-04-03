@@ -4,13 +4,11 @@ import {
     ProgressUpdateCardPresentationProps,
     ProgressUpdateDataToShow,
 } from './progressUpdateCard.types';
-
 import ProgressUpdateCardOverview from './ProgressUpdateCardOverview';
 
 export default function ProgressUpdateCardPresentation({
     titleToShow,
     dateInAgoFormat,
-   
     username,
     userProfileImageUrl,
     tooltipString,
@@ -39,7 +37,7 @@ export default function ProgressUpdateCardPresentation({
                             onClick={(e) => onMoreOrLessButtonClick(e, datum)}
                             className={
                                 styles['progress-update-card__more-less-button']
-                            }   
+                            }
                             data-testid="progress-update-read-more-toggle-button"
                         >
                             {datum.isReadMoreEnabled ? 'Less' : 'More'}

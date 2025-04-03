@@ -75,7 +75,6 @@ const Card: FC<CardProps> = ({
     const { SUCCESS, ERROR } = ToastTypes;
 
     const { data, isUserAuthorized } = useUserData();
-    
 
     const [showEditButton, setShowEditButton] = useState(false);
 

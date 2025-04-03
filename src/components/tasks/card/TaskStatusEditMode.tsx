@@ -30,9 +30,8 @@ type Props = {
 
 // TODO: remove this after fixing the card beautify status
 const beautifyStatus = (status: string) => {
-
     let beautifiedStatus = status;
-    
+
     if (beautifiedStatus === BACKEND_TASK_STATUS.COMPLETED) {
         beautifiedStatus = 'DONE';
     }
@@ -48,7 +47,6 @@ const TaskStatusEditMode = ({
     setEditedTaskDetails,
     isDevMode,
     isSelfTask,
-    
 }: Props) => {
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
