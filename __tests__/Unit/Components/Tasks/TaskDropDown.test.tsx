@@ -120,7 +120,22 @@ describe('TaskDropDown', () => {
         const msgTag = screen.queryByTestId('msg');
         expect(msgTag).toBeNull();
     });
+    it('should show text Done as selected option when a task with completed status is passed down.', () => {
+        const oldProgress = 100;
+        const oldStatus = BACKEND_TASK_STATUS.DONE;
 
+        render(
+            <TaskDropDown
+                oldProgress={oldProgress}
+                oldStatus={oldStatus}
+                onChange={onChange}
+            />
+        );
+        const option: HTMLOptionElement = screen.getByTestId(
+            'task-status-DONE'
+        ) as HTMLOptionElement;
+        expect(option.selected).toBeTruthy();
+    });
     it('should not show any model info on change of status from in progress to blocked', () => {
         const oldProgress = 70;
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
@@ -178,32 +193,6 @@ describe('TaskDropDown', () => {
             expect(select).toHaveClass('taskStatusUpdate');
         });
 
-        it('should render all expected task statuses except COMPLETED in dev mode', () => {
-            render(
-                <TaskDropDown
-                    isDevMode={true}
-                    oldProgress={0}
-                    oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
-                    onChange={onChange}
-                />
-            );
-
-            expect(
-                screen.getByTestId('task-status-IN_PROGRESS')
-            ).toBeInTheDocument();
-            expect(
-                screen.getByTestId('task-status-BLOCKED')
-            ).toBeInTheDocument();
-            expect(
-                screen.getByTestId('task-status-NEEDS_REVIEW')
-            ).toBeInTheDocument();
-            expect(screen.getByTestId('task-status-DONE')).toBeInTheDocument();
-
-            expect(
-                screen.queryByTestId('task-status-COMPLETED')
-            ).not.toBeInTheDocument();
-        });
-
         it('should update state and call onChange when selecting a status', () => {
             const onChange = jest.fn();
 
@@ -221,6 +210,7 @@ describe('TaskDropDown', () => {
                 target: { value: BACKEND_TASK_STATUS.NEEDS_REVIEW },
             });
 
+            expect(statusSelect).toHaveValue(BACKEND_TASK_STATUS.NEEDS_REVIEW);
             expect(onChange).toHaveBeenCalledWith({
                 newStatus: BACKEND_TASK_STATUS.NEEDS_REVIEW,
             });

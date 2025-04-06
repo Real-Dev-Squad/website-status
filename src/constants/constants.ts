@@ -6,8 +6,9 @@ export const DONE = 'DONE';
 export const AVAILABLE = 'AVAILABLE';
 export const UNASSIGNED = 'UNASSIGNED';
 export const PROGRESS_SUCCESSFUL = 'Progress Updated Successfully';
-export const STATUS_UPDATE_SUCCESSFUL = 'Task Status Updated Successfully';
-export const STATUS_UPDATE_ERROR = 'Error updating task status';
+export const TASK_STATUS_UPDATE_SUCCESS_MESSAGE =
+    'Task Status Updated Successfully';
+export const TASK_STATUS_UPDATE_ERROR_MESSAGE = 'Error updating task status';
 export const STANDUP_ALREADY_SUBMITTED =
     'Standup already submitted for the day';
 export const DATEFORMAT = 'MMMM DD, YYYY ';
