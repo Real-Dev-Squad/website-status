@@ -13,8 +13,8 @@ import {
 import { StatusIndicator } from './StatusIndicator';
 import TaskDropDown from '../TaskDropDown';
 import {
-    STATUS_UPDATE_ERROR,
-    STATUS_UPDATE_SUCCESSFUL,
+    TASK_STATUS_UPDATE_ERROR_MESSAGE,
+    TASK_STATUS_UPDATE_SUCCESS_MESSAGE,
     TASK_STATUS_MAPING,
 } from '@/constants/constants';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
@@ -78,12 +78,12 @@ const TaskStatusEditMode = ({
             .unwrap()
             .then(() => {
                 setSaveStatus(SAVED);
-                toast(SUCCESS, STATUS_UPDATE_SUCCESSFUL);
+                toast(SUCCESS, TASK_STATUS_UPDATE_SUCCESS_MESSAGE);
             })
             .catch((error) => {
                 setSaveStatus(ERROR_STATUS);
                 const errorMessage =
-                    error?.data?.message ?? STATUS_UPDATE_ERROR;
+                    error?.data?.message ?? TASK_STATUS_UPDATE_ERROR_MESSAGE;
 
                 toast(ERROR, errorMessage);
             })
