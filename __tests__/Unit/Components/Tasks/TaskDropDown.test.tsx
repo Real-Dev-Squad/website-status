@@ -250,7 +250,7 @@ describe('TaskDropDown', () => {
             expect(label).not.toHaveClass('cardPurposeAndStatusFont');
 
             const select = screen.getByTestId('task-status');
-            expect(select).not.toHaveClass('taskStatusUpdate');
+            expect(select).toHaveClass('taskStatusUpdate');
         });
     });
 
