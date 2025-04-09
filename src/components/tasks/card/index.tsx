@@ -46,7 +46,7 @@ const Card: FC<CardProps> = ({
     onContentChange = () => undefined,
 }) => {
     const router = useRouter();
-    const isDevMode = router.query.dev === 'true' ? true : false;
+    const isDevMode = router.query.dev === 'true';
 
     const statusRedList = [BLOCKED];
     const statusNotOverDueList = [

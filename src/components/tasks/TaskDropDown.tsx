@@ -23,7 +23,7 @@ export default function TaskDropDown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
-    if (isDevMode && oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
+    if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
@@ -97,60 +97,54 @@ export default function TaskDropDown({
         onChange(payload);
         setMessage('');
     };
-    if (isDevMode) {
-        return (
-            <>
-                <label
-                    className={styles.cardPurposeAndStatusFont}
-                    data-testid="task-status-label"
-                >
-                    Status:
-                    <select
-                        className={styles.taskStatusUpdate}
-                        data-testid="task-status"
-                        name="status"
-                        onChange={handleChange}
-                        value={newStatus}
-                    >
-                        {taskStatus.map(([name, status]) => (
-                            <option
-                                data-testid={`task-status-${name}`}
-                                key={status}
-                                value={status}
-                            >
-                                {beautifyStatus(name)}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-                <TaskDropDownModel
-                    message={message}
-                    resetProgressAndStatus={resetProgressAndStatus}
-                    handleProceed={handleProceed}
-                />
-            </>
-        );
+    type TaskStatusItem = [string, string];
+
+    interface TaskStatusSelectProps {
+        newStatus: string;
+        handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+        taskStatus: TaskStatusItem[];
+        testIdPrefix?: string;
     }
+
+    const TaskStatusSelect = ({
+        newStatus,
+        handleChange,
+        taskStatus,
+        testIdPrefix = 'task-status',
+    }: TaskStatusSelectProps) => (
+        <select
+            className={styles.taskStatusUpdate}
+            data-testid={testIdPrefix}
+            name="status"
+            onChange={handleChange}
+            value={newStatus}
+        >
+            {taskStatus.map(([name, status]: TaskStatusItem) => (
+                <option
+                    data-testid={`${testIdPrefix}-${name}`}
+                    key={status}
+                    value={status}
+                >
+                    {beautifyStatus(name)}
+                </option>
+            ))}
+        </select>
+    );
+
     return (
         <>
-            <label>
+            <label
+                className={
+                    isDevMode ? styles.cardPurposeAndStatusFont : undefined
+                }
+                data-testid={isDevMode ? 'task-status-label' : undefined}
+            >
                 Status:
-                <select
-                    data-testid="task-status"
-                    name="status"
-                    onChange={handleChange}
-                    value={newStatus}
-                >
-                    {taskStatus.map(([name, status]) => (
-                        <option
-                            data-testid={`task-status-${name}`}
-                            key={status}
-                            value={status}
-                        >
-                            {beautifyStatus(name)}
-                        </option>
-                    ))}
-                </select>
+                <TaskStatusSelect
+                    newStatus={newStatus}
+                    handleChange={handleChange}
+                    taskStatus={taskStatus}
+                />
             </label>
             <TaskDropDownModel
                 message={message}
