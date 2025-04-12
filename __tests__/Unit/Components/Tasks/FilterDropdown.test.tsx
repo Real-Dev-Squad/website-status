@@ -60,7 +60,7 @@ describe('FilterDropdown', () => {
     test('renders the modal with correct title and buttons', () => {
         renderWithRouter(
             <FilterDropdown
-                tabs={[Tab.UNASSIGNED, Tab.COMPLETED]}
+                tabs={[Tab.UNASSIGNED, Tab.DONE]}
                 onSelect={mockOnSelect}
                 activeTab={Tab.UNASSIGNED}
                 onClose={mockOnClose}
@@ -75,6 +75,9 @@ describe('FilterDropdown', () => {
 
         const unassignedButton = screen.getByText(/unassigned/i);
         expect(unassignedButton).toBeInTheDocument();
+
+        const doneButton = screen.getByText(/done/i);
+        expect(doneButton).toBeInTheDocument();
     });
 
     test('calls onSelect and onClose when a status button is clicked', () => {
@@ -220,6 +223,9 @@ describe('FilterDropdown', () => {
 
         const backlogButton = screen.getByText(/backlog/i);
         expect(backlogButton).toHaveClass('status-button-active');
+
+        const doneButton = screen.getByText(/done/i);
+        expect(doneButton).not.toHaveClass('status-button-active');
     });
 
     it('Renders Task tab Done', async () => {
