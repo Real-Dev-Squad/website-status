@@ -1,4 +1,4 @@
-import TaskDropDown from '@/components/tasks/TaskDropDown';
+import TaskStatusDropdown from '@/components/tasks/TaskStatusDropdown';
 import TaskDropDownModel from '@/components/tasks/TaskDropDownModel';
 import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
@@ -6,7 +6,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 const onChange = jest.fn();
 
-describe('TaskDropDown', () => {
+describe('TaskStatusDropdown', () => {
     beforeEach(() => {
         onChange.mockReset();
     });
@@ -15,7 +15,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
@@ -37,7 +37,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
@@ -59,7 +59,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
@@ -82,7 +82,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.NEEDS_REVIEW;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
@@ -102,7 +102,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
@@ -125,7 +125,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.DONE;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
@@ -141,7 +141,7 @@ describe('TaskDropDown', () => {
         const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
         render(
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={true}
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
@@ -176,9 +176,9 @@ describe('TaskDropDown', () => {
         });
     });
     describe('Task Status Dropdown Rendering in DevMode', () => {
-        it('should renders TaskDropDown with correct classes', () => {
+        it('should renders TaskStatusDropdown with correct classes', () => {
             render(
-                <TaskDropDown
+                <TaskStatusDropdown
                     isDevMode={true}
                     oldProgress={0}
                     oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
@@ -197,7 +197,7 @@ describe('TaskDropDown', () => {
             const onChange = jest.fn();
 
             const { getByTestId } = render(
-                <TaskDropDown
+                <TaskStatusDropdown
                     oldStatus={BACKEND_TASK_STATUS.UN_ASSIGNED}
                     oldProgress={0}
                     onChange={onChange}
@@ -220,7 +220,7 @@ describe('TaskDropDown', () => {
             const currentStatus = BACKEND_TASK_STATUS.BLOCKED;
 
             render(
-                <TaskDropDown
+                <TaskStatusDropdown
                     isDevMode={true}
                     oldProgress={0}
                     oldStatus={currentStatus}
@@ -234,9 +234,9 @@ describe('TaskDropDown', () => {
     });
 
     describe('Task Status Dropdown Rendering in non-DevMode', () => {
-        it('should not render TaskDropDown', () => {
+        it('should not render TaskStatusDropdown', () => {
             render(
-                <TaskDropDown
+                <TaskStatusDropdown
                     isDevMode={false}
                     oldProgress={0}
                     oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
@@ -259,7 +259,7 @@ describe('TaskDropDown', () => {
             const currentStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
             render(
-                <TaskDropDown
+                <TaskStatusDropdown
                     isDevMode={true}
                     oldProgress={0}
                     oldStatus={currentStatus}

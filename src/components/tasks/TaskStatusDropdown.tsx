@@ -12,7 +12,7 @@ type Props = {
     oldStatus: string;
     oldProgress: number;
 };
-export default function TaskDropDown({
+export default function TaskStatusDropdown({
     isDevMode,
     onChange,
     oldStatus,

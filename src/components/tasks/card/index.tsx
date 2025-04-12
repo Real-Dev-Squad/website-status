@@ -616,7 +616,6 @@ const Card: FC<CardProps> = ({
                     <TaskStatusEditMode
                         task={editedTaskDetails}
                         setEditedTaskDetails={setEditedTaskDetails}
-                        isDevMode={isDevMode}
                         isSelfTask={isSelfTask}
                     />
                 ) : (

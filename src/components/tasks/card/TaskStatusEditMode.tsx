@@ -11,7 +11,7 @@ import {
 } from '@/app/services/tasksApi';
 
 import { StatusIndicator } from './StatusIndicator';
-import TaskDropDown from '../TaskDropDown';
+import TaskStatusDropdown from '../TaskStatusDropdown';
 import {
     TASK_STATUS_UPDATE_ERROR_MESSAGE,
     TASK_STATUS_UPDATE_SUCCESS_MESSAGE,
@@ -20,11 +20,11 @@ import {
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
+import { useRouter } from 'next/router';
 
 type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
-    isDevMode?: boolean;
     isSelfTask?: boolean;
 };
 
@@ -42,17 +42,20 @@ const beautifyStatus = (status: string) => {
         ] || status
     );
 };
+
 const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
-    isDevMode,
     isSelfTask,
 }: Props) => {
+    const router = useRouter();
+    const isDevMode = router.query.devMode === 'true';
+
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
-
     const [updateSelfTask] = useUpdateSelfTaskMutation();
     const { SUCCESS, ERROR } = ToastTypes;
+
     const onChangeUpdateTaskStatus = async ({
         newStatus,
         newProgress,
@@ -64,6 +67,7 @@ const TaskStatusEditMode = ({
         if (newProgress !== undefined) {
             payload.percentCompleted = newProgress;
         }
+
         const updatePromise =
             isDevMode && isSelfTask
                 ? updateSelfTask({ id: task.id, task: payload })
@@ -96,7 +100,7 @@ const TaskStatusEditMode = ({
 
     return (
         <div className={styles.taskSection}>
-            <TaskDropDown
+            <TaskStatusDropdown
                 isDevMode={isDevMode}
                 oldStatus={task.status}
                 oldProgress={task.percentCompleted}

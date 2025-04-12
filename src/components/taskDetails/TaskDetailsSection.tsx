@@ -1,6 +1,6 @@
 import React from 'react';
 import Details from './Details';
-import TaskDropDown from '../tasks/TaskDropDown';
+import TaskStatusDropdown from '../tasks/TaskStatusDropdown';
 import ProgressContainer from '../tasks/card/progressContainer';
 import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 import styles from './task-details.module.scss';
@@ -38,7 +38,7 @@ export const TaskDetailsSection: React.FC<TaskDetailsSectionProps> = ({
             <Details detailType={'Priority'} value={priority} />
 
             {isEditing ? (
-                <TaskDropDown
+                <TaskStatusDropdown
                     onChange={handleTaskStatusUpdate}
                     oldStatus={status}
                     oldProgress={percentCompleted}
