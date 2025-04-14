@@ -49,7 +49,7 @@ const TaskStatusEditMode = ({
     isSelfTask,
 }: Props) => {
     const router = useRouter();
-    const isDevMode = router.query.devMode === 'true';
+    const isDevMode = router.query.dev === 'true';
 
     const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
