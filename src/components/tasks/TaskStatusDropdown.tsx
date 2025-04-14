@@ -67,25 +67,25 @@ export default function TaskStatusDropdown({
         const newStatusValue = ev.target.value;
         setStatusAndProgress((prev) => ({
             ...prev,
-            newStatus: ev.target.value,
+            newStatus: newStatusValue,
         }));
-        if (oldStatus === ev.target.value) {
+        if (oldStatus === newStatusValue) {
             return;
         }
-        if (isDevMode && ev.target.value !== BACKEND_TASK_STATUS.BACKLOG) {
+        if (isDevMode && newStatusValue !== BACKEND_TASK_STATUS.BACKLOG) {
             const msg = `The progress of current task is ${oldProgress}%. `;
-            if (shouldTaskProgressBe100(ev.target.value)) {
+            if (shouldTaskProgressBe100(newStatusValue)) {
                 setStatusAndProgress((prev) => ({ ...prev, newProgress: 100 }));
                 setMessage(msg + MSG_ON_100_PROGRESS);
                 return;
             }
-            if (shouldTaskProgressBe0(ev.target.value)) {
+            if (shouldTaskProgressBe0(newStatusValue)) {
                 setStatusAndProgress((prev) => ({ ...prev, newProgress: 0 }));
                 setMessage(msg + MSG_ON_0_PROGRESS);
                 return;
             }
         }
-        onChange({ newStatus: ev.target.value });
+        onChange({ newStatus: newStatusValue });
     };
     const handleProceed = () => {
         const payload: { newStatus: string; newProgress?: number } = {

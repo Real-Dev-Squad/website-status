@@ -68,7 +68,7 @@ const TaskStatusEditMode = ({
             payload.percentCompleted = newProgress;
         }
 
-        const updatePromise =
+        const taskStatusUpdatePromise =
             isDevMode && isSelfTask
                 ? updateSelfTask({ id: task.id, task: payload })
                 : updateTask({ id: task.id, task: payload });
@@ -78,9 +78,10 @@ const TaskStatusEditMode = ({
             ...payload,
         }));
 
-        updatePromise
+        taskStatusUpdatePromise
             .unwrap()
             .then(() => {
+                console.log('Task status updated successfully');
                 setSaveStatus(SAVED);
                 toast(SUCCESS, TASK_STATUS_UPDATE_SUCCESS_MESSAGE);
             })
