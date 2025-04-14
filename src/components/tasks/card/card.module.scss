@@ -464,14 +464,23 @@
 }
 
 .smallSpinner {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid lighten($black, 10%);
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 0.25rem solid $gray;
+    border-bottom-color: lighten($gray, 80%);
     border-radius: 50%;
-    border-top: 2px solid $jungle-green;
-    animation: spin 1s ease-in-out infinite;
-    -webkit-animation: spin 1s ease-in-out infinite;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: spin 1s linear infinite;
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
 }
 
 .selfAlignEnd {

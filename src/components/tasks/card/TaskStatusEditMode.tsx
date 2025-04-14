@@ -78,25 +78,20 @@ const TaskStatusEditMode = ({
             ...payload,
         }));
 
-        taskStatusUpdatePromise
-            .unwrap()
-            .then(() => {
-                console.log('Task status updated successfully');
-                setSaveStatus(SAVED);
-                toast(SUCCESS, TASK_STATUS_UPDATE_SUCCESS_MESSAGE);
-            })
-            .catch((error) => {
-                setSaveStatus(ERROR_STATUS);
-                const errorMessage =
-                    error?.data?.message ?? TASK_STATUS_UPDATE_ERROR_MESSAGE;
-
-                toast(ERROR, errorMessage);
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setSaveStatus('');
-                }, 3000);
-            });
+        try {
+            await taskStatusUpdatePromise.unwrap();
+            setSaveStatus(SAVED);
+            toast(SUCCESS, TASK_STATUS_UPDATE_SUCCESS_MESSAGE);
+        } catch (error: any) {
+            setSaveStatus(ERROR_STATUS);
+            const errorMessage =
+                error?.data?.message ?? TASK_STATUS_UPDATE_ERROR_MESSAGE;
+            toast(ERROR, errorMessage);
+        } finally {
+            setTimeout(() => {
+                setSaveStatus('');
+            }, 3000);
+        }
     };
 
     return (
@@ -108,7 +103,7 @@ const TaskStatusEditMode = ({
                 onChange={onChangeUpdateTaskStatus}
             />
 
-            {!isDevMode && <StatusIndicator status={saveStatus} />}
+            {<StatusIndicator status={saveStatus} />}
         </div>
     );
 };
