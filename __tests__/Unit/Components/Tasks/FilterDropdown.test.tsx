@@ -172,13 +172,13 @@ describe('FilterDropdown', () => {
             <FilterDropdown
                 tabs={[Tab.UNASSIGNED, Tab.DONE]}
                 onSelect={mockOnSelect}
-                activeTab={Tab.COMPLETED}
+                activeTab={Tab.DONE}
                 onClose={mockOnClose}
             />
         );
 
-        const unassignedButton = screen.getByText(/unassigned/i);
-        expect(unassignedButton).not.toHaveClass('status-button-active');
+        const doneButton = screen.getByText(/done/i);
+        expect(doneButton).toHaveClass('status-button-active');
     });
 
     test('render the filter model having BACKLOG tab with correct title and buttons', () => {
