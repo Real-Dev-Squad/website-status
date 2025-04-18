@@ -25,7 +25,6 @@ function TaskUpdateModal({
     editedTaskDetails,
     onUpdateSuccess,
 }: Props) {
-
     return (
         <Modal isOpen={isOpen} toggle={() => setIsOpen(false)}>
             <div className={styles.taskUpdateModal}>
