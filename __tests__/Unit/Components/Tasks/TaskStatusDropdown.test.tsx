@@ -4,7 +4,6 @@ import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-// Mock the useUserData hook
 jest.mock('@/hooks/useUserData', () => ({
     __esModule: true,
     default: () => ({

@@ -13,7 +13,7 @@ type Props = {
     onChange: ({ newStatus, newProgress }: taskStatusUpdateHandleProp) => void;
     oldStatus: string;
     oldProgress: number;
-    isSuperUser?: boolean; // Added prop for better testability
+    isSuperUser?: boolean;
 };
 
 export default function TaskStatusDropdown({
@@ -21,7 +21,7 @@ export default function TaskStatusDropdown({
     onChange,
     oldStatus,
     oldProgress,
-    isSuperUser: propSuperUser, // Renamed to avoid naming conflict
+    isSuperUser: propSuperUser,
 }: Props) {
     const [{ newStatus, newProgress }, setStatusAndProgress] = useState({
         newStatus: oldStatus,
@@ -29,16 +29,9 @@ export default function TaskStatusDropdown({
     });
     const [message, setMessage] = useState('');
 
-    // Use the hook only if in a browser environment
-    let superUserFromHook = false;
-    try {
-        const { data } = useUserData();
-        superUserFromHook = !!data?.roles?.super_user;
-    } catch (e) {
-        // Handle the case where the hook is not available (like in tests)
-    }
+    const { data } = useUserData();
+    const superUserFromHook = !!data?.roles?.super_user;
 
-    // Use prop value if provided, otherwise use the hook value
     const isSuperUser =
         propSuperUser !== undefined ? propSuperUser : superUserFromHook;
 
