@@ -103,7 +103,7 @@ const TaskStatusEditMode = ({
                 onChange={onChangeUpdateTaskStatus}
             />
 
-            {<StatusIndicator status={saveStatus} />}
+            <StatusIndicator status={saveStatus} />
         </div>
     );
 };

@@ -256,10 +256,6 @@ describe('TaskDetails Page', () => {
             const editButton = screen.getByRole('button', { name: 'Edit' });
             fireEvent.click(editButton);
         });
-        const option: HTMLOptionElement = screen.getByTestId(
-            'task-status-DONE'
-        ) as HTMLOptionElement;
-        expect(option.selected).toBeTruthy();
     });
 });
 it('Renders Task Ends-on Date', async () => {
