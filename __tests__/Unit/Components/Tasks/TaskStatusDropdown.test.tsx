@@ -4,6 +4,16 @@ import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { fireEvent, render, screen } from '@testing-library/react';
 
+// Mock the useUserData hook
+jest.mock('@/hooks/useUserData', () => ({
+    __esModule: true,
+    default: () => ({
+        data: { roles: { super_user: true } },
+        isSuccess: true,
+        isLoading: false,
+    }),
+}));
+
 const onChange = jest.fn();
 
 describe('TaskStatusDropdown', () => {
@@ -20,6 +30,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
 
@@ -42,6 +53,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
 
@@ -64,6 +76,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
 
@@ -87,6 +100,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
 
@@ -107,6 +121,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
 
@@ -129,6 +144,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
         const option: HTMLOptionElement = screen.getByTestId(
@@ -146,6 +162,7 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
+                isSuperUser={true}
             />
         );
 
@@ -183,6 +200,7 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
                     onChange={onChange}
+                    isSuperUser={true}
                 />
             );
 
@@ -201,6 +219,7 @@ describe('TaskStatusDropdown', () => {
                     oldStatus={BACKEND_TASK_STATUS.UN_ASSIGNED}
                     oldProgress={0}
                     onChange={onChange}
+                    isSuperUser={true}
                 />
             );
 
@@ -225,6 +244,7 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={currentStatus}
                     onChange={onChange}
+                    isSuperUser={true}
                 />
             );
 
@@ -241,6 +261,7 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
                     onChange={onChange}
+                    isSuperUser={true}
                 />
             );
 
@@ -264,6 +285,7 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={currentStatus}
                     onChange={onChange}
+                    isSuperUser={true}
                 />
             );
 

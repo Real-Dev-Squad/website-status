@@ -464,14 +464,23 @@
 }
 
 .smallSpinner {
+    display: inline-block;
     width: 1.6rem;
     height: 1.6rem;
-    border: 0.25rem solid $gray;
-    border-bottom-color: lighten($gray, 80%);
-    border-radius: 50%;
-    display: inline-block;
+    position: relative;
     box-sizing: border-box;
-    animation: spin 1s linear infinite;
+    animation: spin 1.2s linear infinite;
+    margin-bottom: 0.5rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 0.25rem dotted $gray;
+        box-sizing: border-box;
+    }
 
     @keyframes spin {
         from {
