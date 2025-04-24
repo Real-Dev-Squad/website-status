@@ -179,6 +179,9 @@ describe('FilterDropdown', () => {
 
         const doneButton = screen.getByText(/done/i);
         expect(doneButton).toHaveClass('status-button-active');
+
+        const unassignedButton = screen.getByText(/unassigned/i);
+        expect(unassignedButton).not.toHaveClass('status-button-active');
     });
 
     test('render the filter model having BACKLOG tab with correct title and buttons', () => {
