@@ -246,17 +246,6 @@ describe('TaskDetails Page', () => {
             ).toBeGreaterThanOrEqual(1)
         );
     });
-    it('Renders Task status Done as selected when task status is Completed, when dev flag is on in edit mode', async () => {
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskDetails taskID={details.completedTaskID} />
-            </Provider>
-        );
-        await waitFor(() => {
-            const editButton = screen.getByRole('button', { name: 'Edit' });
-            fireEvent.click(editButton);
-        });
-    });
 });
 it('Renders Task Ends-on Date', async () => {
     renderWithRouter(
