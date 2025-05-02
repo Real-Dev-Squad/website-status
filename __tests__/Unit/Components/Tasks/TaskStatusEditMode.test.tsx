@@ -38,11 +38,10 @@ describe('TaskStatusEditMode', () => {
             </Provider>
         );
         const statusSelect = screen.getByLabelText('Status:');
-
         expect(statusSelect).toHaveValue('BLOCKED');
     });
 
-    it('change task status from BLOCKED to AVAILABLE', async () => {
+    it('change task status from BLOCKED to IN_PROGRESS', async () => {
         const setEditedTaskDetails = jest.fn();
         const mockUpdateTask = jest
             .fn()
@@ -60,36 +59,19 @@ describe('TaskStatusEditMode', () => {
 
         expect(statusSelect).toHaveValue('BLOCKED');
 
-        fireEvent.change(statusSelect, { target: { value: 'AVAILABLE' } });
+        fireEvent.change(statusSelect, { target: { value: 'IN_PROGRESS' } });
 
-        expect(statusSelect).toHaveValue('AVAILABLE');
+        expect(statusSelect).toHaveValue('IN_PROGRESS');
 
         mockUpdateTask({
             id: '1-BLOCKED',
             task: {
-                status: 'AVAILABLE',
+                status: 'IN_PROGRESS',
             },
         });
     });
 
-    it('task status UN_ASSIGNED is mapped to AVAILABLE', () => {
-        const setEditedTaskDetails = jest.fn();
-        const UN_ASSIGNED_TASK = { ...BLOCKED_TASK, status: 'UN_ASSIGNED' };
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskStatusEditMode
-                    task={UN_ASSIGNED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
-                />
-            </Provider>
-        );
-
-        const statusSelect = screen.getByLabelText('Status:');
-
-        expect(statusSelect).toHaveValue('AVAILABLE');
-    });
-
-    it('renders a list of task ', () => {
+    it('renders a list of task statuses', () => {
         const mockUpdateTask = jest.fn();
         const setEditedTaskDetails = jest.fn();
 
@@ -110,7 +92,13 @@ describe('TaskStatusEditMode', () => {
 
         const allTaskStatus = Object.entries(BACKEND_TASK_STATUS)
             .map(([name, status]) => [status, beautifyStatus(name)])
-            .filter(([status]) => status !== BACKEND_TASK_STATUS.COMPLETED);
+            .filter(
+                ([status]) =>
+                    status !== BACKEND_TASK_STATUS.COMPLETED &&
+                    status !== BACKEND_TASK_STATUS.MERGED &&
+                    status !== BACKEND_TASK_STATUS.UN_ASSIGNED &&
+                    status !== BACKEND_TASK_STATUS.BACKLOG
+            );
 
         expect(allOptions).toEqual(allTaskStatus);
     });
@@ -144,7 +132,7 @@ describe('TaskStatusEditMode', () => {
 
         expect(statusSelect).toHaveValue('BLOCKED');
 
-        fireEvent.change(statusSelect, { target: { value: 'AVAILABLE' } });
+        fireEvent.change(statusSelect, { target: { value: 'IN_PROGRESS' } });
 
         expect(updateTaskSpy).toHaveBeenCalled();
 
@@ -188,7 +176,7 @@ describe('TaskStatusEditMode', () => {
 
         const statusSelect = screen.getByLabelText('Status:');
 
-        fireEvent.change(statusSelect, { target: { value: 'AVAILABLE' } });
+        fireEvent.change(statusSelect, { target: { value: 'IN_PROGRESS' } });
 
         await waitFor(
             () => {

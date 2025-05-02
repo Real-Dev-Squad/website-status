@@ -13,7 +13,6 @@ type Props = {
     onChange: ({ newStatus, newProgress }: taskStatusUpdateHandleProp) => void;
     oldStatus: string;
     oldProgress: number;
-    isSuperUser?: boolean;
 };
 
 export default function TaskStatusDropdown({
@@ -21,7 +20,6 @@ export default function TaskStatusDropdown({
     onChange,
     oldStatus,
     oldProgress,
-    isSuperUser: propSuperUser,
 }: Props) {
     const [{ newStatus, newProgress }, setStatusAndProgress] = useState({
         newStatus: oldStatus,
@@ -30,24 +28,17 @@ export default function TaskStatusDropdown({
     const [message, setMessage] = useState('');
 
     const { data } = useUserData();
-    const superUserFromHook = !!data?.roles?.super_user;
-
-    const isSuperUser =
-        propSuperUser !== undefined ? propSuperUser : superUserFromHook;
 
     if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
 
     const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([key, value]) =>
+        ([_, value]) =>
             value !== BACKEND_TASK_STATUS.COMPLETED &&
-            !(
-                isDevMode &&
-                !isSuperUser &&
-                (value === BACKEND_TASK_STATUS.BACKLOG ||
-                    value === BACKEND_TASK_STATUS.UN_ASSIGNED)
-            )
+            value !== BACKEND_TASK_STATUS.BACKLOG &&
+            value !== BACKEND_TASK_STATUS.MERGED &&
+            value !== BACKEND_TASK_STATUS.UN_ASSIGNED
     );
 
     const isCurrentTaskStatusBlock = oldStatus === BACKEND_TASK_STATUS.BLOCKED;

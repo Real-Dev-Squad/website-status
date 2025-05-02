@@ -29,7 +29,6 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
-                isSuperUser={true}
             />
         );
 
@@ -52,7 +51,6 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
-                isSuperUser={true}
             />
         );
 
@@ -75,7 +73,6 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
-                isSuperUser={true}
             />
         );
 
@@ -99,7 +96,6 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
-                isSuperUser={true}
             />
         );
 
@@ -110,30 +106,7 @@ describe('TaskStatusDropdown', () => {
         expect(onChange).toHaveBeenCalledTimes(0);
         expect(screen.getByTestId('task-status')).toHaveValue(oldStatus);
     });
-    it('should not show any model info on change of status from in progress to backlog', () => {
-        const oldProgress = 80;
-        const oldStatus = BACKEND_TASK_STATUS.IN_PROGRESS;
 
-        render(
-            <TaskStatusDropdown
-                isDevMode={true}
-                oldProgress={oldProgress}
-                oldStatus={oldStatus}
-                onChange={onChange}
-                isSuperUser={true}
-            />
-        );
-
-        fireEvent.change(screen.getByTestId('task-status'), {
-            target: { value: BACKEND_TASK_STATUS.BACKLOG },
-        });
-        expect(onChange).toHaveBeenCalledTimes(1);
-        expect(onChange).toHaveBeenCalledWith({
-            newStatus: BACKEND_TASK_STATUS.BACKLOG,
-        });
-        const msgTag = screen.queryByTestId('msg');
-        expect(msgTag).toBeNull();
-    });
     it('should show text Done as selected option when a task with completed status is passed down.', () => {
         const oldProgress = 100;
         const oldStatus = BACKEND_TASK_STATUS.DONE;
@@ -143,7 +116,6 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
-                isSuperUser={true}
             />
         );
         const option: HTMLOptionElement = screen.getByTestId(
@@ -161,7 +133,6 @@ describe('TaskStatusDropdown', () => {
                 oldProgress={oldProgress}
                 oldStatus={oldStatus}
                 onChange={onChange}
-                isSuperUser={true}
             />
         );
 
@@ -199,7 +170,6 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
                     onChange={onChange}
-                    isSuperUser={true}
                 />
             );
 
@@ -218,7 +188,6 @@ describe('TaskStatusDropdown', () => {
                     oldStatus={BACKEND_TASK_STATUS.UN_ASSIGNED}
                     oldProgress={0}
                     onChange={onChange}
-                    isSuperUser={true}
                 />
             );
 
@@ -243,7 +212,6 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={currentStatus}
                     onChange={onChange}
-                    isSuperUser={true}
                 />
             );
 
@@ -260,7 +228,6 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={BACKEND_TASK_STATUS.IN_PROGRESS}
                     onChange={onChange}
-                    isSuperUser={true}
                 />
             );
 
@@ -284,7 +251,6 @@ describe('TaskStatusDropdown', () => {
                     oldProgress={0}
                     oldStatus={currentStatus}
                     onChange={onChange}
-                    isSuperUser={true}
                 />
             );
 
