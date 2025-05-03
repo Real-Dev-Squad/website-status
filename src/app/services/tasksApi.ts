@@ -2,7 +2,6 @@ import task, {
     TaskRequestPayload,
     TasksResponseType,
     GetAllTaskParamType,
-    ExtensionRequest,
     ExtensionRequestsResponse,
     ExtensionRequestCreatePayload,
     ExtensionRequestCreateResponse,

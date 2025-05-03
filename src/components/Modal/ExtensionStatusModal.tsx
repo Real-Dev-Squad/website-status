@@ -11,27 +11,6 @@ type ExtensionStatusModalProps = {
     assignee: string;
 };
 
-type ExtensionRequest = {
-    reason: string;
-    newEndsOn: number;
-    title: string;
-    taskId: string;
-    oldEndsOn: number;
-    status: string;
-    requestNumber: number;
-    id: string;
-    timestamp: number;
-    assignee: string;
-    assigneeId: string;
-    reviewedBy?: string;
-    reviewedAt?: number;
-};
-
-type ExtensionRequestsResponse = {
-    message: string;
-    allExtensionRequests: ExtensionRequest[];
-};
-
 export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
     isOpen,
     onClose,

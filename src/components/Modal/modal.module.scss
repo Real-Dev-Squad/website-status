@@ -181,10 +181,8 @@
 
 .extensionButtonContainer button:only-child {
     justify-content: center;
-}
-
-.extensionButtonContainer button:only-child {
     margin: 0 auto;
+    width: 50%;
 }
 
 .extensionButtonContainer {
@@ -194,7 +192,7 @@
 }
 
 .extensionCloseButton {
-    background-color: #b70000;
+    background-color: $red;
     color: white;
     padding: 10px 0;
     border: none;
@@ -204,13 +202,9 @@
     font-weight: bold;
 }
 
-.extensionButtonContainer button:only-child {
-    width: 50%;
-}
-
 .extensionRequestButton {
-    background-color: #006400;
-    color: white;
+    background-color: $green;
+    color: $white;
     padding: 10px 0;
     border: none;
     border-radius: 4px;
@@ -221,12 +215,12 @@
 
 .extensionApproved {
     font-weight: bold;
-    color: #006400;
+    color: $green;
 }
 
 .extensionPending {
     font-weight: bold;
-    color: #cc7000;
+    color: $orange;
 }
 
 .extensionApprovalInfo {
@@ -235,15 +229,6 @@
     font-style: italic;
     overflow-wrap: break-word;
     word-wrap: break-word;
-}
-
-.extensionRequestButton {
-    background-color: #006400;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
 }
 
 .extensionNoRequests {

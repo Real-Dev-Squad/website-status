@@ -251,24 +251,6 @@
     margin-top: 0.8rem;
 }
 
-.taskStatusUpdate {
-    border: 1px solid #000000b3;
-    border-radius: 4px;
-    font-size: inherit;
-    font-weight: bolder;
-    background-color: transparent;
-    color: $theme-primary-alt;
-    padding: 0.5rem;
-    height: 2.5rem;
-    width: 10rem;
-    transition: 250ms ease-in-out;
-}
-
-.taskStatusUpdate:hover {
-    background-color: $theme-primary-alt;
-    color: $white;
-}
-
 .extension-button {
     border: 1px solid #000000b3;
     border-radius: 4px;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Form.module.scss';
-import { useCreateExtensionRequestMutation } from 'src/app/services/tasksApi';
+import { useCreateExtensionRequestMutation } from '@/app/services/tasksApi';
 
 interface ExtensionRequestFormProps {
     isOpen: boolean;
@@ -118,6 +118,7 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                             rows={4}
                             className={styles.textArea}
                             required
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -139,6 +140,7 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                             onChange={handleChange}
                             className={`${styles.input} ${styles.dateTimeInput}`}
                             required
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -154,6 +156,7 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                             rows={3}
                             className={styles.textArea}
                             required
+                            disabled={isLoading}
                         />
                     </div>
 
@@ -168,10 +171,12 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                         </button>
                         <button
                             type="submit"
-                            className={styles.submitBtn}
+                            className={`${styles.submitBtn} ${
+                                isLoading ? styles.disabledBtn : ''
+                            }`}
                             disabled={isLoading}
                         >
-                            {isLoading ? 'Submitting...' : 'Submit'}
+                            Submit
                         </button>
                     </div>
                 </form>

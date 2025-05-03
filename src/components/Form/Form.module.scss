@@ -90,3 +90,22 @@
 .submitBtn:hover {
     background-color: #006600;
 }
+
+.disabledBtn {
+    background-color: #cccccc !important;
+    color: #666666 !important;
+    cursor: not-allowed !important;
+
+    &:hover {
+        position: relative;
+
+        &:after {
+            position: absolute;
+            font-size: 1.2em;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0.7;
+        }
+    }
+}
