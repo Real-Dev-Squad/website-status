@@ -33,13 +33,20 @@ export default function TaskStatusDropdown({
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
     }
 
-    const taskStatus = Object.entries(BACKEND_TASK_STATUS).filter(
-        ([_, value]) =>
-            value !== BACKEND_TASK_STATUS.COMPLETED &&
-            value !== BACKEND_TASK_STATUS.BACKLOG &&
-            value !== BACKEND_TASK_STATUS.MERGED &&
-            value !== BACKEND_TASK_STATUS.UN_ASSIGNED
-    );
+    const getAvailableTaskStatuses = () => {
+        const excludedStatuses = [
+            BACKEND_TASK_STATUS.COMPLETED,
+            BACKEND_TASK_STATUS.BACKLOG,
+            BACKEND_TASK_STATUS.MERGED,
+            BACKEND_TASK_STATUS.UN_ASSIGNED,
+        ];
+
+        return Object.entries(BACKEND_TASK_STATUS).filter(
+            ([_, value]) => !excludedStatuses.includes(value)
+        );
+    };
+
+    const taskStatus = getAvailableTaskStatuses();
 
     const isCurrentTaskStatusBlock = oldStatus === BACKEND_TASK_STATUS.BLOCKED;
     const isCurrentTaskStatusInProgress =

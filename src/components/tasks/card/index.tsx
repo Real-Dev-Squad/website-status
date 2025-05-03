@@ -612,7 +612,7 @@ const Card: FC<CardProps> = ({
             </div>
 
             <div className={styles.taskStatusEditMode}>
-                {isDevMode && (isEditable || isSelfTask) ? (
+                {isEditable || (isDevMode && isSelfTask) ? (
                     <TaskStatusEditMode
                         task={editedTaskDetails}
                         setEditedTaskDetails={setEditedTaskDetails}
