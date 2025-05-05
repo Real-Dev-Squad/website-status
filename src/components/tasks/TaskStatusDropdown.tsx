@@ -7,6 +7,45 @@ import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import TaskDropDownModel from './TaskDropDownModel';
 import { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 
+const EXCLUDED_STATUSES = [
+    BACKEND_TASK_STATUS.COMPLETED,
+    BACKEND_TASK_STATUS.BACKLOG,
+    BACKEND_TASK_STATUS.MERGED,
+    BACKEND_TASK_STATUS.UN_ASSIGNED,
+];
+
+interface TaskStatusSelectProps {
+    newStatus: string;
+    handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    taskStatus: [string, string][];
+    testIdPrefix?: string;
+}
+
+const TaskStatusSelect = ({
+    newStatus,
+    handleChange,
+    taskStatus,
+    testIdPrefix = 'task-status',
+}: TaskStatusSelectProps) => (
+    <select
+        className={styles.taskStatusUpdate}
+        data-testid={testIdPrefix}
+        name="status"
+        onChange={handleChange}
+        value={newStatus}
+    >
+        {taskStatus.map(([name, status]) => (
+            <option
+                data-testid={`${testIdPrefix}-${name}`}
+                key={status}
+                value={status}
+            >
+                {beautifyStatus(name)}
+            </option>
+        ))}
+    </select>
+);
+
 type Props = {
     isDevMode?: boolean;
     onChange: ({ newStatus, newProgress }: taskStatusUpdateHandleProp) => void;
@@ -14,7 +53,7 @@ type Props = {
     oldProgress: number;
 };
 
-export default function TaskStatusDropdown({
+export function TaskStatusDropdown({
     isDevMode,
     onChange,
     oldStatus,
@@ -31,15 +70,8 @@ export default function TaskStatusDropdown({
     }
 
     const getAvailableTaskStatuses = () => {
-        const excludedStatuses = [
-            BACKEND_TASK_STATUS.COMPLETED,
-            BACKEND_TASK_STATUS.BACKLOG,
-            BACKEND_TASK_STATUS.MERGED,
-            BACKEND_TASK_STATUS.UN_ASSIGNED,
-        ];
-
         return Object.entries(BACKEND_TASK_STATUS).filter(
-            ([_, value]) => !excludedStatuses.includes(value)
+            ([_, value]) => !EXCLUDED_STATUSES.includes(value)
         );
     };
 
@@ -116,40 +148,6 @@ export default function TaskStatusDropdown({
         onChange(payload);
         setMessage('');
     };
-
-    type TaskStatusItem = [string, string];
-
-    interface TaskStatusSelectProps {
-        newStatus: string;
-        handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-        taskStatus: TaskStatusItem[];
-        testIdPrefix?: string;
-    }
-
-    const TaskStatusSelect = ({
-        newStatus,
-        handleChange,
-        taskStatus,
-        testIdPrefix = 'task-status',
-    }: TaskStatusSelectProps) => (
-        <select
-            className={styles.taskStatusUpdate}
-            data-testid={testIdPrefix}
-            name="status"
-            onChange={handleChange}
-            value={newStatus}
-        >
-            {taskStatus.map(([name, status]: TaskStatusItem) => (
-                <option
-                    data-testid={`${testIdPrefix}-${name}`}
-                    key={status}
-                    value={status}
-                >
-                    {beautifyStatus(name)}
-                </option>
-            ))}
-        </select>
-    );
 
     return (
         <>

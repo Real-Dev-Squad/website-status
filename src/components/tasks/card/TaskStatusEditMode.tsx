@@ -11,7 +11,7 @@ import {
 } from '@/app/services/tasksApi';
 
 import { StatusIndicator } from './StatusIndicator';
-import TaskStatusDropdown from '../TaskStatusDropdown';
+import { TaskStatusDropdown } from '../TaskStatusDropdown';
 import {
     TASK_STATUS_UPDATE_ERROR_MESSAGE,
     TASK_STATUS_UPDATE_SUCCESS_MESSAGE,
@@ -84,9 +84,10 @@ const TaskStatusEditMode = ({
             toast(SUCCESS, TASK_STATUS_UPDATE_SUCCESS_MESSAGE);
         } catch (error: any) {
             setSaveStatus(ERROR_STATUS);
-            const errorMessage =
-                error?.data?.message ?? TASK_STATUS_UPDATE_ERROR_MESSAGE;
-            toast(ERROR, errorMessage);
+            toast(
+                ERROR,
+                error?.data?.message ?? TASK_STATUS_UPDATE_ERROR_MESSAGE
+            );
         } finally {
             setTimeout(() => {
                 setSaveStatus('');

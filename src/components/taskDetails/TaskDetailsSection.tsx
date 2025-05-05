@@ -1,6 +1,6 @@
 import React from 'react';
 import Details from './Details';
-import TaskStatusDropdown from '../tasks/TaskStatusDropdown';
+import { TaskStatusDropdown } from '../tasks/TaskStatusDropdown';
 import ProgressContainer from '../tasks/card/progressContainer';
 import task, { taskStatusUpdateHandleProp } from '@/interfaces/task.type';
 import styles from './task-details.module.scss';
