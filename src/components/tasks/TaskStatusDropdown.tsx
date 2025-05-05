@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BACKEND_TASK_STATUS } from '@/constants/task-status';
 import { beautifyStatus } from './card/TaskStatusEditMode';
 import styles from '@/components/tasks/card/card.module.scss';
-import useUserData from '@/hooks/useUserData';
 
 import { MSG_ON_0_PROGRESS, MSG_ON_100_PROGRESS } from '@/constants/constants';
 import TaskDropDownModel from './TaskDropDownModel';
@@ -26,8 +25,6 @@ export default function TaskStatusDropdown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
-
-    const { data } = useUserData();
 
     if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
         BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;

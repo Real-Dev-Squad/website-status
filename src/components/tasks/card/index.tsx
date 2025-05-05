@@ -570,6 +570,17 @@ const Card: FC<CardProps> = ({
                             : `Started ${getStartedAgo()}`}
                     </span>
                 </div>
+                {!isDevMode && (
+                    <div className={styles.statusContainer}>
+                        <p className={styles.cardSpecialFont}>Status:</p>
+                        <p
+                            data-testid="task-status"
+                            className={styles.statusText}
+                        >
+                            {beautifyStatus(cardDetails.status)}
+                        </p>
+                    </div>
+                )}
             </div>
 
             <div className={styles.contributor}>
@@ -611,25 +622,15 @@ const Card: FC<CardProps> = ({
                 {showAssignButton() && <AssigneeButton />}
             </div>
 
-            <div className={styles.taskStatusEditMode}>
-                {isEditable || (isDevMode && isSelfTask) ? (
+            {(isEditable || (isDevMode && isSelfTask)) && (
+                <div className={styles.taskStatusEditMode}>
                     <TaskStatusEditMode
                         task={editedTaskDetails}
                         setEditedTaskDetails={setEditedTaskDetails}
                         isSelfTask={isSelfTask}
                     />
-                ) : (
-                    <div className={styles.statusContainer}>
-                        <p className={styles.cardSpecialFont}>Status:</p>
-                        <p
-                            data-testid="task-status"
-                            className={styles.statusText}
-                        >
-                            {beautifyStatus(cardDetails.status)}
-                        </p>
-                    </div>
-                )}
-            </div>
+                </div>
+            )}
 
             <div className={styles.cardItems}>
                 <div
