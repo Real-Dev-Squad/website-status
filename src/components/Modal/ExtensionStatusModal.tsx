@@ -27,25 +27,19 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
     const modalRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (isOpen) {
-            if (
-                data?.allExtensionRequests &&
-                data.allExtensionRequests.length > 0
-            ) {
-                const latestRequest = [...data.allExtensionRequests].sort(
-                    (a, b) => b.requestNumber - a.requestNumber
-                )[0];
-                setOldEndsOn(latestRequest.newEndsOn);
-            } else {
-                setOldEndsOn(new Date().getTime());
-            }
+        if (isOpen && (data?.allExtensionRequests ?? []).length > 0) {
+            const latestRequest = [...(data?.allExtensionRequests ?? [])].sort(
+                (a, b) => b.requestNumber - a.requestNumber
+            )[0];
+            setOldEndsOn(latestRequest.newEndsOn);
+        } else if (isOpen) {
+            setOldEndsOn(new Date().getTime());
         }
     }, [isOpen, data, taskId, dev]);
 
     const handleOutsideClick = (e: React.MouseEvent) => {
-        if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        if (modalRef.current && !modalRef.current.contains(e.target as Node))
             onClose();
-        }
     };
 
     const handleOpenRequestForm = () => {
@@ -53,35 +47,39 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
         onClose();
     };
 
-    const handleCloseRequestForm = () => {
-        setIsRequestFormOpen(false);
-    };
+    const handleCloseRequestForm = () => setIsRequestFormOpen(false);
 
     const handleSubmitExtensionRequest = (formData: any) => {
-        const requestData = {
-            ...formData,
-            taskId,
-            dev,
-        };
-        console.log('Complete request data:', requestData);
+        console.log('Complete request data:', { ...formData, taskId, dev });
         setIsRequestFormOpen(false);
     };
 
-    const renderRequestForm = () => {
-        return (
-            <ExtensionRequestForm
-                isOpen={isRequestFormOpen}
-                onClose={handleCloseRequestForm}
-                taskId={taskId}
-                assignee={assignee}
-                oldEndsOn={oldEndsOn}
-            />
-        );
+    const formatDate = (timestamp: number) => {
+        const timestampMs =
+            timestamp > 9999999999 ? timestamp : timestamp * 1000;
+        const date = new Date(timestampMs);
+        return `${
+            date.getMonth() + 1
+        }/${date.getDate()}/${date.getFullYear()}, ${date.toLocaleTimeString()}`;
     };
 
-    if (!isOpen) {
-        return isRequestFormOpen ? renderRequestForm() : null;
-    }
+    const getStatusClass = (status: string) =>
+        status === 'APPROVED'
+            ? styles.extensionApproved
+            : styles.extensionPending;
+
+    const renderRequestForm = () => (
+        <ExtensionRequestForm
+            isOpen={isRequestFormOpen}
+            onClose={handleCloseRequestForm}
+            taskId={taskId}
+            assignee={assignee}
+            oldEndsOn={oldEndsOn}
+        />
+    );
+
+    // Early returns
+    if (!isOpen) return isRequestFormOpen ? renderRequestForm() : null;
 
     if (isLoading) {
         return (
@@ -110,20 +108,9 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
         );
     }
 
-    const formatDate = (timestamp: number) => {
-        const timestampMs =
-            timestamp > 9999999999 ? timestamp : timestamp * 1000;
-        const date = new Date(timestampMs);
-        return `${
-            date.getMonth() + 1
-        }/${date.getDate()}/${date.getFullYear()}, ${date.toLocaleTimeString()}`;
-    };
-
-    const getStatusClass = (status: string) => {
-        return status === 'APPROVED'
-            ? styles.extensionApproved
-            : styles.extensionPending;
-    };
+    const hasPendingRequest = data?.allExtensionRequests?.some(
+        (req) => req.status === 'PENDING'
+    );
 
     return (
         <>
@@ -134,70 +121,55 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
                 <div className={styles.extensionModal} ref={modalRef}>
                     <h2>Extension Details</h2>
 
-                    {data?.allExtensionRequests &&
+                    {Array.isArray(data?.allExtensionRequests) &&
                     data.allExtensionRequests.length > 0 ? (
                         data.allExtensionRequests.map((request) => (
                             <div
                                 key={request.id}
                                 className={styles.extensionExtensionRequest}
                             >
-                                <div className={styles.extensionDetailRow}>
-                                    <span className={styles.extensionLabel}>
-                                        Request :
-                                    </span>
-                                    <span className={styles.extensionValue}>
-                                        #{request.requestNumber}
-                                    </span>
-                                </div>
-
-                                <div className={styles.extensionDetailRow}>
-                                    <span className={styles.extensionLabel}>
-                                        Reason :
-                                    </span>
-                                    <span className={styles.extensionValue}>
-                                        {request.reason}
-                                    </span>
-                                </div>
-
-                                <div className={styles.extensionDetailRow}>
-                                    <span className={styles.extensionLabel}>
-                                        Title :
-                                    </span>
-                                    <span className={styles.extensionValue}>
-                                        {request.title}
-                                    </span>
-                                </div>
-
-                                <div className={styles.extensionDetailRow}>
-                                    <span className={styles.extensionLabel}>
-                                        Old Ends On :
-                                    </span>
-                                    <span className={styles.extensionValue}>
-                                        {formatDate(request.oldEndsOn)}
-                                    </span>
-                                </div>
-
-                                <div className={styles.extensionDetailRow}>
-                                    <span className={styles.extensionLabel}>
-                                        New Ends On :
-                                    </span>
-                                    <span className={styles.extensionValue}>
-                                        {formatDate(request.newEndsOn)}
-                                    </span>
-                                </div>
-
-                                <div className={styles.extensionDetailRow}>
-                                    <span className={styles.extensionLabel}>
-                                        Status :
-                                    </span>
-                                    <span
-                                        className={`${
-                                            styles.extensionValue
-                                        } ${getStatusClass(request.status)}`}
+                                {[
+                                    {
+                                        label: 'Request :',
+                                        value: `#${request.requestNumber}`,
+                                    },
+                                    {
+                                        label: 'Reason :',
+                                        value: request.reason,
+                                    },
+                                    { label: 'Title :', value: request.title },
+                                    {
+                                        label: 'Old Ends On :',
+                                        value: formatDate(request.oldEndsOn),
+                                    },
+                                    {
+                                        label: 'New Ends On :',
+                                        value: formatDate(request.newEndsOn),
+                                    },
+                                    {
+                                        label: 'Status :',
+                                        value: request.status,
+                                        className: getStatusClass(
+                                            request.status
+                                        ),
+                                    },
+                                ].map((item, idx) => (
+                                    <div
+                                        key={idx}
+                                        className={styles.extensionDetailRow}
                                     >
-                                        {request.status}
-                                    </span>
-                                </div>
+                                        <span className={styles.extensionLabel}>
+                                            {item.label}
+                                        </span>
+                                        <span
+                                            className={`${
+                                                styles.extensionValue
+                                            } ${item.className || ''}`}
+                                        >
+                                            {item.value}
+                                        </span>
+                                    </div>
+                                ))}
 
                                 {request.reviewedBy && (
                                     <div
@@ -227,13 +199,9 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
                     <div
                         className={styles.extensionButtonContainer}
                         style={{
-                            justifyContent:
-                                data?.allExtensionRequests &&
-                                data.allExtensionRequests.some(
-                                    (request) => request.status === 'PENDING'
-                                )
-                                    ? 'center'
-                                    : 'space-between',
+                            justifyContent: hasPendingRequest
+                                ? 'center'
+                                : 'space-between',
                         }}
                     >
                         <button
@@ -242,30 +210,24 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
                         >
                             Close
                         </button>
-                        {data?.allExtensionRequests &&
-                            data.allExtensionRequests.some(
-                                (request) => request.status === 'PENDING'
-                            ) === false && (
-                                <button
-                                    className={styles.extensionRequestButton}
-                                    onClick={handleOpenRequestForm}
-                                >
-                                    Request Extension
-                                </button>
-                            )}
+                        {!hasPendingRequest && (
+                            <button
+                                className={styles.extensionRequestButton}
+                                onClick={handleOpenRequestForm}
+                            >
+                                Request Extension
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
-
             {renderRequestForm()}
         </>
     );
 };
 
 function formatTimeAgo(timestamp: number) {
-    const now = Date.now();
-    const diff = now - timestamp;
-
+    const diff = Date.now() - timestamp;
     const minutes = Math.floor(diff / 60000);
     const hours = Math.floor(minutes / 60);
     const days = Math.floor(hours / 24);
