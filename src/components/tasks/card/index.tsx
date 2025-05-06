@@ -39,14 +39,17 @@ import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
 import { useRouter } from 'next/router';
+import { ExtensionStatusModal } from '@/components/Modal/ExtensionStatusModal';
+import { TaskRequestPayload } from '@/interfaces/task.type';
 
 const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
+    taskId,
 }) => {
     const router = useRouter();
-    const isDevMode = router.query.dev === 'true';
+    const isDevMode = router.query.dev === 'true' ? true : false;
 
     const statusRedList = [BLOCKED];
     const statusNotOverDueList = [
@@ -81,6 +84,8 @@ const Card: FC<CardProps> = ({
     const [keyLongPressed] = useKeyLongPressed();
 
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const [showExtensionModal, setShowExtensionModal] = useState(false);
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -620,6 +625,36 @@ const Card: FC<CardProps> = ({
                           </p>
                       )}
                 {showAssignButton() && <AssigneeButton />}
+            </div>
+
+            <div className={styles.taskStatusEditMode}>
+                {isDevMode && (isEditable || isSelfTask) ? (
+                    <div className={styles['task-status-control']}>
+                        <button
+                            className={styles['extension-button']}
+                            onClick={() => setShowExtensionModal(true)}
+                        >
+                            Extension Status
+                        </button>
+                        <ExtensionStatusModal
+                            isOpen={showExtensionModal}
+                            onClose={() => setShowExtensionModal(false)}
+                            taskId={cardDetails.id}
+                            dev={isDevMode}
+                            assignee={cardDetails.assignee ?? ''}
+                        />
+                    </div>
+                ) : (
+                    <div className={styles.statusContainer}>
+                        <p className={styles.cardSpecialFont}>Status:</p>
+                        <p
+                            data-testid="task-status"
+                            className={styles.statusText}
+                        >
+                            {beautifyStatus(cardDetails.status)}
+                        </p>
+                    </div>
+                )}
             </div>
 
             {(isEditable || (isDevMode && isSelfTask)) && (

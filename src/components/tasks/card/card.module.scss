@@ -251,6 +251,28 @@
     margin-top: 0.8rem;
 }
 
+.extension-button {
+    border: 1px solid #000000b3;
+    border-radius: 4px;
+    font-size: inherit;
+    font-weight: bolder;
+    background-color: transparent;
+    color: $theme-primary-alt;
+    padding: 0.5rem;
+    height: 2.5rem;
+    width: 10rem;
+    transition: 250ms ease-in-out;
+}
+.extension-button:hover {
+    background-color: $theme-primary-alt;
+    color: $white;
+}
+
+.task-status-control {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .taskStatusUpdate {
     border: 1px solid rgba($black, 0.7);
     border-radius: 4px;
@@ -438,7 +460,6 @@
 .assignedToSection,
 .dateSection,
 .taskSection {
-    width: 100%;
     display: flex;
     gap: 5px;
     flex-wrap: wrap;

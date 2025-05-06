@@ -109,6 +109,7 @@ export type CardProps = {
     content: task;
     shouldEdit: boolean;
     onContentChange?: (changeId: string, changeObject: object) => void;
+    taskId: string;
 };
 
 export type ProgressContainerProps = {
@@ -157,4 +158,39 @@ export const newTaskStatus = ['UNASSIGNED', 'DONE'];
 export type taskStatusUpdateHandleProp = {
     newStatus: string;
     newProgress?: number;
+};
+export type ExtensionRequest = {
+    reason: string;
+    newEndsOn: number;
+    title: string;
+    taskId: string;
+    oldEndsOn: number;
+    status: string;
+    requestNumber: number;
+    id: string;
+    timestamp: number;
+    assignee: string;
+    assigneeId: string;
+    reviewedBy?: string;
+    reviewedAt?: number;
+};
+
+export type ExtensionRequestsResponse = {
+    message: string;
+    allExtensionRequests: ExtensionRequest[];
+};
+
+export type ExtensionRequestCreatePayload = {
+    assignee: string;
+    newEndsOn: number;
+    oldEndsOn: number;
+    reason: string;
+    status: string;
+    taskId: string;
+    title: string;
+};
+
+export type ExtensionRequestCreateResponse = {
+    message: string;
+    extensionRequest: ExtensionRequest;
 };
