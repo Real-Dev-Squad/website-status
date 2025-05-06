@@ -26,25 +26,27 @@ const TaskStatusSelect = ({
     handleChange,
     taskStatus,
     testIdPrefix = 'task-status',
-}: TaskStatusSelectProps) => (
-    <select
-        className={styles.taskStatusUpdate}
-        data-testid={testIdPrefix}
-        name="status"
-        onChange={handleChange}
-        value={newStatus}
-    >
-        {taskStatus.map(([name, status]) => (
-            <option
-                data-testid={`${testIdPrefix}-${name}`}
-                key={status}
-                value={status}
-            >
-                {beautifyStatus(name)}
-            </option>
-        ))}
-    </select>
-);
+}: TaskStatusSelectProps) => {
+    return (
+        <select
+            className={styles.taskStatusUpdate}
+            data-testid={testIdPrefix}
+            name="status"
+            onChange={handleChange}
+            value={newStatus}
+        >
+            {taskStatus.map(([name, status]) => (
+                <option
+                    data-testid={`${testIdPrefix}-${name}`}
+                    key={status}
+                    value={status}
+                >
+                    {beautifyStatus(name)}
+                </option>
+            ))}
+        </select>
+    );
+};
 
 type Props = {
     isDevMode?: boolean;
