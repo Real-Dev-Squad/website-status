@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Form.module.scss';
 import { useCreateExtensionRequestMutation } from '@/app/services/tasksApi';
+import { toast, ToastTypes } from '@/helperFunctions/toast';
+import {
+    EXTENSION_REQUEST_SUCCESS_MESSAGE,
+    EXTENSION_REQUEST_ERROR_MESSAGE,
+} from '@/constants/constants';
 
 interface ExtensionRequestFormProps {
     isOpen: boolean;
@@ -31,6 +36,8 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
 
     const [createExtensionRequest, { isLoading }] =
         useCreateExtensionRequestMutation();
+
+    const { SUCCESS, ERROR } = ToastTypes;
 
     useEffect(() => {
         if (isOpen) {
@@ -77,8 +84,13 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                 dev: true,
             }).unwrap();
 
+            toast(SUCCESS, EXTENSION_REQUEST_SUCCESS_MESSAGE);
             onClose();
-        } catch (error) {
+        } catch (error: any) {
+            toast(
+                ERROR,
+                error?.data?.message ?? EXTENSION_REQUEST_ERROR_MESSAGE
+            );
             console.error('Failed to create extension request:', error);
         }
     };
