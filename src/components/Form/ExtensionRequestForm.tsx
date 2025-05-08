@@ -34,9 +34,9 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
         title: '',
     });
 
+    const [etaError, setEtaError] = useState(false);
     const [createExtensionRequest, { isLoading }] =
         useCreateExtensionRequestMutation();
-
     const { SUCCESS, ERROR } = ToastTypes;
 
     useEffect(() => {
@@ -45,6 +45,7 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                 ? oldEndsOn + 3 * 24 * 60 * 60 * 1000
                 : new Date().getTime();
             setFormData((prev) => ({ ...prev, newEndsOn: defaultNewEndsOn }));
+            setEtaError(false);
         }
     }, [isOpen, oldEndsOn]);
 
@@ -56,6 +57,12 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
         if (name === 'newEndsOn') {
             const timestamp = new Date(value).getTime();
             setFormData((prev) => ({ ...prev, [name]: timestamp }));
+
+            if (oldEndsOn && timestamp <= oldEndsOn) {
+                setEtaError(true);
+            } else {
+                setEtaError(false);
+            }
         } else {
             setFormData((prev) => ({ ...prev, [name]: value }));
         }
@@ -67,12 +74,6 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
         const submissionOldEndsOn = oldEndsOn || new Date().getTime();
 
         try {
-            console.log('Sending data:', {
-                ...formData,
-                taskId,
-                oldEndsOn: submissionOldEndsOn,
-            });
-
             await createExtensionRequest({
                 assignee: assignee,
                 newEndsOn: formData.newEndsOn,
@@ -91,7 +92,6 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                 ERROR,
                 error?.data?.message ?? EXTENSION_REQUEST_ERROR_MESSAGE
             );
-            console.error('Failed to create extension request:', error);
         }
     };
 
@@ -116,7 +116,6 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
                 <h2 className={styles.heading}>Extension Request Form</h2>
-
                 <form onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
                         <label className={styles.label} htmlFor="reason">
@@ -137,6 +136,11 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                     <div className={styles.formGroup}>
                         <div className={styles.oldEta}>
                             Old ETA - {oldEndsOnDate}
+                            {etaError && (
+                                <p className={styles.errorText}>
+                                    Please choose ETA greater than old ETA.
+                                </p>
+                            )}
                         </div>
                     </div>
 
@@ -184,9 +188,9 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
                         <button
                             type="submit"
                             className={`${styles.submitBtn} ${
-                                isLoading ? styles.disabledBtn : ''
+                                isLoading || etaError ? styles.disabledBtn : ''
                             }`}
-                            disabled={isLoading}
+                            disabled={isLoading || etaError}
                         >
                             Submit
                         </button>

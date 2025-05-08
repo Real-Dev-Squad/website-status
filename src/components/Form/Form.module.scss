@@ -90,6 +90,11 @@
 .submitBtn:hover {
     background-color: #006600;
 }
+.errorText {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 4px;
+}
 
 .disabledBtn {
     background-color: #cccccc !important;

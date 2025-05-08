@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from './modal.module.scss';
 import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
 import { ExtensionRequestForm } from '@/components/Form/ExtensionRequestForm';
+import { SmallSpinner } from '../tasks/card/SmallSpinner';
 
 type ExtensionStatusModalProps = {
     isOpen: boolean;
@@ -78,14 +79,16 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
         />
     );
 
-    // Early returns
     if (!isOpen) return isRequestFormOpen ? renderRequestForm() : null;
 
     if (isLoading) {
         return (
             <div className={styles.extensionModalOverlay}>
-                <div className={styles.extensionModal}>
-                    <h2>Loading extension requests...</h2>
+                <div className={styles.extensionModalLoading}>
+                    <h2>Extension Details</h2>
+                    <div className={styles.spinnerContainer}>
+                        <SmallSpinner />
+                    </div>
                 </div>
             </div>
         );
