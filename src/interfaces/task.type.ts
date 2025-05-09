@@ -109,7 +109,6 @@ export type CardProps = {
     content: task;
     shouldEdit: boolean;
     onContentChange?: (changeId: string, changeObject: object) => void;
-    taskId: string;
 };
 
 export type ProgressContainerProps = {

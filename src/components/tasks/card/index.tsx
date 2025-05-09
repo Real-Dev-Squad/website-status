@@ -45,7 +45,6 @@ const Card: FC<CardProps> = ({
     content,
     shouldEdit = false,
     onContentChange = () => undefined,
-    taskId,
 }) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true';
