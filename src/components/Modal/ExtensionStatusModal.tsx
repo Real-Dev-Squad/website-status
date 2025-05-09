@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styles from './modal.module.scss';
 import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
-import { ExtensionRequestForm } from '@/components/Form/ExtensionRequestForm';
 import { SmallSpinner } from '../tasks/card/SmallSpinner';
 
 type ExtensionStatusModalProps = {
@@ -23,36 +22,11 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
         { taskId, dev },
         { skip: !isOpen }
     );
-    const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
-    const [oldEndsOn, setOldEndsOn] = useState<number | null>(null);
     const modalRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (isOpen && (data?.allExtensionRequests ?? []).length > 0) {
-            const latestRequest = [...(data?.allExtensionRequests ?? [])].sort(
-                (a, b) => b.requestNumber - a.requestNumber
-            )[0];
-            setOldEndsOn(latestRequest.newEndsOn);
-        } else if (isOpen) {
-            setOldEndsOn(new Date().getTime());
-        }
-    }, [isOpen, data, taskId, dev]);
 
     const handleOutsideClick = (e: React.MouseEvent) => {
         if (modalRef.current && !modalRef.current.contains(e.target as Node))
             onClose();
-    };
-
-    const handleOpenRequestForm = () => {
-        setIsRequestFormOpen(true);
-        onClose();
-    };
-
-    const handleCloseRequestForm = () => setIsRequestFormOpen(false);
-
-    const handleSubmitExtensionRequest = (formData: any) => {
-        console.log('Complete request data:', { ...formData, taskId, dev });
-        setIsRequestFormOpen(false);
     };
 
     const formatDate = (timestamp: number) => {
@@ -69,17 +43,7 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
             ? styles.extensionApproved
             : styles.extensionPending;
 
-    const renderRequestForm = () => (
-        <ExtensionRequestForm
-            isOpen={isRequestFormOpen}
-            onClose={handleCloseRequestForm}
-            taskId={taskId}
-            assignee={assignee}
-            oldEndsOn={oldEndsOn}
-        />
-    );
-
-    if (!isOpen) return isRequestFormOpen ? renderRequestForm() : null;
+    if (!isOpen) return null;
 
     if (isLoading) {
         return (
@@ -116,116 +80,111 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
     );
 
     return (
-        <>
-            <div
-                className={styles.extensionModalOverlay}
-                onClick={handleOutsideClick}
-            >
-                <div className={styles.extensionModal} ref={modalRef}>
-                    <h2>Extension Details</h2>
+        <div
+            className={styles.extensionModalOverlay}
+            onClick={handleOutsideClick}
+        >
+            <div className={styles.extensionModal} ref={modalRef}>
+                <h2>Extension Details</h2>
 
-                    {Array.isArray(data?.allExtensionRequests) &&
-                    data.allExtensionRequests.length > 0 ? (
-                        data.allExtensionRequests.map((request) => (
-                            <div
-                                key={request.id}
-                                className={styles.extensionExtensionRequest}
-                            >
-                                {[
-                                    {
-                                        label: 'Request :',
-                                        value: `#${request.requestNumber}`,
-                                    },
-                                    {
-                                        label: 'Reason :',
-                                        value: request.reason,
-                                    },
-                                    { label: 'Title :', value: request.title },
-                                    {
-                                        label: 'Old Ends On :',
-                                        value: formatDate(request.oldEndsOn),
-                                    },
-                                    {
-                                        label: 'New Ends On :',
-                                        value: formatDate(request.newEndsOn),
-                                    },
-                                    {
-                                        label: 'Status :',
-                                        value: request.status,
-                                        className: getStatusClass(
-                                            request.status
-                                        ),
-                                    },
-                                ].map((item, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={styles.extensionDetailRow}
-                                    >
-                                        <span className={styles.extensionLabel}>
-                                            {item.label}
-                                        </span>
-                                        <span
-                                            className={`${
-                                                styles.extensionValue
-                                            } ${item.className || ''}`}
-                                        >
-                                            {item.value}
-                                        </span>
-                                    </div>
-                                ))}
-
-                                {request.reviewedBy && (
-                                    <div
-                                        className={styles.extensionApprovalInfo}
-                                    >
-                                        Your request was approved by{' '}
-                                        {request.reviewedBy}{' '}
-                                        {request.reviewedAt
-                                            ? formatTimeAgo(
-                                                  request.reviewedAt * 1000
-                                              )
-                                            : ''}
-                                    </div>
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <div className={styles.extensionNoRequests}>
-                            <p>No extension requests found for this task.</p>
-                            <p>
-                                If you need more time to complete this task, you
-                                can request an extension.
-                            </p>
-                        </div>
-                    )}
-
-                    <div
-                        className={styles.extensionButtonContainer}
-                        style={{
-                            justifyContent: hasPendingRequest
-                                ? 'center'
-                                : 'space-between',
-                        }}
-                    >
-                        <button
-                            className={styles.extensionCloseButton}
-                            onClick={onClose}
+                {Array.isArray(data?.allExtensionRequests) &&
+                data.allExtensionRequests.length > 0 ? (
+                    data.allExtensionRequests.map((request) => (
+                        <div
+                            key={request.id}
+                            className={styles.extensionExtensionRequest}
                         >
-                            Close
-                        </button>
-                        {!hasPendingRequest && (
-                            <button
-                                className={styles.extensionRequestButton}
-                                onClick={handleOpenRequestForm}
-                            >
-                                Request Extension
-                            </button>
-                        )}
+                            {[
+                                {
+                                    label: 'Request :',
+                                    value: `#${request.requestNumber}`,
+                                },
+                                {
+                                    label: 'Reason :',
+                                    value: request.reason,
+                                },
+                                { label: 'Title :', value: request.title },
+                                {
+                                    label: 'Old Ends On :',
+                                    value: formatDate(request.oldEndsOn),
+                                },
+                                {
+                                    label: 'New Ends On :',
+                                    value: formatDate(request.newEndsOn),
+                                },
+                                {
+                                    label: 'Status :',
+                                    value: request.status,
+                                    className: getStatusClass(request.status),
+                                },
+                            ].map((item, idx) => (
+                                <div
+                                    key={idx}
+                                    className={styles.extensionDetailRow}
+                                >
+                                    <span className={styles.extensionLabel}>
+                                        {item.label}
+                                    </span>
+                                    <span
+                                        className={`${styles.extensionValue} ${
+                                            item.className || ''
+                                        }`}
+                                    >
+                                        {item.value}
+                                    </span>
+                                </div>
+                            ))}
+
+                            {request.reviewedBy && (
+                                <div className={styles.extensionApprovalInfo}>
+                                    Your request was approved by{' '}
+                                    {request.reviewedBy}{' '}
+                                    {request.reviewedAt
+                                        ? formatTimeAgo(
+                                              request.reviewedAt * 1000
+                                          )
+                                        : ''}
+                                </div>
+                            )}
+                        </div>
+                    ))
+                ) : (
+                    <div className={styles.extensionNoRequests}>
+                        <p>
+                            No extension requests found for this task, want to
+                            create one?
+                        </p>
                     </div>
+                )}
+
+                <div
+                    className={styles.extensionButtonContainer}
+                    style={{
+                        justifyContent: hasPendingRequest
+                            ? 'center'
+                            : 'space-between',
+                    }}
+                >
+                    <button
+                        className={styles.extensionCloseButton}
+                        onClick={onClose}
+                    >
+                        Close
+                    </button>
+                    {!hasPendingRequest && (
+                        <button
+                            className={styles.extensionRequestButton}
+                            onClick={() => {
+                                // This will be handled in a separate PR
+                                console.log('Request extension button clicked');
+                            }}
+                        >
+                            Request Extension
+                        </button>
+                    )}
                 </div>
             </div>
-            {renderRequestForm()}
-        </>
+        </div>
     );
 };
 
