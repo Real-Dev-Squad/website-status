@@ -1,8 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { ExtensionStatusModal } from '@/components/Modal/ExtensionStatusModal';
-import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
-import { ExtensionRequest } from '@/interfaces/task.type';
+import { ExtensionRequest } from '@/components/Modal/ExtensionStatusModal';
 
 interface QueryResult {
     isLoading: boolean;
@@ -10,6 +9,8 @@ interface QueryResult {
     error?: any;
     isError?: boolean;
 }
+
+const useGetSelfExtensionRequestsQuery = jest.fn();
 
 interface ModalProps {
     isOpen: boolean;
