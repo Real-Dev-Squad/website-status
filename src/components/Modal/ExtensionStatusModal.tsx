@@ -75,7 +75,8 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
         );
     }
 
-    const hasPendingRequest = data?.allExtensionRequests?.some(
+    const extensionRequests = data?.allExtensionRequests ?? [];
+    const hasPendingRequest = extensionRequests.some(
         (req) => req.status === 'PENDING'
     );
 
@@ -87,9 +88,8 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
             <div className={styles.extensionModal} ref={modalRef}>
                 <h2>Extension Details</h2>
 
-                {Array.isArray(data?.allExtensionRequests) &&
-                data.allExtensionRequests.length > 0 ? (
-                    data.allExtensionRequests.map((request) => (
+                {extensionRequests.length > 0 ? (
+                    extensionRequests.map((request) => (
                         <div
                             key={request.id}
                             className={styles.extensionExtensionRequest}
