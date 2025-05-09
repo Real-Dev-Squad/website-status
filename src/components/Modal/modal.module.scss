@@ -134,7 +134,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba($black, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -142,75 +142,81 @@
 }
 
 .extensionModal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
+    background-color: $white;
+    padding: 1.9rem;
+    border-radius: 0.6rem;
     width: 90%;
-    max-width: 500px;
+    max-width: 53.1rem;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1.3rem 3.1rem rgba($black, 0.7);
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 1rem;
 }
 
 .extensionModal h2 {
     text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
+    margin-bottom: 1.9rem;
+    font-size: 2rem;
+    font-weight: 500;
+    color: rgba($black, 0.9);
 }
 
 .extensionDetailRow {
     display: flex;
-    margin-bottom: 12px;
     flex-wrap: wrap;
+    margin-bottom: 1rem;
+    line-height: 1.5;
 }
 
 .extensionLabel {
     font-weight: bold;
-    width: 120px;
-    color: #555;
+    width: 10rem;
+    color: rgba($black, 0.9);
     flex-shrink: 0;
 }
 
 .extensionValue {
     flex: 1;
+    color: rgba($black, 0.9);
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-word;
 }
 
-.extensionButtonContainer button:only-child {
-    justify-content: center;
-    margin: 0 auto;
-    width: 50%;
+.extensionApprovalInfo {
+    margin-top: 0.6rem;
+    font-style: italic;
+    color: $black;
+    text-align: center;
 }
 
 .extensionButtonContainer {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.9rem;
+}
+
+.extensionCloseButton,
+.extensionRequestButton {
+    padding: 0.8rem 0;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    width: 40%;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .extensionCloseButton {
     background-color: $red;
-    color: white;
-    padding: 10px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 48%;
-    font-weight: bold;
+    color: $white;
 }
 
 .extensionRequestButton {
     background-color: $green;
     color: $white;
-    padding: 10px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 48%;
-    font-weight: bold;
 }
 
 .extensionApproved {
@@ -223,21 +229,6 @@
     color: $orange;
 }
 
-.extensionApprovalInfo {
-    margin-top: 10px;
-    color: #555;
-    font-style: italic;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-}
-
-.extensionNoRequests {
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
 .extensionModalLoading {
     display: flex;
     flex-direction: column;
@@ -247,7 +238,7 @@
     background-color: $white;
     padding: 1.5rem;
     border-radius: 0.5rem;
-    max-width: 300px;
+    max-width: 18.8rem;
 }
 
 .spinnerContainer {

@@ -271,7 +271,28 @@
 
 .task-status-control {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
+    align-items: center;
+}
+@media screen and (max-width: 768px) {
+    .task-status-control {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .extension-button {
+        max-width: none;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+
+    .taskStatusEditMode {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-left: 20px;
+    }
 }
 
 .taskStatusUpdate {
