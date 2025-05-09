@@ -39,6 +39,7 @@ import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
 import { useRouter } from 'next/router';
+import { ExtensionStatusModal } from '@/components/Modal/ExtensionStatusModal';
 
 const Card: FC<CardProps> = ({
     content,
@@ -81,6 +82,9 @@ const Card: FC<CardProps> = ({
     const [keyLongPressed] = useKeyLongPressed();
 
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const [showExtensionModal, setShowExtensionModal] = useState(false);
+    const [saveStatus, setSaveStatus] = useState('');
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -623,11 +627,29 @@ const Card: FC<CardProps> = ({
             </div>
 
             {(isEditable || (isDevMode && isSelfTask)) && (
-                <div className={styles.taskStatusEditMode}>
-                    <TaskStatusEditMode
-                        task={editedTaskDetails}
-                        setEditedTaskDetails={setEditedTaskDetails}
-                        isSelfTask={isSelfTask}
+                <div className={styles['task-status-control']}>
+                    <div className={styles.taskStatusEditMode}>
+                        <TaskStatusEditMode
+                            task={editedTaskDetails}
+                            setEditedTaskDetails={setEditedTaskDetails}
+                            isSelfTask={isSelfTask}
+                            setSaveStatus={setSaveStatus}
+                        />
+                    </div>
+
+                    <button
+                        className={styles['extension-button']}
+                        onClick={() => setShowExtensionModal(true)}
+                    >
+                        Extension Status
+                    </button>
+                    <StatusIndicator status={saveStatus} />
+                    <ExtensionStatusModal
+                        isOpen={showExtensionModal}
+                        onClose={() => setShowExtensionModal(false)}
+                        taskId={cardDetails.id}
+                        dev={isDevMode}
+                        assignee={cardDetails.assignee ?? ''}
                     />
                 </div>
             )}

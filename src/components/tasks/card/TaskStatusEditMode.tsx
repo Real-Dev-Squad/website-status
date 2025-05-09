@@ -10,7 +10,6 @@ import {
     useUpdateSelfTaskMutation,
 } from '@/app/services/tasksApi';
 
-import { StatusIndicator } from './StatusIndicator';
 import { TaskStatusDropdown } from '../TaskStatusDropdown';
 import {
     TASK_STATUS_UPDATE_ERROR_MESSAGE,
@@ -26,6 +25,7 @@ type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
     isSelfTask?: boolean;
+    setSaveStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -47,11 +47,11 @@ const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
     isSelfTask,
+    setSaveStatus,
 }: Props) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true';
 
-    const [saveStatus, setSaveStatus] = useState('');
     const [updateTask] = useUpdateTaskMutation();
     const [updateSelfTask] = useUpdateSelfTaskMutation();
     const { SUCCESS, ERROR } = ToastTypes;
@@ -103,8 +103,6 @@ const TaskStatusEditMode = ({
                 oldProgress={task.percentCompleted}
                 onChange={onChangeUpdateTaskStatus}
             />
-
-            <StatusIndicator status={saveStatus} />
         </div>
     );
 };
