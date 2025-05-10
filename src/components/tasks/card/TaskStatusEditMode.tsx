@@ -25,7 +25,7 @@ type Props = {
     task: task;
     setEditedTaskDetails: React.Dispatch<React.SetStateAction<CardTaskDetails>>;
     isSelfTask?: boolean;
-    setSaveStatus: React.Dispatch<React.SetStateAction<string>>;
+    setSaveExtensionRequestStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
 // TODO: remove this after fixing the card beautify status
@@ -47,7 +47,7 @@ const TaskStatusEditMode = ({
     task,
     setEditedTaskDetails,
     isSelfTask,
-    setSaveStatus,
+    setSaveExtensionRequestStatus,
 }: Props) => {
     const router = useRouter();
     const isDevMode = router.query.dev === 'true';
@@ -60,7 +60,7 @@ const TaskStatusEditMode = ({
         newStatus,
         newProgress,
     }: taskStatusUpdateHandleProp) => {
-        setSaveStatus(PENDING);
+        setSaveExtensionRequestStatus(PENDING);
         const payload: { status: string; percentCompleted?: number } = {
             status: newStatus,
         };
@@ -80,17 +80,17 @@ const TaskStatusEditMode = ({
 
         try {
             await taskStatusUpdatePromise.unwrap();
-            setSaveStatus(SAVED);
+            setSaveExtensionRequestStatus(SAVED);
             toast(SUCCESS, TASK_STATUS_UPDATE_SUCCESS_MESSAGE);
         } catch (error: any) {
-            setSaveStatus(ERROR_STATUS);
+            setSaveExtensionRequestStatus(ERROR_STATUS);
             toast(
                 ERROR,
                 error?.data?.message ?? TASK_STATUS_UPDATE_ERROR_MESSAGE
             );
         } finally {
             setTimeout(() => {
-                setSaveStatus('');
+                setSaveExtensionRequestStatus('');
             }, 3000);
         }
     };

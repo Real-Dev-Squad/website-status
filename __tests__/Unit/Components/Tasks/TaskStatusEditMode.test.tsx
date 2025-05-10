@@ -34,7 +34,7 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    setSaveStatus={jest.fn()}
+                    setSaveExtensionRequestStatus={jest.fn()}
                 />
             </Provider>
         );
@@ -53,7 +53,7 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    setSaveStatus={jest.fn()}
+                    setSaveExtensionRequestStatus={jest.fn()}
                 />
             </Provider>
         );
@@ -82,7 +82,7 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
-                    setSaveStatus={jest.fn()}
+                    setSaveExtensionRequestStatus={jest.fn()}
                 />
             </Provider>
         );

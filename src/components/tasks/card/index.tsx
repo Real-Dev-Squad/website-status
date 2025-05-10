@@ -83,9 +83,9 @@ const Card: FC<CardProps> = ({
 
     const [isEditMode, setIsEditMode] = useState(false);
 
-    const [savedExtensionRequestStatus, setsavedExtensionRequestStatus] =
-        useState(false);
-    const [saveStatus, setSaveStatus] = useState('');
+    const [showExtensionModal, setShowExtensionModal] = useState(false);
+    const [saveExtensionRequestStatus, setSaveExtensionRequestStatus] =
+        useState('');
 
     const { data: taskTagLevel, isLoading } = useGetTaskTagsQuery({
         itemId: cardDetails.id,
@@ -634,20 +634,22 @@ const Card: FC<CardProps> = ({
                             task={editedTaskDetails}
                             setEditedTaskDetails={setEditedTaskDetails}
                             isSelfTask={isSelfTask}
-                            setSaveStatus={setSaveStatus}
+                            setSaveExtensionRequestStatus={
+                                setSaveExtensionRequestStatus
+                            }
                         />
                     </div>
 
                     <button
                         className={styles.extensionStatusButton}
-                        onClick={() => setsavedExtensionRequestStatus(true)}
+                        onClick={() => setShowExtensionModal(true)}
                     >
                         Extension Status
                     </button>
-                    <StatusIndicator status={saveStatus} />
+                    <StatusIndicator status={saveExtensionRequestStatus} />
                     <ExtensionStatusModal
-                        isOpen={savedExtensionRequestStatus}
-                        onClose={() => setsavedExtensionRequestStatus(false)}
+                        isOpen={showExtensionModal}
+                        onClose={() => setShowExtensionModal(false)}
                         taskId={cardDetails.id}
                         dev={isDevMode}
                         assignee={cardDetails.assignee ?? ''}
