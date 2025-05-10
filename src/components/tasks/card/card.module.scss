@@ -251,8 +251,8 @@
     margin-top: 0.8rem;
 }
 
-.extension-button {
-    border: 1px solid #000000b3;
+.extensionStatusButton {
+    border: 1px solid rgba($black, 0.7);
     border-radius: 4px;
     font-size: inherit;
     font-weight: bolder;
@@ -264,24 +264,24 @@
     transition: 250ms ease-in-out;
     margin-top: 0.8rem;
 }
-.extension-button:hover {
+.extensionStatusButton:hover {
     background-color: $theme-primary-alt;
     color: $white;
 }
 
-.task-status-control {
+.taskStatusControl {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     align-items: center;
 }
 @media screen and (max-width: 768px) {
-    .task-status-control {
+    .taskStatusControl {
         flex-direction: column;
         align-items: center;
     }
 
-    .extension-button {
+    .extensionStatusButton {
         max-width: none;
         margin-top: 0.5rem;
         text-align: center;
@@ -291,7 +291,7 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        margin-left: 20px;
+        margin-left: 1.2rem;
     }
 }
 
