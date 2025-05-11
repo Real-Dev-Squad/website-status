@@ -29,27 +29,33 @@ const getExtensionRequestDetails = (request: any, styles: any) => [
     {
         label: 'Request :',
         value: `#${request.requestNumber}`,
+        testId: 'request-number',
     },
     {
         label: 'Reason :',
         value: request.reason,
+        testId: 'request-reason',
     },
     {
         label: 'Title :',
         value: request.title,
+        testId: 'request-title',
     },
     {
         label: 'Old Ends On :',
         value: formatToDateTime(request.oldEndsOn),
+        testId: 'old-ends-on',
     },
     {
         label: 'New Ends On :',
         value: formatToDateTime(request.newEndsOn),
+        testId: 'new-ends-on',
     },
     {
         label: 'Status :',
         value: request.status,
         className: getStatusClass(request.status, styles),
+        testId: 'request-status',
     },
 ];
 
@@ -96,10 +102,19 @@ export function ExtensionStatusModal({
 
     if (isLoading) {
         return (
-            <div className={styles.extensionModalOverlay}>
-                <div className={styles.extensionModalLoading}>
-                    <h2>Extension Details</h2>
-                    <div className={styles.spinnerContainer}>
+            <div
+                className={styles.extensionModalOverlay}
+                data-testid="extension-modal-overlay"
+            >
+                <div
+                    className={styles.extensionModalLoading}
+                    data-testid="extension-modal-loading"
+                >
+                    <h2 data-testid="modal-title">Extension Details</h2>
+                    <div
+                        className={styles.spinnerContainer}
+                        data-testid="loading-spinner"
+                    >
                         <SmallSpinner />
                     </div>
                 </div>
@@ -111,29 +126,40 @@ export function ExtensionStatusModal({
         <div
             className={styles.extensionModalOverlay}
             onClick={handleOutsideClick}
+            data-testid="extension-modal-overlay"
         >
-            <div className={styles.extensionModal} ref={modalRef}>
-                <h2>Extension Details</h2>
+            <div
+                className={styles.extensionModal}
+                ref={modalRef}
+                data-testid="extension-modal-content"
+            >
+                <h2 data-testid="modal-title">Extension Details</h2>
 
                 {extensionRequests.length > 0 ? (
                     extensionRequests.map((request) => (
                         <div
                             key={request.id}
                             className={styles.extensionExtensionRequest}
+                            data-testid={`extension-request-${request.id}`}
                         >
                             {getExtensionRequestDetails(request, styles).map(
                                 (item, idx) => (
                                     <div
                                         key={idx}
                                         className={styles.extensionDetailRow}
+                                        data-testid={`detail-row-${idx}`}
                                     >
-                                        <span className={styles.extensionLabel}>
+                                        <span
+                                            className={styles.extensionLabel}
+                                            data-testid={`label-${item.testId}`}
+                                        >
                                             {item.label}
                                         </span>
                                         <span
                                             className={`${
                                                 styles.extensionValue
                                             } ${item.className || ''}`}
+                                            data-testid={`value-${item.testId}`}
                                         >
                                             {item.value}
                                         </span>
@@ -142,7 +168,10 @@ export function ExtensionStatusModal({
                             )}
 
                             {request.reviewedBy && (
-                                <div className={styles.extensionApprovalInfo}>
+                                <div
+                                    className={styles.extensionApprovalInfo}
+                                    data-testid="approval-info"
+                                >
                                     Your request was approved by{' '}
                                     {request.reviewedBy}{' '}
                                     {request.reviewedAt
@@ -155,7 +184,10 @@ export function ExtensionStatusModal({
                         </div>
                     ))
                 ) : (
-                    <div className={styles.extensionNoRequests}>
+                    <div
+                        className={styles.extensionNoRequests}
+                        data-testid="no-requests-message"
+                    >
                         <p>
                             No extension requests found for this task, want to
                             create one?
@@ -170,15 +202,20 @@ export function ExtensionStatusModal({
                             ? 'center'
                             : 'space-between',
                     }}
+                    data-testid="button-container"
                 >
                     <button
                         className={styles.extensionCloseButton}
                         onClick={onClose}
+                        data-testid="close-button"
                     >
                         Close
                     </button>
                     {!hasPendingRequest && (
-                        <button className={styles.extensionRequestButton}>
+                        <button
+                            className={styles.extensionRequestButton}
+                            data-testid="request-extension-button"
+                        >
                             Request Extension
                         </button>
                     )}
