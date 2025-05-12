@@ -13,12 +13,12 @@ type ExtensionStatusModalProps = {
 };
 
 const formatToDateTime = (timestamp: number) => {
-    const timestampMs = timestamp > 9999999999 ? timestamp : timestamp * 1000;
+    const timestampMs = timestamp < 1e12 ? timestamp * 1000 : timestamp;
     return moment(timestampMs).format('MM/DD/YYYY, h:mm:ss A');
 };
 
 const formatToRelativeTime = (timestamp: number) => {
-    const timestampMs = timestamp > 9999999999 ? timestamp : timestamp * 1000;
+    const timestampMs = timestamp < 1e12 ? timestamp * 1000 : timestamp;
     return moment(timestampMs).fromNow();
 };
 
