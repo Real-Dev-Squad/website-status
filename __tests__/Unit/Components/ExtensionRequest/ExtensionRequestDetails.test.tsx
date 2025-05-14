@@ -15,7 +15,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
     const now = Date.now();
     const mockStyles = {
         extensionNoRequests: 'extensionNoRequests',
-        extensionExtensionRequest: 'extensionExtensionRequest',
+        extensionRequest: 'extensionRequest',
         extensionDetailRow: 'extensionDetailRow',
         extensionLabel: 'extensionLabel',
         extensionValue: 'extensionValue',

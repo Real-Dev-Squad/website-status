@@ -33,7 +33,7 @@ export const ExtensionRequestDetails: React.FC<ExtensionRequestDetailsProps> =
                 {extensionRequests.map((request) => (
                     <div
                         key={request.id}
-                        className={styles.extensionExtensionRequest}
+                        className={styles.extensionRequest}
                         data-testid={`extension-request-${request.requestNumber}`}
                     >
                         {getExtensionRequestDetails(request, styles).map(
