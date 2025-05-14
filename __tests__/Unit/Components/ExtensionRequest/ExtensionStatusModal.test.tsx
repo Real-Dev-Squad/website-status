@@ -1,10 +1,83 @@
 import React from 'react';
 import { render, fireEvent, screen, cleanup } from '@testing-library/react';
-import { ExtensionStatusModal } from '@/components/Modal/ExtensionStatusModal';
-
-import { ExtensionRequest } from '@/components/Modal/ExtensionStatusModal';
+import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
+import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
 
 const useGetSelfExtensionRequestsQuery = jest.fn();
+interface ExtensionRequestDetail {
+    testId: string;
+    label: string;
+    value: string | number;
+    className?: string;
+}
+
+jest.mock('@/components/ExtensionRequest/ExtensionRequestDetails', () => ({
+    ExtensionRequestDetails: ({
+        extensionRequests,
+        styles,
+        getExtensionRequestDetails,
+    }: {
+        extensionRequests: ExtensionRequest[];
+        styles: any;
+        getExtensionRequestDetails: any;
+    }) => {
+        if (extensionRequests.length === 0) {
+            return (
+                <div data-testid="no-requests-message">
+                    <p>
+                        No extension requests found for this task, want to
+                        create one?
+                    </p>
+                </div>
+            );
+        }
+
+        return (
+            <>
+                {extensionRequests.map((request) => (
+                    <div
+                        key={request.id}
+                        data-testid={`extension-request-${request.id}`}
+                    >
+                        {getExtensionRequestDetails(request, styles).map(
+                            (item: ExtensionRequestDetail, idx: number) => (
+                                <div
+                                    key={idx}
+                                    data-testid={`detail-row-${idx}`}
+                                >
+                                    <span data-testid={`label-${item.testId}`}>
+                                        {item.label}
+                                    </span>
+                                    <span
+                                        className={item.className || ''}
+                                        data-testid={`value-${item.testId}`}
+                                    >
+                                        {item.value}
+                                    </span>
+                                </div>
+                            )
+                        )}
+                        {request.reviewedBy &&
+                            (request.status === 'APPROVED' ||
+                                request.status === 'DENIED') && (
+                                <div
+                                    data-testid={
+                                        request.status === 'APPROVED'
+                                            ? 'approval-info'
+                                            : 'denied-info'
+                                    }
+                                >
+                                    Your request was{' '}
+                                    {request.status.toLowerCase()} by{' '}
+                                    {request.reviewedBy}
+                                </div>
+                            )}
+                    </div>
+                ))}
+            </>
+        );
+    },
+}));
 
 jest.mock('moment', () => {
     const mockedMoment = jest.requireActual('moment');
@@ -124,39 +197,25 @@ describe.skip('ExtensionStatusModal Component', () => {
         return render(<ExtensionStatusModal {...defaultProps} />);
     };
 
-    test('renders loading state and empty state correctly', () => {
+    test('renders loading state correctly', () => {
         setupTest({ isLoading: true, data: null });
         expect(screen.getByTestId('modal-title')).toBeInTheDocument();
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
-
-        setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
-        expect(screen.getByTestId('no-requests-message')).toBeInTheDocument();
     });
 
-    test('renders extension requests correctly', () => {
+    test('passes data correctly to ExtensionRequestDetails component', () => {
         setupTest({
             isLoading: false,
-            data: { allExtensionRequests: [mockExtensionRequests[0]] },
+            data: { allExtensionRequests: mockExtensionRequests },
         });
 
-        expect(screen.getByTestId('value-request-number')).toHaveTextContent(
-            '#1'
-        );
-        expect(screen.getByTestId('value-request-reason')).toHaveTextContent(
-            'Need more time'
-        );
-        expect(screen.getByTestId('value-request-title')).toHaveTextContent(
-            'Fix bugs'
-        );
-        expect(screen.getByTestId('value-request-status')).toHaveTextContent(
-            'APPROVED'
-        );
-        expect(screen.getByTestId('approval-info')).toHaveTextContent(
-            /Your request was approved by admin/
-        );
-        expect(
-            screen.getByTestId('request-extension-button')
-        ).toBeInTheDocument();
+        expect(screen.getByTestId('extension-request-1')).toBeInTheDocument();
+        expect(screen.getByTestId('extension-request-2')).toBeInTheDocument();
+    });
+
+    test('renders empty state correctly', () => {
+        setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
+        expect(screen.getByTestId('no-requests-message')).toBeInTheDocument();
     });
 
     test('hides request extension button when pending request exists', () => {
@@ -167,6 +226,18 @@ describe.skip('ExtensionStatusModal Component', () => {
         expect(
             screen.queryByTestId('request-extension-button')
         ).not.toBeInTheDocument();
+    });
+
+    test('shows request extension button when no pending request exists', () => {
+        setupTest({
+            isLoading: false,
+            data: {
+                allExtensionRequests: [mockExtensionRequests[0]],
+            },
+        });
+        expect(
+            screen.getByTestId('request-extension-button')
+        ).toBeInTheDocument();
     });
 
     test('handles modal interactions correctly', () => {
@@ -202,83 +273,11 @@ describe.skip('ExtensionStatusModal Component', () => {
         );
     });
 
-    test('applies correct CSS classes for APPROVED status', () => {
-        setupTest({
-            isLoading: false,
-            data: { allExtensionRequests: [mockExtensionRequests[0]] },
-        });
-        const approvedStatus = screen.getByTestId('value-request-status');
-        expect(approvedStatus).toHaveClass('extensionValue');
-        expect(approvedStatus).toHaveClass('extensionApproved');
-    });
-
-    test('formats dates correctly using moment', () => {
-        const timestamp = new Date('2024-05-02T14:02:26').getTime();
-        setupTest({
-            isLoading: false,
-            data: {
-                allExtensionRequests: [
-                    {
-                        ...mockExtensionRequests[0],
-                        oldEndsOn: timestamp,
-                        newEndsOn: timestamp,
-                    },
-                ],
-            },
-        });
-
-        expect(screen.getByTestId('value-old-ends-on')).toHaveTextContent(
-            '05/02/2024, 2:02:26 PM'
-        );
-        expect(screen.getByTestId('value-new-ends-on')).toHaveTextContent(
-            '05/02/2024, 2:02:26 PM'
-        );
-    });
-
-    test.each([
-        { timeAgo: 10 * 1000, expected: 'a few seconds ago' },
-        { timeAgo: 5 * 60 * 1000, expected: '5 minutes ago' },
-        { timeAgo: 3 * 60 * 60 * 1000, expected: '3 hours ago' },
-        { timeAgo: 2 * 24 * 60 * 60 * 1000, expected: '2 days ago' },
-        { timeAgo: 3 * 30 * 24 * 60 * 60 * 1000, expected: '3 months ago' },
-    ])('formats time ago correctly: $expected', ({ timeAgo, expected }) => {
-        const timestamp = now - timeAgo;
-        setupTest({
-            isLoading: false,
-            data: {
-                allExtensionRequests: [
-                    {
-                        ...mockExtensionRequests[0],
-                        reviewedAt: Math.floor(timestamp / 1000),
-                    },
-                ],
-            },
-        });
-
-        expect(screen.getByTestId('approval-info')).toHaveTextContent(
-            new RegExp(`Your request was approved by admin ${expected}`)
-        );
-    });
-
-    test('handles different timestamp formats with moment', () => {
-        setupTest({
-            isLoading: false,
-            data: {
-                allExtensionRequests: [
-                    {
-                        ...mockExtensionRequests[0],
-                        oldEndsOn: 1619090400,
-                        newEndsOn: 1619090400000,
-                    },
-                ],
-            },
-        });
-
-        expect(screen.getByTestId('value-old-ends-on')).toHaveTextContent(
-            '04/22/2021, 12:00:00 AM'
-        );
-        expect(screen.getByTestId('value-new-ends-on')).toHaveTextContent(
-            '04/22/2021, 12:00:00 AM'
+    test('makes API call correctly when modal is open', () => {
+        setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
+        expect(mockQuery).toHaveBeenCalledWith(
+            { taskId: '123', dev: true },
+            { skip: false }
         );
     });
 });

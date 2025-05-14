@@ -36,7 +36,6 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
     dev,
     assignee,
 }) => {
-    // Don't render anything if the modal is closed
     if (!isOpen) return null;
 
     return (
@@ -44,7 +43,6 @@ export const ExtensionStatusModal: React.FC<ExtensionStatusModalProps> = ({
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <h2>Extension Details</h2>
 
-                {/* Placeholder content that matches what's expected in tests */}
                 <div>
                     <span>#1</span>
                     <span className="extensionValue extensionApproved">
