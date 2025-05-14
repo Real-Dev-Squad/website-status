@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
-import styles from './modal.module.scss';
+import styles from './ExtensionStatusModal.module.scss';
 import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
 import { SmallSpinner } from '../tasks/card/SmallSpinner';
 import moment from 'moment';
+import { ExtensionRequestDetails } from './ExtensionRequestDetails';
+import { ExtensionRequest } from '@/interfaces/task.type';
 
 type ExtensionStatusModalProps = {
     isOpen: boolean;
@@ -17,15 +19,33 @@ const formatToDateTime = (timestamp: number) => {
     return moment(timestampMs).format('MM/DD/YYYY, h:mm:ss A');
 };
 
-const formatToRelativeTime = (timestamp: number) => {
+export const formatToRelativeTime = (timestamp: number) => {
     const timestampMs = timestamp < 1e12 ? timestamp * 1000 : timestamp;
     return moment(timestampMs).fromNow();
 };
 
-const getStatusClass = (status: string, styles: any) =>
-    status === 'APPROVED' ? styles.extensionApproved : styles.extensionPending;
+const getStatusClass = (status: string, styles: any) => {
+    switch (status) {
+        case 'APPROVED':
+            return styles.extensionApproved;
+        case 'DENIED':
+            return styles.extensionDenied;
+        default:
+            return styles.extensionPending;
+    }
+};
 
-const getExtensionRequestDetails = (request: any, styles: any) => [
+type ExtensionDetailItem = {
+    label: string;
+    value: string;
+    className?: string;
+    testId: string;
+};
+
+const getExtensionRequestDetails = (
+    request: ExtensionRequest,
+    styles: Record<string, string>
+): ExtensionDetailItem[] => [
     {
         label: 'Request :',
         value: `#${request.requestNumber}`,
@@ -135,65 +155,11 @@ export function ExtensionStatusModal({
             >
                 <h2 data-testid="modal-title">Extension Details</h2>
 
-                {extensionRequests.length > 0 ? (
-                    extensionRequests.map((request) => (
-                        <div
-                            key={request.id}
-                            className={styles.extensionExtensionRequest}
-                            data-testid={`extension-request-${request.id}`}
-                        >
-                            {getExtensionRequestDetails(request, styles).map(
-                                (item, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={styles.extensionDetailRow}
-                                        data-testid={`detail-row-${idx}`}
-                                    >
-                                        <span
-                                            className={styles.extensionLabel}
-                                            data-testid={`label-${item.testId}`}
-                                        >
-                                            {item.label}
-                                        </span>
-                                        <span
-                                            className={`${
-                                                styles.extensionValue
-                                            } ${item.className || ''}`}
-                                            data-testid={`value-${item.testId}`}
-                                        >
-                                            {item.value}
-                                        </span>
-                                    </div>
-                                )
-                            )}
-
-                            {request.reviewedBy && (
-                                <div
-                                    className={styles.extensionApprovalInfo}
-                                    data-testid="approval-info"
-                                >
-                                    Your request was approved by{' '}
-                                    {request.reviewedBy}{' '}
-                                    {request.reviewedAt
-                                        ? formatToRelativeTime(
-                                              request.reviewedAt
-                                          )
-                                        : ''}
-                                </div>
-                            )}
-                        </div>
-                    ))
-                ) : (
-                    <div
-                        className={styles.extensionNoRequests}
-                        data-testid="no-requests-message"
-                    >
-                        <p>
-                            No extension requests found for this task, want to
-                            create one?
-                        </p>
-                    </div>
-                )}
+                <ExtensionRequestDetails
+                    extensionRequests={extensionRequests}
+                    styles={styles}
+                    getExtensionRequestDetails={getExtensionRequestDetails}
+                />
 
                 <div
                     className={styles.extensionButtonContainer}

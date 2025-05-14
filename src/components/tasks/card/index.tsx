@@ -39,7 +39,7 @@ import { PENDING, SAVED, ERROR_STATUS } from '../constants';
 import { StatusIndicator } from './StatusIndicator';
 import Suggestions from '../SuggestionBox/Suggestions';
 import { useRouter } from 'next/router';
-import { ExtensionStatusModal } from '@/components/Modal/ExtensionStatusModal';
+import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
 
 const Card: FC<CardProps> = ({
     content,
