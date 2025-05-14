@@ -2,6 +2,7 @@ import task, {
     TaskRequestPayload,
     TasksResponseType,
     GetAllTaskParamType,
+    ExtensionRequestsResponse,
 } from '@/interfaces/task.type';
 import { api } from './api';
 import { MINE_TASKS_URL, TASKS_URL } from '@/constants/url';
@@ -100,6 +101,19 @@ export const tasksApi = api.injectEndpoints({
                 },
             ],
         }),
+        getSelfExtensionRequests: builder.query<
+            ExtensionRequestsResponse,
+            { taskId: string; dev: boolean }
+        >({
+            query: ({ taskId, dev }) => ({
+                url: '/extension-requests/self',
+                params: {
+                    taskId,
+                    dev,
+                },
+            }),
+            providesTags: ['Extension_Requests'],
+        }),
     }),
     overrideExisting: true,
 });
@@ -110,4 +124,5 @@ export const {
     useAddTaskMutation,
     useUpdateTaskMutation,
     useUpdateSelfTaskMutation,
+    useGetSelfExtensionRequestsQuery,
 } = tasksApi;
