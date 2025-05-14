@@ -1,6 +1,8 @@
 import React from 'react';
-import { formatToRelativeTime } from './ExtensionStatusModal';
-import { ExtensionDetailItem } from './ExtensionStatusModal';
+import {
+    formatToRelativeTime,
+    ExtensionDetailItem,
+} from './ExtensionStatusModal';
 import { ExtensionRequest } from '@/interfaces/task.type';
 type ExtensionRequestDetailsProps = {
     extensionRequests: ExtensionRequest[];
@@ -31,7 +33,7 @@ export const ExtensionRequestDetails: React.FC<ExtensionRequestDetailsProps> =
                 {extensionRequests.map((request) => (
                     <div
                         key={request.id}
-                        className={styles.extensionExtensionRequest}
+                        className={styles.extensionRequest}
                         data-testid={`extension-request-${request.id}`}
                     >
                         {getExtensionRequestDetails(request, styles).map(
