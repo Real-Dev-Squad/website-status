@@ -158,6 +158,14 @@ export type taskStatusUpdateHandleProp = {
     newStatus: string;
     newProgress?: number;
 };
+
+export type ExtensionDetailItem = {
+    label: string;
+    value: string;
+    className?: string;
+    testId: string;
+};
+
 export type ExtensionRequest = {
     reason: string;
     newEndsOn: number;

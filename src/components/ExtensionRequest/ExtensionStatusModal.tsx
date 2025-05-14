@@ -4,7 +4,7 @@ import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
 import { SmallSpinner } from '../tasks/card/SmallSpinner';
 import moment from 'moment';
 import { ExtensionRequestDetails } from './ExtensionRequestDetails';
-import { ExtensionRequest } from '@/interfaces/task.type';
+import { ExtensionRequest, ExtensionDetailItem } from '@/interfaces/task.type';
 
 type ExtensionStatusModalProps = {
     isOpen: boolean;
@@ -33,13 +33,6 @@ const getStatusClass = (status: string, styles: any) => {
         default:
             return styles.extensionPending;
     }
-};
-
-export type ExtensionDetailItem = {
-    label: string;
-    value: string;
-    className?: string;
-    testId: string;
 };
 
 const getExtensionRequestDetails = (

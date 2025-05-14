@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-    formatToRelativeTime,
-    ExtensionDetailItem,
-} from './ExtensionStatusModal';
-import { ExtensionRequest } from '@/interfaces/task.type';
+import { formatToRelativeTime } from './ExtensionStatusModal';
+import { ExtensionRequest, ExtensionDetailItem } from '@/interfaces/task.type';
 type ExtensionRequestDetailsProps = {
     extensionRequests: ExtensionRequest[];
     styles: Record<string, string>;
