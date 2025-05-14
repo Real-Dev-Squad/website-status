@@ -1,12 +1,15 @@
 import React from 'react';
 import { formatToRelativeTime } from './ExtensionStatusModal';
-
+import { ExtensionDetailItem } from './ExtensionStatusModal';
+import { ExtensionRequest } from '@/interfaces/task.type';
 type ExtensionRequestDetailsProps = {
-    extensionRequests: any[];
-    styles: any;
-    getExtensionRequestDetails: (request: any, styles: any) => any[];
+    extensionRequests: ExtensionRequest[];
+    styles: Record<string, string>;
+    getExtensionRequestDetails: (
+        request: ExtensionRequest,
+        styles: Record<string, string>
+    ) => ExtensionDetailItem[];
 };
-
 export const ExtensionRequestDetails: React.FC<ExtensionRequestDetailsProps> =
     ({ extensionRequests, styles, getExtensionRequestDetails }) => {
         if (extensionRequests.length === 0) {

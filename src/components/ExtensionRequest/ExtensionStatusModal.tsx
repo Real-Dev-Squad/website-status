@@ -35,7 +35,7 @@ const getStatusClass = (status: string, styles: any) => {
     }
 };
 
-type ExtensionDetailItem = {
+export type ExtensionDetailItem = {
     label: string;
     value: string;
     className?: string;
