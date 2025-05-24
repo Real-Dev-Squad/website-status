@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, fireEvent, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
-import { mockExtensionRequests } from '../../../../__mocks__/db/ExtesnionRequest';
+import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequest';
 import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
 
 const useGetSelfExtensionRequestsQuery = jest.fn();
@@ -12,8 +12,16 @@ jest.mock('@/components/ExtensionRequest/ExtensionRequestDetails', () => ({
         getExtensionRequestDetails,
     }: {
         extensionRequests: ExtensionRequest[];
-        styles: any;
-        getExtensionRequestDetails: any;
+        styles: Record<string, string>;
+        getExtensionRequestDetails: (
+            request: ExtensionRequest,
+            styles: Record<string, string>
+        ) => Array<{
+            label: string;
+            value: string;
+            testId: string;
+            className?: string;
+        }>;
     }) =>
         extensionRequests.length === 0 ? (
             <div data-testid="no-requests-message">
@@ -69,7 +77,7 @@ jest.mock('@/components/ExtensionRequest/ExtensionRequestDetails', () => ({
 
 jest.mock('moment', () => {
     const actualMoment = jest.requireActual('moment');
-    return (timestamp: any) => {
+    return (timestamp: number | Date) => {
         if (timestamp instanceof Date || typeof timestamp === 'number') {
             return {
                 format: jest.fn().mockImplementation((format) => {

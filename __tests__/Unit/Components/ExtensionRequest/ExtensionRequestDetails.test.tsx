@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ExtensionRequestDetails } from '@/components/ExtensionRequest/ExtensionRequestDetails';
-import { mockExtensionRequestDetails } from '../../../../__mocks__/db/ExtesnionRequest';
+import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequest';
 
 jest.mock('@/components/ExtensionRequest/ExtensionStatusModal', () => ({
     formatToRelativeTime: jest.fn((timestamp) => {
@@ -12,7 +12,6 @@ jest.mock('@/components/ExtensionRequest/ExtensionStatusModal', () => ({
 }));
 
 describe.skip('ExtensionRequestDetails Component', () => {
-    const now = Date.now();
     const mockStyles = {
         extensionNoRequests: 'extensionNoRequests',
         extensionExtensionRequest: 'extensionExtensionRequest',
@@ -67,14 +66,14 @@ describe.skip('ExtensionRequestDetails Component', () => {
     test('renders extension request details correctly', () => {
         render(
             <ExtensionRequestDetails
-                extensionRequests={[mockExtensionRequestDetails[0]]}
+                extensionRequests={[mockExtensionRequests[2]]}
                 styles={mockStyles}
                 getExtensionRequestDetails={getExtensionRequestDetails}
             />
         );
-        expect(screen.getByTestId('extension-request-1')).toBeInTheDocument();
+        expect(screen.getByTestId('extension-request-3')).toBeInTheDocument();
         expect(screen.getByTestId('value-request-number')).toHaveTextContent(
-            '#1'
+            '#3'
         );
         expect(screen.getByTestId('value-request-reason')).toHaveTextContent(
             'Need more time'
@@ -83,7 +82,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
             'APPROVED'
         );
         expect(getExtensionRequestDetails).toHaveBeenCalledWith(
-            mockExtensionRequestDetails[0],
+            mockExtensionRequests[2],
             mockStyles
         );
     });
@@ -91,7 +90,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
     test('renders approval info for approved requests', () => {
         render(
             <ExtensionRequestDetails
-                extensionRequests={[mockExtensionRequestDetails[0]]}
+                extensionRequests={[mockExtensionRequests[2]]}
                 styles={mockStyles}
                 getExtensionRequestDetails={getExtensionRequestDetails}
             />
@@ -107,7 +106,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
     test('renders denial info for denied requests', () => {
         render(
             <ExtensionRequestDetails
-                extensionRequests={[mockExtensionRequestDetails[1]]}
+                extensionRequests={[mockExtensionRequests[3]]}
                 styles={mockStyles}
                 getExtensionRequestDetails={getExtensionRequestDetails}
             />
@@ -123,7 +122,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
     test('does not render review info for pending requests', () => {
         render(
             <ExtensionRequestDetails
-                extensionRequests={[mockExtensionRequestDetails[2]]}
+                extensionRequests={[mockExtensionRequests[4]]}
                 styles={mockStyles}
                 getExtensionRequestDetails={getExtensionRequestDetails}
             />
@@ -135,7 +134,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
     test('applies correct class names to detail rows', () => {
         render(
             <ExtensionRequestDetails
-                extensionRequests={[mockExtensionRequestDetails[0]]}
+                extensionRequests={[mockExtensionRequests[2]]}
                 styles={mockStyles}
                 getExtensionRequestDetails={getExtensionRequestDetails}
             />
@@ -154,7 +153,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
     test('applies custom class names from getExtensionRequestDetails', () => {
         render(
             <ExtensionRequestDetails
-                extensionRequests={[mockExtensionRequestDetails[0]]}
+                extensionRequests={[mockExtensionRequests[2]]}
                 styles={mockStyles}
                 getExtensionRequestDetails={getExtensionRequestDetails}
             />
