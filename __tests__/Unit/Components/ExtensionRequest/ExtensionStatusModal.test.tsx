@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, cleanup } from '@testing-library/react';
 import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
-import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequest';
+import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequests';
 import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
 
 const useGetSelfExtensionRequestsQuery = jest.fn();

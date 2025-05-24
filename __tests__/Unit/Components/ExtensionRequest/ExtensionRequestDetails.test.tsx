@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { ExtensionRequestDetails } from '@/components/ExtensionRequest/ExtensionRequestDetails';
-import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequest';
+import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequests';
 
 jest.mock('@/components/ExtensionRequest/ExtensionStatusModal', () => ({
     formatToRelativeTime: jest.fn((timestamp) => {
