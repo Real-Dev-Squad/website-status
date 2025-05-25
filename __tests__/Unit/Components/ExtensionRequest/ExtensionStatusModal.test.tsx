@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, cleanup } from '@testing-library/react';
+import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
 import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequests';
 import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
@@ -125,13 +125,13 @@ describe.skip('ExtensionStatusModal Component', () => {
         cleanup();
     });
 
-    test('renders loading state correctly', () => {
+    test('should render loading state correctly', () => {
         setupTest({ isLoading: true, data: null });
         expect(screen.getByTestId('modal-title')).toBeInTheDocument();
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
     });
 
-    test('passes data correctly to ExtensionRequestDetails component', () => {
+    test('should pass data correctly to ExtensionRequestDetails component', () => {
         setupTest({
             isLoading: false,
             data: { allExtensionRequests: mockExtensionRequests },
@@ -140,12 +140,12 @@ describe.skip('ExtensionStatusModal Component', () => {
         expect(screen.getByTestId('extension-request-2')).toBeInTheDocument();
     });
 
-    test('renders empty state correctly', () => {
+    test('should render empty state correctly', () => {
         setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
         expect(screen.getByTestId('no-requests-message')).toBeInTheDocument();
     });
 
-    test('hides request extension button when pending request exists', () => {
+    test('should hide request extension button when pending request exists', () => {
         setupTest({
             isLoading: false,
             data: { allExtensionRequests: [{ id: 1, status: 'PENDING' }] },
@@ -155,7 +155,29 @@ describe.skip('ExtensionStatusModal Component', () => {
         ).not.toBeInTheDocument();
     });
 
-    test('shows request extension button when no pending requests', () => {
+    test('should handle modal interactions correctly', () => {
+        setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
+
+        fireEvent.click(screen.getByTestId('close-button'));
+        expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+
+        jest.clearAllMocks();
+        fireEvent.click(screen.getByTestId('extension-modal-overlay'));
+        expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+
+        jest.clearAllMocks();
+        fireEvent.click(screen.getByTestId('extension-modal-content'));
+        expect(defaultProps.onClose).not.toHaveBeenCalled();
+
+        fireEvent.keyDown(document, { key: 'Escape' });
+        expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+
+        jest.clearAllMocks();
+        fireEvent.keyDown(document, { key: 'Enter' });
+        expect(defaultProps.onClose).not.toHaveBeenCalled();
+    });
+
+    test('should show request extension button when no pending requests', () => {
         setupTest({
             isLoading: false,
             data: {

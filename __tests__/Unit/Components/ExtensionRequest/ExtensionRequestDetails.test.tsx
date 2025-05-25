@@ -49,7 +49,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         },
     ]);
 
-    test('renders no requests message when there are no extension requests', () => {
+    test('should render no requests message when there are no extension requests', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[]}
@@ -59,11 +59,11 @@ describe.skip('ExtensionRequestDetails Component', () => {
         );
         expect(screen.getByTestId('no-requests-message')).toBeInTheDocument();
         expect(
-            screen.getByText(/No extension requests found for this task/i)
+            screen.getByTestId('first-extension-request-message')
         ).toBeInTheDocument();
     });
 
-    test('renders extension request details correctly', () => {
+    test('should render extension request details correctly', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[mockExtensionRequests[2]]}
@@ -87,7 +87,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         );
     });
 
-    test('renders approval info for approved requests', () => {
+    test('should render approval info for approved requests', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[mockExtensionRequests[2]]}
@@ -103,7 +103,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         expect(approvalInfo).toHaveClass('extensionApprovalInfo');
     });
 
-    test('renders denial info for denied requests', () => {
+    test('should render denial info for denied requests', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[mockExtensionRequests[3]]}
@@ -119,7 +119,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         expect(denialInfo).toHaveClass('extensionRejectionInfo');
     });
 
-    test('does not render review info for pending requests', () => {
+    test('should not render review info for pending requests', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[mockExtensionRequests[4]]}
@@ -131,7 +131,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         expect(screen.queryByTestId('denied-info')).not.toBeInTheDocument();
     });
 
-    test('applies correct class names to detail rows', () => {
+    test('should apply correct class names to detail rows', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[mockExtensionRequests[2]]}
@@ -150,7 +150,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         );
     });
 
-    test('applies custom class names from getExtensionRequestDetails', () => {
+    test('should apply custom class names from getExtensionRequestDetails', () => {
         render(
             <ExtensionRequestDetails
                 extensionRequests={[mockExtensionRequests[2]]}
