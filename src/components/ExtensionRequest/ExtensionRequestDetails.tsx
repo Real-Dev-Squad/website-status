@@ -17,7 +17,7 @@ export const ExtensionRequestDetails: React.FC<ExtensionRequestDetailsProps> =
                     className={styles.extensionNoRequests}
                     data-testid="no-requests-message"
                 >
-                    <p>
+                    <p data-testid="first-extension-request-message">
                         No extension requests found for this task, want to
                         create one?
                     </p>
