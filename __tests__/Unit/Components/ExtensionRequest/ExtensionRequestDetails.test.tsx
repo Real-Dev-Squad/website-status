@@ -97,7 +97,7 @@ describe.skip('ExtensionRequestDetails Component', () => {
         );
         const approvalInfo = screen.getByTestId('approval-info');
         expect(approvalInfo).toBeInTheDocument();
-        expect(approvalInfo.textContent).toContain(
+        expect(approvalInfo).toHaveTextContent(
             'Your request was approved by admin'
         );
         expect(approvalInfo).toHaveClass('extensionApprovalInfo');

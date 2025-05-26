@@ -27,11 +27,6 @@ const setupTest = (queryReturnValue: any) => {
 };
 
 describe.skip('ExtensionStatusModal Component', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-        cleanup();
-    });
-
     test('should render loading state correctly', () => {
         setupTest({ isLoading: true, data: null });
         expect(screen.getByTestId('modal-title')).toBeInTheDocument();
