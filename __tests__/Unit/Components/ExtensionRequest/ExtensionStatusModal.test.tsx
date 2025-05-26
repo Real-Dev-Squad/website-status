@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
-import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequests';
 import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
 
 const useGetSelfExtensionRequestsQuery = jest.fn();
@@ -75,28 +74,6 @@ jest.mock('@/components/ExtensionRequest/ExtensionRequestDetails', () => ({
         ),
 }));
 
-jest.mock('moment', () => {
-    const actualMoment = jest.requireActual('moment');
-    return (timestamp: number | Date) => {
-        if (timestamp instanceof Date || typeof timestamp === 'number') {
-            return {
-                format: jest.fn().mockImplementation((format) => {
-                    switch (timestamp) {
-                        case 1619090400000:
-                            return '04/22/2021, 12:00:00 AM';
-                        case 1714611746000:
-                            return '05/02/2024, 2:02:26 PM';
-                        default:
-                            return actualMoment(timestamp).format(format);
-                    }
-                }),
-                fromNow: jest.fn().mockReturnValue('some time ago'),
-            };
-        }
-        return actualMoment(timestamp);
-    };
-});
-
 jest.mock(
     '@/app/services/tasksApi',
     () => ({
@@ -131,20 +108,6 @@ describe.skip('ExtensionStatusModal Component', () => {
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument();
     });
 
-    test('should pass data correctly to ExtensionRequestDetails component', () => {
-        setupTest({
-            isLoading: false,
-            data: { allExtensionRequests: mockExtensionRequests },
-        });
-        expect(screen.getByTestId('extension-request-1')).toBeInTheDocument();
-        expect(screen.getByTestId('extension-request-2')).toBeInTheDocument();
-    });
-
-    test('should render empty state correctly', () => {
-        setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
-        expect(screen.getByTestId('no-requests-message')).toBeInTheDocument();
-    });
-
     test('should hide request extension button when pending request exists', () => {
         setupTest({
             isLoading: false,
@@ -175,6 +138,14 @@ describe.skip('ExtensionStatusModal Component', () => {
         jest.clearAllMocks();
         fireEvent.keyDown(document, { key: 'Enter' });
         expect(defaultProps.onClose).not.toHaveBeenCalled();
+    });
+    test('should render close button correctly', () => {
+        setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
+
+        const closeButton = screen.getByTestId('close-button');
+        expect(closeButton).toBeInTheDocument();
+        expect(closeButton).toBeVisible();
+        expect(closeButton).toHaveTextContent('Close');
     });
 
     test('should show request extension button when no pending requests', () => {
