@@ -1,78 +1,8 @@
 import React from 'react';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
 import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
-import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
 
 const useGetSelfExtensionRequestsQuery = jest.fn();
-jest.mock('@/components/ExtensionRequest/ExtensionRequestDetails', () => ({
-    ExtensionRequestDetails: ({
-        extensionRequests,
-        styles,
-        getExtensionRequestDetails,
-    }: {
-        extensionRequests: ExtensionRequest[];
-        styles: Record<string, string>;
-        getExtensionRequestDetails: (
-            request: ExtensionRequest,
-            styles: Record<string, string>
-        ) => Array<{
-            label: string;
-            value: string;
-            testId: string;
-            className?: string;
-        }>;
-    }) =>
-        extensionRequests.length === 0 ? (
-            <div data-testid="no-requests-message">
-                <p>
-                    No extension requests found for this task, want to create
-                    one?
-                </p>
-            </div>
-        ) : (
-            <>
-                {extensionRequests.map((request) => (
-                    <div
-                        key={request.id}
-                        data-testid={`extension-request-${request.id}`}
-                    >
-                        {getExtensionRequestDetails(request, styles).map(
-                            (item: any, idx: number) => (
-                                <div
-                                    key={idx}
-                                    data-testid={`detail-row-${idx}`}
-                                >
-                                    <span data-testid={`label-${item.testId}`}>
-                                        {item.label}
-                                    </span>
-                                    <span
-                                        className={item.className || ''}
-                                        data-testid={`value-${item.testId}`}
-                                    >
-                                        {item.value}
-                                    </span>
-                                </div>
-                            )
-                        )}
-                        {request.reviewedBy &&
-                            ['APPROVED', 'DENIED'].includes(request.status) && (
-                                <div
-                                    data-testid={
-                                        request.status === 'APPROVED'
-                                            ? 'approval-info'
-                                            : 'denied-info'
-                                    }
-                                >
-                                    Your request was{' '}
-                                    {request.status.toLowerCase()} by{' '}
-                                    {request.reviewedBy}
-                                </div>
-                            )}
-                    </div>
-                ))}
-            </>
-        ),
-}));
 
 jest.mock(
     '@/app/services/tasksApi',
