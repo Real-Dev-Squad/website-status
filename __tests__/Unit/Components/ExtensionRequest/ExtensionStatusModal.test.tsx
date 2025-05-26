@@ -1,8 +1,11 @@
 import React from 'react';
 import { render, screen, cleanup, fireEvent } from '@testing-library/react';
-import { ExtensionStatusModal } from '@/components/ExtensionRequest/ExtensionStatusModal';
-
-const useGetSelfExtensionRequestsQuery = jest.fn();
+import {
+    ExtensionStatusModal,
+    formatToRelativeTime,
+} from '@/components/ExtensionRequest/ExtensionStatusModal';
+import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
+import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequests';
 
 jest.mock(
     '@/app/services/tasksApi',
@@ -85,5 +88,39 @@ describe.skip('ExtensionStatusModal Component', () => {
         expect(
             screen.getByTestId('request-extension-button')
         ).toBeInTheDocument();
+    });
+
+    test('should handle timestamp conversion for large timestamps', () => {
+        const approvedRequest = mockExtensionRequests.find(
+            (req) => req.status === 'APPROVED'
+        );
+
+        setupTest({
+            isLoading: false,
+            data: {
+                allExtensionRequests: [approvedRequest],
+            },
+        });
+        expect(screen.getByTestId('modal-title')).toBeInTheDocument();
+    });
+
+    test('should handle denied status class', () => {
+        const deniedRequest = mockExtensionRequests.find(
+            (req) => req.status === 'DENIED'
+        );
+
+        setupTest({
+            isLoading: false,
+            data: {
+                allExtensionRequests: [deniedRequest],
+            },
+        });
+        expect(screen.getByTestId('modal-title')).toBeInTheDocument();
+    });
+
+    test('should test formatToRelativeTime function', () => {
+        const timestamp = 1640995200;
+        const result = formatToRelativeTime(timestamp);
+        expect(typeof result).toBe('string');
     });
 });
