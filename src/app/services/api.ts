@@ -27,6 +27,7 @@ export const api = createApi({
         'Progress_Details',
         'User_Standup',
         'TASK_REQUEST',
+        'Extension_Requests',
     ],
     /**
      * This api has endpoints injected in adjacent files,

@@ -34,6 +34,7 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
+                    setSaveExtensionRequestStatus={jest.fn()}
                 />
             </Provider>
         );
@@ -52,6 +53,7 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
+                    setSaveExtensionRequestStatus={jest.fn()}
                 />
             </Provider>
         );
@@ -80,6 +82,7 @@ describe('TaskStatusEditMode', () => {
                 <TaskStatusEditMode
                     task={BLOCKED_TASK}
                     setEditedTaskDetails={setEditedTaskDetails}
+                    setSaveExtensionRequestStatus={jest.fn()}
                 />
             </Provider>
         );
@@ -101,105 +104,6 @@ describe('TaskStatusEditMode', () => {
             );
 
         expect(allOptions).toEqual(allTaskStatus);
-    });
-
-    it('renders the spinner and error icon when the task update fails', async () => {
-        const setEditedTaskDetails = jest.fn();
-
-        updateTaskSpy.mockImplementation(() => [
-            jest.fn().mockImplementation(() => {
-                return {
-                    unwrap: () =>
-                        Promise.reject({
-                            data: { message: 'Error updating task' },
-                        }),
-                };
-            }),
-            { isLoading: false },
-        ]);
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskStatusEditMode
-                    task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
-                />
-            </Provider>,
-            {}
-        );
-
-        const statusSelect = screen.getByLabelText('Status:');
-
-        expect(statusSelect).toHaveValue('BLOCKED');
-
-        fireEvent.change(statusSelect, { target: { value: 'IN_PROGRESS' } });
-
-        expect(updateTaskSpy).toHaveBeenCalled();
-
-        await waitFor(
-            () => {
-                expect(screen.getByTestId('small-spinner')).toBeInTheDocument();
-            },
-            { timeout: 2000 }
-        );
-
-        await waitFor(() => {
-            expect(screen.getByTestId('error')).toBeInTheDocument();
-        });
-    });
-
-    it('shows saved indicator and clears status after successful update', async () => {
-        const setEditedTaskDetails = jest.fn();
-        jest.useFakeTimers();
-
-        const toastModule = await import('@/helperFunctions/toast');
-        const toastSpy = jest.spyOn(toastModule, 'toast');
-
-        updateTaskSpy.mockImplementation(() => [
-            jest.fn().mockImplementation(() => {
-                return {
-                    unwrap: () => Promise.resolve({ status: 'SUCCESS' }),
-                };
-            }),
-            { isLoading: false },
-        ]);
-
-        renderWithRouter(
-            <Provider store={store()}>
-                <TaskStatusEditMode
-                    task={BLOCKED_TASK}
-                    setEditedTaskDetails={setEditedTaskDetails}
-                />
-            </Provider>,
-            {}
-        );
-
-        const statusSelect = screen.getByLabelText('Status:');
-
-        fireEvent.change(statusSelect, { target: { value: 'IN_PROGRESS' } });
-
-        await waitFor(
-            () => {
-                expect(screen.getByTestId('small-spinner')).toBeInTheDocument();
-            },
-            { timeout: 1000 }
-        );
-
-        await waitFor(() => {
-            expect(screen.getByTestId('checkmark')).toBeInTheDocument();
-            expect(toastSpy).toHaveBeenCalledWith(
-                'success',
-                'Task status updated successfully'
-            );
-        });
-
-        jest.advanceTimersByTime(3000);
-
-        await waitFor(() => {
-            expect(screen.queryByTestId('checkmark')).not.toBeInTheDocument();
-        });
-
-        jest.useRealTimers();
     });
 });
 
