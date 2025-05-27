@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, cleanup, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import {
     ExtensionStatusModal,
     formatToRelativeTime,
@@ -29,7 +29,7 @@ const setupTest = (queryReturnValue: any) => {
     return render(<ExtensionStatusModal {...defaultProps} />);
 };
 
-describe.skip('ExtensionStatusModal Component', () => {
+describe('ExtensionStatusModal Component', () => {
     test('should render loading state correctly', () => {
         setupTest({ isLoading: true, data: null });
         expect(screen.getByTestId('modal-title')).toBeInTheDocument();
@@ -90,7 +90,7 @@ describe.skip('ExtensionStatusModal Component', () => {
         ).toBeInTheDocument();
     });
 
-    test('should handle timestamp conversion for large timestamps', () => {
+    test('should render modal correctly for approved request with large timestamp', () => {
         const approvedRequest = mockExtensionRequests.find(
             (req) => req.status === 'APPROVED'
         );
@@ -104,7 +104,7 @@ describe.skip('ExtensionStatusModal Component', () => {
         expect(screen.getByTestId('modal-title')).toBeInTheDocument();
     });
 
-    test('should handle denied status class', () => {
+    test('should render modal for denied extension requests', () => {
         const deniedRequest = mockExtensionRequests.find(
             (req) => req.status === 'DENIED'
         );
@@ -121,6 +121,6 @@ describe.skip('ExtensionStatusModal Component', () => {
     test('should test formatToRelativeTime function', () => {
         const timestamp = 1640995200;
         const result = formatToRelativeTime(timestamp);
-        expect(typeof result).toBe('string');
+        expect(result).toBe('3 years ago');
     });
 });

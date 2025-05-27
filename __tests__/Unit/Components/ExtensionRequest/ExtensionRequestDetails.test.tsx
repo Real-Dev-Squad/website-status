@@ -11,7 +11,7 @@ jest.mock('@/components/ExtensionRequest/ExtensionStatusModal', () => ({
     }),
 }));
 
-describe.skip('ExtensionRequestDetails Component', () => {
+describe('ExtensionRequestDetails Component', () => {
     const mockStyles = {
         extensionNoRequests: 'extensionNoRequests',
         extensionExtensionRequest: 'extensionExtensionRequest',
