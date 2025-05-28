@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styles from './ExtensionStatusModal.module.scss';
 import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
 import { SmallSpinner } from '../tasks/card/SmallSpinner';
 import moment from 'moment';
 import { ExtensionRequestDetails } from './ExtensionRequestDetails';
 import { ExtensionRequest, ExtensionDetailItem } from '@/interfaces/task.type';
+import { ExtensionRequestForm } from './ExtensionRequestForm';
 
 type ExtensionStatusModalProps = {
     isOpen: boolean;
@@ -84,6 +85,8 @@ export function ExtensionStatusModal({
         { skip: !isOpen }
     );
     const modalRef = useRef<HTMLDivElement>(null);
+    const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+    const [oldEndsOn, setOldEndsOn] = useState<number | null>(null);
 
     const extensionRequests = data?.allExtensionRequests ?? [];
     const hasPendingRequest = extensionRequests.some(
@@ -105,11 +108,50 @@ export function ExtensionStatusModal({
         };
     }, [isOpen, onClose]);
 
+    useEffect(() => {
+        if (isOpen && (data?.allExtensionRequests ?? []).length > 0) {
+            const latestRequest = [...(data?.allExtensionRequests ?? [])].sort(
+                (a, b) => b.requestNumber - a.requestNumber
+            )[0];
+
+            const timestampMs =
+                latestRequest.newEndsOn < 1e12
+                    ? latestRequest.newEndsOn * 1000
+                    : latestRequest.newEndsOn;
+
+            setOldEndsOn(timestampMs);
+        } else if (isOpen) {
+            setOldEndsOn(new Date().getTime());
+        }
+    }, [isOpen, data, taskId, dev]);
+
     const handleOutsideClick = (e: React.MouseEvent) => {
         if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
             onClose();
         }
     };
+    const handleOpenRequestForm = () => {
+        setIsRequestFormOpen(true);
+        onClose();
+    };
+
+    const handleCloseRequestForm = () => setIsRequestFormOpen(false);
+    const handleSubmitExtensionRequest = (formData: any) => {
+        console.log('Complete request data:', { ...formData, taskId, dev });
+        setIsRequestFormOpen(false);
+    };
+
+    const renderRequestForm = () => (
+        <ExtensionRequestForm
+            isOpen={isRequestFormOpen}
+            onClose={handleCloseRequestForm}
+            taskId={taskId}
+            assignee={assignee}
+            oldEndsOn={oldEndsOn}
+        />
+    );
+
+    if (!isOpen) return isRequestFormOpen ? renderRequestForm() : null;
 
     if (!isOpen) return null;
 
@@ -174,12 +216,14 @@ export function ExtensionStatusModal({
                         <button
                             className={styles.extensionRequestButton}
                             data-testid="request-extension-button"
+                            onClick={handleOpenRequestForm}
                         >
                             Request Extension
                         </button>
                     )}
                 </div>
             </div>
+            {renderRequestForm()}
         </div>
     );
 }
