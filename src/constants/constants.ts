@@ -6,6 +6,10 @@ export const DONE = 'DONE';
 export const AVAILABLE = 'AVAILABLE';
 export const UNASSIGNED = 'UNASSIGNED';
 export const PROGRESS_SUCCESSFUL = 'Progress Updated Successfully';
+export const EXTENSION_REQUEST_SUCCESS_MESSAGE =
+    'Extension request created successfully';
+export const EXTENSION_REQUEST_ERROR_MESSAGE =
+    'Failed to create extension request';
 export const TASK_STATUS_UPDATE_SUCCESS_MESSAGE =
     'Task status updated successfully';
 export const TASK_STATUS_UPDATE_ERROR_MESSAGE = 'Error updating task status';

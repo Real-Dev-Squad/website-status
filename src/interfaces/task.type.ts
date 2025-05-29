@@ -186,3 +186,18 @@ export type ExtensionRequestsResponse = {
     message: string;
     allExtensionRequests: ExtensionRequest[];
 };
+
+export type ExtensionRequestCreatePayload = {
+    assignee: string;
+    newEndsOn: number;
+    oldEndsOn: number;
+    reason: string;
+    status: string;
+    taskId: string;
+    title: string;
+};
+
+export type ExtensionRequestCreateResponse = {
+    message: string;
+    extensionRequest: ExtensionRequest;
+};
