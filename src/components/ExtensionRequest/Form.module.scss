@@ -1,10 +1,12 @@
+@import '../../styles/variables.scss';
+
 .modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba($black, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -12,44 +14,44 @@
 }
 
 .modalContent {
-    background-color: white;
-    padding: 25px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: $white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba($black, 0.1);
     width: 90%;
-    max-width: 450px;
+    max-width: 28rem;
 }
 
 .heading {
-    color: #333;
-    font-size: 24px;
+    color: $dark-grayish-red;
+    font-size: 2rem;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 .formGroup {
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
 }
 
 .label {
     display: block;
     font-weight: 500;
-    margin-bottom: 5px;
-    color: #333;
+    margin-bottom: 0.5rem;
+    color: $dark-grayish-red;
 }
 
 .textArea,
 .input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+    padding: 1rem;
+    border: 1px solid $light-gray;
+    border-radius: 0.25rem;
+    font-size: 1rem;
     box-sizing: border-box;
 }
 
 .oldEta {
-    margin-bottom: 10px;
+    margin-bottom: 0.5rem;
     font-weight: 500;
 }
 
@@ -60,54 +62,57 @@
 .formActions {
     display: flex;
     justify-content: space-between;
-    margin-top: 25px;
-}
-
-.button {
-    padding: 10px 15px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
-    width: 48%;
+    margin-top: 2rem;
 }
 
 .cancelBtn {
-    composes: button;
-    background-color: #b80000;
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    color: $white;
+    width: 48%;
+    background-color: $red;
 }
 
 .cancelBtn:hover {
-    background-color: #900000;
+    background-color: $coral-red;
 }
 
 .submitBtn {
-    composes: button;
-    background-color: #008800;
+    padding: 1rem 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    color: $white;
+    width: 48%;
+    background-color: $green;
 }
 
 .submitBtn:hover {
-    background-color: #006600;
+    background-color: $light-green;
 }
+
 .errorText {
-    color: red;
-    font-size: 0.875rem;
+    color: $red;
+    font-size: 1rem;
     margin-top: 4px;
 }
 
 .disabledBtn {
-    background-color: #cccccc !important;
-    color: #666666 !important;
-    cursor: not-allowed !important;
+    background-color: $light-gray;
+    color: $dark-grayish-red;
+    cursor: not-allowed;
 
     &:hover {
         position: relative;
 
         &:after {
             position: absolute;
-            font-size: 1.2em;
-            right: 10px;
+            font-size: 1rem;
+            right: 0.5rem;
             top: 50%;
             transform: translateY(-50%);
             opacity: 0.7;
