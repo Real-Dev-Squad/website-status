@@ -117,10 +117,12 @@ export function ExtensionRequestForm({
     const oldEndsOnDate = getOldEndsOnDate(oldEndsOn);
 
     return (
-        <div className={styles.modalOverlay}>
+        <div className={styles.modalOverlay} data-testid="extension-form-modal">
             <div className={styles.modalContent}>
-                <h2 className={styles.heading}>Extension Request Form</h2>
-                <form onSubmit={handleSubmit}>
+                <h2 className={styles.heading} data-testid="form-heading">
+                    Extension Request Form
+                </h2>
+                <form onSubmit={handleSubmit} data-testid="extension-form">
                     <div className={styles.formGroup}>
                         <label className={styles.label} htmlFor="reason">
                             Reason
@@ -134,14 +136,18 @@ export function ExtensionRequestForm({
                             className={styles.textArea}
                             required
                             disabled={isLoading}
+                            data-testid="reason-input"
                         />
                     </div>
 
                     <div className={styles.formGroup}>
-                        <div className={styles.oldEta}>
+                        <div className={styles.oldEta} data-testid="old-eta">
                             Old ETA - {oldEndsOnDate}
                             {etaError && (
-                                <p className={styles.errorText}>
+                                <p
+                                    className={styles.errorText}
+                                    data-testid="eta-error"
+                                >
                                     Please choose ETA greater than old ETA.
                                 </p>
                             )}
@@ -161,6 +167,7 @@ export function ExtensionRequestForm({
                             className={`${styles.input} ${styles.dateTimeInput}`}
                             required
                             disabled={isLoading}
+                            data-testid="new-eta-input"
                         />
                     </div>
 
@@ -177,6 +184,7 @@ export function ExtensionRequestForm({
                             className={styles.textArea}
                             required
                             disabled={isLoading}
+                            data-testid="title-input"
                         />
                     </div>
 
@@ -186,6 +194,7 @@ export function ExtensionRequestForm({
                             className={styles.cancelBtn}
                             onClick={onClose}
                             disabled={isLoading}
+                            data-testid="cancel-button"
                         >
                             Cancel
                         </button>
@@ -195,6 +204,7 @@ export function ExtensionRequestForm({
                                 isLoading || etaError ? styles.disabledBtn : ''
                             }`}
                             disabled={isLoading || etaError}
+                            data-testid="submit-button"
                         >
                             Submit
                         </button>

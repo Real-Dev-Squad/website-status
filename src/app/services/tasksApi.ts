@@ -124,15 +124,10 @@ export const tasksApi = api.injectEndpoints({
                 url: '/extension-requests',
                 method: 'POST',
                 params: { dev: payload.dev ?? true },
-                body: {
-                    assignee: payload.assignee,
-                    newEndsOn: payload.newEndsOn,
-                    oldEndsOn: payload.oldEndsOn,
-                    reason: payload.reason,
-                    status: payload.status,
-                    taskId: payload.taskId,
-                    title: payload.title,
-                },
+                body: (() => {
+                    const { dev, ...requestPayload } = payload;
+                    return requestPayload;
+                })(),
             }),
             invalidatesTags: ['Extension_Requests'],
         }),
