@@ -21,13 +21,31 @@ interface FormData {
     title: string;
 }
 
-export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
+const { SUCCESS, ERROR } = ToastTypes;
+
+const formatDateForInput = (timestamp: number) =>
+    new Date(timestamp).toISOString().slice(0, 16);
+
+const getOldEndsOnDate = (oldEndsOn: number | null) =>
+    oldEndsOn
+        ? new Date(oldEndsOn).toLocaleDateString('en-US', {
+              month: 'numeric',
+              day: 'numeric',
+              year: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              second: 'numeric',
+              hour12: true,
+          })
+        : 'Not available';
+
+export function ExtensionRequestForm({
     isOpen,
     onClose,
     taskId,
     assignee,
     oldEndsOn,
-}) => {
+}: ExtensionRequestFormProps) {
     const [formData, setFormData] = useState<FormData>({
         reason: '',
         newEndsOn: new Date().getTime(),
@@ -37,7 +55,6 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
     const [etaError, setEtaError] = useState(false);
     const [createExtensionRequest, { isLoading }] =
         useCreateExtensionRequestMutation();
-    const { SUCCESS, ERROR } = ToastTypes;
 
     useEffect(() => {
         if (isOpen) {
@@ -97,20 +114,7 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
 
     if (!isOpen) return null;
 
-    const oldEndsOnDate = oldEndsOn
-        ? new Date(oldEndsOn).toLocaleDateString('en-US', {
-              month: 'numeric',
-              day: 'numeric',
-              year: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-              second: 'numeric',
-              hour12: true,
-          })
-        : 'Not available';
-
-    const formatDateForInput = (timestamp: number) =>
-        new Date(timestamp).toISOString().slice(0, 16);
+    const oldEndsOnDate = getOldEndsOnDate(oldEndsOn);
 
     return (
         <div className={styles.modalOverlay}>
@@ -199,4 +203,4 @@ export const ExtensionRequestForm: React.FC<ExtensionRequestFormProps> = ({
             </div>
         </div>
     );
-};
+}

@@ -130,30 +130,27 @@ export function ExtensionStatusModal({
             onClose();
         }
     };
+
     const handleOpenRequestForm = () => {
         setIsRequestFormOpen(true);
         onClose();
     };
 
     const handleCloseRequestForm = () => setIsRequestFormOpen(false);
-    const handleSubmitExtensionRequest = (formData: any) => {
-        console.log('Complete request data:', { ...formData, taskId, dev });
-        setIsRequestFormOpen(false);
-    };
 
-    const renderRequestForm = () => (
-        <ExtensionRequestForm
-            isOpen={isRequestFormOpen}
-            onClose={handleCloseRequestForm}
-            taskId={taskId}
-            assignee={assignee}
-            oldEndsOn={oldEndsOn}
-        />
-    );
+    if (!isOpen && !isRequestFormOpen) return null;
 
-    if (!isOpen) return isRequestFormOpen ? renderRequestForm() : null;
-
-    if (!isOpen) return null;
+    if (!isOpen && isRequestFormOpen) {
+        return (
+            <ExtensionRequestForm
+                isOpen={isRequestFormOpen}
+                onClose={handleCloseRequestForm}
+                taskId={taskId}
+                assignee={assignee}
+                oldEndsOn={oldEndsOn}
+            />
+        );
+    }
 
     if (isLoading) {
         return (
@@ -223,7 +220,6 @@ export function ExtensionStatusModal({
                     )}
                 </div>
             </div>
-            {renderRequestForm()}
         </div>
     );
 }
