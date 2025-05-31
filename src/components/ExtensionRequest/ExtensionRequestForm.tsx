@@ -93,7 +93,7 @@ export function ExtensionRequestForm({
         try {
             await createExtensionRequest({
                 assignee: assignee,
-                newEndsOn: formData.newEndsOn,
+                newEndsOn: Math.floor(formData.newEndsOn / 1000),
                 oldEndsOn: submissionOldEndsOn,
                 reason: formData.reason,
                 status: 'PENDING',
