@@ -13,6 +13,7 @@ type ExtensionStatusModalProps = {
     taskId: string;
     dev: boolean;
     assignee: string;
+    initialOldEndsOn?: Date | null;
 };
 
 const formatToDateTime = (timestamp: number) => {
@@ -79,6 +80,7 @@ export function ExtensionStatusModal({
     taskId,
     dev,
     assignee,
+    initialOldEndsOn,
 }: ExtensionStatusModalProps) {
     const { data, isLoading, error } = useGetSelfExtensionRequestsQuery(
         { taskId, dev },
@@ -121,7 +123,7 @@ export function ExtensionStatusModal({
 
             setOldEndsOn(timestampMs);
         } else if (isOpen) {
-            setOldEndsOn(new Date().getTime());
+            setOldEndsOn(initialOldEndsOn ? initialOldEndsOn.getTime() : null);
         }
     }, [isOpen, data, taskId, dev]);
 
