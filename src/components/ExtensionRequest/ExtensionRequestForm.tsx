@@ -28,7 +28,7 @@ const formatDateForInput = (timestamp: number) =>
 
 const getOldEndsOnDate = (oldEndsOn: number | null) =>
     oldEndsOn
-        ? new Date(oldEndsOn).toLocaleDateString('en-US', {
+        ? new Date(oldEndsOn).toLocaleDateString('en-GB', {
               month: 'numeric',
               day: 'numeric',
               year: 'numeric',
@@ -94,7 +94,7 @@ export function ExtensionRequestForm({
             await createExtensionRequest({
                 assignee: assignee,
                 newEndsOn: Math.floor(formData.newEndsOn / 1000),
-                oldEndsOn: submissionOldEndsOn,
+                oldEndsOn: Math.floor(submissionOldEndsOn / 1000),
                 reason: formData.reason,
                 status: 'PENDING',
                 taskId,
@@ -104,11 +104,8 @@ export function ExtensionRequestForm({
 
             toast(SUCCESS, EXTENSION_REQUEST_SUCCESS_MESSAGE);
             onClose();
-        } catch (error: any) {
-            toast(
-                ERROR,
-                error?.data?.message ?? EXTENSION_REQUEST_ERROR_MESSAGE
-            );
+        } catch (error) {
+            toast(ERROR, EXTENSION_REQUEST_ERROR_MESSAGE);
         }
     };
 
