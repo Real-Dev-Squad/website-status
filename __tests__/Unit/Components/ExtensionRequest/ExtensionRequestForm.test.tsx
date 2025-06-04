@@ -20,17 +20,25 @@ jest.mock('@/helperFunctions/toast', () => ({
     },
 }));
 
-const defaultProps = {
-    isOpen: true,
-    onClose: jest.fn(),
-    taskId: '123',
-    assignee: 'john',
-    oldEndsOn: new Date().getTime(),
-};
-
 describe('ExtensionRequestForm Component', () => {
+    let mockOnClose: () => void;
+
+    beforeEach(() => {
+        mockOnClose = jest.fn();
+
+        jest.clearAllMocks();
+    });
+
+    const getDefaultProps = () => ({
+        isOpen: true,
+        onClose: mockOnClose,
+        taskId: '123',
+        assignee: 'john',
+        oldEndsOn: new Date().getTime(),
+    });
+
     test('should render all fields correctly', () => {
-        render(<ExtensionRequestForm {...defaultProps} />);
+        render(<ExtensionRequestForm {...getDefaultProps()} />);
 
         expect(screen.getByTestId('extension-form-modal')).toBeInTheDocument();
         expect(screen.getByTestId('form-heading')).toHaveTextContent(
@@ -44,7 +52,7 @@ describe('ExtensionRequestForm Component', () => {
     });
 
     test(' should handle input change correctly', () => {
-        render(<ExtensionRequestForm {...defaultProps} />);
+        render(<ExtensionRequestForm {...getDefaultProps()} />);
 
         fireEvent.change(screen.getByTestId('reason-input'), {
             target: { value: 'Need more time', name: 'reason' },
@@ -62,12 +70,11 @@ describe('ExtensionRequestForm Component', () => {
     });
 
     test('should disable submit button if newEndsOn <= oldEndsOn', () => {
-        render(
-            <ExtensionRequestForm
-                {...defaultProps}
-                oldEndsOn={new Date('2025-01-01T10:00:00').getTime()}
-            />
-        );
+        const props = {
+            ...getDefaultProps(),
+            oldEndsOn: new Date('2025-01-01T10:00:00').getTime(),
+        };
+        render(<ExtensionRequestForm {...props} />);
 
         fireEvent.change(screen.getByTestId('new-eta-input'), {
             target: {
@@ -80,7 +87,7 @@ describe('ExtensionRequestForm Component', () => {
         expect(screen.getByTestId('submit-button')).toBeDisabled();
     });
 
-    test('submits form with correct data', async () => {
+    test('should submits form with correct data', async () => {
         const mockEta = '2025-12-31T18:29';
         const mockEtaTimestampInSeconds = Math.floor(
             new Date(mockEta).getTime() / 1000
@@ -90,7 +97,7 @@ describe('ExtensionRequestForm Component', () => {
             unwrap: () => Promise.resolve(),
         });
 
-        render(<ExtensionRequestForm {...defaultProps} />);
+        render(<ExtensionRequestForm {...getDefaultProps()} />);
 
         fireEvent.change(screen.getByTestId('reason-input'), {
             target: { value: 'Valid reason', name: 'reason' },
@@ -121,16 +128,17 @@ describe('ExtensionRequestForm Component', () => {
     });
 
     test('should not render the form when isOpen is false', () => {
-        render(<ExtensionRequestForm {...defaultProps} isOpen={false} />);
+        const props = { ...getDefaultProps(), isOpen: false };
+        render(<ExtensionRequestForm {...props} />);
         expect(
             screen.queryByTestId('extension-form-modal')
         ).not.toBeInTheDocument();
     });
 
     test('should call onClose when cancel button clicked', () => {
-        render(<ExtensionRequestForm {...defaultProps} />);
+        render(<ExtensionRequestForm {...getDefaultProps()} />);
         fireEvent.click(screen.getByTestId('cancel-button'));
-        expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+        expect(mockOnClose).toHaveBeenCalledTimes(1);
     });
 
     test('should show toast error on submit failure', async () => {
@@ -138,7 +146,7 @@ describe('ExtensionRequestForm Component', () => {
             unwrap: () => Promise.reject(new Error('Error submitting')),
         });
 
-        render(<ExtensionRequestForm {...defaultProps} />);
+        render(<ExtensionRequestForm {...getDefaultProps()} />);
 
         fireEvent.change(screen.getByTestId('reason-input'), {
             target: { value: 'Valid reason', name: 'reason' },
@@ -153,12 +161,13 @@ describe('ExtensionRequestForm Component', () => {
             expect(toast).toHaveBeenCalledWith('ERROR', expect.any(String));
         });
     });
+
     test('should show toast success on successful form submission', async () => {
         mockCreateExtensionRequest.mockReturnValueOnce({
             unwrap: () => Promise.resolve(),
         });
 
-        render(<ExtensionRequestForm {...defaultProps} />);
+        render(<ExtensionRequestForm {...getDefaultProps()} />);
 
         fireEvent.change(screen.getByTestId('reason-input'), {
             target: { value: 'Valid reason', name: 'reason' },
@@ -174,15 +183,15 @@ describe('ExtensionRequestForm Component', () => {
 
         await waitFor(() => {
             expect(toast).toHaveBeenCalledWith('SUCCESS', expect.any(String));
-            expect(defaultProps.onClose).toHaveBeenCalledTimes(1);
+            expect(mockOnClose).toHaveBeenCalledTimes(1);
         });
     });
+
     test('should handle new ETA date input change correctly', () => {
         const oldEndsOn = new Date('2025-01-01T10:00:00').getTime();
+        const props = { ...getDefaultProps(), oldEndsOn };
 
-        render(
-            <ExtensionRequestForm {...defaultProps} oldEndsOn={oldEndsOn} />
-        );
+        render(<ExtensionRequestForm {...props} />);
 
         const newEtaInput = screen.getByTestId('new-eta-input');
         const testDate = '2025-02-01T12:00';
