@@ -7,13 +7,13 @@ import {
 import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
 import { mockExtensionRequests } from '../../../../__mocks__/db/extensionRequests';
 
-jest.mock(
-    '@/app/services/tasksApi',
-    () => ({
-        useGetSelfExtensionRequestsQuery: jest.fn(),
-    }),
-    { virtual: true }
-);
+jest.mock('@/app/services/tasksApi', () => ({
+    useGetSelfExtensionRequestsQuery: jest.fn(),
+    useCreateExtensionRequestMutation: jest.fn(() => [
+        jest.fn(),
+        { isLoading: false },
+    ]),
+}));
 
 const mockQuery = useGetSelfExtensionRequestsQuery as jest.Mock;
 const defaultProps = {
@@ -67,6 +67,7 @@ describe('ExtensionStatusModal Component', () => {
         fireEvent.keyDown(document, { key: 'Enter' });
         expect(defaultProps.onClose).not.toHaveBeenCalled();
     });
+
     test('should render close button correctly', () => {
         setupTest({ isLoading: false, data: { allExtensionRequests: [] } });
 
@@ -122,5 +123,52 @@ describe('ExtensionStatusModal Component', () => {
         const timestamp = 1640995200;
         const result = formatToRelativeTime(timestamp);
         expect(result).toBe('3 years ago');
+    });
+
+    test('should open extension request form when request extension button is clicked', () => {
+        const onCloseMock = jest.fn();
+        mockQuery.mockReturnValue({
+            isLoading: false,
+            data: { allExtensionRequests: [] },
+        });
+
+        const { rerender } = render(
+            <ExtensionStatusModal {...defaultProps} onClose={onCloseMock} />
+        );
+
+        const requestButton = screen.getByTestId('request-extension-button');
+        fireEvent.click(requestButton);
+
+        expect(onCloseMock).toHaveBeenCalledTimes(1);
+
+        rerender(
+            <ExtensionStatusModal
+                {...defaultProps}
+                isOpen={false}
+                onClose={onCloseMock}
+            />
+        );
+
+        expect(screen.getByTestId('extension-form-modal')).toBeInTheDocument();
+        expect(screen.getByTestId('form-heading')).toHaveTextContent(
+            'Extension Request Form'
+        );
+        expect(screen.getByTestId('reason-input')).toBeInTheDocument();
+        expect(screen.getByTestId('new-eta-input')).toBeInTheDocument();
+        expect(screen.getByTestId('title-input')).toBeInTheDocument();
+        expect(screen.getByTestId('cancel-button')).toBeInTheDocument();
+        expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+    });
+
+    test('should handle initialOldEndsOn prop correctly', () => {
+        const initialDate = new Date('2024-01-15T10:00:00Z');
+        const propsWithInitialDate = {
+            ...defaultProps,
+            initialOldEndsOn: initialDate,
+        };
+
+        render(<ExtensionStatusModal {...propsWithInitialDate} />);
+
+        expect(screen.getByTestId('modal-title')).toBeInTheDocument();
     });
 });
