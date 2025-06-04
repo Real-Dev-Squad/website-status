@@ -120,15 +120,16 @@ export const tasksApi = api.injectEndpoints({
             ExtensionRequestCreateResponse,
             ExtensionRequestCreatePayload & { dev?: boolean }
         >({
-            query: (payload) => ({
-                url: '/extension-requests',
-                method: 'POST',
-                params: { dev: payload.dev ?? true },
-                body: (() => {
-                    const { dev, ...requestPayload } = payload;
-                    return requestPayload;
-                })(),
-            }),
+            query: (payload) => {
+                const { dev, ...requestPayload } = payload;
+
+                return {
+                    url: '/extension-requests',
+                    method: 'POST',
+                    params: { dev: dev ?? true },
+                    body: requestPayload,
+                };
+            },
             invalidatesTags: ['Extension_Requests'],
         }),
     }),
