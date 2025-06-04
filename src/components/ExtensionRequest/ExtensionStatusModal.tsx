@@ -111,18 +111,26 @@ export function ExtensionStatusModal({
     }, [isOpen, onClose]);
 
     useEffect(() => {
-        if (isOpen && (data?.allExtensionRequests ?? []).length > 0) {
-            const latestRequest = [...(data?.allExtensionRequests ?? [])].sort(
+        if (!isOpen) return;
+
+        const allRequests = data?.allExtensionRequests ?? [];
+
+        if (allRequests.length > 0) {
+            const latestRequest = [...allRequests].sort(
                 (a, b) => b.requestNumber - a.requestNumber
             )[0];
 
-            const timestampMs =
-                latestRequest.newEndsOn < 1e12
+            const isApproved = latestRequest.status === 'APPROVED';
+            const endsOnTimestamp = isApproved
+                ? latestRequest.newEndsOn < 1e12
                     ? latestRequest.newEndsOn * 1000
-                    : latestRequest.newEndsOn;
+                    : latestRequest.newEndsOn
+                : initialOldEndsOn
+                ? initialOldEndsOn.getTime()
+                : null;
 
-            setOldEndsOn(timestampMs);
-        } else if (isOpen) {
+            setOldEndsOn(endsOnTimestamp);
+        } else {
             setOldEndsOn(initialOldEndsOn ? initialOldEndsOn.getTime() : null);
         }
     }, [isOpen, data, taskId, dev]);
