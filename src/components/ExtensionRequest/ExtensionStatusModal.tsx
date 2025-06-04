@@ -121,17 +121,24 @@ export function ExtensionStatusModal({
             )[0];
 
             const isApproved = latestRequest.status === 'APPROVED';
-            const endsOnTimestamp = isApproved
-                ? latestRequest.newEndsOn < 1e12
-                    ? latestRequest.newEndsOn * 1000
-                    : latestRequest.newEndsOn
-                : initialOldEndsOn
-                ? initialOldEndsOn.getTime()
-                : null;
+
+            let endsOnTimestamp = null;
+            if (isApproved) {
+                const newEndsOn = latestRequest.newEndsOn;
+                const isUnixInSeconds = newEndsOn < 1e12;
+                endsOnTimestamp = isUnixInSeconds
+                    ? newEndsOn * 1000
+                    : newEndsOn;
+            } else if (initialOldEndsOn) {
+                endsOnTimestamp = initialOldEndsOn.getTime();
+            }
 
             setOldEndsOn(endsOnTimestamp);
         } else {
-            setOldEndsOn(initialOldEndsOn ? initialOldEndsOn.getTime() : null);
+            const fallbackEndsOn = initialOldEndsOn
+                ? initialOldEndsOn.getTime()
+                : null;
+            setOldEndsOn(fallbackEndsOn);
         }
     }, [isOpen, data, taskId, dev]);
 
