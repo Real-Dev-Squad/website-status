@@ -161,7 +161,9 @@ export function TaskStatusDropdown({
             >
                 Status:{' '}
                 {newStatus === BACKEND_TASK_STATUS.BACKLOG ? (
-                    <span>{beautifyStatus(newStatus)}</span>
+                    <span data-testid="task-status-backlog">
+                        {beautifyStatus(newStatus)}
+                    </span>
                 ) : (
                     <TaskStatusSelect
                         newStatus={newStatus}
