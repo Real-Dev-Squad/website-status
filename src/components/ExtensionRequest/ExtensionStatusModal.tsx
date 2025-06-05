@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styles from './ExtensionStatusModal.module.scss';
 import { useGetSelfExtensionRequestsQuery } from '@/app/services/tasksApi';
 import { SmallSpinner } from '../tasks/card/SmallSpinner';
 import moment from 'moment';
 import { ExtensionRequestDetails } from './ExtensionRequestDetails';
 import { ExtensionRequest, ExtensionDetailItem } from '@/interfaces/task.type';
+import { ExtensionRequestForm } from './ExtensionRequestForm';
 
 type ExtensionStatusModalProps = {
     isOpen: boolean;
@@ -12,11 +13,12 @@ type ExtensionStatusModalProps = {
     taskId: string;
     dev: boolean;
     assignee: string;
+    initialOldEndsOn?: Date | null;
 };
 
 const formatToDateTime = (timestamp: number) => {
     const timestampMs = timestamp < 1e12 ? timestamp * 1000 : timestamp;
-    return moment(timestampMs).format('MM/DD/YYYY, h:mm:ss A');
+    return moment(timestampMs).format('DD/MM/YYYY, h:mm:ss A');
 };
 
 export const formatToRelativeTime = (timestamp: number) => {
@@ -78,12 +80,15 @@ export function ExtensionStatusModal({
     taskId,
     dev,
     assignee,
+    initialOldEndsOn,
 }: ExtensionStatusModalProps) {
     const { data, isLoading, error } = useGetSelfExtensionRequestsQuery(
         { taskId, dev },
         { skip: !isOpen }
     );
     const modalRef = useRef<HTMLDivElement>(null);
+    const [isRequestFormOpen, setIsRequestFormOpen] = useState(false);
+    const [oldEndsOn, setOldEndsOn] = useState<number | null>(null);
 
     const extensionRequests = data?.allExtensionRequests ?? [];
     const hasPendingRequest = extensionRequests.some(
@@ -105,13 +110,64 @@ export function ExtensionStatusModal({
         };
     }, [isOpen, onClose]);
 
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const allRequests = data?.allExtensionRequests ?? [];
+
+        if (allRequests.length > 0) {
+            const latestRequest = [...allRequests].sort(
+                (a, b) => b.requestNumber - a.requestNumber
+            )[0];
+
+            const isApproved = latestRequest.status === 'APPROVED';
+
+            let endsOnTimestamp = null;
+            if (isApproved) {
+                const newEndsOn = latestRequest.newEndsOn;
+                const isUnixInSeconds = newEndsOn < 1e12;
+                endsOnTimestamp = isUnixInSeconds
+                    ? newEndsOn * 1000
+                    : newEndsOn;
+            } else if (initialOldEndsOn) {
+                endsOnTimestamp = initialOldEndsOn.getTime();
+            }
+
+            setOldEndsOn(endsOnTimestamp);
+        } else {
+            const fallbackEndsOn = initialOldEndsOn
+                ? initialOldEndsOn.getTime()
+                : null;
+            setOldEndsOn(fallbackEndsOn);
+        }
+    }, [isOpen, data, taskId, dev]);
+
     const handleOutsideClick = (e: React.MouseEvent) => {
         if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
             onClose();
         }
     };
 
-    if (!isOpen) return null;
+    const handleOpenRequestForm = () => {
+        setIsRequestFormOpen(true);
+        onClose();
+    };
+
+    const handleCloseRequestForm = () => setIsRequestFormOpen(false);
+
+    if (!isOpen && !isRequestFormOpen) return null;
+
+    if (!isOpen && isRequestFormOpen) {
+        return (
+            <ExtensionRequestForm
+                isOpen={isRequestFormOpen}
+                onClose={handleCloseRequestForm}
+                taskId={taskId}
+                assignee={assignee}
+                oldEndsOn={oldEndsOn}
+            />
+        );
+    }
 
     if (isLoading) {
         return (
@@ -174,6 +230,7 @@ export function ExtensionStatusModal({
                         <button
                             className={styles.extensionRequestButton}
                             data-testid="request-extension-button"
+                            onClick={handleOpenRequestForm}
                         >
                             Request Extension
                         </button>
