@@ -44,7 +44,7 @@ export type TasksResponseType = {
 
 export type ProgressSliderProps = {
     value: number;
-    debounceSlider: (debounceTimeOut: number) => void;
+    debounceSlider: (() => void) | ((debounceTimeOut: number) => void);
     handleProgressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     isLoading: boolean;
 };
@@ -64,7 +64,7 @@ export type ProgressBarProps = {
     startedOn: string;
     endsOn: string;
     handleProgressChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    debounceSlider: (debounceTimeOut: number) => void;
+    debounceSlider: (() => void) | ((debounceTimeOut: number) => void);
     isLoading: boolean;
 };
 
