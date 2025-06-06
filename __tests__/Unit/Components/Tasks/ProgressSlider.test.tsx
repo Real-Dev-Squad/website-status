@@ -51,4 +51,64 @@ describe('Progress Slider', () => {
         const sliderInput = screen.getByRole('slider');
         expect(sliderInput).toBeInTheDocument();
     });
+
+    test('should clear previous timeout and set new one in dev mode', async () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'true' },
+        }));
+
+        jest.useFakeTimers();
+        const debounceSlider = jest.fn();
+
+        render(
+            <ProgressSlider
+                {...DEFAULT_PROPS}
+                value={40}
+                isLoading={false}
+                debounceSlider={debounceSlider}
+            />
+        );
+
+        const sliderInput = screen.getByRole('slider');
+
+        for (let i = 0; i < 3; i++) {
+            fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
+            fireEvent.mouseUp(sliderInput);
+        }
+
+        expect(debounceSlider).toHaveBeenCalledTimes(1);
+        expect(debounceSlider).toHaveBeenLastCalledWith(1000);
+
+        jest.useRealTimers();
+    });
+
+    test('should not clear previous timeout in non-dev mode', async () => {
+        (useRouter as jest.Mock).mockImplementation(() => ({
+            query: { dev: 'false' },
+        }));
+
+        jest.useFakeTimers();
+        const debounceSlider = jest.fn();
+
+        render(
+            <ProgressSlider
+                {...DEFAULT_PROPS}
+                value={40}
+                isLoading={false}
+                debounceSlider={debounceSlider}
+            />
+        );
+
+        const sliderInput = screen.getByRole('slider');
+
+        for (let i = 0; i < 3; i++) {
+            fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
+            fireEvent.mouseUp(sliderInput);
+        }
+
+        expect(debounceSlider).toHaveBeenCalledTimes(3);
+        expect(debounceSlider).toHaveBeenLastCalledWith(1000);
+
+        jest.useRealTimers();
+    });
 });
