@@ -13,6 +13,7 @@ import {
     failedUpdateSelfTaskHandler,
 } from '../../../../__mocks__/handlers/tasks.handler';
 import { ToastContainer } from 'react-toastify';
+import { PROGRESS_SUCCESSFUL } from '@/constants/constants';
 
 const server = setupServer(...handlers);
 
@@ -318,5 +319,72 @@ describe('ProgressContainer', () => {
                 screen.queryByTestId('completion-modal')
             ).not.toBeInTheDocument();
         });
+    });
+
+    test.only('should debounce and only show successful toast once in dev mode', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+
+        fireEvent.change(sliderInput, { target: { value: 50 } });
+        for (let i = 0; i < 3; i++) {
+            fireEvent.mouseDown(sliderInput);
+            fireEvent.mouseUp(sliderInput);
+        }
+
+        await waitFor(() => {
+            expect(screen.getByText(PROGRESS_SUCCESSFUL)).toBeInTheDocument();
+        }, { timeout: 4000 });
+
+    });
+
+    test.only('should not debounce and show successful toast multiple times in non-dev mode', async () => {
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'false' },
+            }
+        );
+
+
+        await waitFor(() => {
+            expect(screen.getByText('0%')).toBeInTheDocument();
+            expect(screen.getByText('UPDATE')).toBeInTheDocument();
+        });
+
+        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+
+        fireEvent.change(sliderInput, { target: { value: 50 } });
+        for (let i = 0; i < 3; i++) {
+            fireEvent.mouseDown(sliderInput);
+            fireEvent.mouseUp(sliderInput);
+        }
+
+
+        await waitFor(() => {
+            expect(screen.getAllByText(PROGRESS_SUCCESSFUL).length).toBe(3);
+        }, { timeout: 4000 });
     });
 });
