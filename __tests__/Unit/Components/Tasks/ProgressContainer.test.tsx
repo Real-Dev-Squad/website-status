@@ -321,7 +321,7 @@ describe('ProgressContainer', () => {
         });
     });
 
-    test.only('should debounce and only show successful toast once in dev mode', async () => {
+    test('should debounce and only show successful toast once in dev mode', async () => {
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
@@ -348,13 +348,17 @@ describe('ProgressContainer', () => {
             fireEvent.mouseUp(sliderInput);
         }
 
-        await waitFor(() => {
-            expect(screen.getByText(PROGRESS_SUCCESSFUL)).toBeInTheDocument();
-        }, { timeout: 4000 });
-
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByText(PROGRESS_SUCCESSFUL)
+                ).toBeInTheDocument();
+            },
+            { timeout: 4000 }
+        );
     });
 
-    test.only('should not debounce and show successful toast multiple times in non-dev mode', async () => {
+    test('should not debounce and show successful toast multiple times in non-dev mode', async () => {
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
@@ -365,7 +369,6 @@ describe('ProgressContainer', () => {
                 query: { dev: 'false' },
             }
         );
-
 
         await waitFor(() => {
             expect(screen.getByText('0%')).toBeInTheDocument();
@@ -382,9 +385,11 @@ describe('ProgressContainer', () => {
             fireEvent.mouseUp(sliderInput);
         }
 
-
-        await waitFor(() => {
-            expect(screen.getAllByText(PROGRESS_SUCCESSFUL).length).toBe(3);
-        }, { timeout: 4000 });
+        await waitFor(
+            () => {
+                expect(screen.getAllByText(PROGRESS_SUCCESSFUL).length).toBe(3);
+            },
+            { timeout: 4000 }
+        );
     });
 });
