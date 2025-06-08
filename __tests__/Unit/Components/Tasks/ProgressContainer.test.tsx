@@ -13,7 +13,6 @@ import {
     failedUpdateSelfTaskHandler,
 } from '../../../../__mocks__/handlers/tasks.handler';
 import { ToastContainer } from 'react-toastify';
-import { PROGRESS_SUCCESSFUL } from '@/constants/constants';
 
 const server = setupServer(...handlers);
 
@@ -23,6 +22,7 @@ describe('ProgressContainer', () => {
     });
     afterEach(() => {
         server.resetHandlers();
+        jest.clearAllMocks();
     });
     afterAll(() => {
         server.close();
@@ -321,12 +321,12 @@ describe('ProgressContainer', () => {
         });
     });
 
-    test('should debounce and only show successful toast once in dev mode', async () => {
+    test('should debounce and make only one fetch call in dev mode', async () => {
+        const fetchSpy = jest.spyOn(window, 'fetch');
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
                 <ProgressContainer content={CONTENT[0]} />
-                <ToastContainer />
             </Provider>,
             {
                 query: { dev: 'true' },
@@ -342,23 +342,22 @@ describe('ProgressContainer', () => {
         fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
 
-        fireEvent.change(sliderInput, { target: { value: 50 } });
         for (let i = 0; i < 3; i++) {
-            fireEvent.mouseDown(sliderInput);
-            fireEvent.mouseUp(sliderInput);
+            fireEvent.mouseUp(sliderInput, { target: { value: 50 + i * 10 } });
         }
 
         await waitFor(
             () => {
-                expect(
-                    screen.getByText(PROGRESS_SUCCESSFUL)
-                ).toBeInTheDocument();
+                expect(fetchSpy).toBeCalledTimes(1);
             },
-            { timeout: 4000 }
+            { timeout: 1050 }
         );
+
+        jest.clearAllMocks();
     });
 
-    test('should not debounce and show successful toast multiple times in non-dev mode', async () => {
+    test('should not debounce and make multiple fetch calls in non-dev mode', async () => {
+        const fetchSpy = jest.spyOn(window, 'fetch');
         server.use(superUserSelfHandler);
         renderWithRouter(
             <Provider store={store()}>
@@ -379,17 +378,15 @@ describe('ProgressContainer', () => {
         fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
 
-        fireEvent.change(sliderInput, { target: { value: 50 } });
         for (let i = 0; i < 3; i++) {
-            fireEvent.mouseDown(sliderInput);
-            fireEvent.mouseUp(sliderInput);
+            fireEvent.mouseUp(sliderInput, { target: { value: 50 + i * 10 } });
         }
 
         await waitFor(
             () => {
-                expect(screen.getAllByText(PROGRESS_SUCCESSFUL).length).toBe(3);
+                expect(fetchSpy).toBeCalledTimes(3);
             },
-            { timeout: 4000 }
+            { timeout: 1050 }
         );
     });
 });
