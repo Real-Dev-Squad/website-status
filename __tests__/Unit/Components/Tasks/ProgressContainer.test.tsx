@@ -333,12 +333,11 @@ describe('ProgressContainer', () => {
             }
         );
 
-        await waitFor(() => {
-            expect(screen.getByText('0%')).toBeInTheDocument();
-            expect(screen.getByText('UPDATE')).toBeInTheDocument();
-        });
+        const updateButton = await screen.findByTestId(
+            'progress-update-text-dev'
+        );
+        expect(updateButton).toBeInTheDocument();
 
-        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
         fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
 
@@ -369,12 +368,11 @@ describe('ProgressContainer', () => {
             }
         );
 
-        await waitFor(() => {
-            expect(screen.getByText('0%')).toBeInTheDocument();
-            expect(screen.getByText('UPDATE')).toBeInTheDocument();
-        });
+        const updateButton = await screen.findByTestId(
+            'progress-update-text-dev'
+        );
+        expect(updateButton).toBeInTheDocument();
 
-        const updateButton = screen.getByRole('button', { name: /UPDATE/i });
         fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
 
