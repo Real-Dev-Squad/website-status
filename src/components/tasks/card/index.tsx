@@ -653,6 +653,7 @@ const Card: FC<CardProps> = ({
                         taskId={cardDetails.id}
                         dev={isDevMode}
                         assignee={cardDetails.assignee ?? ''}
+                        initialOldEndsOn={localEndsOn}
                     />
                 </div>
             )}
