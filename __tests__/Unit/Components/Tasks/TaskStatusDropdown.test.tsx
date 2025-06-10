@@ -109,7 +109,7 @@ describe('TaskStatusDropdown', () => {
 
     it('should show text Done as selected option when a task with completed status is passed down.', () => {
         const oldProgress = 100;
-        const oldStatus = BACKEND_TASK_STATUS.DONE;
+        const oldStatus = BACKEND_TASK_STATUS.COMPLETED;
 
         render(
             <TaskStatusDropdown
@@ -145,6 +145,20 @@ describe('TaskStatusDropdown', () => {
         });
         const msgTag = screen.queryByTestId('msg');
         expect(msgTag).toBeNull();
+    });
+    it('should show text Backlog when a task with Backlog status is passed down.', () => {
+        const oldProgress = 100;
+        const oldStatus = BACKEND_TASK_STATUS.BACKLOG;
+
+        render(
+            <TaskStatusDropdown
+                oldProgress={oldProgress}
+                oldStatus={oldStatus}
+                onChange={onChange}
+            />
+        );
+        const element = screen.getByTestId('task-status-backlog');
+        expect(element).toHaveTextContent('Backlog');
     });
     describe('TaskDropDownModel', () => {
         const handleProceed = jest.fn();
