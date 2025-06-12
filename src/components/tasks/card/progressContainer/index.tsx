@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -22,6 +22,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     const { dev } = router.query;
     const isDev = dev === 'true';
 
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(
         content.percentCompleted
@@ -69,12 +70,21 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     };
 
     const debounceSlider = (debounceTimeOut: number) => {
-        if (debounceTimeOut) {
-            clearTimeout(debounceTimeOut);
+        if (isDev) {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
+            debounceTimeoutRef.current = setTimeout(() => {
+                onProgressChange();
+            }, 1000);
+        } else {
+            if (debounceTimeOut) {
+                clearTimeout(debounceTimeOut);
+            }
+            setTimeout(() => {
+                onProgressChange();
+            }, 1000);
         }
-        setTimeout(() => {
-            onProgressChange();
-        }, 1000);
     };
 
     const handleProgressChange = (
