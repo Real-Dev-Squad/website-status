@@ -76,7 +76,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
             }
             debounceTimeoutRef.current = setTimeout(() => {
                 onProgressChange();
-            }, 1000);
+            }, debounceTimeOut);
         } else {
             if (debounceTimeOut) {
                 clearTimeout(debounceTimeOut);
