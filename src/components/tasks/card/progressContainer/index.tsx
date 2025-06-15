@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useCallback, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -70,15 +70,18 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         setIsProgressMade(false);
     };
 
-    const debounceSlider = (debounceTimeOut: number) => {
-        if (debounceTimeoutRef.current) {
-            clearTimeout(debounceTimeoutRef.current);
-        }
+    const debounceSlider = useCallback(
+        (debounceTimeOut: number) => {
+            if (debounceTimeoutRef.current) {
+                clearTimeout(debounceTimeoutRef.current);
+            }
 
-        debounceTimeoutRef.current = setTimeout(() => {
-            onProgressChange();
-        }, debounceTimeOut);
-    };
+            debounceTimeoutRef.current = setTimeout(() => {
+                onProgressChange();
+            }, debounceTimeOut);
+        },
+        [onProgressChange]
+    );
 
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
