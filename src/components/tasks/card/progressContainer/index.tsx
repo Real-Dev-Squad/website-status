@@ -22,7 +22,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     const { dev } = router.query;
     const isDev = dev === 'true';
 
-    const debounceTimeoutRef = useRef();
+    const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const [isProgressMade, setIsProgressMade] = useState<boolean>(false);
     const [progressValue, setProgressValue] = useState<number>(
