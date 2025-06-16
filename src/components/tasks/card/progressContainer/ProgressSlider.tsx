@@ -11,9 +11,7 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
     isLoading,
 }) => {
     const router = useRouter();
-    const { dev } = router.query;
-    const isDev = dev === 'true';
-
+    const isDev = router.query.dev === 'true';
     return (
         <>
             {isDev ? (
