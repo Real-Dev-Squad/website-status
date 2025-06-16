@@ -83,7 +83,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         debounce((id: string, value: number) => {
             handleSliderChangeComplete(id, value);
         }, DEBOUNCE_DELAY),
-        [isUserAuthorized, handleSliderChangeComplete, isDev]
+        [isUserAuthorized]
     );
     const handleProgressChangeDev = (
         event: React.ChangeEvent<HTMLInputElement>
