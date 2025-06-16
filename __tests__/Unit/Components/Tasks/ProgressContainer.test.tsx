@@ -369,7 +369,7 @@ describe('ProgressContainer', () => {
         fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 5; i++) {
             fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
             fireEvent.mouseUp(sliderInput);
         }
