@@ -13,7 +13,6 @@ export const readMoreFormatter = (
     return stringToFormat;
 };
 
-
 export function debounce(cb: (...args: any[]) => any, delay: number) {
     let timerId: NodeJS.Timeout;
     return function (...args: any[]) {

@@ -1,6 +1,5 @@
 import { debounce } from '@/utils/common';
 
-
 describe('debounce', () => {
     beforeEach(() => {
         jest.useFakeTimers();

@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -13,11 +13,14 @@ import { CompletionModal } from '@/components/Modal/CompletionModal';
 import { ERROR_MESSAGE, PROGRESS_SUCCESSFUL } from '@/constants/constants';
 import styles from '@/components/tasks/card/card.module.scss';
 import { ProgressContainerProps } from '@/interfaces/task.type';
+import { debounce } from '@/utils/common';
 
 const ProgressContainer: FC<ProgressContainerProps> = ({
     content,
     readOnly = false,
 }) => {
+    const DEBOUNCE_DELAY = 1000;
+
     const router = useRouter();
     const { dev } = router.query;
     const isDev = dev === 'true';
@@ -64,7 +67,6 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     };
 
     const onProgressChange = () => {
-        handleSliderChangeComplete(content.id, progressValue);
         setIsProgressMade(false);
     };
 
@@ -75,6 +77,19 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         setTimeout(() => {
             onProgressChange();
         }, 1000);
+    };
+
+    const debouncedUpdate = useCallback(
+        debounce((id: string, value: number) => {
+            handleSliderChangeComplete(id, value);
+        }, DEBOUNCE_DELAY),
+        [isUserAuthorized]
+    );
+    const handleProgressChangeDev = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setProgressValue(Number(event.target.value));
+        debouncedUpdate(content.id, Number(event.target.value));
     };
 
     const handleProgressChange = (
@@ -121,7 +136,9 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
                     progress={!readOnly && isProgressMade}
                     progressValue={progressValue}
                     percentCompleted={content.percentCompleted}
-                    handleProgressChange={handleProgressChange}
+                    handleProgressChange={
+                        isDev ? handleProgressChangeDev : handleProgressChange
+                    }
                     debounceSlider={debounceSlider}
                     startedOn={content.startedOn}
                     endsOn={String(content.endsOn)}
