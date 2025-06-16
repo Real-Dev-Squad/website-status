@@ -87,17 +87,13 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         [isUserAuthorized]
     );
 
-    const handleProgressChangeDev = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setProgressValue(Number(event.target.value));
-        debouncedUpdate(content.id, Number(event.target.value));
-    };
-
     const handleProgressChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         setProgressValue(Number(event.target.value));
+        if (isDev) {
+            debouncedUpdate(content.id, Number(event.target.value));
+        }
     };
 
     const handleProgressUpdate = () => {
@@ -138,9 +134,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
                     progress={!readOnly && isProgressMade}
                     progressValue={progressValue}
                     percentCompleted={content.percentCompleted}
-                    handleProgressChange={
-                        isDev ? handleProgressChangeDev : handleProgressChange
-                    }
+                    handleProgressChange={handleProgressChange}
                     debounceSlider={debounceSlider}
                     startedOn={content.startedOn}
                     endsOn={String(content.endsOn)}
