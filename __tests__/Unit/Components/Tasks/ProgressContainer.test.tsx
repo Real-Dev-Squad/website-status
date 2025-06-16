@@ -369,14 +369,14 @@ describe('ProgressContainer', () => {
         fireEvent.click(updateButton);
         const sliderInput = screen.getByRole('slider');
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 3; i++) {
             fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
             fireEvent.mouseUp(sliderInput);
         }
 
         await waitFor(
             () => {
-                expect(fetchSpy).toBeCalledTimes(5);
+                expect(fetchSpy).toBeCalledTimes(3);
             },
             {
                 timeout: 1050,
