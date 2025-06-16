@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { toast, ToastTypes } from '@/helperFunctions/toast';
 import {
@@ -67,6 +67,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
     };
 
     const onProgressChange = () => {
+        handleSliderChangeComplete(content.id, progressValue);
         setIsProgressMade(false);
     };
 
@@ -85,6 +86,7 @@ const ProgressContainer: FC<ProgressContainerProps> = ({
         }, DEBOUNCE_DELAY),
         [isUserAuthorized]
     );
+
     const handleProgressChangeDev = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
