@@ -344,14 +344,11 @@ describe('ProgressContainer', () => {
             fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
         }
 
-        await waitFor(
-            () => {
-                expect(fetchSpy).toBeCalledTimes(1);
-            },
-            { timeout: 1050 }
-        );
+        await waitFor(() => {
+            expect(fetchSpy).toBeCalledTimes(1);
+        });
 
-        jest.clearAllMocks();
+        fetchSpy.mockRestore();
     });
 
     test('should not debounce and make multiple fetch calls in non-dev mode', async () => {
@@ -379,11 +376,9 @@ describe('ProgressContainer', () => {
             fireEvent.mouseUp(sliderInput, { target: { value: 50 + i * 10 } });
         }
 
-        await waitFor(
-            () => {
-                expect(fetchSpy).toBeCalledTimes(3);
-            },
-            { timeout: 1050 }
-        );
+        await waitFor(() => {
+            expect(fetchSpy).toBeCalledTimes(3);
+        });
+        fetchSpy.mockRestore();
     });
 });
