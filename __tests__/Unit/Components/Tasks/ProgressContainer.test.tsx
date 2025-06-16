@@ -319,4 +319,71 @@ describe('ProgressContainer', () => {
             ).not.toBeInTheDocument();
         });
     });
+
+    test('should debounce and make only one fetch call in dev mode', async () => {
+        const fetchSpy = jest.spyOn(window, 'fetch');
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+            </Provider>,
+            {
+                query: { dev: 'true' },
+            }
+        );
+
+        const updateButton = await screen.findByTestId(
+            'progress-update-text-dev'
+        );
+        expect(updateButton).toBeInTheDocument();
+
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+
+        for (let i = 0; i < 3; i++) {
+            fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
+        }
+
+        await waitFor(
+            () => {
+                expect(fetchSpy).toBeCalledTimes(1);
+            },
+            { timeout: 1050 }
+        );
+
+        jest.clearAllMocks();
+    });
+
+    test('should not debounce and make multiple fetch calls in non-dev mode', async () => {
+        const fetchSpy = jest.spyOn(window, 'fetch');
+        server.use(superUserSelfHandler);
+        renderWithRouter(
+            <Provider store={store()}>
+                <ProgressContainer content={CONTENT[0]} />
+                <ToastContainer />
+            </Provider>,
+            {
+                query: { dev: 'false' },
+            }
+        );
+
+        const updateButton = await screen.findByTestId(
+            'progress-update-text-dev'
+        );
+        expect(updateButton).toBeInTheDocument();
+
+        fireEvent.click(updateButton);
+        const sliderInput = screen.getByRole('slider');
+
+        for (let i = 0; i < 3; i++) {
+            fireEvent.mouseUp(sliderInput, { target: { value: 50 + i * 10 } });
+        }
+
+        await waitFor(
+            () => {
+                expect(fetchSpy).toBeCalledTimes(3);
+            },
+            { timeout: 1050 }
+        );
+    });
 });
