@@ -358,10 +358,7 @@ describe('ProgressContainer', () => {
             <Provider store={store()}>
                 <ProgressContainer content={CONTENT[0]} />
                 <ToastContainer />
-            </Provider>,
-            {
-                query: { dev: 'false' },
-            }
+            </Provider>
         );
 
         const updateButton = await screen.findByTestId(
@@ -373,12 +370,18 @@ describe('ProgressContainer', () => {
         const sliderInput = screen.getByRole('slider');
 
         for (let i = 0; i < 3; i++) {
-            fireEvent.mouseUp(sliderInput, { target: { value: 50 + i * 10 } });
+            fireEvent.change(sliderInput, { target: { value: 50 + i * 10 } });
+            fireEvent.mouseUp(sliderInput);
         }
 
-        await waitFor(() => {
-            expect(fetchSpy).toBeCalledTimes(3);
-        });
+        await waitFor(
+            () => {
+                expect(fetchSpy).toBeCalledTimes(5);
+            },
+            {
+                timeout: 1050,
+            }
+        );
         fetchSpy.mockRestore();
     });
 });
