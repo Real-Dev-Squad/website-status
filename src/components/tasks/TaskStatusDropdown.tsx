@@ -27,6 +27,10 @@ const TaskStatusSelect = ({
     taskStatus,
     testIdPrefix = 'task-status',
 }: TaskStatusSelectProps) => {
+    if (newStatus === BACKEND_TASK_STATUS.COMPLETED) {
+        newStatus = BACKEND_TASK_STATUS.DONE;
+    }
+
     return (
         <select
             className={styles.taskStatusUpdate}
@@ -66,10 +70,6 @@ export function TaskStatusDropdown({
         newProgress: oldProgress,
     });
     const [message, setMessage] = useState('');
-
-    if (oldStatus === BACKEND_TASK_STATUS.COMPLETED) {
-        BACKEND_TASK_STATUS.DONE = BACKEND_TASK_STATUS.COMPLETED;
-    }
 
     const getAvailableTaskStatuses = () => {
         return Object.entries(BACKEND_TASK_STATUS).filter(
@@ -159,12 +159,18 @@ export function TaskStatusDropdown({
                 }
                 data-testid={isDevMode ? 'task-status-label' : undefined}
             >
-                Status:
-                <TaskStatusSelect
-                    newStatus={newStatus}
-                    handleChange={handleChange}
-                    taskStatus={taskStatus}
-                />
+                Status:{' '}
+                {newStatus === BACKEND_TASK_STATUS.BACKLOG ? (
+                    <span data-testid="task-status-backlog">
+                        {beautifyStatus(newStatus)}
+                    </span>
+                ) : (
+                    <TaskStatusSelect
+                        newStatus={newStatus}
+                        handleChange={handleChange}
+                        taskStatus={taskStatus}
+                    />
+                )}
             </label>
             <TaskDropDownModel
                 message={message}

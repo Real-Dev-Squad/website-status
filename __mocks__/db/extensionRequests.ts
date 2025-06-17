@@ -1,4 +1,4 @@
-import { ExtensionRequest } from '@/components/ExtensionRequest/ExtensionStatusModal';
+import { ExtensionRequest } from '@/interfaces/task.type';
 
 export const now = Date.now();
 
