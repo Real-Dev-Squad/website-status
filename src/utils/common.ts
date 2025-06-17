@@ -12,3 +12,11 @@ export const readMoreFormatter = (
 
     return stringToFormat;
 };
+
+export function debounce(cb: (...args: any[]) => any, delayMs: number) {
+    let timerId: ReturnType<typeof setTimeout>;
+    return function (...args: any[]) {
+        clearTimeout(timerId);
+        timerId = setTimeout(() => cb(...args), delayMs);
+    };
+}
