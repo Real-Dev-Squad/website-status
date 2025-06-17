@@ -31,6 +31,7 @@ const ProgressSlider: FC<ProgressSliderProps> = ({
                     }
                 />
             ) : (
+                //TODO: Remove this block while removing feature flag (ISSUE: #1366)
                 <input
                     className={styles.slider}
                     type="range"

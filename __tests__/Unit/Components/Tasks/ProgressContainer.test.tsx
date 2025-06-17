@@ -351,6 +351,7 @@ describe('ProgressContainer', () => {
         fetchSpy.mockRestore();
     });
 
+    //TODO: Remove this test case while removing feature flag (ISSUE: #1366)
     test('should not debounce and make multiple fetch calls in non-dev mode', async () => {
         const fetchSpy = jest.spyOn(window, 'fetch');
         server.use(superUserSelfHandler);
